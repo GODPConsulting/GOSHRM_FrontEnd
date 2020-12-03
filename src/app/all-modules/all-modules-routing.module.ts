@@ -25,6 +25,10 @@ const routes: Routes = [
         loadChildren: () => import('./employees/employees.module').then(m => m.EmployeesModule)
       },
       {
+        path: 'setup',
+        loadChildren: () => import('./setup/setup.module').then(m => m.SetupModule)
+      },
+      {
         path: 'clients',
         loadChildren: () => import('./clients/clients.module').then(m => m.ClientsModule)
       },
@@ -120,7 +124,7 @@ const routes: Routes = [
         path: 'tables',
         loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule)
       },
-     
+
     ]
   }
 ];

@@ -8,12 +8,16 @@ import { OtpComponent } from './otp/otp.component';
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
 import { JobListComponent } from './job-list/job-list.component';
 import { JobViewComponent } from './job-view/job-view.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import {AuthService} from "../services/auth.service";
 
 @NgModule({
   declarations: [LoginComponent, ForgotComponent, RegisterComponent, OtpComponent, LockscreenComponent, JobListComponent, JobViewComponent],
   imports: [
     CommonModule,
-    LoginRoutingModule
-  ]
+    LoginRoutingModule,
+    ReactiveFormsModule
+  ],
+  providers: [AuthService]
 })
 export class LoginModule { }

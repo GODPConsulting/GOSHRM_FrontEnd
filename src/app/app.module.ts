@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 // Bootstrap DataTable
 import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {HttpTokenInterceptor} from "./services/http.interceptor.service";
 @NgModule({
   declarations: [
     AppComponent
@@ -16,6 +18,7 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    HttpClientModule,
     DataTablesModule,
     ToastrModule.forRoot(
       {
@@ -25,7 +28,11 @@ import { ToastrModule } from 'ngx-toastr';
       }
     ),
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpTokenInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
