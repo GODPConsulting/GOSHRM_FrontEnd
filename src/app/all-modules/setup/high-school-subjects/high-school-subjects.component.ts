@@ -32,6 +32,9 @@ export class HighSchoolSubjectsComponent implements OnInit {
   public statusValue;
   public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
+  pageLoading: boolean;
+  value: any;
+  selectedId: any[] = [];
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -57,14 +60,16 @@ export class HighSchoolSubjectsComponent implements OnInit {
     });
   }
   getHighSchools() {
+    this.pageLoading = true;
     return this.setupService.getHighSchoolSubject().subscribe(
       data => {
-        console.log(data);
+        this.pageLoading = false;
         this.subjects = data.setuplist;
         this.rows = this.subjects;
         this.srch = [...this.rows];
       },
       err => {
+        this.pageLoading = false;
         console.log(err);
       }
     );
@@ -302,5 +307,57 @@ export class HighSchoolSubjectsComponent implements OnInit {
        })
      }
    })
+  }
+  addItemId(event, id) {
+    if (event.target.checked) {
+      if (!this.selectedId.includes(id)) {
+        this.selectedId.push(id)
+      }
+    } else {
+      this.selectedId = this.selectedId.filter(_id => {
+        return _id !== id;
+      })
+    }
+
+  }
+  deleteItems() {
+    if (this.selectedId.length === 0) {
+      return swal.fire('Error', 'Select items to delete', 'error')
+    }
+    const payload = {
+      itemIds: this.selectedId
+    };
+    swal.fire({
+      title: "Are you sure you want to delete this record?",
+      text: "You won't be able to revert this",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes!"
+    }).then(result => {
+      if (result.value) {
+        return this.setupService.deleteHighSchoolSubject(payload).subscribe(res => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire('Success', message, 'success').then(() => {
+              this.getHighSchools()
+            })
+          } else {
+            swal.fire('Error', message, 'error')
+          }
+        }, err => {
+          console.log(err);
+        })
+      }
+    })
+
+  }
+  checkAll(event) {
+    if (event.target.checked) {
+      this.selectedId = this.subjects.map(item => {
+        return item.id
+      })
+    } else {
+      this.selectedId = []
+    }
   }
 }

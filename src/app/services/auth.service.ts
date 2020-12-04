@@ -4,12 +4,19 @@ import { Observable } from "rxjs";
 import { map, tap } from "rxjs/operators";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../../environments/environment";
+import { JwtService } from "./jwt.service";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
-  constructor(private apiService: ApiService, private http: HttpClient) {}
+  constructor(
+    private apiService: ApiService,
+    private http: HttpClient,
+    private jwtService: JwtService,
+    private router: Router
+  ) {}
 
   userLogin(payload): Observable<any> {
     // let body = { userName: userName, password: password };
@@ -34,5 +41,13 @@ export class AuthService {
           })
         )
     );
+  }
+  loggedIn() {
+    return this.jwtService.getToken() ? true : false;
+  }
+  clearSession() {
+    this.jwtService.destroyToken().then(() => {
+      this.router.navigateByUrl('/login')
+    });
   }
 }
