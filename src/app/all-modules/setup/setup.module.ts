@@ -11,6 +11,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {HttpTokenInterceptor} from "../../services/http.interceptor.service";
 import { EmploymentLevelComponent } from './employment-level/employment-level.component';
+import { AcademicDisciplineComponent } from './academic-discipline/academic-discipline.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { EmploymentLevelComponent } from './employment-level/employment-level.co
     JobgradesComponent,
     HighSchoolSubjectComponent,
     HighSchoolSubjectsComponent,
-    EmploymentLevelComponent
+    EmploymentLevelComponent,
+    AcademicDisciplineComponent
   ],
   imports: [CommonModule, SetupRoutingModule, DataTablesModule, ReactiveFormsModule],
   providers: [
