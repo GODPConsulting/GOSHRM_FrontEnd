@@ -70,6 +70,8 @@ export class SetupService {
       return data;
     }))
   }
+
+
   updateEmploymentLevel(payload): Observable<any> {
     return this.apiService.post(`/hrmsetup/add/update/employmentlevel`, payload).pipe(res => {
       return res;
