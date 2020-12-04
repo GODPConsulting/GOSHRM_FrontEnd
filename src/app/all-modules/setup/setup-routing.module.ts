@@ -6,6 +6,8 @@ import { HighSchoolSubjectComponent } from "./high-school-subject/high-school-su
 import { HighSchoolSubjectsComponent } from "./high-school-subjects/high-school-subjects.component";
 import { EmploymentTypeComponent } from "./employment-type/employment-type.component";
 
+import { EmploymentLevelComponent } from './employment-level/employment-level.component';
+
 const routes: Routes = [
   {
     path: "",
@@ -23,6 +25,10 @@ const routes: Routes = [
         path: "employment-type",
         component: EmploymentTypeComponent,
       },
+      {
+        path: 'employment-level',
+        component: EmploymentLevelComponent
+      }
     ],
   },
 ];
@@ -31,4 +37,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SetupRoutingModule {}
+export class SetupRoutingModule { }
