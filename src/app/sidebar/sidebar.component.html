@@ -342,6 +342,8 @@
                   urlComplete.subUrl === 'jobgrades') ||
                 (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'high-school-subjects') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'employment-level') ||
                 (urlComplete.mainUrl === 'employees' &&
                   urlComplete.subUrl === 'adminleaves') ||
                 (urlComplete.mainUrl === 'employees' &&
@@ -405,6 +407,8 @@
                     urlComplete.subUrl === 'jobgrades') ||
                   (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'high-school-subjects') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                      urlComplete.subUrl === 'employee-level') ||
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'adminleaves') ||
                   (urlComplete.mainUrl === 'employees' &&
@@ -443,6 +447,13 @@
                   href="javascript:"
                   [ngClass]="{ active: urlComplete.subUrl === 'high-school-subjects' }"
                 >High School Subject</a
+                >
+              </li>
+              <li routerLink="/setup/employment-level">
+                <a
+                  href="javascript:"
+                  [ngClass]="{ active: urlComplete.subUrl === 'employment-level' }"
+                >Employment Level</a
                 >
               </li>
               <li routerLink="/employees/adminleaves">

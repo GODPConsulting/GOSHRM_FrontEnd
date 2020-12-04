@@ -26,4 +26,21 @@ export class SetupService {
       return data;
     }))
   }
+
+  getEmploymentLevel(): Observable<any> {
+    return this.apiService.get(`/hrmsetup/get/all/emplpymentlevels`).pipe(tap(data => {
+      return data;
+    }))
+  }
+
+  deleteEmploymentLevel(payload):Observable<any> {
+    return this.apiService.post(`/hrmsetup/delete/employmentlevel`, payload).pipe(tap(data => {
+      return data;
+    }))
+  }
+  updateEmploymentLevel(payload): Observable<any> {
+    return this.apiService.post(`/hrmsetup/add/update/employmentlevel`, payload).pipe(res => {
+      return res;
+    })
+  }
 }

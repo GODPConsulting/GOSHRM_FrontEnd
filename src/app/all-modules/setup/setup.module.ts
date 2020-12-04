@@ -10,13 +10,15 @@ import { DataTablesModule } from "angular-datatables";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {HttpTokenInterceptor} from "../../services/http.interceptor.service";
+import { EmploymentLevelComponent } from './employment-level/employment-level.component';
 
 @NgModule({
   declarations: [
     SetupComponent,
     JobgradesComponent,
     HighSchoolSubjectComponent,
-    HighSchoolSubjectsComponent
+    HighSchoolSubjectsComponent,
+    EmploymentLevelComponent
   ],
   imports: [CommonModule, SetupRoutingModule, DataTablesModule, ReactiveFormsModule],
   providers: [
