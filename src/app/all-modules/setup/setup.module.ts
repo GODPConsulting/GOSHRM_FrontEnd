@@ -7,9 +7,11 @@ import { JobgradesComponent } from "./jobgrades/jobgrades.component";
 import { HighSchoolSubjectComponent } from "./high-school-subject/high-school-subject.component";
 import { HighSchoolSubjectsComponent } from "./high-school-subjects/high-school-subjects.component";
 import { DataTablesModule } from "angular-datatables";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {HttpTokenInterceptor} from "../../services/http.interceptor.service";
+import {AppModule} from "../../app.module";
+import {SharedModule} from "../../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -18,7 +20,7 @@ import {HttpTokenInterceptor} from "../../services/http.interceptor.service";
     HighSchoolSubjectComponent,
     HighSchoolSubjectsComponent
   ],
-  imports: [CommonModule, SetupRoutingModule, DataTablesModule, ReactiveFormsModule],
+  imports: [CommonModule, SetupRoutingModule, DataTablesModule, ReactiveFormsModule, SharedModule, FormsModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
