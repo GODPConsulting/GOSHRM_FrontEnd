@@ -343,11 +343,8 @@
                 (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'high-school-subjects') ||
                   (urlComplete.mainUrl === 'setup' &&
-<<<<<<< HEAD
                   urlComplete.subUrl === 'academic-discipline') ||
                   (urlComplete.mainUrl === 'setup' &&
-=======
->>>>>>> e003594 (Employment Level)
                   urlComplete.subUrl === 'employment-level') ||
                 (urlComplete.mainUrl === 'employees' &&
                   urlComplete.subUrl === 'adminleaves') ||
@@ -368,8 +365,7 @@
                 (urlComplete.mainUrl === 'employees' &&
                   urlComplete.subUrl === 'overtime') ||
                 (urlComplete.mainUrl === 'employees' &&
-                  urlComplete.subUrl === 'employeelist')
-            }"
+                  urlComplete.subUrl === 'employeelist')}"
           >
             <a
               href="javascript:"
@@ -414,8 +410,8 @@
                     urlComplete.subUrl === 'high-school-subjects') ||
                     (urlComplete.mainUrl === 'setup' &&
                       urlComplete.subUrl === 'employee-level') ||
-                  (urlComplete.mainUrl === 'employees' &&
-                    urlComplete.subUrl === 'adminleaves') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'employment-type') ||
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'employeeleaves') ||
                   (urlComplete.mainUrl === 'employees' &&
@@ -453,6 +449,10 @@
                   [ngClass]="{ active: urlComplete.subUrl === 'high-school-subjects' }"
                 >High School Subject</a
                 >
+              </li>
+              <li routerLink="/setup/employment-type">
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employment-type' }">Employment
+                  Type</a>
               </li>
               <li routerLink="/setup/employment-level">
                 <a
