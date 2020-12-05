@@ -60,21 +60,53 @@ export class SetupService {
   }
 
   getEmploymentLevel(): Observable<any> {
-    return this.apiService.get(`/hrmsetup/get/all/emplpymentlevels`).pipe(tap(data => {
-      return data;
-    }))
+    return this.apiService.get(`/hrmsetup/get/all/emplpymentlevels`).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
   }
 
-  deleteEmploymentLevel(payload):Observable<any> {
-    return this.apiService.post(`/hrmsetup/delete/employmentlevel`, payload).pipe(tap(data => {
-      return data;
-    }))
+  deleteEmploymentLevel(payload): Observable<any> {
+    return this.apiService
+      .post(`/hrmsetup/delete/employmentlevel`, payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
   }
-
 
   updateEmploymentLevel(payload): Observable<any> {
-    return this.apiService.post(`/hrmsetup/add/update/employmentlevel`, payload).pipe(res => {
-      return res;
-    })
+    return this.apiService
+      .post(`/hrmsetup/add/update/employmentlevel`, payload)
+      .pipe((res) => {
+        return res;
+      });
+  }
+
+  // Job Grade Type
+  retrievejobGrade(): Observable<any> {
+    return this.apiService.get(`/hrmsetup/get/all/jobgrades`).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  updatejobGrade(payload): Observable<any> {
+    return this.apiService
+      .post(`/hrmsetup/add/update/jobgrade`, payload)
+      .pipe((res) => {
+        return res;
+      });
+  }
+
+  deletejobGrade(payload): Observable<any> {
+    return this.apiService.post(`/hrmsetup/delete/jobgrade`, payload).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
   }
 }

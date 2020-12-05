@@ -18,7 +18,7 @@ export class JobGradeComponent implements OnInit {
   //@ViewChild(DataTableDirective, { static: false })
   public jobGradeForm: FormGroup;
   //public employeeForm: FormGroup;
-  public employmentTypes: any[] = [];
+  public jobGrades: any[] = [];
   public rows = [];
   public dtTrigger: Subject<any> = new Subject();
   public dtElement: DataTableDirective;
@@ -45,28 +45,31 @@ export class JobGradeComponent implements OnInit {
       })
       .trigger("blur");
     this.initializeForm();
-    this.getEmploymentType();
+    this.getjobGrade();
   }
 
   initializeForm() {
     this.jobGradeForm = this.formBuilder.group({
       id: [0],
-      employment_type: ["", Validators.required],
+      job_grade: ["", Validators.required],
+      job_grade_reporting_to: ["", Validators.required],
+      rank: ["", Validators.required],
+      probation_period_in_months: ["", Validators.required],
       description: ["", Validators.required],
     });
   }
 
   addjobGrade() {
     this.formTitle = "Add Job Grade";
-    $("#add_employment_type").modal("show");
+    $("#add_job_grade").modal("show");
   }
 
-  getEmploymentType() {
-    return this.setupService.getEmploymentTypeApi().subscribe(
+  getjobGrade() {
+    return this.setupService.retrievejobGrade().subscribe(
       (data) => {
         console.log(data);
-        this.employmentTypes = data.setuplist;
-        this.rows = this.employmentTypes;
+        this.jobGrades = data.setuplist;
+        this.rows = this.jobGrades;
         this.srch = [...this.rows];
       },
       (err) => {
@@ -79,7 +82,7 @@ export class JobGradeComponent implements OnInit {
   addData(jobGradeForm: FormGroup) {
     const payload = jobGradeForm.value;
     console.log(payload);
-    return this.setupService.updateEmploymentType(payload).subscribe(
+    return this.setupService.updatejobGrade(payload).subscribe(
       (res) => {
         const message = res.status.message.friendlyMessage;
         //console.log(message);
@@ -87,11 +90,11 @@ export class JobGradeComponent implements OnInit {
         if (res.status.isSuccessful) {
           swal.fire("Success", message, "success");
           this.initializeForm();
-          $("#add_employment_type").modal("hide");
+          $("#add_job_grade").modal("hide");
         } else {
           swal.fire("Error", message, "error");
         }
-        this.getEmploymentType();
+        this.getjobGrade();
       },
       (err) => {
         const message = err.status.message.friendlyMessage;
@@ -149,12 +152,12 @@ export class JobGradeComponent implements OnInit {
         console.log(result);
 
         if (result.value) {
-          return this.setupService.deleteEmploymentType(payload).subscribe(
+          return this.setupService.deletejobGrade(payload).subscribe(
             (res) => {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("Success", message, "success").then(() => {
-                  this.getEmploymentType();
+                  this.getjobGrade();
                 });
               } else {
                 swal.fire("Error", message, "error");
@@ -196,10 +199,13 @@ export class JobGradeComponent implements OnInit {
     this.formTitle = "Edit Job Grade";
     this.jobGradeForm.patchValue({
       id: row.id,
-      employment_type: row.employment_type,
+      job_grade: row.job_grade,
+      job_grade_reporting_to: row.job_grade_reporting_to,
+      rank: row.rank,
+      probation_period_in_months: row.probation_period_in_months,
       description: row.description,
     });
-    $("#add_employment_type").modal("show");
+    $("#add_job_grade").modal("show");
     // this.editId = value;
     // const index = this.lstEmployee.findIndex(item => {
     //   return item.id === value;
@@ -226,7 +232,7 @@ export class JobGradeComponent implements OnInit {
     this.rows.splice(0, this.rows.length);
     let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
-      return d.employment_type.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.job_grade.toLowerCase().indexOf(val) !== -1 || !val;
     });
     this.rows.push(...temp);
   }

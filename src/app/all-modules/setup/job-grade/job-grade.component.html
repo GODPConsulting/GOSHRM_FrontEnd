@@ -56,14 +56,16 @@
                             <th>Report To</th>
                             <th>Rank</th>
                             <th>Probation Period</th>
+                            <th>Description</th>
                             <th class="text-right no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of employmentTypes; let i = index">
-                            <td>{{ row.employment_type }}</td>
-                            <td>{{ row.description }}</td>
-                            <td>{{ row.description }}</td>
+                        <tr *ngFor="let row of jobGrades; let i = index">
+                            <td>{{ row.job_grade }}</td>
+                            <td>{{ row.job_grade_reporting_to }}</td>
+                            <td>{{ row.rank }}</td>
+                            <td>{{ row.probation_period_in_months }}</td>
                             <td>{{ row.description }}</td>
                             <td class="text-right">
                                 <div class="dropdown dropdown-action">
@@ -86,8 +88,8 @@
 </div>
 <!-- /Page Content -->
 
-<!-- Add Employee Modal -->
-<div id="add_employment_type" class="modal custom-modal fade" role="dialog">
+<!-- Add Job Grade Modal -->
+<div id="add_job_grade" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -120,11 +122,11 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Description</label>
+                                <label class="col-form-label">Reporting To</label>
                                 <textarea class="form-control" type="text" [class.invalid]="
                                 jobGradeForm.get('job_grade_reporting_to').invalid &&
                                 jobGradeForm.get('job_grade_reporting_to').touched
-                    " formControlName="description"></textarea>
+                    " formControlName="job_grade_reporting_to"></textarea>
                                 <div *ngIf="
                                 jobGradeForm.get('job_grade_reporting_to').invalid &&
                                 jobGradeForm.get('job_grade_reporting_to').touched
@@ -134,6 +136,64 @@
                                     jobGradeForm.get('job_grade_reporting_to').touched
                       " class="text-danger">
                                         *Description is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Rank <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                jobGradeForm.get('rank').invalid &&
+                                jobGradeForm.get('rank').touched
+                    " formControlName="rank" />
+                                <div *ngIf="
+                                jobGradeForm.get('rank').invalid &&
+                                jobGradeForm.get('rank').touched
+                    ">
+                                    <small *ngIf="
+                                    jobGradeForm.get('rank').invalid &&
+                                    jobGradeForm.get('rank').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Probation Period <span
+                                        class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                jobGradeForm.get('probation_period_in_months').invalid &&
+                                jobGradeForm.get('probation_period_in_months').touched
+                    " formControlName="probation_period_in_months" />
+                                <div *ngIf="
+                                jobGradeForm.get('probation_period_in_months').invalid &&
+                                jobGradeForm.get('probation_period_in_months').touched
+                    ">
+                                    <small *ngIf="
+                                    jobGradeForm.get('probation_period_in_months').invalid &&
+                                    jobGradeForm.get('probation_period_in_months').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Description <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                jobGradeForm.get('description').invalid &&
+                                jobGradeForm.get('description').touched
+                    " formControlName="description" />
+                                <div *ngIf="
+                                jobGradeForm.get('description').invalid &&
+                                jobGradeForm.get('description').touched
+                    ">
+                                    <small *ngIf="
+                                    jobGradeForm.get('description').invalid &&
+                                    jobGradeForm.get('description').touched
+                      " class="text-danger">
+                                        *Field is required</small>
                                 </div>
                             </div>
                         </div>
