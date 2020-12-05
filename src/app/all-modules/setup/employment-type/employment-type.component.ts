@@ -30,6 +30,8 @@ export class EmploymentTypeComponent implements OnInit {
   // public pipe = new DatePipe("en-US");
   // public DateJoin;
   // public statusValue;
+  pageLoading: boolean;
+  selectedId: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -61,15 +63,23 @@ export class EmploymentTypeComponent implements OnInit {
     $("#add_employment_type").modal("show");
   }
 
+  closeModal() {
+    $("#add_employment_type").modal("hide");
+    this.initializeForm();
+  }
+
   getEmploymentType() {
+    this.pageLoading = true;
     return this.setupService.getEmploymentTypeApi().subscribe(
       (data) => {
+        this.pageLoading = false;
         console.log(data);
         this.employmentTypes = data.setuplist;
         this.rows = this.employmentTypes;
         this.srch = [...this.rows];
       },
       (err) => {
+        this.pageLoading = false;
         console.log(err);
       }
     );
@@ -239,5 +249,63 @@ export class EmploymentTypeComponent implements OnInit {
       return d.description.toLowerCase().indexOf(val) !== -1 || !val;
     });
     this.rows.push(...temp);
+  }
+
+  deleteItems() {
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    }
+    const payload = {
+      itemIds: this.selectedId,
+    };
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        if (result.value) {
+          return this.setupService.deleteEmploymentType(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("Success", message, "success").then(() => {
+                  this.getEmploymentType();
+                });
+              } else {
+                swal.fire("Error", message, "error");
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        }
+      });
+  }
+
+  addItemId(event, id) {
+    if (event.target.checked) {
+      if (!this.selectedId.includes(id)) {
+        this.selectedId.push(id);
+      }
+    } else {
+      this.selectedId = this.selectedId.filter((_id) => {
+        return _id !== id;
+      });
+    }
+  }
+
+  checkAll(event) {
+    if (event.target.checked) {
+      this.selectedId = this.employmentTypes.map((item) => {
+        return item.id;
+      });
+    } else {
+      this.selectedId = [];
+    }
   }
 }
