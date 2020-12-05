@@ -1,5 +1,6 @@
+<app-loading *ngIf="pageLoading"></app-loading>
 <!-- Page Content -->
-<div class="content container-fluid">
+<div *ngIf="!pageLoading" class="content container-fluid">
     <!-- Page Header -->
     <div class="page-header">
         <div class="row align-items-center">
@@ -11,13 +12,13 @@
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
-                <a class="btn add-btn" data-toggle="modal" (click)="addjobGrade()"><i class="fa fa-plus"></i> Add
-                    Job Grade</a>
-                <!--        <div class="view-icons">-->
-                <!--          <a routerLink="/employees/employeepage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>-->
-                <!--          <a routerLink="/employees/employeelist" class="list-view btn btn-link active"><i-->
-                <!--            class="fa fa-bars"></i></a>-->
-                <!--        </div>-->
+                <a class="btn add-btn hint" data-toggle="modal" (click)="addjobGrade()"><span
+                        class="hint-text">Add</span><i class="fa fa-plus"></i></a>
+                <a class="btn download-btn hint"><span class="hint-text">Download</span><i
+                        class="fa fa-download"></i></a>
+                <a class="btn upload-btn hint"><span class="hint-text">Upload</span><i class="fa fa-upload"></i></a>
+                <a class="btn delete-btn hint" (click)="deleteItems()"><span class="hint-text">Delete</span><i
+                        class="fa fa-trash"></i></a>
             </div>
         </div>
     </div>
@@ -52,6 +53,11 @@
                     [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === jobGrades.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>S/N</th>
                             <th>Job Grade</th>
                             <th>Report To</th>
                             <th>Rank</th>
@@ -62,6 +68,11 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let row of jobGrades; let i = index">
+                            <td>
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+                            <td>{{ i + 1 }}</td>
                             <td>{{ row.job_grade }}</td>
                             <td>{{ row.job_grade_reporting_to }}</td>
                             <td>{{ row.rank }}</td>

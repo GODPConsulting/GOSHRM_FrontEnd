@@ -30,6 +30,8 @@ export class JobGradeComponent implements OnInit {
   // public pipe = new DatePipe("en-US");
   // public DateJoin;
   // public statusValue;
+  selectedId: any[] = [];
+  pageLoading: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,15 +66,23 @@ export class JobGradeComponent implements OnInit {
     $("#add_job_grade").modal("show");
   }
 
+  closeModal() {
+    $("#add_job_grade").modal("hide");
+    this.initializeForm();
+  }
+
   getjobGrade() {
+    this.pageLoading = true;
     return this.setupService.retrievejobGrade().subscribe(
       (data) => {
+        this.pageLoading = false;
         console.log(data);
         this.jobGrades = data.setuplist;
         this.rows = this.jobGrades;
         this.srch = [...this.rows];
       },
       (err) => {
+        this.pageLoading = false;
         console.log(err);
       }
     );
@@ -245,5 +255,63 @@ export class JobGradeComponent implements OnInit {
       return d.description.toLowerCase().indexOf(val) !== -1 || !val;
     });
     this.rows.push(...temp);
+  }
+
+  checkAll(event) {
+    if (event.target.checked) {
+      this.selectedId = this.jobGrades.map((item) => {
+        return item.id;
+      });
+    } else {
+      this.selectedId = [];
+    }
+  }
+
+  addItemId(event, id) {
+    if (event.target.checked) {
+      if (!this.selectedId.includes(id)) {
+        this.selectedId.push(id);
+      }
+    } else {
+      this.selectedId = this.selectedId.filter((_id) => {
+        return _id !== id;
+      });
+    }
+  }
+
+  deleteItems() {
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    }
+    const payload = {
+      itemIds: this.selectedId,
+    };
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        if (result.value) {
+          return this.setupService.deletejobGrade(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("Success", message, "success").then(() => {
+                  this.getjobGrade();
+                });
+              } else {
+                swal.fire("Error", message, "error");
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        }
+      });
   }
 }
