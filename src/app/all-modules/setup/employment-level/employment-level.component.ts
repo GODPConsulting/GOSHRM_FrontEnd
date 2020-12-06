@@ -29,9 +29,11 @@ export class EmploymentLevelComponent implements OnInit {
   public pipe = new DatePipe("en-US");
   public rows = [];
   public srch = [];
+  selectedId: any[] = [];
   public statusValue;
   public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
+  pageLoading: boolean;
   
   constructor(
     private formBuilder: FormBuilder,
@@ -58,9 +60,10 @@ export class EmploymentLevelComponent implements OnInit {
     });
   }
   getEmploymentLevels() {
+    this.pageLoading = true;
     return this.setupService.getEmploymentLevel().subscribe(
       data => {
-        console.log(data);
+        this.pageLoading = false;
         this.levels = data.setuplist;
         this.rows = this.levels;
         this.srch = [...this.rows];
@@ -215,5 +218,56 @@ searchLevel(val) {
     //   Designation: toSetValues.designation
     // });
   }
+  addItemId(event, id) {
+    if (event.target.checked) {
+      if (!this.selectedId.includes(id)) {
+        this.selectedId.push(id)
+      }
+    } else {
+      this.selectedId = this.selectedId.filter(_id => {
+        return _id !== id;
+      })
+    }
 
+  }
+  deleteItems() {
+    if (this.selectedId.length === 0) {
+      return swal.fire('Error', 'Select items to delete', 'error')
+    }
+    const payload = {
+      itemIds: this.selectedId
+    };
+    swal.fire({
+      title: "Are you sure you want to delete this record?",
+      text: "You won't be able to revert this",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes!"
+    }).then(result => {
+      if (result.value) {
+        return this.setupService.deleteEmploymentLevel(payload).subscribe(res => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire('Success', message, 'success').then(() => {
+              this.getEmploymentLevels()
+            })
+          } else {
+            swal.fire('Error', message, 'error')
+          }
+        }, err => {
+          console.log(err);
+        })
+      }
+    })
+
+  }
+  checkAll(event) {
+    if (event.target.checked) {
+      this.selectedId = this.levels.map(item => {
+        return item.id
+      })
+    } else {
+      this.selectedId = []
+    }
+  }
 }
