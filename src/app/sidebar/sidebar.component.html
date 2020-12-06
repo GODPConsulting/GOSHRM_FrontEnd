@@ -412,6 +412,8 @@
                       urlComplete.subUrl === 'employee-level') ||
                   (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'employment-type') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'academic-discipline') ||
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'employeeleaves') ||
                   (urlComplete.mainUrl === 'employees' &&
@@ -459,6 +461,13 @@
                   href="javascript:"
                   [ngClass]="{ active: urlComplete.subUrl === 'employment-level' }"
                 >Employment Level</a
+                >
+              </li>
+              <li routerLink="/setup/academic-discipline">
+                <a
+                  href="javascript:"
+                  [ngClass]="{ active: urlComplete.subUrl === 'academic-discipline' }"
+                >Academic Discipline</a
                 >
               </li>
               <li routerLink="/employees/adminleaves">

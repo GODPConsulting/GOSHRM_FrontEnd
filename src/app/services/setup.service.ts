@@ -59,6 +59,7 @@ export class SetupService {
       );
   }
 
+  //Employment Level
   getEmploymentLevel(): Observable<any> {
     return this.apiService.get(`/hrmsetup/get/all/emplpymentlevels`).pipe(tap(data => {
       return data;
@@ -76,5 +77,32 @@ export class SetupService {
     return this.apiService.post(`/hrmsetup/add/update/employmentlevel`, payload).pipe(res => {
       return res;
     })
+  }
+
+  //Academic Discipline
+  getAcademicDisciplines(): Observable<any> {
+    return this.apiService.get(`/hrmsetup/get/all/academic/disciplines`).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  deleteAcademicDiscipline(payload): Observable<any> {
+    return this.apiService
+      .post(`/hrmsetup/delete/academic/discipline`, payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
+  updateAcademicDiscipline(payload): Observable<any> {
+    return this.apiService
+      .post(`/hrmsetup/add/update/academic/discipline`, payload)
+      .pipe((res) => {
+        return res;
+      });
   }
 }
