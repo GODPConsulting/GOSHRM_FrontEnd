@@ -282,6 +282,8 @@
                   (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'employment-type') ||
                     (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'academic-discipline') ||
+                    (urlComplete.mainUrl === 'setup' &&
                       urlComplete.subUrl === 'hmo') ||
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'employeeleaves') ||
@@ -323,6 +325,13 @@
               </li>
               <li routerLink="/setup/hmo">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'hmo' }">HMO</a>
+              </li>
+              <li routerLink="/setup/academic-discipline">
+                <a
+                  href="javascript:"
+                  [ngClass]="{ active: urlComplete.subUrl === 'academic-discipline' }"
+                >Academic Discipline</a
+                >
               </li>
               <li routerLink="/employees/adminleaves">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'adminleaves' }">Leaves (Admin)
