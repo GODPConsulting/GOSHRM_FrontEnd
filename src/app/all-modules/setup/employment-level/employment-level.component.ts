@@ -230,6 +230,7 @@ searchLevel(val) {
     }
 
   }
+
   deleteItems() {
     if (this.selectedId.length === 0) {
       return swal.fire('Error', 'Select items to delete', 'error')
@@ -261,6 +262,7 @@ searchLevel(val) {
     })
 
   }
+  
   checkAll(event) {
     if (event.target.checked) {
       this.selectedId = this.levels.map(item => {

@@ -37,6 +37,7 @@ export class AcademicDisciplineComponent implements OnInit {
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
+
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -103,6 +104,7 @@ export class AcademicDisciplineComponent implements OnInit {
   // Add employee  Modal Api Call
   addData(academicDisciplineForm: FormGroup) {
     const payload = academicDisciplineForm.value;
+    payload.rank = parseInt(payload.rank);
     return this.setupService.updateAcademicDiscipline(payload).subscribe(
       res => {
         const message = res.status.message.friendlyMessage;

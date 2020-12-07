@@ -7,6 +7,7 @@ import { HighSchoolSubjectsComponent } from "./high-school-subjects/high-school-
 import { EmploymentTypeComponent } from "./employment-type/employment-type.component";
 import { EmploymentLevelComponent } from './employment-level/employment-level.component';
 import { AcademicDisciplineComponent } from './academic-discipline/academic-discipline.component';
+import { AcademicQualificationComponent } from './academic-qualification/academic-qualification.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
       {
         path: 'academic-discipline',
         component: AcademicDisciplineComponent
+      },
+      {
+        path: 'academic-qualification',
+        component: AcademicQualificationComponent
       }
     ],
   },
