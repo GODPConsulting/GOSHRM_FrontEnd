@@ -14,12 +14,9 @@ import { AcademicDisciplineComponent } from "./academic-discipline/academic-disc
 import { EmploymentLevelComponent } from "./employment-level/employment-level.component";
 import { AppModule } from "../../app.module";
 import { SharedModule } from "../../shared/shared.module";
-<<<<<<< HEAD
 import { JobGradeComponent } from "./job-grade/job-grade.component";
-=======
 import { HmoComponent } from "./hmo/hmo.component";
 import { Ng2SearchPipeModule } from "ng2-search-filter"; // Search module
->>>>>>> dev
 
 @NgModule({
   declarations: [
@@ -30,11 +27,8 @@ import { Ng2SearchPipeModule } from "ng2-search-filter"; // Search module
     EmploymentLevelComponent,
     AcademicDisciplineComponent,
     EmploymentLevelComponent,
-<<<<<<< HEAD
     JobGradeComponent,
-=======
     HmoComponent,
->>>>>>> dev
   ],
   imports: [
     CommonModule,
@@ -43,10 +37,7 @@ import { Ng2SearchPipeModule } from "ng2-search-filter"; // Search module
     ReactiveFormsModule,
     SharedModule,
     FormsModule,
-<<<<<<< HEAD
-=======
     Ng2SearchPipeModule,
->>>>>>> dev
   ],
   providers: [
     {

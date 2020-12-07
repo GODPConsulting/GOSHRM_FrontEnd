@@ -59,84 +59,18 @@ export class SetupService {
       );
   }
 
-<<<<<<< HEAD
-  getEmploymentLevel(): Observable<any> {
-    return this.apiService.get(`/hrmsetup/get/all/emplpymentlevels`).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
-  }
-
-  deleteEmploymentLevel(payload): Observable<any> {
-    return this.apiService
-      .post(`/hrmsetup/delete/employmentlevel`, payload)
-      .pipe(
-        tap((data) => {
-          return data;
-        })
-      );
-  }
-
-  updateEmploymentLevel(payload): Observable<any> {
-    return this.apiService
-      .post(`/hrmsetup/add/update/employmentlevel`, payload)
-      .pipe((res) => {
-        return res;
-      });
-  }
-
-  // Job Grade Type
-  retrievejobGrade(): Observable<any> {
-    return this.apiService.get(`/hrmsetup/get/all/jobgrades`).pipe(
-=======
-  updateEmploymentLevel(payload): Observable<any> {
-    return this.apiService
-      .post(`/hrmsetup/add/update/employmentlevel`, payload)
-      .pipe((res) => {
-        return res;
-      });
-  }
-
-  // HMO
-  /*  getHmos(): Observable<any> {
-    return this.apiService.get(`/hrmsetup/get/all/hmos`).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
-  } */
-
   getData(url) {
     return this.apiService.get(url).pipe(
->>>>>>> dev
       tap((data) => {
         return data;
       })
     );
   }
 
-<<<<<<< HEAD
-  updatejobGrade(payload): Observable<any> {
-    return this.apiService
-      .post(`/hrmsetup/add/update/jobgrade`, payload)
-      .pipe((res) => {
-        return res;
-      });
-  }
-
-  deletejobGrade(payload): Observable<any> {
-    return this.apiService.post(`/hrmsetup/delete/jobgrade`, payload).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
-=======
   updateData(url, payload): Observable<any> {
     return this.apiService.post(url, payload).pipe((res) => {
       return res;
     });
->>>>>>> dev
   }
 
   deleteData(url, payload): Observable<any> {
@@ -146,5 +80,4 @@ export class SetupService {
       })
     );
   }
-
 }
