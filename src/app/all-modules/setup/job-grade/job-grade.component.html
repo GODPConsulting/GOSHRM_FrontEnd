@@ -134,10 +134,19 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Reporting To</label>
-                                <textarea class="form-control" type="text" [class.invalid]="
+                                <!--  <textarea class="form-control" type="text" [class.invalid]="
                                 jobGradeForm.get('job_grade_reporting_to').invalid &&
                                 jobGradeForm.get('job_grade_reporting_to').touched
-                    " formControlName="job_grade_reporting_to"></textarea>
+                    " formControlName="job_grade_reporting_to"></textarea> -->
+                                <select class="form-control" [class.invalid]="
+                    jobGradeForm.get('job_grade_reporting_to').invalid &&
+                    jobGradeForm.get('job_grade_reporting_to').touched" formControlName="job_grade_reporting_to">
+                                    <option selected *ngIf="jobGrades.length === 0" value="">N/A</option>
+                                    <option value="">Select Reporting to</option>
+
+                                    <option *ngFor="let row of jobGrades" value="{{row.job_grade}}">{{row.job_grade}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
                                 jobGradeForm.get('job_grade_reporting_to').invalid &&
                                 jobGradeForm.get('job_grade_reporting_to').touched
@@ -153,7 +162,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Rank <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <input class="form-control" type="number" [class.invalid]="
                                 jobGradeForm.get('rank').invalid &&
                                 jobGradeForm.get('rank').touched
                     " formControlName="rank" />
@@ -173,7 +182,7 @@
                             <div class="form-group">
                                 <label class="col-form-label">Probation Period <span
                                         class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <input class="form-control" type="number" [class.invalid]="
                                 jobGradeForm.get('probation_period_in_months').invalid &&
                                 jobGradeForm.get('probation_period_in_months').touched
                     " formControlName="probation_period_in_months" />
@@ -192,10 +201,11 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Description <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                jobGradeForm.get('description').invalid &&
-                                jobGradeForm.get('description').touched
-                    " formControlName="description" />
+
+                                <textarea class="form-control" [class.invalid]="
+                    jobGradeForm.get('description').invalid &&
+                    jobGradeForm.get('description').touched
+                    " formControlName="description"></textarea>
                                 <div *ngIf="
                                 jobGradeForm.get('description').invalid &&
                                 jobGradeForm.get('description').touched

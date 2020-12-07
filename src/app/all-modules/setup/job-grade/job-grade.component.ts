@@ -1,5 +1,5 @@
 import { DatePipe } from "@angular/common";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DataTableDirective } from "angular-datatables";
 import { Subject } from "rxjs";
@@ -12,7 +12,7 @@ declare const $: any;
   templateUrl: "./job-grade.component.html",
   styleUrls: ["./job-grade.component.css"],
 })
-export class JobGradeComponent implements OnInit {
+export class JobGradeComponent implements OnInit, OnDestroy {
   formTitle;
   public dtOptions: DataTables.Settings = {};
   //@ViewChild(DataTableDirective, { static: false })
@@ -46,8 +46,9 @@ export class JobGradeComponent implements OnInit {
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
       })
       .trigger("blur");
-    this.initializeForm();
+
     this.getjobGrade();
+    this.initializeForm();
   }
 
   initializeForm() {
@@ -64,6 +65,11 @@ export class JobGradeComponent implements OnInit {
   addjobGrade() {
     this.formTitle = "Add Job Grade";
     $("#add_job_grade").modal("show");
+    if (this.jobGrades.length === 0) {
+      this.jobGradeForm.get("job_grade_reporting_to").disable();
+    } else {
+      this.jobGradeForm.get("job_grade_reporting_to").enable();
+    }
   }
 
   closeModal() {
@@ -313,5 +319,11 @@ export class JobGradeComponent implements OnInit {
           );
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+
+    this.getjobGrade().unsubscribe();
   }
 }
