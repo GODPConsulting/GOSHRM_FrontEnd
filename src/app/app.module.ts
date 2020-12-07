@@ -10,11 +10,13 @@ import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {HttpTokenInterceptor} from "./services/http.interceptor.service";
+import { LanguageComponent } from './feat/all-modules/setup/language/language.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    LanguageComponent,
   ],
   imports: [
     BrowserModule,

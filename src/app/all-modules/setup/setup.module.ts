@@ -15,6 +15,7 @@ import { AcademicDisciplineComponent } from './academic-discipline/academic-disc
 import { EmploymentLevelComponent } from './employment-level/employment-level.component';
 import {AppModule} from "../../app.module";
 import {SharedModule} from "../../shared/shared.module";
+import { LanguageComponent } from './language/language.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {SharedModule} from "../../shared/shared.module";
     EmploymentTypeComponent,
     EmploymentLevelComponent,
     AcademicDisciplineComponent,
-    EmploymentLevelComponent
+    EmploymentLevelComponent,
+    LanguageComponent
   ],
   imports: [CommonModule, SetupRoutingModule, DataTablesModule, ReactiveFormsModule, SharedModule, FormsModule],
   providers: [
