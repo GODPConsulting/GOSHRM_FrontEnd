@@ -1,5 +1,5 @@
 import { DatePipe } from "@angular/common";
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DataTableDirective } from "angular-datatables";
 import { Subject } from "rxjs";
@@ -12,7 +12,7 @@ declare const $: any;
   templateUrl: "./job-grade.component.html",
   styleUrls: ["./job-grade.component.css"],
 })
-export class JobGradeComponent implements OnInit, OnDestroy {
+export class JobGradeComponent implements OnInit {
   formTitle;
   public dtOptions: DataTables.Settings = {};
   //@ViewChild(DataTableDirective, { static: false })
@@ -319,11 +319,5 @@ export class JobGradeComponent implements OnInit, OnDestroy {
           );
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-
-    this.getjobGrade().unsubscribe();
   }
 }
