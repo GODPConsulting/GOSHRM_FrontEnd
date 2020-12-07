@@ -346,6 +346,8 @@
                   urlComplete.subUrl === 'academic-discipline') ||
                   (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'employment-level') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'academic-grade') ||
                 (urlComplete.mainUrl === 'employees' &&
                   urlComplete.subUrl === 'adminleaves') ||
                 (urlComplete.mainUrl === 'employees' &&
@@ -410,6 +412,8 @@
                     urlComplete.subUrl === 'high-school-subjects') ||
                     (urlComplete.mainUrl === 'setup' &&
                       urlComplete.subUrl === 'employee-level') ||
+                      (urlComplete.mainUrl === 'setup' &&
+                      urlComplete.subUrl === 'academic-grade') ||
                   (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'employment-type') ||
                   (urlComplete.mainUrl === 'employees' &&
@@ -459,6 +463,13 @@
                   href="javascript:"
                   [ngClass]="{ active: urlComplete.subUrl === 'employment-level' }"
                 >Employment Level</a
+                >
+              </li>
+              <li routerLink="/setup/academic-grade">
+                <a
+                  href="javascript:"
+                  [ngClass]="{ active: urlComplete.subUrl === 'academic-grade'}"
+                >academic-grade</a
                 >
               </li>
               <li routerLink="/employees/adminleaves">
