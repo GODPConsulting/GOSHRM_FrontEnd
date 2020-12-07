@@ -5,14 +5,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-// Bootstrap DataTable
+//Bootstrap DataTable
 import { DataTablesModule } from 'angular-datatables';
 import { ToastrModule } from 'ngx-toastr';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {HttpTokenInterceptor} from "./services/http.interceptor.service";
+
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,6 +35,7 @@ import {HttpTokenInterceptor} from "./services/http.interceptor.service";
     useClass: HttpTokenInterceptor,
     multi: true
   }],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

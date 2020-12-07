@@ -1,39 +1,32 @@
-<app-loading *ngIf="pageLoading"></app-loading>
-<div *ngIf="!pageLoading">
-  <!-- Page Content -->
-  <div class="content container-fluid">
+<!-- Page Content -->
+<div class="content container-fluid">
     <!-- Page Header -->
     <div class="page-header">
       <div class="row align-items-center">
         <div class="col">
-          <h3 class="page-title">High School Subject</h3>
+          <h3 class="page-title">Employment Level</h3>
           <ul class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item active">High School Subject</li>
+            <li class="breadcrumb-item active">Employment Level</li>
           </ul>
         </div>
         <div class="col-auto float-right ml-auto">
           <a
-            class="btn add-btn hint"
+            class="btn add-btn"
             data-toggle="modal"
-            (click)="addHighSchool()"
-            ><span class="hint-text">Add</span><i class="fa fa-plus"></i
-          ></a>
-          <a class="btn download-btn hint"
-            ><span class="hint-text">Download</span
-            ><i class="fa fa-download"></i
-          ></a>
-          <a class="btn upload-btn hint"
-            ><span class="hint-text">Upload</span><i class="fa fa-upload"></i
-          ></a>
-          <a class="btn delete-btn hint" (click)="deleteItems()"
-            ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
-          ></a>
+            (click)="addEmploymentLevel()"
+            ><i class="fa fa-plus"></i>Add Employment Level</a
+          >
+          <!--        <div class="view-icons">-->
+          <!--          <a routerLink="/employees/employeepage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>-->
+          <!--          <a routerLink="/employees/employeelist" class="list-view btn btn-link active"><i-->
+          <!--            class="fa fa-bars"></i></a>-->
+          <!--        </div>-->
         </div>
       </div>
     </div>
     <!-- /Page Header -->
-
+  
     <!-- Search Filter -->
     <div class="row filter-row">
       <div class="col-sm-6 col-md-3">
@@ -41,10 +34,10 @@
           <input
             type="text"
             class="form-control floating"
-            (input)="searchId($event.target.value)"
+            (input)="searchLevel($event.target.value)"
             (focusout)="rerender()"
           />
-          <label class="focus-label">Subject</label>
+          <label class="focus-label">Employment Level</label>
         </div>
       </div>
       <div class="col-sm-6 col-md-3">
@@ -52,7 +45,7 @@
           <input
             type="text"
             class="form-control floating"
-            (input)="searchName($event.target.value)"
+            (input)="searchByDescription($event.target.value)"
             (focusout)="rerender()"
           />
           <label class="focus-label">Description</label>
@@ -63,7 +56,7 @@
       </div>
     </div>
     <!-- /Search Filter -->
-
+  
     <div class="row">
       <div class="col-md-12">
         <div class="table-responsive">
@@ -75,26 +68,14 @@
           >
             <thead>
               <tr>
-                <th>
-                  <input type="checkbox" [checked]="selectedId.length === subjects.length" (change)="checkAll($event)"/>
-                </th>
-                <th>S/N</th>
-                <th>Subject</th>
+                <th>Employment Level</th>
                 <th>Description</th>
                 <th class="text-right no-sort">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of subjects; let i = index">
-                <td>
-                  <input
-                    type="checkbox"
-                    [checked]="selectedId.includes(row.id)"
-                    (change)="addItemId($event, row.id)"
-                  />
-                </td>
-                <td>{{ i + 1 }}</td>
-                <td>{{ row.subject }}</td>
+              <tr *ngFor="let row of levels; let i = index">
+                <td>{{ row.employment_level }}</td>
                 <td>{{ row.description }}</td>
                 <td class="text-right">
                   <div class="dropdown dropdown-action">
@@ -112,7 +93,9 @@
                         (click)="edit(row)"
                         ><i class="fa fa-pencil m-r-5"></i> Edit</a
                       >
-                      <a class="dropdown-item" (click)="delete(row.id)"
+                      <a
+                        class="dropdown-item"
+                        (click)="delete(row.id)"
                         ><i class="fa fa-trash-o m-r-5"></i> Delete</a
                       >
                     </div>
@@ -126,17 +109,13 @@
     </div>
   </div>
   <!-- /Page Content -->
-
+  
   <!-- Add Employee Modal -->
-  <div
-    id="add_high_school_subject"
-    class="modal custom-modal fade"
-    role="dialog"
-  >
+  <div id="add_employment_level" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{ formTitle }}</h5>
+          <h5 class="modal-title">{{formTitle}}</h5>
           <button
             type="button"
             class="close"
@@ -149,38 +128,38 @@
         </div>
         <div class="modal-body">
           <form
-            (ngSubmit)="addData(highSchoolForm)"
-            [formGroup]="highSchoolForm"
+            (ngSubmit)="addData(employmentLevelForm)"
+            [formGroup]="employmentLevelForm"
           >
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="col-form-label"
-                    >Subject <span class="text-danger">*</span></label
+                    >Employment Level <span class="text-danger">*</span></label
                   >
                   <input
                     class="form-control"
                     type="text"
                     [class.invalid]="
-                      highSchoolForm.get('subject').invalid &&
-                      highSchoolForm.get('subject').touched
+                    employmentLevelForm.get('employment_level').invalid &&
+                    employmentLevelForm.get('employment_level').touched
                     "
-                    formControlName="subject"
+                    formControlName="employment_level"
                   />
                   <div
                     *ngIf="
-                      highSchoolForm.get('subject').invalid &&
-                      highSchoolForm.get('subject').touched
+                    employmentLevelForm.get('employment_level').invalid &&
+                    employmentLevelForm.get('employment_level').touched
                     "
                   >
                     <small
                       *ngIf="
-                        highSchoolForm.get('subject').invalid &&
-                        highSchoolForm.get('subject').touched
+                      employmentLevelForm.get('employment_level').invalid &&
+                      employmentLevelForm.get('employment_level').touched
                       "
                       class="text-danger"
                     >
-                      *Subject is required</small
+                      *Employment Level is required</small
                     >
                   </div>
                 </div>
@@ -192,21 +171,21 @@
                     class="form-control"
                     type="text"
                     [class.invalid]="
-                      highSchoolForm.get('description').invalid &&
-                      highSchoolForm.get('description').touched
+                      employmentLevelForm.get('description').invalid &&
+                      employmentLevelForm.get('description').touched
                     "
                     formControlName="description"
                   ></textarea>
                   <div
                     *ngIf="
-                      highSchoolForm.get('description').invalid &&
-                      highSchoolForm.get('description').touched
+                      employmentLevelForm.get('description').invalid &&
+                      employmentLevelForm.get('description').touched
                     "
                   >
                     <small
                       *ngIf="
-                        highSchoolForm.get('description').invalid &&
-                        highSchoolForm.get('description').touched
+                      employmentLevelForm.get('description').invalid &&
+                      employmentLevelForm.get('description').touched
                       "
                       class="text-danger"
                     >
@@ -227,7 +206,7 @@
     </div>
   </div>
   <!-- /Add Employee Modal -->
-
+  
   <!-- Edit Employee Modal -->
   <!--<div id="edit_employee" class="modal custom-modal fade" role="dialog">-->
   <!--  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">-->
@@ -619,7 +598,7 @@
   <!--  </div>-->
   <!--</div>-->
   <!-- /Edit Employee Modal -->
-
+  
   <!-- Delete Employee Modal -->
   <div class="modal custom-modal fade" id="delete_employee" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
@@ -632,9 +611,7 @@
           <div class="modal-btn delete-action">
             <div class="row">
               <div class="col-6">
-                <a
-                  class="btn btn-primary continue-btn"
-                  (click)="deleteEmployee()"
+                <a class="btn btn-primary continue-btn" (click)="deleteEmployee()"
                   >Delete</a
                 >
               </div>
@@ -650,4 +627,4 @@
     </div>
   </div>
   <!-- /Delete Employee Modal -->
-</div>
+  

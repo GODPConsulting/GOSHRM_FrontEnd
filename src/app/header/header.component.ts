@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { HeaderService } from "./header.service";
+import {AuthService} from "../services/auth.service";
 
 @Component({
   selector: "app-header",
@@ -16,7 +17,7 @@ export class HeaderComponent implements OnInit {
   notifications: any;
   messagesData: any;
 
-  constructor(private headerService: HeaderService, private router: Router) {}
+  constructor(private headerService: HeaderService, private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
     // this.getDatas("notification");
@@ -109,6 +110,6 @@ export class HeaderComponent implements OnInit {
   }
 
   logOut() {
-    this.router.navigate(['/login'])
+   this.authService.clearSession()
   }
 }

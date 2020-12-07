@@ -7,10 +7,15 @@ import { JobgradesComponent } from "./jobgrades/jobgrades.component";
 import { HighSchoolSubjectComponent } from "./high-school-subject/high-school-subject.component";
 import { HighSchoolSubjectsComponent } from "./high-school-subjects/high-school-subjects.component";
 import { DataTablesModule } from "angular-datatables";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {HttpTokenInterceptor} from "../../services/http.interceptor.service";
 import { AcademicGradeComponent } from './academic-grade/academic-grade.component';
+import { EmploymentTypeComponent } from './employment-type/employment-type.component';
+import { AcademicDisciplineComponent } from './academic-discipline/academic-discipline.component';
+import { EmploymentLevelComponent } from './employment-level/employment-level.component';
+import {AppModule} from "../../app.module";
+import {SharedModule} from "../../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -18,9 +23,13 @@ import { AcademicGradeComponent } from './academic-grade/academic-grade.componen
     JobgradesComponent,
     HighSchoolSubjectComponent,
     HighSchoolSubjectsComponent,
-    AcademicGradeComponent
+    AcademicGradeComponent,
+    EmploymentTypeComponent,
+    EmploymentLevelComponent,
+    AcademicDisciplineComponent,
+    EmploymentLevelComponent
   ],
-  imports: [CommonModule, SetupRoutingModule, DataTablesModule, ReactiveFormsModule],
+  imports: [CommonModule, SetupRoutingModule, DataTablesModule, ReactiveFormsModule, SharedModule, FormsModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
