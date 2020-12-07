@@ -62,7 +62,7 @@ export class JobGradeComponent implements OnInit {
     });
   }
 
-  addjobGrade() {
+  openModal() {
     this.formTitle = "Add Job Grade";
     $("#add_job_grade").modal("show");
     if (this.jobGrades.length === 0) {
@@ -123,7 +123,6 @@ export class JobGradeComponent implements OnInit {
 
   delete(id: any) {
     let payload;
-
     if (id) {
       const body = [id];
       //body.push(id);
