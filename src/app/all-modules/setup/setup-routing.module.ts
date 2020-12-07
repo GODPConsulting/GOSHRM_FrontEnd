@@ -8,6 +8,7 @@ import { EmploymentTypeComponent } from "./employment-type/employment-type.compo
 import { EmploymentLevelComponent } from './employment-level/employment-level.component';
 import { AcademicDisciplineComponent } from './academic-discipline/academic-discipline.component';
 import { AcademicQualificationComponent } from './academic-qualification/academic-qualification.component';
+import { HmoComponent } from "./hmo/hmo.component";
 
 const routes: Routes = [
   {
@@ -27,8 +28,8 @@ const routes: Routes = [
         component: EmploymentTypeComponent,
       },
       {
-        path: 'high-school-subjects',
-        component: HighSchoolSubjectsComponent
+        path: "high-school-subjects",
+        component: HighSchoolSubjectsComponent,
       },
       {
         path: 'employment-level',
@@ -41,7 +42,15 @@ const routes: Routes = [
       {
         path: 'academic-qualification',
         component: AcademicQualificationComponent
-      }
+      },
+      {
+        path: "employment-level",
+        component: EmploymentLevelComponent,
+      },
+      {
+        path: "hmo",
+        component: HmoComponent,
+      },
     ],
   },
 ];
@@ -50,4 +59,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SetupRoutingModule { }
+export class SetupRoutingModule {}
