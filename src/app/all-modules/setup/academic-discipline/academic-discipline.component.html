@@ -1,1 +1,701 @@
-<p>academic-discipline works!</p>
+<app-loading *ngIf="pageLoading"></app-loading>
+<div *ngIf="!pageLoading">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Add Employee Academic Discipline</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+            <li class="breadcrumb-item active">Academic Discipline</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <a
+            class="btn add-btn hint"
+            data-toggle="modal"
+            (click)="addAcademicDiscipline()"
+            ><span class="hint-text">Add</span><i class="fa fa-plus"></i
+          ></a>
+          <a class="btn download-btn hint"
+            ><span class="hint-text">Download</span
+            ><i class="fa fa-download"></i
+          ></a>
+          <a class="btn upload-btn hint"
+            ><span class="hint-text">Upload</span><i class="fa fa-upload"></i
+          ></a>
+          <a class="btn delete-btn hint" (click)="delete()"
+            ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Search Filter -->
+    <div class="row filter-row">
+      <div class="col-sm-6 col-md-5">
+          <div class="form-group form-focus">
+              <input type="text" class="form-control floating"
+                  [(ngModel)]="searchText" />
+              <label class="focus-label">Start typing to search by any field</label>
+          </div>
+      </div>
+      <!--  <div class="col-sm-6 col-md-3">
+          <a class="btn btn-success btn-block"> Search </a>
+      </div> -->
+  </div>
+    <!-- <div class="row filter-row">
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus">
+          <input
+            type="text"
+            class="form-control floating"
+            (input)="searchDiscipline($event.target.value)"
+            (focusout)="rerender()"
+          />
+          <label class="focus-label">Discipline</label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <div class="form-group form-focus">
+          <input
+            type="text"
+            class="form-control floating"
+            (input)="searchDescription($event.target.value)"
+            (focusout)="rerender()"
+          />
+          <label class="focus-label">Description</label>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-3">
+        <a class="btn btn-success btn-block"> Search </a>
+      </div>
+    </div> -->
+    <!-- /Search Filter -->
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table
+            class="table table-striped custom-table datatable"
+            datatable
+            [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger"
+          >
+            <thead>
+              <tr>
+                <th>
+                  <input type="checkbox" [checked]="selectedId.length === disciplines.length" (change)="checkAll($event)"/>
+                </th>
+                <th>S/N</th>
+                <th>Discipline</th>
+                <th>Description</th>
+                <th>Rank</th>
+                <th class="text-right no-sort">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of disciplines | filter:searchText; let i = index">
+                <td>
+                  <input
+                    type="checkbox"
+                    [checked]="selectedId.includes(row.id)"
+                    (change)="addItemId($event, row.id)"
+                  />
+                </td>
+                <td>{{ i + 1 }}</td>
+                <td>{{ row.discipline }}</td>
+                <td>{{ row.description }}</td>
+                <td>{{ row.rank }}</td>
+                <td class="text-right">
+                  <div class="dropdown dropdown-action">
+                    <a
+                      class="action-icon dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-expanded="false"
+                      ><i class="material-icons">more_vert</i></a
+                    >
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a
+                        class="dropdown-item"
+                        data-toggle="modal"
+                        data-target="#edit_employee"
+                        (click)="edit(row)"
+                        ><i class="fa fa-pencil m-r-5"></i> Edit</a
+                      >
+                      <a class="dropdown-item" (click)="delete(row.id)"
+                        ><i class="fa fa-trash-o m-r-5"></i> Delete</a
+                      >
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+
+  <!-- Add Employee Modal -->
+  <div
+    id="add_academic_discipline"
+    class="modal custom-modal fade"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ formTitle }}</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeModal()"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form
+            (ngSubmit)="addData(academicDisciplineForm)"
+            [formGroup]="academicDisciplineForm"
+          >
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Discipline <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    type="text"
+                    [class.invalid]="
+                      academicDisciplineForm.get('discipline').invalid &&
+                      academicDisciplineForm.get('discipline').touched
+                    "
+                    formControlName="discipline"
+                  />
+                  <div
+                    *ngIf="
+                      academicDisciplineForm.get('discipline').invalid &&
+                      academicDisciplineForm.get('discipline').touched
+                    "
+                  >
+                    <small
+                      *ngIf="
+                        academicDisciplineForm.get('discipline').invalid &&
+                        academicDisciplineForm.get('discipline').touched
+                      "
+                      class="text-danger"
+                    >
+                      *Discipline is required</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label"
+                    >Rank <span class="text-danger">*</span></label
+                  >
+                  <input
+                    class="form-control"
+                    type="number"
+                    [class.invalid]="
+                      academicDisciplineForm.get('rank').invalid &&
+                      academicDisciplineForm.get('rank').touched
+                    "
+                    formControlName="rank"
+                  />
+                  <div
+                    *ngIf="
+                      academicDisciplineForm.get('rank').invalid &&
+                      academicDisciplineForm.get('rank').touched
+                    "
+                  >
+                    <small
+                      *ngIf="
+                        academicDisciplineForm.get('rank').invalid &&
+                        academicDisciplineForm.get('rank').touched
+                      "
+                      class="text-danger"
+                    >
+                      *Rank is required</small
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label class="col-form-label">Description</label>
+                  <textarea
+                    class="form-control"
+                    type="text"
+                    [class.invalid]="
+                      academicDisciplineForm.get('description').invalid &&
+                      academicDisciplineForm.get('description').touched
+                    "
+                    formControlName="description"
+                  ></textarea>
+                  <div
+                    *ngIf="
+                      academicDisciplineForm.get('description').invalid &&
+                      academicDisciplineForm.get('description').touched
+                    "
+                  >
+                    <small
+                      *ngIf="
+                        academicDisciplineForm.get('description').invalid &&
+                        academicDisciplineForm.get('description').touched
+                      "
+                      class="text-danger"
+                    >
+                      *Description is required</small
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="submit-section">
+              <button class="btn btn-primary submit-btn" type="submit">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Add Employee Modal -->
+
+  <!-- Edit Employee Modal -->
+  <!--<div id="edit_employee" class="modal custom-modal fade" role="dialog">-->
+  <!--  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">-->
+  <!--    <div class="modal-content">-->
+  <!--      <div class="modal-header">-->
+  <!--        <h5 class="modal-title">Edit Employee</h5>-->
+  <!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+  <!--          <span aria-hidden="true">&times;</span>-->
+  <!--        </button>-->
+  <!--      </div>-->
+  <!--      <div class="modal-body">-->
+  <!--        <form (ngSubmit)="editEmployee()" [formGroup]="editEmployeeForm">-->
+  <!--          <div class="row">-->
+  <!--            <div class="col-sm-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label class="col-form-label">First Name <span class="text-danger">*</span></label>-->
+  <!--                <input class="form-control" type="text"-->
+  <!--                       [class.invalid]="editEmployeeForm.get('subject').invalid && editEmployeeForm.get('subject').touched"-->
+  <!--                       formControlName="subject">-->
+  <!--                <div-->
+  <!--                  *ngIf="editEmployeeForm.get('subject').invalid && editEmployeeForm.get('subject').touched">-->
+  <!--                  <small-->
+  <!--                    *ngIf="editEmployeeForm.get('subject').invalid && editEmployeeForm.get('subject').touched"-->
+  <!--                    class="text-danger"> *Firstname is required</small>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <div class="col-sm-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label class="col-form-label">Last Name</label>-->
+  <!--                <input class="form-control" type="text"-->
+  <!--                       [class.invalid]="editEmployeeForm.get('description').invalid && editEmployeeForm.get('description').touched"-->
+  <!--                       formControlName="description">-->
+  <!--                <div-->
+  <!--                  *ngIf="editEmployeeForm.get('description').invalid && editEmployeeForm.get('description').touched">-->
+  <!--                  <small-->
+  <!--                    *ngIf="editEmployeeForm.get('description').invalid && editEmployeeForm.get('description').touched"-->
+  <!--                    class="text-danger"> *Description is required</small>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <div class="col-sm-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label class="col-form-label">Username <span class="text-danger">*</span></label>-->
+  <!--                <input class="form-control" type="text"-->
+  <!--                       [class.invalid]="editEmployeeForm.get('UserName').invalid && editEmployeeForm.get('UserName').touched"-->
+  <!--                       formControlName="UserName">-->
+  <!--                <div-->
+  <!--                  *ngIf="editEmployeeForm.get('UserName').invalid && editEmployeeForm.get('UserName').touched">-->
+  <!--                  <small-->
+  <!--                    *ngIf="editEmployeeForm.get('UserName').invalid && editEmployeeForm.get('UserName').touched"-->
+  <!--                    class="text-danger"> *Username is required</small>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <div class="col-sm-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label class="col-form-label">Email <span class="text-danger">*</span></label>-->
+  <!--                <input class="form-control" type="email"-->
+  <!--                       [class.invalid]="editEmployeeForm.get('Email').invalid && editEmployeeForm.get('Email').touched"-->
+  <!--                       formControlName="Email">-->
+  <!--                <div-->
+  <!--                  *ngIf="editEmployeeForm.get('Email').invalid && editEmployeeForm.get('Email').touched">-->
+  <!--                  <small-->
+  <!--                    *ngIf="editEmployeeForm.get('Email').invalid && editEmployeeForm.get('Email').touched"-->
+  <!--                    class="text-danger"> *Email is required</small>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <div class="col-sm-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label class="col-form-label">Password</label>-->
+  <!--                <input class="form-control" type="password"-->
+  <!--                       [class.invalid]="editEmployeeForm.get('Password').invalid && editEmployeeForm.get('Password').touched"-->
+  <!--                       formControlName="Password">-->
+  <!--                <div-->
+  <!--                  *ngIf="editEmployeeForm.get('Password').invalid && editEmployeeForm.get('Password').touched">-->
+  <!--                  <small-->
+  <!--                    *ngIf="editEmployeeForm.get('Password').invalid && editEmployeeForm.get('Password').touched"-->
+  <!--                    class="text-danger"> *Password is required</small>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <div class="col-sm-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label class="col-form-label">Confirm Password</label>-->
+  <!--                <input class="form-control" type="password"-->
+  <!--                       [class.invalid]="editEmployeeForm.get('ConfirmPassword').invalid && editEmployeeForm.get('ConfirmPassword').touched"-->
+  <!--                       formControlName="ConfirmPassword">-->
+  <!--                <div-->
+  <!--                  *ngIf="editEmployeeForm.get('ConfirmPassword').invalid && editEmployeeForm.get('ConfirmPassword').touched">-->
+  <!--                  <small-->
+  <!--                    *ngIf="editEmployeeForm.get('ConfirmPassword').invalid && editEmployeeForm.get('ConfirmPassword').touched"-->
+  <!--                    class="text-danger"> *ConfirmPassword is required</small>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <div class="col-sm-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>-->
+  <!--                <input type="text" class="form-control"-->
+  <!--                       [class.invalid]="editEmployeeForm.get('EmployeeID').invalid && editEmployeeForm.get('EmployeeID').touched"-->
+  <!--                       formControlName="EmployeeID">-->
+  <!--                <div-->
+  <!--                  *ngIf="editEmployeeForm.get('EmployeeID').invalid && editEmployeeForm.get('EmployeeID').touched">-->
+  <!--                  <small-->
+  <!--                    *ngIf="editEmployeeForm.get('EmployeeID').invalid && editEmployeeForm.get('EmployeeID').touched"-->
+  <!--                    class="text-danger"> *Employee ID is required</small>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <div class="col-sm-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label class="col-form-label">Joining Date <span class="text-danger">*</span></label>-->
+  <!--                <div class="cal-icon">-->
+  <!--                  <input class="form-control datetimepicker" type="text" bsDatepicker type="text"-->
+  <!--                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"  [class.invalid]="editEmployeeForm.get('JoinDate').invalid && editEmployeeForm.get('JoinDate').touched"-->
+  <!--                         formControlName="JoinDate" (bsValueChange)="from($event)">-->
+  <!--                  <div-->
+  <!--                    *ngIf="editEmployeeForm.get('JoinDate').invalid && editEmployeeForm.get('JoinDate').touched">-->
+  <!--                    <small-->
+  <!--                      *ngIf="editEmployeeForm.get('JoinDate').invalid && editEmployeeForm.get('JoinDate').touched"-->
+  <!--                      class="text-danger"> *JoinDate is required</small>-->
+  <!--                  </div>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <div class="col-sm-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label class="col-form-label">Phone </label>-->
+  <!--                <input class="form-control" type="text"-->
+  <!--                       [class.invalid]="editEmployeeForm.get('PhoneNumber').invalid && editEmployeeForm.get('PhoneNumber').touched"-->
+  <!--                       formControlName="PhoneNumber">-->
+  <!--                <div-->
+  <!--                  *ngIf="editEmployeeForm.get('PhoneNumber').invalid && editEmployeeForm.get('PhoneNumber').touched">-->
+  <!--                  <small-->
+  <!--                    *ngIf="editEmployeeForm.get('PhoneNumber').invalid && editEmployeeForm.get('PhoneNumber').touched"-->
+  <!--                    class="text-danger"> *Phone is required</small>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <div class="col-sm-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label class="col-form-label">Company</label>-->
+  <!--                <select class="select form-control"-->
+  <!--                        [class.invalid]="editEmployeeForm.get('CompanyName').invalid && editEmployeeForm.get('CompanyName').touched"-->
+  <!--                        formControlName="CompanyName">-->
+  <!--                  <option value="">Global Technologies</option>-->
+  <!--                  <option value="1">Delta Infotech</option>-->
+  <!--                </select>-->
+  <!--                <div-->
+  <!--                  *ngIf="editEmployeeForm.get('CompanyName').invalid && editEmployeeForm.get('CompanyName').touched">-->
+  <!--                  <small-->
+  <!--                    *ngIf="editEmployeeForm.get('CompanyName').invalid && editEmployeeForm.get('CompanyName').touched"-->
+  <!--                    class="text-danger"> Company Name required</small>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <div class="col-md-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label>Department <span class="text-danger">*</span></label>-->
+  <!--                <select class="select form-control"-->
+  <!--                        [class.invalid]="editEmployeeForm.get('DepartmentName').invalid && editEmployeeForm.get('DepartmentName').touched"-->
+  <!--                        formControlName="DepartmentName">-->
+  <!--                  <option>Select Department</option>-->
+  <!--                  <option>Web Development</option>-->
+  <!--                  <option>IT Management</option>-->
+  <!--                  <option>Marketing</option>-->
+  <!--                </select>-->
+  <!--                <div-->
+  <!--                  *ngIf="editEmployeeForm.get('DepartmentName').invalid && editEmployeeForm.get('DepartmentName').touched">-->
+  <!--                  <small-->
+  <!--                    *ngIf="editEmployeeForm.get('DepartmentName').invalid && editEmployeeForm.get('DepartmentName').touched"-->
+  <!--                    class="text-danger"> *Department Name required</small>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <div class="col-md-6">-->
+  <!--              <div class="form-group">-->
+  <!--                <label>Designation <span class="text-danger">*</span></label>-->
+  <!--                <select class="select form-control"-->
+  <!--                        [class.invalid]="editEmployeeForm.get('Designation').invalid && editEmployeeForm.get('Designation').touched"-->
+  <!--                        formControlName="Designation">-->
+  <!--                  <option>Select Designation</option>-->
+  <!--                  <option>Web Designer</option>-->
+  <!--                  <option>Web Developer</option>-->
+  <!--                  <option>Android Developer</option>-->
+  <!--                </select>-->
+  <!--                <div-->
+  <!--                  *ngIf="editEmployeeForm.get('Designation').invalid && editEmployeeForm.get('Designation').touched">-->
+  <!--                  <small-->
+  <!--                    *ngIf="editEmployeeForm.get('Designation').invalid && editEmployeeForm.get('Designation').touched"-->
+  <!--                    class="text-danger"> *Designation Name required</small>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--          <div class="table-responsive m-t-15">-->
+  <!--            <table class="table table-striped custom-table">-->
+  <!--              <thead>-->
+  <!--              <tr>-->
+  <!--                <th>Module Permission</th>-->
+  <!--                <th class="text-center">Read</th>-->
+  <!--                <th class="text-center">Write</th>-->
+  <!--                <th class="text-center">Create</th>-->
+  <!--                <th class="text-center">Delete</th>-->
+  <!--                <th class="text-center">Import</th>-->
+  <!--                <th class="text-center">Export</th>-->
+  <!--              </tr>-->
+  <!--              </thead>-->
+  <!--              <tbody>-->
+  <!--              <tr>-->
+  <!--                <td>Holidays</td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--              </tr>-->
+  <!--              <tr>-->
+  <!--                <td>Leaves</td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--              </tr>-->
+  <!--              <tr>-->
+  <!--                <td>Clients</td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--              </tr>-->
+  <!--              <tr>-->
+  <!--                <td>Projects</td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--              </tr>-->
+  <!--              <tr>-->
+  <!--                <td>Tasks</td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--              </tr>-->
+  <!--              <tr>-->
+  <!--                <td>Chats</td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--              </tr>-->
+  <!--              <tr>-->
+  <!--                <td>Assets</td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--              </tr>-->
+  <!--              <tr>-->
+  <!--                <td>Timing Sheets</td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input checked="" type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--                <td class="text-center">-->
+  <!--                  <input type="checkbox">-->
+  <!--                </td>-->
+  <!--              </tr>-->
+  <!--              </tbody>-->
+  <!--            </table>-->
+  <!--          </div>-->
+  <!--          <div class="submit-section">-->
+  <!--            <button class="btn btn-primary submit-btn" type="submit">Submit</button>-->
+  <!--          </div>-->
+  <!--        </form>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--</div>-->
+  <!-- /Edit Employee Modal -->
+
+  <!-- Delete Employee Modal -->
+  <div class="modal custom-modal fade" id="delete_employee" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="form-header">
+            <h3>Delete Employee</h3>
+            <p>Are you sure want to delete?</p>
+          </div>
+          <div class="modal-btn delete-action">
+            <div class="row">
+              <div class="col-6">
+                <a
+                  class="btn btn-primary continue-btn"
+                  (click)="deleteEmployee()"
+                  >Delete</a
+                >
+              </div>
+              <div class="col-6">
+                <a data-dismiss="modal" class="btn btn-primary cancel-btn"
+                  >Cancel</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Delete Employee Modal -->
+</div>
