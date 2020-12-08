@@ -10,6 +10,7 @@ import { AcademicDisciplineComponent } from "./academic-discipline/academic-disc
 import { EmploymentLevelComponent } from "./employment-level/employment-level.component";
 import { AcademicQualificationComponent } from './academic-qualification/academic-qualification.component';
 import { HmoComponent } from "./hmo/hmo.component";
+import { ProfMembershipComponent } from './prof-membership/prof-membership.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,14 @@ const routes: Routes = [
     path: "",
     component: SetupComponent,
     children: [
+      {
+        path: "prof-membership",
+        component: ProfMembershipComponent,
+      },
+      {
+        path: "language",
+        component: LanguageComponent,
+      },
       {
         path: "job-grade",
         component: JobGradeComponent,
