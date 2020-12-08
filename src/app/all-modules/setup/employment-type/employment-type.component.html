@@ -1,5 +1,7 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+
 <!-- Page Content -->
-<div class="content container-fluid">
+<div *ngIf="!pageLoading" class="content container-fluid">
     <!-- Page Header -->
     <div class="page-header">
         <div class="row align-items-center">
@@ -10,38 +12,38 @@
                     <li class="breadcrumb-item active">Employment Type</li>
                 </ul>
             </div>
+            <!--        <div class="view-icons">-->
+            <!--          <a routerLink="/employees/employeepage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>-->
+            <!--          <a routerLink="/employees/employeelist" class="list-view btn btn-link active"><i-->
+            <!--            class="fa fa-bars"></i></a>-->
+            <!--        </div>-->
             <div class="col-auto float-right ml-auto">
-                <a class="btn add-btn" data-toggle="modal" (click)="addEmploymentType()"><i class="fa fa-plus"></i> Add
-                    Employment Type</a>
-                <!--        <div class="view-icons">-->
-                <!--          <a routerLink="/employees/employeepage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>-->
-                <!--          <a routerLink="/employees/employeelist" class="list-view btn btn-link active"><i-->
-                <!--            class="fa fa-bars"></i></a>-->
-                <!--        </div>-->
+                <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span
+                        class="hint-text">Add</span><i class="fa fa-plus"></i></a>
+                <a class="btn download-btn hint"><span class="hint-text">Download</span><i
+                        class="fa fa-download"></i></a>
+                <a class="btn upload-btn hint"><span class="hint-text">Upload</span><i class="fa fa-upload"></i></a>
+                <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
+                        class="fa fa-trash"></i></a>
             </div>
+
         </div>
     </div>
     <!-- /Page Header -->
 
+
     <!-- Search Filter -->
     <div class="row filter-row">
-        <div class="col-sm-6 col-md-3">
+        <div class="col-sm-6 col-md-5">
             <div class="form-group form-focus">
                 <input type="text" class="form-control floating" (input)="searchId($event.target.value)"
-                    (focusout)="rerender()" />
-                <label class="focus-label">Employment</label>
+                    [(ngModel)]="searchText" />
+                <label class="focus-label">Start typing to search by any field</label>
             </div>
         </div>
-        <div class="col-sm-6 col-md-3">
-            <div class="form-group form-focus">
-                <input type="text" class="form-control floating" (input)="searchName($event.target.value)"
-                    (focusout)="rerender()" />
-                <label class="focus-label">Description</label>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
+        <!--  <div class="col-sm-6 col-md-3">
             <a class="btn btn-success btn-block"> Search </a>
-        </div>
+        </div> -->
     </div>
     <!-- /Search Filter -->
 
@@ -52,13 +54,23 @@
                     [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === employmentTypes.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>S/N</th>
                             <th>Employment Type</th>
                             <th>Description</th>
                             <th class="text-right no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of employmentTypes; let i = index">
+                        <tr *ngFor="let row of employmentTypes | filter:searchText; let i = index">
+                            <td>
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+                            <td>{{ i + 1 }}</td>
                             <td>{{ row.employment_type }}</td>
                             <td>{{ row.description }}</td>
                             <td class="text-right">
