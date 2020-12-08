@@ -5,13 +5,13 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { Subject } from "rxjs";
 import { ToastrService } from "ngx-toastr";
-import swal from 'sweetalert2'
+import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
   selector: "app-high-school-subjects",
   templateUrl: "./high-school-subjects.component.html",
-  styleUrls: ["./high-school-subjects.component.css"]
+  styleUrls: ["./high-school-subjects.component.css"],
 })
 export class HighSchoolSubjectsComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
@@ -25,7 +25,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
 
   public highSchoolForm: FormGroup;
   public editEmployeeForm: FormGroup;
-  formTitle: string  = "Add High School Subject"
+  formTitle: string = "Add High School Subject";
   public pipe = new DatePipe("en-US");
   public rows = [];
   public srch = [];
@@ -43,7 +43,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
 
   ngOnInit(): void {
     $(".floating")
-      .on("focus blur", function(e) {
+      .on("focus blur", function (e) {
         $(this)
           .parents(".form-focus")
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
@@ -56,28 +56,26 @@ export class HighSchoolSubjectsComponent implements OnInit {
     this.highSchoolForm = this.formBuilder.group({
       id: [0],
       subject: ["", Validators.required],
-      description: ["", Validators.required]
+      description: ["", Validators.required],
     });
   }
   getHighSchools() {
     this.pageLoading = true;
     return this.setupService.getHighSchoolSubject().subscribe(
-      data => {
+      (data) => {
         this.pageLoading = false;
         this.subjects = data.setuplist;
         this.rows = this.subjects;
         this.srch = [...this.rows];
       },
-      err => {
+      (err) => {
         this.pageLoading = false;
         console.log(err);
       }
     );
   }
   rerender(): void {
-    $("#datatable")
-      .DataTable()
-      .clear();
+    $("#datatable").DataTable().clear();
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
@@ -101,20 +99,20 @@ export class HighSchoolSubjectsComponent implements OnInit {
   addData(highSchoolForm: FormGroup) {
     const payload = highSchoolForm.value;
     return this.setupService.updateHighSchoolSubject(payload).subscribe(
-      res => {
+      (res) => {
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire('Success', message, 'success')
+          swal.fire("Success", message, "success");
           this.initializeForm();
           $("#add_high_school_subject").modal("hide");
         } else {
-          swal.fire('Error', message, 'error')
+          swal.fire("Error", message, "error");
         }
         this.getHighSchools();
       },
-      err => {
+      (err) => {
         const message = err.status.message.friendlyMessage;
-        swal.fire('Error', message, 'error')
+        swal.fire("Error", message, "error");
       }
     );
     // let DateJoin = this.pipe.transform(
@@ -188,13 +186,13 @@ export class HighSchoolSubjectsComponent implements OnInit {
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
-   this.formTitle = "Edit High School Subject";
+    this.formTitle = "Edit High School Subject";
     this.highSchoolForm.patchValue({
       id: row.id,
       subject: row.subject,
-      description: row.description
+      description: row.description,
     });
-    $('#add_high_school_subject').modal('show')
+    $("#add_high_school_subject").modal("show");
     // this.editId = value;
     // const index = this.lstEmployee.findIndex(item => {
     //   return item.id === value;
@@ -233,7 +231,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   //search by Id
   searchId(val) {
     this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function(d) {
+    let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
       return d.subject.toLowerCase().indexOf(val) !== -1 || !val;
     });
@@ -243,7 +241,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   //search by name
   searchName(val) {
     this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function(d) {
+    let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
       return d.description.toLowerCase().indexOf(val) !== -1 || !val;
     });
@@ -253,7 +251,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   //search by purchase
   searchByDesignation(val) {
     this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function(d) {
+    let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
       return d.designation.toLowerCase().indexOf(val) !== -1 || !val;
     });
@@ -271,93 +269,101 @@ export class HighSchoolSubjectsComponent implements OnInit {
 
   addHighSchool() {
     this.formTitle = "Add High School Subject";
-    $('#add_high_school_subject').modal('show')
+    $("#add_high_school_subject").modal("show");
   }
 
   closeModal() {
-    $('#add_high_school_subject').modal('hide');
-    this.initializeForm()
+    $("#add_high_school_subject").modal("hide");
+    this.initializeForm();
   }
 
   delete(id: any) {
-   const body = [];
-   body.push(id);
-   const payload = {
-     itemIds: body
-   };
-   swal.fire({
-     title: "Are you sure you want to delete this record?",
-     text: "You won't be able to revert this",
-     icon: "warning",
-     showCancelButton: true,
-     confirmButtonText: "Yes!"
-   }).then(result => {
-     if (result.value) {
-       return this.setupService.deleteHighSchoolSubject(payload).subscribe(res => {
-         const message = res.status.message.friendlyMessage;
-         if (res.status.isSuccessful) {
-           swal.fire('Success', message, 'success').then(() => {
-             this.getHighSchools()
-           })
-         } else {
-           swal.fire('Error', message, 'error')
-         }
-       }, err => {
-         console.log(err);
-       })
-     }
-   })
+    const body = [];
+    body.push(id);
+    const payload = {
+      itemIds: body,
+    };
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        if (result.value) {
+          return this.setupService.deleteHighSchoolSubject(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("Success", message, "success").then(() => {
+                  this.getHighSchools();
+                });
+              } else {
+                swal.fire("Error", message, "error");
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        }
+      });
   }
   addItemId(event, id) {
     if (event.target.checked) {
       if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id)
+        this.selectedId.push(id);
       }
     } else {
-      this.selectedId = this.selectedId.filter(_id => {
+      this.selectedId = this.selectedId.filter((_id) => {
         return _id !== id;
-      })
+      });
     }
-
   }
   deleteItems() {
     if (this.selectedId.length === 0) {
-      return swal.fire('Error', 'Select items to delete', 'error')
+      return swal.fire("Error", "Select items to delete", "error");
     }
     const payload = {
-      itemIds: this.selectedId
+      itemIds: this.selectedId,
     };
-    swal.fire({
-      title: "Are you sure you want to delete this record?",
-      text: "You won't be able to revert this",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes!"
-    }).then(result => {
-      if (result.value) {
-        return this.setupService.deleteHighSchoolSubject(payload).subscribe(res => {
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire('Success', message, 'success').then(() => {
-              this.getHighSchools()
-            })
-          } else {
-            swal.fire('Error', message, 'error')
-          }
-        }, err => {
-          console.log(err);
-        })
-      }
-    })
-
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        if (result.value) {
+          return this.setupService.deleteHighSchoolSubject(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("Success", message, "success").then(() => {
+                  this.getHighSchools();
+                });
+              } else {
+                swal.fire("Error", message, "error");
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        }
+      });
   }
   checkAll(event) {
     if (event.target.checked) {
-      this.selectedId = this.subjects.map(item => {
-        return item.id
-      })
+      this.selectedId = this.subjects.map((item) => {
+        return item.id;
+      });
     } else {
-      this.selectedId = []
+      this.selectedId = [];
     }
   }
 }
