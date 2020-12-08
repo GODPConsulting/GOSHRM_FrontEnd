@@ -82,7 +82,7 @@ export class JobGradeComponent implements OnInit {
     return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
       (data) => {
         this.pageLoading = false;
-        console.log(data);
+        //console.log(data);
         this.jobGrades = data.setuplist;
         this.rows = this.jobGrades;
         this.srch = [...this.rows];

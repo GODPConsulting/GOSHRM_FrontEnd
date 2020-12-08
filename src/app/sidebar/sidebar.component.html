@@ -222,6 +222,10 @@
                   (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'employment-level') ||
                   (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'hmo') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'employment-type') ||
+                    (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'academic-grade') ||
                   (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'hmo') ||
@@ -249,9 +253,17 @@
                 subdrop:
                 (urlComplete.mainUrl === 'setup' &&
                       urlComplete.subUrl === 'hmo') ||
+<<<<<<< HEAD
+                      (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'employment-type') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'job-grade') ||
+                  (urlComplete.mainUrl === 'employees' &&
+=======
                   (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'academic-qualification') ||
                     (urlComplete.mainUrl === 'employees' &&
+>>>>>>> dev
                     urlComplete.subUrl === 'employeepage') ||
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'holidays') ||
@@ -337,21 +349,15 @@
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'hmo' }">HMO</a>
               </li>
               <li routerLink="/setup/academic-grade">
-                <a
-                  href="javascript:"
-                  [ngClass]="{ active: urlComplete.subUrl === 'academic-grade'}"
-                >Academic Grade</a>
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-grade'}">Academic Grade</a>
               </li>
               <li routerLink="/setup/academic-discipline">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-discipline' }">Academic
                   Discipline</a>
               </li>
               <li routerLink="/setup/academic-qualification">
-                <a
-                  href="javascript:"
-                  [ngClass]="{ active: urlComplete.subUrl === 'academic-qualification' }"
-                >Academic Qualification</a
-                >
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-qualification' }">Academic
+                  Qualification</a>
               </li>
               <li routerLink="/employees/adminleaves">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'adminleaves' }">Leaves (Admin)

@@ -75,7 +75,7 @@ export class EmploymentTypeComponent implements OnInit {
       .subscribe(
         (data) => {
           this.pageLoading = false;
-          console.log(data);
+          //console.log(data);
           this.employmentTypes = data.setuplist;
           this.rows = this.employmentTypes;
           this.srch = [...this.rows];
