@@ -100,7 +100,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   // Add employee  Modal Api Call
   addData(highSchoolForm: FormGroup) {
     const payload = highSchoolForm.value;
-    return this.setupService.updateLanguage(payload).subscribe(
+    return this.setupService.updateHighSchoolSubject(payload).subscribe(
       res => {
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {

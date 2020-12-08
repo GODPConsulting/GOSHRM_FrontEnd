@@ -10,6 +10,7 @@ export class SetupService {
   getProfMembership: any;
   deleteLanguage: any;
   updateProfMembership: any;
+  updateLanguage: any;
   getLanguage() {
     throw new Error('Method not implemented.');
   }
