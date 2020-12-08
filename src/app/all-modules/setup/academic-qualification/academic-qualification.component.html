@@ -1,22 +1,16 @@
 <app-loading *ngIf="pageLoading"></app-loading>
-
 <!-- Page Content -->
 <div *ngIf="!pageLoading" class="content container-fluid">
     <!-- Page Header -->
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Employment Type</h3>
+                <h3 class="page-title">Academic Qualification</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Employment Type</li>
+                    <li class="breadcrumb-item active">Academic Qualification</li>
                 </ul>
             </div>
-            <!--        <div class="view-icons">-->
-            <!--          <a routerLink="/employees/employeepage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>-->
-            <!--          <a routerLink="/employees/employeelist" class="list-view btn btn-link active"><i-->
-            <!--            class="fa fa-bars"></i></a>-->
-            <!--        </div>-->
             <div class="col-auto float-right ml-auto">
                 <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span
                         class="hint-text">Add</span><i class="fa fa-plus"></i></a>
@@ -26,17 +20,15 @@
                 <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
                         class="fa fa-trash"></i></a>
             </div>
-
         </div>
     </div>
     <!-- /Page Header -->
-
 
     <!-- Search Filter -->
     <div class="row filter-row">
         <div class="col-sm-6 col-md-5">
             <div class="form-group form-focus">
-                <input type="text" class="form-control floating" (input)="searchId($event.target.value)"
+                <input type="text" class="form-control floating"
                     [(ngModel)]="searchText" />
                 <label class="focus-label">Start typing to search by any field</label>
             </div>
@@ -55,31 +47,33 @@
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === employmentTypes.length"
+                                <input type="checkbox" [checked]="selectedId.length === qualifications.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Employment Type</th>
+                            <th>Qualification</th>
                             <th>Description</th>
+                            <th>Rank</th>
                             <th class="text-right no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of employmentTypes | filter:searchText; let i = index">
+                        <tr *ngFor="let row of qualifications | filter:searchText; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.employment_type }}</td>
+                            <td>{{ row.qualification }}</td>
                             <td>{{ row.description }}</td>
+                            <td>{{ row.rank }}</td>
                             <td class="text-right">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" data-toggle="modal" data-target="#edit_employee"
-                                            (click)="edit(row)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                            (click)="editAcademicQualification(row)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                         <a class="dropdown-item" (click)="delete(row.id)"><i
                                                 class="fa fa-trash-o m-r-5"></i> Delete</a>
                                     </div>
@@ -94,8 +88,8 @@
 </div>
 <!-- /Page Content -->
 
-<!-- Add Employee Modal -->
-<div id="add_employment_type" class="modal custom-modal fade" role="dialog">
+<!-- Add HMO Modal -->
+<div id="add_academic_qualification" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -105,24 +99,24 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="addData(employmentTypeForm)" [formGroup]="employmentTypeForm">
+                <form (ngSubmit)="addAcademicQualification(academicQualificationForm)" [formGroup]="academicQualificationForm">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Employment Type <span class="text-danger">*</span></label>
+                                <label class="col-form-label">Qualification<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                employmentTypeForm.get('employment_type').invalid &&
-                                employmentTypeForm.get('employment_type').touched
-                    " formControlName="employment_type" />
+                                academicQualificationForm.get('qualification').invalid &&
+                                academicQualificationForm.get('qualification').touched
+                    " formControlName="qualification" />
                                 <div *ngIf="
-                                employmentTypeForm.get('employment_type').invalid &&
-                                employmentTypeForm.get('employment_type').touched
+                                academicQualificationForm.get('qualification').invalid &&
+                                academicQualificationForm.get('qualification').touched
                     ">
                                     <small *ngIf="
-                                    employmentTypeForm.get('employment_type').invalid &&
-                                    employmentTypeForm.get('employment_type').touched
+                                    academicQualificationForm.get('qualification').invalid &&
+                                    academicQualificationForm.get('qualification').touched
                       " class="text-danger">
-                                        *Subject is required</small>
+                                        *Qualification Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -130,18 +124,37 @@
                             <div class="form-group">
                                 <label class="col-form-label">Description</label>
                                 <textarea class="form-control" type="text" [class.invalid]="
-                                employmentTypeForm.get('description').invalid &&
-                                employmentTypeForm.get('description').touched
+                                academicQualificationForm.get('description').invalid &&
+                                academicQualificationForm.get('description').touched
                     " formControlName="description"></textarea>
                                 <div *ngIf="
-                                employmentTypeForm.get('description').invalid &&
-                                employmentTypeForm.get('description').touched
+                                academicQualificationForm.get('description').invalid &&
+                                academicQualificationForm.get('description').touched
                     ">
                                     <small *ngIf="
-                                    employmentTypeForm.get('description').invalid &&
-                                    employmentTypeForm.get('description').touched
+                                    academicQualificationForm.get('description').invalid &&
+                                    academicQualificationForm.get('description').touched
                       " class="text-danger">
-                                        *Description is required</small>
+                                        *Description Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Rank<span class="text-danger">*</span></label>
+                                <input class="form-control" type="number" [class.invalid]="
+                                academicQualificationForm.get('rank').invalid &&
+                                academicQualificationForm.get('rank').touched
+                    " formControlName="rank" />
+                                <div *ngIf="
+                                academicQualificationForm.get('rank').invalid &&
+                                academicQualificationForm.get('rank').touched
+                    ">
+                                    <small *ngIf="
+                                    academicQualificationForm.get('rank').invalid &&
+                                    academicQualificationForm.get('rank').touched
+                      " class="text-danger">
+                                        *Rank Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -189,13 +202,13 @@
 <!--              <div class="form-group">-->
 <!--                <label class="col-form-label">Last Name</label>-->
 <!--                <input class="form-control" type="text"-->
-<!--                       [class.invalid]="editEmployeeForm.get('description').invalid && editEmployeeForm.get('description').touched"-->
-<!--                       formControlName="description">-->
+<!--                       [class.invalid]="editEmployeeForm.get('reg_date').invalid && editEmployeeForm.get('reg_date').touched"-->
+<!--                       formControlName="reg_date">-->
 <!--                <div-->
-<!--                  *ngIf="editEmployeeForm.get('description').invalid && editEmployeeForm.get('description').touched">-->
+<!--                  *ngIf="editEmployeeForm.get('reg_date').invalid && editEmployeeForm.get('reg_date').touched">-->
 <!--                  <small-->
-<!--                    *ngIf="editEmployeeForm.get('description').invalid && editEmployeeForm.get('description').touched"-->
-<!--                    class="text-danger"> *Description is required</small>-->
+<!--                    *ngIf="editEmployeeForm.get('reg_date').invalid && editEmployeeForm.get('reg_date').touched"-->
+<!--                    class="text-danger"> *reg_date is required</small>-->
 <!--                </div>-->
 <!--              </div>-->
 <!--            </div>-->

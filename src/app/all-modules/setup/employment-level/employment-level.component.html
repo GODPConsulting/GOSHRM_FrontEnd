@@ -1,3 +1,5 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+<div *ngIf="!pageLoading">
 <!-- Page Content -->
 <div class="content container-fluid">
     <!-- Page Header -->
@@ -12,11 +14,21 @@
         </div>
         <div class="col-auto float-right ml-auto">
           <a
-            class="btn add-btn"
-            data-toggle="modal"
-            (click)="addEmploymentLevel()"
-            ><i class="fa fa-plus"></i>Add Employment Level</a
-          >
+          class="btn add-btn hint"
+          data-toggle="modal"
+          (click)="addEmploymentLevel()"
+          ><span class="hint-text">Add</span><i class="fa fa-plus"></i
+        ></a>
+        <a class="btn download-btn hint"
+            ><span class="hint-text">Download</span
+            ><i class="fa fa-download"></i
+          ></a>
+          <a class="btn upload-btn hint"
+            ><span class="hint-text">Upload</span><i class="fa fa-upload"></i
+          ></a>
+          <a class="btn delete-btn hint" (click)="delete()"
+            ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+          ></a>
           <!--        <div class="view-icons">-->
           <!--          <a routerLink="/employees/employeepage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>-->
           <!--          <a routerLink="/employees/employeelist" class="list-view btn btn-link active"><i-->
@@ -29,32 +41,17 @@
   
     <!-- Search Filter -->
     <div class="row filter-row">
-      <div class="col-sm-6 col-md-3">
-        <div class="form-group form-focus">
-          <input
-            type="text"
-            class="form-control floating"
-            (input)="searchLevel($event.target.value)"
-            (focusout)="rerender()"
-          />
-          <label class="focus-label">Employment Level</label>
-        </div>
+      <div class="col-sm-6 col-md-5">
+          <div class="form-group form-focus">
+              <input type="text" class="form-control floating"
+                  [(ngModel)]="searchText" />
+              <label class="focus-label">Start typing to search by any field</label>
+          </div>
       </div>
-      <div class="col-sm-6 col-md-3">
-        <div class="form-group form-focus">
-          <input
-            type="text"
-            class="form-control floating"
-            (input)="searchByDescription($event.target.value)"
-            (focusout)="rerender()"
-          />
-          <label class="focus-label">Description</label>
-        </div>
-      </div>
-      <div class="col-sm-6 col-md-3">
-        <a class="btn btn-success btn-block"> Search </a>
-      </div>
-    </div>
+      <!--  <div class="col-sm-6 col-md-3">
+          <a class="btn btn-success btn-block"> Search </a>
+      </div> -->
+  </div>
     <!-- /Search Filter -->
   
     <div class="row">
@@ -68,13 +65,25 @@
           >
             <thead>
               <tr>
+                <th>
+                  <input type="checkbox" [checked]="selectedId.length === levels.length" (change)="checkAll($event)"/>
+                </th>
+                <th>S/N</th>
                 <th>Employment Level</th>
                 <th>Description</th>
                 <th class="text-right no-sort">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of levels; let i = index">
+              <tr *ngFor="let row of levels | filter:searchText; let i = index">
+                <td>
+                  <input
+                    type="checkbox"
+                    [checked]="selectedId.includes(row.id)"
+                    (change)="addItemId($event, row.id)"
+                  />
+                </td>
+                <td>{{ i + 1 }}</td>
                 <td>{{ row.employment_level }}</td>
                 <td>{{ row.description }}</td>
                 <td class="text-right">
@@ -625,6 +634,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
   <!-- /Delete Employee Modal -->
   

@@ -170,47 +170,8 @@ export class HmoComponent implements OnInit {
             );
         }
       });
+    this.selectedId = [];
   }
-
-  /* deleteItems() {
-    if (this.selectedId.length === 0) {
-      return swal.fire("Error", "Select items to delete", "error");
-    }
-    const payload = {
-      itemIds: this.selectedId,
-    };
-    console.log(this.selectedId);
-
-    swal
-      .fire({
-        title: "Are you sure you want to delete this record?",
-        text: "You won't be able to revert this",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes!",
-      })
-      .then((result) => {
-        if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/hmo", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
-                    this.getHmo();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
-              }
-            );
-        }
-      });
-  } */
 
   checkAll(event) {
     if (event.target.checked) {
@@ -233,21 +194,4 @@ export class HmoComponent implements OnInit {
       });
     }
   }
-
-  /*  getHmo() {
-    this.pageLoading = true;
-    return this.setupService.getHmos().subscribe(
-      (data) => {
-        this.pageLoading = false;
-        console.log(data);
-        this.hmos = data.setuplist;
-        this.rows = this.hmos;
-        this.srch = [...this.rows];
-      },
-      (err) => {
-        this.pageLoading = false;
-        console.log(err);
-      }
-    );
-  } */
 }

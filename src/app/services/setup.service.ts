@@ -38,68 +38,6 @@ export class SetupService {
       );
   }
 
-  // Employment Type
-  getEmploymentTypeApi(): Observable<any> {
-    return this.apiService.get(`/hrmsetup/get/all/employmenttypes`).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
-  }
-
-  updateEmploymentType(payload): Observable<any> {
-    return this.apiService
-      .post(`/hrmsetup/add/update/employmenttype`, payload)
-      .pipe((res) => {
-        return res;
-      });
-  }
-
-  deleteEmploymentType(payload): Observable<any> {
-    return this.apiService
-      .post(`/hrmsetup/delete/employmenttype`, payload)
-      .pipe(
-        tap((data) => {
-          return data;
-        })
-      );
-  }
-
-  getEmploymentLevel(): Observable<any> {
-    return this.apiService.get(`/hrmsetup/get/all/emplpymentlevels`).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
-  }
-
-  deleteEmploymentLevel(payload): Observable<any> {
-    return this.apiService
-      .post(`/hrmsetup/delete/employmentlevel`, payload)
-      .pipe(
-        tap((data) => {
-          return data;
-        })
-      );
-  }
-
-  updateEmploymentLevel(payload): Observable<any> {
-    return this.apiService
-      .post(`/hrmsetup/add/update/employmentlevel`, payload)
-      .pipe((res) => {
-        return res;
-      });
-  }
-
-  // HMO
-  /*  getHmos(): Observable<any> {
-    return this.apiService.get(`/hrmsetup/get/all/hmos`).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
-  } */
-
   getData(url) {
     return this.apiService.get(url).pipe(
       tap((data) => {
