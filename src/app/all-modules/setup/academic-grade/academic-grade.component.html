@@ -5,10 +5,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Academic Qualification</h3>
+                <h3 class="page-title">Academic Grade</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Academic Qualification</li>
+                    <li class="breadcrumb-item active">Academic Grade</li>
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
@@ -46,23 +46,23 @@
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === qualifications.length"
+                                <input type="checkbox" [checked]="selectedId.length === grades.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Qualification</th>
+                            <th>Grade</th>
                             <th>Rank</th>
                             <th class="text-right no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of qualifications | filter:searchText; let i = index">
+                        <tr *ngFor="let row of grades | filter:searchText; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.qualification }}</td>
+                            <td>{{ row.grade }}</td>
                             <td>{{ row.rank }}</td>
                             <td class="text-right">
                                 <div class="dropdown dropdown-action">
@@ -70,8 +70,7 @@
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" data-toggle="modal" data-target="#edit_employee"
-                                            (click)="editAcademicQualification(row)"><i class="fa fa-pencil m-r-5"></i>
-                                            Edit</a>
+                                            (click)="editAcademicGrade(row)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                         <a class="dropdown-item" (click)="delete(row.id)"><i
                                                 class="fa fa-trash-o m-r-5"></i> Delete</a>
                                     </div>
@@ -87,7 +86,7 @@
 <!-- /Page Content -->
 
 <!-- Add HMO Modal -->
-<div id="add_academic_qualification" class="modal custom-modal fade" role="dialog">
+<div id="add-academic-grade" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -97,42 +96,39 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="addAcademicQualification(academicQualificationForm)"
-                    [formGroup]="academicQualificationForm">
+                <form (ngSubmit)="addAcademicGrade(academicGradeForm)" [formGroup]="academicGradeForm">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Qualification<span class="text-danger">*</span></label>
+                                <label class="col-form-label">grade<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                academicQualificationForm.get('qualification').invalid &&
-                                academicQualificationForm.get('qualification').touched
-                    " formControlName="qualification" />
+                                academicGradeForm.get('grade').invalid &&
+                                academicGradeForm.get('grade').touched
+                    " formControlName="grade" />
                                 <div *ngIf="
-                                academicQualificationForm.get('qualification').invalid &&
-                                academicQualificationForm.get('qualification').touched
+                                academicGradeForm.get('grade').invalid &&
+                                academicGradeForm.get('grade').touched
                     ">
                                     <small *ngIf="
-                                    academicQualificationForm.get('qualification').invalid &&
-                                    academicQualificationForm.get('qualification').touched
+                                    academicGradeForm.get('grade').invalid &&
+                                    academicGradeForm.get('grade').touched
                       " class="text-danger">
-                                        *Qualification Field is required</small>
+                                        *Grade Field is required</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Description</label>
+                                <label class="col-form-label">Description<span class="text-danger">*</span></label>
                                 <textarea class="form-control" type="text" [class.invalid]="
-                                academicQualificationForm.get('description').invalid &&
-                                academicQualificationForm.get('description').touched
+                                academicGradeForm.get('description').invalid &&
+                                academicGradeForm.get('description').touched
                     " formControlName="description"></textarea>
-                                <div *ngIf="
-                                academicQualificationForm.get('description').invalid &&
-                                academicQualificationForm.get('description').touched
+                                <div *ngIf="academicGradeForm.get('description').invalid && academicGradeForm.get('description').touched
                     ">
                                     <small *ngIf="
-                                    academicQualificationForm.get('description').invalid &&
-                                    academicQualificationForm.get('description').touched
+                                    academicGradeForm.get('description').invalid &&
+                                    academicGradeForm.get('description').touched
                       " class="text-danger">
                                         *Description Field is required</small>
                                 </div>
@@ -142,22 +138,22 @@
                             <div class="form-group">
                                 <label class="col-form-label">Rank<span class="text-danger">*</span></label>
                                 <input class="form-control" type="number" [class.invalid]="
-                                academicQualificationForm.get('rank').invalid &&
-                                academicQualificationForm.get('rank').touched
+                                academicGradeForm.get('rank').invalid &&
+                                academicGradeForm.get('rank').touched
                     " formControlName="rank" />
                                 <div *ngIf="
-                                academicQualificationForm.get('rank').invalid &&
-                                academicQualificationForm.get('rank').touched
-                    ">
+                                academicGradeForm.get('rank').invalid &&
+                                academicGradeForm.get('rank').touched">
                                     <small *ngIf="
-                                    academicQualificationForm.get('rank').invalid &&
-                                    academicQualificationForm.get('rank').touched
+                                    AcademicGradeForm.get('rank').invalid &&
+                                    AcademicGradeForm.get('rank').touched
                       " class="text-danger">
                                         *Rank Field is required</small>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             Submit
