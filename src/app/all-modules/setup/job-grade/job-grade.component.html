@@ -1,22 +1,16 @@
 <app-loading *ngIf="pageLoading"></app-loading>
-
 <!-- Page Content -->
 <div *ngIf="!pageLoading" class="content container-fluid">
     <!-- Page Header -->
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Employment Type</h3>
+                <h3 class="page-title">Job Grade</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Employment Type</li>
+                    <li class="breadcrumb-item active">Job Grade</li>
                 </ul>
             </div>
-            <!--        <div class="view-icons">-->
-            <!--          <a routerLink="/employees/employeepage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>-->
-            <!--          <a routerLink="/employees/employeelist" class="list-view btn btn-link active"><i-->
-            <!--            class="fa fa-bars"></i></a>-->
-            <!--        </div>-->
             <div class="col-auto float-right ml-auto">
                 <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span
                         class="hint-text">Add</span><i class="fa fa-plus"></i></a>
@@ -26,7 +20,6 @@
                 <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
                         class="fa fa-trash"></i></a>
             </div>
-
         </div>
     </div>
     <!-- /Page Header -->
@@ -36,8 +29,7 @@
     <div class="row filter-row">
         <div class="col-sm-6 col-md-5">
             <div class="form-group form-focus">
-                <input type="text" class="form-control floating" (input)="searchId($event.target.value)"
-                    [(ngModel)]="searchText" />
+                <input type="text" class="form-control floating" [(ngModel)]="searchText" />
                 <label class="focus-label">Start typing to search by any field</label>
             </div>
         </div>
@@ -55,23 +47,29 @@
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === employmentTypes.length"
+                                <input type="checkbox" [checked]="selectedId.length === jobGrades.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Employment Type</th>
+                            <th>Job Grade</th>
+                            <th>Report To</th>
+                            <th>Rank</th>
+                            <th>Probation Period</th>
                             <th>Description</th>
                             <th class="text-right no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of employmentTypes | filter:searchText; let i = index">
+                        <tr *ngFor="let row of jobGrades | filter:searchText; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.employment_type }}</td>
+                            <td>{{ row.job_grade }}</td>
+                            <td>{{ row.job_grade_reporting_to }}</td>
+                            <td>{{ row.rank }}</td>
+                            <td>{{ row.probation_period_in_months }}</td>
                             <td>{{ row.description }}</td>
                             <td class="text-right">
                                 <div class="dropdown dropdown-action">
@@ -94,8 +92,8 @@
 </div>
 <!-- /Page Content -->
 
-<!-- Add Employee Modal -->
-<div id="add_employment_type" class="modal custom-modal fade" role="dialog">
+<!-- Add Job Grade Modal -->
+<div id="add_job_grade" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -105,43 +103,111 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="addData(employmentTypeForm)" [formGroup]="employmentTypeForm">
+                <form (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Employment Type <span class="text-danger">*</span></label>
+                                <label class="col-form-label">Job Grade <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                employmentTypeForm.get('employment_type').invalid &&
-                                employmentTypeForm.get('employment_type').touched
-                    " formControlName="employment_type" />
+                                jobGradeForm.get('job_grade').invalid &&
+                                jobGradeForm.get('job_grade').touched
+                    " formControlName="job_grade" />
                                 <div *ngIf="
-                                employmentTypeForm.get('employment_type').invalid &&
-                                employmentTypeForm.get('employment_type').touched
+                                jobGradeForm.get('job_grade').invalid &&
+                                jobGradeForm.get('job_grade').touched
                     ">
                                     <small *ngIf="
-                                    employmentTypeForm.get('employment_type').invalid &&
-                                    employmentTypeForm.get('employment_type').touched
+                                    jobGradeForm.get('job_grade').invalid &&
+                                    jobGradeForm.get('job_grade').touched
                       " class="text-danger">
-                                        *Subject is required</small>
+                                        *Field is required</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Description</label>
-                                <textarea class="form-control" type="text" [class.invalid]="
-                                employmentTypeForm.get('description').invalid &&
-                                employmentTypeForm.get('description').touched
-                    " formControlName="description"></textarea>
+                                <label class="col-form-label">Reporting To</label>
+                                <!--  <textarea class="form-control" type="text" [class.invalid]="
+                                jobGradeForm.get('job_grade_reporting_to').invalid &&
+                                jobGradeForm.get('job_grade_reporting_to').touched
+                    " formControlName="job_grade_reporting_to"></textarea> -->
+                                <select class="form-control" [class.invalid]="
+                    jobGradeForm.get('job_grade_reporting_to').invalid &&
+                    jobGradeForm.get('job_grade_reporting_to').touched" formControlName="job_grade_reporting_to">
+                                    <option selected *ngIf="jobGrades.length === 0" value="">N/A</option>
+                                    <option value="">Select Reporting to</option>
+
+                                    <option *ngFor="let row of jobGrades" value="{{row.job_grade}}">{{row.job_grade}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
-                                employmentTypeForm.get('description').invalid &&
-                                employmentTypeForm.get('description').touched
+                                jobGradeForm.get('job_grade_reporting_to').invalid &&
+                                jobGradeForm.get('job_grade_reporting_to').touched
                     ">
                                     <small *ngIf="
-                                    employmentTypeForm.get('description').invalid &&
-                                    employmentTypeForm.get('description').touched
+                                    jobGradeForm.get('job_grade_reporting_to').invalid &&
+                                    jobGradeForm.get('job_grade_reporting_to').touched
                       " class="text-danger">
                                         *Description is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Rank <span class="text-danger">*</span></label>
+                                <input class="form-control" type="number" [class.invalid]="
+                                jobGradeForm.get('rank').invalid &&
+                                jobGradeForm.get('rank').touched
+                    " formControlName="rank" min="1" />
+                                <div *ngIf="
+                                jobGradeForm.get('rank').invalid &&
+                                jobGradeForm.get('rank').touched
+                    ">
+                                    <small *ngIf="
+                                    jobGradeForm.get('rank').invalid &&
+                                    jobGradeForm.get('rank').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Probation Period <span
+                                        class="text-danger">*</span></label>
+                                <input class="form-control" type="number" [class.invalid]="
+                                jobGradeForm.get('probation_period_in_months').invalid &&
+                                jobGradeForm.get('probation_period_in_months').touched
+                    " formControlName="probation_period_in_months" min="1" />
+                                <div *ngIf="
+                                jobGradeForm.get('probation_period_in_months').invalid &&
+                                jobGradeForm.get('probation_period_in_months').touched
+                    ">
+                                    <small *ngIf="
+                                    jobGradeForm.get('probation_period_in_months').invalid &&
+                                    jobGradeForm.get('probation_period_in_months').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Description <span class="text-danger">*</span></label>
+
+                                <textarea class="form-control" [class.invalid]="
+                    jobGradeForm.get('description').invalid &&
+                    jobGradeForm.get('description').touched
+                    " formControlName="description"></textarea>
+                                <div *ngIf="
+                                jobGradeForm.get('description').invalid &&
+                                jobGradeForm.get('description').touched
+                    ">
+                                    <small *ngIf="
+                                    jobGradeForm.get('description').invalid &&
+                                    jobGradeForm.get('description').touched
+                      " class="text-danger">
+                                        *Field is required</small>
                                 </div>
                             </div>
                         </div>

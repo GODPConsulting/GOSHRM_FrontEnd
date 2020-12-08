@@ -65,7 +65,7 @@ export class AcademicDisciplineComponent implements OnInit {
   }
   getAcademicDisplines() {
     this.pageLoading = true;
-    return this.setupService.getAcademicDisciplines().subscribe(
+    return this.setupService.getData("/hrmsetup/get/all/academic/disciplines").subscribe(
       data => {
         this.pageLoading = false;
         this.disciplines = data.setuplist;
@@ -104,8 +104,8 @@ export class AcademicDisciplineComponent implements OnInit {
   // Add employee  Modal Api Call
   addData(academicDisciplineForm: FormGroup) {
     const payload = academicDisciplineForm.value;
-    payload.rank = parseInt(payload.rank);
-    return this.setupService.updateAcademicDiscipline(payload).subscribe(
+    payload.rank = parseInt(payload.rank)
+    return this.setupService.updateData("/hrmsetup/add/update/academic/discipline", payload).subscribe(
       res => {
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
@@ -286,34 +286,59 @@ export class AcademicDisciplineComponent implements OnInit {
   }
 
   delete(id: any) {
-   const body = [];
-   body.push(id);
-   const payload = {
-     itemIds: body
-   };
-   swal.fire({
-     title: "Are you sure you want to delete this record?",
-     text: "You won't be able to revert this",
-     icon: "warning",
-     showCancelButton: true,
-     confirmButtonText: "Yes!"
-   }).then(result => {
-     if (result.value) {
-       return this.setupService.deleteAcademicDiscipline(payload).subscribe(res => {
-         const message = res.status.message.friendlyMessage;
-         if (res.status.isSuccessful) {
-           swal.fire('Success', message, 'success').then(() => {
-             this.getAcademicDisplines()
-           })
-         } else {
-           swal.fire('Error', message, 'error')
-         }
-       }, err => {
-         console.log(err);
-       })
-     }
-   })
+    let payload;
+
+    if (id) {
+      const body = [id];
+      //body.push(id);
+      //console.log(body);
+      payload = {
+        itemIds: body,
+      };
+    } else if (this.selectedId) {
+      if (this.selectedId.length === 0) {
+        return swal.fire("Error", "Select items to delete", "error");
+      }
+      payload = {
+        itemIds: this.selectedId,
+      };
+      //console.log(this.selectedId);
+    }
+
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        //console.log(result);
+
+        if (result.value) {
+          return this.setupService
+            .deleteData("/hrmsetup/delete/academic/discipline", payload)
+            .subscribe(
+              (res) => {
+                const message = res.status.message.friendlyMessage;
+                if (res.status.isSuccessful) {
+                  swal.fire("Success", message, "success").then(() => {
+                    this.getAcademicDisplines();
+                  });
+                } else {
+                  swal.fire("Error", message, "error");
+                }
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
+        }
+      });
   }
+
+  
   addItemId(event, id) {
     if (event.target.checked) {
       if (!this.selectedId.includes(id)) {
@@ -326,37 +351,7 @@ export class AcademicDisciplineComponent implements OnInit {
     }
 
   }
-  deleteItems() {
-    if (this.selectedId.length === 0) {
-      return swal.fire('Error', 'Select items to delete', 'error')
-    }
-    const payload = {
-      itemIds: this.selectedId
-    };
-    swal.fire({
-      title: "Are you sure you want to delete this record?",
-      text: "You won't be able to revert this",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes!"
-    }).then(result => {
-      if (result.value) {
-        return this.setupService.deleteAcademicDiscipline(payload).subscribe(res => {
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire('Success', message, 'success').then(() => {
-              this.getAcademicDisplines()
-            })
-          } else {
-            swal.fire('Error', message, 'error')
-          }
-        }, err => {
-          console.log(err);
-        })
-      }
-    })
-
-  }
+  
   checkAll(event) {
     if (event.target.checked) {
       this.selectedId = this.disciplines.map(item => {
