@@ -153,6 +153,7 @@ addAcademicQualification(academicQualificationForm: FormGroup) {
     });
     $("#add_academic_qualification").modal("show");
   }
+  
   openModal() {
     $("#add_academic_qualification").modal("show");
   }
