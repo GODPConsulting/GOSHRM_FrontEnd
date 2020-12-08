@@ -2,20 +2,20 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
-
 declare const $: any;
 @Component({
-  selector: "app-hmo",
-  templateUrl: "./hmo.component.html",
-  styleUrls: ["./hmo.component.css"],
+  selector: 'app-academic-grade',
+  templateUrl: './academic-grade.component.html',
+  styleUrls: ['./academic-grade.component.css']
 })
-export class HmoComponent implements OnInit {
-  public hmos: any[] = [];
+export class AcademicGradeComponent implements OnInit {
+
+  public grades: any[] = [];
   public rows = [];
   public srch = [];
   pageLoading: boolean;
-  public formTitle = "Add HMO";
-  public hmoForm: FormGroup;
+  public formTitle = "Add Academic Grade";
+  public academicGradeForm: FormGroup;
   selectedId: any[] = [];
 
   constructor(
@@ -31,32 +31,26 @@ export class HmoComponent implements OnInit {
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
       })
       .trigger("blur");
-    this.getHmo();
+    this.getAcademicGrade();
     this.initializeForm();
   }
 
   initializeForm() {
-    this.hmoForm = this.formBuilder.group({
+    this.academicGradeForm = this.formBuilder.group({
       id: [0],
-      hmo_name: ["", Validators.required],
-      hmo_code: ["", Validators.required],
-      contact_phone_number: ["", Validators.required],
-      contact_email: ["", Validators.required],
-      address: ["", Validators.required],
-      reg_date: ["", Validators.required],
-      rating: ["", Validators.required],
-      order_comments: ["", Validators.required],
+      grade: ["", Validators.required],
+      description: ["", Validators.required],
+      rank: ["", Validators.required],
     });
   }
 
-  getHmo() {
+  getAcademicGrade() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/hmos").subscribe(
+    return this.setupService.getData("/hrmsetup/get/all/academic/grades").subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
-        this.hmos = data.setuplist;
-        this.rows = this.hmos;
+        this.grades = data.setuplist;
+        this.rows = this.grades;
         this.srch = [...this.rows];
       },
       (err) => {
@@ -67,20 +61,20 @@ export class HmoComponent implements OnInit {
   }
 
   openModal() {
-    $("#add_hmo").modal("show");
+    $("#add-academic-grade").modal("show");
   }
 
   closeModal() {
-    $("#add_hmo").modal("hide");
+    $("#add-academic-grade").modal("hide");
     this.initializeForm();
   }
 
   // Add employee  Modal Api Call
-  addHmo(Form: FormGroup) {
-    const payload = Form.value;
-    console.log(payload);
+  addAcademicGrade(academicGradeForm: FormGroup) {
+    const payload = academicGradeForm.value;
+    payload.rank = +payload.rank;
     return this.setupService
-      .updateData("/hrmsetup/add/update/hmo", payload)
+      .updateData("/hrmsetup/add/update/academic/grade", payload)
       .subscribe(
         (res) => {
           const message = res.status.message.friendlyMessage;
@@ -89,11 +83,11 @@ export class HmoComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            $("#add_hmo").modal("hide");
+            $("#add-academic-grade").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getHmo();
+          this.getAcademicGrade();
         },
         (err) => {
           const message = err.status.message.friendlyMessage;
@@ -103,20 +97,16 @@ export class HmoComponent implements OnInit {
   }
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
-  editHmo(row) {
-    this.formTitle = "Edit HMO";
-    this.hmoForm.patchValue({
+  editAcademicGrade(row) {
+    this.formTitle = "Edit Academic Grade";
+    this.academicGradeForm.patchValue({
       id: row.id,
-      hmo_name: row.hmo_name,
-      hmo_code: row.hmo_code,
-      contact_phone_number: row.contact_phone_number,
-      contact_email: row.contact_email,
-      address: row.address,
-      reg_date: row.reg_date,
-      rating: row.rating,
-      order_comments: row.order_comments,
+      grade: row.grade,
+      description: row.description,
+      rank: row.rank,
+     
     });
-    $("#add_hmo").modal("show");
+    $("#add-academic-grade").modal("show");
   }
 
   delete(id: any) {
@@ -152,6 +142,46 @@ export class HmoComponent implements OnInit {
 
         if (result.value) {
           return this.setupService
+            .deleteData("/hrmsetup/delete/academic/grade", payload)
+            .subscribe(
+              (res) => {
+                const message = res.status.message.friendlyMessage;
+                if (res.status.isSuccessful) {
+                  swal.fire("Success", message, "success").then(() => {
+                    this.getAcademicGrade();
+                  });
+                } else {
+                  swal.fire("Error", message, "error");
+                }
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
+        }
+      });
+  }
+
+  /* deleteItems() {
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    }
+    const payload = {
+      itemIds: this.selectedId,
+    };
+    console.log(this.selectedId);
+
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        if (result.value) {
+          return this.setupService
             .deleteData("/hrmsetup/delete/hmo", payload)
             .subscribe(
               (res) => {
@@ -170,12 +200,11 @@ export class HmoComponent implements OnInit {
             );
         }
       });
-    this.selectedId = [];
-  }
+  } */
 
   checkAll(event) {
     if (event.target.checked) {
-      this.selectedId = this.hmos.map((item) => {
+      this.selectedId = this.grades.map((item) => {
         return item.id;
       });
     } else {
@@ -194,4 +223,22 @@ export class HmoComponent implements OnInit {
       });
     }
   }
+
+  /*  getHmo() {
+    this.pageLoading = true;
+    return this.setupService.getHmos().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        console.log(data);
+        this.hmos = data.setuplist;
+        this.rows = this.hmos;
+        this.srch = [...this.rows];
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
+  } */
+
 }

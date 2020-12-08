@@ -37,6 +37,7 @@ export class AcademicDisciplineComponent implements OnInit {
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
+
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
