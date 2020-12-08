@@ -13,22 +13,12 @@
           </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-          <a
-            class="btn add-btn hint"
-            data-toggle="modal"
-            (click)="addHighSchool()"
-            ><span class="hint-text">Add</span><i class="fa fa-plus"></i
-          ></a>
-          <a class="btn download-btn hint"
-            ><span class="hint-text">Download</span
-            ><i class="fa fa-download"></i
-          ></a>
-          <a class="btn upload-btn hint"
-            ><span class="hint-text">Upload</span><i class="fa fa-upload"></i
-          ></a>
-          <a class="btn delete-btn hint" (click)="deleteItems()"
-            ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
-          ></a>
+          <a class="btn add-btn hint" data-toggle="modal" (click)="addHighSchool()"><span class="hint-text">Add</span><i
+              class="fa fa-plus"></i></a>
+          <a class="btn download-btn hint"><span class="hint-text">Download</span><i class="fa fa-download"></i></a>
+          <a class="btn upload-btn hint"><span class="hint-text">Upload</span><i class="fa fa-upload"></i></a>
+          <a class="btn delete-btn hint" (click)="deleteItems()"><span class="hint-text">Delete</span><i
+              class="fa fa-trash"></i></a>
         </div>
       </div>
     </div>
@@ -38,23 +28,15 @@
     <div class="row filter-row">
       <div class="col-sm-6 col-md-3">
         <div class="form-group form-focus">
-          <input
-            type="text"
-            class="form-control floating"
-            (input)="searchId($event.target.value)"
-            (focusout)="rerender()"
-          />
+          <input type="text" class="form-control floating" (input)="searchId($event.target.value)"
+            (focusout)="rerender()" />
           <label class="focus-label">Subject</label>
         </div>
       </div>
       <div class="col-sm-6 col-md-3">
         <div class="form-group form-focus">
-          <input
-            type="text"
-            class="form-control floating"
-            (input)="searchName($event.target.value)"
-            (focusout)="rerender()"
-          />
+          <input type="text" class="form-control floating" (input)="searchName($event.target.value)"
+            (focusout)="rerender()" />
           <label class="focus-label">Description</label>
         </div>
       </div>
@@ -67,54 +49,34 @@
     <div class="row">
       <div class="col-md-12">
         <div class="table-responsive">
-          <table
-            class="table table-striped custom-table datatable"
-            datatable
-            [dtOptions]="dtOptions"
-            [dtTrigger]="dtTrigger"
-          >
+          <table class="table table-striped custom-table datatable" datatable [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger">
             <thead>
               <tr>
                 <th>
-                  <input type="checkbox" [checked]="selectedId.length === subjects.length" (change)="checkAll($event)"/>
+                  <input type="checkbox" [checked]="selectedId.length === subjects.length"
+                    (change)="checkAll($event)" />
                 </th>
                 <th>S/N</th>
                 <th>Subject</th>
-                <th>Description</th>
                 <th class="text-right no-sort">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let row of subjects; let i = index">
                 <td>
-                  <input
-                    type="checkbox"
-                    [checked]="selectedId.includes(row.id)"
-                    (change)="addItemId($event, row.id)"
-                  />
+                  <input type="checkbox" [checked]="selectedId.includes(row.id)" (change)="addItemId($event, row.id)" />
                 </td>
                 <td>{{ i + 1 }}</td>
                 <td>{{ row.subject }}</td>
-                <td>{{ row.description }}</td>
                 <td class="text-right">
                   <div class="dropdown dropdown-action">
-                    <a
-                      class="action-icon dropdown-toggle"
-                      data-toggle="dropdown"
-                      aria-expanded="false"
-                      ><i class="material-icons">more_vert</i></a
-                    >
+                    <a class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                        class="material-icons">more_vert</i></a>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a
-                        class="dropdown-item"
-                        data-toggle="modal"
-                        data-target="#edit_employee"
-                        (click)="edit(row)"
-                        ><i class="fa fa-pencil m-r-5"></i> Edit</a
-                      >
-                      <a class="dropdown-item" (click)="delete(row.id)"
-                        ><i class="fa fa-trash-o m-r-5"></i> Delete</a
-                      >
+                      <a class="dropdown-item" data-toggle="modal" data-target="#edit_employee" (click)="edit(row)"><i
+                          class="fa fa-pencil m-r-5"></i> Edit</a>
+                      <a class="dropdown-item" (click)="delete(row.id)"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                     </div>
                   </div>
                 </td>
@@ -128,90 +90,53 @@
   <!-- /Page Content -->
 
   <!-- Add Employee Modal -->
-  <div
-    id="add_high_school_subject"
-    class="modal custom-modal fade"
-    role="dialog"
-  >
+  <div id="add_high_school_subject" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{ formTitle }}</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-            (click)="closeModal()"
-          >
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form
-            (ngSubmit)="addData(highSchoolForm)"
-            [formGroup]="highSchoolForm"
-          >
+          <form (ngSubmit)="addData(highSchoolForm)" [formGroup]="highSchoolForm">
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="col-form-label"
-                    >Subject <span class="text-danger">*</span></label
-                  >
-                  <input
-                    class="form-control"
-                    type="text"
-                    [class.invalid]="
+                  <label class="col-form-label">Subject <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text" [class.invalid]="
                       highSchoolForm.get('subject').invalid &&
                       highSchoolForm.get('subject').touched
-                    "
-                    formControlName="subject"
-                  />
-                  <div
-                    *ngIf="
+                    " formControlName="subject" />
+                  <div *ngIf="
                       highSchoolForm.get('subject').invalid &&
                       highSchoolForm.get('subject').touched
-                    "
-                  >
-                    <small
-                      *ngIf="
+                    ">
+                    <small *ngIf="
                         highSchoolForm.get('subject').invalid &&
                         highSchoolForm.get('subject').touched
-                      "
-                      class="text-danger"
-                    >
-                      *Subject is required</small
-                    >
+                      " class="text-danger">
+                      *Subject is required</small>
                   </div>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="col-form-label">Description</label>
-                  <textarea
-                    class="form-control"
-                    type="text"
-                    [class.invalid]="
+                  <textarea class="form-control" type="text" [class.invalid]="
                       highSchoolForm.get('description').invalid &&
                       highSchoolForm.get('description').touched
-                    "
-                    formControlName="description"
-                  ></textarea>
-                  <div
-                    *ngIf="
+                    " formControlName="description"></textarea>
+                  <div *ngIf="
                       highSchoolForm.get('description').invalid &&
                       highSchoolForm.get('description').touched
-                    "
-                  >
-                    <small
-                      *ngIf="
+                    ">
+                    <small *ngIf="
                         highSchoolForm.get('description').invalid &&
                         highSchoolForm.get('description').touched
-                      "
-                      class="text-danger"
-                    >
-                      *Description is required</small
-                    >
+                      " class="text-danger">
+                      *Description is required</small>
                   </div>
                 </div>
               </div>
@@ -632,16 +557,10 @@
           <div class="modal-btn delete-action">
             <div class="row">
               <div class="col-6">
-                <a
-                  class="btn btn-primary continue-btn"
-                  (click)="deleteEmployee()"
-                  >Delete</a
-                >
+                <a class="btn btn-primary continue-btn" (click)="deleteEmployee()">Delete</a>
               </div>
               <div class="col-6">
-                <a data-dismiss="modal" class="btn btn-primary cancel-btn"
-                  >Cancel</a
-                >
+                <a data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
               </div>
             </div>
           </div>

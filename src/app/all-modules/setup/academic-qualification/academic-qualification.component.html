@@ -28,8 +28,7 @@
     <div class="row filter-row">
         <div class="col-sm-6 col-md-5">
             <div class="form-group form-focus">
-                <input type="text" class="form-control floating"
-                    [(ngModel)]="searchText" />
+                <input type="text" class="form-control floating" [(ngModel)]="searchText" />
                 <label class="focus-label">Start typing to search by any field</label>
             </div>
         </div>
@@ -52,7 +51,6 @@
                             </th>
                             <th>S/N</th>
                             <th>Qualification</th>
-                            <th>Description</th>
                             <th>Rank</th>
                             <th class="text-right no-sort">Action</th>
                         </tr>
@@ -65,7 +63,6 @@
                             </td>
                             <td>{{ i + 1 }}</td>
                             <td>{{ row.qualification }}</td>
-                            <td>{{ row.description }}</td>
                             <td>{{ row.rank }}</td>
                             <td class="text-right">
                                 <div class="dropdown dropdown-action">
@@ -73,7 +70,8 @@
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" data-toggle="modal" data-target="#edit_employee"
-                                            (click)="editAcademicQualification(row)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                            (click)="editAcademicQualification(row)"><i class="fa fa-pencil m-r-5"></i>
+                                            Edit</a>
                                         <a class="dropdown-item" (click)="delete(row.id)"><i
                                                 class="fa fa-trash-o m-r-5"></i> Delete</a>
                                     </div>
@@ -99,7 +97,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="addAcademicQualification(academicQualificationForm)" [formGroup]="academicQualificationForm">
+                <form (ngSubmit)="addAcademicQualification(academicQualificationForm)"
+                    [formGroup]="academicQualificationForm">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">

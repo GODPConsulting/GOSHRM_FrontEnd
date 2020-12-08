@@ -28,8 +28,7 @@
     <div class="row filter-row">
         <div class="col-sm-6 col-md-5">
             <div class="form-group form-focus">
-                <input type="text" class="form-control floating"
-                    [(ngModel)]="searchText" />
+                <input type="text" class="form-control floating" [(ngModel)]="searchText" />
                 <label class="focus-label">Start typing to search by any field</label>
             </div>
         </div>
@@ -52,7 +51,6 @@
                             </th>
                             <th>S/N</th>
                             <th>Grade</th>
-                            <th>Description</th>
                             <th>Rank</th>
                             <th class="text-right no-sort">Action</th>
                         </tr>
@@ -65,7 +63,6 @@
                             </td>
                             <td>{{ i + 1 }}</td>
                             <td>{{ row.grade }}</td>
-                            <td>{{ row.description }}</td>
                             <td>{{ row.rank }}</td>
                             <td class="text-right">
                                 <div class="dropdown dropdown-action">
@@ -571,7 +568,7 @@
                     <p>Are you sure want to delete?</p>
                 </div>
                 <div class="modal-btn delete-action">
-                    <div class="row"> 
+                    <div class="row">
                         <div class="col-6">
                             <a class="btn btn-primary continue-btn" (click)="deleteEmployee()">Delete</a>
                         </div>
