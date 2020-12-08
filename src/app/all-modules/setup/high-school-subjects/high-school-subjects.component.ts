@@ -100,7 +100,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   // Add employee  Modal Api Call
   addData(highSchoolForm: FormGroup) {
     const payload = highSchoolForm.value;
-    return this.setupService.updateHighSchoolSubject(payload).subscribe(
+    return this.setupService.updateLanguage(payload).subscribe(
       res => {
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
@@ -293,7 +293,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
      confirmButtonText: "Yes!"
    }).then(result => {
      if (result.value) {
-       return this.setupService.deleteHighSchoolSubject(payload).subscribe(res => {
+       return this.setupService.deleteLanguage(payload).subscribe(res => {
          const message = res.status.message.friendlyMessage;
          if (res.status.isSuccessful) {
            swal.fire('Success', message, 'success').then(() => {
@@ -335,7 +335,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
       confirmButtonText: "Yes!"
     }).then(result => {
       if (result.value) {
-        return this.setupService.deleteHighSchoolSubject(payload).subscribe(res => {
+        return this.setupService.deleteLanguage(payload).subscribe(res => {
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire('Success', message, 'success').then(() => {

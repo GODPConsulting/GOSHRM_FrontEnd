@@ -1,3 +1,4 @@
+import { LanguageComponent } from './language/language.component';
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { JobgradesComponent } from "./jobgrades/jobgrades.component";
@@ -8,11 +9,16 @@ import { EmploymentTypeComponent } from "./employment-type/employment-type.compo
 import { EmploymentLevelComponent } from "./employment-level/employment-level.component";
 import { HmoComponent } from "./hmo/hmo.component";
 
+
 const routes: Routes = [
   {
     path: "",
     component: SetupComponent,
     children: [
+      {
+        path: "language",
+        component: LanguageComponent,
+      },
       {
         path: "jobgrades",
         component: JobgradesComponent,

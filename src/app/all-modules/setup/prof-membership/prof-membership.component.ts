@@ -9,23 +9,23 @@ import swal from 'sweetalert2'
 
 declare const $: any;
 @Component({
-  selector: 'app-language',
-  templateUrl: './language.component.html',
-  styleUrls: ['./language.component.css']
+  selector: 'app-prof-membership',
+  templateUrl: './prof-membership.component.html',
+  styleUrls: ['./prof-membership.component.css']
 })
-export class LanguageComponent implements OnInit {
+export class ProfMembershipComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   public lstEmployee: any;
   public subjects: any[] = [];
-  public url: any = "languagelist";
+  public url: any = "employeelist";
   public tempId: any;
   public editId: any;
 
-  public languageForm: FormGroup;
+  public highSchoolForm: FormGroup;
   public editEmployeeForm: FormGroup;
-  formTitle: string  = "Add language"
+  formTitle: string  = "Add High School Subject"
   public pipe = new DatePipe("en-US");
   public rows = [];
   public srch = [];
@@ -35,6 +35,8 @@ export class LanguageComponent implements OnInit {
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
+  ProfMembership: any;
+  getLanguage: any;
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -50,18 +52,18 @@ export class LanguageComponent implements OnInit {
       })
       .trigger("blur");
     this.initializeForm();
-    this.getLanguage();
+    this.ProfMembership();
   }
   initializeForm() {
-    this.languageForm = this.formBuilder.group({
+    this.highSchoolForm = this.formBuilder.group({
       id: [0],
       subject: ["", Validators.required],
       description: ["", Validators.required]
     });
   }
-  getLanguage() {
+  getProfMembership() {
     this.pageLoading = true;
-    return this.setupService.getHighSchoolSubject().subscribe(
+    return this.setupService.getProfMembership().subscribe(
       data => {
         this.pageLoading = false;
         this.subjects = data.setuplist;
@@ -82,14 +84,14 @@ export class LanguageComponent implements OnInit {
       dtInstance.destroy();
     });
     this.lstEmployee = [];
-    this.loadLanguage();
+    this.loadEmployee();
     setTimeout(() => {
       this.dtTrigger.next();
     }, 1000);
   }
 
   // Get Employee  Api Call
-  loadLanguage() {
+  loadEmployee() {
     // this.srvModuleService.get(this.url).subscribe((data) => {
     //   this.lstEmployee = data;
     //   this.rows = this.lstEmployee;
@@ -98,19 +100,19 @@ export class LanguageComponent implements OnInit {
   }
 
   // Add employee  Modal Api Call
-  addData(languageForm: FormGroup) {
-    const payload = languageForm.value;
-    return this.setupService.updateLanguage(payload).subscribe(
+  addData(profMembershipForm: FormGroup) {
+    const payload = profMembershipForm.value;
+    return this.setupService.updateProfMembership(payload).subscribe(
       res => {
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire('Success', message, 'success')
           this.initializeForm();
-          $("#add_language").modal("hide");
+          $("#add_high_school_subject").modal("hide");
         } else {
           swal.fire('Error', message, 'error')
         }
-        this.getLanguage();
+        this.getProfMembership();
       },
       err => {
         const message = err.status.message.friendlyMessage;
@@ -156,7 +158,7 @@ export class LanguageComponent implements OnInit {
   }
 
   // edit modal api call
-  editLanguage() {
+  editEmployee() {
     // let obj = {
     //   firstname: this.editEmployeeForm.value.FirstName,
     //   lastname: this.editEmployeeForm.value.LastName,
@@ -187,39 +189,37 @@ export class LanguageComponent implements OnInit {
   }
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
-  
-  // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
-    this.formTitle = "Edit High School Subject";
-     this.languageForm.patchValue({
-       id: row.id,
-       subject: row.subject,
-       description: row.description
-     });
-     $('#add_high_school_subject').modal('show')
-     // this.editId = value;
-     // const index = this.lstEmployee.findIndex(item => {
-     //   return item.id === value;
-     // });
-     // let toSetValues = this.lstEmployee[index];
-     // this.editEmployeeForm.setValue({
-     //   FirstName: toSetValues.firstname,
-     //   LastName: toSetValues.lastname,
-     //   UserName: toSetValues.username,
-     //   Email: toSetValues.email,
-     //   Password: toSetValues.password,
-     //   ConfirmPassword: toSetValues.confirmpassword,
-     //   EmployeeID: toSetValues.employeeId,
-     //   JoinDate: toSetValues.joindate,
-     //   PhoneNumber: toSetValues.phone,
-     //   CompanyName: toSetValues.company,
-     //   DepartmentName: toSetValues.department,
-     //   Designation: toSetValues.designation
-     // });
-   }
+   this.formTitle = "Edit Prof Membership";
+    this.highSchoolForm.patchValue({
+      id: row.id,
+      subject: row.subject,
+      description: row.description
+    });
+    $('#add_prof_membership').modal('show')
+    // this.editId = value;
+    // const index = this.lstEmployee.findIndex(item => {
+    //   return item.id === value;
+    // });
+    // let toSetValues = this.lstEmployee[index];
+    // this.editEmployeeForm.setValue({
+    //   FirstName: toSetValues.firstname,
+    //   LastName: toSetValues.lastname,
+    //   UserName: toSetValues.username,
+    //   Email: toSetValues.email,
+    //   Password: toSetValues.password,
+    //   ConfirmPassword: toSetValues.confirmpassword,
+    //   EmployeeID: toSetValues.employeeId,
+    //   JoinDate: toSetValues.joindate,
+    //   PhoneNumber: toSetValues.phone,
+    //   CompanyName: toSetValues.company,
+    //   DepartmentName: toSetValues.department,
+    //   Designation: toSetValues.designation
+    // });
+  }
 
   // delete employee data api call
-  deleteLanguage() {
+  deleteEmployee() {
     // this.srvModuleService.delete(this.tempId, this.url).subscribe((data) => {
     //   $("#datatable").DataTable().clear();
     //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -271,13 +271,13 @@ export class LanguageComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  addLanguage() {
-    this.formTitle = "Add Language";
-    $('#add_language').modal('show')
+  addProfMembership() {
+    this.formTitle = "Add High School Subject";
+    $('#add_high_school_subject').modal('show')
   }
 
   closeModal() {
-    $('#add_language').modal('hide');
+    $('#add_high_school_subject').modal('hide');
     this.initializeForm()
   }
 
@@ -363,3 +363,4 @@ export class LanguageComponent implements OnInit {
     }
   }
 }
+
