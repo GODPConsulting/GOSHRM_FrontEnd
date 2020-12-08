@@ -1,3 +1,4 @@
+import { LanguageComponent } from './language/language.component';
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
@@ -33,6 +34,7 @@ import { ProfMembershipComponent } from './prof-membership/prof-membership.compo
     JobGradeComponent,
     HmoComponent,
     ProfMembershipComponent,
+    LanguageComponent,
   ],
   imports: [
     CommonModule,

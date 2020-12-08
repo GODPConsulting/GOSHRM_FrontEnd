@@ -37,6 +37,7 @@ export class ProfMembershipComponent implements OnInit {
   selectedId: any[] = [];
   ProfMembership: any;
   getLanguage: any;
+  profMembershipForm: any;
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -191,7 +192,7 @@ export class ProfMembershipComponent implements OnInit {
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
    this.formTitle = "Edit Prof Membership";
-    this.highSchoolForm.patchValue({
+    this.profMembershipForm.patchValue({
       id: row.id,
       subject: row.subject,
       description: row.description
@@ -272,12 +273,12 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   addProfMembership() {
-    this.formTitle = "Add High School Subject";
-    $('#add_high_school_subject').modal('show')
+    this.formTitle = "Add Prof Membeship";
+    $('#add_prof_membership').modal('show')
   }
 
   closeModal() {
-    $('#add_high_school_subject').modal('hide');
+    $('#add_prof_membership').modal('hide');
     this.initializeForm()
   }
 
@@ -295,11 +296,11 @@ export class ProfMembershipComponent implements OnInit {
      confirmButtonText: "Yes!"
    }).then(result => {
      if (result.value) {
-       return this.setupService.deleteLanguage(payload).subscribe(res => {
+       return this.setupService.deleteProfMembership(payload).subscribe(res => {
          const message = res.status.message.friendlyMessage;
          if (res.status.isSuccessful) {
            swal.fire('Success', message, 'success').then(() => {
-             this.getLanguage()
+             this.getProfMembership()
            })
          } else {
            swal.fire('Error', message, 'error')
@@ -337,11 +338,11 @@ export class ProfMembershipComponent implements OnInit {
       confirmButtonText: "Yes!"
     }).then(result => {
       if (result.value) {
-        return this.setupService.deleteLanguage(payload).subscribe(res => {
+        return this.setupService.deleteProfMembership(payload).subscribe(res => {
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire('Success', message, 'success').then(() => {
-              this.getLanguage()
+              this.getProfMembership()
             })
           } else {
             swal.fire('Error', message, 'error')

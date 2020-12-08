@@ -6,10 +6,10 @@
     <div class="page-header">
       <div class="row align-items-center">
         <div class="col">
-          <h3 class="page-title">High School Subject</h3>
+          <h3 class="page-title">Prof Membership</h3>
           <ul class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item active">High School Subject</li>
+            <li class="breadcrumb-item active">Prof Membership</li>
           </ul>
         </div>
         <div class="col-auto float-right ml-auto">
@@ -149,8 +149,8 @@
         </div>
         <div class="modal-body">
           <form
-            (ngSubmit)="addData(highSchoolForm)"
-            [formGroup]="highSchoolForm"
+            (ngSubmit)="addData(profMembershipForm)"
+            [formGroup]="profMembershipForm"
           >
             <div class="row">
               <div class="col-sm-6">
@@ -162,21 +162,21 @@
                     class="form-control"
                     type="text"
                     [class.invalid]="
-                      highSchoolForm.get('subject').invalid &&
-                      highSchoolForm.get('subject').touched
+                    profMembershipForm.get('subject').invalid &&
+                    profMembershipForm.get('subject').touched
                     "
                     formControlName="subject"
                   />
                   <div
                     *ngIf="
-                      highSchoolForm.get('subject').invalid &&
-                      highSchoolForm.get('subject').touched
+                    profMembershipForm.get('subject').invalid &&
+                      profMembershipForm.get('subject').touched
                     "
                   >
                     <small
                       *ngIf="
-                        highSchoolForm.get('subject').invalid &&
-                        highSchoolForm.get('subject').touched
+                      profMembershipForm.get('subject').invalid &&
+                      profMembershipForm.get('subject').touched
                       "
                       class="text-danger"
                     >
@@ -192,21 +192,21 @@
                     class="form-control"
                     type="text"
                     [class.invalid]="
-                      highSchoolForm.get('description').invalid &&
-                      highSchoolForm.get('description').touched
+                    profMembershipForm.get('description').invalid &&
+                    profMembershipForm.get('description').touched
                     "
                     formControlName="description"
                   ></textarea>
                   <div
                     *ngIf="
-                      highSchoolForm.get('description').invalid &&
-                      highSchoolForm.get('description').touched
+                    profMembershipForm.get('description').invalid &&
+                    profMembershipForm.get('description').touched
                     "
                   >
                     <small
                       *ngIf="
-                        highSchoolForm.get('description').invalid &&
-                        highSchoolForm.get('description').touched
+                      profMembershipForm.get('description').invalid &&
+                      profMembershipForm.get('description').touched
                       "
                       class="text-danger"
                     >
