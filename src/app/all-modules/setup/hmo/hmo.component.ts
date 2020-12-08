@@ -170,6 +170,7 @@ export class HmoComponent implements OnInit {
             );
         }
       });
+    this.selectedId = [];
   }
 
   checkAll(event) {
@@ -193,21 +194,4 @@ export class HmoComponent implements OnInit {
       });
     }
   }
-
-  /*  getHmo() {
-    this.pageLoading = true;
-    return this.setupService.getHmos().subscribe(
-      (data) => {
-        this.pageLoading = false;
-        console.log(data);
-        this.hmos = data.setuplist;
-        this.rows = this.hmos;
-        this.srch = [...this.rows];
-      },
-      (err) => {
-        this.pageLoading = false;
-        console.log(err);
-      }
-    );
-  } */
 }
