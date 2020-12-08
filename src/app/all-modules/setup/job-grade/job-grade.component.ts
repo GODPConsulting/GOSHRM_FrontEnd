@@ -8,17 +8,17 @@ import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: "app-employment-type",
-  templateUrl: "./employment-type.component.html",
-  styleUrls: ["./employment-type.component.css"],
+  selector: "app-job-grade",
+  templateUrl: "./job-grade.component.html",
+  styleUrls: ["./job-grade.component.css"],
 })
-export class EmploymentTypeComponent implements OnInit {
+export class JobGradeComponent implements OnInit {
   formTitle;
   public dtOptions: DataTables.Settings = {};
   //@ViewChild(DataTableDirective, { static: false })
-  public employmentTypeForm: FormGroup;
+  public jobGradeForm: FormGroup;
   //public employeeForm: FormGroup;
-  public employmentTypes: any[] = [];
+  public jobGrades: any[] = [];
   public rows = [];
   public dtTrigger: Subject<any> = new Subject();
   public dtElement: DataTableDirective;
@@ -30,8 +30,8 @@ export class EmploymentTypeComponent implements OnInit {
   // public pipe = new DatePipe("en-US");
   // public DateJoin;
   // public statusValue;
-  pageLoading: boolean;
   selectedId: any[] = [];
+  pageLoading: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,53 +46,60 @@ export class EmploymentTypeComponent implements OnInit {
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
       })
       .trigger("blur");
+
+    this.getjobGrade();
     this.initializeForm();
-    this.getEmploymentType();
   }
 
   initializeForm() {
-    this.employmentTypeForm = this.formBuilder.group({
+    this.jobGradeForm = this.formBuilder.group({
       id: [0],
-      employment_type: ["", Validators.required],
+      job_grade: ["", Validators.required],
+      job_grade_reporting_to: ["", Validators.required],
+      rank: ["", Validators.required],
+      probation_period_in_months: ["", Validators.required],
       description: ["", Validators.required],
     });
   }
 
   openModal() {
-    this.formTitle = "Add Employment Type";
-    $("#add_employment_type").modal("show");
+    this.formTitle = "Add Job Grade";
+    $("#add_job_grade").modal("show");
+    if (this.jobGrades.length === 0) {
+      this.jobGradeForm.get("job_grade_reporting_to").disable();
+    } else {
+      this.jobGradeForm.get("job_grade_reporting_to").enable();
+    }
   }
 
   closeModal() {
-    $("#add_employment_type").modal("hide");
+    $("#add_job_grade").modal("hide");
     this.initializeForm();
   }
 
-  getEmploymentType() {
+  getjobGrade() {
     this.pageLoading = true;
-    return this.setupService
-      .getData("/hrmsetup/get/all/employmenttypes")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          console.log(data);
-          this.employmentTypes = data.setuplist;
-          this.rows = this.employmentTypes;
-          this.srch = [...this.rows];
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
+    return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
+      (data) => {
+        this.pageLoading = false;
+        console.log(data);
+        this.jobGrades = data.setuplist;
+        this.rows = this.jobGrades;
+        this.srch = [...this.rows];
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
-  // Add employment via reactive form Modal Api Call
-  addEmploymentType(Form: FormGroup) {
+  // AddjobGrade Modal Api Call
+  addJobGrade(Form: FormGroup) {
     const payload = Form.value;
     console.log(payload);
     return this.setupService
-      .updateData("/hrmsetup/add/update/employmenttype", payload)
+      .updateData("/hrmsetup/add/update/jobgrade", payload)
       .subscribe(
         (res) => {
           const message = res.status.message.friendlyMessage;
@@ -101,11 +108,11 @@ export class EmploymentTypeComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            $("#add_employment_type").modal("hide");
+            $("#add_job_grade").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getEmploymentType();
+          this.getjobGrade();
         },
         (err) => {
           const message = err.status.message.friendlyMessage;
@@ -119,7 +126,7 @@ export class EmploymentTypeComponent implements OnInit {
     if (id) {
       const body = [id];
       //body.push(id);
-      //console.log(body);
+      console.log("b", body);
       payload = {
         itemIds: body,
       };
@@ -130,7 +137,7 @@ export class EmploymentTypeComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
+      console.log("s", this.selectedId);
     }
     swal
       .fire({
@@ -142,15 +149,16 @@ export class EmploymentTypeComponent implements OnInit {
       })
       .then((result) => {
         //console.log(result);
+
         if (result.value) {
           return this.setupService
-            .deleteData("/hrmsetup/delete/employmenttype", payload)
+            .deleteData("/hrmsetup/delete/jobgrade", payload)
             .subscribe(
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("Success", message, "success").then(() => {
-                    this.getEmploymentType();
+                    this.getjobGrade();
                   });
                 } else {
                   swal.fire("Error", message, "error");
@@ -162,17 +170,31 @@ export class EmploymentTypeComponent implements OnInit {
             );
         }
       });
+    this.selectedId = [];
   }
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
-    this.formTitle = "Edit High School Subject";
-    this.employmentTypeForm.patchValue({
+    this.formTitle = "Edit Job Grade";
+    this.jobGradeForm.patchValue({
       id: row.id,
-      employment_type: row.employment_type,
+      job_grade: row.job_grade,
+      job_grade_reporting_to: row.job_grade_reporting_to,
+      rank: row.rank,
+      probation_period_in_months: row.probation_period_in_months,
       description: row.description,
     });
-    $("#add_employment_type").modal("show");
+    $("#add_job_grade").modal("show");
+  }
+
+  checkAll(event) {
+    if (event.target.checked) {
+      this.selectedId = this.jobGrades.map((item) => {
+        return item.id;
+      });
+    } else {
+      this.selectedId = [];
+    }
   }
 
   addItemId(event, id) {
@@ -184,16 +206,6 @@ export class EmploymentTypeComponent implements OnInit {
       this.selectedId = this.selectedId.filter((_id) => {
         return _id !== id;
       });
-    }
-  }
-
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.employmentTypes.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
     }
   }
 }
