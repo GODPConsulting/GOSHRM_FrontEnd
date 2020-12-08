@@ -8,6 +8,7 @@ import { JobGradeComponent } from "./job-grade/job-grade.component";
 import { AcademicDisciplineComponent } from "./academic-discipline/academic-discipline.component";
 import { EmploymentLevelComponent } from "./employment-level/employment-level.component";
 import { HmoComponent } from "./hmo/hmo.component";
+import { GymWorkoutComponent } from "./gym-workout/gym-workout.component";
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
       {
         path: "hmo",
         component: HmoComponent,
+      },
+      {
+        path: "gym-workout",
+        component: GymWorkoutComponent,
       },
     ],
   },

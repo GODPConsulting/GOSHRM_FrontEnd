@@ -221,8 +221,8 @@
                   urlComplete.subUrl === 'employment-level') ||
                   (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'hmo') ||
-                (urlComplete.mainUrl === 'employees' &&
-                  urlComplete.subUrl === 'adminleaves') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'gym-workout') ||
                 (urlComplete.mainUrl === 'employees' &&
                   urlComplete.subUrl === 'employeeleaves') ||
                 (urlComplete.mainUrl === 'employees' &&
@@ -245,6 +245,8 @@
                 subdrop:
                 (urlComplete.mainUrl === 'setup' &&
                       urlComplete.subUrl === 'hmo') ||
+                      (urlComplete.mainUrl === 'setup' &&
+                      urlComplete.subUrl === 'gym-workout') ||
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'employeepage') ||
                   (urlComplete.mainUrl === 'employees' &&
@@ -285,8 +287,8 @@
                     urlComplete.subUrl === 'academic-discipline') ||
                     (urlComplete.mainUrl === 'setup' &&
                       urlComplete.subUrl === 'hmo') ||
-                  (urlComplete.mainUrl === 'employees' &&
-                    urlComplete.subUrl === 'employeeleaves') ||
+                      (urlComplete.mainUrl === 'setup' &&
+                      urlComplete.subUrl === 'gym-workout') ||
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'leavesettings') ||
                   (urlComplete.mainUrl === 'employees' &&
@@ -330,9 +332,9 @@
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-discipline' }">Academic
                   Discipline</a>
               </li>
-              <li routerLink="/employees/adminleaves">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'adminleaves' }">Leaves (Admin)
-                  <span class="badge badge-pill bg-primary float-right">1</span></a>
+              <li routerLink="/setup/gym-workout">
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'gym-workout' }">Gym/Workout
+                </a>
               </li>
               <li routerLink="/employees/employeeleaves">
                 <a href="javascript:" [ngClass]="{
