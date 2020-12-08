@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { SetupService } from "src/app/services/setup.service";
+import swal from "sweetalert2";
+declare const $: any;
 @Component({
   selector: 'app-academic-grade',
   templateUrl: './academic-grade.component.html',
@@ -7,9 +10,235 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AcademicGradeComponent implements OnInit {
 
-  constructor() { }
+  public grades: any[] = [];
+  public rows = [];
+  public srch = [];
+  pageLoading: boolean;
+  public formTitle = "Add Academic Grade";
+  public academicGradeForm: FormGroup;
+  selectedId: any[] = [];
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private setupService: SetupService
+  ) {}
 
   ngOnInit(): void {
+    $(".floating")
+      .on("focus blur", function (e) {
+        $(this)
+          .parents(".form-focus")
+          .toggleClass("focused", e.type === "focus" || this.value.length > 0);
+      })
+      .trigger("blur");
+    this.getAcademicGrade();
+    this.initializeForm();
   }
+
+  initializeForm() {
+    this.academicGradeForm = this.formBuilder.group({
+      id: [0],
+      grade: ["", Validators.required],
+      description: ["", Validators.required],
+      rank: ["", Validators.required],
+    });
+  }
+
+  getAcademicGrade() {
+    this.pageLoading = true;
+    return this.setupService.getData("/hrmsetup/get/all/academic/grades").subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.grades = data.setuplist;
+        this.rows = this.grades;
+        this.srch = [...this.rows];
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
+  }
+
+  openModal() {
+    $("#add-academic-grade").modal("show");
+  }
+
+  closeModal() {
+    $("#add-academic-grade").modal("hide");
+    this.initializeForm();
+  }
+
+  // Add employee  Modal Api Call
+  addAcademicGrade(academicGradeForm: FormGroup) {
+    const payload = academicGradeForm.value;
+    payload.rank = +payload.rank;
+    return this.setupService
+      .updateData("/hrmsetup/add/update/academic/grade", payload)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          //console.log(message);
+
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#add-academic-grade").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getAcademicGrade();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  // To Get The employee Edit Id And Set Values To Edit Modal Form
+  editAcademicGrade(row) {
+    this.formTitle = "Edit Academic Grade";
+    this.academicGradeForm.patchValue({
+      id: row.id,
+      grade: row.grade,
+      description: row.description,
+      rank: row.rank,
+     
+    });
+    $("#add-academic-grade").modal("show");
+  }
+
+  delete(id: any) {
+    let payload;
+
+    if (id) {
+      const body = [id];
+      //body.push(id);
+      //console.log(body);
+      payload = {
+        itemIds: body,
+      };
+    } else if (this.selectedId) {
+      if (this.selectedId.length === 0) {
+        return swal.fire("Error", "Select items to delete", "error");
+      }
+      payload = {
+        itemIds: this.selectedId,
+      };
+      //console.log(this.selectedId);
+    }
+
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        //console.log(result);
+
+        if (result.value) {
+          return this.setupService
+            .deleteData("/hrmsetup/delete/academic/grade", payload)
+            .subscribe(
+              (res) => {
+                const message = res.status.message.friendlyMessage;
+                if (res.status.isSuccessful) {
+                  swal.fire("Success", message, "success").then(() => {
+                    this.getAcademicGrade();
+                  });
+                } else {
+                  swal.fire("Error", message, "error");
+                }
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
+        }
+      });
+  }
+
+  /* deleteItems() {
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    }
+    const payload = {
+      itemIds: this.selectedId,
+    };
+    console.log(this.selectedId);
+
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        if (result.value) {
+          return this.setupService
+            .deleteData("/hrmsetup/delete/hmo", payload)
+            .subscribe(
+              (res) => {
+                const message = res.status.message.friendlyMessage;
+                if (res.status.isSuccessful) {
+                  swal.fire("Success", message, "success").then(() => {
+                    this.getHmo();
+                  });
+                } else {
+                  swal.fire("Error", message, "error");
+                }
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
+        }
+      });
+  } */
+
+  checkAll(event) {
+    if (event.target.checked) {
+      this.selectedId = this.grades.map((item) => {
+        return item.id;
+      });
+    } else {
+      this.selectedId = [];
+    }
+  }
+
+  addItemId(event, id) {
+    if (event.target.checked) {
+      if (!this.selectedId.includes(id)) {
+        this.selectedId.push(id);
+      }
+    } else {
+      this.selectedId = this.selectedId.filter((_id) => {
+        return _id !== id;
+      });
+    }
+  }
+
+  /*  getHmo() {
+    this.pageLoading = true;
+    return this.setupService.getHmos().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        console.log(data);
+        this.hmos = data.setuplist;
+        this.rows = this.hmos;
+        this.srch = [...this.rows];
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
+  } */
 
 }

@@ -7,6 +7,7 @@ import { HighSchoolSubjectsComponent } from "./high-school-subjects/high-school-
 import { EmploymentTypeComponent } from "./employment-type/employment-type.component";
 import { EmploymentLevelComponent } from "./employment-level/employment-level.component";
 import { HmoComponent } from "./hmo/hmo.component";
+import { AcademicGradeComponent } from './academic-grade/academic-grade.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
       {
         path: "hmo",
         component: HmoComponent,
+      },
+      {
+        path: "academic-grade",
+        component: AcademicGradeComponent,
       },
     ],
   },
