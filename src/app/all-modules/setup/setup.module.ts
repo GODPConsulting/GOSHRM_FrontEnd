@@ -17,8 +17,13 @@ import { AppModule } from "../../app.module";
 import { SharedModule } from "../../shared/shared.module";
 import { JobGradeComponent } from "./job-grade/job-grade.component";
 import { HmoComponent } from "./hmo/hmo.component";
+<<<<<<< HEAD
 import { Ng2SearchPipeModule } from "ng2-search-filter"; // Search module
 import { GymWorkoutComponent } from "./gym-workout/gym-workout.component";
+=======
+import { Ng2SearchPipeModule } from "ng2-search-filter";
+import { HighSchoolGradeComponent } from './high-school-grade/high-school-grade.component'; // Search module
+>>>>>>> dev
 
 @NgModule({
   declarations: [
@@ -32,7 +37,11 @@ import { GymWorkoutComponent } from "./gym-workout/gym-workout.component";
     AcademicQualificationComponent,
     JobGradeComponent,
     HmoComponent,
+<<<<<<< HEAD
     GymWorkoutComponent,
+=======
+    HighSchoolGradeComponent,
+>>>>>>> dev
   ],
   imports: [
     CommonModule,

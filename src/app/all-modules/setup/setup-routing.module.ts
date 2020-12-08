@@ -8,7 +8,11 @@ import { AcademicDisciplineComponent } from "./academic-discipline/academic-disc
 import { EmploymentLevelComponent } from "./employment-level/employment-level.component";
 import { AcademicQualificationComponent } from "./academic-qualification/academic-qualification.component";
 import { HmoComponent } from "./hmo/hmo.component";
+<<<<<<< HEAD
 import { GymWorkoutComponent } from "./gym-workout/gym-workout.component";
+=======
+import { HighSchoolGradeComponent } from './high-school-grade/high-school-grade.component';
+>>>>>>> dev
 import { AcademicGradeComponent } from "./academic-grade/academic-grade.component";
 
 const routes: Routes = [
@@ -45,8 +49,13 @@ const routes: Routes = [
         component: HmoComponent,
       },
       {
+<<<<<<< HEAD
         path: "gym-workout",
         component: GymWorkoutComponent,
+=======
+        path: "high-school-grade",
+        component: HighSchoolGradeComponent,
+>>>>>>> dev
       },
       {
         path: "academic-grade",
