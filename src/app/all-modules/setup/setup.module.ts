@@ -5,6 +5,7 @@ import { SetupRoutingModule } from "./setup-routing.module";
 import { SetupComponent } from "./setup.component";
 import { HighSchoolSubjectComponent } from "./high-school-subject/high-school-subject.component";
 import { HighSchoolSubjectsComponent } from "./high-school-subjects/high-school-subjects.component";
+import { AcademicQualificationComponent } from './academic-qualification/academic-qualification.component';
 import { DataTablesModule } from "angular-datatables";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -27,6 +28,7 @@ import { Ng2SearchPipeModule } from "ng2-search-filter"; // Search module
     EmploymentLevelComponent,
     AcademicDisciplineComponent,
     EmploymentLevelComponent,
+    AcademicQualificationComponent,
     JobGradeComponent,
     HmoComponent,
   ],
