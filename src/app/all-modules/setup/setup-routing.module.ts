@@ -1,15 +1,15 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { SetupComponent } from "./setup.component";
-import { HighSchoolSubjectComponent } from "./high-school-subject/high-school-subject.component";
 import { HighSchoolSubjectsComponent } from "./high-school-subjects/high-school-subjects.component";
 import { EmploymentTypeComponent } from "./employment-type/employment-type.component";
 import { JobGradeComponent } from "./job-grade/job-grade.component";
 import { AcademicDisciplineComponent } from "./academic-discipline/academic-discipline.component";
 import { EmploymentLevelComponent } from "./employment-level/employment-level.component";
-import { AcademicQualificationComponent } from './academic-qualification/academic-qualification.component';
+import { AcademicQualificationComponent } from "./academic-qualification/academic-qualification.component";
 import { HmoComponent } from "./hmo/hmo.component";
 import { HighSchoolGradeComponent } from './high-school-grade/high-school-grade.component';
+import { AcademicGradeComponent } from "./academic-grade/academic-grade.component";
 
 const routes: Routes = [
   {
@@ -29,16 +29,16 @@ const routes: Routes = [
         component: HighSchoolSubjectsComponent,
       },
       {
-        path: 'employment-level',
-        component: EmploymentLevelComponent
+        path: "employment-level",
+        component: EmploymentLevelComponent,
       },
       {
-        path: 'academic-discipline',
-        component: AcademicDisciplineComponent
+        path: "academic-discipline",
+        component: AcademicDisciplineComponent,
       },
       {
-        path: 'academic-qualification',
-        component: AcademicQualificationComponent
+        path: "academic-qualification",
+        component: AcademicQualificationComponent,
       },
       {
         path: "hmo",
@@ -47,6 +47,10 @@ const routes: Routes = [
       {
         path: "high-school-grade",
         component: HighSchoolGradeComponent,
+      },
+      {
+        path: "academic-grade",
+        component: AcademicGradeComponent,
       },
     ],
   },

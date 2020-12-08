@@ -9,6 +9,7 @@ declare const $: any;
   templateUrl: './high-school-grade.component.html',
   styleUrls: ['./high-school-grade.component.css']
 })
+
 export class HighSchoolGradeComponent implements OnInit {
   public grades: any[] = [];
   public rows = [];
@@ -178,8 +179,5 @@ delete(id: any) {
       }
     });
 }
-
-
-
 
 }
