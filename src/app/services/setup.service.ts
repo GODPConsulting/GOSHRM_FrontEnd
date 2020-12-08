@@ -59,23 +59,6 @@ export class SetupService {
       );
   }
 
-  updateEmploymentLevel(payload): Observable<any> {
-    return this.apiService
-      .post(`/hrmsetup/add/update/employmentlevel`, payload)
-      .pipe((res) => {
-        return res;
-      });
-  }
-
-  // HMO
-  /*  getHmos(): Observable<any> {
-    return this.apiService.get(`/hrmsetup/get/all/hmos`).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
-  } */
-
   getData(url) {
     return this.apiService.get(url).pipe(
       tap((data) => {
@@ -97,5 +80,4 @@ export class SetupService {
       })
     );
   }
-
 }
