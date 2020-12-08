@@ -9,6 +9,7 @@ import { AcademicDisciplineComponent } from "./academic-discipline/academic-disc
 import { EmploymentLevelComponent } from "./employment-level/employment-level.component";
 import { AcademicQualificationComponent } from './academic-qualification/academic-qualification.component';
 import { HmoComponent } from "./hmo/hmo.component";
+import { AcademicGradeComponent } from './academic-grade/academic-grade.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
       {
         path: "hmo",
         component: HmoComponent,
+      },
+      {
+        path: "academic-grade",
+        component: AcademicGradeComponent,
       },
     ],
   },

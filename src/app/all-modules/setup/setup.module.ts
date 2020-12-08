@@ -13,6 +13,7 @@ import { HttpTokenInterceptor } from "../../services/http.interceptor.service";
 import { EmploymentTypeComponent } from "./employment-type/employment-type.component";
 import { AcademicDisciplineComponent } from "./academic-discipline/academic-discipline.component";
 import { EmploymentLevelComponent } from "./employment-level/employment-level.component";
+import { AcademicGradeComponent } from './academic-grade/academic-grade.component';
 import { AppModule } from "../../app.module";
 import { SharedModule } from "../../shared/shared.module";
 import { JobGradeComponent } from "./job-grade/job-grade.component";
@@ -24,6 +25,7 @@ import { Ng2SearchPipeModule } from "ng2-search-filter"; // Search module
     SetupComponent,
     HighSchoolSubjectComponent,
     HighSchoolSubjectsComponent,
+    AcademicGradeComponent,
     EmploymentTypeComponent,
     EmploymentLevelComponent,
     AcademicDisciplineComponent,
