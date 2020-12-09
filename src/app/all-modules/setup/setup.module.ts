@@ -19,6 +19,8 @@ import { SharedModule } from "../../shared/shared.module";
 import { JobGradeComponent } from "./job-grade/job-grade.component";
 import { HmoComponent } from "./hmo/hmo.component";
 import { Ng2SearchPipeModule } from "ng2-search-filter"; // Search module
+import { GymWorkoutComponent } from "./gym-workout/gym-workout.component";
+import { HighSchoolGradeComponent } from "./high-school-grade/high-school-grade.component";
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { Ng2SearchPipeModule } from "ng2-search-filter"; // Search module
     AcademicQualificationComponent,
     JobGradeComponent,
     HmoComponent,
+    GymWorkoutComponent,
+    HighSchoolGradeComponent,
   ],
   imports: [
     CommonModule,
