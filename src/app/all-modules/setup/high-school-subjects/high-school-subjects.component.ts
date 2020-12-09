@@ -293,7 +293,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
      confirmButtonText: "Yes!"
    }).then(result => {
      if (result.value) {
-       return this.setupService.deleteLanguage(payload).subscribe(res => {
+       return this.setupService.deleteHighSchoolSubject(payload).subscribe(res => {
          const message = res.status.message.friendlyMessage;
          if (res.status.isSuccessful) {
            swal.fire('Success', message, 'success').then(() => {

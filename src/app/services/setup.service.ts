@@ -8,16 +8,13 @@ import { tap } from "rxjs/operators";
 })
 export class SetupService {
   getProfMembership: any;
-  deleteLanguage: any;
   updateProfMembership: any;
-  updateLanguage: any;
   deleteProfMembership: any;
-  getLanguage() {
-    throw new Error('Method not implemented.');
-  }
+  deleteLanguage: any;
+  updateLanguage: any;
   constructor(private apiService: ApiService) {}
   getHighSchoolSubject(): Observable<any> {
-    return this.apiService.get(`/hrmsetup/get/all/language`).pipe(
+    return this.apiService.get(`/hrmsetup/get/all/highschoolsubjects`).pipe(
       tap((data) => {
         return data;
       })

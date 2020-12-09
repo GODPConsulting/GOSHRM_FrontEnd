@@ -48,7 +48,7 @@ const routes: Routes = [
       },
       {
         path: "academic-qualification",
-        component: AcademicQualificationComponent,
+        component: AcademicQualificationComponent, 
       },
       {
         path: "hmo",
