@@ -1,4 +1,4 @@
-import { LanguageComponent } from './language/language.component';
+
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
@@ -18,8 +18,7 @@ import { AppModule } from "../../app.module";
 import { SharedModule } from "../../shared/shared.module";
 import { JobGradeComponent } from "./job-grade/job-grade.component";
 import { HmoComponent } from "./hmo/hmo.component";
-import { Ng2SearchPipeModule } from "ng2-search-filter";
-import { ProfMembershipComponent } from './prof-membership/prof-membership.component'; // Search module
+import { Ng2SearchPipeModule } from "ng2-search-filter"; // Search module
 
 @NgModule({
   declarations: [
@@ -33,8 +32,6 @@ import { ProfMembershipComponent } from './prof-membership/prof-membership.compo
     AcademicQualificationComponent,
     JobGradeComponent,
     HmoComponent,
-    ProfMembershipComponent,
-    LanguageComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +41,6 @@ import { ProfMembershipComponent } from './prof-membership/prof-membership.compo
     SharedModule,
     FormsModule,
     Ng2SearchPipeModule,
-    AppModule,
   ],
   providers: [
     {

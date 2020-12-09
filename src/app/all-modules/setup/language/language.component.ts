@@ -190,13 +190,13 @@ export class LanguageComponent implements OnInit {
   
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
-    this.formTitle = "Edit High School Subject";
+    this.formTitle = "Edit Language";
      this.languageForm.patchValue({
        id: row.id,
        subject: row.subject,
        description: row.description
      });
-     $('#add_high_school_subject').modal('show')
+     $('#add_language').modal('show')
      // this.editId = value;
      // const index = this.lstEmployee.findIndex(item => {
      //   return item.id === value;
