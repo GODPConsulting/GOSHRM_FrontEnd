@@ -8,9 +8,14 @@ import { AcademicDisciplineComponent } from "./academic-discipline/academic-disc
 import { EmploymentLevelComponent } from "./employment-level/employment-level.component";
 import { AcademicQualificationComponent } from "./academic-qualification/academic-qualification.component";
 import { HmoComponent } from "./hmo/hmo.component";
+<<<<<<< HEAD
 import { GymWorkoutComponent } from "./gym-workout/gym-workout.component";
 import { HighSchoolGradeComponent } from "./high-school-grade/high-school-grade.component";
 import { AcademicGradeComponent } from "./academic-grade/academic-grade.component";
+=======
+import { AcademicGradeComponent } from './academic-grade/academic-grade.component';
+import { ProfCertificationComponent } from './prof-certification/prof-certification.component';
+>>>>>>> ed6ad8c (added Prof-certification)
 
 const routes: Routes = [
   {
@@ -57,6 +62,10 @@ const routes: Routes = [
         path: "academic-grade",
         component: AcademicGradeComponent,
       },
+      {
+        path: "prof-certification",
+        component: ProfCertificationComponent,
+      },
     ],
   },
 ];
@@ -66,3 +75,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class SetupRoutingModule {}
+
