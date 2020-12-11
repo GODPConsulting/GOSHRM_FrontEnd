@@ -42,6 +42,12 @@ export class AuthService {
         )
     );
   }
+  getProfile(): Observable<any> {
+    return this.apiService.get(`/identity/profile`).pipe(tap(data => {
+        return data;
+      })
+    );
+  }
   loggedIn() {
     return this.jwtService.getToken() ? true : false;
   }

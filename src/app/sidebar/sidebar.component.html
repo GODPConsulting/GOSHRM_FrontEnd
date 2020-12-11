@@ -335,6 +335,7 @@
             <span>Set up</span>
           </li>
           <li
+            *ngIf="userRights.includes('general setup')"
             class="submenu"
             [ngClass]="{
               active:
@@ -434,7 +435,7 @@
                     : 'none'
               }"
             >
-              <li routerLink="/setup/jobgrades">
+              <li routerLink="/setup/jobgrades" *ngIf="userRights.includes('job title')">
                 <a
                   href="javascript:"
                   [ngClass]="{
