@@ -20,6 +20,7 @@ import { HmoComponent } from "./hmo/hmo.component";
 import { Ng2SearchPipeModule } from "ng2-search-filter"; // Search module
 import { GymWorkoutComponent } from "./gym-workout/gym-workout.component";
 import { HighSchoolGradeComponent } from "./high-school-grade/high-school-grade.component";
+import { ProfCertificationComponent } from './prof-certification/prof-certification.component'; // Search module
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { HighSchoolGradeComponent } from "./high-school-grade/high-school-grade.
     HmoComponent,
     GymWorkoutComponent,
     HighSchoolGradeComponent,
+    ProfCertificationComponent,
   ],
   imports: [
     CommonModule,
