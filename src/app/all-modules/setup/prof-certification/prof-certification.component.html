@@ -92,7 +92,6 @@
                 </th>
                 <th>S/N</th>
                 <th>Certification</th>
-                <th>Description</th>
                 <th>Rank</th>
                 <th class="text-right no-sort">Action</th>
               </tr>
@@ -108,7 +107,6 @@
                 </td>
                 <td>{{ i + 1 }}</td>
                 <td>{{ row.certification }}</td>
-                <td>{{ row.description }}</td>
                 <td>{{ row.rank }}</td>
                 <td class="text-right">
                   <div class="dropdown dropdown-action">
@@ -234,8 +232,8 @@
 
               <div class="col-sm-6">
                 <div class="form-group">
-                  >Description <span class="text-danger">*</span></label>
-                  <input
+                  <label>Description <span class="text-danger">*</span></label>
+                  <textarea
                     class="form-control"
                     type="text"
                     [class.invalid]="
@@ -265,9 +263,7 @@
             </div>
             <div class="submit-section">
               <button class="btn btn-primary submit-btn" type="submit">
-                Submit<div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">
-                            Submit
+                Submit
               </button>
             </div>
           </form>

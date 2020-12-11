@@ -58,14 +58,14 @@ export class ProfCertificationComponent implements OnInit {
   initializeForm() {
     this.profCertificationForm = this.formBuilder.group({
       id: [0],
-      discipline: ["", Validators.required],
+      certification: ["", Validators.required],
       description: ["", Validators.required],
       rank: [0, Validators.required],
     });
   }
   getprofCertification() {
     this.pageLoading = true;
-    return this.setupService.getData("/api/v1/hrmsetup/get/all/prof_certification").subscribe(
+    return this.setupService.getData("/hrmsetup/get/all/prof_certification").subscribe(
       data => {
         this.pageLoading = false;
         this.certifications = data.setuplist;
@@ -105,7 +105,7 @@ export class ProfCertificationComponent implements OnInit {
   addData(profCertificationForm: FormGroup) {
     const payload = profCertificationForm.value;
     payload.rank = parseInt(payload.rank)
-    return this.setupService.updateData("/api/v1/hrmsetup/add/update/prof_certification", payload).subscribe(
+    return this.setupService.updateData("/hrmsetup/add/update/prof_certification", payload).subscribe(
       res => {
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
@@ -309,7 +309,7 @@ export class ProfCertificationComponent implements OnInit {
 
         if (result.value) {
           return this.setupService
-            .deleteData("/api/v1/hrmsetup/delete/prof_certification", payload)
+            .deleteData("/hrmsetup/delete/prof_certification", payload)
             .subscribe(
               (res) => {
                 const message = res.status.message.friendlyMessage;
