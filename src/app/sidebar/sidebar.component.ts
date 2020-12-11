@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, Event, NavigationEnd } from "@angular/router";
 import { AllModulesService } from "../all-modules/all-modules.service";
+import {JwtService} from "../services/jwt.service";
 
 @Component({
   selector: "app-sidebar",
@@ -22,10 +23,11 @@ export class SidebarComponent implements OnInit {
 
   members = {};
   groups = {};
-
+  userRights: any[] = [];
   constructor(
     private router: Router,
-    private allModulesService: AllModulesService
+    private allModulesService: AllModulesService,
+    public jwtService: JwtService
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -55,6 +57,8 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userRights = this.jwtService.getUserActivities();
+    console.log(this.userRights);
     // Slide up and down of menus
     $(document).on("click", "#sidebar-menu a", function (e) {
       e.stopImmediatePropagation();
