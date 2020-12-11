@@ -1,0 +1,246 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+<!-- Page Content -->
+<div *ngIf="!pageLoading" class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Job Detail</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Job Detail</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span
+                        class="hint-text">Add</span><i class="fa fa-plus"></i></a>
+                <a class="btn download-btn hint"><span class="hint-text">Download</span><i
+                        class="fa fa-download"></i></a>
+                <a class="btn upload-btn hint"><span class="hint-text">Upload</span><i class="fa fa-upload"></i></a>
+                <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
+                        class="fa fa-trash"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <!-- Search Filter -->
+    <div class="row filter-row">
+        <div class="col-sm-6 col-md-5">
+            <div class="form-group form-focus">
+                <input type="text" class="form-control floating" (input)="searchId($event.target.value)"
+                    [(ngModel)]="searchText" />
+                <label class="focus-label">Start typing to search by any field</label>
+            </div>
+        </div>
+        <!--  <div class="col-sm-6 col-md-3">
+            <a class="btn btn-success btn-block"> Search </a>
+        </div> -->
+    </div>
+    <!-- /Search Filter -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table datatable" datatable [dtOptions]="dtOptions"
+                    [dtTrigger]="dtTrigger">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === jobDetails.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>S/N</th>
+                            <th>Job Title</th>
+                            <th>Total Skill Weight</th>
+                            <th class="text-right no-sort">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of jobDetails | filter:searchText; let i = index">
+                            <td>
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ row.job_title }}</td>
+                            <td>{{ row.weight }}</td>
+                            <td class="text-right">
+                                <div class="dropdown dropdown-action">
+                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_employee"
+                                            (click)="editgymWorkout(row)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item" (click)="delete(row.id)"><i
+                                                class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Job Detail Modal -->
+<div id="add_job_detail" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{formTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addJobDetail(jobDetailForm)" [formGroup]="jobDetailForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Job Title<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                jobDetailForm.get('job_title').invalid &&
+                                jobDetailForm.get('job_title').touched
+                    " formControlName="job_title" />
+                                <div *ngIf="
+                                jobDetailForm.get('job_title').invalid &&
+                                jobDetailForm.get('job_title').touched
+                    ">
+                                    <small *ngIf="
+                                    jobDetailForm.get('job_title').invalid &&
+                                    jobDetailForm.get('job_title').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Description<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                jobDetailForm.get('job_description').invalid &&
+                                jobDetailForm.get('job_description').touched
+                    " formControlName="job_description" />
+                                <div *ngIf="
+                                jobDetailForm.get('job_description').invalid &&
+                                jobDetailForm.get('job_description').touched
+                    ">
+                                    <small *ngIf="
+                                    jobDetailForm.get('job_description').invalid &&
+                                    jobDetailForm.get('job_description').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div formArrayName="sub_Skills" class="sub_Skills">
+                        <div *ngFor="let item of jobDetailForm.controls.sub_Skills['controls']; let i = index">
+                            <div [formGroupName]="i">
+                                <div class="col sub_Skills">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Skill<span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                            [class.invalid]="item.controls.skill.invalid && item.controls.skill.touched"
+                                            formControlName="skill" />
+                                        <div *ngIf="
+                                        item.controls.skill.invalid &&
+                                        item.controls.skill.touched
+                            ">
+                                            <small *ngIf="
+                                            item.controls.skill.invalid &&
+                                            item.controls.skill.touched
+                              " class="text-danger">
+                                                *Field is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col sub_Skills">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Skill Description<span
+                                                class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                            [class.invalid]="item.controls.description.invalid && item.controls.description.touched"
+                                            formControlName="description" />
+                                        <div *ngIf="item.controls.description.invalid && item.controls.description.touched
+                            ">
+                                            <small *ngIf="
+                                            item.controls.description.invalid && item.controls.description.touched
+                              " class="text-danger">
+                                                *Field is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col sub_Skills">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Weight<span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text"
+                                            [class.invalid]="item.controls.weight.invalid && item.controls.weight.touched"
+                                            formControlName="weight" />
+                                        <div *ngIf="item.controls.weight.invalid && item.controls.weight.touched
+                            ">
+                                            <small *ngIf="item.controls.weight.invalid && item.controls.weight.touched
+                              " class="text-danger">
+                                                *Field is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--  <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Skill Description<span
+                                                class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" [class.invalid]="
+                                        jobDetailForm.get('sub_Skills').value[0].description.invalid &&
+                                        jobDetailForm.get('sub_Skills').value[0].description.touched
+                            " formControlName="sub_Skills" />
+                                        <div *ngIf="
+                                        jobDetailForm.get('sub_Skills').value[0].description.invalid &&
+                                        jobDetailForm.get('sub_Skills').value[0].description.touched
+                            ">
+                                            <small *ngIf="
+                                            jobDetailForm.get('sub_Skills').value[0].description.invalid &&
+                                            jobDetailForm.get('sub_Skills').value[0].description.touched
+                              " class="text-danger">
+                                                *Field is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Skill Weight<span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" [class.invalid]="
+                                        jobDetailForm.get('sub_Skills[0].weight').invalid &&
+                                        jobDetailForm.get('sub_Skills[0].weight').touched
+                            " formControlName="sub_Skills[0].weight" />
+                                        <div *ngIf="
+                                        jobDetailForm.get('sub_Skills[0].weight').invalid &&
+                                        jobDetailForm.get('sub_Skills[0].weight').touched
+                            ">
+                                            <small *ngIf="
+                                            jobDetailForm.get('sub_Skills[0].weight').invalid &&
+                                            jobDetailForm.get('sub_Skills[0].weight').touched
+                              " class="text-danger">
+                                                *Field is required</small>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                        </div>
+                    </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Employee Modal -->
