@@ -21,6 +21,7 @@ import { Ng2SearchPipeModule } from "ng2-search-filter"; // Search module
 import { GymWorkoutComponent } from "./gym-workout/gym-workout.component";
 import { HighSchoolGradeComponent } from "./high-school-grade/high-school-grade.component";
 import { JobDetailComponent } from "src/app/all-module/setup/job-detail/job-detail.component";
+import { ProfCertificationComponent } from "./prof-certification/prof-certification.component";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { JobDetailComponent } from "src/app/all-module/setup/job-detail/job-deta
     GymWorkoutComponent,
     HighSchoolGradeComponent,
     JobDetailComponent,
+    ProfCertificationComponent,
   ],
   imports: [
     CommonModule,
