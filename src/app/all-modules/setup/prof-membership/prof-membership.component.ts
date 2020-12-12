@@ -18,14 +18,14 @@ export class ProfMembershipComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   public lstEmployee: any;
-  public subjects: any[] = [];
-  public url: any = "employeelist";
+  public profMemberships: any[] = [];
+  public url: any = "profMembershiplist";
   public tempId: any;
   public editId: any;
 
-  public highSchoolForm: FormGroup;
+  public profMembershipForm: FormGroup;
   public editEmployeeForm: FormGroup;
-  formTitle: string  = "Add High School Subject"
+  formTitle: string  = "Add prof-membership"
   public pipe = new DatePipe("en-US");
   public rows = [];
   public srch = [];
@@ -35,9 +35,6 @@ export class ProfMembershipComponent implements OnInit {
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
-  ProfMembership: any;
-  getLanguage: any;
-  profMembershipForm: any;
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -53,25 +50,26 @@ export class ProfMembershipComponent implements OnInit {
       })
       .trigger("blur");
     this.initializeForm();
-    this.ProfMembership();
+    this.getProfMembership();
   }
   initializeForm() {
-    this.highSchoolForm = this.formBuilder.group({
+    this.profMembershipForm = this.formBuilder.group({
       id: [0],
-      subject: ["", Validators.required],
+      language: ["", Validators.required],
       description: ["", Validators.required]
     });
   }
   getProfMembership() {
     this.pageLoading = true;
-    return this.setupService.getProfMembership().subscribe(
-      data => {
+    return this.setupService.getData("/hrmsetup/get/all/prof_membership").subscribe(
+      (data) => {
         this.pageLoading = false;
-        this.subjects = data.setuplist;
-        this.rows = this.subjects;
+        //console.log(data);
+        this.profMemberships = data.setuplist;
+        this.rows = this.profMemberships;
         this.srch = [...this.rows];
       },
-      err => {
+      (err) => {
         this.pageLoading = false;
         console.log(err);
       }
@@ -85,14 +83,14 @@ export class ProfMembershipComponent implements OnInit {
       dtInstance.destroy();
     });
     this.lstEmployee = [];
-    this.loadEmployee();
+    this.loadLanguage();
     setTimeout(() => {
       this.dtTrigger.next();
     }, 1000);
   }
 
   // Get Employee  Api Call
-  loadEmployee() {
+  loadLanguage() {
     // this.srvModuleService.get(this.url).subscribe((data) => {
     //   this.lstEmployee = data;
     //   this.rows = this.lstEmployee;
@@ -101,25 +99,25 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   // Add employee  Modal Api Call
-  addData(profMembershipForm: FormGroup) {
-    const payload = profMembershipForm.value;
-    return this.setupService.updateProfMembership(payload).subscribe(
-      res => {
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire('Success', message, 'success')
-          this.initializeForm();
-          $("#add_high_school_subject").modal("hide");
-        } else {
-          swal.fire('Error', message, 'error')
-        }
-        this.getProfMembership();
-      },
-      err => {
-        const message = err.status.message.friendlyMessage;
-        swal.fire('Error', message, 'error')
-      }
-    );
+  // addData(languageForm: FormGroup) {
+  //   const payload = languageForm.value;
+  //   return this.setupService.updateLanguage(payload).subscribe(
+  //     res => {
+  //       const message = res.status.message.friendlyMessage;
+  //       if (res.status.isSuccessful) {
+  //         swal.fire('Success', message, 'success')
+  //         this.initializeForm();
+  //         $("#add_language").modal("hide");
+  //       } else {
+  //         swal.fire('Error', message, 'error')
+  //       }
+  //       this.getLanguage();
+  //     },
+  //     err => {
+  //       const message = err.status.message.friendlyMessage;
+  //       swal.fire('Error', message, 'error')
+  //     }
+  //   );
     // let DateJoin = this.pipe.transform(
     //   this.addEmployeeForm.value.JoinDate,
     //   "dd-MM-yyyy"
@@ -151,7 +149,7 @@ export class ProfMembershipComponent implements OnInit {
     // $("#add_employee").modal("hide");
     // this.addEmployeeForm.reset();
     // this.toastr.success("Employeee added sucessfully...!", "Success");
-  }
+  //}
 
   // to know the date picker changes
   from(data) {
@@ -159,7 +157,7 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   // edit modal api call
-  editEmployee() {
+  editLanguage() {
     // let obj = {
     //   firstname: this.editEmployeeForm.value.FirstName,
     //   lastname: this.editEmployeeForm.value.LastName,
@@ -190,37 +188,39 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
+  
+  // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
-   this.formTitle = "Edit Prof Membership";
-    this.profMembershipForm.patchValue({
-      id: row.id,
-      subject: row.subject,
-      description: row.description
-    });
-    $('#add_prof_membership').modal('show')
-    // this.editId = value;
-    // const index = this.lstEmployee.findIndex(item => {
-    //   return item.id === value;
-    // });
-    // let toSetValues = this.lstEmployee[index];
-    // this.editEmployeeForm.setValue({
-    //   FirstName: toSetValues.firstname,
-    //   LastName: toSetValues.lastname,
-    //   UserName: toSetValues.username,
-    //   Email: toSetValues.email,
-    //   Password: toSetValues.password,
-    //   ConfirmPassword: toSetValues.confirmpassword,
-    //   EmployeeID: toSetValues.employeeId,
-    //   JoinDate: toSetValues.joindate,
-    //   PhoneNumber: toSetValues.phone,
-    //   CompanyName: toSetValues.company,
-    //   DepartmentName: toSetValues.department,
-    //   Designation: toSetValues.designation
-    // });
-  }
+    this.formTitle = "Edit prof membership";
+     this.profMembershipForm.patchValue({
+       id: row.id,
+       profMembership: row.profMembership,
+       description: row.description
+     });
+     $('#add_prof_membership').modal('show')
+     // this.editId = value;
+     // const index = this.lstEmployee.findIndex(item => {
+     //   return item.id === value;
+     // });
+     // let toSetValues = this.lstEmployee[index];
+     // this.editEmployeeForm.setValue({
+     //   FirstName: toSetValues.firstname,
+     //   LastName: toSetValues.lastname,
+     //   UserName: toSetValues.username,
+     //   Email: toSetValues.email,
+     //   Password: toSetValues.password,
+     //   ConfirmPassword: toSetValues.confirmpassword,
+     //   EmployeeID: toSetValues.employeeId,
+     //   JoinDate: toSetValues.joindate,
+     //   PhoneNumber: toSetValues.phone,
+     //   CompanyName: toSetValues.company,
+     //   DepartmentName: toSetValues.department,
+     //   Designation: toSetValues.designation
+     // });
+   }
 
   // delete employee data api call
-  deleteEmployee() {
+  deleteProfMembership() {
     // this.srvModuleService.delete(this.tempId, this.url).subscribe((data) => {
     //   $("#datatable").DataTable().clear();
     //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -272,45 +272,94 @@ export class ProfMembershipComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  addProfMembership() {
-    this.formTitle = "Add Prof Membeship";
-    $('#add_prof_membership').modal('show')
+  openModal() {
+    $("#add_prof_membership").modal("show");
   }
-
+  
   closeModal() {
     $('#add_prof_membership').modal('hide');
     this.initializeForm()
   }
 
-  delete(id: any) {
-   const body = [];
-   body.push(id);
-   const payload = {
-     itemIds: body
-   };
-   swal.fire({
-     title: "Are you sure you want to delete this record?",
-     text: "You won't be able to revert this",
-     icon: "warning",
-     showCancelButton: true,
-     confirmButtonText: "Yes!"
-   }).then(result => {
-     if (result.value) {
-       return this.setupService.deleteProfMembership(payload).subscribe(res => {
-         const message = res.status.message.friendlyMessage;
-         if (res.status.isSuccessful) {
-           swal.fire('Success', message, 'success').then(() => {
-             this.getProfMembership()
-           })
-         } else {
-           swal.fire('Error', message, 'error')
-         }
-       }, err => {
-         console.log(err);
-       })
-     }
-   })
+  addLanguage(profMembershipForm: FormGroup) {
+    const payload = profMembershipForm.value;
+    return this.setupService
+      .updateData("/hrmsetup/add/update/prof_membership", payload)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          //console.log(message);
+
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#add_language").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getProfMembership();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
   }
+
+  delete(id: any) {
+    let payload;
+
+    if (id) {
+      const body = [id];
+      //body.push(id);
+      //console.log(body);
+      payload = {
+        itemIds: body,
+      };
+    } else if (this.selectedId) {
+      if (this.selectedId.length === 0) {
+        return swal.fire("Error", "Select items to delete", "error");
+      }
+      payload = {
+        itemIds: this.selectedId,
+      };
+      //console.log(this.selectedId);
+    }
+
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        //console.log(result);
+
+        if (result.value) {
+          return this.setupService
+            .deleteData("/hrmsetup/delete/prof_membership", payload)
+            .subscribe(
+              (res) => {
+                const message = res.status.message.friendlyMessage;
+                if (res.status.isSuccessful) {
+                  swal.fire("Success", message, "success").then(() => {
+                    this.getProfMembership();
+                  });
+                } else {
+                  swal.fire("Error", message, "error");
+                }
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
+        }
+      });
+    this.selectedId = [];
+  }
+ 
   addItemId(event, id) {
     if (event.target.checked) {
       if (!this.selectedId.includes(id)) {
@@ -356,7 +405,7 @@ export class ProfMembershipComponent implements OnInit {
   }
   checkAll(event) {
     if (event.target.checked) {
-      this.selectedId = this.subjects.map(item => {
+      this.selectedId = this.profMemberships.map(item => {
         return item.id
       })
     } else {
@@ -364,4 +413,3 @@ export class ProfMembershipComponent implements OnInit {
     }
   }
 }
-

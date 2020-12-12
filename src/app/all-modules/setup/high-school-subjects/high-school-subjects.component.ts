@@ -329,31 +329,6 @@ export class HighSchoolSubjectsComponent implements OnInit {
     const payload = {
       itemIds: this.selectedId,
     };
-<<<<<<< HEAD
-    swal.fire({
-      title: "Are you sure you want to delete this record?",
-      text: "You won't be able to revert this",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes!"
-    }).then(result => {
-      if (result.value) {
-        return this.setupService.deleteLanguage(payload).subscribe(res => {
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire('Success', message, 'success').then(() => {
-              this.getHighSchools()
-            })
-          } else {
-            swal.fire('Error', message, 'error')
-          }
-        }, err => {
-          console.log(err);
-        })
-      }
-    })
-
-=======
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -381,7 +356,6 @@ export class HighSchoolSubjectsComponent implements OnInit {
           );
         }
       });
->>>>>>> dev
   }
   checkAll(event) {
     if (event.target.checked) {

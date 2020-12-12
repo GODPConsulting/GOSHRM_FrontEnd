@@ -28,7 +28,7 @@
     <div class="row filter-row">
         <div class="col-sm-6 col-md-5">
             <div class="form-group form-focus">
-                <input type="text" class="form-control floating" (input)="searchId($event.target.value)"
+                <input type="text" class="form-control floating"
                     [(ngModel)]="searchText" />
                 <label class="focus-label">Start typing to search by any field</label>
             </div>
@@ -47,34 +47,29 @@
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === language.length"
+                                <input type="checkbox" [checked]="selectedId.length === languages.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Name</th>
-                            <th>Comments</th>
+                            <th>Language</th>
                             <th class="text-right no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of language | filter:searchText; let i = index">
+                        <tr *ngFor="let row of languages | filter:searchText; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.hmo_name }}</td>
-                            <td>{{ row.address }}</td>
-                            <td>{{ row.reg_date | date }}</td>
-                            <td>{{ row.rating }}</td>
-                            <td>{{ row.order_comments }}</td>
+                            <td>{{ row.language }}</td>
                             <td class="text-right">
                                 <div class="dropdown dropdown-action">
                                     <a class="action-icon dropdown-toggle" data-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item" data-toggle="modal" data-target="#edit_employee"
-                                            (click)="editLanguage(row)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                            (click)="edit(row)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                         <a class="dropdown-item" (click)="delete(row.id)"><i
                                                 class="fa fa-trash-o m-r-5"></i> Delete</a>
                                     </div>
@@ -90,7 +85,7 @@
 <!-- /Page Content -->
 
 <!-- Add HMO Modal -->
-<div id="add_hmo" class="modal custom-modal fade" role="dialog">
+<div id="add_language" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -104,158 +99,43 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Name<span class="text-danger">*</span></label>
+                                <label class="col-form-label">Language <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                languageForm.get('language_name').invalid &&
-                                languageForm.get('language_name').touched
-                    " formControlName="language_name" />
+                                languageForm.get('language').invalid &&
+                                languageForm.get('language').touched
+                    " formControlName="language" />
                                 <div *ngIf="
-                                languageForm.get('language_name').invalid &&
-                                languageForm.get('language_name').touched
+                                languageForm.get('language').invalid &&
+                                languageForm.get('language').touched
                     ">
                                     <small *ngIf="
-                                    languageForm.get('language_name').invalid &&
-                                    languageForm.get('language_name').touched
+                                    languageForm.get('language').invalid &&
+                                    languageForm.get('language').touched
                       " class="text-danger">
-                                        *Field is required</small>
+                                        *Language Field is required</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Code</label>
+                                <label class="col-form-label">Description <span class="text-danger">*</span></label>
                                 <textarea class="form-control" type="text" [class.invalid]="
-                                languageForm.get('language_code').invalid &&
-                                languageForm.get('language_code').touched
-                    " formControlName="hmo_code"></textarea>
+                                languageForm.get('description').invalid &&
+                                languageForm.get('description').touched
+                    " formControlName="description"></textarea>
                                 <div *ngIf="
-                                languageForm.get('language_code').invalid &&
-                                languageForm.get('language_code').touched
+                                languageForm.get('description').invalid &&
+                                languageForm.get('description').touched
                     ">
                                     <small *ngIf="
-                                    languageForm.get('language_code').invalid &&
-                                    languageForm.get('language_code').touched
+                                    languageForm.get('description').invalid &&
+                                    languageForm.get('description').touched
                       " class="text-danger">
-                                        *Field is required</small>
+                                        *Description Field is required</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Phone Number<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                languageForm.get('contact_phone_number').invalid &&
-                                languageForm.get('contact_phone_number').touched
-                    " formControlName="contact_phone_number" />
-                                <div *ngIf="
-                                languageForm.get('contact_phone_number').invalid &&
-                                languageForm.get('contact_phone_number').touched
-                    ">
-                                    <small *ngIf="
-                                    languageForm.get('contact_phone_number').invalid &&
-                                    languageForm.get('contact_phone_number').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Email<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                languageForm.get('contact_email').invalid &&
-                                languageForm.get('contact_email').touched
-                    " formControlName="contact_email" />
-                                <div *ngIf="
-                                languageForm.get('contact_email').invalid &&
-                                languageForm.get('contact_email').touched
-                    ">
-                                    <small *ngIf="
-                                    languageForm.get('contact_email').invalid &&
-                                    languageForm.get('contact_email').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Address <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                languageForm.get('address').invalid &&
-                                languageForm.get('address').touched
-                    " formControlName="address" />
-                                <div *ngIf="
-                                languageForm.get('address').invalid &&
-                                languageForm.get('address').touched
-                    ">
-                                    <small *ngIf="
-                                    languageForm.get('address').invalid &&
-                                    languageForm.get('address').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Registration Date <span
-                                        class="text-danger">*</span></label>
-                                <input class="form-control" type="date" [class.invalid]="
-                                languageForm.get('reg_date').invalid &&
-                                languageForm.get('reg_date').touched
-                    " formControlName="reg_date" />
-                                <div *ngIf="
-                                languageForm.get('reg_date').invalid &&
-                                languageForm.get('reg_date').touched
-                    ">
-                                    <small *ngIf="
-                                    languageForm.get('reg_date').invalid &&
-                                    languageForm.get('reg_date').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Rating<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                languageForm.get('rating').invalid &&
-                                languageForm.get('rating').touched
-                    " formControlName="rating" />
-                                <div *ngIf="
-                                languageForm.get('rating').invalid &&
-                                languageForm.get('rating').touched
-                    ">
-                                    <small *ngIf="
-                                    languageForm.get('rating').invalid &&
-                                    languageForm.get('rating').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Comments <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                languageForm.get('order_comments').invalid &&
-                                languageForm.get('order_comments').touched
-                    " formControlName="order_comments" />
-                                <div *ngIf="
-                                languageForm.get('order_comments').invalid &&
-                                languageForm.get('order_comments').touched
-                    ">
-                                    <small *ngIf="
-                                    languageForm.get('order_comments').invalid &&
-                                    languageForm.get('order_comments').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
+                       
                     </div>
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">

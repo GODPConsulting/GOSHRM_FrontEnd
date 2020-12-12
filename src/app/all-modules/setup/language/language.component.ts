@@ -18,7 +18,7 @@ export class LanguageComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   public lstEmployee: any;
-  public subjects: any[] = [];
+  public languages: any[] = [];
   public url: any = "languagelist";
   public tempId: any;
   public editId: any;
@@ -55,20 +55,21 @@ export class LanguageComponent implements OnInit {
   initializeForm() {
     this.languageForm = this.formBuilder.group({
       id: [0],
-      subject: ["", Validators.required],
+      language: ["", Validators.required],
       description: ["", Validators.required]
     });
   }
   getLanguage() {
     this.pageLoading = true;
-    return this.setupService.getHighSchoolSubject().subscribe(
-      data => {
+    return this.setupService.getData("/hrmsetup/get/all/languages").subscribe(
+      (data) => {
         this.pageLoading = false;
-        this.subjects = data.setuplist;
-        this.rows = this.subjects;
+        //console.log(data);
+        this.languages = data.setuplist;
+        this.rows = this.languages;
         this.srch = [...this.rows];
       },
-      err => {
+      (err) => {
         this.pageLoading = false;
         console.log(err);
       }
@@ -98,25 +99,25 @@ export class LanguageComponent implements OnInit {
   }
 
   // Add employee  Modal Api Call
-  addData(languageForm: FormGroup) {
-    const payload = languageForm.value;
-    return this.setupService.updateLanguage(payload).subscribe(
-      res => {
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire('Success', message, 'success')
-          this.initializeForm();
-          $("#add_language").modal("hide");
-        } else {
-          swal.fire('Error', message, 'error')
-        }
-        this.getLanguage();
-      },
-      err => {
-        const message = err.status.message.friendlyMessage;
-        swal.fire('Error', message, 'error')
-      }
-    );
+  // addData(languageForm: FormGroup) {
+  //   const payload = languageForm.value;
+  //   return this.setupService.updateLanguage(payload).subscribe(
+  //     res => {
+  //       const message = res.status.message.friendlyMessage;
+  //       if (res.status.isSuccessful) {
+  //         swal.fire('Success', message, 'success')
+  //         this.initializeForm();
+  //         $("#add_language").modal("hide");
+  //       } else {
+  //         swal.fire('Error', message, 'error')
+  //       }
+  //       this.getLanguage();
+  //     },
+  //     err => {
+  //       const message = err.status.message.friendlyMessage;
+  //       swal.fire('Error', message, 'error')
+  //     }
+  //   );
     // let DateJoin = this.pipe.transform(
     //   this.addEmployeeForm.value.JoinDate,
     //   "dd-MM-yyyy"
@@ -148,7 +149,7 @@ export class LanguageComponent implements OnInit {
     // $("#add_employee").modal("hide");
     // this.addEmployeeForm.reset();
     // this.toastr.success("Employeee added sucessfully...!", "Success");
-  }
+  //}
 
   // to know the date picker changes
   from(data) {
@@ -193,7 +194,7 @@ export class LanguageComponent implements OnInit {
     this.formTitle = "Edit Language";
      this.languageForm.patchValue({
        id: row.id,
-       subject: row.subject,
+       language: row.language,
        description: row.description
      });
      $('#add_language').modal('show')
@@ -271,45 +272,94 @@ export class LanguageComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  addLanguage() {
-    this.formTitle = "Add Language";
-    $('#add_language').modal('show')
+  openModal() {
+    $("#add_language").modal("show");
   }
-
+  
   closeModal() {
     $('#add_language').modal('hide');
     this.initializeForm()
   }
 
-  delete(id: any) {
-   const body = [];
-   body.push(id);
-   const payload = {
-     itemIds: body
-   };
-   swal.fire({
-     title: "Are you sure you want to delete this record?",
-     text: "You won't be able to revert this",
-     icon: "warning",
-     showCancelButton: true,
-     confirmButtonText: "Yes!"
-   }).then(result => {
-     if (result.value) {
-       return this.setupService.deleteLanguage(payload).subscribe(res => {
-         const message = res.status.message.friendlyMessage;
-         if (res.status.isSuccessful) {
-           swal.fire('Success', message, 'success').then(() => {
-             this.getLanguage()
-           })
-         } else {
-           swal.fire('Error', message, 'error')
-         }
-       }, err => {
-         console.log(err);
-       })
-     }
-   })
+  addLanguage(languageForm: FormGroup) {
+    const payload = languageForm.value;
+    return this.setupService
+      .updateData("/hrmsetup/add/update/language", payload)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          //console.log(message);
+
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#add_language").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getLanguage();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
   }
+
+  delete(id: any) {
+    let payload;
+
+    if (id) {
+      const body = [id];
+      //body.push(id);
+      //console.log(body);
+      payload = {
+        itemIds: body,
+      };
+    } else if (this.selectedId) {
+      if (this.selectedId.length === 0) {
+        return swal.fire("Error", "Select items to delete", "error");
+      }
+      payload = {
+        itemIds: this.selectedId,
+      };
+      //console.log(this.selectedId);
+    }
+
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        //console.log(result);
+
+        if (result.value) {
+          return this.setupService
+            .deleteData("/hrmsetup/delete/language", payload)
+            .subscribe(
+              (res) => {
+                const message = res.status.message.friendlyMessage;
+                if (res.status.isSuccessful) {
+                  swal.fire("Success", message, "success").then(() => {
+                    this.getLanguage();
+                  });
+                } else {
+                  swal.fire("Error", message, "error");
+                }
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
+        }
+      });
+    this.selectedId = [];
+  }
+ 
   addItemId(event, id) {
     if (event.target.checked) {
       if (!this.selectedId.includes(id)) {
@@ -355,7 +405,7 @@ export class LanguageComponent implements OnInit {
   }
   checkAll(event) {
     if (event.target.checked) {
-      this.selectedId = this.subjects.map(item => {
+      this.selectedId = this.languages.map(item => {
         return item.id
       })
     } else {

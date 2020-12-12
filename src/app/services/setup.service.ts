@@ -13,6 +13,7 @@ export class SetupService {
   deleteLanguage: any;
   updateLanguage: any;
   constructor(private apiService: ApiService) {}
+  
   getHighSchoolSubject(): Observable<any> {
     return this.apiService.get(`/hrmsetup/get/all/highschoolsubjects`).pipe(
       tap((data) => {
