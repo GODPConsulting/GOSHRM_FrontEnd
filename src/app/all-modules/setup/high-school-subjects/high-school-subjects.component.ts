@@ -50,7 +50,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
       })
       .trigger("blur");
     this.initializeForm();
-    this.getHighSchools();
+    this.getHighSchoolSub();
   }
   initializeForm() {
     this.highSchoolForm = this.formBuilder.group({
@@ -59,20 +59,22 @@ export class HighSchoolSubjectsComponent implements OnInit {
       description: ["", Validators.required],
     });
   }
-  getHighSchools() {
+  getHighSchoolSub() {
     this.pageLoading = true;
-    return this.setupService.getHighSchoolSubject().subscribe(
-      (data) => {
-        this.pageLoading = false;
-        this.subjects = data.setuplist;
-        this.rows = this.subjects;
-        this.srch = [...this.rows];
-      },
-      (err) => {
-        this.pageLoading = false;
-        console.log(err);
-      }
-    );
+    return this.setupService
+      .getData("/hrmsetup/get/all/highschoolsubjects")
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          this.subjects = data.setuplist;
+          this.rows = this.subjects;
+          this.srch = [...this.rows];
+        },
+        (err) => {
+          this.pageLoading = false;
+          console.log(err);
+        }
+      );
   }
   rerender(): void {
     $("#datatable").DataTable().clear();
@@ -96,25 +98,27 @@ export class HighSchoolSubjectsComponent implements OnInit {
   }
 
   // Add employee  Modal Api Call
-  addData(highSchoolForm: FormGroup) {
-    const payload = highSchoolForm.value;
-    return this.setupService.updateHighSchoolSubject(payload).subscribe(
-      (res) => {
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire("Success", message, "success");
-          this.initializeForm();
-          $("#add_high_school_subject").modal("hide");
-        } else {
+  addHighSchoolSub(Form: FormGroup) {
+    const payload = Form.value;
+    return this.setupService
+      .updateData("/hrmsetup/add/update/highschoolsubject", payload)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#add_high_school_subject").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getHighSchoolSub();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
-        this.getHighSchools();
-      },
-      (err) => {
-        const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
-      }
-    );
+      );
     // let DateJoin = this.pipe.transform(
     //   this.addEmployeeForm.value.JoinDate,
     //   "dd-MM-yyyy"
@@ -267,7 +271,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  addHighSchool() {
+  openModal() {
     this.formTitle = "Add High School Subject";
     $("#add_high_school_subject").modal("show");
   }
@@ -277,40 +281,6 @@ export class HighSchoolSubjectsComponent implements OnInit {
     this.initializeForm();
   }
 
-  delete(id: any) {
-    const body = [];
-    body.push(id);
-    const payload = {
-      itemIds: body,
-    };
-    swal
-      .fire({
-        title: "Are you sure you want to delete this record?",
-        text: "You won't be able to revert this",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes!",
-      })
-      .then((result) => {
-        if (result.value) {
-          return this.setupService.deleteHighSchoolSubject(payload).subscribe(
-            (res) => {
-              const message = res.status.message.friendlyMessage;
-              if (res.status.isSuccessful) {
-                swal.fire("Success", message, "success").then(() => {
-                  this.getHighSchools();
-                });
-              } else {
-                swal.fire("Error", message, "error");
-              }
-            },
-            (err) => {
-              console.log(err);
-            }
-          );
-        }
-      });
-  }
   addItemId(event, id) {
     if (event.target.checked) {
       if (!this.selectedId.includes(id)) {
@@ -322,13 +292,36 @@ export class HighSchoolSubjectsComponent implements OnInit {
       });
     }
   }
-  deleteItems() {
-    if (this.selectedId.length === 0) {
-      return swal.fire("Error", "Select items to delete", "error");
+
+  checkAll(event) {
+    if (event.target.checked) {
+      this.selectedId = this.subjects.map((item) => {
+        return item.id;
+      });
+    } else {
+      this.selectedId = [];
     }
-    const payload = {
-      itemIds: this.selectedId,
-    };
+  }
+
+  delete(id: any) {
+    let payload;
+
+    if (id) {
+      const body = [id];
+      //body.push(id);
+      //console.log(body);
+      payload = {
+        itemIds: body,
+      };
+    } else if (this.selectedId) {
+      if (this.selectedId.length === 0) {
+        return swal.fire("Error", "Select items to delete", "error");
+      }
+      payload = {
+        itemIds: this.selectedId,
+      };
+      //console.log(this.selectedId);
+    }
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -338,32 +331,27 @@ export class HighSchoolSubjectsComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
+        //console.log(result);
         if (result.value) {
-          return this.setupService.deleteHighSchoolSubject(payload).subscribe(
-            (res) => {
-              const message = res.status.message.friendlyMessage;
-              if (res.status.isSuccessful) {
-                swal.fire("Success", message, "success").then(() => {
-                  this.getHighSchools();
-                });
-              } else {
-                swal.fire("Error", message, "error");
+          return this.setupService
+            .deleteData("/hrmsetup/delete/highschoolsubject", payload)
+            .subscribe(
+              (res) => {
+                const message = res.status.message.friendlyMessage;
+                if (res.status.isSuccessful) {
+                  swal.fire("Success", message, "success").then(() => {
+                    this.getHighSchoolSub();
+                  });
+                } else {
+                  swal.fire("Error", message, "error");
+                }
+              },
+              (err) => {
+                console.log(err);
               }
-            },
-            (err) => {
-              console.log(err);
-            }
-          );
+            );
         }
       });
-  }
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.subjects.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+    this.selectedId = [];
   }
 }
