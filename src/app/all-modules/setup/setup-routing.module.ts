@@ -13,6 +13,8 @@ import { HmoComponent } from "./hmo/hmo.component";
 import { GymWorkoutComponent } from "./gym-workout/gym-workout.component";
 import { HighSchoolGradeComponent } from "./high-school-grade/high-school-grade.component";
 import { AcademicGradeComponent } from "./academic-grade/academic-grade.component";
+import { JobDetailComponent } from "src/app/all-modules/setup/job-detail/job-detail.component";
+import { ProfCertificationComponent } from "./prof-certification/prof-certification.component";
 
 const routes: Routes = [
   {
@@ -63,6 +65,14 @@ const routes: Routes = [
       {
         path: "academic-grade",
         component: AcademicGradeComponent,
+      },
+      {
+        path: "job-detail",
+        component: JobDetailComponent,
+      },
+      {
+        path: "prof-certification",
+        component: ProfCertificationComponent,
       },
     ],
   },
