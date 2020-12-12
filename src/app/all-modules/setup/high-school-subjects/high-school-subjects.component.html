@@ -13,11 +13,11 @@
           </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-          <a class="btn add-btn hint" data-toggle="modal" (click)="addHighSchool()"><span class="hint-text">Add</span><i
+          <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span class="hint-text">Add</span><i
               class="fa fa-plus"></i></a>
           <a class="btn download-btn hint"><span class="hint-text">Download</span><i class="fa fa-download"></i></a>
           <a class="btn upload-btn hint"><span class="hint-text">Upload</span><i class="fa fa-upload"></i></a>
-          <a class="btn delete-btn hint" (click)="deleteItems()"><span class="hint-text">Delete</span><i
+          <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
               class="fa fa-trash"></i></a>
         </div>
       </div>
@@ -26,23 +26,16 @@
 
     <!-- Search Filter -->
     <div class="row filter-row">
-      <div class="col-sm-6 col-md-3">
+      <div class="col-sm-6 col-md-5">
         <div class="form-group form-focus">
           <input type="text" class="form-control floating" (input)="searchId($event.target.value)"
-            (focusout)="rerender()" />
-          <label class="focus-label">Subject</label>
+            [(ngModel)]="searchText" />
+          <label class="focus-label">Start typing to search by any field</label>
         </div>
       </div>
-      <div class="col-sm-6 col-md-3">
-        <div class="form-group form-focus">
-          <input type="text" class="form-control floating" (input)="searchName($event.target.value)"
-            (focusout)="rerender()" />
-          <label class="focus-label">Description</label>
-        </div>
-      </div>
-      <div class="col-sm-6 col-md-3">
+      <!--  <div class="col-sm-6 col-md-3">
         <a class="btn btn-success btn-block"> Search </a>
-      </div>
+    </div> -->
     </div>
     <!-- /Search Filter -->
 
@@ -63,7 +56,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of subjects; let i = index">
+              <tr *ngFor="let row of subjects | filter:searchText; let i = index">
                 <td>
                   <input type="checkbox" [checked]="selectedId.includes(row.id)" (change)="addItemId($event, row.id)" />
                 </td>
@@ -100,7 +93,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form (ngSubmit)="addData(highSchoolForm)" [formGroup]="highSchoolForm">
+          <form (ngSubmit)="addHighSchoolSub(highSchoolForm)" [formGroup]="highSchoolForm">
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
