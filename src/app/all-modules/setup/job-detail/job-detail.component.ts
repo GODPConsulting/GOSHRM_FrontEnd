@@ -74,7 +74,7 @@ export class JobDetailComponent implements OnInit {
     return this.setupService.getData("/hrmsetup/get/all/jobdetails").subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+        console.log(data);
         this.jobDetails = data.setuplist;
         this.rows = this.jobDetails;
         this.srch = [...this.rows];
@@ -123,7 +123,7 @@ export class JobDetailComponent implements OnInit {
   }
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
-  editjobDetail(row) {
+  editJobDetail(row) {
     this.formTitle = "Edit Job Detail";
     this.jobDetailForm.patchValue({
       id: row.id,
