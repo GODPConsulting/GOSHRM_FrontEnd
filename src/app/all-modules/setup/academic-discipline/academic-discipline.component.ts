@@ -5,17 +5,15 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { Subject } from "rxjs";
 import { ToastrService } from "ngx-toastr";
-import swal from 'sweetalert2'
-
+import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: 'app-academic-discipline',
-  templateUrl: './academic-discipline.component.html',
-  styleUrls: ['./academic-discipline.component.css']
+  selector: "app-academic-discipline",
+  templateUrl: "./academic-discipline.component.html",
+  styleUrls: ["./academic-discipline.component.css"],
 })
 export class AcademicDisciplineComponent implements OnInit {
-
   public dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
@@ -27,12 +25,12 @@ export class AcademicDisciplineComponent implements OnInit {
 
   public academicDisciplineForm: FormGroup;
   public editEmployeeForm: FormGroup;
-  formTitle: string  = "Add Academic Discipline"
+  formTitle: string = "Add Academic Discipline";
   public pipe = new DatePipe("en-US");
   public rows = [];
   public srch = [];
   public statusValue;
-  public dtTrigger: Subject<any> = new Subject();
+  //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
   value: any;
@@ -46,7 +44,7 @@ export class AcademicDisciplineComponent implements OnInit {
 
   ngOnInit(): void {
     $(".floating")
-      .on("focus blur", function(e) {
+      .on("focus blur", function (e) {
         $(this)
           .parents(".form-focus")
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
@@ -65,30 +63,30 @@ export class AcademicDisciplineComponent implements OnInit {
   }
   getAcademicDisplines() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/academic/disciplines").subscribe(
-      data => {
-        this.pageLoading = false;
-        this.disciplines = data.setuplist;
-        this.rows = this.disciplines;
-        this.srch = [...this.rows];
-      },
-      err => {
-        this.pageLoading = false;
-        console.log(err);
-      }
-    );
+    return this.setupService
+      .getData("/hrmsetup/get/all/academic/disciplines")
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          this.disciplines = data.setuplist;
+          this.rows = this.disciplines;
+          this.srch = [...this.rows];
+        },
+        (err) => {
+          this.pageLoading = false;
+          console.log(err);
+        }
+      );
   }
   rerender(): void {
-    $("#datatable")
-      .DataTable()
-      .clear();
+    $("#datatable").DataTable().clear();
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
     this.lstEmployee = [];
     this.loadEmployee();
     setTimeout(() => {
-      this.dtTrigger.next();
+      //   this.dtTrigger.next();
     }, 1000);
   }
 
@@ -104,24 +102,26 @@ export class AcademicDisciplineComponent implements OnInit {
   // Add employee  Modal Api Call
   addData(academicDisciplineForm: FormGroup) {
     const payload = academicDisciplineForm.value;
-    payload.rank = parseInt(payload.rank)
-    return this.setupService.updateData("/hrmsetup/add/update/academic/discipline", payload).subscribe(
-      res => {
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire('Success', message, 'success')
-          this.initializeForm();
-          $("#add_academic_discipline").modal("hide");
-        } else {
-          swal.fire('Error', message, 'error')
+    payload.rank = parseInt(payload.rank);
+    return this.setupService
+      .updateData("/hrmsetup/add/update/academic/discipline", payload)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#add_academic_discipline").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getAcademicDisplines();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
         }
-        this.getAcademicDisplines();
-      },
-      err => {
-        const message = err.status.message.friendlyMessage;
-        swal.fire('Error', message, 'error')
-      }
-    );
+      );
     // let DateJoin = this.pipe.transform(
     //   this.addEmployeeForm.value.JoinDate,
     //   "dd-MM-yyyy"
@@ -193,14 +193,14 @@ export class AcademicDisciplineComponent implements OnInit {
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
-   this.formTitle = "Edit Academic Discipline";
+    this.formTitle = "Edit Academic Discipline";
     this.academicDisciplineForm.patchValue({
       id: row.id,
       discipline: row.discipline,
       description: row.description,
-      rank: row.rank
+      rank: row.rank,
     });
-    $('#add_academic_discipline').modal('show')
+    $("#add_academic_discipline").modal("show");
     // this.editId = value;
     // const index = this.lstEmployee.findIndex(item => {
     //   return item.id === value;
@@ -239,7 +239,7 @@ export class AcademicDisciplineComponent implements OnInit {
   //search by Discipline
   searchDiscipline(val) {
     this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function(d) {
+    let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
       return d.discipline.toLowerCase().indexOf(val) !== -1 || !val;
     });
@@ -249,7 +249,7 @@ export class AcademicDisciplineComponent implements OnInit {
   //search by Description
   searchDescription(val) {
     this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function(d) {
+    let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
       return d.description.toLowerCase().indexOf(val) !== -1 || !val;
     });
@@ -259,7 +259,7 @@ export class AcademicDisciplineComponent implements OnInit {
   //search by purchase
   searchByDesignation(val) {
     this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function(d) {
+    let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
       return d.designation.toLowerCase().indexOf(val) !== -1 || !val;
     });
@@ -272,17 +272,17 @@ export class AcademicDisciplineComponent implements OnInit {
   }
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
+    //this.dtTrigger.unsubscribe();
   }
 
   addAcademicDiscipline() {
     this.formTitle = "Add Academic Discipline";
-    $('#add_academic_discipline').modal('show')
+    $("#add_academic_discipline").modal("show");
   }
 
   closeModal() {
-    $('#add_academic_discipline').modal('hide');
-    this.initializeForm()
+    $("#add_academic_discipline").modal("hide");
+    this.initializeForm();
   }
 
   delete(id: any) {
@@ -338,28 +338,25 @@ export class AcademicDisciplineComponent implements OnInit {
       });
   }
 
-  
   addItemId(event, id) {
     if (event.target.checked) {
       if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id)
+        this.selectedId.push(id);
       }
     } else {
-      this.selectedId = this.selectedId.filter(_id => {
+      this.selectedId = this.selectedId.filter((_id) => {
         return _id !== id;
-      })
+      });
     }
-
   }
-  
+
   checkAll(event) {
     if (event.target.checked) {
-      this.selectedId = this.disciplines.map(item => {
-        return item.id
-      })
+      this.selectedId = this.disciplines.map((item) => {
+        return item.id;
+      });
     } else {
-      this.selectedId = []
+      this.selectedId = [];
     }
   }
-
 }
