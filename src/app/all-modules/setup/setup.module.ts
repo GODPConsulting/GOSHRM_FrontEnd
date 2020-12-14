@@ -1,3 +1,4 @@
+import { ProfMembershipComponent } from './prof-membership/prof-membership.component';
 
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -25,6 +26,7 @@ import { LanguageComponent } from './language/language.component';
 import { JobDetailComponent } from "src/app/all-modules/setup/job-detail/job-detail.component";
 import { ProfCertificationComponent } from "./prof-certification/prof-certification.component";
 
+
 @NgModule({
   declarations: [
     SetupComponent,
@@ -42,6 +44,7 @@ import { ProfCertificationComponent } from "./prof-certification/prof-certificat
     LanguageComponent,
     JobDetailComponent,
     ProfCertificationComponent,
+    ProfMembershipComponent,
   ],
   imports: [
     CommonModule,

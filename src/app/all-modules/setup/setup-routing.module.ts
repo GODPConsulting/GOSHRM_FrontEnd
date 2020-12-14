@@ -1,3 +1,4 @@
+import { ProfMembershipComponent } from './prof-membership/prof-membership.component';
 import { LanguageComponent } from './language/language.component';
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
@@ -16,6 +17,7 @@ import { AcademicGradeComponent } from "./academic-grade/academic-grade.componen
 import { JobDetailComponent } from "src/app/all-modules/setup/job-detail/job-detail.component";
 import { ProfCertificationComponent } from "./prof-certification/prof-certification.component";
 
+
 const routes: Routes = [
   {
     path: "",
@@ -25,6 +27,10 @@ const routes: Routes = [
       {
         path: "language",
         component: LanguageComponent,
+      },
+      {
+        path: "prof-membership",
+        component: ProfMembershipComponent,
       },
       {
         path: "job-grade",
