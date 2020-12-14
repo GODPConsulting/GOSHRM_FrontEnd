@@ -439,37 +439,7 @@
                     active:
                       urlComplete.subUrl === 'job-detail'}">Job Detail</a>
               </li>
-              <li routerLink="/employees/employeeleaves">
-                <a href="javascript:" [ngClass]="{
-                    active: urlComplete.subUrl === 'employeeleaves'
-                  }">Leaves (Employee)</a>
-              </li>
 
-              <li routerLink="/employees/leavesettings">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'leavesettings' }">Leave Settings</a>
-              </li>
-              <li routerLink="/employees/attendanceadmin">
-                <a href="javascript:" [ngClass]="{
-                    active: urlComplete.subUrl === 'attendanceadmin'
-                  }">Attendance (Admin)</a>
-              </li>
-              <li routerLink="/employees/attendanceemployee">
-                <a href="javascript:" [ngClass]="{
-                    active: urlComplete.subUrl === 'attendanceemployee'
-                  }">Attendance (Employee)</a>
-              </li>
-              <li routerLink="/employees/departments">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'departments' }">Departments</a>
-              </li>
-              <li routerLink="/employees/designation">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'designation' }">Designations</a>
-              </li>
-              <li routerLink="/employees/timesheet" [hidden]="true">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'timesheet' }">Timesheet</a>
-              </li>
-              <li routerLink="/employees/overtime">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'overtime' }">Overtime</a>
-              </li>
             </ul>
           </li>
           <li [ngClass]="{

@@ -5,17 +5,15 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DatePipe } from "@angular/common";
 import { Subject } from "rxjs";
 import { ToastrService } from "ngx-toastr";
-import swal from 'sweetalert2'
-
+import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: 'app-prof-certification',
-  templateUrl: './prof-certification.component.html',
-  styleUrls: ['./prof-certification.component.css']
+  selector: "app-prof-certification",
+  templateUrl: "./prof-certification.component.html",
+  styleUrls: ["./prof-certification.component.css"],
 })
 export class ProfCertificationComponent implements OnInit {
-
   public dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
@@ -27,12 +25,12 @@ export class ProfCertificationComponent implements OnInit {
 
   public profCertificationForm: FormGroup;
   public editEmployeeForm: FormGroup;
-  formTitle: string  = "Add Professional Certification"
+  formTitle: string = "Add Professional Certification";
   public pipe = new DatePipe("en-US");
   public rows = [];
   public srch = [];
   public statusValue;
-  public dtTrigger: Subject<any> = new Subject();
+  //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
   value: any;
@@ -46,7 +44,7 @@ export class ProfCertificationComponent implements OnInit {
 
   ngOnInit(): void {
     $(".floating")
-      .on("focus blur", function(e) {
+      .on("focus blur", function (e) {
         $(this)
           .parents(".form-focus")
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
@@ -65,20 +63,22 @@ export class ProfCertificationComponent implements OnInit {
   }
   getprofCertification() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/prof_certification").subscribe(
-      data => {
-        this.pageLoading = false;
-        this.certifications = data.setuplist;
-        this.rows = this.certifications;
-        this.srch = [...this.rows];
-      },
-      err => {
-        this.pageLoading = false;
-        console.log(err);
-      }
-    );
+    return this.setupService
+      .getData("/hrmsetup/get/all/prof_certification")
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          this.certifications = data.setuplist;
+          this.rows = this.certifications;
+          this.srch = [...this.rows];
+        },
+        (err) => {
+          this.pageLoading = false;
+          console.log(err);
+        }
+      );
   }
-  rerender(): void {
+  /*  rerender(): void {
     $("#datatable")
       .DataTable()
       .clear();
@@ -91,7 +91,7 @@ export class ProfCertificationComponent implements OnInit {
       this.dtTrigger.next();
     }, 1000);
   }
-
+ */
   // Get Employee  Api Call
   loadEmployee() {
     // this.srvModuleService.get(this.url).subscribe((data) => {
@@ -104,24 +104,26 @@ export class ProfCertificationComponent implements OnInit {
   // Add employee  Modal Api Call
   addData(profCertificationForm: FormGroup) {
     const payload = profCertificationForm.value;
-    payload.rank = parseInt(payload.rank)
-    return this.setupService.updateData("/hrmsetup/add/update/prof_certification", payload).subscribe(
-      res => {
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire('Success', message, 'success')
-          this.initializeForm();
-          $("#add-prof-certification").modal("hide");
-        } else {
-          swal.fire('Error', message, 'error')
+    payload.rank = parseInt(payload.rank);
+    return this.setupService
+      .updateData("/hrmsetup/add/update/prof_certification", payload)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#add-prof-certification").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getprofCertification();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
         }
-        this.getprofCertification();
-      },
-      err => {
-        const message = err.status.message.friendlyMessage;
-        swal.fire('Error', message, 'error')
-      }
-    );
+      );
     // let DateJoin = this.pipe.transform(
     //   this.addEmployeeForm.value.JoinDate,
     //   "dd-MM-yyyy"
@@ -193,14 +195,14 @@ export class ProfCertificationComponent implements OnInit {
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
-   this.formTitle = "Edit Professional Certification";
+    this.formTitle = "Edit Professional Certification";
     this.profCertificationForm.patchValue({
       id: row.id,
       certification: row.certification,
       description: row.description,
-      rank: row.rank
+      rank: row.rank,
     });
-    $('#add-prof-certification').modal('show')
+    $("#add-prof-certification").modal("show");
     // this.editId = value;
     // const index = this.lstEmployee.findIndex(item => {
     //   return item.id === value;
@@ -239,7 +241,7 @@ export class ProfCertificationComponent implements OnInit {
   //search by Certification
   searchCertification(val) {
     this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function(d) {
+    let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
       return d.certification.toLowerCase().indexOf(val) !== -1 || !val;
     });
@@ -249,13 +251,12 @@ export class ProfCertificationComponent implements OnInit {
   //search by Description
   searchDescription(val) {
     this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function(d) {
+    let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
       return d.description.toLowerCase().indexOf(val) !== -1 || !val;
     });
     this.rows.push(...temp);
   }
-
 
   //getting the status value
   getStatus(data) {
@@ -263,17 +264,17 @@ export class ProfCertificationComponent implements OnInit {
   }
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
+    // this.dtTrigger.unsubscribe();
   }
 
   addProfCertification() {
     this.formTitle = "Add Professional Certification";
-    $('#add-prof-certification').modal('show')
+    $("#add-prof-certification").modal("show");
   }
 
   closeModal() {
-    $('#add-prof-certification').modal('hide');
-    this.initializeForm()
+    $("#add-prof-certification").modal("hide");
+    this.initializeForm();
   }
 
   delete(id: any) {
@@ -329,28 +330,25 @@ export class ProfCertificationComponent implements OnInit {
       });
   }
 
-  
   addItemId(event, id) {
     if (event.target.checked) {
       if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id)
+        this.selectedId.push(id);
       }
     } else {
-      this.selectedId = this.selectedId.filter(_id => {
+      this.selectedId = this.selectedId.filter((_id) => {
         return _id !== id;
-      })
+      });
     }
-
   }
-  
+
   checkAll(event) {
     if (event.target.checked) {
-      this.selectedId = this.certifications.map(item => {
-        return item.id
-      })
+      this.selectedId = this.certifications.map((item) => {
+        return item.id;
+      });
     } else {
-      this.selectedId = []
+      this.selectedId = [];
     }
   }
-
 }
