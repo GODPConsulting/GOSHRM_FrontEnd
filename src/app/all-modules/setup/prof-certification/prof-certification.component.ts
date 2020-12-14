@@ -9,32 +9,33 @@ import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: "app-high-school-subjects",
-  templateUrl: "./high-school-subjects.component.html",
-  styleUrls: ["./high-school-subjects.component.css"],
+  selector: "app-prof-certification",
+  templateUrl: "./prof-certification.component.html",
+  styleUrls: ["./prof-certification.component.css"],
 })
-export class HighSchoolSubjectsComponent implements OnInit {
+export class ProfCertificationComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
   public dtElement: DataTableDirective;
   public lstEmployee: any;
-  public subjects: any[] = [];
+  public certifications: any[] = [];
   public url: any = "employeelist";
   public tempId: any;
   public editId: any;
 
-  public highSchoolForm: FormGroup;
+  public profCertificationForm: FormGroup;
   public editEmployeeForm: FormGroup;
-  formTitle: string = "Add High School Subject";
+  formTitle: string = "Add Professional Certification";
   public pipe = new DatePipe("en-US");
   public rows = [];
   public srch = [];
   public statusValue;
-  public dtTrigger: Subject<any> = new Subject();
+  //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
+
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -50,24 +51,25 @@ export class HighSchoolSubjectsComponent implements OnInit {
       })
       .trigger("blur");
     this.initializeForm();
-    this.getHighSchoolSub();
+    this.getprofCertification();
   }
   initializeForm() {
-    this.highSchoolForm = this.formBuilder.group({
+    this.profCertificationForm = this.formBuilder.group({
       id: [0],
-      subject: ["", Validators.required],
+      certification: ["", Validators.required],
       description: ["", Validators.required],
+      rank: [0, Validators.required],
     });
   }
-  getHighSchoolSub() {
+  getprofCertification() {
     this.pageLoading = true;
     return this.setupService
-      .getData("/hrmsetup/get/all/highschoolsubjects")
+      .getData("/hrmsetup/get/all/prof_certification")
       .subscribe(
         (data) => {
           this.pageLoading = false;
-          this.subjects = data.setuplist;
-          this.rows = this.subjects;
+          this.certifications = data.setuplist;
+          this.rows = this.certifications;
           this.srch = [...this.rows];
         },
         (err) => {
@@ -76,8 +78,10 @@ export class HighSchoolSubjectsComponent implements OnInit {
         }
       );
   }
-  rerender(): void {
-    $("#datatable").DataTable().clear();
+  /*  rerender(): void {
+    $("#datatable")
+      .DataTable()
+      .clear();
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
     });
@@ -87,7 +91,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
       this.dtTrigger.next();
     }, 1000);
   }
-
+ */
   // Get Employee  Api Call
   loadEmployee() {
     // this.srvModuleService.get(this.url).subscribe((data) => {
@@ -98,21 +102,22 @@ export class HighSchoolSubjectsComponent implements OnInit {
   }
 
   // Add employee  Modal Api Call
-  addHighSchoolSub(Form: FormGroup) {
-    const payload = Form.value;
+  addData(profCertificationForm: FormGroup) {
+    const payload = profCertificationForm.value;
+    payload.rank = parseInt(payload.rank);
     return this.setupService
-      .updateData("/hrmsetup/add/update/highschoolsubject", payload)
+      .updateData("/hrmsetup/add/update/prof_certification", payload)
       .subscribe(
         (res) => {
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            $("#add_high_school_subject").modal("hide");
+            $("#add-prof-certification").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getHighSchoolSub();
+          this.getprofCertification();
         },
         (err) => {
           const message = err.status.message.friendlyMessage;
@@ -190,13 +195,14 @@ export class HighSchoolSubjectsComponent implements OnInit {
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
-    this.formTitle = "Edit High School Subject";
-    this.highSchoolForm.patchValue({
+    this.formTitle = "Edit Professional Certification";
+    this.profCertificationForm.patchValue({
       id: row.id,
-      subject: row.subject,
+      certification: row.certification,
       description: row.description,
+      rank: row.rank,
     });
-    $("#add_high_school_subject").modal("show");
+    $("#add-prof-certification").modal("show");
     // this.editId = value;
     // const index = this.lstEmployee.findIndex(item => {
     //   return item.id === value;
@@ -232,32 +238,22 @@ export class HighSchoolSubjectsComponent implements OnInit {
     // this.toastr.success("Employee deleted sucessfully..!", "Success");
   }
 
-  //search by Id
-  searchId(val) {
+  //search by Certification
+  searchCertification(val) {
     this.rows.splice(0, this.rows.length);
     let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
-      return d.subject.toLowerCase().indexOf(val) !== -1 || !val;
+      return d.certification.toLowerCase().indexOf(val) !== -1 || !val;
     });
     this.rows.push(...temp);
   }
 
-  //search by name
-  searchName(val) {
+  //search by Description
+  searchDescription(val) {
     this.rows.splice(0, this.rows.length);
     let temp = this.srch.filter(function (d) {
       val = val.toLowerCase();
       return d.description.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    this.rows.push(...temp);
-  }
-
-  //search by purchase
-  searchByDesignation(val) {
-    this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function (d) {
-      val = val.toLowerCase();
-      return d.designation.toLowerCase().indexOf(val) !== -1 || !val;
     });
     this.rows.push(...temp);
   }
@@ -268,39 +264,17 @@ export class HighSchoolSubjectsComponent implements OnInit {
   }
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
+    // this.dtTrigger.unsubscribe();
   }
 
-  openModal() {
-    this.formTitle = "Add High School Subject";
-    $("#add_high_school_subject").modal("show");
+  addProfCertification() {
+    this.formTitle = "Add Professional Certification";
+    $("#add-prof-certification").modal("show");
   }
 
   closeModal() {
-    $("#add_high_school_subject").modal("hide");
+    $("#add-prof-certification").modal("hide");
     this.initializeForm();
-  }
-
-  addItemId(event, id) {
-    if (event.target.checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
-  }
-
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.subjects.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
   }
 
   delete(id: any) {
@@ -322,6 +296,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
       };
       //console.log(this.selectedId);
     }
+
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -332,15 +307,16 @@ export class HighSchoolSubjectsComponent implements OnInit {
       })
       .then((result) => {
         //console.log(result);
+
         if (result.value) {
           return this.setupService
-            .deleteData("/hrmsetup/delete/highschoolsubject", payload)
+            .deleteData("/hrmsetup/delete/prof_certification", payload)
             .subscribe(
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("Success", message, "success").then(() => {
-                    this.getHighSchoolSub();
+                    this.getprofCertification();
                   });
                 } else {
                   swal.fire("Error", message, "error");
@@ -352,6 +328,27 @@ export class HighSchoolSubjectsComponent implements OnInit {
             );
         }
       });
-    this.selectedId = [];
+  }
+
+  addItemId(event, id) {
+    if (event.target.checked) {
+      if (!this.selectedId.includes(id)) {
+        this.selectedId.push(id);
+      }
+    } else {
+      this.selectedId = this.selectedId.filter((_id) => {
+        return _id !== id;
+      });
+    }
+  }
+
+  checkAll(event) {
+    if (event.target.checked) {
+      this.selectedId = this.certifications.map((item) => {
+        return item.id;
+      });
+    } else {
+      this.selectedId = [];
+    }
   }
 }

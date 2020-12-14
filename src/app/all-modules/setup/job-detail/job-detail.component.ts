@@ -1,36 +1,21 @@
-import { DatePipe } from "@angular/common";
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { DataTableDirective } from "angular-datatables";
-import { Subject } from "rxjs";
+import { Component, OnInit } from "@angular/core";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: "app-employment-type",
-  templateUrl: "./employment-type.component.html",
-  styleUrls: ["./employment-type.component.css"],
+  selector: "app-job-detail",
+  templateUrl: "./job-detail.component.html",
+  styleUrls: ["./job-detail.component.css"],
 })
-export class EmploymentTypeComponent implements OnInit {
-  formTitle;
-  public dtOptions: DataTables.Settings = {};
-  //@ViewChild(DataTableDirective, { static: false })
-  public employmentTypeForm: FormGroup;
-  //public employeeForm: FormGroup;
-  public employmentTypes: any[] = [];
+export class JobDetailComponent implements OnInit {
+  public jobDetails: any[] = [];
   public rows = [];
-  //public dtTrigger: Subject<any> = new Subject();
-  public dtElement: DataTableDirective;
-  public lstEmployee: any;
-  //public url: any = "employeelist";
-  // public tempId: any;
-  // public editId: any;
   public srch = [];
-  // public pipe = new DatePipe("en-US");
-  // public DateJoin;
-  // public statusValue;
   pageLoading: boolean;
+  public formTitle = "Add Job Details";
+  public jobDetailForm: FormGroup;
   selectedId: any[] = [];
 
   constructor(
@@ -46,53 +31,76 @@ export class EmploymentTypeComponent implements OnInit {
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
       })
       .trigger("blur");
+    this.getJobDetail();
     this.initializeForm();
-    this.getEmploymentType();
   }
 
-  initializeForm() {
-    this.employmentTypeForm = this.formBuilder.group({
+  /*  initializeForm() {
+    this.jobDetailForm = this.formBuilder.group({
       id: [0],
-      employment_type: ["", Validators.required],
-      description: ["", Validators.required],
+      job_title: ["", Validators.required],
+      job_description: ["", Validators.required],
+      sub_Skills: this.formBuilder.group([
+        {
+          job_details_Id: 0,
+          skill: "",
+          description: "",
+          weight: "",
+        },
+        Validators.required,
+      ]),
+    });
+  }
+ */
+
+  initializeForm() {
+    this.jobDetailForm = this.formBuilder.group({
+      id: [0],
+      job_title: ["", Validators.required],
+      job_description: ["", Validators.required],
+      sub_Skills: this.formBuilder.array([
+        this.formBuilder.group({
+          job_details_Id: [0],
+          skill: ["", Validators.required],
+          description: ["", Validators.required],
+          weight: ["", Validators.required],
+        }),
+      ]),
     });
   }
 
+  getJobDetail() {
+    this.pageLoading = true;
+    return this.setupService.getData("/hrmsetup/get/all/jobdetails").subscribe(
+      (data) => {
+        this.pageLoading = false;
+        console.log(data);
+        this.jobDetails = data.setuplist;
+        this.rows = this.jobDetails;
+        this.srch = [...this.rows];
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
+  }
+
   openModal() {
-    this.formTitle = "Add Employment Type";
-    $("#add_employment_type").modal("show");
+    $("#add_job_detail").modal("show");
   }
 
   closeModal() {
-    $("#add_employment_type").modal("hide");
+    $("#add_job_detail").modal("hide");
     this.initializeForm();
   }
 
-  getEmploymentType() {
-    this.pageLoading = true;
-    return this.setupService
-      .getData("/hrmsetup/get/all/employmenttypes")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          //console.log(data);
-          this.employmentTypes = data.setuplist;
-          this.rows = this.employmentTypes;
-          this.srch = [...this.rows];
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
-  }
-
-  // Add employment via reactive form Modal Api Call
-  addEmploymentType(Form: FormGroup) {
+  // Add employee  Modal Api Call
+  addJobDetail(Form: FormGroup) {
     const payload = Form.value;
     console.log(payload);
     return this.setupService
-      .updateData("/hrmsetup/add/update/employmenttype", payload)
+      .updateData("/hrmsetup/add/update/jobdetail", payload)
       .subscribe(
         (res) => {
           const message = res.status.message.friendlyMessage;
@@ -101,11 +109,11 @@ export class EmploymentTypeComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            $("#add_employment_type").modal("hide");
+            $("#add_job_detail").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getEmploymentType();
+          this.getJobDetail();
         },
         (err) => {
           const message = err.status.message.friendlyMessage;
@@ -114,8 +122,25 @@ export class EmploymentTypeComponent implements OnInit {
       );
   }
 
+  // To Get The employee Edit Id And Set Values To Edit Modal Form
+  editJobDetail(row) {
+    this.formTitle = "Edit Job Detail";
+    this.jobDetailForm.patchValue({
+      id: row.id,
+      job_title: row.job_title,
+      job_description: row.job_description,
+      sub_Skills: row.sub_Skills,
+      job_details_Id: row.job_details_Id,
+      skill: row.skill,
+      description: row.description,
+      weight: row.weight,
+    });
+    $("#add_job_detail").modal("show");
+  }
+
   delete(id: any) {
     let payload;
+
     if (id) {
       const body = [id];
       //body.push(id);
@@ -144,13 +169,13 @@ export class EmploymentTypeComponent implements OnInit {
         //console.log(result);
         if (result.value) {
           return this.setupService
-            .deleteData("/hrmsetup/delete/employmenttype", payload)
+            .deleteData("/hrmsetup/delete/hmo", payload)
             .subscribe(
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("Success", message, "success").then(() => {
-                    this.getEmploymentType();
+                    this.getJobDetail();
                   });
                 } else {
                   swal.fire("Error", message, "error");
@@ -162,17 +187,17 @@ export class EmploymentTypeComponent implements OnInit {
             );
         }
       });
+    this.selectedId = [];
   }
 
-  // To Get The employee Edit Id And Set Values To Edit Modal Form
-  edit(row) {
-    this.formTitle = "Edit High School Subject";
-    this.employmentTypeForm.patchValue({
-      id: row.id,
-      employment_type: row.employment_type,
-      description: row.description,
-    });
-    $("#add_employment_type").modal("show");
+  checkAll(event) {
+    if (event.target.checked) {
+      this.selectedId = this.jobDetails.map((item) => {
+        return item.id;
+      });
+    } else {
+      this.selectedId = [];
+    }
   }
 
   addItemId(event, id) {
@@ -184,16 +209,6 @@ export class EmploymentTypeComponent implements OnInit {
       this.selectedId = this.selectedId.filter((_id) => {
         return _id !== id;
       });
-    }
-  }
-
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.employmentTypes.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
     }
   }
 }
