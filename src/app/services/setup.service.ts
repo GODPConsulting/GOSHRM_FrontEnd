@@ -7,6 +7,11 @@ import { tap } from "rxjs/operators";
   providedIn: "root",
 })
 export class SetupService {
+  getProfMembership: any;
+  updateProfMembership: any;
+  deleteProfMembership: any;
+  deleteLanguage: any;
+  updateLanguage: any;
   constructor(private apiService: ApiService) {}
 
   getData(url: string): Observable<any> {

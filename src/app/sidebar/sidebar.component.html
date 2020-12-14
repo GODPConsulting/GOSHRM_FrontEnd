@@ -230,11 +230,13 @@
                   (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'academic-discipline') ||
                   (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'academic-qualification') ||
-                  (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'employment-level') ||
                   (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'hmo') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'language') ||
+                 (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'prof-membership') ||
                     (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'gym-workout') ||
                     (urlComplete.mainUrl === 'setup' &&
@@ -286,6 +288,12 @@
                       (urlComplete.mainUrl === 'setup' &&
                       urlComplete.subUrl === 'gym-workout') ||
                     (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'job-grade') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'language') ||
+               (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'prof-membership') ||
+                  (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'academic-qualification') ||
                       (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'high-school-grade') ||
@@ -347,6 +355,10 @@
                     urlComplete.subUrl === 'academic-discipline') ||
                     (urlComplete.mainUrl === 'setup' &&
                       urlComplete.subUrl === 'hmo') ||
+                 (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'language') ||
+                (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'prof-membership') ||
                       (urlComplete.mainUrl === 'setup' &&
                       urlComplete.subUrl === 'gym-workout') ||
                     (urlComplete.mainUrl === 'setup' &&
@@ -394,6 +406,11 @@
               <li routerLink="/setup/hmo">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'hmo' }">HMO</a>
               </li>
+              <li routerLink="/setup/language">
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'language' }">Language</a>
+              </li>
+              <li routerLink="/setup/prof-membership">
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'prof-membership' }">Prof Membership</a>
               <li routerLink="/setup/academic-grade">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-grade'}">Academic Grade</a>
               </li>
