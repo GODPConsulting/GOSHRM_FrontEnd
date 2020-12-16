@@ -6,8 +6,18 @@ import { DatePipe } from "@angular/common";
 import { Subject } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import swal from "sweetalert2";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { ApiService } from "src/app/services/api.service";
+import { toBase64String } from "@angular/compiler/src/output/source_map";
+import { HttpResponse } from "@angular/common/http";
+import { saveAs } from "file-saver";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 declare const $: any;
+const EXCEL_TYPE =
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+const EXCEL_EXTENSION = ".xlsx";
 @Component({
   selector: "app-academic-discipline",
   templateUrl: "./academic-discipline.component.html",
@@ -25,6 +35,7 @@ export class AcademicDisciplineComponent implements OnInit {
 
   public academicDisciplineForm: FormGroup;
   public editEmployeeForm: FormGroup;
+  public acadDisciplineFile: FormGroup;
   formTitle: string = "Add Academic Discipline";
   public pipe = new DatePipe("en-US");
   public rows = [];
@@ -35,11 +46,18 @@ export class AcademicDisciplineComponent implements OnInit {
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
-
+  trustedUrl: SafeUrl;
+  blob;
+  data;
+  dload;
+  file: File;
+  //= "http://godp.co.uk:72/api/v1/hrmsetup/download/academic/disciplines";
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private sanitizer: DomSanitizer,
+    private apiservice: ApiService
   ) {}
 
   ngOnInit(): void {
@@ -51,14 +69,268 @@ export class AcademicDisciplineComponent implements OnInit {
       })
       .trigger("blur");
     this.initializeForm();
+    //this.initializeUploadForm();
     this.getAcademicDisplines();
   }
+
+  /* xhr method
+  onSelectedFile(event: FileList) {
+    this.file = event.item(0);
+  } */
+
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.acadDisciplineFile.patchValue({
+      uploadInput: this.file,
+    });
+  }
+  /* 
+  initializeUploadForm() {
+    this.acadDisciplineFile = this.formBuilder.group({
+      uploadInput: [""],
+    });
+  } */
+
+  uploadAcadDiscipline() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.acadDisciplineFile.get("uploadInput").value
+    );
+
+    console.log(formData, this.acadDisciplineFile.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/academic/discipline", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_academic_discipline").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getAcademicDisplines();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  /* xhr method
+  uploadAcadDisciplinee() {
+    let formData = new FormData();
+    formData.append("uploadInput", this.file, this.file.name);
+
+    console.log({ formData }, this.file);
+    return this.setupService
+      .upload("/hrmsetup/upload/academic/discipline", this.file)
+      .then((res) => {
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("Success", message, "success");
+          this.initializeForm();
+          $("#add_academic_discipline").modal("hide");
+        } else {
+          swal.fire("Error", message, "error");
+        }
+        this.getAcademicDisplines();
+      })
+      .catch((err) => {
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      });
+  } */
+
+  downloadFile() {
+    this.apiservice.downloadLink().subscribe(
+      (resp) => {
+        //console.log(resp.headers.get("content-disposition"));
+        //this.data = resp.body;
+        console.log(resp);
+        //console.log(atob(JSON.stringify(resp)));
+        this.blob = resp;
+        const data = resp;
+        if (data != undefined) {
+          const byteString = atob(JSON.stringify(data));
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const bb = new Blob([ab]);
+          try {
+            const file = new File([bb], "File.xlsx", {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(file, bb);
+            saveAs(file);
+          } catch (err) {
+            const textFileAsBlob = new Blob([bb], {
+              type: "application/vnd.ms-excel",
+            });
+            window.navigator.msSaveBlob(
+              textFileAsBlob,
+              "Deposit Category.xlsx"
+            );
+          }
+        } else {
+          return swal.fire(`GOS HRM`, "Unable to download data", "error");
+        }
+      },
+      (err) => {}
+    );
+  }
+
+  downloadFileee() {
+    this.apiservice.downloadLink().subscribe((resp) => {
+      //console.log(resp.headers.get("content-disposition"));
+      //this.data = resp.body;
+      console.log(resp);
+      console.log(atob(JSON.stringify(resp)));
+      this.blob = resp;
+      this.downloadExcel(
+        this.blob.setuplist,
+        "work"
+      ); /*
+      let file = new File([this.data], "text.xlsx", {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+      });
+      FileSaver.saveAs(file); */
+    });
+  }
+
+  downloadExcel(json, excelFileName: string) {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { data: worksheet },
+      SheetNames: ["data"],
+    };
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    this.saveAsExcelFile(excelBuffer, excelFileName);
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(
+      data,
+      fileName + "_export_" + new Date().getTime() + EXCEL_EXTENSION
+    );
+  }
+
+  /**/
+
+  /* 
+  downloadFile() {
+    this.apiservice.download().subscribe((data) => {
+      console.log(data);
+      //this.blob = window.atob(JSON.stringify(data));
+
+      this.dload = toBase64String((JSON.stringify(data)));
+      console.log(this.blob);
+    });
+  }
+
+  _base64ToArrayBuffer(base64) {
+    var binary_string = window.atob(base64);
+    var len = binary_string.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+      bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+  }
+ */
+  /* 
+  downloadFile() {
+    this.apiservice.download().subscribe((data) => {
+      console.log(data);
+      this.blob = window.atob(JSON.stringify(data));
+      console.log(this.blob);
+    });
+  }
+ */
+  /* downloadFile() {
+   this.apiservice.download("hrmsetup/download/academic/disciplines").subscribe(file => {
+     this.blob= new Blob([file],{type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+
+   })
+  } 
+*/
+  /*  Working for csv download
+
+  downloadFile() {
+    return this.setupService
+      .getData("/hrmsetup/get/all/academic/disciplines")
+      .subscribe(
+        (data) => {
+          //this.users = data;
+          console.log(data);
+          let serialNum = 1;
+          const customerData = data.setuplist;
+          const jsonData = customerData.map((row) => ({
+            //console.log(row);
+
+            "S/N": serialNum++,
+            Discipline: row.discipline,
+            Description: row.description,
+            Rank: row.rank,
+          }));
+
+          console.log(jsonData);
+          const csvData = this.objToCsv(jsonData);
+          this.downloadData(csvData);
+        },
+        (err) => console.log(err)
+      );
+  }
+
+  objToCsv(data) {
+    const csvRows = [];
+    // get the headers
+    const headers = Object.keys(data[0]);
+    csvRows.push(headers);
+
+    // loop over rows
+    for (const row of data) {
+      const values = headers.map((header) => {
+        const escaped = ("" + row[header]).replace(/"/g, '\\"'); // form escaped comma separated values
+        return `"${escaped}"`;
+      });
+      csvRows.push(values.join(","));
+    }
+    return csvRows.join("\n");
+  }
+
+  downloadData(data) {
+    const blob = new Blob([data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const url = window.URL.createObjectURL(blob);
+    this.trustedUrl = this.sanitizer.bypassSecurityTrustUrl(url);
+  }
+*/
+
+  openUploadModal() {
+    $("#upload_academic_discipline").modal("show");
+  }
+
   initializeForm() {
     this.academicDisciplineForm = this.formBuilder.group({
       id: [0],
       discipline: ["", Validators.required],
       description: ["", Validators.required],
       rank: [0, Validators.required],
+    });
+    this.acadDisciplineFile = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
   getAcademicDisplines() {
@@ -102,6 +374,8 @@ export class AcademicDisciplineComponent implements OnInit {
   // Add employee  Modal Api Call
   addData(academicDisciplineForm: FormGroup) {
     const payload = academicDisciplineForm.value;
+    console.log(payload);
+
     payload.rank = parseInt(payload.rank);
     return this.setupService
       .updateData("/hrmsetup/add/update/academic/discipline", payload)
