@@ -279,7 +279,7 @@ export class LanguageComponent implements OnInit {
   closeModal() {
     $('#add_language').modal('hide');
     this.initializeForm()
-  }
+  } 
 
   addLanguage(languageForm: FormGroup) {
     const payload = languageForm.value;

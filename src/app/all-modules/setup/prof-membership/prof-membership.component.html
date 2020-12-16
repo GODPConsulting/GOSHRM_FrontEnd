@@ -42,40 +42,31 @@
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-striped custom-table datatable" datatable [dtOptions]="dtOptions"
+                <table  class="table table-striped custom-table datatable" datatable [dtOptions]="dtOptions"
                     [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === languages.length"
+                                <input type="checkbox" [checked]="selectedId.length === profMemberships.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Proffessional Membership</th>
+                            <th>Professional Membership</th>
                             <th>Description</th>
-                            <th class="text-right no-sort">Action</th>
+                            <th ></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of languages | filter:searchText; let i = index">
+                        <tr (click)="edit(row)" *ngFor="let row of profMemberships | filter:searchText; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.prof_membership }}</td>
-                            <td>{{ row.prof_membership_description }}</td>
+                            <td>{{ row.professional_membership }}</td>
+                            <td>{{ row.description }}</td>
                             <td class="text-right">
-                                <div class="dropdown dropdown-action">
-                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_employee"
-                                            (click)="edit(row)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                        <a class="dropdown-item" (click)="delete(row.id)"><i
-                                                class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                    </div>
-                                </div>
+                                
                             </td>
                         </tr>
                     </tbody>
@@ -87,7 +78,7 @@
 <!-- /Page Content -->
 
 <!-- Add HMO Modal -->
-<div id="add_language" class="modal custom-modal fade" role="dialog">
+<div id="add_prof_membership" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -97,22 +88,22 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="addLanguage(languageForm)" [formGroup]="languageForm">
+                <form (ngSubmit)="addProfMembership(professionalMembershipForm)" [formGroup]="professionalMembershipForm">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Prof Membership <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                profMembershipForm.get('prof_membership').invalid &&
-                                profMembershipForm.get('prof_membership').touched
-                    " formControlName="language" />
+                                professionalMembershipForm.get('professional_membership').invalid &&
+                                professionalMembershipForm.get('professional_membership').touched
+                    " formControlName="professional_membership" />
                                 <div *ngIf="
-                                profMembershipForm.get('prof_membership').invalid &&
-                                profMembershipForm.get('prof_membership').touched
+                                professionalMembershipForm.get('professional_membership').invalid &&
+                                professionalMembershipForm.get('professional_membership').touched
                     ">
                                     <small *ngIf="
-                                    profMembershipForm.get('prof_membership').invalid &&
-                                    profMembershipForm.get('prof_membership').touched
+                                    professionalMembershipForm.get('professional_membership').invalid &&
+                                    professionalMembershipForm.get('professional_membership').touched
                       " class="text-danger">
                                         *Prof Membership Field is required</small>
                                 </div>
@@ -122,16 +113,16 @@
                             <div class="form-group">
                                 <label class="col-form-label">Description <span class="text-danger">*</span></label>
                                 <textarea class="form-control" type="text" [class.invalid]="
-                                profMembershipForm.get('prof_membership_description').invalid &&
-                                profMembershipForm.get('prof_membership_description').touched
+                                professionalMembershipForm.get('description').invalid &&
+                                professionalMembershipForm.get('description').touched
                     " formControlName="description"></textarea>
                                 <div *ngIf="
-                                profMembershipForm.get('prof_membership_description').invalid &&
-                                profMembershipForm.get('prof_membership_description').touched
+                                professionalMembershipForm.get('description').invalid &&
+                                professionalMembershipForm.get('description').touched
                     ">
                                     <small *ngIf="
-                                    profMembershipForm.get('prof_membership_description').invalid &&
-                                    profMembershipForm.get('prof_membership_description').touched
+                                    professionalMembershipForm.get('description').invalid &&
+                                    professionalMembershipForm.get('description').touched
                       " class="text-danger">
                                         *Description Field is required</small>
                                 </div>

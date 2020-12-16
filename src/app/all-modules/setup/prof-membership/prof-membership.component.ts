@@ -23,9 +23,9 @@ export class ProfMembershipComponent implements OnInit {
   public tempId: any;
   public editId: any;
 
-  public profMembershipForm: FormGroup;
-  public editEmployeeForm: FormGroup;
-  formTitle: string  = "Add prof-membership"
+  public professionalMembershipForm: FormGroup;
+  public editProfessionalMembershipForm: FormGroup;
+  formTitle: string  = "Add Professional Membership"
   public pipe = new DatePipe("en-US");
   public rows = [];
   public srch = [];
@@ -50,16 +50,16 @@ export class ProfMembershipComponent implements OnInit {
       })
       .trigger("blur");
     this.initializeForm();
-    this.getProfMembership();
+    this.getProfMembershipForm();
   }
   initializeForm() {
-    this.profMembershipForm = this.formBuilder.group({
+    this.professionalMembershipForm = this.formBuilder.group({
       id: [0],
-      language: ["", Validators.required],
+      professional_membership: ["", Validators.required],
       description: ["", Validators.required]
     });
   }
-  getProfMembership() {
+  getProfMembershipForm() {
     this.pageLoading = true;
     return this.setupService.getData("/hrmsetup/get/all/prof_membership").subscribe(
       (data) => {
@@ -83,14 +83,14 @@ export class ProfMembershipComponent implements OnInit {
       dtInstance.destroy();
     });
     this.lstEmployee = [];
-    this.loadProfMembership();
+    this.loadProfMembershipForm();
     setTimeout(() => {
       this.dtTrigger.next();
     }, 1000);
   }
 
   // Get Employee  Api Call
-  loadProfMembership() {
+  loadProfMembershipForm() {
     // this.srvModuleService.get(this.url).subscribe((data) => {
     //   this.lstEmployee = data;
     //   this.rows = this.lstEmployee;
@@ -157,7 +157,7 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   // edit modal api call
-  editProfMembership() {
+  editProfMembershipForm() {
     // let obj = {
     //   firstname: this.editEmployeeForm.value.FirstName,
     //   lastname: this.editEmployeeForm.value.LastName,
@@ -191,10 +191,10 @@ export class ProfMembershipComponent implements OnInit {
   
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
-    this.formTitle = "Edit prof membership";
-     this.profMembershipForm.patchValue({
+    this.formTitle = "Edit profMembership";
+     this.professionalMembershipForm.patchValue({
        id: row.id,
-       profMembership: row.profMembership,
+       professional_membership: row.professional_membership,
        description: row.description
      });
      $('#add_prof_membership').modal('show')
@@ -281,8 +281,8 @@ export class ProfMembershipComponent implements OnInit {
     this.initializeForm()
   }
 
-  addProfMembership(profMembershipForm: FormGroup) {
-    const payload = profMembershipForm.value;
+  addProfMembership(form: FormGroup) {
+    const payload = form.value;
     return this.setupService
       .updateData("/hrmsetup/add/update/prof_membership", payload)
       .subscribe(
@@ -297,7 +297,7 @@ export class ProfMembershipComponent implements OnInit {
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getProfMembership();
+          this.getProfMembershipForm();
         },
         (err) => {
           const message = err.status.message.friendlyMessage;
@@ -345,7 +345,7 @@ export class ProfMembershipComponent implements OnInit {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("Success", message, "success").then(() => {
-                    this.getProfMembership();
+                    this.getProfMembershipForm();
                   });
                 } else {
                   swal.fire("Error", message, "error");
@@ -372,37 +372,7 @@ export class ProfMembershipComponent implements OnInit {
     }
 
   }
-  deleteItems() {
-    if (this.selectedId.length === 0) {
-      return swal.fire('Error', 'Select items to delete', 'error')
-    }
-    const payload = {
-      itemIds: this.selectedId
-    };
-    swal.fire({
-      title: "Are you sure you want to delete this record?",
-      text: "You won't be able to revert this",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes!"
-    }).then(result => {
-      if (result.value) {
-        return this.setupService.deleteProfMembership(payload).subscribe(res => {
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire('Success', message, 'success').then(() => {
-              this.getProfMembership()
-            })
-          } else {
-            swal.fire('Error', message, 'error')
-          }
-        }, err => {
-          console.log(err);
-        })
-      }
-    })
-
-  }
+ 
   checkAll(event) {
     if (event.target.checked) {
       this.selectedId = this.profMemberships.map(item => {
