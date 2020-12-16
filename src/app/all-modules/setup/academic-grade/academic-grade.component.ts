@@ -4,12 +4,11 @@ import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 declare const $: any;
 @Component({
-  selector: 'app-academic-grade',
-  templateUrl: './academic-grade.component.html',
-  styleUrls: ['./academic-grade.component.css']
+  selector: "app-academic-grade",
+  templateUrl: "./academic-grade.component.html",
+  styleUrls: ["./academic-grade.component.css", "../setup.component.css"]
 })
 export class AcademicGradeComponent implements OnInit {
-
   public grades: any[] = [];
   public rows = [];
   public srch = [];
@@ -17,6 +16,8 @@ export class AcademicGradeComponent implements OnInit {
   public formTitle = "Add Academic Grade";
   public academicGradeForm: FormGroup;
   selectedId: any[] = [];
+  public academicGradeUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,6 +36,42 @@ export class AcademicGradeComponent implements OnInit {
     this.initializeForm();
   }
 
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.academicGradeUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadAcademicGrade() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.academicGradeUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/academic/grade", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_academic_grade").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getAcademicGrade();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
   initializeForm() {
     this.academicGradeForm = this.formBuilder.group({
       id: [0],
@@ -42,22 +79,31 @@ export class AcademicGradeComponent implements OnInit {
       description: ["", Validators.required],
       rank: ["", Validators.required],
     });
+    this.academicGradeUploadForm = this.formBuilder.group({
+      uploadInput: [""],
+    });
   }
 
   getAcademicGrade() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/academic/grades").subscribe(
-      (data) => {
-        this.pageLoading = false;
-        this.grades = data.setuplist;
-        this.rows = this.grades;
-        this.srch = [...this.rows];
-      },
-      (err) => {
-        this.pageLoading = false;
-        console.log(err);
-      }
-    );
+    return this.setupService
+      .getData("/hrmsetup/get/all/academic/grades")
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          this.grades = data.setuplist;
+          this.rows = this.grades;
+          this.srch = [...this.rows];
+        },
+        (err) => {
+          this.pageLoading = false;
+          console.log(err);
+        }
+      );
+  }
+
+  openUploadModal() {
+    $("#upload_academic_grade").modal("show");
   }
 
   openModal() {
@@ -104,7 +150,6 @@ export class AcademicGradeComponent implements OnInit {
       grade: row.grade,
       description: row.description,
       rank: row.rank,
-     
     });
     $("#add-academic-grade").modal("show");
   }
@@ -240,5 +285,4 @@ export class AcademicGradeComponent implements OnInit {
       }
     );
   } */
-
 }

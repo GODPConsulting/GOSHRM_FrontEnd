@@ -58,11 +58,11 @@
                             <th>Reg Date</th>
                             <th>Rating</th>
                             <th>Comments</th>
-                            <th class="text-right no-sort">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let row of hmos | filter:searchText; let i = index">
+                        <tr data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="editHmo(row)"
+                        *ngFor="let row of hmos | filter:searchText; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
@@ -75,19 +75,7 @@
                             <td>{{ row.address }}</td>
                             <td>{{ row.reg_date | date }}</td>
                             <td>{{ row.rating }}</td>
-                            <td>{{ row.order_comments }}</td>
-                            <td class="text-right">
-                                <div class="dropdown dropdown-action">
-                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_employee"
-                                            (click)="editHmo(row)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                        <a class="dropdown-item" (click)="delete(row.id)"><i
-                                                class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                    </div>
-                                </div>
-                            </td>
+                            <td>{{ row.other_comments }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -249,16 +237,16 @@
                             <div class="form-group">
                                 <label class="col-form-label">Comments <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                hmoForm.get('order_comments').invalid &&
-                                hmoForm.get('order_comments').touched
-                    " formControlName="order_comments" />
+                                hmoForm.get('other_comments').invalid &&
+                                hmoForm.get('other_comments').touched
+                    " formControlName="other_comments" />
                                 <div *ngIf="
-                                hmoForm.get('order_comments').invalid &&
-                                hmoForm.get('order_comments').touched
+                                hmoForm.get('other_comments').invalid &&
+                                hmoForm.get('other_comments').touched
                     ">
                                     <small *ngIf="
-                                    hmoForm.get('order_comments').invalid &&
-                                    hmoForm.get('order_comments').touched
+                                    hmoForm.get('other_comments').invalid &&
+                                    hmoForm.get('other_comments').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>

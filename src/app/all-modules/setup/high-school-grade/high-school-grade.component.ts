@@ -7,7 +7,7 @@ declare const $: any;
 @Component({
   selector: 'app-high-school-grade',
   templateUrl: './high-school-grade.component.html',
-  styleUrls: ['./high-school-grade.component.css']
+  styleUrls: ['./high-school-grade.component.css','../setup.component.css']
 })
 
 export class HighSchoolGradeComponent implements OnInit {

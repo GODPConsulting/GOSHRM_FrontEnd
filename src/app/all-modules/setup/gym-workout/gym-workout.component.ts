@@ -7,7 +7,7 @@ declare const $: any;
 @Component({
   selector: "app-gym-workout",
   templateUrl: "./gym-workout.component.html",
-  styleUrls: ["./gym-workout.component.css"],
+  styleUrls: ["./gym-workout.component.css","../setup.component.css"]
 })
 export class GymWorkoutComponent implements OnInit {
   public gymWorkouts: any[] = [];

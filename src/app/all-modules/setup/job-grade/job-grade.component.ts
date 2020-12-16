@@ -10,7 +10,7 @@ declare const $: any;
 @Component({
   selector: "app-job-grade",
   templateUrl: "./job-grade.component.html",
-  styleUrls: ["./job-grade.component.css"],
+  styleUrls: ["./job-grade.component.css","../setup.component.css"]
 })
 export class JobGradeComponent implements OnInit {
   formTitle;
@@ -32,6 +32,8 @@ export class JobGradeComponent implements OnInit {
   // public statusValue;
   selectedId: any[] = [];
   pageLoading: boolean;
+  public jobGradeUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,8 +49,44 @@ export class JobGradeComponent implements OnInit {
       })
       .trigger("blur");
 
-    this.getjobGrade();
+    this.getJobGrade();
     this.initializeForm();
+  }
+
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.jobGradeUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadJobGrade() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.jobGradeUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/jobgrade", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_job_grade").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getJobGrade();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
   }
 
   initializeForm() {
@@ -60,9 +98,18 @@ export class JobGradeComponent implements OnInit {
       probation_period_in_months: ["", Validators.required],
       description: ["", Validators.required],
     });
+    //initialize upload form
+    this.jobGradeUploadForm = this.formBuilder.group({
+      uploadInput: [""],
+    });
+  }
+
+  openUploadModal() {
+    $("#upload_job_grade").modal("show");
   }
 
   openModal() {
+    this.initializeForm();
     this.formTitle = "Add Job Grade";
     $("#add_job_grade").modal("show");
     if (this.jobGrades.length === 0) {
@@ -77,7 +124,7 @@ export class JobGradeComponent implements OnInit {
     this.initializeForm();
   }
 
-  getjobGrade() {
+  getJobGrade() {
     this.pageLoading = true;
     return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
       (data) => {
@@ -112,7 +159,7 @@ export class JobGradeComponent implements OnInit {
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getjobGrade();
+          this.getJobGrade();
         },
         (err) => {
           const message = err.status.message.friendlyMessage;
@@ -158,7 +205,7 @@ export class JobGradeComponent implements OnInit {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("Success", message, "success").then(() => {
-                    this.getjobGrade();
+                    this.getJobGrade();
                   });
                 } else {
                   swal.fire("Error", message, "error");
