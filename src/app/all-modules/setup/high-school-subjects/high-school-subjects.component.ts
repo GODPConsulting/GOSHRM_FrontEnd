@@ -11,7 +11,7 @@ declare const $: any;
 @Component({
   selector: "app-high-school-subjects",
   templateUrl: "./high-school-subjects.component.html",
-  styleUrls: ["./high-school-subjects.component.css"],
+  styleUrls: ["./high-school-subjects.component.css",'../setup.component.css']
 })
 export class HighSchoolSubjectsComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};

@@ -7,7 +7,7 @@ declare const $: any;
 @Component({
   selector: "app-hmo",
   templateUrl: "./hmo.component.html",
-  styleUrls: ["./hmo.component.css"],
+  styleUrls: ["./hmo.component.css","../setup.component.css"]
 })
 export class HmoComponent implements OnInit {
   public hmos: any[] = [];

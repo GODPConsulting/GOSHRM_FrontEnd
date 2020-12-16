@@ -21,7 +21,7 @@ const EXCEL_EXTENSION = ".xlsx";
 @Component({
   selector: "app-academic-discipline",
   templateUrl: "./academic-discipline.component.html",
-  styleUrls: ["./academic-discipline.component.css"],
+  styleUrls: ["./academic-discipline.component.css", "../setup.component.css"]
 })
 export class AcademicDisciplineComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};

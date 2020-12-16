@@ -8,7 +8,7 @@ declare const $: any;
 @Component({
   selector: "app-academic-qualification",
   templateUrl: "./academic-qualification.component.html",
-  styleUrls: ["./academic-qualification.component.css"],
+  styleUrls: ["./academic-qualification.component.css", "../setup.component.css"]
 })
 export class AcademicQualificationComponent implements OnInit {
   public qualifications: any[] = [];

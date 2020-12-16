@@ -56,12 +56,11 @@
                             <th>Report To</th>
                             <th>Rank</th>
                             <th>Probation Period</th>
-                            <!-- <th class="text-right no-sort">Action</th> -->
                         </tr>
                     </thead>
                     <tbody>
-                        <tr (click)="edit(row)" *ngFor="let row of jobGrades | filter:searchText; let i = index"
-                            style="cursor: pointer;">
+                        <tr data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="edit(row)"
+                         *ngFor="let row of jobGrades | filter:searchText; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
@@ -71,18 +70,6 @@
                             <td>{{ row.job_grade_reporting_to }}</td>
                             <td>{{ row.rank }}</td>
                             <td>{{ row.probation_period_in_months }}</td>
-                            <!-- <td class="text-right">
-                                <div class="dropdown dropdown-action">
-                                    <a class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_employee"
-                                            (click)="edit(row)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                        <a class="dropdown-item" (click)="delete(row.id)"><i
-                                                class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                    </div>
-                                </div>
-                            </td> -->
                         </tr>
                     </tbody>
                 </table>
