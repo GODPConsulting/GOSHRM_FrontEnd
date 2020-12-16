@@ -41,7 +41,7 @@ export class AcademicDisciplineComponent implements OnInit {
   public rows = [];
   public srch = [];
   public statusValue;
-  public dtTrigger: Subject<any> = new Subject();
+  //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
   value: any;
@@ -358,7 +358,7 @@ export class AcademicDisciplineComponent implements OnInit {
     this.lstEmployee = [];
     this.loadEmployee();
     setTimeout(() => {
-      this.dtTrigger.next();
+      //   this.dtTrigger.next();
     }, 1000);
   }
 
@@ -546,7 +546,7 @@ export class AcademicDisciplineComponent implements OnInit {
   }
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
+    //this.dtTrigger.unsubscribe();
   }
 
   addAcademicDiscipline() {

@@ -20,7 +20,7 @@ export class JobGradeComponent implements OnInit {
   //public employeeForm: FormGroup;
   public jobGrades: any[] = [];
   public rows = [];
-  public dtTrigger: Subject<any> = new Subject();
+  //public dtTrigger: Subject<any> = new Subject();
   public dtElement: DataTableDirective;
   public lstEmployee: any;
   //public url: any = "employeelist";
