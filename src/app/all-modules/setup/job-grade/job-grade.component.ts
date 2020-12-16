@@ -109,6 +109,7 @@ export class JobGradeComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
     this.formTitle = "Add Job Grade";
     $("#add_job_grade").modal("show");
     if (this.jobGrades.length === 0) {
