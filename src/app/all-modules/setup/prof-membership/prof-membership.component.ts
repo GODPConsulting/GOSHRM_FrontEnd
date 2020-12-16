@@ -35,6 +35,11 @@ export class ProfMembershipComponent implements OnInit {
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
+  public profMembershipForm: FormGroup;
+  file: File;
+  professionalMembershipUploadForm: FormGroup;
+  getProfMembership: any;
+
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -52,11 +57,54 @@ export class ProfMembershipComponent implements OnInit {
     this.initializeForm();
     this.getProfMembershipForm();
   }
+
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.professionalMembershipUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadProfMembership() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.professionalMembershipUploadForm.get("uploadInput").value
+    );
+    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/prof_membership", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_prof_membership").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getProfMembership();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+openUploadModal() {
+    $("#upload_prof_membership").modal("show");
+  }
+
+
   initializeForm() {
     this.professionalMembershipForm = this.formBuilder.group({
       id: [0],
       professional_membership: ["", Validators.required],
       description: ["", Validators.required]
+    });
+    this.professionalMembershipUploadForm = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
   getProfMembershipForm() {

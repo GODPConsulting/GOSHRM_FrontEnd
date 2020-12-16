@@ -24,6 +24,7 @@ export class LanguageComponent implements OnInit {
   public editId: any;
 
   public languageForm: FormGroup;
+  file: File;
   public editEmployeeForm: FormGroup;
   formTitle: string  = "Add language"
   public pipe = new DatePipe("en-US");
@@ -35,6 +36,7 @@ export class LanguageComponent implements OnInit {
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
+  
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -52,6 +54,45 @@ export class LanguageComponent implements OnInit {
     this.initializeForm();
     this.getLanguage();
   }
+
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.languageForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadLanguage() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.languageForm.get("uploadInput").value
+    );
+    //console.log(formData, this.languageForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/language", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_language").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getLanguage();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+openUploadModal() {
+    $("#upload_language").modal("show");
+  }
+
   initializeForm() {
     this.languageForm = this.formBuilder.group({
       id: [0],
