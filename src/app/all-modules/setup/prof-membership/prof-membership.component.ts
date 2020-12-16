@@ -83,14 +83,14 @@ export class ProfMembershipComponent implements OnInit {
       dtInstance.destroy();
     });
     this.lstEmployee = [];
-    this.loadLanguage();
+    this.loadProfMembership();
     setTimeout(() => {
       this.dtTrigger.next();
     }, 1000);
   }
 
   // Get Employee  Api Call
-  loadLanguage() {
+  loadProfMembership() {
     // this.srvModuleService.get(this.url).subscribe((data) => {
     //   this.lstEmployee = data;
     //   this.rows = this.lstEmployee;
@@ -157,7 +157,7 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   // edit modal api call
-  editLanguage() {
+  editProfMembership() {
     // let obj = {
     //   firstname: this.editEmployeeForm.value.FirstName,
     //   lastname: this.editEmployeeForm.value.LastName,
@@ -281,7 +281,7 @@ export class ProfMembershipComponent implements OnInit {
     this.initializeForm()
   }
 
-  addLanguage(profMembershipForm: FormGroup) {
+  addProfMembership(profMembershipForm: FormGroup) {
     const payload = profMembershipForm.value;
     return this.setupService
       .updateData("/hrmsetup/add/update/prof_membership", payload)
@@ -293,7 +293,7 @@ export class ProfMembershipComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            $("#add_language").modal("hide");
+            $("#add_prof_membership").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
