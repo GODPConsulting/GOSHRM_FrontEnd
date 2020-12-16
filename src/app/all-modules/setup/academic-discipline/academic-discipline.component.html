@@ -628,12 +628,12 @@
         </button>
       </div>
       <div class="modal-body">
-        <form (ngSubmit)="uploadAcadDiscipline()" [formGroup]="acadDisciplineFile">
+        <form (ngSubmit)="uploadAcademicDiscipline()" [formGroup]="academicDisciplineUploadForm">
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group row">
-                <label class="col-form-label col-md-3">File Input</label>
-                <div class="col-md-9">
+                <label class="col-form-label col-md-4">Choose File</label>
+                <div class="col-md-8">
                   <input class="form-control" name="uploadInput" id="uploadInput" type="file"
                     (change)="onSelectedFile($event)">
                 </div>

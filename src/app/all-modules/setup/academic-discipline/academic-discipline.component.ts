@@ -35,7 +35,7 @@ export class AcademicDisciplineComponent implements OnInit {
 
   public academicDisciplineForm: FormGroup;
   public editEmployeeForm: FormGroup;
-  public acadDisciplineFile: FormGroup;
+  public academicDisciplineUploadForm: FormGroup;
   formTitle: string = "Add Academic Discipline";
   public pipe = new DatePipe("en-US");
   public rows = [];
@@ -80,7 +80,7 @@ export class AcademicDisciplineComponent implements OnInit {
 
   onSelectedFile(event) {
     this.file = event.target.files[0];
-    this.acadDisciplineFile.patchValue({
+    this.academicDisciplineUploadForm.patchValue({
       uploadInput: this.file,
     });
   }
@@ -91,14 +91,17 @@ export class AcademicDisciplineComponent implements OnInit {
     });
   } */
 
-  uploadAcadDiscipline() {
+  uploadAcademicDiscipline() {
     const formData = new FormData();
     formData.append(
       "uploadInput",
-      this.acadDisciplineFile.get("uploadInput").value
+      this.academicDisciplineUploadForm.get("uploadInput").value
     );
 
-    console.log(formData, this.acadDisciplineFile.get("uploadInput").value);
+    console.log(
+      formData,
+      this.academicDisciplineUploadForm.get("uploadInput").value
+    );
     return this.setupService
       .updateData("/hrmsetup/upload/academic/discipline", formData)
       .subscribe(
@@ -329,7 +332,7 @@ export class AcademicDisciplineComponent implements OnInit {
       description: ["", Validators.required],
       rank: [0, Validators.required],
     });
-    this.acadDisciplineFile = this.formBuilder.group({
+    this.academicDisciplineUploadForm = this.formBuilder.group({
       uploadInput: [""],
     });
   }
