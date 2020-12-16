@@ -57,7 +57,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr (click)="edit(row)" *ngFor="let row of profMemberships | filter:searchText; let i = index">
+                        <tr (click)="edit(row)" class="pointer" *ngFor="let row of profMemberships | filter:searchText; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />

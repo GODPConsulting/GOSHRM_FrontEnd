@@ -11,7 +11,7 @@ declare const $: any;
 @Component({
   selector: 'app-prof-membership',
   templateUrl: './prof-membership.component.html',
-  styleUrls: ['./prof-membership.component.css']
+  styleUrls: ['./prof-membership.component.css', '../setup.component.css']
 })
 export class ProfMembershipComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
