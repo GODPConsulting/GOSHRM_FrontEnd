@@ -17,8 +17,10 @@
               class="hint-text">Add</span><i class="fa fa-plus"></i></a>
           <!-- <a class="btn download-btn hint" href="{{dload?.resolvedURL}}" (click)="downloadFile()" download><span
               class="hint-text">Download</span><i class="fa fa-download"></i></a> -->
-          <a class="btn download-btn hint"><span class="hint-text">Download</span><i class="fa fa-download"></i></a>
-          <a class="btn upload-btn hint"><span class="hint-text">Upload</span><i class="fa fa-upload"></i></a>
+          <a class="btn download-btn hint" (click)="downloadFile()" download><span class="hint-text">Download</span><i
+              class="fa fa-download"></i></a>
+          <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
+              class="fa fa-upload"></i></a>
           <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
               class="fa fa-trash"></i></a>
         </div>
@@ -614,3 +616,39 @@
   </div>
   <!-- /Delete Employee Modal -->
 </div>
+
+<!-- Upload academic_discipline Modal -->
+<div id="upload_academic_discipline" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Academic Discipline</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="uploadAcadDiscipline()" [formGroup]="acadDisciplineFile">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group row">
+                <label class="col-form-label col-md-3">File Input</label>
+                <div class="col-md-9">
+                  <input class="form-control" name="uploadInput" id="uploadInput" type="file"
+                    (change)="onSelectedFile($event)">
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="submit-section">
+            <button class="btn btn-primary submit-btn" type="submit">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Upload HMO Modal -->
