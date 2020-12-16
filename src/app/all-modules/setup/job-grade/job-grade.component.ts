@@ -10,7 +10,7 @@ declare const $: any;
 @Component({
   selector: "app-job-grade",
   templateUrl: "./job-grade.component.html",
-  styleUrls: ["./job-grade.component.css"],
+  styleUrls: ["./job-grade.component.css","../setup.component.css"]
 })
 export class JobGradeComponent implements OnInit {
   formTitle;

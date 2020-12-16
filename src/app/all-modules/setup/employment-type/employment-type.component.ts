@@ -10,7 +10,7 @@ declare const $: any;
 @Component({
   selector: "app-employment-type",
   templateUrl: "./employment-type.component.html",
-  styleUrls: ["./employment-type.component.css"],
+  styleUrls: ["./employment-type.component.css","../setup.component.css"]
 })
 export class EmploymentTypeComponent implements OnInit {
   formTitle;
@@ -166,7 +166,7 @@ export class EmploymentTypeComponent implements OnInit {
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
-    this.formTitle = "Edit High School Subject";
+    this.formTitle = "Edit Employment Type";
     this.employmentTypeForm.patchValue({
       id: row.id,
       employment_type: row.employment_type,
