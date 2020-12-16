@@ -75,7 +75,7 @@
                             <td>{{ row.address }}</td>
                             <td>{{ row.reg_date | date }}</td>
                             <td>{{ row.rating }}</td>
-                            <td>{{ row.order_comments }}</td>
+                            <td>{{ row.other_comments }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -237,16 +237,16 @@
                             <div class="form-group">
                                 <label class="col-form-label">Comments <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                hmoForm.get('order_comments').invalid &&
-                                hmoForm.get('order_comments').touched
-                    " formControlName="order_comments" />
+                                hmoForm.get('other_comments').invalid &&
+                                hmoForm.get('other_comments').touched
+                    " formControlName="other_comments" />
                                 <div *ngIf="
-                                hmoForm.get('order_comments').invalid &&
-                                hmoForm.get('order_comments').touched
+                                hmoForm.get('other_comments').invalid &&
+                                hmoForm.get('other_comments').touched
                     ">
                                     <small *ngIf="
-                                    hmoForm.get('order_comments').invalid &&
-                                    hmoForm.get('order_comments').touched
+                                    hmoForm.get('other_comments').invalid &&
+                                    hmoForm.get('other_comments').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>

@@ -166,7 +166,7 @@ export class EmploymentTypeComponent implements OnInit {
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
-    this.formTitle = "Edit High School Subject";
+    this.formTitle = "Edit Employment Type";
     this.employmentTypeForm.patchValue({
       id: row.id,
       employment_type: row.employment_type,
