@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SetupService } from 'src/app/services/setup.service';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { SetupService } from "src/app/services/setup.service";
 
-import swal from 'sweetalert2';
+import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: 'app-academic-qualification',
-  templateUrl: './academic-qualification.component.html',
-  styleUrls: ['./academic-qualification.component.css']
+  selector: "app-academic-qualification",
+  templateUrl: "./academic-qualification.component.html",
+  styleUrls: ["./academic-qualification.component.css"],
 })
 export class AcademicQualificationComponent implements OnInit {
-
   public qualifications: any[] = [];
   public rows = [];
   public srch = [];
@@ -19,11 +18,13 @@ export class AcademicQualificationComponent implements OnInit {
   public formTitle = "Add Academic Qualification";
   public academicQualificationForm: FormGroup;
   selectedId: any[] = [];
+  public academicQualificationUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     $(".floating")
@@ -37,57 +38,97 @@ export class AcademicQualificationComponent implements OnInit {
     this.initializeForm();
   }
 
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.academicQualificationUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadAcademicQualification() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.academicQualificationUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/academic/qualification", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_academic_qualification").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getAcademicQualifications();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
   initializeForm() {
     this.academicQualificationForm = this.formBuilder.group({
       id: [0],
       qualification: ["", Validators.required],
       description: ["", Validators.required],
       rank: ["", Validators.required],
-      
+    });
+    this.academicQualificationUploadForm = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
-  
+
   getAcademicQualifications() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/academic/qualifications").subscribe(
-      (data) => {
-        this.pageLoading = false;
-        //console.log(data);
-        this.qualifications = data.setuplist;
-        this.rows = this.qualifications;
-        this.srch = [...this.rows];
-      },
-      (err) => {
-        this.pageLoading = false;
-        console.log(err);
-      }
-    );
+    return this.setupService
+      .getData("/hrmsetup/get/all/academic/qualifications")
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          //console.log(data);
+          this.qualifications = data.setuplist;
+          this.rows = this.qualifications;
+          this.srch = [...this.rows];
+        },
+        (err) => {
+          this.pageLoading = false;
+          console.log(err);
+        }
+      );
   }
-// Add employee  Modal Api Call
-addAcademicQualification(academicQualificationForm: FormGroup) {
-  const payload = academicQualificationForm.value;
-  return this.setupService
-    .updateData("/hrmsetup/add/update/academic/qualification", payload)
-    .subscribe(
-      (res) => {
-        const message = res.status.message.friendlyMessage;
-        //console.log(message);
+  // Add employee  Modal Api Call
+  addAcademicQualification(academicQualificationForm: FormGroup) {
+    const payload = academicQualificationForm.value;
+    return this.setupService
+      .updateData("/hrmsetup/add/update/academic/qualification", payload)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          //console.log(message);
 
-        if (res.status.isSuccessful) {
-          swal.fire("Success", message, "success");
-          this.initializeForm();
-          $("#add_acadmic_qualification").modal("hide");
-        } else {
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#add_acadmic_qualification").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getAcademicQualifications();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
-        this.getAcademicQualifications();
-      },
-      (err) => {
-        const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
-      }
-    );
-}
+      );
+  }
 
   delete(id: any) {
     let payload;
@@ -153,7 +194,11 @@ addAcademicQualification(academicQualificationForm: FormGroup) {
     });
     $("#add_academic_qualification").modal("show");
   }
-  
+
+  openUploadModal() {
+    $("#upload_academic_qualification").modal("show");
+  }
+
   openModal() {
     $("#add_academic_qualification").modal("show");
   }
@@ -183,5 +228,4 @@ addAcademicQualification(academicQualificationForm: FormGroup) {
       });
     }
   }
-
 }

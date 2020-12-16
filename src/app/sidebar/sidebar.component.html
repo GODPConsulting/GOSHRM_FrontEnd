@@ -24,7 +24,7 @@
               </li>
             </ul>
           </li>
-          <li class="submenu" [ngClass]="{ active: urlComplete.mainUrl === 'apps' }">
+          <!-- <li class="submenu" [ngClass]="{ active: urlComplete.mainUrl === 'apps' }">
             <a href="javascript:" [ngClass]="{ subdrop: urlComplete.mainUrl === 'apps' }">
               <i class="la la-cube"></i>
               <span> Apps</span>
@@ -72,7 +72,7 @@
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'file-manager' }">File Manager</a>
               </li>
             </ul>
-          </li>
+          </li> -->
           <li class="menu-title">
             <span>Employees</span>
           </li>
@@ -425,6 +425,7 @@
 
             </ul>
           </li>
+          <!-- other templates
           <li [ngClass]="{
               active:
                 urlComplete.subUrl === 'clientspage' ||
@@ -936,7 +937,7 @@
                 <a href="javascript:"> <span>Level 1</span></a>
               </li>
             </ul>
-          </li>
+          </li> -->
         </ul>
         <ul *ngIf="sidebarMenus.chat">
           <li routerLink="/dashboard/admin">
