@@ -16,7 +16,8 @@
                         class="hint-text">Add</span><i class="fa fa-plus"></i></a>
                 <a class="btn download-btn hint"><span class="hint-text">Download</span><i
                         class="fa fa-download"></i></a>
-                <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i class="fa fa-upload"></i></a>
+                <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
+                        class="fa fa-upload"></i></a>
                 <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
                         class="fa fa-trash"></i></a>
             </div>
@@ -28,8 +29,7 @@
     <div class="row filter-row">
         <div class="col-sm-6 col-md-5">
             <div class="form-group form-focus">
-                <input type="text" class="form-control floating"
-                    [(ngModel)]="searchText" />
+                <input type="text" class="form-control floating" [(ngModel)]="searchText" />
                 <label class="focus-label">Start typing to search by any field</label>
             </div>
         </div>
@@ -42,7 +42,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-striped custom-table datatable" datatable [dtOptions]="dtOptions"
+                <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions"
                     [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
@@ -56,7 +56,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr (click)="edit(row)" class="pointer" *ngFor="let row of languages | filter:searchText; let i = index">
+                        <tr (click)="edit(row)" class="pointer"
+                            *ngFor="let row of languages | filter:searchText; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
@@ -64,7 +65,7 @@
                             <td>{{ i + 1 }}</td>
                             <td>{{ row.language }}</td>
                             <td class="text-right">
-                               
+
                             </td>
                         </tr>
                     </tbody>
@@ -126,7 +127,7 @@
                                 </div>
                             </div>
                         </div>
-                       
+
                     </div>
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
@@ -546,16 +547,28 @@
             <div class="modal-body">
                 <form (ngSubmit)="uploadLanguage()" [formGroup]="languageUploadForm">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group row">
-                                <label class="col-form-label col-md-4">Choose File</label>
-                                <div class="col-md-8">
-                                    <input class="form-control" name="uploadInput" id="uploadInput" type="file"
-                                        (change)="onSelectedFile($event)">
-                                </div>
+
+                        <div class="form-group row col-6">
+                            <label class="col-form-label col-md-5">Choose File (.xlsx format)</label>
+                            <div class="col-md-7">
+                                <input class="form-control" name="uploadInput" id="uploadInput" type="file"
+                                    (change)="onSelectedFile($event)">
                             </div>
                         </div>
+
                     </div>
+
+
+                    <div class="row">
+                        <p class="col-5">Please use the guide below for your sheet</p>
+                        <table class="table table-bordered col-8">
+                            <tr>
+                                <th>Language</th>
+                                <th>Description</th>
+                            </tr>
+                        </table>
+                    </div>
+
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             Submit
