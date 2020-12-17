@@ -1,11 +1,9 @@
 <div class="account-content">
-  <a routerLink="/login/joblist" class="btn btn-primary apply-btn">Apply Job</a>
+  <!-- <a routerLink="/login/joblist" class="btn btn-primary apply-btn">Apply Job</a> -->
   <div class="container">
     <!-- Account Logo -->
     <div class="account-logo">
-      <a href="javascript:"
-        ><img src="assets/img/logo.png" alt="Dreamguy's Technologies"
-      /></a>
+      <a href="javascript:"><img src="assets/img/logo.png" alt="Dreamguy's Technologies" /></a>
     </div>
     <!-- /Account Logo -->
 
@@ -18,11 +16,7 @@
         <form [formGroup]="loginForm">
           <div class="form-group">
             <label>Username</label>
-            <input
-              class="form-control"
-              type="text"
-              formControlName="userName"
-            />
+            <input class="form-control" type="text" formControlName="userName" />
           </div>
           <div class="form-group">
             <div class="row">
@@ -35,23 +29,12 @@
                 </a>
               </div>
             </div>
-            <input
-              class="form-control"
-              type="password"
-              formControlName="password"
-            />
+            <input class="form-control" type="password" formControlName="password" />
           </div>
           <div class="form-group text-center">
-            <button
-              class="btn btn-primary account-btn"
-              type="button"
-              (click)="login(loginForm)"
-              [disabled]="loading"
-            >
+            <button class="btn btn-primary account-btn" type="button" (click)="login(loginForm)" [disabled]="loading">
               <span *ngIf="!loading">Login</span>
-              <span *ngIf="loading"
-                ><i class="fa fa-spinner fa-spin"></i
-              ></span>
+              <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
             </button>
           </div>
           <div class="account-footer">
