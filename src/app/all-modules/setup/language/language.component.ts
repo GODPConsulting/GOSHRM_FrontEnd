@@ -23,7 +23,7 @@ export class LanguageComponent implements OnInit {
   public tempId: any;
   public editId: any;
 
-  public languageForm: FormGroup;
+  public languageUploadForm: FormGroup;
   file: File;
   public editEmployeeForm: FormGroup;
   formTitle: string  = "Add language"
@@ -36,6 +36,7 @@ export class LanguageComponent implements OnInit {
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
+  languageForm: FormGroup;
   
   constructor(
     private setupService: SetupService,
@@ -53,11 +54,12 @@ export class LanguageComponent implements OnInit {
       .trigger("blur");
     this.initializeForm();
     this.getLanguage();
+  
   }
 
   onSelectedFile(event) {
     this.file = event.target.files[0];
-    this.languageForm.patchValue({
+    this.languageUploadForm.patchValue({
       uploadInput: this.file,
     });
   }
@@ -66,7 +68,7 @@ export class LanguageComponent implements OnInit {
     const formData = new FormData();
     formData.append(
       "uploadInput",
-      this.languageForm.get("uploadInput").value
+      this.languageUploadForm.get("uploadInput").value
     );
     //console.log(formData, this.languageForm.get("uploadInput").value);
     return this.setupService
@@ -98,6 +100,9 @@ openUploadModal() {
       id: [0],
       language: ["", Validators.required],
       description: ["", Validators.required]
+    });
+    this.languageUploadForm = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
   getLanguage() {

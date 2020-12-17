@@ -35,10 +35,10 @@ export class ProfMembershipComponent implements OnInit {
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
-  public profMembershipForm: FormGroup;
+  public professionalMembershipUploadForm: FormGroup;
   file: File;
-  professionalMembershipUploadForm: FormGroup;
-  getProfMembership: any;
+  getProfessionalMembership: any;
+  
 
   constructor(
     private setupService: SetupService,
@@ -84,7 +84,7 @@ export class ProfMembershipComponent implements OnInit {
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getProfMembership();
+          this.getProfessionalMembership();
         },
         (err) => {
           const message = err.status.message.friendlyMessage;
