@@ -11,7 +11,7 @@ declare const $: any;
 @Component({
   selector: "app-high-school-subjects",
   templateUrl: "./high-school-subjects.component.html",
-  styleUrls: ["./high-school-subjects.component.css",'../setup.component.css']
+  styleUrls: ["./high-school-subjects.component.css", "../setup.component.css"],
 })
 export class HighSchoolSubjectsComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
@@ -35,6 +35,8 @@ export class HighSchoolSubjectsComponent implements OnInit {
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
+  public highSchoolSubUploadForm: FormGroup;
+  file: File;
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -52,13 +54,58 @@ export class HighSchoolSubjectsComponent implements OnInit {
     this.initializeForm();
     this.getHighSchoolSub();
   }
+
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.highSchoolSubUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadHighSchoolSub() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.highSchoolSubUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.highSchoolSubUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/highschoolsubject", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_high_school_subject").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getHighSchoolSub();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  openUploadModal() {
+    $("#upload_high_school_subject").modal("show");
+  }
+
   initializeForm() {
     this.highSchoolForm = this.formBuilder.group({
       id: [0],
       subject: ["", Validators.required],
       description: ["", Validators.required],
     });
+    this.highSchoolSubUploadForm = this.formBuilder.group({
+      uploadInput: [""],
+    });
   }
+
   getHighSchoolSub() {
     this.pageLoading = true;
     return this.setupService

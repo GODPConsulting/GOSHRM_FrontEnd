@@ -7,7 +7,7 @@ declare const $: any;
 @Component({
   selector: "app-job-detail",
   templateUrl: "./job-detail.component.html",
-  styleUrls: ["./job-detail.component.css","../setup.component.css"]
+  styleUrls: ["./job-detail.component.css", "../setup.component.css"],
 })
 export class JobDetailComponent implements OnInit {
   public jobDetails: any[] = [];
@@ -17,6 +17,8 @@ export class JobDetailComponent implements OnInit {
   public formTitle = "Add Job Details";
   public jobDetailForm: FormGroup;
   selectedId: any[] = [];
+  public jobDetailUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,6 +35,46 @@ export class JobDetailComponent implements OnInit {
       .trigger("blur");
     this.getJobDetail();
     this.initializeForm();
+  }
+
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.jobDetailUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadJobDetail() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.jobDetailUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/jobdetail", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_job_detail").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getJobDetail();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  openUploadModal() {
+    $("#upload_job_detail").modal("show");
   }
 
   /*  initializeForm() {
@@ -66,6 +108,9 @@ export class JobDetailComponent implements OnInit {
           weight: ["", Validators.required],
         }),
       ]),
+    });
+    this.jobDetailUploadForm = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
 

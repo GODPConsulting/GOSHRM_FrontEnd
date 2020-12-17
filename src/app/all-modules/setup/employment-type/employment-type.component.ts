@@ -10,7 +10,7 @@ declare const $: any;
 @Component({
   selector: "app-employment-type",
   templateUrl: "./employment-type.component.html",
-  styleUrls: ["./employment-type.component.css","../setup.component.css"]
+  styleUrls: ["./employment-type.component.css", "../setup.component.css"],
 })
 export class EmploymentTypeComponent implements OnInit {
   formTitle;
@@ -32,6 +32,8 @@ export class EmploymentTypeComponent implements OnInit {
   // public statusValue;
   pageLoading: boolean;
   selectedId: any[] = [];
+  public employmentTypeUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,11 +52,54 @@ export class EmploymentTypeComponent implements OnInit {
     this.getEmploymentType();
   }
 
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.employmentTypeUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadEmploymentType() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.employmentTypeUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.employmentTypeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/employmenttype", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_employment_type").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getEmploymentType();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  openUploadModal() {
+    $("#upload_employment_type").modal("show");
+  }
+
   initializeForm() {
     this.employmentTypeForm = this.formBuilder.group({
       id: [0],
       employment_type: ["", Validators.required],
       description: ["", Validators.required],
+    });
+    this.employmentTypeUploadForm = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
 

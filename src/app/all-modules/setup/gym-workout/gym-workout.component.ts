@@ -7,7 +7,7 @@ declare const $: any;
 @Component({
   selector: "app-gym-workout",
   templateUrl: "./gym-workout.component.html",
-  styleUrls: ["./gym-workout.component.css","../setup.component.css"]
+  styleUrls: ["./gym-workout.component.css", "../setup.component.css"],
 })
 export class GymWorkoutComponent implements OnInit {
   public gymWorkouts: any[] = [];
@@ -17,6 +17,8 @@ export class GymWorkoutComponent implements OnInit {
   public formTitle = "Add Gym/Workout";
   public gymWorkoutForm: FormGroup;
   selectedId: any[] = [];
+  public gymWorkoutUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,6 +37,46 @@ export class GymWorkoutComponent implements OnInit {
     this.initializeForm();
   }
 
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.gymWorkoutUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadGymWorkout() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.gymWorkoutUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/gymworkout", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_gym_workout").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getGymWorkout();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  openUploadModal() {
+    $("#upload_gym_workout").modal("show");
+  }
+
   initializeForm() {
     this.gymWorkoutForm = this.formBuilder.group({
       id: [0],
@@ -43,6 +85,9 @@ export class GymWorkoutComponent implements OnInit {
       address: ["", Validators.required],
       ratings: ["", Validators.required],
       other_comments: ["", Validators.required],
+    });
+    this.gymWorkoutUploadForm = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
 

@@ -7,7 +7,7 @@ declare const $: any;
 @Component({
   selector: "app-hmo",
   templateUrl: "./hmo.component.html",
-  styleUrls: ["./hmo.component.css","../setup.component.css"]
+  styleUrls: ["./hmo.component.css", "../setup.component.css"],
 })
 export class HmoComponent implements OnInit {
   public hmos: any[] = [];
@@ -17,6 +17,8 @@ export class HmoComponent implements OnInit {
   public formTitle = "Add HMO";
   public hmoForm: FormGroup;
   selectedId: any[] = [];
+  public hmoUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,6 +37,43 @@ export class HmoComponent implements OnInit {
     this.initializeForm();
   }
 
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.hmoUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadHmo() {
+    const formData = new FormData();
+    formData.append("uploadInput", this.hmoUploadForm.get("uploadInput").value);
+
+    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/hmo", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_hmo").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getHmo();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  openUploadModal() {
+    $("#upload_hmo").modal("show");
+  }
+
   initializeForm() {
     this.hmoForm = this.formBuilder.group({
       id: [0],
@@ -46,6 +85,9 @@ export class HmoComponent implements OnInit {
       reg_date: ["", Validators.required],
       rating: ["", Validators.required],
       other_comments: ["", Validators.required],
+    });
+    this.hmoUploadForm = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
 

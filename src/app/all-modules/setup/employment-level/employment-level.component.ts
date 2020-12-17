@@ -12,7 +12,7 @@ declare const $: any;
 @Component({
   selector: "app-employment-level",
   templateUrl: "./employment-level.component.html",
-  styleUrls: ["./employment-level.component.css","../setup.component.css"]
+  styleUrls: ["./employment-level.component.css", "../setup.component.css"],
 })
 export class EmploymentLevelComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
@@ -35,6 +35,8 @@ export class EmploymentLevelComponent implements OnInit {
   //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
+  public employmentLevelUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,11 +55,54 @@ export class EmploymentLevelComponent implements OnInit {
     this.getEmploymentLevels();
   }
 
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.employmentLevelUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadEmploymentLevel() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.employmentLevelUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/employmentlevel", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_employment_level").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getEmploymentLevels();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  openUploadModal() {
+    $("#upload_employment_level").modal("show");
+  }
+
   initializeForm() {
     this.employmentLevelForm = this.formBuilder.group({
       id: [0],
       employment_level: ["", Validators.required],
       description: ["", Validators.required],
+    });
+    this.employmentLevelUploadForm = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
   getEmploymentLevels() {
