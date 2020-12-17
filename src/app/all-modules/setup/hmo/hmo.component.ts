@@ -7,7 +7,7 @@ declare const $: any;
 @Component({
   selector: "app-hmo",
   templateUrl: "./hmo.component.html",
-  styleUrls: ["./hmo.component.css"],
+  styleUrls: ["./hmo.component.css","../setup.component.css"]
 })
 export class HmoComponent implements OnInit {
   public hmos: any[] = [];
@@ -45,7 +45,7 @@ export class HmoComponent implements OnInit {
       address: ["", Validators.required],
       reg_date: ["", Validators.required],
       rating: ["", Validators.required],
-      order_comments: ["", Validators.required],
+      other_comments: ["", Validators.required],
     });
   }
 
@@ -114,7 +114,7 @@ export class HmoComponent implements OnInit {
       address: row.address,
       reg_date: row.reg_date,
       rating: row.rating,
-      order_comments: row.order_comments,
+      other_comments: row.other_comments,
     });
     $("#add_hmo").modal("show");
   }

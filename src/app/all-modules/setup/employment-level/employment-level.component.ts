@@ -12,7 +12,7 @@ declare const $: any;
 @Component({
   selector: "app-employment-level",
   templateUrl: "./employment-level.component.html",
-  styleUrls: ["./employment-level.component.css"],
+  styleUrls: ["./employment-level.component.css","../setup.component.css"]
 })
 export class EmploymentLevelComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};

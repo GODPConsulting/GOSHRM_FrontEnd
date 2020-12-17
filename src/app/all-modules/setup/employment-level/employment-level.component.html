@@ -55,27 +55,16 @@
                 </th>
                 <th>S/N</th>
                 <th>Employment Level</th>
-                <th class="text-right no-sort">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of levels | filter:searchText; let i = index">
+              <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)"
+              *ngFor="let row of levels | filter:searchText; let i = index">
                 <td>
                   <input type="checkbox" [checked]="selectedId.includes(row.id)" (change)="addItemId($event, row.id)" />
                 </td>
                 <td>{{ i + 1 }}</td>
                 <td>{{ row.employment_level }}</td>
-                <td class="text-right">
-                  <div class="dropdown dropdown-action">
-                    <a class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
-                        class="material-icons">more_vert</i></a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item" data-toggle="modal" data-target="#edit_employee" (click)="edit(row)"><i
-                          class="fa fa-pencil m-r-5"></i> Edit</a>
-                      <a class="dropdown-item" (click)="delete(row.id)"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                    </div>
-                  </div>
-                </td>
               </tr>
             </tbody>
           </table>

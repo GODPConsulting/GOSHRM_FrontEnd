@@ -7,7 +7,7 @@ declare const $: any;
 @Component({
   selector: "app-job-detail",
   templateUrl: "./job-detail.component.html",
-  styleUrls: ["./job-detail.component.css"],
+  styleUrls: ["./job-detail.component.css","../setup.component.css"]
 })
 export class JobDetailComponent implements OnInit {
   public jobDetails: any[] = [];

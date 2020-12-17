@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
+import { data } from "jquery";
 
 @Injectable({
   providedIn: "root",
@@ -35,4 +36,18 @@ export class SetupService {
       })
     );
   }
+
+  /*  using xhr method
+  upload(path: string, file: File): Promise<any> {
+    return this.apiService.uploadExcel(path, file).then((data) => {
+      return data;
+    });
+  } */
+
+  /* no need updateData() will be used for upload
+  upload(url, payload) {
+    return this.apiService.post(url, payload).pipe((res) => {
+      return res;
+    });
+  } */
 }
