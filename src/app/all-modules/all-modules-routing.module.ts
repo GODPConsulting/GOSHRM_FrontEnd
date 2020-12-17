@@ -14,6 +14,7 @@ const routes: Routes = [
     component: AllModulesComponent,
     canActivate: [AuthGuard],
     children: [
+     
       {
         path: "dashboard",
         loadChildren: () =>
