@@ -1,3 +1,7 @@
-.pointer{
-    cursor: pointer;
+.pointer {
+  cursor: pointer;
+}
+
+.table-hover tbody tr:hover td {
+  background-color: #ff9b44af;
 }
