@@ -33,26 +33,10 @@
     <!-- /Page Header -->
 
 
-    <!-- Search Filter -->
-    <div class="row filter-row">
-        <div class="col-sm-6 col-md-5">
-            <div class="form-group form-focus">
-                <input type="text" class="form-control floating" (input)="searchId($event.target.value)"
-                    [(ngModel)]="searchText" />
-                <label class="focus-label">Start typing to search by any field</label>
-            </div>
-        </div>
-        <!--  <div class="col-sm-6 col-md-3">
-            <a class="btn btn-success btn-block"> Search </a>
-        </div> -->
-    </div>
-    <!-- /Search Filter -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions"
-                    [dtTrigger]="dtTrigger">
+                <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions">
                     <thead>
                         <tr>
                             <th>

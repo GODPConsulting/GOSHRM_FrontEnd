@@ -25,20 +25,6 @@
     </div>
     <!-- /Page Header -->
 
-    <!-- Search Filter -->
-    <div class="row filter-row">
-        <div class="col-sm-6 col-md-5">
-            <div class="form-group form-focus">
-                <input type="text" class="form-control floating" [(ngModel)]="searchText" />
-                <label class="focus-label">Start typing to search by any field</label>
-            </div>
-        </div>
-        <!--  <div class="col-sm-6 col-md-3">
-            <a class="btn btn-success btn-block"> Search </a>
-        </div> -->
-    </div>
-    <!-- /Search Filter -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -53,7 +39,6 @@
                             <th>S/N</th>
                             <th>Professional Membership</th>
                             <th>Description</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,9 +51,6 @@
                             <td>{{ i + 1 }}</td>
                             <td>{{ row.professional_membership }}</td>
                             <td>{{ row.description }}</td>
-                            <td class="text-right">
-
-                            </td>
                         </tr>
                     </tbody>
                 </table>
