@@ -12,12 +12,13 @@
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
-                <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span
-                        class="hint-text">Add</span><i class="fa fa-plus"></i></a>
                 <a class="btn download-btn hint"><span class="hint-text">Download</span><i
                         class="fa fa-download"></i></a>
                 <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
                         class="fa fa-upload"></i></a>
+
+                <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span
+                        class="hint-text">Add</span><i class="fa fa-plus"></i></a>
                 <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
                         class="fa fa-trash"></i></a>
             </div>
@@ -538,7 +539,7 @@
 <!-- /Edit Employee Modal -->
 
 <!-- Upload prof-membership Modal -->
-<div class="modal custom-modal fade" id="upload_prof_membership" role="dialog">
+<div class="modal custom-modal fade" id="upload_language" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -550,6 +551,7 @@
             <div class="modal-body">
                 <form (ngSubmit)="uploadProfMembership()" [formGroup]="professionalMembershipUploadForm">
                     <div class="row">
+
                         <div class="form-group row col-6">
                             <label class="col-form-label col-md-5">Choose File (.xlsx format)</label>
                             <div class="col-md-7">
@@ -570,6 +572,7 @@
                             </tr>
                         </table>
                     </div>
+
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             Submit

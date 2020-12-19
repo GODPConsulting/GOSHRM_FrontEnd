@@ -34,6 +34,7 @@ export class LanguageComponent implements OnInit {
   public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
+  loading: boolean = true;
   value: any;
   selectedId: any[] = [];
   languageForm: FormGroup;
@@ -65,6 +66,7 @@ export class LanguageComponent implements OnInit {
   }
 
   uploadLanguage() {
+    this.loading = true;
     const formData = new FormData();
     formData.append(
       "uploadInput",
@@ -84,6 +86,7 @@ export class LanguageComponent implements OnInit {
             swal.fire("Error", message, "error");
           }
           this.getLanguage();
+          this.loading = false;
         },
         (err) => {
           const message = err.status.message.friendlyMessage;
@@ -117,6 +120,7 @@ openUploadModal() {
       },
       (err) => {
         this.pageLoading = false;
+        this.loading = false;
         console.log(err);
       }
     );
