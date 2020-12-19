@@ -1,40 +1,26 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
-import { DataTableDirective } from "angular-datatables";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { DatePipe } from "@angular/common";
-import { Subject } from "rxjs";
-import { ToastrService } from "ngx-toastr";
 import swal from "sweetalert2";
-import { takeUntil } from "rxjs/operators";
 
 declare const $: any;
 @Component({
   selector: "app-employment-level",
   templateUrl: "./employment-level.component.html",
-  styleUrls: ["./employment-level.component.css","../setup.component.css"]
+  styleUrls: ["./employment-level.component.css", "../setup.component.css"],
 })
 export class EmploymentLevelComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
-  @ViewChild(DataTableDirective, { static: false })
-  public dtElement: DataTableDirective;
-  public lstEmployee: any;
   public levels: any[] = [];
-  public url: any = "employeelist";
-  public tempId: any;
-  public editId: any;
 
   public employmentLevelForm: FormGroup;
-  public editEmployeeForm: FormGroup;
   formTitle: string = "Add Employment Level";
-  public pipe = new DatePipe("en-US");
   public rows = [];
   public srch = [];
   selectedId: any[] = [];
-  public statusValue;
-  //public dtTrigger: Subject<any> = new Subject();
-  public DateJoin;
   pageLoading: boolean;
+  public employmentLevelUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,8 +35,60 @@ export class EmploymentLevelComponent implements OnInit {
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
       })
       .trigger("blur");
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+      columns: [{ orderable: false }, null, null],
+      order: [[1, "asc"]],
+    };
     this.initializeForm();
     this.getEmploymentLevels();
+  }
+
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.employmentLevelUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadEmploymentLevel() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.employmentLevelUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/employmentlevel", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_employment_level").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getEmploymentLevels();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  openUploadModal() {
+    $("#upload_employment_level").modal("show");
   }
 
   initializeForm() {
@@ -58,6 +96,9 @@ export class EmploymentLevelComponent implements OnInit {
       id: [0],
       employment_level: ["", Validators.required],
       description: ["", Validators.required],
+    });
+    this.employmentLevelUploadForm = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
   getEmploymentLevels() {
@@ -100,55 +141,14 @@ export class EmploymentLevelComponent implements OnInit {
       );
   }
 
-  //getting the status value
-  getStatus(data) {
-    this.statusValue = data;
-  }
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    //  this.dtTrigger.unsubscribe();
-  }
-
   addEmploymentLevel() {
     this.formTitle = "Add Employment Level";
     $("#add_employment_level").modal("show");
-  }
-  loadEmployee() {
-    // this.srvModuleService.get(this.url).subscribe((data) => {
-    //   this.lstEmployee = data;
-    //   this.rows = this.lstEmployee;
-    // this.srch = [...this.rows];
-    // });
   }
 
   closeModal() {
     $("#add_employment_level").modal("hide");
     this.initializeForm();
-  }
-  /* rerender(): void {
-    $("#datatable").DataTable().clear();
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      dtInstance.destroy();
-    });
-    this.lstEmployee = [];
-    this.loadEmployee();
-    setTimeout(() => {
-      this.dtTrigger.next();
-    }, 1000);
-  } */
-
-  // to know the date picker changes
-  from(data) {
-    this.DateJoin = this.pipe.transform(data, "dd-MM-yyyy");
-  }
-  //search by Level
-  searchLevel(val) {
-    this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function (d) {
-      val = val.toLowerCase();
-      return d.employment_level.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    this.rows.push(...temp);
   }
 
   //search by description
@@ -214,18 +214,6 @@ export class EmploymentLevelComponent implements OnInit {
       });
   }
 
-  deleteEmployee() {
-    // this.srvModuleService.delete(this.tempId, this.url).subscribe((data) => {
-    //   $("#datatable").DataTable().clear();
-    //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-    //     dtInstance.destroy();
-    //   });
-    //   this.dtTrigger.next();
-    // });
-    // this.loadEmployee();
-    // $("#delete_employee").modal("hide");
-    // this.toastr.success("Employee deleted sucessfully..!", "Success");
-  }
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   edit(row) {
     this.formTitle = "Edit Employment Level";
@@ -235,25 +223,6 @@ export class EmploymentLevelComponent implements OnInit {
       description: row.description,
     });
     $("#add_employment_level").modal("show");
-    // this.editId = value;
-    // const index = this.lstEmployee.findIndex(item => {
-    //   return item.id === value;
-    // });
-    // let toSetValues = this.lstEmployee[index];
-    // this.editEmployeeForm.setValue({
-    //   FirstName: toSetValues.firstname,
-    //   LastName: toSetValues.lastname,
-    //   UserName: toSetValues.username,
-    //   Email: toSetValues.email,
-    //   Password: toSetValues.password,
-    //   ConfirmPassword: toSetValues.confirmpassword,
-    //   EmployeeID: toSetValues.employeeId,
-    //   JoinDate: toSetValues.joindate,
-    //   PhoneNumber: toSetValues.phone,
-    //   CompanyName: toSetValues.company,
-    //   DepartmentName: toSetValues.department,
-    //   Designation: toSetValues.designation
-    // });
   }
   addItemId(event, id) {
     if (event.target.checked) {
@@ -266,38 +235,6 @@ export class EmploymentLevelComponent implements OnInit {
       });
     }
   }
-
-  // deleteItems() {
-  //   if (this.selectedId.length === 0) {
-  //     return swal.fire('Error', 'Select items to delete', 'error')
-  //   }
-  //   const payload = {
-  //     itemIds: this.selectedId
-  //   };
-  //   swal.fire({
-  //     title: "Are you sure you want to delete this record?",
-  //     text: "You won't be able to revert this",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonText: "Yes!"
-  //   }).then(result => {
-  //     if (result.value) {
-  //       return this.setupService.deleteData("/hrmsetup/delete/employmentlevel", payload).subscribe(res => {
-  //         const message = res.status.message.friendlyMessage;
-  //         if (res.status.isSuccessful) {
-  //           swal.fire('Success', message, 'success').then(() => {
-  //             this.getEmploymentLevels()
-  //           })
-  //         } else {
-  //           swal.fire('Error', message, 'error')
-  //         }
-  //       }, err => {
-  //         console.log(err);
-  //       })
-  //     }
-  //   })
-
-  // }
 
   checkAll(event) {
     if (event.target.checked) {
