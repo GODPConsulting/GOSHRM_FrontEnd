@@ -1645,7 +1645,7 @@ table.dataTable thead > tr > td.sorting {
   border: 1px solid #ff9b44;
   /*border-radius: 50px;*/
   color: #fff;
-  float: right;
+  margin-right: 5px;
   font-weight: 500;
   /*min-width: 140px;*/
 }
@@ -1656,9 +1656,7 @@ table.dataTable thead > tr > td.sorting {
   border: 1px solid #ff851a;
   color: #fff;
 }
-.add-btn i {
-  margin-right: 5px;
-}
+
 .cal-icon {
   position: relative;
   width: 100%;
