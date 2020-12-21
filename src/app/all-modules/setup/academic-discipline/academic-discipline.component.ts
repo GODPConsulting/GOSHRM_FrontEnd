@@ -21,7 +21,7 @@ const EXCEL_EXTENSION = ".xlsx";
 @Component({
   selector: "app-academic-discipline",
   templateUrl: "./academic-discipline.component.html",
-  styleUrls: ["./academic-discipline.component.css", "../setup.component.css"]
+  styleUrls: ["./academic-discipline.component.css", "../setup.component.css"],
 })
 export class AcademicDisciplineComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
@@ -68,6 +68,19 @@ export class AcademicDisciplineComponent implements OnInit {
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
       })
       .trigger("blur");
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null],
+      order: [[1, "asc"]],
+    };
     this.initializeForm();
     //this.initializeUploadForm();
     this.getAcademicDisplines();
@@ -77,6 +90,10 @@ export class AcademicDisciplineComponent implements OnInit {
   onSelectedFile(event: FileList) {
     this.file = event.item(0);
   } */
+
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
 
   onSelectedFile(event) {
     this.file = event.target.files[0];

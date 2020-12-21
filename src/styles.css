@@ -267,6 +267,7 @@ textarea.form-control {
   height: 46px;
 }
 .form-control-sm.form-control {
+  /*dataTables search*/
   height: 30px;
   border-radius: 0;
 }
@@ -8529,3 +8530,32 @@ ul.comment-list li ul.children {
 .download-btn:hover .download-btn:focus .download-btn:active {
   color: #777777;
 }
+/*-------------
+HRM_Setup
+---------------*/
+/* Datatable search */
+div.dataTables_wrapper div.dataTables_filter {
+  text-align: left;
+}
+
+div.dataTables_wrapper div.dataTables_length {
+  text-align: right;
+}
+
+div.dataTables_wrapper div.dataTables_filter input {
+  /*dataTables search*/
+  height: 50px;
+  padding: 21px 12px 6px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+div.dataTables_wrapper div.dataTables_filter input::placeholder {
+  /*dataTables search*/
+  color: rgba(172, 172, 172, 0.74);
+}
+
+div.dataTables_wrapper div.dataTables_filter label {
+  display: block;
+}
+/* Datatable search */

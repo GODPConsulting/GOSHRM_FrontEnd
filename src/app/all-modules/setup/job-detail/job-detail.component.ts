@@ -7,9 +7,10 @@ declare const $: any;
 @Component({
   selector: "app-job-detail",
   templateUrl: "./job-detail.component.html",
-  styleUrls: ["./job-detail.component.css","../setup.component.css"]
+  styleUrls: ["./job-detail.component.css", "../setup.component.css"],
 })
 export class JobDetailComponent implements OnInit {
+  public dtOptions: DataTables.Settings = {};
   public jobDetails: any[] = [];
   public rows = [];
   public srch = [];
@@ -17,6 +18,8 @@ export class JobDetailComponent implements OnInit {
   public formTitle = "Add Job Details";
   public jobDetailForm: FormGroup;
   selectedId: any[] = [];
+  public jobDetailUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,8 +34,64 @@ export class JobDetailComponent implements OnInit {
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
       })
       .trigger("blur");
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+      columns: [{ orderable: false }, null, null, null],
+      order: [[1, "asc"]],
+    };
     this.getJobDetail();
     this.initializeForm();
+  }
+
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.jobDetailUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
+  uploadJobDetail() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.jobDetailUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/jobdetail", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_job_detail").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getJobDetail();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  openUploadModal() {
+    $("#upload_job_detail").modal("show");
   }
 
   /*  initializeForm() {
@@ -66,6 +125,9 @@ export class JobDetailComponent implements OnInit {
           weight: ["", Validators.required],
         }),
       ]),
+    });
+    this.jobDetailUploadForm = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
 

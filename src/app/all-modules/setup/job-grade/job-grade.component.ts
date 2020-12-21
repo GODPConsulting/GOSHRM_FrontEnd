@@ -1,8 +1,5 @@
-import { DatePipe } from "@angular/common";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { DataTableDirective } from "angular-datatables";
-import { Subject } from "rxjs";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 
@@ -10,26 +7,15 @@ declare const $: any;
 @Component({
   selector: "app-job-grade",
   templateUrl: "./job-grade.component.html",
-  styleUrls: ["./job-grade.component.css","../setup.component.css"]
+  styleUrls: ["./job-grade.component.css", "../setup.component.css"],
 })
 export class JobGradeComponent implements OnInit {
   formTitle;
   public dtOptions: DataTables.Settings = {};
-  //@ViewChild(DataTableDirective, { static: false })
   public jobGradeForm: FormGroup;
-  //public employeeForm: FormGroup;
   public jobGrades: any[] = [];
   public rows = [];
-  //public dtTrigger: Subject<any> = new Subject();
-  public dtElement: DataTableDirective;
-  public lstEmployee: any;
-  //public url: any = "employeelist";
-  // public tempId: any;
-  // public editId: any;
   public srch = [];
-  // public pipe = new DatePipe("en-US");
-  // public DateJoin;
-  // public statusValue;
   selectedId: any[] = [];
   pageLoading: boolean;
   public jobGradeUploadForm: FormGroup;
@@ -49,8 +35,25 @@ export class JobGradeComponent implements OnInit {
       })
       .trigger("blur");
 
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+      columns: [{ orderable: false }, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
+
     this.getJobGrade();
     this.initializeForm();
+  }
+
+  stopParentEvent(event) {
+    event.stopPropagation();
   }
 
   onSelectedFile(event) {
@@ -66,7 +69,6 @@ export class JobGradeComponent implements OnInit {
       "uploadInput",
       this.jobGradeUploadForm.get("uploadInput").value
     );
-
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     return this.setupService
       .updateData("/hrmsetup/upload/jobgrade", formData)
@@ -196,7 +198,6 @@ export class JobGradeComponent implements OnInit {
       })
       .then((result) => {
         //console.log(result);
-
         if (result.value) {
           return this.setupService
             .deleteData("/hrmsetup/delete/jobgrade", payload)

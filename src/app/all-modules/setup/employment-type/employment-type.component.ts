@@ -1,8 +1,6 @@
-import { DatePipe } from "@angular/common";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DataTableDirective } from "angular-datatables";
-import { Subject } from "rxjs";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 
@@ -10,28 +8,21 @@ declare const $: any;
 @Component({
   selector: "app-employment-type",
   templateUrl: "./employment-type.component.html",
-  styleUrls: ["./employment-type.component.css","../setup.component.css"]
+  styleUrls: ["./employment-type.component.css", "../setup.component.css"],
 })
 export class EmploymentTypeComponent implements OnInit {
   formTitle;
   public dtOptions: DataTables.Settings = {};
-  //@ViewChild(DataTableDirective, { static: false })
   public employmentTypeForm: FormGroup;
-  //public employeeForm: FormGroup;
   public employmentTypes: any[] = [];
   public rows = [];
-  //public dtTrigger: Subject<any> = new Subject();
   public dtElement: DataTableDirective;
   public lstEmployee: any;
-  //public url: any = "employeelist";
-  // public tempId: any;
-  // public editId: any;
   public srch = [];
-  // public pipe = new DatePipe("en-US");
-  // public DateJoin;
-  // public statusValue;
   pageLoading: boolean;
   selectedId: any[] = [];
+  public employmentTypeUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,8 +37,64 @@ export class EmploymentTypeComponent implements OnInit {
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
       })
       .trigger("blur");
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+      columns: [{ orderable: false }, null, null],
+      order: [[1, "asc"]],
+    };
     this.initializeForm();
     this.getEmploymentType();
+  }
+
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.employmentTypeUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadEmploymentType() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.employmentTypeUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.employmentTypeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/employmenttype", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_employment_type").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getEmploymentType();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  openUploadModal() {
+    $("#upload_employment_type").modal("show");
   }
 
   initializeForm() {
@@ -55,6 +102,9 @@ export class EmploymentTypeComponent implements OnInit {
       id: [0],
       employment_type: ["", Validators.required],
       description: ["", Validators.required],
+    });
+    this.employmentTypeUploadForm = this.formBuilder.group({
+      uploadInput: [""],
     });
   }
 

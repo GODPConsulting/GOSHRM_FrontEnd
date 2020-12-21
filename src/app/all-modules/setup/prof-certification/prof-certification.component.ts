@@ -11,7 +11,7 @@ declare const $: any;
 @Component({
   selector: "app-prof-certification",
   templateUrl: "./prof-certification.component.html",
-  styleUrls: ["./prof-certification.component.css", "../setup.component.css"]
+  styleUrls: ["./prof-certification.component.css", "../setup.component.css"],
 })
 export class ProfCertificationComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
@@ -35,6 +35,8 @@ export class ProfCertificationComponent implements OnInit {
   pageLoading: boolean;
   value: any;
   selectedId: any[] = [];
+  public profCertUploadForm: FormGroup;
+  file: File;
 
   constructor(
     private setupService: SetupService,
@@ -50,9 +52,66 @@ export class ProfCertificationComponent implements OnInit {
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
       })
       .trigger("blur");
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+      columns: [{ orderable: false }, null, null, null],
+      order: [[1, "asc"]],
+    };
     this.initializeForm();
     this.getprofCertification();
   }
+
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
+  onSelectedFile(event) {
+    this.file = event.target.files[0];
+    this.profCertUploadForm.patchValue({
+      uploadInput: this.file,
+    });
+  }
+
+  uploadProfCert() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.profCertUploadForm.get("uploadInput").value
+    );
+
+    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    return this.setupService
+      .updateData("/hrmsetup/upload/prof_certification", formData)
+      .subscribe(
+        (res) => {
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#upload_prof_certification").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getprofCertification();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
+  }
+
+  openUploadModal() {
+    $("#upload_prof_certification").modal("show");
+  }
+
   initializeForm() {
     this.profCertificationForm = this.formBuilder.group({
       id: [0],
@@ -60,7 +119,11 @@ export class ProfCertificationComponent implements OnInit {
       description: ["", Validators.required],
       rank: [0, Validators.required],
     });
+    this.profCertUploadForm = this.formBuilder.group({
+      uploadInput: [""],
+    });
   }
+
   getprofCertification() {
     this.pageLoading = true;
     return this.setupService
