@@ -97,8 +97,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)" 
-              *ngFor="let row of certifications | filter:searchText; let i = index">
+              <tr *ngFor="let row of certifications | filter:searchText; let i = index">
                 <td>
                   <input
                     type="checkbox"
@@ -107,8 +106,8 @@
                   />
                 </td>
                 <td>{{ i + 1 }}</td>
-                <td>{{ row.certification }}</td>
-                <td>{{ row.rank }}</td>
+                <td data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)">{{ row.certification }}</td>
+                <td data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)">{{ row.rank }}</td>
                 
               </tr>
             </tbody>

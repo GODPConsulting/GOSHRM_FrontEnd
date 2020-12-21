@@ -63,14 +63,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="edit(row)"
-                        *ngFor="let row of employmentTypes | filter:searchText; let i = index">
+                        <tr *ngFor="let row of employmentTypes | filter:searchText; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.employment_type }}</td>
+                            <td data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="edit(row)">{{ row.employment_type }}</td>
                         </tr>
                     </tbody>
                 </table>

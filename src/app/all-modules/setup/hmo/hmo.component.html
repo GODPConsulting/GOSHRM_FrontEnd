@@ -61,21 +61,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="editHmo(row)"
-                        *ngFor="let row of hmos | filter:searchText; let i = index">
+                        <tr *ngFor="let row of hmos | filter:searchText; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.hmo_name }}</td>
-                            <td>{{ row.hmo_code }}</td>
-                            <td>{{ row.contact_phone_number }}</td>
-                            <td>{{ row.contact_email }}</td>
-                            <td>{{ row.address }}</td>
-                            <td>{{ row.reg_date | date }}</td>
-                            <td>{{ row.rating }}</td>
-                            <td>{{ row.other_comments }}</td>
+                            <td data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="editHmo(row)">{{ row.hmo_name }}</td>
+                            <td data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="editHmo(row)">{{ row.hmo_code }}</td>
+                            <td data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="editHmo(row)">{{ row.contact_phone_number }}</td>
+                            <td data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="editHmo(row)">{{ row.contact_email }}</td>
+                            <td data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="editHmo(row)">{{ row.address }}</td>
+                            <td data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="editHmo(row)">{{ row.reg_date | date }}</td>
+                            <td data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="editHmo(row)">{{ row.rating }}</td>
+                            <td data-toggle="modal"class="pointer"data-target="#edit_employee"(click)="editHmo(row)"s>{{ row.other_comments }}</td>
                         </tr>
                     </tbody>
                 </table>
