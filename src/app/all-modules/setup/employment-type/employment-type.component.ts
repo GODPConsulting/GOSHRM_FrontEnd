@@ -53,6 +53,10 @@ export class EmploymentTypeComponent implements OnInit {
     this.getEmploymentType();
   }
 
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.employmentTypeUploadForm.patchValue({

@@ -45,7 +45,7 @@
                         <tr data-toggle="modal" class="pointer" data-target="#edit_employee"
                             (click)="editAcademicQualification(row)"
                             *ngFor="let row of qualifications | filter:searchText; let i = index">
-                            <td>
+                            <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>

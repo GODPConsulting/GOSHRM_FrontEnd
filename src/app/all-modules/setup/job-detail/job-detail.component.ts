@@ -57,6 +57,10 @@ export class JobDetailComponent implements OnInit {
     });
   }
 
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
   uploadJobDetail() {
     const formData = new FormData();
     formData.append(

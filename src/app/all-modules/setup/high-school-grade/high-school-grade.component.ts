@@ -50,6 +50,10 @@ export class HighSchoolGradeComponent implements OnInit {
     this.initializeForm();
   }
 
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.highSchoolGradeUploadForm.patchValue({

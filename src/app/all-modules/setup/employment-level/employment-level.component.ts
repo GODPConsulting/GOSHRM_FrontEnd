@@ -51,6 +51,10 @@ export class EmploymentLevelComponent implements OnInit {
     this.getEmploymentLevels();
   }
 
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.employmentLevelUploadForm.patchValue({

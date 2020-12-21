@@ -91,6 +91,10 @@ export class AcademicDisciplineComponent implements OnInit {
     this.file = event.item(0);
   } */
 
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.academicDisciplineUploadForm.patchValue({
