@@ -370,7 +370,7 @@ export class AcademicDisciplineComponent implements OnInit {
         }
       );
   }
-  rerender(): void {
+  /* rerender(): void {
     $("#datatable").DataTable().clear();
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.destroy();
@@ -380,19 +380,14 @@ export class AcademicDisciplineComponent implements OnInit {
     setTimeout(() => {
       //   this.dtTrigger.next();
     }, 1000);
-  }
-
-  // Get Employee  Api Call
-  loadEmployee() {
-    // this.srvModuleService.get(this.url).subscribe((data) => {
-    //   this.lstEmployee = data;
-    //   this.rows = this.lstEmployee;
-    // this.srch = [...this.rows];
-    // });
-  }
+  } */
 
   // Add employee  Modal Api Call
   addData(academicDisciplineForm: FormGroup) {
+    if (!academicDisciplineForm.valid) {
+      swal.fire("Error", "Please complete all fields", "error");
+      return;
+    }
     const payload = academicDisciplineForm.value;
     console.log(payload);
 
