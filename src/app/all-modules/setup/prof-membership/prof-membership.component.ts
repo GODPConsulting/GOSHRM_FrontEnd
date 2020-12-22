@@ -70,6 +70,10 @@ export class ProfMembershipComponent implements OnInit {
     this.getProfMembershipForm();
   }
 
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.professionalMembershipUploadForm.patchValue({

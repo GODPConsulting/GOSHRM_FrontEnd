@@ -16,7 +16,6 @@
                         class="fa fa-download"></i></a>
                 <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
                         class="fa fa-upload"></i></a>
-
                 <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span
                         class="hint-text">Add</span><i class="fa fa-plus"></i></a>
                 <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
@@ -45,7 +44,7 @@
                     <tbody>
                         <tr (click)="edit(row)" class="pointer"
                             *ngFor="let row of profMemberships | filter:searchText; let i = index">
-                            <td>
+                            <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>

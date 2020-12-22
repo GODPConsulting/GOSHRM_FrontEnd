@@ -68,6 +68,10 @@ export class ProfCertificationComponent implements OnInit {
     this.getprofCertification();
   }
 
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.profCertUploadForm.patchValue({

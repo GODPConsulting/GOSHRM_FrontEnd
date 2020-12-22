@@ -52,6 +52,10 @@ export class JobGradeComponent implements OnInit {
     this.initializeForm();
   }
 
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.jobGradeUploadForm.patchValue({

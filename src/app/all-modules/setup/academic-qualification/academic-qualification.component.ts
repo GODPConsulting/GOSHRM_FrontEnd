@@ -54,6 +54,10 @@ export class AcademicQualificationComponent implements OnInit {
     this.initializeForm();
   }
 
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.academicQualificationUploadForm.patchValue({
@@ -133,7 +137,7 @@ export class AcademicQualificationComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            $("#add_acadmic_qualification").modal("hide");
+            $("#add_academic_qualification").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }

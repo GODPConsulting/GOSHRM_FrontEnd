@@ -13,14 +13,13 @@
           </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-          <a class="btn add-btn hint" data-toggle="modal" (click)="addEmploymentLevel()"><span
-              class="hint-text">Add</span><i class="fa fa-plus"></i></a>
           <a class="btn download-btn hint"><span class="hint-text">Download</span><i class="fa fa-download"></i></a>
-          <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
-              class="fa fa-upload"></i></a>
+          <a class="btn upload-btn hint" (click)="openUploadModal()"><span 
+            class="hint-text">Upload</span><i class="fa fa-upload"></i></a>
+          <a class="btn add-btn hint" data-toggle="modal" (click)="addEmploymentLevel()"><span
+            class="hint-text">Add</span><i class="fa fa-plus"></i></a>
           <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
               class="fa fa-trash"></i></a>
-          <!--        <div class="view-icons">-->
           <!--          <a routerLink="/employees/employeepage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>-->
           <!--          <a routerLink="/employees/employeelist" class="list-view btn btn-link active"><i-->
           <!--            class="fa fa-bars"></i></a>-->
@@ -46,7 +45,7 @@
             <tbody>
               <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)"
                 *ngFor="let row of levels | filter:searchText; let i = index">
-                <td>
+                <td (click)="stopParentEvent($event)">
                   <input type="checkbox" [checked]="selectedId.includes(row.id)" (change)="addItemId($event, row.id)" />
                 </td>
                 <td>{{ i + 1 }}</td>

@@ -65,6 +65,10 @@ export class LanguageComponent implements OnInit {
     this.getLanguage();
   }
 
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.languageUploadForm.patchValue({

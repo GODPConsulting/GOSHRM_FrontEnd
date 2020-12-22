@@ -56,6 +56,10 @@ export class HighSchoolSubjectsComponent implements OnInit {
     this.getHighSchoolSub();
   }
 
+  stopParentEvent(event) {
+    event.stopPropagation();
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.highSchoolSubUploadForm.patchValue({
