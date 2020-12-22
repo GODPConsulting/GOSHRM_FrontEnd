@@ -33,7 +33,6 @@ export class ProfMembershipComponent implements OnInit {
   //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
-  loading: boolean = false;
   value: any;
   selectedId: any[] = [];
   public professionalMembershipUploadForm: FormGroup;

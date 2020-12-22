@@ -128,7 +128,7 @@
 <!-- /Add Employee Modal -->
 
 <!-- Upload prof-membership Modal -->
-<div class="modal custom-modal fade" id="upload_language" role="dialog">
+<div class="modal custom-modal fade" id="upload_prof_membership" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -140,7 +140,6 @@
             <div class="modal-body">
                 <form (ngSubmit)="uploadProfMembership()" [formGroup]="professionalMembershipUploadForm">
                     <div class="row">
-
                         <div class="form-group row col-6">
                             <label class="col-form-label col-md-5">Choose File (.xlsx format)</label>
                             <div class="col-md-7">
@@ -161,9 +160,8 @@
                             </tr>
                         </table>
                     </div>
-
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit"  (ngSubmit)="uploadProfMembership()" [disabled]="loading">
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadProfMembership()" [disabled]="loading">
                             <span *ngIf="!loading">Submit</span> 
                             <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
