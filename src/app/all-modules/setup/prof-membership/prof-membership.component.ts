@@ -33,6 +33,7 @@ export class ProfMembershipComponent implements OnInit {
   //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
+  loading: boolean = false;
   value: any;
   selectedId: any[] = [];
   public professionalMembershipUploadForm: FormGroup;
@@ -82,6 +83,9 @@ export class ProfMembershipComponent implements OnInit {
       "uploadInput",
       this.professionalMembershipUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     return this.setupService
       .updateData("/hrmsetup/upload/prof_membership", formData)

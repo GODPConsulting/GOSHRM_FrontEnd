@@ -164,8 +164,9 @@
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">
-                            Submit
+                        <button class="btn btn-primary submit-btn" type="submit"  (ngSubmit)="uploadProfMembership()" [disabled]="loading">
+                            <span *ngIf="!loading">Submit</span> 
+                            <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>

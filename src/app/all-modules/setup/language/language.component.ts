@@ -29,7 +29,7 @@ export class LanguageComponent implements OnInit {
   public srch = [];
   public statusValue;
   pageLoading: boolean;
-  loading: boolean = true;
+  loading: boolean = false;
   value: any;
   selectedId: any[] = [];
   languageForm: FormGroup;
@@ -73,12 +73,14 @@ export class LanguageComponent implements OnInit {
   }
 
   uploadLanguage() {
-    this.loading = true;
     const formData = new FormData();
     formData.append(
       "uploadInput",
       this.languageUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
     //console.log(formData, this.languageForm.get("uploadInput").value);
     return this.setupService
       .updateData("/hrmsetup/upload/language", formData)
@@ -93,7 +95,6 @@ export class LanguageComponent implements OnInit {
             swal.fire("Error", message, "error");
           }
           this.getLanguage();
-          this.loading = false;
         },
         (err) => {
           const message = err.status.message.friendlyMessage;
@@ -127,7 +128,6 @@ export class LanguageComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        this.loading = false;
         console.log(err);
       }
     );
