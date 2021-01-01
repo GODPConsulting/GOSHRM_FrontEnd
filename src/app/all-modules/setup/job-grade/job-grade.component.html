@@ -98,7 +98,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Reporting To</label>
+                                <label class="col-form-label">Reporting To<span class="text-danger">*</span></label>
                                 <!--  <textarea class="form-control" type="text" [class.invalid]="
                                 jobGradeForm.get('job_grade_reporting_to').invalid &&
                                 jobGradeForm.get('job_grade_reporting_to').touched
@@ -221,7 +221,7 @@
 </div>
 <!-- /Delete Employee Modal -->
 <!-- Upload Job Grade Modal -->
-<div id="upload_job_grade" class="modal custom-modal fade" role="dialog">
+<div id="upload_job_grade" class="modal custom-modal fade " role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -230,12 +230,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body px-5">
                 <form (ngSubmit)="uploadJobGrade()" [formGroup]="jobGradeUploadForm">
                     <div class="row">
 
-                        <div class="form-group row col-6">
-                            <label class="col-form-label col-md-5">Choose File (.xlsx format)</label>
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" type="file"
                                     (change)="onSelectedFile($event)">
@@ -246,10 +246,11 @@
 
 
                     <div class="row">
-                        <p class="col-5">Please use the guide below for your sheet</p>
-                        <table class="table table-bordered col-8">
+                        <p>Please use the guide below for your sheet</p>
+                        <table class="table table-bordered">
                             <tr>
                                 <th>Job Grade</th>
+                                <th>Description</th>
                                 <th>Report To</th>
                                 <th>Rank</th>
                                 <th>Probation Period</th>
