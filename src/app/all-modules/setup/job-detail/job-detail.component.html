@@ -96,7 +96,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Description<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <input class="form-control" type="text" rows="5" [class.invalid]="
                                 jobDetailForm.get('job_description').invalid &&
                                 jobDetailForm.get('job_description').touched
                     " formControlName="job_description" />
@@ -153,7 +153,7 @@
                                 <div class="col sub_Skills">
                                     <div class="form-group">
                                         <label class="col-form-label">Weight<span class="text-danger">*</span></label>
-                                        <input class="form-control" type="number"
+                                        <input class="form-control" type="number" min="1"
                                             [class.invalid]="item.controls.weight.invalid && item.controls.weight.touched"
                                             formControlName="weight" />
                                         <div *ngIf="item.controls.weight.invalid && item.controls.weight.touched
@@ -233,9 +233,9 @@
                 <form (ngSubmit)="uploadJobDetail()" [formGroup]="jobDetailUploadForm">
                     <div class="row">
 
-                        <div class="form-group row col-6">
-                            <label class="col-form-label col-md-5">Choose File (.xlsx format)</label>
-                            <div class="col-md-7">
+                        <div class="form-group row col-8">
+                            <label class="col-form-label col-md-4">Choose File (excel format)</label>
+                            <div class="col-md-8">
                                 <input class="form-control" name="uploadInput" id="uploadInput" type="file"
                                     (change)="onSelectedFile($event)">
                             </div>
