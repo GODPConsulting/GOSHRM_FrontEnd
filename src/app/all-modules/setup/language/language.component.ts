@@ -29,7 +29,8 @@ export class LanguageComponent implements OnInit {
   public srch = [];
   public statusValue;
   pageLoading: boolean;
-  loading: boolean = false;
+  loading: boolean = true;
+  spinner: boolean = false;
   value: any;
   selectedId: any[] = [];
   languageForm: FormGroup;
@@ -86,6 +87,8 @@ export class LanguageComponent implements OnInit {
       return swal.fire('Error', 'Select a file', 'error')
     }
     //console.log(formData, this.languageForm.get("uploadInput").value);
+   this.spinner = true;
+   this.loading = false;
     return this.setupService
       .updateData("/hrmsetup/upload/language", formData)
       .subscribe(
@@ -108,6 +111,8 @@ export class LanguageComponent implements OnInit {
   }
   openUploadModal() {
     $("#upload_language").modal("show");
+
+    
   }
 
   initializeForm() {

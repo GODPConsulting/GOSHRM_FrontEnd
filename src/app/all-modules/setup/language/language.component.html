@@ -157,9 +157,9 @@
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadLanguage()" [disabled]="loading">
-                            <span *ngIf="!loading">Submit</span> 
-                            <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadLanguage()" [disabled]="!loading">
+                            <span *ngIf="loading">Submit</span> 
+                            <span *ngIf="!loading && spinner" ><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>
