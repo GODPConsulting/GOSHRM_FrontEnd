@@ -96,8 +96,26 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
+                                <label class="col-form-label">Rank<span class="text-danger">*</span></label>
+                                <input class="form-control" type="number" min="1" [class.invalid]="
+                                academicGradeForm.get('rank').invalid &&
+                                academicGradeForm.get('rank').touched
+                    " formControlName="rank" />
+                                <div *ngIf="
+                                academicGradeForm.get('rank').invalid &&
+                                academicGradeForm.get('rank').touched">
+                                    <small *ngIf="
+                                    academicGradeForm.get('rank').invalid &&
+                                    academicGradeForm.get('rank').touched
+                      " class="text-danger">
+                                        *Rank Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
                                 <label class="col-form-label">Description<span class="text-danger">*</span></label>
-                                <textarea class="form-control" type="text" [class.invalid]="
+                                <textarea class="form-control" type="text" rows="5" [class.invalid]="
                                 academicGradeForm.get('description').invalid &&
                                 academicGradeForm.get('description').touched
                     " formControlName="description"></textarea>
@@ -108,24 +126,6 @@
                                     academicGradeForm.get('description').touched
                       " class="text-danger">
                                         *Description Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Rank<span class="text-danger">*</span></label>
-                                <input class="form-control" type="number" [class.invalid]="
-                                academicGradeForm.get('rank').invalid &&
-                                academicGradeForm.get('rank').touched
-                    " formControlName="rank" />
-                                <div *ngIf="
-                                academicGradeForm.get('rank').invalid &&
-                                academicGradeForm.get('rank').touched">
-                                    <small *ngIf="
-                                    AcademicGradeForm.get('rank').invalid &&
-                                    AcademicGradeForm.get('rank').touched
-                      " class="text-danger">
-                                        *Rank Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -180,9 +180,9 @@
             <div class="modal-body">
                 <form (ngSubmit)="uploadAcademicGrade()" [formGroup]="academicGradeUploadForm">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-8">
                             <div class="form-group row">
-                                <label class="col-form-label col-md-4">Choose File</label>
+                                <label class="col-form-label col-md-4">Choose File (excel format)</label>
                                 <div class="col-md-8">
                                     <input class="form-control" name="uploadInput" id="uploadInput" type="file"
                                         (change)="onSelectedFile($event)">

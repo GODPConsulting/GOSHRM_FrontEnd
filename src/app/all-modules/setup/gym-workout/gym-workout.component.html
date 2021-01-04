@@ -202,9 +202,9 @@
                 <form (ngSubmit)="uploadGymWorkout()" [formGroup]="gymWorkoutUploadForm">
                     <div class="row">
 
-                        <div class="form-group row col-6">
-                            <label class="col-form-label col-md-5">Choose File (.xlsx format)</label>
-                            <div class="col-md-7">
+                        <div class="form-group row col-8">
+                            <label class="col-form-label col-md-4">Choose File (excel format)</label>
+                            <div class="col-md-8">
                                 <input class="form-control" name="uploadInput" id="uploadInput" type="file"
                                     (change)="onSelectedFile($event)">
                             </div>

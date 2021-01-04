@@ -251,6 +251,8 @@
                   urlComplete.subUrl === 'job-detail') ||
                 (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'prof-certification') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'job-sub-skill') ||
                 (urlComplete.mainUrl === 'employees' &&
                   urlComplete.subUrl === 'employeeleaves') ||
                 (urlComplete.mainUrl === 'employees' &&
@@ -301,6 +303,8 @@
                   urlComplete.subUrl === 'job-detail') ||
                     (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'prof-certification') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'job-sub-skill') ||
                     (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'employeepage') ||
                   (urlComplete.mainUrl === 'employees' &&
@@ -367,6 +371,8 @@
                     urlComplete.subUrl === 'high-school-grade') ||
                     (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'job-detail') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'job-sub-skill') ||
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'leavesettings') ||
                   (urlComplete.mainUrl === 'employees' &&
@@ -439,6 +445,11 @@
                 <a href="javascript:" [ngClass]="{
                     active:
                       urlComplete.subUrl === 'job-detail'}">Job Detail</a>
+              </li>
+              <li routerLink="/setup/job-sub-skill">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'job-sub-skill'}">Job Sub Skill</a>
               </li>
 
             </ul>
