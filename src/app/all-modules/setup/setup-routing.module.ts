@@ -16,6 +16,7 @@ import { HighSchoolGradeComponent } from "./high-school-grade/high-school-grade.
 import { AcademicGradeComponent } from "./academic-grade/academic-grade.component";
 import { JobDetailComponent } from "src/app/all-modules/setup/job-detail/job-detail.component";
 import { ProfCertificationComponent } from "./prof-certification/prof-certification.component";
+import { JobSubSkillComponent } from './job-sub-skill/job-sub-skill.component';
 
 
 const routes: Routes = [
@@ -79,6 +80,10 @@ const routes: Routes = [
       {
         path: "prof-certification",
         component: ProfCertificationComponent,
+      },
+      {
+        path: "job-sub-skill",
+        component: JobSubSkillComponent,
       },
     ],
   },

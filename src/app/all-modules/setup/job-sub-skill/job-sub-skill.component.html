@@ -5,10 +5,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Professional Membership</h3>
+                <h3 class="page-title">Job Sub Skill</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
-                    <li class="breadcrumb-item active">Professional Membership</li>
+                    <li class="breadcrumb-item active">Job Sub Skill</li>
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
@@ -33,24 +33,27 @@
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === profMemberships.length"
+                                <input type="checkbox" [checked]="selectedId.length === subSkill.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Professional Membership</th>
-                            <th>Description</th>
+                            <th>Job Title</th>
+                            <th>Skill</th>
+                            <th>Weight</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr (click)="edit(row)" class="pointer"
-                            *ngFor="let row of profMemberships | filter:searchText; let i = index">
+                        <tr data-toggle="modal" class="pointer" data-target="#edit_employee"
+                            (click)="editSubSkill(row)"
+                            *ngFor="let row of subSkill | filter:searchText; let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.professional_membership }}</td>
-                            <td>{{ row.description }}</td>
+                            <td>{{ row.job_title }}</td>
+                            <td>{{ row.skill }}</td>
+                            <td>{{ row.weight }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -60,8 +63,8 @@
 </div>
 <!-- /Page Content -->
 
-<!-- Add HMO Modal -->
-<div id="add_prof_membership" class="modal custom-modal fade" role="dialog">
+<!-- Add Job Detail Modal -->
+<div id="add_sub_skill" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -71,49 +74,88 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="addProfMembership(professionalMembershipForm)"
-                    [formGroup]="professionalMembershipForm">
+                <form (ngSubmit)="addSubSkill(subSkillForm)" [formGroup]="subSkillForm">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Prof Membership <span class="text-danger">*</span></label>
+                                <label class="col-form-label">Job Title<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                professionalMembershipForm.get('professional_membership').invalid &&
-                                professionalMembershipForm.get('professional_membership').touched
-                    " formControlName="professional_membership" />
+                                subSkillForm.get('job_title').invalid &&
+                                subSkillForm.get('job_title').touched
+                    " formControlName="job_title" />
                                 <div *ngIf="
-                                professionalMembershipForm.get('professional_membership').invalid &&
-                                professionalMembershipForm.get('professional_membership').touched
+                                subSkillForm.get('job_title').invalid &&
+                                subSkillForm.get('job_title').touched
                     ">
                                     <small *ngIf="
-                                    professionalMembershipForm.get('professional_membership').invalid &&
-                                    professionalMembershipForm.get('professional_membership').touched
+                                    subSkillForm.get('job_title').invalid &&
+                                    subSkillForm.get('job_title').touched
                       " class="text-danger">
-                                        *Prof Membership Field is required</small>
+                                        *Field is required</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Description <span class="text-danger">*</span></label>
-                                <textarea class="form-control" type="text" rows="5" [class.invalid]="
-                                professionalMembershipForm.get('description').invalid &&
-                                professionalMembershipForm.get('description').touched
-                    " formControlName="description"></textarea>
+                                <label class="col-form-label">Skill<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                subSkillForm.get('skill').invalid &&
+                                subSkillForm.get('skill').touched
+                    " formControlName="skill" />
                                 <div *ngIf="
-                                professionalMembershipForm.get('description').invalid &&
-                                professionalMembershipForm.get('description').touched
+                                subSkillForm.get('skill').invalid &&
+                                subSkillForm.get('skill').touched
                     ">
                                     <small *ngIf="
-                                    professionalMembershipForm.get('description').invalid &&
-                                    professionalMembershipForm.get('description').touched
+                                    subSkillForm.get('skill').invalid &&
+                                    subSkillForm.get('skill').touched
                       " class="text-danger">
-                                        *Description Field is required</small>
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Weight<span class="text-danger">*</span></label>
+                                <input class="form-control" type="number" min="1" [class.invalid]="
+                                subSkillForm.get('weight').invalid &&
+                                subSkillForm.get('weight').touched
+                    " formControlName="weight" />
+                                <div *ngIf="
+                                subSkillForm.get('weight').invalid &&
+                                subSkillForm.get('weight').touched
+                    ">
+                                    <small *ngIf="
+                                    subSkillForm.get('weight').invalid &&
+                                    subSkillForm.get('weight').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Description<span class="text-danger">*</span></label>
+                                <textarea class="form-control" type="text" rows="5" [class.invalid]="
+                                subSkillForm.get('description').invalid &&
+                                subSkillForm.get('description').touched
+                    " formControlName="description"></textarea>
+                                <div *ngIf="
+                                subSkillForm.get('description').invalid &&
+                                subSkillForm.get('description').touched
+                    ">
+                                    <small *ngIf="
+                                    subSkillForm.get('description').invalid &&
+                                    subSkillForm.get('description').touched
+                      " class="text-danger">
+                                        *Field is required</small>
                                 </div>
                             </div>
                         </div>
 
                     </div>
+                    
+
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             Submit
@@ -124,22 +166,21 @@
         </div>
     </div>
 </div>
-
 <!-- /Add Employee Modal -->
-
-<!-- Upload prof-membership Modal -->
-<div class="modal custom-modal fade" id="upload_prof_membership" role="dialog">
+<!-- Upload Job Detail Modal -->
+<div id="upload_sub_skill" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Upload Professional Membership</h5>
+                <h5 class="modal-title">Upload Sub Skill</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="uploadProfMembership()" [formGroup]="professionalMembershipUploadForm">
+                <form (ngSubmit)="uploadSubSkill()" [formGroup]="subSkillUploadForm">
                     <div class="row">
+
                         <div class="form-group row col-8">
                             <label class="col-form-label col-md-4">Choose File (excel format)</label>
                             <div class="col-md-8">
@@ -155,11 +196,14 @@
                         <p class="col-5">Please use the guide below for your sheet</p>
                         <table class="table table-bordered col-8">
                             <tr>
-                                <th>Professional Membership</th>
+                                <th>Job Title</th>
+                                <th>Skill</th>
                                 <th>Description</th>
+                                <th>Weight</th>
                             </tr>
                         </table>
                     </div>
+
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             Submit
@@ -170,28 +214,4 @@
         </div>
     </div>
 </div>
-
-<!-- Delete Employee Modal -->
-<div class="modal custom-modal fade" id="delete_employee" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-header">
-                    <h3>Delete Employee</h3>
-                    <p>Are you sure want to delete?</p>
-                </div>
-                <div class="modal-btn delete-action">
-                    <div class="row">
-                        <div class="col-6">
-                            <a class="btn btn-primary continue-btn" (click)="deleteEmployee()">Delete</a>
-                        </div>
-                        <div class="col-6">
-                            <a data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Delete Employee Modal -->
+<!-- /Upload Job Grade Modal -->

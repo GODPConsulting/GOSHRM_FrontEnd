@@ -95,27 +95,8 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Description</label>
-                                <textarea class="form-control" type="text" [class.invalid]="
-                                highSchoolGradeForm.get('description').invalid &&
-                                highSchoolGradeForm.get('description').touched
-                    " formControlName="description"></textarea>
-                                <div *ngIf="
-                                highSchoolGradeForm.get('description').invalid &&
-                                highSchoolGradeForm.get('description').touched
-                    ">
-                                    <small *ngIf="
-                                    highSchoolGradeForm.get('description').invalid &&
-                                    highSchoolGradeForm.get('description').touched
-                      " class="text-danger">
-                                        *Description Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
                                 <label class="col-form-label">Rank<span class="text-danger">*</span></label>
-                                <input class="form-control" type="number" [class.invalid]="
+                                <input class="form-control" type="number" min="1" [class.invalid]="
                                 highSchoolGradeForm.get('rank').invalid &&
                                 highSchoolGradeForm.get('rank').touched
                     " formControlName="rank" />
@@ -128,6 +109,25 @@
                                     highSchoolGradeForm.get('rank').touched
                       " class="text-danger">
                                         *Rank Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Description</label>
+                                <textarea class="form-control" type="text" rows="5" [class.invalid]="
+                                highSchoolGradeForm.get('description').invalid &&
+                                highSchoolGradeForm.get('description').touched
+                    " formControlName="description"></textarea>
+                                <div *ngIf="
+                                highSchoolGradeForm.get('description').invalid &&
+                                highSchoolGradeForm.get('description').touched
+                    ">
+                                    <small *ngIf="
+                                    highSchoolGradeForm.get('description').invalid &&
+                                    highSchoolGradeForm.get('description').touched
+                      " class="text-danger">
+                                        *Description Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -181,9 +181,9 @@
                 <form (ngSubmit)="uploadHighSchoolGrade()" [formGroup]="highSchoolGradeUploadForm">
                     <div class="row">
 
-                        <div class="form-group row col-6">
-                            <label class="col-form-label col-md-5">Choose File (.xlsx format)</label>
-                            <div class="col-md-7">
+                        <div class="form-group row col-8">
+                            <label class="col-form-label col-md-4">Choose File (excel format)</label>
+                            <div class="col-md-8">
                                 <input class="form-control" name="uploadInput" id="uploadInput" type="file"
                                     (change)="onSelectedFile($event)">
                             </div>

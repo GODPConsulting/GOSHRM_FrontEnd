@@ -94,7 +94,7 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="col-form-label">Description</label>
-                  <textarea class="form-control" type="text" [class.invalid]="
+                  <textarea class="form-control" type="text" rows="5" [class.invalid]="
                       employmentLevelForm.get('description').invalid &&
                       employmentLevelForm.get('description').touched
                     " formControlName="description"></textarea>
@@ -161,9 +161,9 @@
         <form (ngSubmit)="uploadEmploymentLevel()" [formGroup]="employmentLevelUploadForm">
           <div class="row">
 
-            <div class="form-group row col-6">
-              <label class="col-form-label col-md-5">Choose File (.xlsx format)</label>
-              <div class="col-md-7">
+            <div class="form-group row col-8">
+              <label class="col-form-label col-md-4">Choose File (excel format)</label>
+              <div class="col-md-8">
                 <input class="form-control" name="uploadInput" id="uploadInput" type="file"
                   (change)="onSelectedFile($event)">
               </div>

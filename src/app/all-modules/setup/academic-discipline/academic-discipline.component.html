@@ -101,7 +101,7 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="col-form-label">Rank <span class="text-danger">*</span></label>
-                  <input class="form-control" type="number" [class.invalid]="
+                  <input class="form-control" type="number" min="1" [class.invalid]="
                       academicDisciplineForm.get('rank').invalid &&
                       academicDisciplineForm.get('rank').touched
                     " formControlName="rank" />
@@ -121,7 +121,7 @@
               <div class="col-sm-6">
                 <div class="form-group">
                   <label class="col-form-label">Description</label>
-                  <textarea class="form-control" type="text" [class.invalid]="
+                  <textarea class="form-control" type="text" rows="5" [class.invalid]="
                       academicDisciplineForm.get('description').invalid &&
                       academicDisciplineForm.get('description').touched
                     " formControlName="description"></textarea>
@@ -189,9 +189,9 @@
         <form (ngSubmit)="uploadAcademicDiscipline()" [formGroup]="academicDisciplineUploadForm">
           <div class="row">
 
-            <div class="form-group row col-6">
-              <label class="col-form-label col-md-5">Choose File (.xlsx format)</label>
-              <div class="col-md-7">
+            <div class="form-group row col-8">
+              <label class="col-form-label col-md-4">Choose File (excel format)</label>
+              <div class="col-md-8">
                 <input class="form-control" name="uploadInput" id="uploadInput" type="file"
                   (change)="onSelectedFile($event)">
               </div>
