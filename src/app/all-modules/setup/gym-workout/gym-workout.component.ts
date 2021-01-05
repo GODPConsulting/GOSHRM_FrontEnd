@@ -43,7 +43,7 @@ export class GymWorkoutComponent implements OnInit {
         search: "_INPUT_",
         searchPlaceholder: "Start typing to search by any field",
       },
-      columns: [{ orderable: false }, null, null, null, null, null, null],
+      columns: [{ orderable: false }, null, null, null, null],
       order: [[1, "asc"]],
     };
     this.getGymWorkout();

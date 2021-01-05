@@ -180,17 +180,26 @@
             <div class="modal-body">
                 <form (ngSubmit)="uploadAcademicGrade()" [formGroup]="academicGradeUploadForm">
                     <div class="row">
-                        <div class="col-sm-8">
+                    
                             <div class="form-group row">
-                                <label class="col-form-label col-md-4">Choose File (excel format)</label>
-                                <div class="col-md-8">
+                                <label class="col-form-label col-md-5">Choose File (excel format)</label>
+                                <div class="col-md-7">
                                     <input class="form-control" name="uploadInput" id="uploadInput" type="file"
                                         (change)="onSelectedFile($event)">
                                 </div>
                             </div>
-                        </div>
-
                     </div>
+                    <div class="row">
+                        <p>Please use the guide below for your sheet</p>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Grade</th>
+                                <th>Description</th>
+                                <th>Rank</th>
+                            </tr>
+                        </table>
+                    </div>
+
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             Submit
