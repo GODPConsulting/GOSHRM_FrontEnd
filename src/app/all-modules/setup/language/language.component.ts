@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { DataTableDirective } from "angular-datatables";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -16,6 +16,7 @@ declare const $: any;
 export class LanguageComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
+  @ViewChild('fileInput') fileInput: ElementRef
   public dtElement: DataTableDirective;
   public lstEmployee: any;
   public languages: any[] = [];
@@ -29,6 +30,8 @@ export class LanguageComponent implements OnInit {
   public srch = [];
   public statusValue;
   pageLoading: boolean;
+
+  spinner: boolean = false;
   value: any;
   selectedId: any[] = [];
   languageForm: FormGroup;
@@ -81,15 +84,23 @@ export class LanguageComponent implements OnInit {
       "uploadInput",
       this.languageUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
     //console.log(formData, this.languageForm.get("uploadInput").value);
+   this.spinner = true;
+   
     return this.setupService
       .updateData("/hrmsetup/upload/language", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
+          
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_language").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -97,6 +108,7 @@ export class LanguageComponent implements OnInit {
           this.getLanguage();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -104,6 +116,8 @@ export class LanguageComponent implements OnInit {
   }
   openUploadModal() {
     $("#upload_language").modal("show");
+
+    
   }
 
   initializeForm() {

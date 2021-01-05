@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
@@ -10,11 +10,14 @@ declare const $: any;
   styleUrls: ["./hmo.component.css", "../setup.component.css"],
 })
 export class HmoComponent implements OnInit {
+  @ViewChild('fileInput') fileInput: ElementRef
   public dtOptions: DataTables.Settings = {};
   public hmos: any[] = [];
   public rows = [];
   public srch = [];
   pageLoading: boolean;
+  loading: boolean = true;
+  spinner: boolean = false;
   public formTitle = "Add HMO";
   public hmoForm: FormGroup;
   selectedId: any[] = [];
@@ -76,15 +79,22 @@ export class HmoComponent implements OnInit {
     const formData = new FormData();
     formData.append("uploadInput", this.hmoUploadForm.get("uploadInput").value);
 
-    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
+    //console.log(formData, this.languageForm.get("uploadInput").value);
+   this.spinner = true;
+   this.loading = false;
     return this.setupService
       .updateData("/hrmsetup/upload/hmo", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_hmo").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -92,6 +102,7 @@ export class HmoComponent implements OnInit {
           this.getHmo();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }

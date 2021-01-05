@@ -44,6 +44,8 @@ export class AcademicDisciplineComponent implements OnInit {
   //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
+  loading: boolean = true;
+  spinner: boolean = false;
   value: any;
   selectedId: any[] = [];
   trustedUrl: SafeUrl;
@@ -119,6 +121,13 @@ export class AcademicDisciplineComponent implements OnInit {
       formData,
       this.academicDisciplineUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
+    
+    //console.log(formData, this.languageForm.get("uploadInput").value);
+   this.spinner = true;
+   this.loading = false;
     return this.setupService
       .updateData("/hrmsetup/upload/academic/discipline", formData)
       .subscribe(

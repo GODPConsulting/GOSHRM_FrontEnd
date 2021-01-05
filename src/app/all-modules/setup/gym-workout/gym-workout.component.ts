@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { DatePipe } from "@angular/common";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
@@ -10,12 +11,16 @@ declare const $: any;
   styleUrls: ["./gym-workout.component.css", "../setup.component.css"],
 })
 export class GymWorkoutComponent implements OnInit {
+  @ViewChild('fileInput') fileInput: ElementRef
   public dtOptions: DataTables.Settings = {};
   public gymWorkouts: any[] = [];
   public rows = [];
   public srch = [];
   pageLoading: boolean;
+ 
+  spinner: boolean = false;
   public formTitle = "Add Gym/Workout";
+  public pipe = new DatePipe("en-US");
   public gymWorkoutForm: FormGroup;
   selectedId: any[] = [];
   public gymWorkoutUploadForm: FormGroup;
@@ -67,16 +72,22 @@ export class GymWorkoutComponent implements OnInit {
       "uploadInput",
       this.gymWorkoutUploadForm.get("uploadInput").value
     );
-
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    this.spinner = true;
+    
     return this.setupService
       .updateData("/hrmsetup/upload/gymworkout", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_gym_workout").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -84,6 +95,7 @@ export class GymWorkoutComponent implements OnInit {
           this.getGymWorkout();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
