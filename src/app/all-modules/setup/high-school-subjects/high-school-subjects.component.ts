@@ -131,6 +131,11 @@ export class HighSchoolSubjectsComponent implements OnInit {
 
   // Add employee  Modal Api Call
   addHighSchoolSub(Form: FormGroup) {
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+
     const payload = Form.value;
     return this.setupService
       .updateData("/hrmsetup/add/update/highschoolsubject", payload)
