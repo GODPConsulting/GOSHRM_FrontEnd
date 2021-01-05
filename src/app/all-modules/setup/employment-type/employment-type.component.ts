@@ -145,6 +145,10 @@ export class EmploymentTypeComponent implements OnInit {
 
   // Add employment via reactive form Modal Api Call
   addEmploymentType(Form: FormGroup) {
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
     const payload = Form.value;
     console.log(payload);
     return this.setupService

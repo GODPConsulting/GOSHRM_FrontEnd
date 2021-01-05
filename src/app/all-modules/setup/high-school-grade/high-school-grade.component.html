@@ -64,7 +64,7 @@
 <!-- Add HMO Modal -->
 <div id="add_high_school_grade" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
+        <div class="modal-content w-75 mx-auto">
             <div class="modal-header">
                 <h5 class="modal-title">{{formTitle}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
@@ -73,63 +73,55 @@
             </div>
             <div class="modal-body">
                 <form (ngSubmit)="addHighSchoolGrade(highSchoolGradeForm)" [formGroup]="highSchoolGradeForm">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Grade<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                    <div class="form-group">
+                        <label class="col-form-label">Grade<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" [class.invalid]="
                                 highSchoolGradeForm.get('grade').invalid &&
                                 highSchoolGradeForm.get('grade').touched
                     " formControlName="grade" />
-                                <div *ngIf="
+                        <div *ngIf="
                                 highSchoolGradeForm.get('grade').invalid &&
                                 highSchoolGradeForm.get('grade').touched
                     ">
-                                    <small *ngIf="
+                            <small *ngIf="
                                     highSchoolGradeForm.get('grade').invalid &&
                                     highSchoolGradeForm.get('grade').touched
                       " class="text-danger">
-                                        *Grade Field is required</small>
-                                </div>
-                            </div>
+                                *Grade Field is required</small>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Rank<span class="text-danger">*</span></label>
-                                <input class="form-control" type="number" min="1" [class.invalid]="
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Rank<span class="text-danger">*</span></label>
+                        <input class="form-control" type="number" min="1" [class.invalid]="
                                 highSchoolGradeForm.get('rank').invalid &&
                                 highSchoolGradeForm.get('rank').touched
                     " formControlName="rank" />
-                                <div *ngIf="
+                        <div *ngIf="
                                 highSchoolGradeForm.get('rank').invalid &&
                                 highSchoolGradeForm.get('rank').touched
                     ">
-                                    <small *ngIf="
+                            <small *ngIf="
                                     highSchoolGradeForm.get('rank').invalid &&
                                     highSchoolGradeForm.get('rank').touched
                       " class="text-danger">
-                                        *Rank Field is required</small>
-                                </div>
-                            </div>
+                                *Rank Field is required</small>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Description</label>
-                                <textarea class="form-control" type="text" rows="5" [class.invalid]="
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Description<span class="text-danger">*</span></label>
+                        <textarea class="form-control" type="text" rows="5" [class.invalid]="
                                 highSchoolGradeForm.get('description').invalid &&
                                 highSchoolGradeForm.get('description').touched
                     " formControlName="description"></textarea>
-                                <div *ngIf="
+                        <div *ngIf="
                                 highSchoolGradeForm.get('description').invalid &&
                                 highSchoolGradeForm.get('description').touched
                     ">
-                                    <small *ngIf="
+                            <small *ngIf="
                                     highSchoolGradeForm.get('description').invalid &&
                                     highSchoolGradeForm.get('description').touched
                       " class="text-danger">
-                                        *Description Field is required</small>
-                                </div>
-                            </div>
+                                *Description Field is required</small>
                         </div>
                     </div>
                     <div class="submit-section">
@@ -177,13 +169,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body px-5">
                 <form (ngSubmit)="uploadHighSchoolGrade()" [formGroup]="highSchoolGradeUploadForm">
                     <div class="row">
 
-                        <div class="form-group row col-8">
-                            <label class="col-form-label col-md-4">Choose File (excel format)</label>
-                            <div class="col-md-8">
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-5">Choose File (excel format)</label>
+                            <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" type="file"
                                     (change)="onSelectedFile($event)">
                             </div>
@@ -193,11 +185,10 @@
 
 
                     <div class="row">
-                        <p class="col-5">Please use the guide below for your sheet</p>
-                        <table class="table table-bordered col-8">
+                        <p>Please use the guide below for your sheet</p>
+                        <table class="table table-bordered">
                             <tr>
-                                <th>Grade
-                                </th>
+                                <th>Grade</th>
                                 <th>Description</th>
                                 <th>Rank</th>
                             </tr>

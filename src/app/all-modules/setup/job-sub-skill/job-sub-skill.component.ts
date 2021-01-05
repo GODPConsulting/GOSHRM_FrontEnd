@@ -128,7 +128,7 @@ export class JobSubSkillComponent implements OnInit {
 
   getSubSkill() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/sub-skill").subscribe(
+    return this.setupService.getData("/hrmsetup/get/all/sub_skill").subscribe(
       (data) => {
         this.pageLoading = false;
         console.log(data);
@@ -157,7 +157,7 @@ export class JobSubSkillComponent implements OnInit {
     const payload = Form.value;
     console.log(payload);
     return this.setupService
-      .updateData("/hrmsetup/add/update/sub-skill", payload)
+      .updateData("/hrmsetup/add/update/sub_skill", payload)
       .subscribe(
         (res) => {
           const message = res.status.message.friendlyMessage;
@@ -223,7 +223,7 @@ export class JobSubSkillComponent implements OnInit {
         //console.log(result);
         if (result.value) {
           return this.setupService
-            .deleteData("/hrmsetup/delete/sub-skill", payload)
+            .deleteData("/hrmsetup/delete/sub_skill", payload)
             .subscribe(
               (res) => {
                 const message = res.status.message.friendlyMessage;

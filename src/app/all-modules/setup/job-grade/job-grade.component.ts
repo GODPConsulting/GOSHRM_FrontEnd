@@ -145,6 +145,10 @@ export class JobGradeComponent implements OnInit {
 
   // AddjobGrade Modal Api Call
   addJobGrade(Form: FormGroup) {
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
     const payload = Form.value;
     console.log(payload);
     return this.setupService
