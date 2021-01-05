@@ -1,3 +1,4 @@
+import { DatePipe } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
@@ -15,7 +16,10 @@ export class GymWorkoutComponent implements OnInit {
   public rows = [];
   public srch = [];
   pageLoading: boolean;
+  loading: boolean = true;
+  spinner: boolean = false;
   public formTitle = "Add Gym/Workout";
+  public pipe = new DatePipe("en-US");
   public gymWorkoutForm: FormGroup;
   selectedId: any[] = [];
   public gymWorkoutUploadForm: FormGroup;
@@ -67,8 +71,12 @@ export class GymWorkoutComponent implements OnInit {
       "uploadInput",
       this.gymWorkoutUploadForm.get("uploadInput").value
     );
-
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    this.spinner = true;
+    this.loading = false;
     return this.setupService
       .updateData("/hrmsetup/upload/gymworkout", formData)
       .subscribe(
