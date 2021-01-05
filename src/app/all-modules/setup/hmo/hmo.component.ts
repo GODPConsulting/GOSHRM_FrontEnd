@@ -15,6 +15,8 @@ export class HmoComponent implements OnInit {
   public rows = [];
   public srch = [];
   pageLoading: boolean;
+  loading: boolean = true;
+  spinner: boolean = false;
   public formTitle = "Add HMO";
   public hmoForm: FormGroup;
   selectedId: any[] = [];
@@ -76,7 +78,12 @@ export class HmoComponent implements OnInit {
     const formData = new FormData();
     formData.append("uploadInput", this.hmoUploadForm.get("uploadInput").value);
 
-    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
+    //console.log(formData, this.languageForm.get("uploadInput").value);
+   this.spinner = true;
+   this.loading = false;
     return this.setupService
       .updateData("/hrmsetup/upload/hmo", formData)
       .subscribe(
