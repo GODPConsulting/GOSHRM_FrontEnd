@@ -143,7 +143,7 @@
                         <div class="form-group row col-8">
                             <label class="col-form-label col-md-4">Choose File (excel format)</label>
                             <div class="col-md-8">
-                                <input class="form-control" name="uploadInput" id="uploadInput" type="file"
+                                <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
                                     (change)="onSelectedFile($event)">
                             </div>
                         </div>
@@ -161,9 +161,9 @@
                         </table>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadProfMembership()" [disabled]="!loading">
-                            <span *ngIf="loading">Submit</span> 
-                            <span *ngIf="!loading && spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadProfMembership()" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span> 
+                            <span *ngIf="spinner" ><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>

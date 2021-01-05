@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { DataTableDirective } from "angular-datatables";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -16,6 +16,7 @@ declare const $: any;
 export class ProfMembershipComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
+  @ViewChild('fileInput') fileInput: ElementRef
   public dtElement: DataTableDirective;
   public lstEmployee: any;
   public profMemberships: any[] = [];
@@ -33,7 +34,7 @@ export class ProfMembershipComponent implements OnInit {
   //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
-  loading: boolean = true;
+  
   spinner: boolean = false;
   value: any;
   selectedId: any[] = [];
@@ -93,22 +94,25 @@ export class ProfMembershipComponent implements OnInit {
     }
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
-    this.loading = false;
+    
     return this.setupService
       .updateData("/hrmsetup/upload/prof_membership", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_prof_membership").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getProfessionalMembership();
+          
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }

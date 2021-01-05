@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { DataTableDirective } from "angular-datatables";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -16,6 +16,7 @@ declare const $: any;
 export class LanguageComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
+  @ViewChild('fileInput') fileInput: ElementRef
   public dtElement: DataTableDirective;
   public lstEmployee: any;
   public languages: any[] = [];
@@ -29,7 +30,7 @@ export class LanguageComponent implements OnInit {
   public srch = [];
   public statusValue;
   pageLoading: boolean;
-  loading: boolean = true;
+
   spinner: boolean = false;
   value: any;
   selectedId: any[] = [];
@@ -88,15 +89,18 @@ export class LanguageComponent implements OnInit {
     }
     //console.log(formData, this.languageForm.get("uploadInput").value);
    this.spinner = true;
-   this.loading = false;
+   
     return this.setupService
       .updateData("/hrmsetup/upload/language", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
+          
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_language").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -104,6 +108,7 @@ export class LanguageComponent implements OnInit {
           this.getLanguage();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
