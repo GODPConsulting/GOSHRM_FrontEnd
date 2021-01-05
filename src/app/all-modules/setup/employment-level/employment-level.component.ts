@@ -19,6 +19,8 @@ export class EmploymentLevelComponent implements OnInit {
   public srch = [];
   selectedId: any[] = [];
   pageLoading: boolean;
+  loading: boolean = true;
+  spinner: boolean = false;
   public employmentLevelUploadForm: FormGroup;
   file: File;
 
@@ -68,8 +70,12 @@ export class EmploymentLevelComponent implements OnInit {
       "uploadInput",
       this.employmentLevelUploadForm.get("uploadInput").value
     );
-
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    this.spinner = true;
+    this.loading = false;
     return this.setupService
       .updateData("/hrmsetup/upload/employmentlevel", formData)
       .subscribe(

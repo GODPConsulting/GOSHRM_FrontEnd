@@ -61,7 +61,7 @@
   <!-- Add Employee Modal -->
   <div id="add_high_school_subject" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
+      <div class="modal-content w-75 mx-auto">
         <div class="modal-header">
           <h5 class="modal-title">{{ formTitle }}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
@@ -70,44 +70,38 @@
         </div>
         <div class="modal-body">
           <form (ngSubmit)="addHighSchoolSub(highSchoolForm)" [formGroup]="highSchoolForm">
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label class="col-form-label">Subject <span class="text-danger">*</span></label>
-                  <input class="form-control" type="text" [class.invalid]="
+            <div class="form-group">
+              <label class="col-form-label">Subject <span class="text-danger">*</span></label>
+              <input class="form-control" type="text" [class.invalid]="
                       highSchoolForm.get('subject').invalid &&
                       highSchoolForm.get('subject').touched
                     " formControlName="subject" />
-                  <div *ngIf="
+              <div *ngIf="
                       highSchoolForm.get('subject').invalid &&
                       highSchoolForm.get('subject').touched
                     ">
-                    <small *ngIf="
+                <small *ngIf="
                         highSchoolForm.get('subject').invalid &&
                         highSchoolForm.get('subject').touched
                       " class="text-danger">
-                      *Subject is required</small>
-                  </div>
-                </div>
+                  *Subject is required</small>
               </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label class="col-form-label">Description</label>
-                  <textarea class="form-control" type="text" rows="5" [class.invalid]="
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">Description<span class="text-danger">*</span></label>
+              <textarea class="form-control" type="text" rows="5" [class.invalid]="
                       highSchoolForm.get('description').invalid &&
                       highSchoolForm.get('description').touched
                     " formControlName="description"></textarea>
-                  <div *ngIf="
+              <div *ngIf="
                       highSchoolForm.get('description').invalid &&
                       highSchoolForm.get('description').touched
                     ">
-                    <small *ngIf="
+                <small *ngIf="
                         highSchoolForm.get('description').invalid &&
                         highSchoolForm.get('description').touched
                       " class="text-danger">
-                      *Description is required</small>
-                  </div>
-                </div>
+                  *Description is required</small>
               </div>
             </div>
             <div class="submit-section">
@@ -157,13 +151,13 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body px-5">
           <form (ngSubmit)="uploadHighSchoolSub()" [formGroup]="highSchoolSubUploadForm">
             <div class="row">
 
-              <div class="form-group row col-8">
-                <label class="col-form-label col-md-4">Choose File (excel format)</label>
-                <div class="col-md-8">
+              <div class="form-group row">
+                <label class="col-form-label col-md-5">Choose File (excel format)</label>
+                <div class="col-md-7">
                   <input class="form-control" name="uploadInput" id="uploadInput" type="file"
                     (change)="onSelectedFile($event)">
                 </div>
@@ -173,8 +167,8 @@
 
 
             <div class="row">
-              <p class="col-5">Please use the guide below for your sheet</p>
-              <table class="table table-bordered col-8">
+              <p>Please use the guide below for your sheet</p>
+              <table class="table table-bordered">
                 <tr>
                   <th>Subject</th>
                   <th>Description</th>

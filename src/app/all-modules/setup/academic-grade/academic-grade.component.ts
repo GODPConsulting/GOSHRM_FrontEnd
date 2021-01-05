@@ -14,6 +14,8 @@ export class AcademicGradeComponent implements OnInit {
   public rows = [];
   public srch = [];
   pageLoading: boolean;
+  loading: boolean = true;
+  spinner: boolean = false;
   public formTitle = "Add Academic Grade";
   public academicGradeForm: FormGroup;
   selectedId: any[] = [];
@@ -66,8 +68,12 @@ export class AcademicGradeComponent implements OnInit {
       "uploadInput",
       this.academicGradeUploadForm.get("uploadInput").value
     );
-
-    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
+    //console.log(formData, this.languageForm.get("uploadInput").value);
+   this.spinner = true;
+   this.loading = false;
     return this.setupService
       .updateData("/hrmsetup/upload/academic/grade", formData)
       .subscribe(

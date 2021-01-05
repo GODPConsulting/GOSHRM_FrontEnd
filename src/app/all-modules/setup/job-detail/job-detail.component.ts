@@ -117,14 +117,7 @@ export class JobDetailComponent implements OnInit {
       id: [0],
       job_title: ["", Validators.required],
       job_description: ["", Validators.required],
-      sub_Skills: this.formBuilder.array([
-        this.formBuilder.group({
-          job_details_Id: [0],
-          skill: ["", Validators.required],
-          description: ["", Validators.required],
-          weight: ["", Validators.required],
-        }),
-      ]),
+     
     });
     this.jobDetailUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -191,11 +184,6 @@ export class JobDetailComponent implements OnInit {
       id: row.id,
       job_title: row.job_title,
       job_description: row.job_description,
-      sub_Skills: row.sub_Skills,
-      job_details_Id: row.job_details_Id,
-      skill: row.skill,
-      description: row.description,
-      weight: row.weight,
     });
     $("#add_job_detail").modal("show");
   }

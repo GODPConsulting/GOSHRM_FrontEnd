@@ -20,6 +20,8 @@ export class EmploymentTypeComponent implements OnInit {
   public lstEmployee: any;
   public srch = [];
   pageLoading: boolean;
+  loading: boolean = true;
+  spinner: boolean = false;
   selectedId: any[] = [];
   public employmentTypeUploadForm: FormGroup;
   file: File;
@@ -70,8 +72,12 @@ export class EmploymentTypeComponent implements OnInit {
       "uploadInput",
       this.employmentTypeUploadForm.get("uploadInput").value
     );
-
-    //console.log(formData, this.employmentTypeUploadForm.get("uploadInput").value);
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
+    //console.log(formData, this.languageForm.get("uploadInput").value);
+   this.spinner = true;
+   this.loading = false;
     return this.setupService
       .updateData("/hrmsetup/upload/employmenttype", formData)
       .subscribe(
@@ -139,6 +145,10 @@ export class EmploymentTypeComponent implements OnInit {
 
   // Add employment via reactive form Modal Api Call
   addEmploymentType(Form: FormGroup) {
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
     const payload = Form.value;
     console.log(payload);
     return this.setupService
