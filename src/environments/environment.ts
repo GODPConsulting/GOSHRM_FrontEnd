@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  api_url: "http://104.238.103.48:70",
+  api_url: "http://localhost:9021/api/v1",
+  //api_url: "http://192.168.1.100:70",
+  //http://localhost:9021/
 };
 
 /*

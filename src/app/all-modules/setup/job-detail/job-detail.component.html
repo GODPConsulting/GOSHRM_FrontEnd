@@ -51,7 +51,7 @@
                             </td>
                             <td>{{ i + 1 }}</td>
                             <td>{{ row.job_title }}</td>
-                            <td>{{ row.sub_Skills[0].weight }}</td>
+                            <td>{{ row.totalSkillWeight }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -113,100 +113,7 @@
                             </div>
                         </div>
                     </div>
-                    <div formArrayName="sub_Skills" class="sub_Skills">
-                        <div *ngFor="let item of jobDetailForm.controls.sub_Skills['controls']; let i = index">
-                            <div [formGroupName]="i">
-                                <div class="col sub_Skills">
-                                    <div class="form-group">
-                                        <label class="col-form-label">Skill<span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text"
-                                            [class.invalid]="item.controls.skill.invalid && item.controls.skill.touched"
-                                            formControlName="skill" />
-                                        <div *ngIf="
-                                        item.controls.skill.invalid &&
-                                        item.controls.skill.touched
-                            ">
-                                            <small *ngIf="
-                                            item.controls.skill.invalid &&
-                                            item.controls.skill.touched
-                              " class="text-danger">
-                                                *Field is required</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col sub_Skills">
-                                    <div class="form-group">
-                                        <label class="col-form-label">Skill Description<span
-                                                class="text-danger">*</span></label>
-                                        <input class="form-control" type="text"
-                                            [class.invalid]="item.controls.description.invalid && item.controls.description.touched"
-                                            formControlName="description" />
-                                        <div *ngIf="item.controls.description.invalid && item.controls.description.touched
-                            ">
-                                            <small *ngIf="
-                                            item.controls.description.invalid && item.controls.description.touched
-                              " class="text-danger">
-                                                *Field is required</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col sub_Skills">
-                                    <div class="form-group">
-                                        <label class="col-form-label">Weight<span class="text-danger">*</span></label>
-                                        <input class="form-control" type="number" min="1"
-                                            [class.invalid]="item.controls.weight.invalid && item.controls.weight.touched"
-                                            formControlName="weight" />
-                                        <div *ngIf="item.controls.weight.invalid && item.controls.weight.touched
-                            ">
-                                            <small *ngIf="item.controls.weight.invalid && item.controls.weight.touched
-                              " class="text-danger">
-                                                *Field is required</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--  <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="col-form-label">Skill Description<span
-                                                class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" [class.invalid]="
-                                        jobDetailForm.get('sub_Skills').value[0].description.invalid &&
-                                        jobDetailForm.get('sub_Skills').value[0].description.touched
-                            " formControlName="sub_Skills" />
-                                        <div *ngIf="
-                                        jobDetailForm.get('sub_Skills').value[0].description.invalid &&
-                                        jobDetailForm.get('sub_Skills').value[0].description.touched
-                            ">
-                                            <small *ngIf="
-                                            jobDetailForm.get('sub_Skills').value[0].description.invalid &&
-                                            jobDetailForm.get('sub_Skills').value[0].description.touched
-                              " class="text-danger">
-                                                *Field is required</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="col-form-label">Skill Weight<span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" [class.invalid]="
-                                        jobDetailForm.get('sub_Skills[0].weight').invalid &&
-                                        jobDetailForm.get('sub_Skills[0].weight').touched
-                            " formControlName="sub_Skills[0].weight" />
-                                        <div *ngIf="
-                                        jobDetailForm.get('sub_Skills[0].weight').invalid &&
-                                        jobDetailForm.get('sub_Skills[0].weight').touched
-                            ">
-                                            <small *ngIf="
-                                            jobDetailForm.get('sub_Skills[0].weight').invalid &&
-                                            jobDetailForm.get('sub_Skills[0].weight').touched
-                              " class="text-danger">
-                                                *Field is required</small>
-                                        </div>
-                                    </div>
-                                </div> -->
-
-                        </div>
-                    </div>
+                   
 
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
