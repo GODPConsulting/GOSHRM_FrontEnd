@@ -40,10 +40,10 @@
                             <th>Code</th>
                             <th>Phone Number</th>
                             <th>Email</th>
-                            <th>Address</th>
-                            <th>Reg Date</th>
+                            <!-- <th>Address</th>
+                            <th>Reg Date</th> -->
                             <th>Rating</th>
-                            <th>Comments</th>
+                            <!-- <th>Comments</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -58,10 +58,10 @@
                             <td>{{ row.hmo_code }}</td>
                             <td>{{ row.contact_phone_number }}</td>
                             <td>{{ row.contact_email }}</td>
-                            <td>{{ row.address }}</td>
-                            <td>{{ row.reg_date | date }}</td>
+                            <!-- <td>{{ row.address }}</td>
+                            <td>{{ row.reg_date | date }}</td> -->
                             <td>{{ row.rating }}</td>
-                            <td>{{ row.other_comments }}</td>
+                            <!-- <td>{{ row.other_comments }}</td> -->
                         </tr>
                     </tbody>
                 </table>
@@ -160,7 +160,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Address <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
@@ -178,8 +178,8 @@
                                         *Field is required</small>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
+                        </div> -->
+                        <!-- <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Registration Date <span
                                         class="text-danger">*</span></label>
@@ -198,7 +198,7 @@
                                         *Field is required</small>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Rating<span class="text-danger">*</span></label>
@@ -219,7 +219,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Comments <span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
@@ -237,7 +237,7 @@
                                         *Field is required</small>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
@@ -309,10 +309,8 @@
                                 <th>Code</th>
                                 <th>Phone Number</th>
                                 <th>Email</th>
-                                <th>Address</th>
-                                <th>Reg Date</th>
                                 <th>Rating</th>
-                                <th>Comments</th>
+
                             </tr>
                         </table>
                     </div>
