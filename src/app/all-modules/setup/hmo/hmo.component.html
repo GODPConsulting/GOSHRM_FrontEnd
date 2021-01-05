@@ -105,11 +105,11 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Code</label>
-                                <textarea class="form-control" type="text" [class.invalid]="
+                                <label class="col-form-label">Code<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
                                 hmoForm.get('hmo_code').invalid &&
                                 hmoForm.get('hmo_code').touched
-                    " formControlName="hmo_code"></textarea>
+                    " formControlName="hmo_code">
                                 <div *ngIf="
                                 hmoForm.get('hmo_code').invalid &&
                                 hmoForm.get('hmo_code').touched
@@ -160,13 +160,13 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="col-sm-6">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Address <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <textarea class="form-control" type="text" [class.invalid]="
                                 hmoForm.get('address').invalid &&
                                 hmoForm.get('address').touched
-                    " formControlName="address" />
+                    " formControlName="address"> </textarea>
                                 <div *ngIf="
                                 hmoForm.get('address').invalid &&
                                 hmoForm.get('address').touched
@@ -178,8 +178,8 @@
                                         *Field is required</small>
                                 </div>
                             </div>
-                        </div> -->
-                        <!-- <div class="col-sm-6">
+                        </div>
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Registration Date <span
                                         class="text-danger">*</span></label>
@@ -198,14 +198,14 @@
                                         *Field is required</small>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Rating<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <input class="form-control" type="number" [class.invalid]="
                                 hmoForm.get('rating').invalid &&
                                 hmoForm.get('rating').touched
-                    " formControlName="rating" />
+                    " formControlName="rating" min="1" max="5" />
                                 <div *ngIf="
                                 hmoForm.get('rating').invalid &&
                                 hmoForm.get('rating').touched
@@ -218,14 +218,13 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- <div class="col-sm-6">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Comments <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <textarea class="form-control" type="text" [class.invalid]="
                                 hmoForm.get('other_comments').invalid &&
                                 hmoForm.get('other_comments').touched
-                    " formControlName="other_comments" />
+                    " formControlName="other_comments"> </textarea>
                                 <div *ngIf="
                                 hmoForm.get('other_comments').invalid &&
                                 hmoForm.get('other_comments').touched
@@ -237,7 +236,7 @@
                                         *Field is required</small>
                                 </div>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
@@ -286,13 +285,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body px-5">
                 <form (ngSubmit)="uploadHmo()" [formGroup]="hmoUploadForm">
                     <div class="row">
 
-                        <div class="form-group row col-8">
-                            <label class="col-form-label col-md-4">Choose File (excel format)</label>
-                            <div class="col-md-8">
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-5">Choose File (excel format)</label>
+                            <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
                                     (change)="onSelectedFile($event)">
                             </div>
@@ -302,8 +301,8 @@
 
 
                     <div class="row">
-                        <p class="col-5">Please use the guide below for your sheet</p>
-                        <table class="table table-bordered col-8">
+                        <p>Please use the guide below for your sheet</p>
+                        <table class="table table-bordered">
                             <tr>
                                 <th>Name</th>
                                 <th>Code</th>
@@ -316,9 +315,10 @@
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadHmo()" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span> 
-                            <span *ngIf="spinner" ><i class="fa fa-spinner fa-spin"></i></span>
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadHmo()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>

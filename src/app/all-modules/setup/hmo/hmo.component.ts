@@ -10,7 +10,7 @@ declare const $: any;
   styleUrls: ["./hmo.component.css", "../setup.component.css"],
 })
 export class HmoComponent implements OnInit {
-  @ViewChild('fileInput') fileInput: ElementRef
+  @ViewChild("fileInput") fileInput: ElementRef;
   public dtOptions: DataTables.Settings = {};
   public hmos: any[] = [];
   public rows = [];
@@ -80,11 +80,11 @@ export class HmoComponent implements OnInit {
     formData.append("uploadInput", this.hmoUploadForm.get("uploadInput").value);
 
     if (!this.file) {
-      return swal.fire('Error', 'Select a file', 'error')
+      return swal.fire("Error", "Select a file", "error");
     }
     //console.log(formData, this.languageForm.get("uploadInput").value);
-   this.spinner = true;
-   this.loading = false;
+    this.spinner = true;
+    this.loading = false;
     return this.setupService
       .updateData("/hrmsetup/upload/hmo", formData)
       .subscribe(
@@ -94,7 +94,7 @@ export class HmoComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = "";
             $("#upload_hmo").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -158,6 +158,10 @@ export class HmoComponent implements OnInit {
 
   // Add employee  Modal Api Call
   addHmo(Form: FormGroup) {
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
     const payload = Form.value;
     console.log(payload);
     return this.setupService
