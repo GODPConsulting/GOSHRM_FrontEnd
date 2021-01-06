@@ -228,6 +228,7 @@ export class JobSubSkillComponent implements OnInit {
 
   // Add employee  Modal Api Call
   addSubSkill(Form: FormGroup) {
+    this.subSkillForm.get("job_title").enable();
     /* if (!Form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -260,14 +261,16 @@ export class JobSubSkillComponent implements OnInit {
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   editSubSkill(row) {
     this.formTitle = "Edit Job Skill";
-    this.subSkillForm.get("job_title").disable();
+
     this.subSkillForm.patchValue({
+      job_details_Id: this.jobTitleId,
       id: row.id,
       skill: row.skill,
       description: row.description,
       weight: row.weight,
       job_title: row.job_title,
     });
+    this.subSkillForm.get("job_title").disable();
     $("#add_sub_skill").modal("show");
   }
 
