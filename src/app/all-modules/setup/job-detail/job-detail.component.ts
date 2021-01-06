@@ -15,7 +15,7 @@ export class JobDetailComponent implements OnInit {
   public rows = [];
   public srch = [];
   pageLoading: boolean;
-  public formTitle = "Add Job Details";
+  public formTitle = "Add Job Title";
   public jobDetailForm: FormGroup;
   selectedId: any[] = [];
   public jobDetailUploadForm: FormGroup;
@@ -117,7 +117,6 @@ export class JobDetailComponent implements OnInit {
       id: [0],
       job_title: ["", Validators.required],
       job_description: ["", Validators.required],
-     
     });
     this.jobDetailUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -179,7 +178,7 @@ export class JobDetailComponent implements OnInit {
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   editJobDetail(row) {
-    this.formTitle = "Edit Job Detail";
+    this.formTitle = "Edit Job Title";
     this.jobDetailForm.patchValue({
       id: row.id,
       job_title: row.job_title,

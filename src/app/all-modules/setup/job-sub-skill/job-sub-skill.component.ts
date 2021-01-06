@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: 'app-job-sub-skill',
-  templateUrl: './job-sub-skill.component.html',
-  styleUrls: ['./job-sub-skill.component.css']
+  selector: "app-job-sub-skill",
+  templateUrl: "./job-sub-skill.component.html",
+  styleUrls: ["./job-sub-skill.component.css", "../setup.component.css"],
 })
 export class JobSubSkillComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
@@ -20,34 +20,54 @@ export class JobSubSkillComponent implements OnInit {
   selectedId: any[] = [];
   public subSkillUploadForm: FormGroup;
   file: File;
+  public jobTitles;
+  public jobDetailForm;
 
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     $(".floating")
-    .on("focus blur", function (e) {
-      $(this)
-        .parents(".form-focus")
-        .toggleClass("focused", e.type === "focus" || this.value.length > 0);
-    })
-    .trigger("blur");
-  this.dtOptions = {
-    dom:
-      "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-      "<'row'<'col-sm-12'tr>>" +
-      "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-    language: {
-      search: "_INPUT_",
-      searchPlaceholder: "Start typing to search by any field",
-    },
-    columns: [{ orderable: false }, null, null, null],
-    order: [[1, "asc"]],
-  };
-  this.getSubSkill();
-  this.initializeForm();
+      .on("focus blur", function (e) {
+        $(this)
+          .parents(".form-focus")
+          .toggleClass("focused", e.type === "focus" || this.value.length > 0);
+      })
+      .trigger("blur");
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+      columns: [{ orderable: false }, null, null, null, null],
+      order: [[1, "asc"]],
+    };
+    this.getSubSkill();
+    this.initializeForm();
+    this.getJobTitle();
+  }
+
+  getJobTitle() {
+    // this.pageLoading = true;
+    return this.setupService.getData("/hrmsetup/get/all/jobdetails").subscribe(
+      (data) => {
+        //this.pageLoading = false;
+        console.log(data);
+        this.jobTitles = data.setuplist;
+        this.rows = this.jobTitles;
+        this.srch = [...this.rows];
+      },
+      (err) => {
+        //this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   onSelectedFile(event) {
@@ -115,14 +135,18 @@ export class JobSubSkillComponent implements OnInit {
   initializeForm() {
     this.subSkillForm = this.formBuilder.group({
       id: [0],
-      Skill: ["", Validators.required],
-      Description: ["", Validators.required],
-      Weight: ["", Validators.required],
+      skill: ["", Validators.required],
+      description: ["", Validators.required],
+      weight: ["", Validators.required],
       job_title: ["", Validators.required],
-
     });
     this.subSkillUploadForm = this.formBuilder.group({
       uploadInput: [""],
+    });
+    this.jobDetailForm = this.formBuilder.group({
+      id: [0],
+      job_title: ["", Validators.required],
+      job_description: ["", Validators.required],
     });
   }
 
@@ -265,5 +289,4 @@ export class JobSubSkillComponent implements OnInit {
       });
     }
   }
-
 }

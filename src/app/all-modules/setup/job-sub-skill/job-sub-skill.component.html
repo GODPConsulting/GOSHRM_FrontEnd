@@ -1,14 +1,72 @@
 <app-loading *ngIf="pageLoading"></app-loading>
 <!-- Page Content -->
 <div *ngIf="!pageLoading" class="content container-fluid">
+
+    <!-- Add Job Title Modal -->
+    <div id="add_job_detail" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content w-75 mx-auto">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{formTitle}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form (ngSubmit)="addJobDetail(jobDetailForm)" [formGroup]="jobDetailForm">
+                        <div class="form-group">
+                            <label class="col-form-label">Job Title<span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" [class.invalid]="
+                                jobDetailForm.get('job_title').invalid &&
+                                jobDetailForm.get('job_title').touched
+                    " formControlName="job_title" />
+                            <div *ngIf="
+                                jobDetailForm.get('job_title').invalid &&
+                                jobDetailForm.get('job_title').touched
+                    ">
+                                <small *ngIf="
+                                    jobDetailForm.get('job_title').invalid &&
+                                    jobDetailForm.get('job_title').touched
+                      " class="text-danger">
+                                    *Field is required</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Description<span class="text-danger">*</span></label>
+                            <textarea class="form-control" type="text" rows="5" [class.invalid]="
+                                jobDetailForm.get('job_description').invalid &&
+                                jobDetailForm.get('job_description').touched
+                    " formControlName="job_description"> </textarea>
+                            <div *ngIf="
+                                jobDetailForm.get('job_description').invalid &&
+                                jobDetailForm.get('job_description').touched
+                    ">
+                                <small *ngIf="
+                                    jobDetailForm.get('job_description').invalid &&
+                                    jobDetailForm.get('job_description').touched
+                      " class="text-danger">
+                                    *Field is required</small>
+                            </div>
+                        </div>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn" type="submit">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Add Job Title Modal -->
     <!-- Page Header -->
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Job Sub Skill</h3>
+                <h3 class="page-title">Job Skill</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
-                    <li class="breadcrumb-item active">Job Sub Skill</li>
+                    <li class="breadcrumb-item active">Job Skill</li>
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
@@ -43,8 +101,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#edit_employee"
-                            (click)="editSubSkill(row)"
+                        <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="editSubSkill(row)"
                             *ngFor="let row of subSkill | filter:searchText; let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
@@ -79,10 +136,14 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Job Title<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <select class="form-control" [class.invalid]="
                                 subSkillForm.get('job_title').invalid &&
-                                subSkillForm.get('job_title').touched
-                    " formControlName="job_title" />
+                                subSkillForm.get('job_title').touched" formControlName="job_title">
+                                    <option selected value="">Select Job Title</option>
+
+                                    <option *ngFor="let row of jobTitles" value="{{row.job_title}}">{{row.job_title}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
                                 subSkillForm.get('job_title').invalid &&
                                 subSkillForm.get('job_title').touched
@@ -154,7 +215,7 @@
                         </div>
 
                     </div>
-                    
+
 
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
