@@ -127,7 +127,7 @@ export class ProfCertificationComponent implements OnInit {
       id: [0],
       certification: ["", Validators.required],
       description: ["", Validators.required],
-      rank: [0, Validators.required],
+      rank: ["", Validators.required],
     });
     this.profCertUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -165,17 +165,13 @@ export class ProfCertificationComponent implements OnInit {
     }, 1000);
   }
  */
-  // Get Employee  Api Call
-  loadEmployee() {
-    // this.srvModuleService.get(this.url).subscribe((data) => {
-    //   this.lstEmployee = data;
-    //   this.rows = this.lstEmployee;
-    // this.srch = [...this.rows];
-    // });
-  }
 
   // Add employee  Modal Api Call
   addData(profCertificationForm: FormGroup) {
+    if (!profCertificationForm.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
     const payload = profCertificationForm.value;
     payload.rank = parseInt(payload.rank);
     return this.setupService

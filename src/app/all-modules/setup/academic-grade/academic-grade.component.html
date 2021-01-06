@@ -65,7 +65,7 @@
 <!-- Add HMO Modal -->
 <div id="add-academic-grade" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
+        <div class="modal-content w-75 mx-auto">
             <div class="modal-header">
                 <h5 class="modal-title">{{formTitle}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
@@ -74,67 +74,60 @@
             </div>
             <div class="modal-body">
                 <form (ngSubmit)="addAcademicGrade(academicGradeForm)" [formGroup]="academicGradeForm">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">grade<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                    <div class="form-group">
+                        <label class="col-form-label">Grade<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" [class.invalid]="
                                 academicGradeForm.get('grade').invalid &&
                                 academicGradeForm.get('grade').touched
                     " formControlName="grade" />
-                                <div *ngIf="
+                        <div *ngIf="
                                 academicGradeForm.get('grade').invalid &&
                                 academicGradeForm.get('grade').touched
                     ">
-                                    <small *ngIf="
+                            <small *ngIf="
                                     academicGradeForm.get('grade').invalid &&
                                     academicGradeForm.get('grade').touched
                       " class="text-danger">
-                                        *Grade Field is required</small>
-                                </div>
-                            </div>
+                                *Grade Field is required</small>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Rank<span class="text-danger">*</span></label>
-                                <input class="form-control" type="number" min="1" [class.invalid]="
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Rank<span class="text-danger">*</span></label>
+                        <input class="form-control" type="number" min="1" [class.invalid]="
                                 academicGradeForm.get('rank').invalid &&
                                 academicGradeForm.get('rank').touched
                     " formControlName="rank" />
-                                <div *ngIf="
+                        <div *ngIf="
                                 academicGradeForm.get('rank').invalid &&
                                 academicGradeForm.get('rank').touched">
-                                    <small *ngIf="
+                            <small *ngIf="
                                     academicGradeForm.get('rank').invalid &&
                                     academicGradeForm.get('rank').touched
                       " class="text-danger">
-                                        *Rank Field is required</small>
-                                </div>
-                            </div>
+                                *Rank Field is required</small>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Description<span class="text-danger">*</span></label>
-                                <textarea class="form-control" type="text" rows="5" [class.invalid]="
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Description<span class="text-danger">*</span></label>
+                        <textarea class="form-control" type="text" rows="5" [class.invalid]="
                                 academicGradeForm.get('description').invalid &&
                                 academicGradeForm.get('description').touched
                     " formControlName="description"></textarea>
-                                <div *ngIf="academicGradeForm.get('description').invalid && academicGradeForm.get('description').touched
+                        <div *ngIf="academicGradeForm.get('description').invalid && academicGradeForm.get('description').touched
                     ">
-                                    <small *ngIf="
+                            <small *ngIf="
                                     academicGradeForm.get('description').invalid &&
                                     academicGradeForm.get('description').touched
                       " class="text-danger">
-                                        *Description Field is required</small>
-                                </div>
-                            </div>
+                                *Description Field is required</small>
                         </div>
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadAcademicGrade()" [disabled]="!loading">
-                            <span *ngIf="loading">Submit</span> 
-                            <span *ngIf="!loading && spinner" ><i class="fa fa-spinner fa-spin"></i></span>
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadAcademicGrade()"
+                            [disabled]="!loading">
+                            <span *ngIf="loading">Submit</span>
+                            <span *ngIf="!loading && spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>
@@ -178,20 +171,29 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body px-5">
                 <form (ngSubmit)="uploadAcademicGrade()" [formGroup]="academicGradeUploadForm">
                     <div class="row">
-                        <div class="col-sm-8">
-                            <div class="form-group row">
-                                <label class="col-form-label col-md-4">Choose File (excel format)</label>
-                                <div class="col-md-8">
-                                    <input class="form-control" name="uploadInput" id="uploadInput" type="file"
-                                        (change)="onSelectedFile($event)">
-                                </div>
+
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-5">Choose File (excel format)</label>
+                            <div class="col-md-7">
+                                <input class="form-control" name="uploadInput" id="uploadInput" type="file"
+                                    (change)="onSelectedFile($event)">
                             </div>
                         </div>
-
                     </div>
+                    <div class="row">
+                        <p>Please use the guide below for your sheet</p>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Grade</th>
+                                <th>Description</th>
+                                <th>Rank</th>
+                            </tr>
+                        </table>
+                    </div>
+
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             Submit

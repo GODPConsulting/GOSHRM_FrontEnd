@@ -39,9 +39,7 @@
                             <th>S/N</th>
                             <th>Gym</th>
                             <th>Phone Number</th>
-                            <th>Address</th>
                             <th>Ratings</th>
-                            <th>Comments</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,9 +53,7 @@
                             <td>{{ i + 1 }}</td>
                             <td>{{ row.gym }}</td>
                             <td>{{ row.contact_phone_number }}</td>
-                            <td>{{ row.address }}</td>
                             <td>{{ row.ratings }}</td>
-                            <td>{{ row.other_comments }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -121,10 +117,10 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Address <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <textarea class="form-control" type="text" rows="5" [class.invalid]="
                                 gymWorkoutForm.get('address').invalid &&
                                 gymWorkoutForm.get('address').touched
-                    " formControlName="address" />
+                    " formControlName="address"> </textarea>
                                 <div *ngIf="
                                 gymWorkoutForm.get('address').invalid &&
                                 gymWorkoutForm.get('address').touched
@@ -140,10 +136,10 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Ratings<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <input class="form-control" type="number" [class.invalid]="
                                 gymWorkoutForm.get('ratings').invalid &&
                                 gymWorkoutForm.get('ratings').touched
-                    " formControlName="ratings" />
+                    " formControlName="ratings" min="1" max="5" />
                                 <div *ngIf="
                                 gymWorkoutForm.get('ratings').invalid &&
                                 gymWorkoutForm.get('ratings').touched
@@ -160,10 +156,10 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Comments <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <textarea class="form-control" type="text" rows="5" [class.invalid]="
                                 gymWorkoutForm.get('other_comments').invalid &&
                                 gymWorkoutForm.get('other_comments').touched
-                    " formControlName="other_comments" />
+                    " formControlName="other_comments"></textarea>
                                 <div *ngIf="
                                 gymWorkoutForm.get('other_comments').invalid &&
                                 gymWorkoutForm.get('other_comments').touched
@@ -198,13 +194,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body px-5">
                 <form (ngSubmit)="uploadGymWorkout()" [formGroup]="gymWorkoutUploadForm">
                     <div class="row">
 
-                        <div class="form-group row col-8">
-                            <label class="col-form-label col-md-4">Choose File (excel format)</label>
-                            <div class="col-md-8">
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-5">Choose File (excel format)</label>
+                            <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
                                     (change)="onSelectedFile($event)">
                             </div>
@@ -214,8 +210,8 @@
 
 
                     <div class="row">
-                        <p class="col-5">Please use the guide below for your sheet</p>
-                        <table class="table table-bordered col-8">
+                        <p>Please use the guide below for your sheet</p>
+                        <table class="table table-bordered">
                             <tr>
                                 <th>Gym</th>
                                 <th>Phone Number</th>
@@ -227,9 +223,10 @@
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadGymWorkout()" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span> 
-                            <span *ngIf="spinner" ><i class="fa fa-spinner fa-spin"></i></span>
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadGymWorkout()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>

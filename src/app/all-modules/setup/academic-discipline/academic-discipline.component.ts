@@ -123,9 +123,9 @@ export class AcademicDisciplineComponent implements OnInit {
       this.academicDisciplineUploadForm.get("uploadInput").value
     );
     if (!this.file) {
-      return swal.fire('Error', 'Select a file', 'error')
+      return swal.fire("Error", "Select a file", "error");
     }
-    
+
     //console.log(formData, this.languageForm.get("uploadInput").value);
    this.spinner = true;
    
@@ -360,7 +360,7 @@ export class AcademicDisciplineComponent implements OnInit {
       id: [0],
       discipline: ["", Validators.required],
       description: ["", Validators.required],
-      rank: [0, Validators.required],
+      rank: ["", Validators.required],
     });
     this.academicDisciplineUploadForm = this.formBuilder.group({
       uploadInput: [""],

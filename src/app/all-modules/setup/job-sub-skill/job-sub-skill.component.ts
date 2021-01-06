@@ -5,9 +5,9 @@ import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: 'app-job-sub-skill',
-  templateUrl: './job-sub-skill.component.html',
-  styleUrls: ['./job-sub-skill.component.css']
+  selector: "app-job-sub-skill",
+  templateUrl: "./job-sub-skill.component.html",
+  styleUrls: ["./job-sub-skill.component.css", "../setup.component.css"],
 })
 export class JobSubSkillComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
@@ -23,34 +23,101 @@ export class JobSubSkillComponent implements OnInit {
   selectedId: any[] = [];
   public subSkillUploadForm: FormGroup;
   file: File;
+  public jobTitles;
+  public jobDetailForm;
+  public jobTitleId;
 
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     $(".floating")
-    .on("focus blur", function (e) {
-      $(this)
-        .parents(".form-focus")
-        .toggleClass("focused", e.type === "focus" || this.value.length > 0);
-    })
-    .trigger("blur");
-  this.dtOptions = {
-    dom:
-      "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-      "<'row'<'col-sm-12'tr>>" +
-      "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-    language: {
-      search: "_INPUT_",
-      searchPlaceholder: "Start typing to search by any field",
-    },
-    columns: [{ orderable: false }, null, null, null],
-    order: [[1, "asc"]],
-  };
-  this.getSubSkill();
-  this.initializeForm();
+      .on("focus blur", function (e) {
+        $(this)
+          .parents(".form-focus")
+          .toggleClass("focused", e.type === "focus" || this.value.length > 0);
+      })
+      .trigger("blur");
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+      columns: [{ orderable: false }, null, null, null, null],
+      order: [[1, "asc"]],
+    };
+    this.getSubSkill();
+    this.initializeForm();
+    this.getJobTitle();
+  }
+
+  getJobTitle() {
+    // this.pageLoading = true;
+    return this.setupService.getData("/hrmsetup/get/all/jobdetails").subscribe(
+      (data) => {
+        //this.pageLoading = false;
+        console.log(data);
+        this.jobTitles = data.setuplist;
+        this.rows = this.jobTitles;
+        this.srch = [...this.rows];
+      },
+      (err) => {
+        //this.pageLoading = false;
+        console.log(err);
+      }
+    );
+  }
+
+  getJobId(event) {
+    console.log(event.target.value);
+    //console.log(this.jobTitles);
+    for (const obj of this.jobTitles) {
+      if (obj.job_title === event.target.value) {
+        this.jobTitleId = obj.id;
+        console.log(this.jobTitleId);
+      }
+    }
+    this.subSkillForm.patchValue({
+      job_details_Id: this.jobTitleId,
+    });
+  }
+
+  // Add Job Title  Modal Api Call
+  addJobDetail(Form: FormGroup) {
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+    const payload = Form.value;
+    console.log(payload);
+    return this.setupService
+      .updateData("/hrmsetup/add/update/jobdetail", payload)
+      .subscribe(
+        (res) => {
+          console.log(res.setup_id);
+          const message = res.status.message.friendlyMessage;
+          //console.log(message);
+
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#add_job_detail").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          // this.getJobDetail();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
   }
 
   onSelectedFile(event) {
@@ -124,15 +191,20 @@ export class JobSubSkillComponent implements OnInit {
 
   initializeForm() {
     this.subSkillForm = this.formBuilder.group({
+      job_details_Id: [this.jobTitleId],
       id: [0],
-      Skill: ["", Validators.required],
-      Description: ["", Validators.required],
-      Weight: ["", Validators.required],
+      skill: ["", Validators.required],
+      description: ["", Validators.required],
+      weight: ["", Validators.required],
       job_title: ["", Validators.required],
-
     });
     this.subSkillUploadForm = this.formBuilder.group({
       uploadInput: [""],
+    });
+    this.jobDetailForm = this.formBuilder.group({
+      id: [0],
+      job_title: ["", Validators.required],
+      job_description: ["", Validators.required],
     });
   }
 
@@ -155,6 +227,8 @@ export class JobSubSkillComponent implements OnInit {
 
   openModal() {
     $("#add_sub_skill").modal("show");
+    this.subSkillForm.get("job_title").enable();
+    this.formTitle = "Add Job SKill";
   }
 
   closeModal() {
@@ -164,6 +238,11 @@ export class JobSubSkillComponent implements OnInit {
 
   // Add employee  Modal Api Call
   addSubSkill(Form: FormGroup) {
+    this.subSkillForm.get("job_title").enable();
+    /* if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    } */
     const payload = Form.value;
     console.log(payload);
     return this.setupService
@@ -191,14 +270,17 @@ export class JobSubSkillComponent implements OnInit {
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   editSubSkill(row) {
-    this.formTitle = "Edit Job Sub Skill";
+    this.formTitle = "Edit Job Skill";
+
     this.subSkillForm.patchValue({
+      job_details_Id: this.jobTitleId,
       id: row.id,
       skill: row.skill,
       description: row.description,
       weight: row.weight,
       job_title: row.job_title,
     });
+    this.subSkillForm.get("job_title").disable();
     $("#add_sub_skill").modal("show");
   }
 
@@ -275,5 +357,4 @@ export class JobSubSkillComponent implements OnInit {
       });
     }
   }
-
 }
