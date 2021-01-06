@@ -15,13 +15,14 @@ export class JobSubSkillComponent implements OnInit {
   public rows = [];
   public srch = [];
   pageLoading: boolean;
-  public formTitle = "Add Job Sub Skill";
+  public formTitle = "Add Job Skill";
   public subSkillForm: FormGroup;
   selectedId: any[] = [];
   public subSkillUploadForm: FormGroup;
   file: File;
   public jobTitles;
   public jobDetailForm;
+  public jobTitleId;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -68,6 +69,52 @@ export class JobSubSkillComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  getJobId(event) {
+    console.log(event.target.value);
+    //console.log(this.jobTitles);
+    for (const obj of this.jobTitles) {
+      if (obj.job_title === event.target.value) {
+        this.jobTitleId = obj.id;
+        console.log(this.jobTitleId);
+      }
+    }
+    this.subSkillForm.patchValue({
+      job_details_Id: this.jobTitleId,
+    });
+  }
+
+  // Add Job Title  Modal Api Call
+  addJobDetail(Form: FormGroup) {
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+    const payload = Form.value;
+    console.log(payload);
+    return this.setupService
+      .updateData("/hrmsetup/add/update/jobdetail", payload)
+      .subscribe(
+        (res) => {
+          console.log(res.setup_id);
+          const message = res.status.message.friendlyMessage;
+          //console.log(message);
+
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#add_job_detail").modal("hide");
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          // this.getJobDetail();
+        },
+        (err) => {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
   }
 
   onSelectedFile(event) {
@@ -134,6 +181,7 @@ export class JobSubSkillComponent implements OnInit {
 
   initializeForm() {
     this.subSkillForm = this.formBuilder.group({
+      job_details_Id: [this.jobTitleId],
       id: [0],
       skill: ["", Validators.required],
       description: ["", Validators.required],
@@ -169,6 +217,8 @@ export class JobSubSkillComponent implements OnInit {
 
   openModal() {
     $("#add_sub_skill").modal("show");
+    this.subSkillForm.get("job_title").enable();
+    this.formTitle = "Add Job SKill";
   }
 
   closeModal() {
@@ -178,6 +228,10 @@ export class JobSubSkillComponent implements OnInit {
 
   // Add employee  Modal Api Call
   addSubSkill(Form: FormGroup) {
+    /* if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    } */
     const payload = Form.value;
     console.log(payload);
     return this.setupService
@@ -205,7 +259,8 @@ export class JobSubSkillComponent implements OnInit {
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
   editSubSkill(row) {
-    this.formTitle = "Edit Job Sub Skill";
+    this.formTitle = "Edit Job Skill";
+    this.subSkillForm.get("job_title").disable();
     this.subSkillForm.patchValue({
       id: row.id,
       skill: row.skill,

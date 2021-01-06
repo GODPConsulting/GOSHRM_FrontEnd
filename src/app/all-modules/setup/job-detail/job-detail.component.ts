@@ -149,7 +149,7 @@ export class JobDetailComponent implements OnInit {
     this.initializeForm();
   }
 
-  // Add employee  Modal Api Call
+  // Add Job Title  Modal Api Call
   addJobDetail(Form: FormGroup) {
     const payload = Form.value;
     console.log(payload);
