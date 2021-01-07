@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { DataTableDirective } from "angular-datatables";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -26,6 +26,7 @@ const EXCEL_EXTENSION = ".xlsx";
 export class AcademicDisciplineComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
+  @ViewChild('fileInput') fileInput: ElementRef
   public dtElement: DataTableDirective;
   public lstEmployee: any;
   public disciplines: any[] = [];
@@ -44,7 +45,7 @@ export class AcademicDisciplineComponent implements OnInit {
   //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
-  loading: boolean = true;
+  
   spinner: boolean = false;
   value: any;
   selectedId: any[] = [];
@@ -122,20 +123,22 @@ export class AcademicDisciplineComponent implements OnInit {
       this.academicDisciplineUploadForm.get("uploadInput").value
     );
     if (!this.file) {
-      return swal.fire('Error', 'Select a file', 'error')
+      return swal.fire("Error", "Select a file", "error");
     }
-    
+
     //console.log(formData, this.languageForm.get("uploadInput").value);
    this.spinner = true;
-   this.loading = false;
+   
     return this.setupService
       .updateData("/hrmsetup/upload/academic/discipline", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_academic_discipline").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -143,6 +146,7 @@ export class AcademicDisciplineComponent implements OnInit {
           this.getAcademicDisplines();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -356,7 +360,7 @@ export class AcademicDisciplineComponent implements OnInit {
       id: [0],
       discipline: ["", Validators.required],
       description: ["", Validators.required],
-      rank: [0, Validators.required],
+      rank: ["", Validators.required],
     });
     this.academicDisciplineUploadForm = this.formBuilder.group({
       uploadInput: [""],

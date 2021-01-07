@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { DataTableDirective } from "angular-datatables";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -16,6 +16,7 @@ declare const $: any;
 export class ProfCertificationComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
+  @ViewChild('fileInput') fileInput: ElementRef
   public dtElement: DataTableDirective;
   public lstEmployee: any;
   public certifications: any[] = [];
@@ -33,6 +34,8 @@ export class ProfCertificationComponent implements OnInit {
   //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
+
+  spinner: boolean = false;
   value: any;
   selectedId: any[] = [];
   public profCertUploadForm: FormGroup;
@@ -85,16 +88,22 @@ export class ProfCertificationComponent implements OnInit {
       "uploadInput",
       this.profCertUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
 
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/upload/prof_certification", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_prof_certification").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -102,6 +111,7 @@ export class ProfCertificationComponent implements OnInit {
           this.getprofCertification();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -117,7 +127,7 @@ export class ProfCertificationComponent implements OnInit {
       id: [0],
       certification: ["", Validators.required],
       description: ["", Validators.required],
-      rank: [0, Validators.required],
+      rank: ["", Validators.required],
     });
     this.profCertUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -155,17 +165,13 @@ export class ProfCertificationComponent implements OnInit {
     }, 1000);
   }
  */
-  // Get Employee  Api Call
-  loadEmployee() {
-    // this.srvModuleService.get(this.url).subscribe((data) => {
-    //   this.lstEmployee = data;
-    //   this.rows = this.lstEmployee;
-    // this.srch = [...this.rows];
-    // });
-  }
 
   // Add employee  Modal Api Call
   addData(profCertificationForm: FormGroup) {
+    if (!profCertificationForm.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
     const payload = profCertificationForm.value;
     payload.rank = parseInt(payload.rank);
     return this.setupService
