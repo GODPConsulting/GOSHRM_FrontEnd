@@ -46,7 +46,7 @@
                                         </li>
                                         <li>
                                             <div class="title">Email:</div>
-                                            <div class="text"><a href="">johndoe@example.com</a></div>
+                                            <div class="text"><a href="">eelole@example.com</a></div>
                                         </li>
                                         <li>
                                             <div class="title">Birthday:</div>
@@ -54,7 +54,7 @@
                                         </li>
                                         <li>
                                             <div class="title">Address:</div>
-                                            <div class="text">1861 Bayonne Ave, Manchester Township, NJ, 08759</div>
+                                            <div class="text">76 Mobolaji Bank Anthony Way,</div>
                                         </li>
                                         <li>
                                             <div class="title">Gender:</div>
@@ -890,13 +890,19 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label>Middle Name</label>
+                                        <input type="text" class="form-control" value="Doe">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label>Last Name</label>
                                         <input type="text" class="form-control" value="Doe">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Birth Date</label>
+                                        <label>Date of Birth</label>
                                         <div class="cal-icon">
                                             <input class="form-control datetimepicker" type="text" bsDatepicker
                                                 type="text"
@@ -921,19 +927,19 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Address</label>
-                                <input type="text" class="form-control" value="4487 Snowbird Lane">
+                                <input type="text" class="form-control" value="76 Mobolaji Bank Anthony Way">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>State</label>
-                                <input type="text" class="form-control" value="New York">
+                                <input type="text" class="form-control" value="Lagos">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Country</label>
-                                <input type="text" class="form-control" value="United States">
+                                <input type="text" class="form-control" value="Nigeria">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -956,6 +962,8 @@
                                     <option>Web Development</option>
                                     <option>IT Management</option>
                                     <option>Marketing</option>
+                                    <option>Consulting</option>
+                                    <option>Hr</option>
                                 </select>
                             </div>
                         </div>
@@ -983,7 +991,11 @@
                         </div>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Submit</button>
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadEmployee_profile()"
+                                [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
                     </div>
                 </form>
             </div>
