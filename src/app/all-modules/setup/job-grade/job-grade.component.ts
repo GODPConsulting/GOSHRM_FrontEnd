@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
@@ -10,6 +10,7 @@ declare const $: any;
   styleUrls: ["./job-grade.component.css", "../setup.component.css"],
 })
 export class JobGradeComponent implements OnInit {
+  @ViewChild('fileInput') fileInput: ElementRef
   formTitle;
   public dtOptions: DataTables.Settings = {};
   public jobGradeForm: FormGroup;
@@ -18,6 +19,8 @@ export class JobGradeComponent implements OnInit {
   public srch = [];
   selectedId: any[] = [];
   pageLoading: boolean;
+
+  spinner: boolean = false;
   public jobGradeUploadForm: FormGroup;
   file: File;
 
@@ -69,15 +72,22 @@ export class JobGradeComponent implements OnInit {
       "uploadInput",
       this.jobGradeUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    this.spinner = true;
+
     return this.setupService
       .updateData("/hrmsetup/upload/jobgrade", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_job_grade").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -85,6 +95,7 @@ export class JobGradeComponent implements OnInit {
           this.getJobGrade();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
