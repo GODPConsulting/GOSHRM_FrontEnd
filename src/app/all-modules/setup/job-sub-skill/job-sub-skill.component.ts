@@ -226,6 +226,7 @@ export class JobSubSkillComponent implements OnInit {
   }
 
   openModal() {
+    
     $("#add_sub_skill").modal("show");
     this.subSkillForm.get("job_title").enable();
     this.formTitle = "Add Job SKill";
@@ -239,6 +240,10 @@ export class JobSubSkillComponent implements OnInit {
   // Add employee  Modal Api Call
   addSubSkill(Form: FormGroup) {
     this.subSkillForm.get("job_title").enable();
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
     /* if (!Form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
