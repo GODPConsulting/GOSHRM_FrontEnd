@@ -10,13 +10,13 @@ declare const $: any;
   styleUrls: ["./hmo.component.css", "../setup.component.css"],
 })
 export class HmoComponent implements OnInit {
-  @ViewChild('fileInput') fileInput: ElementRef
+  @ViewChild("fileInput") fileInput: ElementRef;
   public dtOptions: DataTables.Settings = {};
   public hmos: any[] = [];
   public rows = [];
   public srch = [];
   pageLoading: boolean;
-  loading: boolean = true;
+  
   spinner: boolean = false;
   public formTitle = "Add HMO";
   public hmoForm: FormGroup;
@@ -46,18 +46,7 @@ export class HmoComponent implements OnInit {
         search: "_INPUT_",
         searchPlaceholder: "Start typing to search by any field",
       },
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
+      columns: [{ orderable: false }, null, null, null, null, null, null],
       order: [[1, "asc"]],
     };
     this.getHmo();
@@ -80,11 +69,11 @@ export class HmoComponent implements OnInit {
     formData.append("uploadInput", this.hmoUploadForm.get("uploadInput").value);
 
     if (!this.file) {
-      return swal.fire('Error', 'Select a file', 'error')
+      return swal.fire("Error", "Select a file", "error");
     }
     //console.log(formData, this.languageForm.get("uploadInput").value);
    this.spinner = true;
-   this.loading = false;
+   
     return this.setupService
       .updateData("/hrmsetup/upload/hmo", formData)
       .subscribe(
@@ -94,7 +83,7 @@ export class HmoComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = "";
             $("#upload_hmo").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -158,6 +147,10 @@ export class HmoComponent implements OnInit {
 
   // Add employee  Modal Api Call
   addHmo(Form: FormGroup) {
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
     const payload = Form.value;
     console.log(payload);
     return this.setupService

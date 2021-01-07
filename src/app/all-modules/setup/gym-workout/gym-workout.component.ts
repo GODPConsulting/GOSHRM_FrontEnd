@@ -11,13 +11,13 @@ declare const $: any;
   styleUrls: ["./gym-workout.component.css", "../setup.component.css"],
 })
 export class GymWorkoutComponent implements OnInit {
-  @ViewChild('fileInput') fileInput: ElementRef
+  @ViewChild("fileInput") fileInput: ElementRef;
   public dtOptions: DataTables.Settings = {};
   public gymWorkouts: any[] = [];
   public rows = [];
   public srch = [];
   pageLoading: boolean;
- 
+
   spinner: boolean = false;
   public formTitle = "Add Gym/Workout";
   public pipe = new DatePipe("en-US");
@@ -73,11 +73,11 @@ export class GymWorkoutComponent implements OnInit {
       this.gymWorkoutUploadForm.get("uploadInput").value
     );
     if (!this.file) {
-      return swal.fire('Error', 'Select a file', 'error')
+      return swal.fire("Error", "Select a file", "error");
     }
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
-    
+
     return this.setupService
       .updateData("/hrmsetup/upload/gymworkout", formData)
       .subscribe(
@@ -87,7 +87,7 @@ export class GymWorkoutComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = "";
             $("#upload_gym_workout").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -148,6 +148,10 @@ export class GymWorkoutComponent implements OnInit {
 
   // Add employee  Modal Api Call
   addGymWorkout(Form: FormGroup) {
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
     const payload = Form.value;
     console.log(payload);
     return this.setupService

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 
@@ -15,10 +15,13 @@ declare const $: any;
 })
 export class AcademicQualificationComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
+  @ViewChild('fileInput') fileInput: ElementRef
   public qualifications: any[] = [];
   public rows = [];
   public srch = [];
   pageLoading: boolean;
+
+  spinner: boolean = false;
   public formTitle = "Add Academic Qualification";
   public academicQualificationForm: FormGroup;
   selectedId: any[] = [];
@@ -71,16 +74,22 @@ export class AcademicQualificationComponent implements OnInit {
       "uploadInput",
       this.academicQualificationUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire('error', 'select a file', 'error')
+    }
 
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/upload/academic/qualification", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_academic_qualification").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -88,6 +97,7 @@ export class AcademicQualificationComponent implements OnInit {
           this.getAcademicQualifications();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }

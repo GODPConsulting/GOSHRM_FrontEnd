@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
@@ -11,10 +11,13 @@ declare const $: any;
 })
 export class HighSchoolGradeComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
+  @ViewChild('fileInput') fileInput: ElementRef
   public grades: any[] = [];
   public rows = [];
   public srch = [];
   pageLoading: boolean;
+
+  spinner: boolean = false; 
   public formTitle = "Add High School Grade";
   public highSchoolGradeForm: FormGroup;
   selectedId: any[] = [];
@@ -67,16 +70,22 @@ export class HighSchoolGradeComponent implements OnInit {
       "uploadInput",
       this.highSchoolGradeUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
 
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/upload/highschoolgrade", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_high_school_grade").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -84,6 +93,7 @@ export class HighSchoolGradeComponent implements OnInit {
           this.getHighSchoolGrade();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
