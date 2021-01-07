@@ -34,7 +34,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
     private srvModuleService: AllModulesService,
     private toastr: ToastrService,
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   ngOnInit() {
     // for floating label

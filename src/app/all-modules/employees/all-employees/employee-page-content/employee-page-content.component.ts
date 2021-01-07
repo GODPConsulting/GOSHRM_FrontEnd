@@ -6,6 +6,7 @@ import { DatePipe } from "@angular/common";
 import { Subject } from "rxjs";
 import { DataTableDirective } from "angular-datatables";
 import { id } from "src/assets/all-modules-data/id";
+import { EmployeeService } from "src/app/services/employee.service";
 
 declare const $: any;
 @Component({
@@ -25,14 +26,18 @@ export class EmployeePageContentComponent implements OnInit {
   public rows = [];
   public srch = [];
   public statusValue;
+  public employeeList = [];
+
   constructor(
     private srvModuleService: AllModulesService,
     private toastr: ToastrService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private employeeService: EmployeeService
   ) {}
 
   ngOnInit() {
-    this.loadEmployee();
+    this.loadEmployees();
+
     this.addEmployeeForm = this.formBuilder.group({
       FirstName: ["", [Validators.required]],
       LastName: ["", [Validators.required]],
@@ -71,6 +76,15 @@ export class EmployeePageContentComponent implements OnInit {
       this.rows = this.lstEmployee;
       this.srch = [...this.rows];
     });
+  } /**/
+
+  loadEmployees() {
+    return this.employeeService
+      .getData("/admin/get/all/staff")
+      .subscribe((data) => {
+        console.log(data.staff);
+        this.employeeList = data.staff;
+      });
   }
 
   // Add employee  Modal Api Call
