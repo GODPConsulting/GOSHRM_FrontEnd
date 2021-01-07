@@ -5,6 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { DatePipe } from "@angular/common";
 import { Subject } from "rxjs";
 import { DataTableDirective } from "angular-datatables";
+import { EmployeeService } from "src/app/services/employee.service";
 
 declare const $: any;
 @Component({
@@ -30,13 +31,18 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   public statusValue;
   public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
+  public employeeList = [];
+  public pageLoading: boolean;
+
   constructor(
     private srvModuleService: AllModulesService,
     private toastr: ToastrService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private employeeService: EmployeeService
   ) {}
 
   ngOnInit() {
+    this.loadEmployees();
     // for floating label
 
     $(".floating")
@@ -46,6 +52,21 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
       })
       .trigger("blur");
+
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null, null, null],
+      //order: [[1, "asc"]],
+    };
+
     this.loadEmployee();
     // add employee form validation
     this.addEmployeeForm = this.formBuilder.group({
@@ -106,6 +127,22 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
       this.rows = this.lstEmployee;
       this.srch = [...this.rows];
     });
+  }
+
+  // Get All Employees
+  loadEmployees() {
+    this.pageLoading = true;
+    return this.employeeService.getData("/admin/get/all/staff").subscribe(
+      (data) => {
+        this.pageLoading = false;
+        console.log(data.staff);
+        this.employeeList = data.staff;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   // Add employee  Modal Api Call

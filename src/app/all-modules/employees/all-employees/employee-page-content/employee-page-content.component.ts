@@ -27,6 +27,7 @@ export class EmployeePageContentComponent implements OnInit {
   public srch = [];
   public statusValue;
   public employeeList = [];
+  public pageLoading: boolean;
 
   constructor(
     private srvModuleService: AllModulesService,
@@ -79,12 +80,18 @@ export class EmployeePageContentComponent implements OnInit {
   } /**/
 
   loadEmployees() {
-    return this.employeeService
-      .getData("/admin/get/all/staff")
-      .subscribe((data) => {
+    this.pageLoading = true;
+    return this.employeeService.getData("/admin/get/all/staff").subscribe(
+      (data) => {
+        this.pageLoading = false;
         console.log(data.staff);
         this.employeeList = data.staff;
-      });
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   // Add employee  Modal Api Call
