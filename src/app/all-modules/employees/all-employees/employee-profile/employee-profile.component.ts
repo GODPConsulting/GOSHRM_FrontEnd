@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 
@@ -8,10 +8,13 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./employee-profile.component.css"],
 })
 export class EmployeeProfileComponent implements OnInit {
+  @ViewChild("fileInput")
+  fileInput: ElementRef;
   public addEmployeeForm: FormGroup;
   constructor(
     private toastr: ToastrService,
     private formBuilder: FormBuilder
+    
   ) {}
 
   ngOnInit() {
