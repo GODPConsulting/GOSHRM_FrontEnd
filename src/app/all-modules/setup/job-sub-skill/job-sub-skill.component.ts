@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
@@ -11,11 +11,14 @@ declare const $: any;
 })
 export class JobSubSkillComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
+  @ViewChild('fileInput') fileInput: ElementRef
   public subSkill: any[] = [];
   public rows = [];
   public srch = [];
   pageLoading: boolean;
-  public formTitle = "Add Job Skill";
+
+  spinner: boolean = false;
+  public formTitle = "Add Job Sub Skill";
   public subSkillForm: FormGroup;
   selectedId: any[] = [];
   public subSkillUploadForm: FormGroup;
@@ -134,16 +137,22 @@ export class JobSubSkillComponent implements OnInit {
       "uploadInput",
       this.subSkillUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
 
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/upload/sub_skill", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_sub_skill").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -151,6 +160,7 @@ export class JobSubSkillComponent implements OnInit {
           this.getSubSkill();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -216,6 +226,7 @@ export class JobSubSkillComponent implements OnInit {
   }
 
   openModal() {
+    
     $("#add_sub_skill").modal("show");
     this.subSkillForm.get("job_title").enable();
     this.formTitle = "Add Job SKill";
@@ -229,6 +240,10 @@ export class JobSubSkillComponent implements OnInit {
   // Add employee  Modal Api Call
   addSubSkill(Form: FormGroup) {
     this.subSkillForm.get("job_title").enable();
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
     /* if (!Form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;

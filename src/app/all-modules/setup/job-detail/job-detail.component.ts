@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
@@ -11,10 +11,14 @@ declare const $: any;
 })
 export class JobDetailComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
+  @ViewChild("fileInput")
+  fileInput: ElementRef;
   public jobDetails: any[] = [];
   public rows = [];
   public srch = [];
   pageLoading: boolean;
+
+  spinner: boolean = false;
   public formTitle = "Add Job Title";
   public jobDetailForm: FormGroup;
   selectedId: any[] = [];
@@ -67,16 +71,22 @@ export class JobDetailComponent implements OnInit {
       "uploadInput",
       this.jobDetailUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire("Error", "Select a file", "error");
+    }
 
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/upload/jobdetail", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = "";
             $("#upload_job_detail").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -84,6 +94,7 @@ export class JobDetailComponent implements OnInit {
           this.getJobDetail();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -151,6 +162,10 @@ export class JobDetailComponent implements OnInit {
 
   // Add Job Title  Modal Api Call
   addJobDetail(Form: FormGroup) {
+    if (!Form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
     const payload = Form.value;
     console.log(payload);
     return this.setupService
