@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import { map, tap } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
@@ -30,6 +30,14 @@ export class SetupService {
       })
     );
   }
+
+  exportAcademicDiscipline  () {
+    return this.apiService.getExcel("/hrmsetup/download/academic/disciplines").pipe(
+        map(data => {
+            return data;
+        })
+    );
+}
 
   /*  using xhr method
   upload(path: string, file: File): Promise<any> {

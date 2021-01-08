@@ -38,6 +38,7 @@ export class AcademicDisciplineComponent implements OnInit {
   public editEmployeeForm: FormGroup;
   public academicDisciplineUploadForm: FormGroup;
   formTitle: string = "Add Academic Discipline";
+  exportData: string = "";
   public pipe = new DatePipe("en-US");
   public rows = [];
   public srch = [];
@@ -179,16 +180,12 @@ export class AcademicDisciplineComponent implements OnInit {
   } */
 
   downloadFile() {
-    this.apiservice.downloadLink().subscribe(
-      (resp) => {
-        //console.log(resp.headers.get("content-disposition"));
-        //this.data = resp.body;
-        console.log(resp);
-        //console.log(atob(JSON.stringify(resp)));
+    this.setupService.exportAcademicDiscipline().subscribe(
+      resp => {
         this.blob = resp;
         const data = resp;
         if (data != undefined) {
-          const byteString = atob(JSON.stringify(data));
+          const byteString = atob(data);
           const ab = new ArrayBuffer(byteString.length);
           const ia = new Uint8Array(ab);
           for (let i = 0; i < byteString.length; i++) {
@@ -196,7 +193,7 @@ export class AcademicDisciplineComponent implements OnInit {
           }
           const bb = new Blob([ab]);
           try {
-            const file = new File([bb], "File.xlsx", {
+            const file = new File([bb], "AcademicDiscipline.xlsx", {
               type: "application/vnd.ms-excel",
             });
             console.log(file, bb);
