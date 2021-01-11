@@ -235,6 +235,7 @@ export class JobSubSkillComponent implements OnInit {
   closeModal() {
     $("#add_sub_skill").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   // Add employee  Modal Api Call

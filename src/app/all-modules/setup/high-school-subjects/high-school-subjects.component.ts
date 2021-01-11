@@ -91,7 +91,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = ""
             $("#upload_high_school_subject").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -217,6 +217,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   closeModal() {
     $("#add_high_school_subject").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   addItemId(event, id) {

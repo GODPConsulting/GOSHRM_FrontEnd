@@ -77,17 +77,20 @@ export class JobDetailComponent implements OnInit {
 
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
+    
     return this.setupService
       .updateData("/hrmsetup/upload/jobdetail", formData)
       .subscribe(
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
+
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
             this.fileInput.nativeElement.value = "";
             $("#upload_job_detail").modal("hide");
+          
           } else {
             swal.fire("Error", message, "error");
           }
@@ -158,6 +161,7 @@ export class JobDetailComponent implements OnInit {
   closeModal() {
     $("#add_job_detail").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   // Add Job Title  Modal Api Call

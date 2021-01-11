@@ -103,7 +103,7 @@ export class ProfCertificationComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = "";
             $("#upload_prof_certification").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -344,6 +344,7 @@ export class ProfCertificationComponent implements OnInit {
   closeModal() {
     $("#add-prof-certification").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   delete(id: any) {

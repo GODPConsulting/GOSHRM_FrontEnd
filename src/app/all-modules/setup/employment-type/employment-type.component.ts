@@ -88,7 +88,7 @@ export class EmploymentTypeComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = "";
             $("#upload_employment_type").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -126,6 +126,7 @@ export class EmploymentTypeComponent implements OnInit {
   closeModal() {
     $("#add_employment_type").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   getEmploymentType() {

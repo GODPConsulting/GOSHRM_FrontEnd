@@ -143,6 +143,7 @@ export class HmoComponent implements OnInit {
   closeModal() {
     $("#add_hmo").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   // Add employee  Modal Api Call

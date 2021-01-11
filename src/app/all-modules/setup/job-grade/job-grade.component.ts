@@ -80,11 +80,13 @@ export class JobGradeComponent implements OnInit {
       .updateData("/hrmsetup/upload/jobgrade", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
+
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ""
+            this.fileInput.nativeElement.value = "";
             $("#upload_job_grade").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -131,6 +133,7 @@ export class JobGradeComponent implements OnInit {
   closeModal() {
     $("#add_job_grade").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   getJobGrade() {

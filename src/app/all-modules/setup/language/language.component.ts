@@ -188,6 +188,8 @@ export class LanguageComponent implements OnInit {
   closeModal() {
     $("#add_language").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
+
   }
 
   addLanguage(languageForm: FormGroup) {

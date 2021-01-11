@@ -16,7 +16,8 @@ declare const $: any;
 export class ProfMembershipComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
-  @ViewChild('fileInput') fileInput: ElementRef
+  @ViewChild('fileInput') 
+  fileInput: ElementRef
   public dtElement: DataTableDirective;
   public lstEmployee: any;
   public profMemberships: any[] = [];
@@ -24,7 +25,8 @@ export class ProfMembershipComponent implements OnInit {
   public tempId: any;
   public editId: any;
 
-  public professionalMembershipForm: FormGroup;
+  public professionalMembershipUploadForm: FormGroup;
+  file: File;
   public editProfessionalMembershipForm: FormGroup;
   formTitle: string = "Add Professional Membership";
   public pipe = new DatePipe("en-US");
@@ -38,9 +40,7 @@ export class ProfMembershipComponent implements OnInit {
   spinner: boolean = false;
   value: any;
   selectedId: any[] = [];
-  public professionalMembershipUploadForm: FormGroup;
-  file: File;
-  getProfessionalMembership: any;
+  professionalMembershipForm: FormGroup;
 
   constructor(
     private setupService: SetupService,
@@ -101,10 +101,11 @@ export class ProfMembershipComponent implements OnInit {
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
+          
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = "";
             $("#upload_prof_membership").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -352,10 +353,15 @@ export class ProfMembershipComponent implements OnInit {
   closeModal() {
     $("#add_prof_membership").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
-  addProfMembership(form: FormGroup) {
-    const payload = form.value;
+  addProfMembership(professionalMembershipForm: FormGroup) {
+    if (!professionalMembershipForm.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+    const payload = professionalMembershipForm.value;
     return this.setupService
       .updateData("/hrmsetup/add/update/prof_membership", payload)
       .subscribe(

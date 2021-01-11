@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { DataTableDirective } from 'angular-datatables';
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
@@ -11,18 +12,23 @@ declare const $: any;
 })
 export class EmploymentLevelComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
+  @ViewChild(DataTableDirective, { static: false })
+  @ViewChild("fileInput")
+  fileInput: ElementRef;
   public levels: any[] = [];
 
   public employmentLevelForm: FormGroup;
+  file: File;
   formTitle: string = "Add Employment Level";
   public rows = [];
   public srch = [];
   selectedId: any[] = [];
   pageLoading: boolean;
-  loading: boolean = true;
+  
   spinner: boolean = false;
   public employmentLevelUploadForm: FormGroup;
-  file: File;
+  value: any;
+  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -75,15 +81,17 @@ export class EmploymentLevelComponent implements OnInit {
     }
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
-    this.loading = false;
+    
     return this.setupService
       .updateData("/hrmsetup/upload/employmentlevel", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = "";
             $("#upload_employment_level").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -91,6 +99,7 @@ export class EmploymentLevelComponent implements OnInit {
           this.getEmploymentLevels();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -159,6 +168,7 @@ export class EmploymentLevelComponent implements OnInit {
   closeModal() {
     $("#add_employment_level").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   //search by description

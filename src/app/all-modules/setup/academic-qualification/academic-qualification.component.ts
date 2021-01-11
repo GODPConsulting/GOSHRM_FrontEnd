@@ -80,12 +80,14 @@ export class AcademicQualificationComponent implements OnInit {
 
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
+
     return this.setupService
       .updateData("/hrmsetup/upload/academic/qualification", formData)
       .subscribe(
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
+
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
@@ -236,6 +238,7 @@ export class AcademicQualificationComponent implements OnInit {
   closeModal() {
     $("#add_academic_qualification").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
   checkAll(event) {
     if (event.target.checked) {
