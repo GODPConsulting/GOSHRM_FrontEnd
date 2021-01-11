@@ -105,6 +105,11 @@ export class JobDetailComponent implements OnInit {
     $("#upload_job_detail").modal("show");
   }
 
+  closeUploadModal() {
+    this.jobDetailUploadForm.reset();
+    this.fileInput.nativeElement.value = "";
+  }
+
   /*  initializeForm() {
     this.jobDetailForm = this.formBuilder.group({
       id: [0],
@@ -136,7 +141,7 @@ export class JobDetailComponent implements OnInit {
 
   getJobDetail() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/jobdetails").subscribe(
+    return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
       (data) => {
         this.pageLoading = false;
         console.log(data);

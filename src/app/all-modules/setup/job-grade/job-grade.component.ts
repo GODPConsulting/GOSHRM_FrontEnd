@@ -58,6 +58,42 @@ export class JobGradeComponent implements OnInit {
     event.stopPropagation();
   }
 
+  downloadFile() {
+    this.setupService.exportExcelFile("/hrmsetup/download/jobgrade").subscribe(
+      (resp) => {
+        //this.blob = resp;
+        const data = resp;
+        if (data != undefined) {
+          const byteString = atob(data);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const bb = new Blob([ab]);
+          try {
+            const file = new File([bb], "Job Grade.xlsx", {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(file, bb);
+            saveAs(file);
+          } catch (err) {
+            const textFileAsBlob = new Blob([bb], {
+              type: "application/vnd.ms-excel",
+            });
+            window.navigator.msSaveBlob(
+              textFileAsBlob,
+              "Deposit Category.xlsx"
+            );
+          }
+        } else {
+          return swal.fire(`GOS HRM`, "Unable to download data", "error");
+        }
+      },
+      (err) => {}
+    );
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.jobGradeUploadForm.patchValue({
@@ -84,7 +120,7 @@ export class JobGradeComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ""
+            this.fileInput.nativeElement.value = "";
             $("#upload_job_grade").modal("hide");
           } else {
             swal.fire("Error", message, "error");

@@ -31,13 +31,13 @@ export class SetupService {
     );
   }
 
-  exportAcademicDiscipline  () {
-    return this.apiService.getExcel("/hrmsetup/download/academic/disciplines").pipe(
-        map(data => {
-            return data;
-        })
+  exportExcelFile(url: string) {
+    return this.apiService.getExcel(url).pipe(
+      map((data) => {
+        return data;
+      })
     );
-}
+  }
 
   /*  using xhr method
   upload(path: string, file: File): Promise<any> {
