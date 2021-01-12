@@ -44,15 +44,17 @@
                     </thead>
                     <tbody>
                         <tr data-toggle="modal" class="pointer" data-target="#edit_employee"
-                            (click)="editJobDetail(row)"
                             *ngFor="let row of jobDetails | filter:searchText; let i = index">
+
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
-                            <td>{{ i + 1 }}</td>
-                            <td>{{ row.job_title }}</td>
-                            <td>{{ row.totalSkillWeight }}</td>
+
+                            <td> <a [routerLink]="['/job-detail',row.id]">{{ i + 1 }}</a></td>
+                            <td> <a [routerLink]="['/job-detail',row.id]">{{ row.job_title }}</a></td>
+                            <td> <a [routerLink]="['/job-detail',row.id]">{{ row.totalSkillWeight }}</a></td>
+
                         </tr>
                     </tbody>
                 </table>

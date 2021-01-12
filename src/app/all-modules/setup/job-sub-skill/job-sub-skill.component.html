@@ -4,13 +4,13 @@
 
     <!-- Add Job Title Modal -->
     <div id="add_job_detail" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content w-75 mx-auto">
+        <div class="mb-3">
+            <div class="modal-content w-100">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Job Title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                    <h3 class="modal-title">Add Job Title</h3>
+                    <!--  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
                         <span aria-hidden="true">&times;</span>
-                    </button>
+                    </button> -->
                 </div>
                 <div class="modal-body">
                     <form (ngSubmit)="addJobDetail(jobDetailForm)" [formGroup]="jobDetailForm">
@@ -267,9 +267,10 @@
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadSubSkill()" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span> 
-                            <span *ngIf="spinner" ><i class="fa fa-spinner fa-spin"></i></span>
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadSubSkill()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>

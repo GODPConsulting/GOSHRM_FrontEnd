@@ -1,5 +1,6 @@
+<app-loading *ngIf="pageLoading"></app-loading>
 <!-- Page Content -->
-<div class="content container-fluid">
+<div *ngIf="!pageLoading" class="content container-fluid">
 
     <!-- Page Header -->
     <div class="page-header">

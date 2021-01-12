@@ -142,7 +142,7 @@ export class JobDetailComponent implements OnInit {
   }
 
   closeUploadModal() {
-    this.jobDetailUploadForm.reset();
+    //this.jobDetailUploadForm.reset();
     this.fileInput.nativeElement.value = "";
   }
 
@@ -210,7 +210,7 @@ export class JobDetailComponent implements OnInit {
     const payload = Form.value;
     console.log(payload);
     return this.setupService
-      .updateData("/hrmsetup/add/update/jobdetail", payload)
+      .updateData("/hrmsetup/add/update/jobtitle", payload)
       .subscribe(
         (res) => {
           const message = res.status.message.friendlyMessage;
@@ -274,7 +274,7 @@ export class JobDetailComponent implements OnInit {
         //console.log(result);
         if (result.value) {
           return this.setupService
-            .deleteData("/hrmsetup/delete/hmo", payload)
+            .deleteData("/hrmsetup/delete/jobtitle", payload)
             .subscribe(
               (res) => {
                 const message = res.status.message.friendlyMessage;

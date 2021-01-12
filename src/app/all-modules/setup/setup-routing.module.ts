@@ -1,5 +1,5 @@
-import { ProfMembershipComponent } from './prof-membership/prof-membership.component';
-import { LanguageComponent } from './language/language.component';
+import { ProfMembershipComponent } from "./prof-membership/prof-membership.component";
+import { LanguageComponent } from "./language/language.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { SetupComponent } from "./setup.component";
@@ -16,15 +16,13 @@ import { HighSchoolGradeComponent } from "./high-school-grade/high-school-grade.
 import { AcademicGradeComponent } from "./academic-grade/academic-grade.component";
 import { JobDetailComponent } from "src/app/all-modules/setup/job-detail/job-detail.component";
 import { ProfCertificationComponent } from "./prof-certification/prof-certification.component";
-import { JobSubSkillComponent } from './job-sub-skill/job-sub-skill.component';
-
+import { JobSubSkillComponent } from "./job-sub-skill/job-sub-skill.component";
 
 const routes: Routes = [
   {
     path: "",
     component: SetupComponent,
     children: [
-  
       {
         path: "language",
         component: LanguageComponent,
@@ -55,7 +53,7 @@ const routes: Routes = [
       },
       {
         path: "academic-qualification",
-        component: AcademicQualificationComponent, 
+        component: AcademicQualificationComponent,
       },
       {
         path: "hmo",
@@ -76,6 +74,10 @@ const routes: Routes = [
       {
         path: "job-detail",
         component: JobDetailComponent,
+      },
+      {
+        path: "job-detail/:id",
+        component: JobSubSkillComponent,
       },
       {
         path: "prof-certification",
