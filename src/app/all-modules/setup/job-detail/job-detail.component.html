@@ -12,7 +12,7 @@
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
-                <a class="btn download-btn hint"><span class="hint-text">Download</span><i
+                <a class="btn download-btn hint" (click)="downloadFile()"><span class="hint-text">Download</span><i
                         class="fa fa-download"></i></a>
                 <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
                         class="fa fa-upload"></i></a>
@@ -44,15 +44,17 @@
                     </thead>
                     <tbody>
                         <tr data-toggle="modal" class="pointer" data-target="#edit_employee"
-                            (click)="editJobDetail(row)"
                             *ngFor="let row of jobDetails | filter:searchText; let i = index">
+
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
-                            <td>{{ i + 1 }}</td>
-                            <td>{{ row.job_title }}</td>
-                            <td>{{ row.totalSkillWeight }}</td>
+
+                            <td> <a [routerLink]="['/job-detail',row.id]">{{ i + 1 }}</a></td>
+                            <td> <a [routerLink]="['/job-detail',row.id]">{{ row.job_title }}</a></td>
+                            <td> <a [routerLink]="['/job-detail',row.id]">{{ row.totalSkillWeight }}</a></td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -124,31 +126,39 @@
 <div class="layout-content">
     <router-outlet></router-outlet>
     <app-treasury-product-setup _nghost-wal-c427="" class="ng-star-inserted">
-    <div _ngcontent-wal-c427="" class="ui-g">
-    <div _ngcontent-wal-c427="" class="ui-g-12 no-padding">
-    <div _ngcontent-wal-c427="" class="card no-padding">
-    <div _ngcontent-wal-c427="" class="panel panel-default">
-    <div _ngcontent-wal-c427="" class="panel-heading">
-    <div _ngcontent-wal-c427="" class="row">
-    <div _ngcontent-wal-c427="" class="col-md-12">
-          <h3 _ngcontent-wal-c427="" class="panel-title pull-left"> Add Job Details </h3>
-    </div>
-    </div>
-    </div>
-    <div _ngcontent-wal-c427="" class="panel-body">
-    <div _ngcontent-wal-c427="" class="form-horizontal">
-          <form _ngcontent-wal-c427="" novalidate="" ng-reflect-form="[object Object]" class="ng-untouched ng-pristine ng-invalid">
-    <div _ngcontent-wal-c427="" class="form-group">
-          <label _ngcontent-wal-c427="" for="name" class="control-label col-md-2">Job Title</label>
-    <div _ngcontent-wal-c427="" class="col-md-4">
-          <input _ngcontent-wal-c427="" type="text" name="name" formcontrolname="name" id="name" class="form-control ng-untouched ng-pristine ng-invalid" ng-reflect-name="name">
-    </div>
-          <label _ngcontent-wal-c427="" for="description" class="control-label col-md-2"> Job Description </label>
-    <div _ngcontent-wal-c427="" class="col-md-4">
-          <input _ngcontent-wal-c427="" type="text" formcontrolname="description" name="description" id="description" class="form-control ng-untouched ng-pristine ng-invalid" ng-reflect-name="description">
-    </div>
-    </div>
-    <!-- <div _ngcontent-wal-c427="" class="form-group">
+        <div _ngcontent-wal-c427="" class="ui-g">
+            <div _ngcontent-wal-c427="" class="ui-g-12 no-padding">
+                <div _ngcontent-wal-c427="" class="card no-padding">
+                    <div _ngcontent-wal-c427="" class="panel panel-default">
+                        <div _ngcontent-wal-c427="" class="panel-heading">
+                            <div _ngcontent-wal-c427="" class="row">
+                                <div _ngcontent-wal-c427="" class="col-md-12">
+                                    <h3 _ngcontent-wal-c427="" class="panel-title pull-left"> Add Job Details </h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div _ngcontent-wal-c427="" class="panel-body">
+                            <div _ngcontent-wal-c427="" class="form-horizontal">
+                                <form _ngcontent-wal-c427="" novalidate="" ng-reflect-form="[object Object]"
+                                    class="ng-untouched ng-pristine ng-invalid">
+                                    <div _ngcontent-wal-c427="" class="form-group">
+                                        <label _ngcontent-wal-c427="" for="name" class="control-label col-md-2">Job
+                                            Title</label>
+                                        <div _ngcontent-wal-c427="" class="col-md-4">
+                                            <input _ngcontent-wal-c427="" type="text" name="name" formcontrolname="name"
+                                                id="name" class="form-control ng-untouched ng-pristine ng-invalid"
+                                                ng-reflect-name="name">
+                                        </div>
+                                        <label _ngcontent-wal-c427="" for="description" class="control-label col-md-2">
+                                            Job Description </label>
+                                        <div _ngcontent-wal-c427="" class="col-md-4">
+                                            <input _ngcontent-wal-c427="" type="text" formcontrolname="description"
+                                                name="description" id="description"
+                                                class="form-control ng-untouched ng-pristine ng-invalid"
+                                                ng-reflect-name="description">
+                                        </div>
+                                    </div>
+                                    <!-- <div _ngcontent-wal-c427="" class="form-group">
     <label _ngcontent-wal-c427="" for="name" class="control-label col-md-2">Treasury Type</label>
     <div _ngcontent-wal-c427="" class="col-md-4">
           <select _ngcontent-wal-c427="" name="type" formcontrolname="type" id="productType" class="form-control ng-untouched ng-pristine ng-valid" ng-reflect-name="type">
@@ -159,24 +169,25 @@
     </select>
     </div>
     </div> -->
-    </form>
-  </div>
- </div>
-       <div _ngcontent-wal-c427="" class="panel-footer">
-       <div _ngcontent-wal-c427="" class="row">
-       <div _ngcontent-wal-c427="" class="col-md-12">
-           <button _ngcontent-wal-c427="" type="button" class="btn btn-primary pull-right" style="margin-right: 5px;" disabled="spinner">
-                  <span *ngIf="!spinner">Save</span>
-                  <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-            </button>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-  </div>
-</div>
-          </app-treasury-product-setup>
+                                </form>
+                            </div>
+                        </div>
+                        <div _ngcontent-wal-c427="" class="panel-footer">
+                            <div _ngcontent-wal-c427="" class="row">
+                                <div _ngcontent-wal-c427="" class="col-md-12">
+                                    <button _ngcontent-wal-c427="" type="button" class="btn btn-primary pull-right"
+                                        style="margin-right: 5px;" disabled="spinner">
+                                        <span *ngIf="!spinner">Save</span>
+                                        <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-treasury-product-setup>
     <!--container-->
 </div>
 
@@ -188,7 +199,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Upload Job Title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #fileInput (click)="closeModal()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #fileInput
+                    (click)="closeModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -220,7 +232,7 @@
 
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadJobDetail()"
-                                [disabled]="spinner">
+                            [disabled]="spinner">
                             <span *ngIf="!spinner">Submit</span>
                             <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
