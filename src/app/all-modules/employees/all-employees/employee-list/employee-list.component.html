@@ -1,5 +1,6 @@
+<app-loading *ngIf="pageLoading"></app-loading>
 <!-- Page Content -->
-<div class="content container-fluid">
+<div *ngIf="!pageLoading" class="content container-fluid">
 
     <!-- Page Header -->
     <div class="page-header">
@@ -66,7 +67,7 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>ID</th>
+                            <th>Staff Code</th>
                             <th>Job Grade</th>
                             <th>Office</th>
                             <th>Email</th>
@@ -86,7 +87,7 @@
                                         <span>{{row.jobTitleName}} </span></a>
                                 </h2>
                             </td>
-                            <td>{{row.staffId}}</td>
+                            <td>{{row.staffCode}}</td>
                             <td>row.jobGrade</td>
                             <td>{{row.staffOfficeName}}</td>
                             <td>{{row.email}}</td>

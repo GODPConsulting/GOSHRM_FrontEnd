@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 
@@ -11,7 +12,7 @@ declare const $: any;
 })
 export class JobSubSkillComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
-  @ViewChild('fileInput') fileInput: ElementRef
+  @ViewChild("fileInput") fileInput: ElementRef;
   public subSkill: any[] = [];
   public rows = [];
   public srch = [];
@@ -26,10 +27,12 @@ export class JobSubSkillComponent implements OnInit {
   public jobTitles;
   public jobDetailForm;
   public jobTitleId;
+  public jobSkills;
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -55,17 +58,52 @@ export class JobSubSkillComponent implements OnInit {
     this.getSubSkill();
     this.initializeForm();
     this.getJobTitle();
+    this.route.paramMap.subscribe((params) => {
+      console.log(params.get("id"));
+      this.getSingleJobTitle(+params.get("id"));
+    });
+  }
+
+  getSingleJobTitle(id) {
+    return this.setupService
+      .getData(`/hrmsetup/get/single/jobtitle?id=${id}`)
+      .subscribe(
+        (data) => {
+          //this.pageLoading = false;
+          let arr = 1; //arr should be id too
+          console.log(data);
+          this.jobTitles = data.setuplist;
+          this.rows = this.jobTitles;
+          this.jobSkills = this.jobTitles.sub_Skills; // replace in line 105 in template
+          //this.srch = [...this.rows];
+          this.jobDetailForm.patchValue({
+            id: this.rows[arr].id,
+            job_title: this.rows[arr].job_title,
+            job_description: this.rows[arr].job_description,
+          });
+        },
+        (err) => {
+          //this.pageLoading = false;
+          console.log(err);
+        }
+      );
   }
 
   getJobTitle() {
     // this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/jobdetails").subscribe(
+    return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
       (data) => {
         //this.pageLoading = false;
+        let arr = 1;
         console.log(data);
         this.jobTitles = data.setuplist;
         this.rows = this.jobTitles;
         this.srch = [...this.rows];
+        this.jobDetailForm.patchValue({
+          id: this.rows[arr].id,
+          job_title: this.rows[arr].job_title,
+          job_description: this.rows[arr].job_description,
+        });
       },
       (err) => {
         //this.pageLoading = false;
@@ -77,12 +115,12 @@ export class JobSubSkillComponent implements OnInit {
   getJobId(event) {
     console.log(event.target.value);
     //console.log(this.jobTitles);
-    for (const obj of this.jobTitles) {
+    /* for (const obj of this.jobTitles) {
       if (obj.job_title === event.target.value) {
         this.jobTitleId = obj.id;
         console.log(this.jobTitleId);
       }
-    }
+    }*/
     this.subSkillForm.patchValue({
       job_details_Id: this.jobTitleId,
     });
@@ -131,6 +169,42 @@ export class JobSubSkillComponent implements OnInit {
     event.stopPropagation();
   }
 
+  downloadFile() {
+    this.setupService.exportExcelFile("/hrmsetup/download/sub_skill").subscribe(
+      (resp) => {
+        //this.blob = resp;
+        const data = resp;
+        if (data != undefined) {
+          const byteString = atob(data);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const bb = new Blob([ab]);
+          try {
+            const file = new File([bb], "Job skills.xlsx", {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(file, bb);
+            saveAs(file);
+          } catch (err) {
+            const textFileAsBlob = new Blob([bb], {
+              type: "application/vnd.ms-excel",
+            });
+            window.navigator.msSaveBlob(
+              textFileAsBlob,
+              "Deposit Category.xlsx"
+            );
+          }
+        } else {
+          return swal.fire(`GOS HRM`, "Unable to download data", "error");
+        }
+      },
+      (err) => {}
+    );
+  }
+
   uploadSubSkill() {
     const formData = new FormData();
     formData.append(
@@ -138,7 +212,7 @@ export class JobSubSkillComponent implements OnInit {
       this.subSkillUploadForm.get("uploadInput").value
     );
     if (!this.file) {
-      return swal.fire('Error', 'Select a file', 'error')
+      return swal.fire("Error", "Select a file", "error");
     }
 
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
@@ -152,7 +226,7 @@ export class JobSubSkillComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = "";
             $("#upload_sub_skill").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -226,7 +300,6 @@ export class JobSubSkillComponent implements OnInit {
   }
 
   openModal() {
-    
     $("#add_sub_skill").modal("show");
     this.subSkillForm.get("job_title").enable();
     this.formTitle = "Add Job SKill";

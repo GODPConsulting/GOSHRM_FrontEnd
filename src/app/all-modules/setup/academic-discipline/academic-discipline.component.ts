@@ -26,7 +26,8 @@ const EXCEL_EXTENSION = ".xlsx";
 export class AcademicDisciplineComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild(DataTableDirective, { static: false })
-  @ViewChild('fileInput') fileInput: ElementRef
+  @ViewChild("fileInput")
+  fileInput: ElementRef;
   public dtElement: DataTableDirective;
   public lstEmployee: any;
   public disciplines: any[] = [];
@@ -38,6 +39,7 @@ export class AcademicDisciplineComponent implements OnInit {
   public editEmployeeForm: FormGroup;
   public academicDisciplineUploadForm: FormGroup;
   formTitle: string = "Add Academic Discipline";
+  exportData: string = "";
   public pipe = new DatePipe("en-US");
   public rows = [];
   public srch = [];
@@ -45,7 +47,7 @@ export class AcademicDisciplineComponent implements OnInit {
   //public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
   pageLoading: boolean;
-  
+
   spinner: boolean = false;
   value: any;
   selectedId: any[] = [];
@@ -127,8 +129,8 @@ export class AcademicDisciplineComponent implements OnInit {
     }
 
     //console.log(formData, this.languageForm.get("uploadInput").value);
-   this.spinner = true;
-   
+    this.spinner = true;
+
     return this.setupService
       .updateData("/hrmsetup/upload/academic/discipline", formData)
       .subscribe(
@@ -138,7 +140,7 @@ export class AcademicDisciplineComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = "";
             $("#upload_academic_discipline").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -179,43 +181,41 @@ export class AcademicDisciplineComponent implements OnInit {
   } */
 
   downloadFile() {
-    this.apiservice.downloadLink().subscribe(
-      (resp) => {
-        //console.log(resp.headers.get("content-disposition"));
-        //this.data = resp.body;
-        console.log(resp);
-        //console.log(atob(JSON.stringify(resp)));
-        this.blob = resp;
-        const data = resp;
-        if (data != undefined) {
-          const byteString = atob(JSON.stringify(data));
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
-          for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
+    this.setupService
+      .exportExcelFile("/hrmsetup/download/academic/disciplines")
+      .subscribe(
+        (resp) => {
+          this.blob = resp;
+          const data = resp;
+          if (data != undefined) {
+            const byteString = atob(data);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+              ia[i] = byteString.charCodeAt(i);
+            }
+            const bb = new Blob([ab]);
+            try {
+              const file = new File([bb], "AcademicDiscipline.xlsx", {
+                type: "application/vnd.ms-excel",
+              });
+              console.log(file, bb);
+              saveAs(file);
+            } catch (err) {
+              const textFileAsBlob = new Blob([bb], {
+                type: "application/vnd.ms-excel",
+              });
+              window.navigator.msSaveBlob(
+                textFileAsBlob,
+                "Deposit Category.xlsx"
+              );
+            }
+          } else {
+            return swal.fire(`GOS HRM`, "Unable to download data", "error");
           }
-          const bb = new Blob([ab]);
-          try {
-            const file = new File([bb], "File.xlsx", {
-              type: "application/vnd.ms-excel",
-            });
-            console.log(file, bb);
-            saveAs(file);
-          } catch (err) {
-            const textFileAsBlob = new Blob([bb], {
-              type: "application/vnd.ms-excel",
-            });
-            window.navigator.msSaveBlob(
-              textFileAsBlob,
-              "Deposit Category.xlsx"
-            );
-          }
-        } else {
-          return swal.fire(`GOS HRM`, "Unable to download data", "error");
-        }
-      },
-      (err) => {}
-    );
+        },
+        (err) => {}
+      );
   }
 
   downloadFileee() {
