@@ -111,6 +111,7 @@ export class ProfMembershipComponent implements OnInit {
             swal.fire("Error", message, "error");
           }
           
+          
         },
         (err) => {
           this.spinner = false;

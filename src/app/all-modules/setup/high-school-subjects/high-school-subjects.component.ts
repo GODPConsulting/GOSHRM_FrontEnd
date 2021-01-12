@@ -155,6 +155,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = "";
             $("#add_high_school_subject").modal("hide");
           } else {
             swal.fire("Error", message, "error");
