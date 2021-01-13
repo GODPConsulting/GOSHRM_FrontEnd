@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
+import swal from "sweetalert2";
 
 @Component({
   selector: "app-employee-profile",
@@ -8,10 +9,19 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./employee-profile.component.css"],
 })
 export class EmployeeProfileComponent implements OnInit {
+  @ViewChild("fileInput")
+  fileInput: ElementRef;
   public addEmployeeForm: FormGroup;
+  setupService: any;
+  file: any;
+  spinner: boolean;
+  employee_profileUploadForm: any;
+  initializeForm: any;
+  getEmployee_Profile: any;
   constructor(
     private toastr: ToastrService,
     private formBuilder: FormBuilder
+    
   ) {}
 
   ngOnInit() {
@@ -22,5 +32,42 @@ export class EmployeeProfileComponent implements OnInit {
 
   onSubmit() {
     this.toastr.success("Bank & statutory added", "Success");
+  }
+
+  uploadLanguage() {
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.employee_profileUploadForm.get("uploadInput").value
+    );
+    if (!this.file) {
+      return swal.fire("Error", "Select a file", "error");
+    }
+    //console.log(formData, this.languageForm.get("uploadInput").value);
+    this.spinner = true;
+
+    return this.setupService
+      .updateData("/hrmsetup/upload/language", formData)
+      .subscribe(
+        (res) => {
+          this.spinner = false;
+          const message = res.status.message.friendlyMessage;
+
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            this.fileInput.nativeElement.value = "";
+            
+          } else {
+            swal.fire("Error", message, "error");
+          }
+          this.getEmployee_Profile();
+        },
+        (err) => {
+          this.spinner = false;
+          const message = err.status.message.friendlyMessage;
+          swal.fire("Error", message, "error");
+        }
+      );
   }
 }

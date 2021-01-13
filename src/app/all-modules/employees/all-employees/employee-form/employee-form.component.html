@@ -1,0 +1,346 @@
+<!-- Page Content -->
+<div class="content container-fluid"> 
+    <div class="modal-body">
+        <form (ngSubmit)="addEmployee()" [formGroup]="addEmployeeForm">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">First Name <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="addEmployeeForm.get('FirstName').invalid && addEmployeeForm.get('FirstName').touched"
+                            formControlName="FirstName">
+                        <div
+                            *ngIf="addEmployeeForm.get('FirstName').invalid && addEmployeeForm.get('FirstName').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('FirstName').invalid && addEmployeeForm.get('FirstName').touched"
+                                class="text-danger"> *Firstname is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">Last Name <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="addEmployeeForm.get('LastName').invalid && addEmployeeForm.get('LastName').touched"
+                            formControlName="LastName">
+                        <div
+                            *ngIf="addEmployeeForm.get('LastName').invalid && addEmployeeForm.get('LastName').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('LastName').invalid && addEmployeeForm.get('LastName').touched"
+                                class="text-danger"> *Lastname is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">MiddleName <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="addEmployeeForm.get('MiddleName').invalid && addEmployeeForm.get('MiddleName').touched"
+                            formControlName="MiddleName">
+                        <div
+                            *ngIf="addEmployeeForm.get('MiddleName').invalid && addEmployeeForm.get('MiddleName').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('MiddleName').invalid && addEmployeeForm.get('MiddleName').touched"
+                                class="text-danger"> *MiddleName is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">StaffCode <span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="addEmployeeForm.get('StaffCode').invalid && addEmployeeForm.get('StaffCode').touched"
+                            formControlName="StaffCode">
+                        <div
+                            *ngIf="addEmployeeForm.get('StaffCode').invalid && addEmployeeForm.get('StaffCode').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('StaffCode').invalid && addEmployeeForm.get('StaffCode').touched"
+                                class="text-danger"> *StaffCode is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">Date Of Birth <span class="text-danger">*</span></label>
+                        <input class="form-control" type="date"
+                            [class.invalid]="addEmployeeForm.get('Date').invalid && addEmployeeForm.get('Date').touched"
+                            formControlName="date" >
+                        <div
+                            *ngIf="addEmployeeForm.get('date').invalid && addEmployeeForm.get('date').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('DD-MM-YYYY').invalid && addEmployeeForm.get('DD-MM-YYYY').touched"
+                                class="text-danger"> *Date is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Gender <span class="text-danger">*</span></label>
+                        <select class="select form-control"
+                            [class.invalid]="addEmployeeForm.get('Gender').invalid && addEmployeeForm.get('Gender').touched"
+                            formControlName="Gender">
+                            <option>Select Gender</option>
+                            <option>Female</option>
+                            <option>Male</option>
+                            <option>Not Sure</option>
+                        </select>
+                        <div
+                            *ngIf="addEmployeeForm.get('Gender').invalid && addEmployeeForm.get('Gender').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('Gender').invalid && addEmployeeForm.get('Gender').touched"
+                                class="text-danger"> *Gender required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Job Title <span class="text-danger">*</span></label>
+                        <select class="select form-control"
+                            [class.invalid]="addEmployeeForm.get('JobTitle').invalid && addEmployeeForm.get('JobTitle').touched"
+                            formControlName="JobTitle">
+                            <option>Select JobTitle</option>
+                            <option>Software Developer</option>
+                            <option>Software Developer</option>
+                            <option>Marketing</option>
+                        </select>
+                        <div
+                            *ngIf="addEmployeeForm.get('JobTitle').invalid && addEmployeeForm.get('JobTitle').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('JobTitle').invalid && addEmployeeForm.get('JobTitle').touched"
+                                class="text-danger"> *JobTitle required</small>
+                        </div>
+                    </div>
+                </div>
+    
+                
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                        <input class="form-control" type="email"
+                            [class.invalid]="addEmployeeForm.get('Email').invalid && addEmployeeForm.get('Email').touched"
+                            formControlName="Email">
+                        <div
+                            *ngIf="addEmployeeForm.get('Email').invalid && addEmployeeForm.get('Email').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('Email').invalid && addEmployeeForm.get('Email').touched"
+                                class="text-danger"> *Email is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Country<span class="text-danger">*</span></label>
+                        <select class="select form-control"
+                            [class.invalid]="addEmployeeForm.get('Country').invalid && addEmployeeForm.get('Country').touched"
+                            formControlName="Country">
+                            <option>Select Country</option>
+                            <option>Nigeria</option>
+                            <option>Hungary</option>
+                            <option>Afghanistan</option>
+                        </select>
+                        <div
+                            *ngIf="addEmployeeForm.get('Country').invalid && addEmployeeForm.get('Country').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('Country').invalid && addEmployeeForm.get('Country').touched"
+                                class="text-danger"> *Country is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>State<span class="text-danger">*</span></label>
+                        <select class="select form-control"
+                            [class.invalid]="addEmployeeForm.get('User Role').invalid && addEmployeeForm.get('User Role').touched"
+                            formControlName="User Role">
+                            <option>Select User Role</option>
+                            <option>admin</option>
+                            <option>Hr</option>
+                            <option>Management</option>
+                        </select>
+                        <div
+                            *ngIf="addEmployeeForm.get('User Role').invalid && addEmployeeForm.get('User Role').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('User Role').invalid && addEmployeeForm.get('User Role').touched"
+                                class="text-danger"> *User Role is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Office/Department<span class="text-danger">*</span></label>
+                        <select class="select form-control"
+                            [class.invalid]="addEmployeeForm.get('Office/Department').invalid && addEmployeeForm.get('Office/Department').touched"
+                            formControlName="Office/Department">
+                            <option>Select Office/Department</option>
+                            <option>Nigeria</option>
+                            <option>Hungary</option>
+                            <option>Afghanistan</option>
+                        </select>
+                        <div
+                            *ngIf="addEmployeeForm.get('Office/Department').invalid && addEmployeeForm.get('Office/Department').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('Office/Department').invalid && addEmployeeForm.get('Office/Department').touched"
+                                class="text-danger"> *Office/Department is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">Staff Limit <span class="text-danger">*</span></label>
+                        <input class="form-control" type="number"
+                            [class.invalid]="addEmployeeForm.get('Staff Limit').invalid && addEmployeeForm.get('Staff Limit').touched"
+                            formControlName="Staff Limit">
+                        <div
+                            *ngIf="addEmployeeForm.get('Staff Limit').invalid && addEmployeeForm.get('Staff Limit').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('Staff Limit').invalid && addEmployeeForm.get('Staff Limit').touched"
+                                class="text-danger"> *Staff Limit is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">Address<span class="text-danger">*</span></label>
+                        <textarea class="form-control" type="text"rows="5"
+                            [class.invalid]="addEmployeeForm.get('Address').invalid && addEmployeeForm.get('Address').touched"
+                            formControlName="Address"></textarea>
+                        <div
+                            *ngIf="addEmployeeForm.get('Address').invalid && addEmployeeForm.get('Address').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('Address').invalid && addEmployeeForm.get('Address').touched"
+                                class="text-danger"> *Address is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">Phone Number<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="addEmployeeForm.get('Phone Number').invalid && addEmployeeForm.get('Phone Number').touched"
+                            formControlName="Phone Number">
+                        <div
+                            *ngIf="addEmployeeForm.get('Phone Number').invalid && addEmployeeForm.get('Phone Number').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('Phone Number').invalid && addEmployeeForm.get('Phone Number').touched"
+                                class="text-danger"> *Phone Number is required</small>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <h5>User Credentials</h5>
+            <hr>
+            <div class ="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">User Name<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="addEmployeeForm.get('User Name').invalid && addEmployeeForm.get('User Name').touched"
+                            formControlName="User Name">
+                        <div
+                            *ngIf="addEmployeeForm.get('User Name').invalid && addEmployeeForm.get('User Name').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('User Name').invalid && addEmployeeForm.get('User Name').touched"
+                                class="text-danger"> *User Name is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">Password<span class="text-danger">*</span></label>
+                        <input class="form-control" type="password"
+                            [class.invalid]="addEmployeeForm.get('Password').invalid && addEmployeeForm.get('Password').touched"
+                            formControlName="Password">
+                        <div
+                            *ngIf="addEmployeeForm.get('Password').invalid && addEmployeeForm.get('Password').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('Password').invalid && addEmployeeForm.get('Password').touched"
+                                class="text-danger"> *Password is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>State<span class="text-danger">*</span></label>
+                        <select class="select form-control"
+                            [class.invalid]="addEmployeeForm.get('User Role').invalid && addEmployeeForm.get('User Role').touched"
+                            formControlName="User Role">
+                            <option>Select User Role</option>
+                            <option>admin</option>
+                            <option>Hr</option>
+                            <option>Management</option>
+                        </select>
+                        <div
+                            *ngIf="addEmployeeForm.get('User Role').invalid && addEmployeeForm.get('User Role').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('User Role').invalid && addEmployeeForm.get('User Role').touched"
+                                class="text-danger"> *User Role is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Status<span class="text-danger">*</span></label>
+                        <select class="select form-control"
+                            [class.invalid]="addEmployeeForm.get('Status').invalid && addEmployeeForm.get('Status').touched"
+                            formControlName="Status">
+                            <option>Select Status</option>
+                            <option>Enabled</option>
+                            <option>Disabled</option>
+                        </select>
+                        <div
+                            *ngIf="addEmployeeForm.get('Status').invalid && addEmployeeForm.get('Status').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('Status').invalid && addEmployeeForm.get('Status').touched"
+                                class="text-danger"> *Status is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Access<span class="text-danger">*</span></label>
+                        <select class="select form-control"
+                            [class.invalid]="addEmployeeForm.get('Access').invalid && addEmployeeForm.get('Access').touched"
+                            formControlName="Access">
+                            <option>Select Access</option>
+                            <option>Group</option>
+                            <option>Company</option>
+                            <option>Branch</option>
+                            <option>Department</option>
+                        </select>
+                        <div
+                            *ngIf="addEmployeeForm.get('Access').invalid && addEmployeeForm.get('Access').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('Access').invalid && addEmployeeForm.get('Access').touched"
+                                class="text-danger"> *Access is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Access Level<span class="text-danger">*</span></label>
+                        <select class="select form-control"
+                            [class.invalid]="addEmployeeForm.get('AAccess Level').invalid && addEmployeeForm.get('Access Level').touched"
+                            formControlName="Access Level">
+                            <option>Select Access Level</option>
+                            <option>Group</option>
+                            <option>Company</option>
+                            <option>Branch</option>
+                            <option>Department</option>
+                        </select>
+                        <div
+                            *ngIf="addEmployeeForm.get('Access Level').invalid && addEmployeeForm.get('Access Level').touched">
+                            <small
+                                *ngIf="addEmployeeForm.get('Access Level').invalid && addEmployeeForm.get('Access Level').touched"
+                                class="text-danger"> *Access Level is required</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="submit-section">
+                <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

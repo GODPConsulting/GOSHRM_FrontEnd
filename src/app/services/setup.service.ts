@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
-import { data } from "jquery";
+import { map, tap } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
@@ -27,6 +26,14 @@ export class SetupService {
   deleteData(url: string, payload: object): Observable<any> {
     return this.apiService.post(url, payload).pipe(
       tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  exportExcelFile(url: string) {
+    return this.apiService.getExcel(url).pipe(
+      map((data) => {
         return data;
       })
     );

@@ -68,6 +68,42 @@ export class AcademicQualificationComponent implements OnInit {
     });
   }
 
+  downloadFile() {
+    this.setupService.exportExcelFile("/hrmsetup/download/academic/qualifications").subscribe(
+      (resp) => {
+        //this.blob = resp;
+        const data = resp;
+        if (data != undefined) {
+          const byteString = atob(data);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const bb = new Blob([ab]);
+          try {
+            const file = new File([bb], "academicqualification.xlsx", {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(file, bb);
+            saveAs(file);
+          } catch (err) {
+            const textFileAsBlob = new Blob([bb], {
+              type: "application/vnd.ms-excel",
+            });
+            window.navigator.msSaveBlob(
+              textFileAsBlob,
+              "Deposit Category.xlsx"
+            );
+          }
+        } else {
+          return swal.fire(`GOS HRM`, "Unable to download data", "error");
+        }
+      },
+      (err) => {}
+    );
+  }
+
   uploadAcademicQualification() {
     const formData = new FormData();
     formData.append(
@@ -80,12 +116,14 @@ export class AcademicQualificationComponent implements OnInit {
 
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
+
     return this.setupService
       .updateData("/hrmsetup/upload/academic/qualification", formData)
       .subscribe(
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
+
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
@@ -236,6 +274,7 @@ export class AcademicQualificationComponent implements OnInit {
   closeModal() {
     $("#add_academic_qualification").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
   checkAll(event) {
     if (event.target.checked) {

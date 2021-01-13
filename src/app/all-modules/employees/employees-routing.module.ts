@@ -14,6 +14,7 @@ import { DepartmentsComponent } from './departments/departments.component';
 import { DesignationComponent } from './designation/designation.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
 import { OvertimeComponent } from './overtime/overtime.component';
+import { EmployeeFormComponent } from './all-employees/employee-form/employee-form.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
       {
         path: 'employeeprofile',
         component: EmployeeProfileComponent
+      },
+      {
+        path: 'employee-form',
+        component: EmployeeFormComponent
       },
       {
         path: 'holidays',

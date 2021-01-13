@@ -1,5 +1,6 @@
+<app-loading *ngIf="pageLoading"></app-loading>
 <!-- Page Content -->
-<div class="content container-fluid">
+<div *ngIf="!pageLoading" class="content container-fluid">
 
     <!-- Page Header -->
     <div class="page-header">
@@ -12,8 +13,8 @@
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
-                <a  class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i
-                        class="fa fa-plus"></i> Add Employee</a>
+                <a class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add
+                    Employee</a>
                 <div class="view-icons">
                     <a routerLink="/employees/employeepage" class="grid-view btn btn-link active"><i
                             class="fa fa-th"></i></a>
@@ -25,7 +26,7 @@
     </div>
     <!-- /Page Header -->
 
-    <!-- Search Filter -->
+    <!-- Search Filter 
     <div class="row filter-row">
         <div class="col-sm-6 col-md-3">
             <div class="form-group form-focus">
@@ -52,32 +53,37 @@
             </div>
         </div>
         <div class="col-sm-6 col-md-3">
-            <a  class="btn btn-success btn-block"> Search </a>
+            <a class="btn btn-success btn-block"> Search </a>
         </div>
-    </div>
+    </div>-->
     <!-- Search Filter -->
 
     <div class="row staff-grid-row">
-        <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3" *ngFor="let emp of lstEmployee;let i = index">
+        <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3" *ngFor="let emp of employeeList;let i = index">
             <div class="profile-widget">
                 <div class="profile-img">
                     <a routerLink="/employees/employeeprofile" class="avatar"><img
                             src="assets/img/profiles/avatar-0{{i+ 1}}.jpg" alt=""></a>
                 </div>
                 <div class="dropdown profile-action">
-                    <a  class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
+                    <a class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
                             class="material-icons">more_vert</i></a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item"  data-toggle="modal" data-target="#edit_employee"
+                        <a class="dropdown-item" data-toggle="modal" data-target="#edit_employee"
                             (click)="editEmp(emp.id)"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                        <a class="dropdown-item"  data-toggle="modal" data-target="#delete_employee"
+                        <a class="dropdown-item" data-toggle="modal" data-target="#delete_employee"
                             (click)="tempId = emp.id"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                     </div>
                 </div>
+                <p>Staff Code: {{emp.staffCode}}</p>
                 <h4 class="user-name m-t-10 mb-0 text-ellipsis"><a
-                        routerLink="/employees/employeeprofile">{{emp.firstname}}</a>
+                        routerLink="/employees/employeeprofile">{{emp.firstName}} {{emp.lastName}}</a>
                 </h4>
-                <div class="small text-muted">{{emp.designation}}</div>
+                <div class="small text-muted">{{emp.jobTitleName}}</div>
+                <div class="small text-muted">
+                    <p>{{emp.email}}</p>
+                </div>
+
             </div>
         </div>
     </div>
@@ -884,12 +890,10 @@
                 <div class="modal-btn delete-action">
                     <div class="row">
                         <div class="col-6">
-                            <a  class="btn btn-primary continue-btn"
-                                (click)="deleteEmployee()">Delete</a>
+                            <a class="btn btn-primary continue-btn" (click)="deleteEmployee()">Delete</a>
                         </div>
                         <div class="col-6">
-                            <a  data-dismiss="modal"
-                                class="btn btn-primary cancel-btn">Cancel</a>
+                            <a data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
                         </div>
                     </div>
                 </div>

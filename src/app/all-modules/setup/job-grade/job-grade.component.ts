@@ -10,16 +10,15 @@ declare const $: any;
   styleUrls: ["./job-grade.component.css", "../setup.component.css"],
 })
 export class JobGradeComponent implements OnInit {
-  @ViewChild('fileInput') fileInput: ElementRef
   formTitle;
   public dtOptions: DataTables.Settings = {};
+  @ViewChild("fileInput") fileInput: ElementRef;
   public jobGradeForm: FormGroup;
   public jobGrades: any[] = [];
   public rows = [];
   public srch = [];
   selectedId: any[] = [];
   pageLoading: boolean;
-
   spinner: boolean = false;
   public jobGradeUploadForm: FormGroup;
   file: File;
@@ -59,6 +58,42 @@ export class JobGradeComponent implements OnInit {
     event.stopPropagation();
   }
 
+  downloadFile() {
+    this.setupService.exportExcelFile("/hrmsetup/download/jobgrade").subscribe(
+      (resp) => {
+        //this.blob = resp;
+        const data = resp;
+        if (data != undefined) {
+          const byteString = atob(data);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const bb = new Blob([ab]);
+          try {
+            const file = new File([bb], "Job Grade.xlsx", {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(file, bb);
+            saveAs(file);
+          } catch (err) {
+            const textFileAsBlob = new Blob([bb], {
+              type: "application/vnd.ms-excel",
+            });
+            window.navigator.msSaveBlob(
+              textFileAsBlob,
+              "Deposit Category.xlsx"
+            );
+          }
+        } else {
+          return swal.fire(`GOS HRM`, "Unable to download data", "error");
+        }
+      },
+      (err) => {}
+    );
+  }
+
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.jobGradeUploadForm.patchValue({
@@ -73,21 +108,21 @@ export class JobGradeComponent implements OnInit {
       this.jobGradeUploadForm.get("uploadInput").value
     );
     if (!this.file) {
-      return swal.fire('Error', 'Select a file', 'error')
+      return swal.fire("Error", "Select a file", "error");
     }
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
-
     return this.setupService
       .updateData("/hrmsetup/upload/jobgrade", formData)
       .subscribe(
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
+
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = "";
             $("#upload_job_grade").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -95,7 +130,6 @@ export class JobGradeComponent implements OnInit {
           this.getJobGrade();
         },
         (err) => {
-          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -135,6 +169,7 @@ export class JobGradeComponent implements OnInit {
   closeModal() {
     $("#add_job_grade").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   getJobGrade() {

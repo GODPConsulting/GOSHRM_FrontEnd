@@ -82,6 +82,42 @@ export class ProfCertificationComponent implements OnInit {
     });
   }
 
+  downloadFile() {
+    this.setupService.exportExcelFile("/hrmsetup/download/prof_certifications").subscribe(
+      (resp) => {
+        //this.blob = resp;
+        const data = resp;
+        if (data != undefined) {
+          const byteString = atob(data);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const bb = new Blob([ab]);
+          try {
+            const file = new File([bb], "Professional Certification.xlsx", {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(file, bb);
+            saveAs(file);
+          } catch (err) {
+            const textFileAsBlob = new Blob([bb], {
+              type: "application/vnd.ms-excel",
+            });
+            window.navigator.msSaveBlob(
+              textFileAsBlob,
+              "Deposit Category.xlsx"
+            );
+          }
+        } else {
+          return swal.fire(`GOS HRM`, "Unable to download data", "error");
+        }
+      },
+      (err) => {}
+    );
+  }
+
   uploadProfCert() {
     const formData = new FormData();
     formData.append(
@@ -103,7 +139,7 @@ export class ProfCertificationComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = "";
             $("#upload_prof_certification").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -344,6 +380,7 @@ export class ProfCertificationComponent implements OnInit {
   closeModal() {
     $("#add-prof-certification").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   delete(id: any) {

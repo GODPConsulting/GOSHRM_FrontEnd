@@ -52,6 +52,14 @@ export class ApiService {
       "http://godp.co.uk:72/api/v1/hrmsetup/download/academic/disciplines"
     );
   }
+  getExcel(
+    path: string,
+    params: HttpParams = new HttpParams()
+  ): Observable<any> {
+    return this.http
+      .get(`${environment.api_url}${path}`, { params })
+      .pipe(catchError(this.handleError));
+  }
   /* */
   /*  download(x):Observable<any> {
     //this.authKey =localStorage.getItem('token')

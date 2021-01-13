@@ -70,6 +70,42 @@ export class HighSchoolSubjectsComponent implements OnInit {
     });
   }
 
+  downloadFile() {
+    this.setupService.exportExcelFile("/hrmsetup/download/highschoolsubjects").subscribe(
+      (resp) => {
+        //this.blob = resp;
+        const data = resp;
+        if (data != undefined) {
+          const byteString = atob(data);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const bb = new Blob([ab]);
+          try {
+            const file = new File([bb], "HighSchoolSubject.xlsx", {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(file, bb);
+            saveAs(file);
+          } catch (err) {
+            const textFileAsBlob = new Blob([bb], {
+              type: "application/vnd.ms-excel",
+            });
+            window.navigator.msSaveBlob(
+              textFileAsBlob,
+              "Deposit Category.xlsx"
+            );
+          }
+        } else {
+          return swal.fire(`GOS HRM`, "Unable to download data", "error");
+        }
+      },
+      (err) => {}
+    );
+  }
+
   uploadHighSchoolSub() {
     const formData = new FormData();
     formData.append(
@@ -91,7 +127,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
+            this.fileInput.nativeElement.value = ""
             $("#upload_high_school_subject").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -155,6 +191,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = "";
             $("#add_high_school_subject").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -217,6 +254,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   closeModal() {
     $("#add_high_school_subject").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   addItemId(event, id) {

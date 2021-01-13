@@ -65,6 +65,42 @@ export class JobDetailComponent implements OnInit {
     event.stopPropagation();
   }
 
+  downloadFile() {
+    this.setupService.exportExcelFile("/hrmsetup/download/jobtitle").subscribe(
+      (resp) => {
+        //this.blob = resp;
+        const data = resp;
+        if (data != undefined) {
+          const byteString = atob(data);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const bb = new Blob([ab]);
+          try {
+            const file = new File([bb], "Job Detail.xlsx", {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(file, bb);
+            saveAs(file);
+          } catch (err) {
+            const textFileAsBlob = new Blob([bb], {
+              type: "application/vnd.ms-excel",
+            });
+            window.navigator.msSaveBlob(
+              textFileAsBlob,
+              "Deposit Category.xlsx"
+            );
+          }
+        } else {
+          return swal.fire(`GOS HRM`, "Unable to download data", "error");
+        }
+      },
+      (err) => {}
+    );
+  }
+
   uploadJobDetail() {
     const formData = new FormData();
     formData.append(
@@ -77,17 +113,20 @@ export class JobDetailComponent implements OnInit {
 
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
+    
     return this.setupService
-      .updateData("/hrmsetup/upload/jobdetail", formData)
+      .updateData("/hrmsetup/upload/jobtitle", formData)
       .subscribe(
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
+
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
             this.fileInput.nativeElement.value = "";
             $("#upload_job_detail").modal("hide");
+          
           } else {
             swal.fire("Error", message, "error");
           }
@@ -103,6 +142,11 @@ export class JobDetailComponent implements OnInit {
 
   openUploadModal() {
     $("#upload_job_detail").modal("show");
+  }
+
+  closeUploadModal() {
+    //this.jobDetailUploadForm.reset();
+    this.fileInput.nativeElement.value = "";
   }
 
   /*  initializeForm() {
@@ -136,7 +180,7 @@ export class JobDetailComponent implements OnInit {
 
   getJobDetail() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/jobdetails").subscribe(
+    return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
       (data) => {
         this.pageLoading = false;
         console.log(data);
@@ -158,6 +202,7 @@ export class JobDetailComponent implements OnInit {
   closeModal() {
     $("#add_job_detail").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   // Add Job Title  Modal Api Call
@@ -169,7 +214,7 @@ export class JobDetailComponent implements OnInit {
     const payload = Form.value;
     console.log(payload);
     return this.setupService
-      .updateData("/hrmsetup/add/update/jobdetail", payload)
+      .updateData("/hrmsetup/add/update/jobtitle", payload)
       .subscribe(
         (res) => {
           const message = res.status.message.friendlyMessage;
@@ -233,7 +278,7 @@ export class JobDetailComponent implements OnInit {
         //console.log(result);
         if (result.value) {
           return this.setupService
-            .deleteData("/hrmsetup/delete/hmo", payload)
+            .deleteData("/hrmsetup/delete/jobtitle", payload)
             .subscribe(
               (res) => {
                 const message = res.status.message.friendlyMessage;
