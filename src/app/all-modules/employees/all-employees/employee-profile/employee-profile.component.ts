@@ -14,10 +14,13 @@ export class EmployeeProfileComponent implements OnInit {
   public addEmployeeForm: FormGroup;
   setupService: any;
   file: any;
-  spinner: boolean;
+  
   employee_profileUploadForm: any;
   initializeForm: any;
   getEmployee_Profile: any;
+  pageLoading: boolean;
+  spinner: boolean = false;
+  value: any;
   constructor(
     private toastr: ToastrService,
     private formBuilder: FormBuilder
@@ -34,7 +37,7 @@ export class EmployeeProfileComponent implements OnInit {
     this.toastr.success("Bank & statutory added", "Success");
   }
 
-  uploadLanguage() {
+  uploadReferee() {
     const formData = new FormData();
     formData.append(
       "uploadInput",
