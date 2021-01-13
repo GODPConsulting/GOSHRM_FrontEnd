@@ -21,11 +21,13 @@ declare const $: any;
 })
 export class JobSubSkillComponent
   implements OnInit /* , OnDestroy, AfterViewInit */ {
-  //@ViewChild(DataTableDirective, { static: false })
-  //@ViewChild("skillstable") skillstable: DataTableDirective;
+  /**/ //@ViewChild(DataTableDirective)
+  //@ViewChild("dtElement")
+  //skillstable: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
   //public dtElement: DataTableDirective;
-  //dtTrigger: Subject<any> = new Subject();
+  //dtInstance: DataTables.Api;
+  //public dtTrigger: Subject<any> = new Subject();
   @ViewChild("fileInput") fileInput: ElementRef;
   public subSkill: any[] = [];
   public rows = [];
@@ -65,26 +67,26 @@ export class JobSubSkillComponent
       console.log(+params.get("id"));
       this.jobTitleId = +params.get("id");
       this.getSingleJobTitle(+params.get("id"));
+      this.dtOptions = {
+        dom:
+          "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+          "<'row'<'col-sm-12'tr>>" +
+          "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        language: {
+          search: "_INPUT_",
+          searchPlaceholder: "Start typing to search by any field",
+        },
+        columns: [{ orderable: false }, null, null, null],
+        order: [[1, "asc"]],
+      };
     });
 
-    this.getSubSkill();
+    //this.getSubSkill();
     this.initializeForm();
-    this.getJobTitle();
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-      columns: [{ orderable: false }, null, null, null],
-      order: [[1, "asc"]],
-    };
+    //this.getJobTitle();
   }
-
-  /*  ngAfterViewInit() {
+  /* 
+  ngAfterViewInit() {
     //Define datatable
     this.dtTrigger.next();
   }
@@ -99,19 +101,17 @@ export class JobSubSkillComponent
       // Destroy the table first
       dtInstance.destroy();
       // Call the dtTrigger to rerender again
-      //this.dtTrigger.next();
-    });
-    setTimeout(() => {
       this.dtTrigger.next();
-    }, 1000);
-  }
- */
+    });
+  } */
+
   getSingleJobTitle(id: number) {
+    this.pageLoading = true;
     return this.setupService
       .getData(`/hrmsetup/get/single/jobtitle?SetupId=${id}`)
       .subscribe(
         (data) => {
-          //this.pageLoading = false;
+          this.pageLoading = false;
           //console.log("id", id);
 
           //console.log("data", data);
@@ -120,6 +120,8 @@ export class JobSubSkillComponent
           if (id !== 0) {
             this.jobFormTitle = "Edit Job Title";
             this.jobSkills = this.jobTitle.sub_Skills;
+
+            //this.rerender();
             //console.log(this.jobTitle.job_title);
             this.subSkillForm.patchValue({
               job_title: this.jobTitle.job_title,
@@ -133,7 +135,7 @@ export class JobSubSkillComponent
           }
         },
         (err) => {
-          //this.pageLoading = false;
+          this.pageLoading = false;
           console.log(err);
         }
       );
@@ -417,6 +419,18 @@ export class JobSubSkillComponent
           }
           //this.getSubSkill();
           this.getSingleJobTitle(this.jobTitleId);
+          this.dtOptions = {
+            dom:
+              "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+              "<'row'<'col-sm-12'tr>>" +
+              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            language: {
+              search: "_INPUT_",
+              searchPlaceholder: "Start typing to search by any field",
+            },
+            columns: [{ orderable: false }, null, null, null],
+            order: [[1, "asc"]],
+          };
           //this.rerender();
         },
         (err) => {
@@ -498,7 +512,7 @@ export class JobSubSkillComponent
 
   checkAll(event) {
     if (event.target.checked) {
-      this.selectedId = this.subSkill.map((item) => {
+      this.selectedId = this.jobSkills.map((item) => {
         return item.id;
       });
     } else {
