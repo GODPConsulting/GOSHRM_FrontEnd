@@ -1,6 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+  AfterViewInit,
+} from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+import { DataTableDirective } from "angular-datatables";
+import { Subject } from "rxjs";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 
@@ -10,8 +19,13 @@ declare const $: any;
   templateUrl: "./job-sub-skill.component.html",
   styleUrls: ["./job-sub-skill.component.css", "../setup.component.css"],
 })
-export class JobSubSkillComponent implements OnInit {
+export class JobSubSkillComponent
+  implements OnInit /* , OnDestroy, AfterViewInit */ {
+  //@ViewChild(DataTableDirective, { static: false })
+  //@ViewChild("skillstable") skillstable: DataTableDirective;
   public dtOptions: DataTables.Settings = {};
+  //public dtElement: DataTableDirective;
+  //dtTrigger: Subject<any> = new Subject();
   @ViewChild("fileInput") fileInput: ElementRef;
   public subSkill: any[] = [];
   public rows = [];
@@ -28,11 +42,14 @@ export class JobSubSkillComponent implements OnInit {
   public jobDetailForm;
   public jobTitleId;
   public jobSkills;
+  public jobTitle;
+  public jobFormTitle = "Add Job Title";
 
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +60,16 @@ export class JobSubSkillComponent implements OnInit {
           .toggleClass("focused", e.type === "focus" || this.value.length > 0);
       })
       .trigger("blur");
+
+    this.route.paramMap.subscribe((params) => {
+      console.log(+params.get("id"));
+      this.jobTitleId = +params.get("id");
+      this.getSingleJobTitle(+params.get("id"));
+    });
+
+    this.getSubSkill();
+    this.initializeForm();
+    this.getJobTitle();
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -52,35 +79,58 @@ export class JobSubSkillComponent implements OnInit {
         search: "_INPUT_",
         searchPlaceholder: "Start typing to search by any field",
       },
-      columns: [{ orderable: false }, null, null, null, null],
+      columns: [{ orderable: false }, null, null, null],
       order: [[1, "asc"]],
     };
-    this.getSubSkill();
-    this.initializeForm();
-    this.getJobTitle();
-    this.route.paramMap.subscribe((params) => {
-      console.log(params.get("id"));
-      this.getSingleJobTitle(+params.get("id"));
-    });
   }
 
-  getSingleJobTitle(id) {
+  /*  ngAfterViewInit() {
+    //Define datatable
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(): void {
+    //$("#datatable").DataTable().clear();
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      //this.dtTrigger.next();
+    });
+    setTimeout(() => {
+      this.dtTrigger.next();
+    }, 1000);
+  }
+ */
+  getSingleJobTitle(id: number) {
     return this.setupService
-      .getData(`/hrmsetup/get/single/jobtitle?id=${id}`)
+      .getData(`/hrmsetup/get/single/jobtitle?SetupId=${id}`)
       .subscribe(
         (data) => {
           //this.pageLoading = false;
-          let arr = 1; //arr should be id too
-          console.log(data);
-          this.jobTitles = data.setuplist;
-          this.rows = this.jobTitles;
-          this.jobSkills = this.jobTitles.sub_Skills; // replace in line 105 in template
-          //this.srch = [...this.rows];
-          this.jobDetailForm.patchValue({
-            id: this.rows[arr].id,
-            job_title: this.rows[arr].job_title,
-            job_description: this.rows[arr].job_description,
-          });
+          //console.log("id", id);
+
+          //console.log("data", data);
+          this.jobTitle = data.setuplist[0];
+          //this.rows = this.jobTitle.sub_Skills;
+          if (id !== 0) {
+            this.jobFormTitle = "Edit Job Title";
+            this.jobSkills = this.jobTitle.sub_Skills;
+            //console.log(this.jobTitle.job_title);
+            this.subSkillForm.patchValue({
+              job_title: this.jobTitle.job_title,
+            });
+            //this.srch = [...this.rows];
+            this.jobDetailForm.patchValue({
+              id: this.jobTitle.id,
+              job_title: this.jobTitle.job_title,
+              job_description: this.jobTitle.job_description,
+            });
+          }
         },
         (err) => {
           //this.pageLoading = false;
@@ -94,16 +144,10 @@ export class JobSubSkillComponent implements OnInit {
     return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
       (data) => {
         //this.pageLoading = false;
-        let arr = 1;
-        console.log(data);
+        //console.log(data);
         this.jobTitles = data.setuplist;
         this.rows = this.jobTitles;
         this.srch = [...this.rows];
-        this.jobDetailForm.patchValue({
-          id: this.rows[arr].id,
-          job_title: this.rows[arr].job_title,
-          job_description: this.rows[arr].job_description,
-        });
       },
       (err) => {
         //this.pageLoading = false;
@@ -133,25 +177,44 @@ export class JobSubSkillComponent implements OnInit {
       return;
     }
     const payload = Form.value;
+    this.jobTitle = payload.job_title;
+    console.log(this.jobTitle);
+
     console.log(payload);
+    this.spinner = true;
     return this.setupService
-      .updateData("/hrmsetup/add/update/jobdetail", payload)
+      .updateData("/hrmsetup/add/update/jobtitle", payload)
       .subscribe(
         (res) => {
-          console.log(res.setup_id);
+          this.spinner = false;
+          console.log(res);
+          this.jobTitleId = res.setup_id;
           const message = res.status.message.friendlyMessage;
           //console.log(message);
 
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
-            this.initializeForm();
+            //populate jobtitle form field
+            this.jobDetailForm.patchValue({
+              id: payload.id,
+              job_title: payload.job_title,
+              job_description: payload.job_description,
+            });
             $("#add_job_detail").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
+          this.router.navigate(["/setup/job-detail", res.setup_id]);
           // this.getJobDetail();
+          /* this.getSingleJobTitle(this.jobTitleId);
+          this.jobDetailForm.patchValue({
+            id: res.setup_id,
+            job_title: payload.job_title,
+            job_description: payload.job_description,
+          }); */
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -301,8 +364,20 @@ export class JobSubSkillComponent implements OnInit {
 
   openModal() {
     $("#add_sub_skill").modal("show");
-    this.subSkillForm.get("job_title").enable();
+    //this.subSkillForm.get("job_title").enable();
     this.formTitle = "Add Job SKill";
+  }
+
+  closeUploadModal() {
+    $("#add_sub_skill").modal("hide");
+    this.subSkillForm = this.formBuilder.group({
+      job_details_Id: [this.jobTitleId],
+      id: [0],
+      skill: ["", Validators.required],
+      description: ["", Validators.required],
+      weight: ["", Validators.required],
+      job_title: [this.jobTitle.job_title, Validators.required],
+    });
   }
 
   closeModal() {
@@ -313,24 +388,26 @@ export class JobSubSkillComponent implements OnInit {
 
   // Add employee  Modal Api Call
   addSubSkill(Form: FormGroup) {
-    this.subSkillForm.get("job_title").enable();
+    const payload = Form.value;
+    console.log(payload);
+    //this.subSkillForm.get("job_title").enable();
+    this.subSkillForm.patchValue({
+      job_details_Id: this.jobTitleId,
+      job_title: payload.job_title,
+    });
+    console.log(payload);
     if (!Form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    /* if (!Form.valid) {
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    } */
-    const payload = Form.value;
-    console.log(payload);
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/add/update/sub_skill", payload)
       .subscribe(
         (res) => {
           const message = res.status.message.friendlyMessage;
           //console.log(message);
-
+          this.spinner = false;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
@@ -338,9 +415,12 @@ export class JobSubSkillComponent implements OnInit {
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getSubSkill();
+          //this.getSubSkill();
+          this.getSingleJobTitle(this.jobTitleId);
+          //this.rerender();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -357,9 +437,9 @@ export class JobSubSkillComponent implements OnInit {
       skill: row.skill,
       description: row.description,
       weight: row.weight,
-      job_title: row.job_title,
+      job_title: this.jobTitle.job_title,
     });
-    this.subSkillForm.get("job_title").disable();
+    //this.subSkillForm.get("job_title").disable();
     $("#add_sub_skill").modal("show");
   }
 
@@ -380,7 +460,7 @@ export class JobSubSkillComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
+      console.log(this.selectedId);
     }
     swal
       .fire({
@@ -400,7 +480,8 @@ export class JobSubSkillComponent implements OnInit {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("Success", message, "success").then(() => {
-                    this.getSubSkill();
+                    //this.getSubSkill();
+                    this.getSingleJobTitle(this.jobTitleId);
                   });
                 } else {
                   swal.fire("Error", message, "error");
