@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 
@@ -15,10 +15,13 @@ declare const $: any;
 })
 export class AcademicQualificationComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
+  @ViewChild('fileInput') fileInput: ElementRef
   public qualifications: any[] = [];
   public rows = [];
   public srch = [];
   pageLoading: boolean;
+
+  spinner: boolean = false;
   public formTitle = "Add Academic Qualification";
   public academicQualificationForm: FormGroup;
   selectedId: any[] = [];
@@ -65,22 +68,66 @@ export class AcademicQualificationComponent implements OnInit {
     });
   }
 
+  downloadFile() {
+    this.setupService.exportExcelFile("/hrmsetup/download/academic/qualifications").subscribe(
+      (resp) => {
+        //this.blob = resp;
+        const data = resp;
+        if (data != undefined) {
+          const byteString = atob(data);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const bb = new Blob([ab]);
+          try {
+            const file = new File([bb], "academicqualification.xlsx", {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(file, bb);
+            saveAs(file);
+          } catch (err) {
+            const textFileAsBlob = new Blob([bb], {
+              type: "application/vnd.ms-excel",
+            });
+            window.navigator.msSaveBlob(
+              textFileAsBlob,
+              "Deposit Category.xlsx"
+            );
+          }
+        } else {
+          return swal.fire(`GOS HRM`, "Unable to download data", "error");
+        }
+      },
+      (err) => {}
+    );
+  }
+
   uploadAcademicQualification() {
     const formData = new FormData();
     formData.append(
       "uploadInput",
       this.academicQualificationUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire('error', 'select a file', 'error')
+    }
 
     //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
+    this.spinner = true;
+
     return this.setupService
       .updateData("/hrmsetup/upload/academic/qualification", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
+
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ''
             $("#upload_academic_qualification").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -88,6 +135,7 @@ export class AcademicQualificationComponent implements OnInit {
           this.getAcademicQualifications();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -226,6 +274,7 @@ export class AcademicQualificationComponent implements OnInit {
   closeModal() {
     $("#add_academic_qualification").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
   checkAll(event) {
     if (event.target.checked) {

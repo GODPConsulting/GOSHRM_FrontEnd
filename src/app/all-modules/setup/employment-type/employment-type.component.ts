@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { DataTableDirective } from "angular-datatables";
 import { SetupService } from "src/app/services/setup.service";
@@ -13,6 +13,7 @@ declare const $: any;
 export class EmploymentTypeComponent implements OnInit {
   formTitle;
   public dtOptions: DataTables.Settings = {};
+  @ViewChild('fileInput') fileInput: ElementRef
   public employmentTypeForm: FormGroup;
   public employmentTypes: any[] = [];
   public rows = [];
@@ -20,7 +21,7 @@ export class EmploymentTypeComponent implements OnInit {
   public lstEmployee: any;
   public srch = [];
   pageLoading: boolean;
-  loading: boolean = true;
+  
   spinner: boolean = false;
   selectedId: any[] = [];
   public employmentTypeUploadForm: FormGroup;
@@ -66,6 +67,42 @@ export class EmploymentTypeComponent implements OnInit {
     });
   }
 
+  downloadFile() {
+    this.setupService.exportExcelFile("/hrmsetup/download/employmenttypes").subscribe(
+      (resp) => {
+        //this.blob = resp;
+        const data = resp;
+        if (data != undefined) {
+          const byteString = atob(data);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const bb = new Blob([ab]);
+          try {
+            const file = new File([bb], "employmenttype.xlsx", {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(file, bb);
+            saveAs(file);
+          } catch (err) {
+            const textFileAsBlob = new Blob([bb], {
+              type: "application/vnd.ms-excel",
+            });
+            window.navigator.msSaveBlob(
+              textFileAsBlob,
+              "Deposit Category.xlsx"
+            );
+          }
+        } else {
+          return swal.fire(`GOS HRM`, "Unable to download data", "error");
+        }
+      },
+      (err) => {}
+    );
+  }
+
   uploadEmploymentType() {
     const formData = new FormData();
     formData.append(
@@ -77,15 +114,17 @@ export class EmploymentTypeComponent implements OnInit {
     }
     //console.log(formData, this.languageForm.get("uploadInput").value);
    this.spinner = true;
-   this.loading = false;
+   
     return this.setupService
       .updateData("/hrmsetup/upload/employmenttype", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = "";
             $("#upload_employment_type").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -93,6 +132,7 @@ export class EmploymentTypeComponent implements OnInit {
           this.getEmploymentType();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -122,6 +162,7 @@ export class EmploymentTypeComponent implements OnInit {
   closeModal() {
     $("#add_employment_type").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   getEmploymentType() {

@@ -12,7 +12,7 @@
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
-                <a class="btn download-btn hint"><span class="hint-text">Download</span><i
+                <a class="btn download-btn hint" (click)="downloadFile()"><span class="hint-text">Download</span><i
                         class="fa fa-download"></i></a>
                 <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
                         class="fa fa-upload"></i></a>
@@ -44,15 +44,17 @@
                     </thead>
                     <tbody>
                         <tr data-toggle="modal" class="pointer" data-target="#edit_employee"
-                            (click)="editJobDetail(row)"
                             *ngFor="let row of jobDetails | filter:searchText; let i = index">
+
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
-                            <td>{{ i + 1 }}</td>
-                            <td>{{ row.job_title }}</td>
-                            <td>{{ row.totalSkillWeight }}</td>
+
+                            <td> <a [routerLink]="[row.id]">{{ i + 1 }}</a></td>
+                            <td> <a [routerLink]="[row.id]">{{ row.job_title }}</a></td>
+                            <td> <a [routerLink]="[row.id]">{{ row.totalSkillWeight }}</a></td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -63,7 +65,7 @@
 <!-- /Page Content -->
 
 <!-- Add Job Title Modal -->
-<div id="add_job_detail" class="modal custom-modal fade" role="dialog">
+<!--<div id="add_job_detail" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content w-75 mx-auto">
             <div class="modal-header">
@@ -115,9 +117,12 @@
                     </div>
                 </form>
             </div>
+           
         </div>
     </div>
-</div>
+</div> -->
+
+
 <!-- /Add Job Title Modal -->
 <!-- Upload Job Detail Modal -->
 <div id="upload_job_detail" class="modal custom-modal fade" role="dialog">
@@ -125,7 +130,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Upload Job Title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #fileInput
+                    (click)="closeModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -135,7 +141,7 @@
                         <div class="form-group row">
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
-                                <input class="form-control" name="uploadInput" id="uploadInput" type="file"
+                                <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
                                     (change)="onSelectedFile($event)">
                             </div>
                         </div>
@@ -148,16 +154,18 @@
                             <tr>
                                 <th>Job Title</th>
                                 <th>Job Description</th>
-                                <th>Skill</th>
+                                <!-- <th>Skill</th>
                                 <th>Skill Description</th>
-                                <th>Total Skill Weight</th>
+                                <th>Total Skill Weight</th> -->
                             </tr>
                         </table>
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">
-                            Submit
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadJobDetail()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>

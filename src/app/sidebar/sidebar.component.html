@@ -4,7 +4,7 @@
     <perfect-scrollbar [scrollIndicators]="false">
       <div id="sidebar-menu" class="sidebar-menu">
         <ul *ngIf="sidebarMenus.default">
-          <li class="menu-title">
+          <!-- <li class="menu-title">
             <span>Main</span>
           </li>
           <li class="submenu" [ngClass]="{ active: urlComplete.mainUrl === 'dashboard' }">
@@ -23,7 +23,7 @@
                 <a [ngClass]="{ active: urlComplete.subUrl === 'employee' }" href="javascript:">Employee Dashboard</a>
               </li>
             </ul>
-          </li>
+          </li> -->
           <!-- <li class="submenu" [ngClass]="{ active: urlComplete.mainUrl === 'apps' }">
             <a href="javascript:" [ngClass]="{ subdrop: urlComplete.mainUrl === 'apps' }">
               <i class="la la-cube"></i>
@@ -81,6 +81,8 @@
                 (urlComplete.mainUrl === 'employees' &&
                   urlComplete.subUrl === 'employeepage') ||
                 (urlComplete.mainUrl === 'employees' &&
+                  urlComplete.subUrl === 'employee-form') ||
+                (urlComplete.mainUrl === 'employees' &&
                   urlComplete.subUrl === 'holidays') ||
                 (urlComplete.mainUrl === 'employees' &&
                   urlComplete.subUrl === 'adminleaves') ||
@@ -107,6 +109,8 @@
                 subdrop:
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'employeepage') ||
+                  (urlComplete.mainUrl === 'employees' &&
+                    urlComplete.subUrl === 'employee-form') ||
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'holidays') ||
                   (urlComplete.mainUrl === 'employees' &&
@@ -135,6 +139,8 @@
                 display:
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'employeepage') ||
+                  (urlComplete.mainUrl === 'employees' &&
+                    urlComplete.subUrl === 'employee-form') ||
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'holidays') ||
                   (urlComplete.mainUrl === 'employees' &&
@@ -166,7 +172,11 @@
                       urlComplete.subUrl === 'employeepage' ||
                       urlComplete.subUrl === 'employeelist'
                   }">All Employees</a>
-                <!-- </li>
+              </li>
+              <li routerLink="/employees/employee-form">
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employee-form' }">employee-form</a>
+              </li>
+              <!-- </li>
               <li routerLink="/employees/holidays">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'holidays' }">Holidays</a>
               </li>
@@ -416,7 +426,7 @@
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'language' }">Language</a>
               </li>
               <li routerLink="/setup/prof-membership">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'prof-membership' }">Prof
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'prof-membership' }">Professional
                   Membership</a>
               <li routerLink="/setup/academic-grade">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-grade'}">Academic Grade</a>
@@ -454,7 +464,7 @@
  -->
             </ul>
           </li>
-          other templates
+          <!-- other templates
           <li [ngClass]="{
               active:
                 urlComplete.subUrl === 'clientspage' ||
@@ -966,7 +976,7 @@
                 <a href="javascript:"> <span>Level 1</span></a>
               </li>
             </ul>
-          </li>
+          </li> -->
         </ul>
         <ul *ngIf="sidebarMenus.chat">
           <li routerLink="/dashboard/admin">

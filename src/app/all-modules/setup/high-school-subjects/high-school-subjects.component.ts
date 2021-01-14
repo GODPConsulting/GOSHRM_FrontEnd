@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { DataTableDirective } from "angular-datatables";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -13,6 +13,7 @@ declare const $: any;
 })
 export class HighSchoolSubjectsComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
+  @ViewChild('fileInput') fileInput: ElementRef
   public dtElement: DataTableDirective;
   public subjects: any[] = [];
 
@@ -23,6 +24,8 @@ export class HighSchoolSubjectsComponent implements OnInit {
   public srch = [];
   public statusValue;
   pageLoading: boolean;
+
+  spinner: boolean = false;
   value: any;
   selectedId: any[] = [];
   public highSchoolSubUploadForm: FormGroup;
@@ -67,22 +70,64 @@ export class HighSchoolSubjectsComponent implements OnInit {
     });
   }
 
+  downloadFile() {
+    this.setupService.exportExcelFile("/hrmsetup/download/highschoolsubjects").subscribe(
+      (resp) => {
+        //this.blob = resp;
+        const data = resp;
+        if (data != undefined) {
+          const byteString = atob(data);
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (let i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const bb = new Blob([ab]);
+          try {
+            const file = new File([bb], "HighSchoolSubject.xlsx", {
+              type: "application/vnd.ms-excel",
+            });
+            console.log(file, bb);
+            saveAs(file);
+          } catch (err) {
+            const textFileAsBlob = new Blob([bb], {
+              type: "application/vnd.ms-excel",
+            });
+            window.navigator.msSaveBlob(
+              textFileAsBlob,
+              "Deposit Category.xlsx"
+            );
+          }
+        } else {
+          return swal.fire(`GOS HRM`, "Unable to download data", "error");
+        }
+      },
+      (err) => {}
+    );
+  }
+
   uploadHighSchoolSub() {
     const formData = new FormData();
     formData.append(
       "uploadInput",
       this.highSchoolSubUploadForm.get("uploadInput").value
     );
+    if (!this.file) {
+      return swal.fire('Error', 'Select a file', 'error')
+    }
 
     //console.log(formData, this.highSchoolSubUploadForm.get("uploadInput").value);
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/upload/highschoolsubject", formData)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = ""
             $("#upload_high_school_subject").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -90,6 +135,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
           this.getHighSchoolSub();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -145,6 +191,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
+            this.fileInput.nativeElement.value = "";
             $("#add_high_school_subject").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -207,6 +254,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   closeModal() {
     $("#add_high_school_subject").modal("hide");
     this.initializeForm();
+    this.fileInput.nativeElement.value = "";
   }
 
   addItemId(event, id) {

@@ -4,13 +4,13 @@
 
     <!-- Add Job Title Modal -->
     <div id="add_job_detail" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content w-75 mx-auto">
+        <div class="mb-3">
+            <div class="modal-content w-100">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Job Title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                    <h3 class="modal-title">{{jobFormTitle}}</h3>
+                    <!--  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
                         <span aria-hidden="true">&times;</span>
-                    </button>
+                    </button> -->
                 </div>
                 <div class="modal-body">
                     <form (ngSubmit)="addJobDetail(jobDetailForm)" [formGroup]="jobDetailForm">
@@ -49,8 +49,9 @@
                             </div>
                         </div>
                         <div class="submit-section">
-                            <button class="btn btn-primary submit-btn" type="submit">
-                                Submit
+                            <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                                <span *ngIf="!spinner">Submit</span>
+                                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                             </button>
                         </div>
                     </form>
@@ -70,7 +71,7 @@
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
-                <a class="btn download-btn hint"><span class="hint-text">Download</span><i
+                <a class="btn download-btn hint" (click)="downloadFile()"><span class="hint-text">Download</span><i
                         class="fa fa-download"></i></a>
                 <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
                         class="fa fa-upload"></i></a>
@@ -91,24 +92,22 @@
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === subSkill.length"
+                                <input type="checkbox" [checked]="selectedId.length === jobSkills.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Job Title</th>
-                            <th>Skill</th>
+                            <th>Skills</th>
                             <th>Weight</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="editSubSkill(row)"
-                            *ngFor="let row of subSkill | filter:searchText; let i = index">
+                            *ngFor="let row of jobSkills; let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.job_title }}</td>
                             <td>{{ row.skill }}</td>
                             <td>{{ row.weight }}</td>
                         </tr>
@@ -126,14 +125,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{formTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="closeUploadModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form (ngSubmit)="addSubSkill(subSkillForm)" [formGroup]="subSkillForm">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Job Title<span class="text-danger">*</span></label>
                                 <select class="form-control" [class.invalid]="
@@ -156,7 +156,7 @@
                                         *Field is required</small>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Skill<span class="text-danger">*</span></label>
@@ -219,8 +219,9 @@
 
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">
-                            Submit
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>
@@ -246,7 +247,7 @@
                         <div class="form-group row">
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
-                                <input class="form-control" name="uploadInput" id="uploadInput" type="file"
+                                <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
                                     (change)="onSelectedFile($event)">
                             </div>
                         </div>
@@ -267,8 +268,10 @@
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">
-                            Submit
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadSubSkill()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>

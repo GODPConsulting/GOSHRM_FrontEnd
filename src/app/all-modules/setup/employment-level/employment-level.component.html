@@ -13,7 +13,7 @@
           </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-          <a class="btn download-btn hint"><span class="hint-text">Download</span><i class="fa fa-download"></i></a>
+          <a class="btn download-btn hint" (click)="downloadFile()"><span class="hint-text">Download</span><i class="fa fa-download"></i></a>
           <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
               class="fa fa-upload"></i></a>
           <a class="btn add-btn hint" data-toggle="modal" (click)="addEmploymentLevel()"><span
@@ -106,8 +106,10 @@
               </div>
             </div>
             <div class="submit-section">
-              <button class="btn btn-primary submit-btn" type="submit">
-                Submit
+              <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadEmploymentLevel()"
+                    [disabled]="spinner">
+                    <span *ngIf="!spinner">Submit</span>
+                    <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
               </button>
             </div>
           </form>
@@ -158,7 +160,7 @@
             <div class="form-group row">
               <label class="col-form-label col-md-5">Choose File (excel format)</label>
               <div class="col-md-7">
-                <input class="form-control" name="uploadInput" id="uploadInput" type="file"
+                <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
                   (change)="onSelectedFile($event)">
               </div>
             </div>
