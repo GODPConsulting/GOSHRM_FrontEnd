@@ -14,8 +14,6 @@ const routes: Routes = [
     component: AllModulesComponent,
     canActivate: [AuthGuard],
     children: [
-     
-     
       {
         path: "employees",
         loadChildren: () =>
