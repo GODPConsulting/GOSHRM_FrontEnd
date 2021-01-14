@@ -4,7 +4,7 @@
     <perfect-scrollbar [scrollIndicators]="false">
       <div id="sidebar-menu" class="sidebar-menu">
         <ul *ngIf="sidebarMenus.default">
-          <li class="menu-title">
+          <!-- <li class="menu-title">
             <span>Main</span>
           </li>
           <li class="submenu" [ngClass]="{ active: urlComplete.mainUrl === 'dashboard' }">
@@ -23,7 +23,7 @@
                 <a [ngClass]="{ active: urlComplete.subUrl === 'employee' }" href="javascript:">Employee Dashboard</a>
               </li>
             </ul>
-          </li>
+          </li> -->
           <!-- <li class="submenu" [ngClass]="{ active: urlComplete.mainUrl === 'apps' }">
             <a href="javascript:" [ngClass]="{ subdrop: urlComplete.mainUrl === 'apps' }">
               <i class="la la-cube"></i>
@@ -176,7 +176,7 @@
               <li routerLink="/employees/employee-form">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employee-form' }">employee-form</a>
               </li>
-                <!-- </li>
+              <!-- </li>
               <li routerLink="/employees/holidays">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'holidays' }">Holidays</a>
               </li>
