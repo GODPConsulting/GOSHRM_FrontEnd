@@ -42,7 +42,7 @@ export class AcademicGradeComponent implements OnInit {
   }
 
   // prevents the"editAcademicGrade(row)" from working on checkbox
-  stopParentEvent(event) {
+  stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
@@ -217,7 +217,7 @@ export class AcademicGradeComponent implements OnInit {
 
   // Deleting items from table
   delete() {
-    let payload;
+    let payload: object;
     if (this.selectedId) {
       if (this.selectedId.length === 0) {
         return swal.fire("Error", "Select items to delete", "error");
@@ -272,7 +272,7 @@ export class AcademicGradeComponent implements OnInit {
   }
 
   // Adds selected items to an array for multi delete
-  addItemId(event, id) {
+  addItemId(event, id: number) {
     if (event.target.checked) {
       if (!this.selectedId.includes(id)) {
         this.selectedId.push(id);
