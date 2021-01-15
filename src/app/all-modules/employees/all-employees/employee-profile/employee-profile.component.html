@@ -91,7 +91,7 @@
                 <ul class="nav nav-tabs nav-tabs-bottom">
                     <li class="nav-item"><a href="#emp_profile" data-toggle="tab" class="nav-link active">Profile</a>
                     </li>
-                    <li class="nav-item"><a href="#emp_projects" data-toggle="tab" class="nav-link">Projects</a></li>
+                    <!-- <li class="nav-item"><a href="#emp_projects" data-toggle="tab" class="nav-link">Projects</a></li> -->
                     <li class="nav-item"><a href="#emp_assets" data-toggle="tab" class="nav-link">Assets</a></li>
                     <li class="nav-item"><a href="#emp_careers" data-toggle="tab" class="nav-link">Careers</a></li>
                     <li class="nav-item"><a href="#emp_hobbies" data-toggle="tab" class="nav-link">Hobbies</a></li>
@@ -249,25 +249,30 @@
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
-                            <h3 class="card-title">Family Informations <a class="edit-icon" data-toggle="modal"
-                                    data-target="#family_info_modal"><i class="fa fa-pencil"></i></a></h3>
+                            <h3 class="card-title">Dependent Cotacts<a class="edit-icon" data-toggle="modal"
+                                    data-target="#dependent_contacts_modal"><i class="fa fa-pencil"></i></a></h3>
                             <div class="table-responsive">
                                 <table class="table table-nowrap">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Relationship</th>
+                                            <th>Full Name</th>
+                                            <th>Phone No.</th>
+                                            <th>Email</th>
                                             <th>Date of Birth</th>
-                                            <th>Phone</th>
-                                            <th></th>
+                                            <th>Relationship</th>
+                                            <th>Address</th>
+                                            <th>Country</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>Leo</td>
-                                            <td>Brother</td>
+                                            <td>Leo leo</td>
+                                            <td>0900000000</td>
+                                            <td>elo@godp.co.uk</td>
                                             <td>Feb 16th, 2019</td>
-                                            <td>9876543210</td>
+                                            <td>Brother</td>
+                                            <td>ikeja</td>
+                                            <td>Nigeria</td>
                                             <td class="text-right">
                                                 <div class="dropdown dropdown-action">
                                                     <a aria-expanded="false" data-toggle="dropdown"
@@ -289,9 +294,10 @@
                     </div>
                 </div>
             </div>
+            <!-- Referee Card -->
             <div class="row">
-                <!-- Referees Modal -->
                 <div class="col-md-6 d-flex">
+
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
                             <h3 class="card-title">Referees <a class="edit-icon" data-toggle="modal"
@@ -363,121 +369,13 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- referees Contact Modal -->
             </div>
+            <!-- /Referee Card -->
         </div>
-
-        <div id="referees_contact_modal" class="modal custom-modal fade" role="dialog">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Referee</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="card-title">Primary Contact</h3>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Full Name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Phone No <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Email <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Relationship <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Number of years (Relationship) <span
-                                                        class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Organisation <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Country</label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Address</label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Confirmation Received <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Confirmation Date <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Confirmation Upload <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Phone 2</label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="submit-section">
-                                <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadReferee()"
-                                    [disabled]="spinner">
-                                    <span *ngIf="!spinner">Submit</span>
-                                    <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- /Referees Contact Modal -->
         <!-- /Profile Info Tab -->
 
         <!-- Projects Tab -->
-        <div class="tab-pane fade" id="emp_projects">
+        <!--<div class="tab-pane fade" id="emp_projects">
             <div class="row">
                 <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
                     <div class="card">
@@ -782,63 +680,28 @@
                              <br> -->
                             <ul class="personal-info">
                                 <li>
-                                    <div class="title">Full Name</div>
-                                    <div class="text">John Doe</div>
+                                    <div class="title">Asset Name</div>
+                                    <div class="text">GODP Shares</div>
                                 </li>
                                 <hr>
                                 <li>
-                                    <div class="title">Email </div>
-                                    <div class="text">ellleiek@godp.com.uk</div>
+                                    <div class="title">Asset No. </div>
+                                    <div class="text">GODP101</div>
                                 </li>
                                 <hr>
                                 <li>
-                                    <div class="title">Relationship</div>
-                                    <div class="text">Father</div>
+                                    <div class="title">Description</div>
+                                    <div class="text">Good news from GOD.</div>
                                 </li>
                                 <hr>
                                 <li>
-                                    <div class="title">No. of Years</div>
+                                    <div class="title">Classification</div>
                                     <div class="text">19</div>
                                 </li>
                                 <hr>
                                 <li>
-                                    <div class="title">Phone </div>
-                                    <div class="text">9876543210, 9876543210</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Address </div>
-                                    <div class="text">76 Mobolaji Bank Anthony Way,</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Country </div>
-                                    <div class="text">Nigeria</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Organization</div>
-                                    <div class="text">GODP</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Confirmation Received</div>
-                                    <div class="text">GODP</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Confirmation Date</div>
-                                    <div class="text">GODP</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Confirmation Upload</div>
-                                    <div class="text">GODP</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Approval status</div>
-                                    <div class="text">GODP</div>
+                                    <div class="title">Physical Condition </div>
+                                    <div class="text">Active</div>
                                 </li>
                             </ul>
 
@@ -850,114 +713,7 @@
             </div>
         </div>
 
-        <div id="assets_contact_modal" class="modal custom-modal fade" role="dialog">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Assets</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="card">
-                                <div class="card-body">
-                                    <h3 class="card-title">Primary Contact</h3>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Full Name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Phone No <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Email <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Relationship <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Number of years (Relationship) <span
-                                                        class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Organisation <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Country</label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Address</label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Confirmation Received <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Confirmation Date <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Confirmation Upload <span class="text-danger">*</span></label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Phone 2</label>
-                                                <input class="form-control" type="text">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="submit-section">
-                                <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadReferee()"
-                                    [disabled]="spinner">
-                                    <span *ngIf="!spinner">Submit</span>
-                                    <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- /Referees Contact Modal -->
-
-        <!-- /Assets Tab-->
+        <!-- /Assets Tab -->
 
         <!-- Careers Tab -->
         <div id="emp_careers" class="tab-pane fade">
@@ -1046,12 +802,57 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Professional Certification <a class="edit-icon" data-toggle="modal"
+                                    data-target="#professional_cert_info"><i class="fa fa-pencil"></i></a></h3>
+                            <div class="experience-box">
+                                <ul class="experience-list">
+                                    <li>
+                                        <div class="experience-user">
+                                            <div class="before-circle"></div>
+                                        </div>
+                                        <div class="experience-content">
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">Web Designer at Zen Corporation</a>
+                                                <span class="time">Jan 2013 - Present (5 years 2 months)</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="experience-user">
+                                            <div class="before-circle"></div>
+                                        </div>
+                                        <div class="experience-content">
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">Web Designer at Ron-tech</a>
+                                                <span class="time">Jan 2013 - Present (5 years 2 months)</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="experience-user">
+                                            <div class="before-circle"></div>
+                                        </div>
+                                        <div class="experience-content">
+                                            <div class="timeline-content">
+                                                <a href="#/" class="name">Web Designer at Dalt Technology</a>
+                                                <span class="time">Jan 2013 - Present (5 years 2 months)</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- /Careers Tab-->
+        <!-- /Careers Tab -->
 
-        <!--Hobbies Tab-->
+        <!--Hobbies Tab -->
         <div id="emp_hobbies" class="tab-pane fade">
             <div class="row">
                 <div class="col-md-6 d-flex">
@@ -1095,83 +896,18 @@
                 </div>
             </div>
         </div>
+
+        <!-- /Hobbies Tab -->
     </div>
 
-    <!-- Hobbies Modal -->
-    <div id="hobbies_modal" class="modal custom-modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Hobbies</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title">Hobbies</h3>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Name of Hobbies <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Description <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Star <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Status <span class="text-danger">*</span></label>
-                                            <select class="select form-control"
-                                                [class.invalid]="addEmployeeForm.get('Gender').invalid && addEmployeeForm.get('Gender').touched"
-                                                formControlName="Gender">
-                                                <option value="Approved selected">Approved</option>
-                                                <option>Pending</option>
-                                                <option>Declined</option>
-                                            </select>
-                                            <div
-                                                *ngIf="addEmployeeForm.get('Status').invalid && addEmployeeForm.get('Status').touched">
-                                                <small
-                                                    *ngIf="addEmployeeForm.get('Status').invalid && addEmployeeForm.get('Status').touched"
-                                                    class="text-danger"> *Status required</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="submit-section">
-                            <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadLanguage()"
-                                [disabled]="spinner">
-                                <span *ngIf="!spinner">Submit</span>
-                                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
-<!-- /Hobbies Modal -->
-<!-- /Hobbies Tab -->
+
 
 <!-- HMO Tab -->
-<!-- /HMO Tab-->
+<!-- /HMO Tab -->
 
-<!-- profile modal -->
+<!-- Profile Modal -->
 <div id="profile_info" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1326,6 +1062,7 @@
         </div>
     </div>
 </div>
+<!-- /Profile Modal -->
 
 
 <!-- Personal Info Modal -->
@@ -1393,6 +1130,189 @@
     </div>
 </div>
 <!-- /Personal Info Modal -->
+
+<!-- Dependent Contacts Modal -->
+<div id="dependent_contacts_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> Dependent Contacts </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-scroll">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Family Member <a class="delete-icon"><i
+                                            class="fa fa-trash-o"></i></a></h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Full Name <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Phone Number <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label> Email <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Relationship <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Date of birth <span class="text-danger">*</span></label>
+                                            <input class="form-control datetimepicker" type="text" bsDatepicker
+                                                type="text"
+                                                [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label> Address <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Country <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Dependent Contacts Modal -->
+
+<!-- /Referees Contact Modal -->
+<div id="referees_contact_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Referee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Primary Contact</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Full Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Phone No <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Email <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Relationship <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Number of years (Relationship) <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Organisation <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Country</label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Confirmation Received <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Confirmation Date <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Confirmation Upload <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Phone 2</label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadReferee()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /Referees Contact Modal -->
 
 <!-- Emergency Contact Modal -->
 <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
@@ -1470,7 +1390,183 @@
 </div>
 <!-- /Emergency Contact Modal -->
 
+<!-- Assets Contact Modal -->
+<div id="assets_contact_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Assets</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Employee Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Office <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Asset Name <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Asset Number <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Description <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Classification <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Physical Condition<span class="text-danger">*</span></label>
+                                        <select class="select form-control" formControlName="client">
+                                            <option>Approved</option>
+                                            <option>Pending</option>
+                                            <option>Declined</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Location</label>
+                                        <input class="select form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Request Approval Status<span class="text-danger">*</span></label>
+                                        <select class="select form-control" formControlName="client">
+                                            <option>Select a status</option>
+                                            <option>Approved</option>
+                                            <option>Pending</option>
+                                            <option>Declined</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Return Approval Status <span class="text-danger">*</span></label>
+                                        <select class="select form-control" formControlName="client">
+                                            <option>Select a Status</option>
+                                            <option>Approved</option>
+                                            <option>Pending</option>
+                                            <option>Declined</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadAssets()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- /Assets Contact Modal -->
+
+
+
+<!-- Hobbies Modal -->
+<div id="hobbies_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hobbies</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Hobbies</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Name of Hobbies <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Description <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Star <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Status <span class="text-danger">*</span></label>
+                                        <select class="select form-control"
+                                            [class.invalid]="addEmployeeForm.get('Gender').invalid && addEmployeeForm.get('Gender').touched"
+                                            formControlName="Gender">
+                                            <option value="Approved selected">Approved</option>
+                                            <option>Pending</option>
+                                            <option>Declined</option>
+                                        </select>
+                                        <div
+                                            *ngIf="addEmployeeForm.get('Status').invalid && addEmployeeForm.get('Status').touched">
+                                            <small
+                                                *ngIf="addEmployeeForm.get('Status').invalid && addEmployeeForm.get('Status').touched"
+                                                class="text-danger"> *Status required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadLanguage()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Hobbies Modal -->
 
 <!-- Experience Modal -->
 <div id="experience_info" class="modal custom-modal fade" role="dialog">
@@ -1590,3 +1686,112 @@
         </div>
     </div>
 </div>
+<!-- Experience Modal -->
+
+<!-- Professional Cerification Modal -->
+<div id="professional_cert_info" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Professional Certification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-scroll">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Professional Certification <a class="delete-icon"><i
+                                            class="fa fa-trash-o"></i></a></h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group form-focus">
+                                            <input type="text" class="form-control floating">
+                                            <label class="focus-label">Certification</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group form-focus">
+                                            <input type="text" class="form-control floating">
+                                            <label class="focus-label">Institution</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group form-focus">
+                                            <div class="cal-icon">
+                                                <input type="text" bsDatepicker type="text"
+                                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                                    class="form-control floating datetimepicker">
+                                            </div>
+                                            <label class="focus-label">Date Granted</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group form-focus">
+                                            <div class="cal-icon">
+                                                <input type="text" bsDatepicker type="text"
+                                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                                    class="form-control floating datetimepicker">
+                                            </div>
+                                            <label class="focus-label">Expiry Date</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Professional Certificate <a class="delete-icon"><i
+                                            class="fa fa-trash-o"></i></a></h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group form-focus">
+                                            <input type="text" class="form-control floating">
+                                            <label class="focus-label">Certificate</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group form-focus">
+                                            <input type="text" class="form-control floating">
+                                            <label class="focus-label">Institution</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group form-focus">
+                                            <div class="cal-icon">
+                                                <input type="text" bsDatepicker type="text"
+                                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                                    class="form-control floating datetimepicker">
+                                            </div>
+                                            <label class="focus-label">Granted Date</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group form-focus">
+                                            <div class="cal-icon">
+                                                <input type="text" bsDatepicker type="text"
+                                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
+                                                    class="form-control floating datetimepicker">
+                                            </div>
+                                            <label class="focus-label">Expiry Date</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-more">
+                                    <a><i class="fa fa-plus-circle"></i> Add More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Professinal Certification Modal -->
