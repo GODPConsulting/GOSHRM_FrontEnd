@@ -1,148 +1,119 @@
 <app-loading *ngIf="pageLoading"></app-loading>
-<div *ngIf="!pageLoading">
-  <!-- Page Content -->
-  <div class="content container-fluid">
-    <!-- Page Header -->
-    <div class="page-header">
-      <div class="row align-items-center">
-        <div class="col">
-          <h3 class="page-title">Employment Level</h3>
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
-            <li class="breadcrumb-item active">Employment Level</li>
-          </ul>
-        </div>
-        <div class="col-auto float-right ml-auto">
-          <a class="btn download-btn hint" (click)="downloadFile()"><span class="hint-text">Download</span><i class="fa fa-download"></i></a>
-          <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
-              class="fa fa-upload"></i></a>
-          <a class="btn add-btn hint" data-toggle="modal" (click)="addEmploymentLevel()"><span
-              class="hint-text">Add</span><i class="fa fa-plus"></i></a>
-          <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
-              class="fa fa-trash"></i></a>
-          <!--          <a routerLink="/employees/employeepage" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>-->
-          <!--          <a routerLink="/employees/employeelist" class="list-view btn btn-link active"><i-->
-          <!--            class="fa fa-bars"></i></a>-->
-          <!--        </div>-->
-        </div>
+<!-- Page Content -->
+<div *ngIf="!pageLoading" class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">Employment Level</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
+          <li class="breadcrumb-item active">Employment Level</li>
+        </ul>
       </div>
-    </div>
-    <!-- /Page Header -->
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="table-responsive">
-          <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions">
-            <thead>
-              <tr>
-                <th>
-                  <input type="checkbox" [checked]="selectedId.length === levels.length" (change)="checkAll($event)" />
-                </th>
-                <th>S/N</th>
-                <th>Employment Level</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)"
-                *ngFor="let row of levels | filter:searchText; let i = index">
-                <td (click)="stopParentEvent($event)">
-                  <input type="checkbox" [checked]="selectedId.includes(row.id)" (change)="addItemId($event, row.id)" />
-                </td>
-                <td>{{ i + 1 }}</td>
-                <td>{{ row.employment_level }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="col-auto float-right ml-auto">
+        <a class="btn download-btn hint" (click)="downloadFile()"><span class="hint-text">Download</span><i
+            class="fa fa-download"></i></a>
+        <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
+            class="fa fa-upload"></i></a>
+        <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span class="hint-text">Add</span><i
+            class="fa fa-plus"></i></a>
+        <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
+            class="fa fa-trash"></i></a>
       </div>
     </div>
   </div>
-  <!-- /Page Content -->
+  <!-- /Page Header -->
 
-  <!-- Add Employee Modal -->
-  <div id="add_employment_level" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content w-75 mx-auto">
-        <div class="modal-header">
-          <h5 class="modal-title">{{formTitle}}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form (ngSubmit)="addData(employmentLevelForm)" [formGroup]="employmentLevelForm">
-            <div class="form-group">
-              <label class="col-form-label">Employment Level <span class="text-danger">*</span></label>
-              <input class="form-control" type="text" [class.invalid]="
-                    employmentLevelForm.get('employment_level').invalid &&
-                    employmentLevelForm.get('employment_level').touched
-                    " formControlName="employment_level" />
-              <div *ngIf="
-                    employmentLevelForm.get('employment_level').invalid &&
-                    employmentLevelForm.get('employment_level').touched
-                    ">
-                <small *ngIf="
-                      employmentLevelForm.get('employment_level').invalid &&
-                      employmentLevelForm.get('employment_level').touched
-                      " class="text-danger">
-                  *Employment Level is required</small>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-form-label">Description <span class="text-danger">*</span></label>
-              <textarea class="form-control" type="text" rows="5" [class.invalid]="
-                      employmentLevelForm.get('description').invalid &&
-                      employmentLevelForm.get('description').touched
-                    " formControlName="description"></textarea>
-              <div *ngIf="
-                      employmentLevelForm.get('description').invalid &&
-                      employmentLevelForm.get('description').touched
-                    ">
-                <small *ngIf="
-                      employmentLevelForm.get('description').invalid &&
-                      employmentLevelForm.get('description').touched
-                      " class="text-danger">
-                  *Description is required</small>
-              </div>
-            </div>
-            <div class="submit-section">
-              <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadEmploymentLevel()"
-                    [disabled]="spinner">
-                    <span *ngIf="!spinner">Submit</span>
-                    <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Delete Employee Modal -->
-  <div class="modal custom-modal fade" id="delete_employee" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div class="form-header">
-            <h3>Delete Employee</h3>
-            <p>Are you sure want to delete?</p>
-          </div>
-          <div class="modal-btn delete-action">
-            <div class="row">
-              <div class="col-6">
-                <a class="btn btn-primary continue-btn" (click)="deleteEmployee()">Delete</a>
-              </div>
-              <div class="col-6">
-                <a data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-              </div>
-            </div>
-          </div>
-        </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions">
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" [checked]="selectedId.length === levels.length" (change)="checkAll($event)" />
+              </th>
+              <th>S/N</th>
+              <th>Employment Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)"
+              *ngFor="let row of levels; let i = index">
+              <td (click)="stopParentEvent($event)">
+                <input type="checkbox" [checked]="selectedId.includes(row.id)" (change)="addItemId($event, row.id)" />
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ row.employment_level }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
-<!-- /Delete Employee Modal -->
+<!-- /Page Content -->
+
+<!-- Add Employment Level Modal -->
+<div id="add_employment_level" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content w-75 mx-auto">
+      <div class="modal-header">
+        <h5 class="modal-title">{{formTitle}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="addEmploymentLevel(employmentLevelForm)" [formGroup]="employmentLevelForm">
+          <div class="form-group">
+            <label class="col-form-label">Employment Level <span class="text-danger">*</span></label>
+            <input class="form-control" type="text" [class.invalid]="
+                    employmentLevelForm.get('employment_level').invalid &&
+                    employmentLevelForm.get('employment_level').touched
+                    " formControlName="employment_level" />
+            <div *ngIf="
+                    employmentLevelForm.get('employment_level').invalid &&
+                    employmentLevelForm.get('employment_level').touched
+                    ">
+              <small *ngIf="
+                      employmentLevelForm.get('employment_level').invalid &&
+                      employmentLevelForm.get('employment_level').touched
+                      " class="text-danger">
+                *Employment Level is required</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-form-label">Description <span class="text-danger">*</span></label>
+            <textarea class="form-control" type="text" rows="5" [class.invalid]="
+                      employmentLevelForm.get('description').invalid &&
+                      employmentLevelForm.get('description').touched
+                    " formControlName="description"></textarea>
+            <div *ngIf="
+                      employmentLevelForm.get('description').invalid &&
+                      employmentLevelForm.get('description').touched
+                    ">
+              <small *ngIf="
+                      employmentLevelForm.get('description').invalid &&
+                      employmentLevelForm.get('description').touched
+                      " class="text-danger">
+                *Description is required</small>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Add Employment Level Modal-->
+
 <!-- Upload Employment Level Modal -->
 <div id="upload_employment_level" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -179,9 +150,9 @@
           </div>
 
           <div class="submit-section">
-            <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadEmploymentLevel()" [disabled]="!loading">
-              <span *ngIf="loading">Submit</span> 
-              <span *ngIf="!loading && spinner" ><i class="fa fa-spinner fa-spin"></i></span>
+            <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
             </button>
           </div>
         </form>
@@ -189,4 +160,4 @@
     </div>
   </div>
 </div>
-<!-- /Upload Job Grade Modal -->
+<!-- /Upload Employment Level Modal -->

@@ -48,7 +48,7 @@ export class AcademicQualificationComponent implements OnInit {
   }
 
   // prevents the"editAcademicGrade(row)" from working on checkbox
-  stopParentEvent(event) {
+  stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
@@ -167,7 +167,7 @@ export class AcademicQualificationComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = form.value;
+    const payload: object = form.value;
     this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/add/update/academic/qualification", payload)
@@ -193,7 +193,7 @@ export class AcademicQualificationComponent implements OnInit {
   }
 
   delete() {
-    let payload;
+    let payload: object;
     if (this.selectedId) {
       if (this.selectedId.length === 0) {
         return swal.fire("Error", "Select items to delete", "error");
@@ -270,7 +270,7 @@ export class AcademicQualificationComponent implements OnInit {
     }
   }
 
-  addItemId(event, id) {
+  addItemId(event, id: number) {
     if (event.target.checked) {
       if (!this.selectedId.includes(id)) {
         this.selectedId.push(id);
