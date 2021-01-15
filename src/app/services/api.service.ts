@@ -47,11 +47,6 @@ export class ApiService {
     );
   } */
 
-  downloadLink() {
-    return this.http.get(
-      "http://godp.co.uk:72/api/v1/hrmsetup/download/academic/disciplines"
-    );
-  }
   getExcel(
     path: string,
     params: HttpParams = new HttpParams()
