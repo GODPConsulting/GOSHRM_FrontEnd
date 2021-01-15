@@ -7,7 +7,7 @@
         <div class="mb-3">
             <div class="modal-content w-100">
                 <div class="modal-header">
-                    <h3 class="modal-title">Add Job Title</h3>
+                    <h3 class="modal-title">{{jobFormTitle}}</h3>
                     <!--  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
                         <span aria-hidden="true">&times;</span>
                     </button> -->
@@ -49,8 +49,9 @@
                             </div>
                         </div>
                         <div class="submit-section">
-                            <button class="btn btn-primary submit-btn" type="submit">
-                                Submit
+                            <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                                <span *ngIf="!spinner">Submit</span>
+                                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                             </button>
                         </div>
                     </form>
@@ -91,24 +92,22 @@
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === subSkill.length"
+                                <input type="checkbox" [checked]="selectedId.length === jobSkills.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Job Title</th>
-                            <th>Skill</th>
+                            <th>Skills</th>
                             <th>Weight</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="editSubSkill(row)"
-                            *ngFor="let row of subSkill | filter:searchText; let i = index">
+                            *ngFor="let row of jobSkills; let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.job_title }}</td>
                             <td>{{ row.skill }}</td>
                             <td>{{ row.weight }}</td>
                         </tr>
@@ -126,14 +125,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{formTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="closeUploadModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form (ngSubmit)="addSubSkill(subSkillForm)" [formGroup]="subSkillForm">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Job Title<span class="text-danger">*</span></label>
                                 <select class="form-control" [class.invalid]="
@@ -156,7 +156,7 @@
                                         *Field is required</small>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Skill<span class="text-danger">*</span></label>
@@ -219,8 +219,9 @@
 
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">
-                            Submit
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>
