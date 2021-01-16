@@ -13,16 +13,13 @@ export class HmoComponent implements OnInit {
   @ViewChild("fileInput") fileInput: ElementRef;
   public dtOptions: DataTables.Settings = {};
   public hmos: any[] = [];
-  public rows = [];
-  public srch = [];
-  pageLoading: boolean;
-  
-  spinner: boolean = false;
+  public pageLoading: boolean;
+
+  public spinner: boolean = false;
   public formTitle = "Add HMO";
   public hmoForm: FormGroup;
-  selectedId: any[] = [];
+  public selectedId: number[] = [];
   public hmoUploadForm: FormGroup;
-  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,9 +55,9 @@ export class HmoComponent implements OnInit {
   }
 
   onSelectedFile(event) {
-    this.file = event.target.files[0];
+    const file = event.target.files[0];
     this.hmoUploadForm.patchValue({
-      uploadInput: this.file,
+      uploadInput: file,
     });
   }
 
@@ -101,15 +98,12 @@ export class HmoComponent implements OnInit {
   }
 
   uploadHmo() {
-    const formData = new FormData();
-    formData.append("uploadInput", this.hmoUploadForm.get("uploadInput").value);
-
-    if (!this.file) {
+    if (!this.hmoUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
     }
-    //console.log(formData, this.languageForm.get("uploadInput").value);
-   this.spinner = true;
-   
+    const formData = new FormData();
+    formData.append("uploadInput", this.hmoUploadForm.get("uploadInput").value);
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/upload/hmo", formData)
       .subscribe(
@@ -135,6 +129,7 @@ export class HmoComponent implements OnInit {
   }
 
   openUploadModal() {
+    this.fileInput.nativeElement.value = "";
     $("#upload_hmo").modal("show");
   }
 
@@ -162,8 +157,6 @@ export class HmoComponent implements OnInit {
         this.pageLoading = false;
         //console.log(data);
         this.hmos = data.setuplist;
-        this.rows = this.hmos;
-        this.srch = [...this.rows];
       },
       (err) => {
         this.pageLoading = false;
@@ -179,24 +172,24 @@ export class HmoComponent implements OnInit {
   closeModal() {
     $("#add_hmo").modal("hide");
     this.initializeForm();
-    this.fileInput.nativeElement.value = "";
   }
 
-  // Add employee  Modal Api Call
-  addHmo(Form: FormGroup) {
-    if (!Form.valid) {
+  // Add HMO Modal Api Call
+  addHmo(form: FormGroup) {
+    if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = Form.value;
+    const payload = form.value;
     console.log(payload);
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/add/update/hmo", payload)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           //console.log(message);
-
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
@@ -207,13 +200,14 @@ export class HmoComponent implements OnInit {
           this.getHmo();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
       );
   }
 
-  // To Get The employee Edit Id And Set Values To Edit Modal Form
+  // To Set Values To Edit Modal Form
   editHmo(row) {
     this.formTitle = "Edit HMO";
     this.hmoForm.patchValue({
@@ -230,17 +224,9 @@ export class HmoComponent implements OnInit {
     $("#add_hmo").modal("show");
   }
 
-  delete(id: any) {
-    let payload;
-
-    if (id) {
-      const body = [id];
-      //body.push(id);
-      //console.log(body);
-      payload = {
-        itemIds: body,
-      };
-    } else if (this.selectedId) {
+  delete() {
+    let payload: object;
+    if (this.selectedId) {
       if (this.selectedId.length === 0) {
         return swal.fire("Error", "Select items to delete", "error");
       }
@@ -249,7 +235,6 @@ export class HmoComponent implements OnInit {
       };
       //console.log(this.selectedId);
     }
-
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -259,8 +244,6 @@ export class HmoComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
-
         if (result.value) {
           return this.setupService
             .deleteData("/hrmsetup/delete/hmo", payload)
@@ -284,8 +267,8 @@ export class HmoComponent implements OnInit {
     this.selectedId = [];
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
       this.selectedId = this.hmos.map((item) => {
         return item.id;
       });
@@ -294,8 +277,8 @@ export class HmoComponent implements OnInit {
     }
   }
 
-  addItemId(event, id) {
-    if (event.target.checked) {
+  addItemId(event: Event, id: number) {
+    if ((<HTMLInputElement>event.target).checked) {
       if (!this.selectedId.includes(id)) {
         this.selectedId.push(id);
       }

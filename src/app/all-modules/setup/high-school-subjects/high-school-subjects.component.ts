@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
-import { DataTableDirective } from "angular-datatables";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ToastrService } from "ngx-toastr";
 import swal from "sweetalert2";
 
 declare const $: any;
@@ -13,36 +11,21 @@ declare const $: any;
 })
 export class HighSchoolSubjectsComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
-  @ViewChild('fileInput') fileInput: ElementRef
-  public dtElement: DataTableDirective;
+  @ViewChild("fileInput") fileInput: ElementRef;
   public subjects: any[] = [];
-
   public highSchoolForm: FormGroup;
-  public editEmployeeForm: FormGroup;
-  formTitle: string = "Add High School Subject";
-  public rows = [];
-  public srch = [];
-  public statusValue;
-  pageLoading: boolean;
+  public formTitle: string = "Add High School Subject";
+  public pageLoading: boolean;
 
-  spinner: boolean = false;
-  value: any;
-  selectedId: any[] = [];
+  public spinner: boolean = false;
+  public selectedId: number[] = [];
   public highSchoolSubUploadForm: FormGroup;
-  file: File;
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    $(".floating")
-      .on("focus blur", function (e) {
-        $(this)
-          .parents(".form-focus")
-          .toggleClass("focused", e.type === "focus" || this.value.length > 0);
-      })
-      .trigger("blur");
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -59,64 +42,65 @@ export class HighSchoolSubjectsComponent implements OnInit {
     this.getHighSchoolSub();
   }
 
-  stopParentEvent(event) {
+  // Prevents the"editAcademicGrade(row)" from working on checkbox
+  stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
-  onSelectedFile(event) {
-    this.file = event.target.files[0];
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event) {
+    const file = (<HTMLInputElement>event.target).files[0];
     this.highSchoolSubUploadForm.patchValue({
-      uploadInput: this.file,
+      uploadInput: file,
     });
   }
 
   downloadFile() {
-    this.setupService.exportExcelFile("/hrmsetup/download/highschoolsubjects").subscribe(
-      (resp) => {
-        //this.blob = resp;
-        const data = resp;
-        if (data != undefined) {
-          const byteString = atob(data);
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
-          for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
+    this.setupService
+      .exportExcelFile("/hrmsetup/download/highschoolsubjects")
+      .subscribe(
+        (resp) => {
+          const data = resp;
+          if (data != undefined) {
+            const byteString = atob(data);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+              ia[i] = byteString.charCodeAt(i);
+            }
+            const bb = new Blob([ab]);
+            try {
+              const file = new File([bb], "High School Subject.xlsx", {
+                type: "application/vnd.ms-excel",
+              });
+              console.log(file, bb);
+              saveAs(file);
+            } catch (err) {
+              const textFileAsBlob = new Blob([bb], {
+                type: "application/vnd.ms-excel",
+              });
+              window.navigator.msSaveBlob(
+                textFileAsBlob,
+                "High School Subject.xlsx"
+              );
+            }
+          } else {
+            return swal.fire(`GOS HRM`, "Unable to download data", "error");
           }
-          const bb = new Blob([ab]);
-          try {
-            const file = new File([bb], "HighSchoolSubject.xlsx", {
-              type: "application/vnd.ms-excel",
-            });
-            console.log(file, bb);
-            saveAs(file);
-          } catch (err) {
-            const textFileAsBlob = new Blob([bb], {
-              type: "application/vnd.ms-excel",
-            });
-            window.navigator.msSaveBlob(
-              textFileAsBlob,
-              "Deposit Category.xlsx"
-            );
-          }
-        } else {
-          return swal.fire(`GOS HRM`, "Unable to download data", "error");
-        }
-      },
-      (err) => {}
-    );
+        },
+        (err) => {}
+      );
   }
 
   uploadHighSchoolSub() {
+    if (!this.highSchoolSubUploadForm.get("uploadInput").value) {
+      return swal.fire("Error", "Select a file", "error");
+    }
     const formData = new FormData();
     formData.append(
       "uploadInput",
       this.highSchoolSubUploadForm.get("uploadInput").value
     );
-    if (!this.file) {
-      return swal.fire('Error', 'Select a file', 'error')
-    }
-
-    //console.log(formData, this.highSchoolSubUploadForm.get("uploadInput").value);
     this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/upload/highschoolsubject", formData)
@@ -127,7 +111,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ""
+            this.fileInput.nativeElement.value = "";
             $("#upload_high_school_subject").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -165,8 +149,6 @@ export class HighSchoolSubjectsComponent implements OnInit {
         (data) => {
           this.pageLoading = false;
           this.subjects = data.setuplist;
-          this.rows = this.subjects;
-          this.srch = [...this.rows];
         },
         (err) => {
           this.pageLoading = false;
@@ -176,17 +158,18 @@ export class HighSchoolSubjectsComponent implements OnInit {
   }
 
   // Add employee  Modal Api Call
-  addHighSchoolSub(Form: FormGroup) {
-    if (!Form.valid) {
+  addHighSchoolSub(form: FormGroup) {
+    if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-
-    const payload = Form.value;
+    const payload = form.value;
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/add/update/highschoolsubject", payload)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
@@ -199,6 +182,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
           this.getHighSchoolSub();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -216,37 +200,8 @@ export class HighSchoolSubjectsComponent implements OnInit {
     $("#add_high_school_subject").modal("show");
   }
 
-  //search by Id
-  searchId(val) {
-    this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function (d) {
-      val = val.toLowerCase();
-      return d.subject.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    this.rows.push(...temp);
-  }
-
-  //search by name
-  searchName(val) {
-    this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function (d) {
-      val = val.toLowerCase();
-      return d.description.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    this.rows.push(...temp);
-  }
-
-  //search by purchase
-  searchByDesignation(val) {
-    this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function (d) {
-      val = val.toLowerCase();
-      return d.designation.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    this.rows.push(...temp);
-  }
-
   openModal() {
+    this.fileInput.nativeElement.value = "";
     this.formTitle = "Add High School Subject";
     $("#add_high_school_subject").modal("show");
   }
@@ -254,11 +209,10 @@ export class HighSchoolSubjectsComponent implements OnInit {
   closeModal() {
     $("#add_high_school_subject").modal("hide");
     this.initializeForm();
-    this.fileInput.nativeElement.value = "";
   }
 
-  addItemId(event, id) {
-    if (event.target.checked) {
+  addItemId(event: Event, id: number) {
+    if ((<HTMLInputElement>event.target).checked) {
       if (!this.selectedId.includes(id)) {
         this.selectedId.push(id);
       }
@@ -269,8 +223,8 @@ export class HighSchoolSubjectsComponent implements OnInit {
     }
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
       this.selectedId = this.subjects.map((item) => {
         return item.id;
       });
@@ -279,24 +233,15 @@ export class HighSchoolSubjectsComponent implements OnInit {
     }
   }
 
-  delete(id: any) {
-    let payload;
-
-    if (id) {
-      const body = [id];
-      //body.push(id);
-      //console.log(body);
-      payload = {
-        itemIds: body,
-      };
-    } else if (this.selectedId) {
+  delete() {
+    let payload: object;
+    if (this.selectedId) {
       if (this.selectedId.length === 0) {
         return swal.fire("Error", "Select items to delete", "error");
       }
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
