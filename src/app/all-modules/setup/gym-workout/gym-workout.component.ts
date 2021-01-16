@@ -170,12 +170,12 @@ export class GymWorkoutComponent implements OnInit {
   }
 
   // Add Gym/workout  Modal Api Call
-  addGymWorkout(Form: FormGroup) {
-    if (!Form.valid) {
+  addGymWorkout(form: FormGroup) {
+    if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = Form.value;
+    const payload = form.value;
     console.log(payload);
     this.spinner = true;
     return this.setupService
@@ -237,7 +237,6 @@ export class GymWorkoutComponent implements OnInit {
       })
       .then((result) => {
         //console.log(result);
-
         if (result.value) {
           return this.setupService
             .deleteData("/hrmsetup/delete/gymworkout", payload)
@@ -261,8 +260,8 @@ export class GymWorkoutComponent implements OnInit {
     this.selectedId = [];
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
       this.selectedId = this.gymWorkouts.map((item) => {
         return item.id;
       });
@@ -271,8 +270,8 @@ export class GymWorkoutComponent implements OnInit {
     }
   }
 
-  addItemId(event, id: number) {
-    if (event.target.checked) {
+  addItemId(event: Event, id: number) {
+    if ((<HTMLInputElement>event.target).checked) {
       if (!this.selectedId.includes(id)) {
         this.selectedId.push(id);
       }
