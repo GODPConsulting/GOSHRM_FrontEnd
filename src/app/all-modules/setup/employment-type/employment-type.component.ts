@@ -43,7 +43,7 @@ export class EmploymentTypeComponent implements OnInit {
     this.getEmploymentType();
   }
 
-  // prevents the"editAcademicGrade(row)" from working on checkbox
+  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
