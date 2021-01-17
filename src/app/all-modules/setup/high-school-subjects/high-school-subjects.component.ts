@@ -16,7 +16,6 @@ export class HighSchoolSubjectsComponent implements OnInit {
   public highSchoolForm: FormGroup;
   public formTitle: string = "Add High School Subject";
   public pageLoading: boolean;
-
   public spinner: boolean = false;
   public selectedId: number[] = [];
   public highSchoolSubUploadForm: FormGroup;
@@ -42,7 +41,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
     this.getHighSchoolSub();
   }
 
-  // Prevents the"editAcademicGrade(row)" from working on checkbox
+  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }

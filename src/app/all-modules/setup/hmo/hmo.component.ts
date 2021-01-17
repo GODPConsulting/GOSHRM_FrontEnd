@@ -27,13 +27,6 @@ export class HmoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    $(".floating")
-      .on("focus blur", function (e) {
-        $(this)
-          .parents(".form-focus")
-          .toggleClass("focused", e.type === "focus" || this.value.length > 0);
-      })
-      .trigger("blur");
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -50,12 +43,14 @@ export class HmoComponent implements OnInit {
     this.initializeForm();
   }
 
-  stopParentEvent(event) {
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
-  onSelectedFile(event) {
-    const file = event.target.files[0];
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event) {
+    const file = (<HTMLInputElement>event.target).files[0];
     this.hmoUploadForm.patchValue({
       uploadInput: file,
     });
@@ -64,7 +59,6 @@ export class HmoComponent implements OnInit {
   downloadFile() {
     this.setupService.exportExcelFile("/hrmsetup/download/hmo").subscribe(
       (resp) => {
-        //this.blob = resp;
         const data = resp;
         if (data != undefined) {
           const byteString = atob(data);
@@ -84,10 +78,7 @@ export class HmoComponent implements OnInit {
             const textFileAsBlob = new Blob([bb], {
               type: "application/vnd.ms-excel",
             });
-            window.navigator.msSaveBlob(
-              textFileAsBlob,
-              "Deposit Category.xlsx"
-            );
+            window.navigator.msSaveBlob(textFileAsBlob, "HMO.xlsx");
           }
         } else {
           return swal.fire(`GOS HRM`, "Unable to download data", "error");
@@ -113,7 +104,6 @@ export class HmoComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = "";
             $("#upload_hmo").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -129,6 +119,7 @@ export class HmoComponent implements OnInit {
   }
 
   openUploadModal() {
+    // Resets the upload form
     this.fileInput.nativeElement.value = "";
     $("#upload_hmo").modal("show");
   }
@@ -226,10 +217,9 @@ export class HmoComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId) {
-      if (this.selectedId.length === 0) {
-        return swal.fire("Error", "Select items to delete", "error");
-      }
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    } else {
       payload = {
         itemIds: this.selectedId,
       };

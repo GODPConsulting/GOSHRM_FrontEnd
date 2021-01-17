@@ -15,7 +15,7 @@ export class GymWorkoutComponent implements OnInit {
   public gymWorkouts: any[] = [];
   public pageLoading: boolean;
   public spinner: boolean = false;
-  public formTitle = "Add Gym/Workout";
+  public formTitle: string = "Add Gym/Workout";
   public gymWorkoutForm: FormGroup;
   public selectedId: any[] = [];
   public gymWorkoutUploadForm: FormGroup;
@@ -43,7 +43,7 @@ export class GymWorkoutComponent implements OnInit {
     this.initializeForm();
   }
 
-  // Prevents the"editAcademicGrade(row)" from working on checkbox
+  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }

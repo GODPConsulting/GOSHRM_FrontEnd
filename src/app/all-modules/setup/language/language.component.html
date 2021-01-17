@@ -41,8 +41,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr (click)="edit(row)" class="pointer"
-                            *ngFor="let row of languages | filter:searchText; let i = index">
+                        <tr (click)="edit(row)" class="pointer" *ngFor="let row of languages; let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
@@ -58,7 +57,7 @@
 </div>
 <!-- /Page Content -->
 
-<!-- Add HMO Modal -->
+<!-- Add language Modal -->
 <div id="add_language" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content w-75 mx-auto">
@@ -105,8 +104,9 @@
                         </div>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">
-                            Submit
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>
@@ -114,6 +114,7 @@
         </div>
     </div>
 </div>
+<!-- /Add language Modal -->
 
 <!-- Upload Language Modal -->
 <div class="modal custom-modal fade" id="upload_language" role="dialog">
@@ -133,7 +134,7 @@
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                                    (change)="onSelectedFile($event)" >
+                                    (change)="onSelectedFile($event)">
                             </div>
                         </div>
 
@@ -162,28 +163,4 @@
         </div>
     </div>
 </div>
-
-<!-- Delete Employee Modal -->
-<div class="modal custom-modal fade" id="delete_employee" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-header">
-                    <h3>Delete Employee</h3>
-                    <p>Are you sure want to delete?</p>
-                </div>
-                <div class="modal-btn delete-action">
-                    <div class="row">
-                        <div class="col-6">
-                            <a class="btn btn-primary continue-btn" (click)="deleteEmployee()">Delete</a>
-                        </div>
-                        <div class="col-6">
-                            <a data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Delete Employee Modal -->
+<!-- /Upload Language Modal -->

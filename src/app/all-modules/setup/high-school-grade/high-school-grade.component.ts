@@ -42,7 +42,7 @@ export class HighSchoolGradeComponent implements OnInit {
     this.initializeForm();
   }
 
-  // Prevents the"editAcademicGrade(row)" from working on checkbox
+  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }

@@ -10,18 +10,15 @@ declare const $: any;
   styleUrls: ["./job-grade.component.css", "../setup.component.css"],
 })
 export class JobGradeComponent implements OnInit {
-  formTitle;
+  public formTitle: string = "Add Job Grade";
   public dtOptions: DataTables.Settings = {};
   @ViewChild("fileInput") fileInput: ElementRef;
   public jobGradeForm: FormGroup;
   public jobGrades: any[] = [];
-  public rows = [];
-  public srch = [];
-  selectedId: any[] = [];
-  pageLoading: boolean;
-  spinner: boolean = false;
+  public selectedId: number[] = [];
+  public pageLoading: boolean;
+  public spinner: boolean = false;
   public jobGradeUploadForm: FormGroup;
-  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,14 +26,6 @@ export class JobGradeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    $(".floating")
-      .on("focus blur", function (e) {
-        $(this)
-          .parents(".form-focus")
-          .toggleClass("focused", e.type === "focus" || this.value.length > 0);
-      })
-      .trigger("blur");
-
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -49,19 +38,18 @@ export class JobGradeComponent implements OnInit {
       columns: [{ orderable: false }, null, null, null, null, null],
       order: [[1, "asc"]],
     };
-
     this.getJobGrade();
     this.initializeForm();
   }
 
-  stopParentEvent(event) {
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
   downloadFile() {
     this.setupService.exportExcelFile("/hrmsetup/download/jobgrade").subscribe(
       (resp) => {
-        //this.blob = resp;
         const data = resp;
         if (data != undefined) {
           const byteString = atob(data);
@@ -81,10 +69,7 @@ export class JobGradeComponent implements OnInit {
             const textFileAsBlob = new Blob([bb], {
               type: "application/vnd.ms-excel",
             });
-            window.navigator.msSaveBlob(
-              textFileAsBlob,
-              "Deposit Category.xlsx"
-            );
+            window.navigator.msSaveBlob(textFileAsBlob, "Job Grade.xlsx");
           }
         } else {
           return swal.fire(`GOS HRM`, "Unable to download data", "error");
@@ -94,23 +79,23 @@ export class JobGradeComponent implements OnInit {
     );
   }
 
+  // Appends a selected file to "uploadInput"
   onSelectedFile(event) {
-    this.file = event.target.files[0];
+    const file = event.target.files[0];
     this.jobGradeUploadForm.patchValue({
-      uploadInput: this.file,
+      uploadInput: file,
     });
   }
 
   uploadJobGrade() {
+    if (this.jobGradeUploadForm.get("uploadInput").value) {
+      return swal.fire("Error", "Select a file", "error");
+    }
     const formData = new FormData();
     formData.append(
       "uploadInput",
       this.jobGradeUploadForm.get("uploadInput").value
     );
-    if (!this.file) {
-      return swal.fire("Error", "Select a file", "error");
-    }
-    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/upload/jobgrade", formData)
@@ -130,6 +115,7 @@ export class JobGradeComponent implements OnInit {
           this.getJobGrade();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -152,24 +138,23 @@ export class JobGradeComponent implements OnInit {
   }
 
   openUploadModal() {
+    // Reset upload form
+    this.fileInput.nativeElement.value = "";
     $("#upload_job_grade").modal("show");
   }
 
   openModal() {
     this.initializeForm();
-    this.formTitle = "Add Job Grade";
     $("#add_job_grade").modal("show");
-    if (this.jobGrades.length === 0) {
+    /* if (this.jobGrades.length === 0) {
       this.jobGradeForm.get("job_grade_reporting_to").disable();
     } else {
-      this.jobGradeForm.get("job_grade_reporting_to").enable();
-    }
+      this.jobGradeForm.get("job_grade_reporting_to").enable(); 
+    }*/
   }
 
   closeModal() {
     $("#add_job_grade").modal("hide");
-    this.initializeForm();
-    this.fileInput.nativeElement.value = "";
   }
 
   getJobGrade() {
@@ -179,8 +164,6 @@ export class JobGradeComponent implements OnInit {
         this.pageLoading = false;
         //console.log(data);
         this.jobGrades = data.setuplist;
-        this.rows = this.jobGrades;
-        this.srch = [...this.rows];
       },
       (err) => {
         this.pageLoading = false;
@@ -189,21 +172,21 @@ export class JobGradeComponent implements OnInit {
     );
   }
 
-  // AddjobGrade Modal Api Call
-  addJobGrade(Form: FormGroup) {
-    if (!Form.valid) {
+  // Add Job Grade Modal Api Call
+  addJobGrade(form: FormGroup) {
+    if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = Form.value;
+    const payload = form.value;
     console.log(payload);
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/add/update/jobgrade", payload)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
-          //console.log(message);
-
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
@@ -214,29 +197,22 @@ export class JobGradeComponent implements OnInit {
           this.getJobGrade();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
       );
   }
 
-  delete(id: any) {
-    let payload;
-    if (id) {
-      const body = [id];
-      //body.push(id);
-      console.log("b", body);
-      payload = {
-        itemIds: body,
-      };
-    } else if (this.selectedId) {
+  delete() {
+    let payload: object;
+    if (this.selectedId) {
       if (this.selectedId.length === 0) {
         return swal.fire("Error", "Select items to delete", "error");
       }
       payload = {
         itemIds: this.selectedId,
       };
-      console.log("s", this.selectedId);
     }
     swal
       .fire({
@@ -247,7 +223,6 @@ export class JobGradeComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService
             .deleteData("/hrmsetup/delete/jobgrade", payload)
@@ -271,7 +246,7 @@ export class JobGradeComponent implements OnInit {
     this.selectedId = [];
   }
 
-  // To Get The employee Edit Id And Set Values To Edit Modal Form
+  // Set Values To Edit Modal Form
   edit(row) {
     this.formTitle = "Edit Job Grade";
     this.jobGradeForm.patchValue({
@@ -285,8 +260,8 @@ export class JobGradeComponent implements OnInit {
     $("#add_job_grade").modal("show");
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
       this.selectedId = this.jobGrades.map((item) => {
         return item.id;
       });
@@ -295,8 +270,8 @@ export class JobGradeComponent implements OnInit {
     }
   }
 
-  addItemId(event, id) {
-    if (event.target.checked) {
+  addItemId(event: Event, id: number) {
+    if ((<HTMLInputElement>event.target).checked) {
       if (!this.selectedId.includes(id)) {
         this.selectedId.push(id);
       }
