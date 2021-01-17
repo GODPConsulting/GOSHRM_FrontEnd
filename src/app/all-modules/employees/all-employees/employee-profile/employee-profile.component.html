@@ -1092,20 +1092,16 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>ID Issues</label>
-                                <div class="cal-icon">
-                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
-                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
-                                </div>
+                                <label>ID Issues <span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker type="date"
+                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>ID Expiry Date</label>
-                                <div class="cal-icon">
-                                    <input class="form-control datetimepicker" type="text" bsDatepicker type="text"
-                                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
-                                </div>
+                                <label>ID Expiry Date <span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker type="date"
+                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -1164,7 +1160,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label> Email <span class="text-danger">*</span></label>
-                                            <input class="form-control" type="text">
+                                            <input class="form-control" type="email">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -1176,8 +1172,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Date of birth <span class="text-danger">*</span></label>
-                                            <input class="form-control datetimepicker" type="text" bsDatepicker
-                                                type="text"
+                                            <input class="form-control datetimepicker" type="date" bsDatepicker
+                                                type="date"
                                                 [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
                                         </div>
                                     </div>
@@ -1238,7 +1234,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Email <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="email">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -1273,27 +1269,24 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Confirmation Received <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
+                                        <label>Confirmation Recieved <span class="text-danger">*</span></label>
+                                        <input class="form-control datetimepicker" type="date" bsDatepicker type="date"
+                                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Confirmation Date <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Confirmation Upload <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
+                                        <input class="form-control datetimepicker" type="date" bsDatepicker type="date"
+                                            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Phone 2</label>
-                                        <input class="form-control" type="text">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-md-5">Confirmation upload (file format)</label>
+                                    <div class="col-md-7">
+                                        <input class="form-control" name="uploadInput" id="uploadInput" #fileInput
+                                            type="file" (change)="onSelectedFile($event)">
                                     </div>
                                 </div>
                             </div>
@@ -1306,6 +1299,7 @@
                             <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -1357,7 +1351,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Email <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="email">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -1607,7 +1601,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group form-focus">
                                             <div class="cal-icon">
-                                                <input type="text" bsDatepicker type="text"
+                                                <input type="date" bsDatepicker type="date"
                                                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                                                     class="form-control floating datetimepicker">
                                             </div>
@@ -1617,7 +1611,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group form-focus">
                                             <div class="cal-icon">
-                                                <input type="text" bsDatepicker type="text"
+                                                <input type="date" bsDatepicker type="date"
                                                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                                                     class="form-control floating datetimepicker">
                                             </div>
@@ -1654,7 +1648,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group form-focus">
                                             <div class="cal-icon">
-                                                <input type="text" bsDatepicker type="text"
+                                                <input type="date" bsDatepicker type="date"
                                                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                                                     class="form-control floating datetimepicker">
                                             </div>
@@ -1664,7 +1658,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group form-focus">
                                             <div class="cal-icon">
-                                                <input type="text" bsDatepicker type="text"
+                                                <input type="date" bsDatepicker type="date"
                                                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                                                     class="form-control floating datetimepicker">
                                             </div>
@@ -1721,7 +1715,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group form-focus">
                                             <div class="cal-icon">
-                                                <input type="text" bsDatepicker type="text"
+                                                <input type="date" bsDatepicker type="date"
                                                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                                                     class="form-control floating datetimepicker">
                                             </div>
@@ -1731,7 +1725,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group form-focus">
                                             <div class="cal-icon">
-                                                <input type="text" bsDatepicker type="text"
+                                                <input type="date" bsDatepicker type="date"
                                                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                                                     class="form-control floating datetimepicker">
                                             </div>
@@ -1762,7 +1756,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group form-focus">
                                             <div class="cal-icon">
-                                                <input type="text" bsDatepicker type="text"
+                                                <input type="text" bsDatepicker type="date"
                                                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                                                     class="form-control floating datetimepicker">
                                             </div>
@@ -1772,7 +1766,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group form-focus">
                                             <div class="cal-icon">
-                                                <input type="text" bsDatepicker type="text"
+                                                <input type="date" bsDatepicker type="date"
                                                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
                                                     class="form-control floating datetimepicker">
                                             </div>
