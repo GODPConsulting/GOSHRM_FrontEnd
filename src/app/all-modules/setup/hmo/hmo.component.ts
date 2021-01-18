@@ -157,12 +157,12 @@ export class HmoComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
     $("#add_hmo").modal("show");
   }
 
   closeModal() {
     $("#add_hmo").modal("hide");
-    this.initializeForm();
   }
 
   // Add HMO Modal Api Call

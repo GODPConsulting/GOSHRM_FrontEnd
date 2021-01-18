@@ -15,35 +15,24 @@ import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: "app-job-sub-skill",
-  templateUrl: "./job-sub-skill.component.html",
-  styleUrls: ["./job-sub-skill.component.css", "../setup.component.css"],
+  selector: "app-job-skill",
+  templateUrl: "./job-skill.component.html",
+  styleUrls: ["./job-skill.component.css", "../setup.component.css"],
 })
-export class JobSubSkillComponent
-  implements OnInit /* , OnDestroy, AfterViewInit */ {
-  /**/ //@ViewChild(DataTableDirective)
-  //@ViewChild("dtElement")
-  //skillstable: DataTableDirective;
+export class JobSkillComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
-  //public dtElement: DataTableDirective;
-  //dtInstance: DataTables.Api;
-  //public dtTrigger: Subject<any> = new Subject();
   @ViewChild("fileInput") fileInput: ElementRef;
-  public subSkill: any[] = [];
-  public rows = [];
-  public srch = [];
-  pageLoading: boolean;
-
-  spinner: boolean = false;
+  public jobSkill: any[] = [];
+  public pageLoading: boolean;
+  public spinner: boolean = false;
   public formTitle = "Add Job Sub Skill";
-  public subSkillForm: FormGroup;
-  selectedId: any[] = [];
-  public subSkillUploadForm: FormGroup;
-  file: File;
+  public jobSkillForm: FormGroup;
+  public selectedId: number[] = [];
+  public jobSkillUploadForm: FormGroup;
   public jobTitles;
-  public jobDetailForm;
+  public jobTitleForm;
   public jobTitleId;
-  public jobSkills;
+  public jobSkills: any[] = [];
   public jobTitle;
   public jobFormTitle = "Add Job Title";
 
@@ -55,14 +44,6 @@ export class JobSubSkillComponent
   ) {}
 
   ngOnInit(): void {
-    $(".floating")
-      .on("focus blur", function (e) {
-        $(this)
-          .parents(".form-focus")
-          .toggleClass("focused", e.type === "focus" || this.value.length > 0);
-      })
-      .trigger("blur");
-
     this.route.paramMap.subscribe((params) => {
       console.log(+params.get("id"));
       this.jobTitleId = +params.get("id");
@@ -83,27 +64,9 @@ export class JobSubSkillComponent
 
     //this.getSubSkill();
     this.initializeForm();
+    this.initializeJobTitleForm();
     //this.getJobTitle();
   }
-  /* 
-  ngAfterViewInit() {
-    //Define datatable
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(): void {
-    //$("#datatable").DataTable().clear();
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  } */
 
   getSingleJobTitle(id: number) {
     this.pageLoading = true;
@@ -123,11 +86,11 @@ export class JobSubSkillComponent
 
             //this.rerender();
             //console.log(this.jobTitle.job_title);
-            this.subSkillForm.patchValue({
+            this.jobSkillForm.patchValue({
               job_title: this.jobTitle.job_title,
             });
             //this.srch = [...this.rows];
-            this.jobDetailForm.patchValue({
+            this.jobTitleForm.patchValue({
               id: this.jobTitle.id,
               job_title: this.jobTitle.job_title,
               job_description: this.jobTitle.job_description,
@@ -141,44 +104,13 @@ export class JobSubSkillComponent
       );
   }
 
-  getJobTitle() {
-    // this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
-      (data) => {
-        //this.pageLoading = false;
-        //console.log(data);
-        this.jobTitles = data.setuplist;
-        this.rows = this.jobTitles;
-        this.srch = [...this.rows];
-      },
-      (err) => {
-        //this.pageLoading = false;
-        console.log(err);
-      }
-    );
-  }
-
-  getJobId(event) {
-    console.log(event.target.value);
-    //console.log(this.jobTitles);
-    /* for (const obj of this.jobTitles) {
-      if (obj.job_title === event.target.value) {
-        this.jobTitleId = obj.id;
-        console.log(this.jobTitleId);
-      }
-    }*/
-    this.subSkillForm.patchValue({
-      job_details_Id: this.jobTitleId,
-    });
-  }
-
   // Add Job Title  Modal Api Call
-  addJobDetail(Form: FormGroup) {
-    if (!Form.valid) {
+  addJobTitle(form: FormGroup) {
+    if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = Form.value;
+    const payload = form.value;
     this.jobTitle = payload.job_title;
     console.log(this.jobTitle);
 
@@ -196,17 +128,17 @@ export class JobSubSkillComponent
 
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
-            //populate jobtitle form field
-            this.jobDetailForm.patchValue({
+            // Populate job title form field
+            this.jobTitleForm.patchValue({
               id: payload.id,
               job_title: payload.job_title,
               job_description: payload.job_description,
             });
-            $("#add_job_detail").modal("hide");
+            //$("#add_job_title").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.router.navigate(["/setup/job-detail", res.setup_id]);
+          this.router.navigate(["/setup/job-title", this.jobTitleId]);
           // this.getJobDetail();
           /* this.getSingleJobTitle(this.jobTitleId);
           this.jobDetailForm.patchValue({
@@ -223,21 +155,22 @@ export class JobSubSkillComponent
       );
   }
 
-  onSelectedFile(event) {
-    this.file = event.target.files[0];
-    this.subSkillUploadForm.patchValue({
-      uploadInput: this.file,
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event) {
+    const file = (<HTMLInputElement>event.target).files[0];
+    this.jobSkillUploadForm.patchValue({
+      uploadInput: file,
     });
   }
 
-  stopParentEvent(event) {
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
   downloadFile() {
     this.setupService.exportExcelFile("/hrmsetup/download/sub_skill").subscribe(
       (resp) => {
-        //this.blob = resp;
         const data = resp;
         if (data != undefined) {
           const byteString = atob(data);
@@ -257,10 +190,7 @@ export class JobSubSkillComponent
             const textFileAsBlob = new Blob([bb], {
               type: "application/vnd.ms-excel",
             });
-            window.navigator.msSaveBlob(
-              textFileAsBlob,
-              "Deposit Category.xlsx"
-            );
+            window.navigator.msSaveBlob(textFileAsBlob, "Job skills.xlsx");
           }
         } else {
           return swal.fire(`GOS HRM`, "Unable to download data", "error");
@@ -270,17 +200,15 @@ export class JobSubSkillComponent
     );
   }
 
-  uploadSubSkill() {
+  uploadJobSkill() {
+    if (!this.jobSkillUploadForm.get("uploadInput").value) {
+      return swal.fire("Error", "Select a file", "error");
+    }
     const formData = new FormData();
     formData.append(
       "uploadInput",
-      this.subSkillUploadForm.get("uploadInput").value
+      this.jobSkillUploadForm.get("uploadInput").value
     );
-    if (!this.file) {
-      return swal.fire("Error", "Select a file", "error");
-    }
-
-    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/upload/sub_skill", formData)
@@ -291,12 +219,11 @@ export class JobSubSkillComponent
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = "";
             $("#upload_sub_skill").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getSubSkill();
+          //this.getSubSkill();
         },
         (err) => {
           this.spinner = false;
@@ -304,10 +231,6 @@ export class JobSubSkillComponent
           swal.fire("Error", message, "error");
         }
       );
-  }
-
-  openUploadModal() {
-    $("#upload_sub_skill").modal("show");
   }
 
   /*  initializeForm() {
@@ -329,7 +252,7 @@ export class JobSubSkillComponent
  */
 
   initializeForm() {
-    this.subSkillForm = this.formBuilder.group({
+    this.jobSkillForm = this.formBuilder.group({
       job_details_Id: [this.jobTitleId],
       id: [0],
       skill: ["", Validators.required],
@@ -337,16 +260,19 @@ export class JobSubSkillComponent
       weight: ["", Validators.required],
       job_title: ["", Validators.required],
     });
-    this.subSkillUploadForm = this.formBuilder.group({
+    this.jobSkillUploadForm = this.formBuilder.group({
       uploadInput: [""],
     });
-    this.jobDetailForm = this.formBuilder.group({
+  }
+
+  initializeJobTitleForm() {
+    this.jobTitleForm = this.formBuilder.group({
       id: [0],
       job_title: ["", Validators.required],
       job_description: ["", Validators.required],
     });
   }
-
+  /* 
   getSubSkill() {
     this.pageLoading = true;
     return this.setupService.getData("/hrmsetup/get/all/sub_skill").subscribe(
@@ -355,7 +281,6 @@ export class JobSubSkillComponent
         console.log(data);
         this.subSkill = data.setuplist;
         this.rows = this.subSkill;
-        this.srch = [...this.rows];
       },
       (err) => {
         this.pageLoading = false;
@@ -363,16 +288,20 @@ export class JobSubSkillComponent
       }
     );
   }
+ */
 
-  openModal() {
-    $("#add_sub_skill").modal("show");
-    //this.subSkillForm.get("job_title").enable();
-    this.formTitle = "Add Job SKill";
+  openUploadModal() {
+    // Resets the upload form
+    this.fileInput.nativeElement.value = "";
+    $("#upload_sub_skill").modal("show");
   }
 
-  closeUploadModal() {
-    $("#add_sub_skill").modal("hide");
-    this.subSkillForm = this.formBuilder.group({
+  openModal() {
+    this.initializeForm();
+    this.formTitle = "Add Job SKill";
+    $("#add_sub_skill").modal("show");
+    //this.subSkillForm.get("job_title").enable();
+    this.jobSkillForm = this.formBuilder.group({
       job_details_Id: [this.jobTitleId],
       id: [0],
       skill: ["", Validators.required],
@@ -380,25 +309,28 @@ export class JobSubSkillComponent
       weight: ["", Validators.required],
       job_title: [this.jobTitle.job_title, Validators.required],
     });
+    console.log(this.jobSkillForm.value);
+  }
+
+  closeUploadModal() {
+    $("#add_sub_skill").modal("hide");
   }
 
   closeModal() {
     $("#add_sub_skill").modal("hide");
-    this.initializeForm();
-    this.fileInput.nativeElement.value = "";
   }
 
-  // Add employee  Modal Api Call
-  addSubSkill(Form: FormGroup) {
-    const payload = Form.value;
+  // Add Job Skill  Modal Api Call
+  addJobSkill(form: FormGroup) {
+    const payload = form.value;
     console.log(payload);
     //this.subSkillForm.get("job_title").enable();
-    this.subSkillForm.patchValue({
+    /* this.jobSkillForm.patchValue({
       job_details_Id: this.jobTitleId,
       job_title: payload.job_title,
-    });
+    }); */
     console.log(payload);
-    if (!Form.valid) {
+    if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -419,19 +351,6 @@ export class JobSubSkillComponent
           }
           //this.getSubSkill();
           this.getSingleJobTitle(this.jobTitleId);
-          this.dtOptions = {
-            dom:
-              "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-              "<'row'<'col-sm-12'tr>>" +
-              "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            language: {
-              search: "_INPUT_",
-              searchPlaceholder: "Start typing to search by any field",
-            },
-            columns: [{ orderable: false }, null, null, null],
-            order: [[1, "asc"]],
-          };
-          //this.rerender();
         },
         (err) => {
           this.spinner = false;
@@ -441,40 +360,32 @@ export class JobSubSkillComponent
       );
   }
 
-  // To Get The employee Edit Id And Set Values To Edit Modal Form
-  editSubSkill(row) {
+  // Set Values To Edit Modal Form
+  editJobSkill(row) {
     this.formTitle = "Edit Job Skill";
-
-    this.subSkillForm.patchValue({
-      job_details_Id: this.jobTitleId,
+    this.jobSkillForm.patchValue({
+      job_details_Id: row.job_details_Id,
       id: row.id,
       skill: row.skill,
       description: row.description,
       weight: row.weight,
       job_title: this.jobTitle.job_title,
     });
+    //console.log(this.jobSkillForm.value);
+
     //this.subSkillForm.get("job_title").disable();
     $("#add_sub_skill").modal("show");
   }
 
-  delete(id: any) {
-    let payload;
-
-    if (id) {
-      const body = [id];
-      //body.push(id);
-      //console.log(body);
-      payload = {
-        itemIds: body,
-      };
-    } else if (this.selectedId) {
-      if (this.selectedId.length === 0) {
-        return swal.fire("Error", "Select items to delete", "error");
-      }
+  delete() {
+    let payload: object;
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    } else {
       payload = {
         itemIds: this.selectedId,
       };
-      console.log(this.selectedId);
+      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -510,8 +421,8 @@ export class JobSubSkillComponent
     this.selectedId = [];
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
       this.selectedId = this.jobSkills.map((item) => {
         return item.id;
       });
@@ -520,8 +431,8 @@ export class JobSubSkillComponent
     }
   }
 
-  addItemId(event, id) {
-    if (event.target.checked) {
+  addItemId(event: Event, id: number) {
+    if ((<HTMLInputElement>event.target).checked) {
       if (!this.selectedId.includes(id)) {
         this.selectedId.push(id);
       }
