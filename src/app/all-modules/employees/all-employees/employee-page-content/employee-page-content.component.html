@@ -13,7 +13,8 @@
                 </ul>
             </div>
             <div class="col-auto float-right ml-auto">
-                <a class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add
+                <a routerLink="/employees/employee-form" class="btn add-btn" data-toggle="modal"
+                    data-target="#add_employee"><i class="fa fa-plus"></i> Add
                     Employee</a>
                 <div class="view-icons">
                     <a routerLink="/employees/employeepage" class="grid-view btn btn-link active"><i
@@ -25,38 +26,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
-    <!-- Search Filter 
-    <div class="row filter-row">
-        <div class="col-sm-6 col-md-3">
-            <div class="form-group form-focus">
-                <input type="text" class="form-control floating" (input)="searchId($event.target.value)">
-                <label class=" focus-label">Employee ID</label>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-            <div class="form-group form-focus">
-                <input type="text" class="form-control floating" (input)="searchName($event.target.value)">
-                <label class="focus-label">Employee Name</label>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-            <div class="form-group form-focus select-focus">
-                <select class="select form-control" (input)="searchByDesignation($event.target.value)">
-                    <option>Select Designation</option>
-                    <option>Web Developer</option>
-                    <option>Web Designer</option>
-                    <option>Android Developer</option>
-                    <option>Ios Developer</option>
-                </select>
-                <label class="focus-label">Designation</label>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-            <a class="btn btn-success btn-block"> Search </a>
-        </div>
-    </div>-->
-    <!-- Search Filter -->
 
     <div class="row staff-grid-row">
         <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3" *ngFor="let emp of employeeList;let i = index">
