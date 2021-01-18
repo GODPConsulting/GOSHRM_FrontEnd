@@ -1,29 +1,25 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: "app-job-detail",
-  templateUrl: "./job-detail.component.html",
-  styleUrls: ["./job-detail.component.css", "../setup.component.css"],
+  selector: "app-job-title",
+  templateUrl: "./job-title.component.html",
+  styleUrls: ["./job-title.component.css", "../setup.component.css"],
 })
-export class JobDetailComponent implements OnInit {
+export class JobTitleComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild("fileInput")
   fileInput: ElementRef;
-  public jobDetails: any[] = [];
-  public rows = [];
-  public srch = [];
-  pageLoading: boolean;
-
-  spinner: boolean = false;
+  public jobTitles: any[] = [];
+  public pageLoading: boolean;
+  public spinner: boolean = false;
   public formTitle = "Add Job Title";
-  public jobDetailForm: FormGroup;
-  selectedId: any[] = [];
-  public jobDetailUploadForm: FormGroup;
-  file: File;
+  public jobTitleForm: FormGroup;
+  public selectedId: number[] = [];
+  public jobTitleUploadForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,13 +27,6 @@ export class JobDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    $(".floating")
-      .on("focus blur", function (e) {
-        $(this)
-          .parents(".form-focus")
-          .toggleClass("focused", e.type === "focus" || this.value.length > 0);
-      })
-      .trigger("blur");
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -50,25 +39,26 @@ export class JobDetailComponent implements OnInit {
       columns: [{ orderable: false }, null, null, null],
       order: [[1, "asc"]],
     };
-    this.getJobDetail();
+    this.getJobTitle();
     this.initializeForm();
   }
 
-  onSelectedFile(event) {
-    this.file = event.target.files[0];
-    this.jobDetailUploadForm.patchValue({
-      uploadInput: this.file,
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event) {
+    const file = (<HTMLInputElement>event.target).files[0];
+    this.jobTitleUploadForm.patchValue({
+      uploadInput: file,
     });
   }
 
-  stopParentEvent(event) {
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
   downloadFile() {
     this.setupService.exportExcelFile("/hrmsetup/download/jobtitle").subscribe(
       (resp) => {
-        //this.blob = resp;
         const data = resp;
         if (data != undefined) {
           const byteString = atob(data);
@@ -79,7 +69,7 @@ export class JobDetailComponent implements OnInit {
           }
           const bb = new Blob([ab]);
           try {
-            const file = new File([bb], "Job Detail.xlsx", {
+            const file = new File([bb], "Job Title.xlsx", {
               type: "application/vnd.ms-excel",
             });
             console.log(file, bb);
@@ -88,10 +78,7 @@ export class JobDetailComponent implements OnInit {
             const textFileAsBlob = new Blob([bb], {
               type: "application/vnd.ms-excel",
             });
-            window.navigator.msSaveBlob(
-              textFileAsBlob,
-              "Deposit Category.xlsx"
-            );
+            window.navigator.msSaveBlob(textFileAsBlob, "Job Title.xlsx");
           }
         } else {
           return swal.fire(`GOS HRM`, "Unable to download data", "error");
@@ -101,36 +88,30 @@ export class JobDetailComponent implements OnInit {
     );
   }
 
-  uploadJobDetail() {
+  uploadJobTitle() {
+    if (!this.jobTitleUploadForm.get("uploadInput").value) {
+      return swal.fire("Error", "Select a file", "error");
+    }
     const formData = new FormData();
     formData.append(
       "uploadInput",
-      this.jobDetailUploadForm.get("uploadInput").value
+      this.jobTitleUploadForm.get("uploadInput").value
     );
-    if (!this.file) {
-      return swal.fire("Error", "Select a file", "error");
-    }
-
-    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
-    
     return this.setupService
       .updateData("/hrmsetup/upload/jobtitle", formData)
       .subscribe(
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
-
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = "";
-            $("#upload_job_detail").modal("hide");
-          
+            $("#upload_job_title").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getJobDetail();
+          this.getJobTitle();
         },
         (err) => {
           this.spinner = false;
@@ -141,52 +122,28 @@ export class JobDetailComponent implements OnInit {
   }
 
   openUploadModal() {
-    $("#upload_job_detail").modal("show");
-  }
-
-  closeUploadModal() {
-    //this.jobDetailUploadForm.reset();
     this.fileInput.nativeElement.value = "";
+    $("#upload_job_title").modal("show");
   }
-
-  /*  initializeForm() {
-    this.jobDetailForm = this.formBuilder.group({
-      id: [0],
-      job_title: ["", Validators.required],
-      job_description: ["", Validators.required],
-      sub_Skills: this.formBuilder.group([
-        {
-          job_details_Id: 0,
-          skill: "",
-          description: "",
-          weight: "",
-        },
-        Validators.required,
-      ]),
-    });
-  }
- */
 
   initializeForm() {
-    this.jobDetailForm = this.formBuilder.group({
+    this.jobTitleForm = this.formBuilder.group({
       id: [0],
       job_title: ["", Validators.required],
       job_description: ["", Validators.required],
     });
-    this.jobDetailUploadForm = this.formBuilder.group({
+    this.jobTitleUploadForm = this.formBuilder.group({
       uploadInput: [""],
     });
   }
 
-  getJobDetail() {
+  getJobTitle() {
     this.pageLoading = true;
     return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
       (data) => {
         this.pageLoading = false;
         console.log(data);
-        this.jobDetails = data.setuplist;
-        this.rows = this.jobDetails;
-        this.srch = [...this.rows];
+        this.jobTitles = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
@@ -195,39 +152,32 @@ export class JobDetailComponent implements OnInit {
     );
   }
 
-  openModal() {
-    $("#add_job_detail").modal("show");
-  }
-
-  closeModal() {
-    $("#add_job_detail").modal("hide");
+  /*  closeModal() {
+    $("#add_job_title").modal("hide");
     this.initializeForm();
-    this.fileInput.nativeElement.value = "";
-  }
+  } */
 
   // Add Job Title  Modal Api Call
-  addJobDetail(Form: FormGroup) {
-    if (!Form.valid) {
+  addJobTitle(form: FormGroup) {
+    if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = Form.value;
+    const payload = form.value;
     console.log(payload);
     return this.setupService
       .updateData("/hrmsetup/add/update/jobtitle", payload)
       .subscribe(
         (res) => {
           const message = res.status.message.friendlyMessage;
-          //console.log(message);
-
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            $("#add_job_detail").modal("hide");
+            $("#add_job_title").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getJobDetail();
+          this.getJobTitle();
         },
         (err) => {
           const message = err.status.message.friendlyMessage;
@@ -236,31 +186,22 @@ export class JobDetailComponent implements OnInit {
       );
   }
 
-  // To Get The employee Edit Id And Set Values To Edit Modal Form
-  editJobDetail(row) {
+  // Set Values To Edit Modal Form
+  editJobTitle(row) {
     this.formTitle = "Edit Job Title";
-    this.jobDetailForm.patchValue({
+    this.jobTitleForm.patchValue({
       id: row.id,
       job_title: row.job_title,
       job_description: row.job_description,
     });
-    $("#add_job_detail").modal("show");
+    $("#add_job_title").modal("show");
   }
 
-  delete(id: any) {
-    let payload;
-
-    if (id) {
-      const body = [id];
-      //body.push(id);
-      //console.log(body);
-      payload = {
-        itemIds: body,
-      };
-    } else if (this.selectedId) {
-      if (this.selectedId.length === 0) {
-        return swal.fire("Error", "Select items to delete", "error");
-      }
+  delete() {
+    let payload: object;
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    } else {
       payload = {
         itemIds: this.selectedId,
       };
@@ -284,7 +225,7 @@ export class JobDetailComponent implements OnInit {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("Success", message, "success").then(() => {
-                    this.getJobDetail();
+                    this.getJobTitle();
                   });
                 } else {
                   swal.fire("Error", message, "error");
@@ -299,9 +240,9 @@ export class JobDetailComponent implements OnInit {
     this.selectedId = [];
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.jobDetails.map((item) => {
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
+      this.selectedId = this.jobTitles.map((item) => {
         return item.id;
       });
     } else {
@@ -309,8 +250,8 @@ export class JobDetailComponent implements OnInit {
     }
   }
 
-  addItemId(event, id) {
-    if (event.target.checked) {
+  addItemId(event: Event, id: number) {
+    if ((<HTMLInputElement>event.target).checked) {
       if (!this.selectedId.includes(id)) {
         this.selectedId.push(id);
       }

@@ -3,7 +3,7 @@
 <div *ngIf="!pageLoading" class="content container-fluid">
 
     <!-- Add Job Title Modal -->
-    <div id="add_job_detail" role="dialog">
+    <div id="add_job_title" role="dialog">
         <div class="mb-3">
             <div class="modal-content w-100">
                 <div class="modal-header">
@@ -13,20 +13,20 @@
                     </button> -->
                 </div>
                 <div class="modal-body">
-                    <form (ngSubmit)="addJobDetail(jobDetailForm)" [formGroup]="jobDetailForm">
+                    <form (ngSubmit)="addJobTitle(jobTitleForm)" [formGroup]="jobTitleForm">
                         <div class="form-group">
                             <label class="col-form-label">Job Title<span class="text-danger">*</span></label>
                             <input class="form-control" type="text" [class.invalid]="
-                                jobDetailForm.get('job_title').invalid &&
-                                jobDetailForm.get('job_title').touched
+                                jobTitleForm.get('job_title').invalid &&
+                                jobTitleForm.get('job_title').touched
                     " formControlName="job_title" />
                             <div *ngIf="
-                                jobDetailForm.get('job_title').invalid &&
-                                jobDetailForm.get('job_title').touched
+                                jobTitleForm.get('job_title').invalid &&
+                                jobTitleForm.get('job_title').touched
                     ">
                                 <small *ngIf="
-                                    jobDetailForm.get('job_title').invalid &&
-                                    jobDetailForm.get('job_title').touched
+                                    jobTitleForm.get('job_title').invalid &&
+                                    jobTitleForm.get('job_title').touched
                       " class="text-danger">
                                     *Field is required</small>
                             </div>
@@ -34,16 +34,16 @@
                         <div class="form-group">
                             <label class="col-form-label">Description<span class="text-danger">*</span></label>
                             <textarea class="form-control" type="text" rows="5" [class.invalid]="
-                                jobDetailForm.get('job_description').invalid &&
-                                jobDetailForm.get('job_description').touched
+                                jobTitleForm.get('job_description').invalid &&
+                                jobTitleForm.get('job_description').touched
                     " formControlName="job_description"> </textarea>
                             <div *ngIf="
-                                jobDetailForm.get('job_description').invalid &&
-                                jobDetailForm.get('job_description').touched
+                                jobTitleForm.get('job_description').invalid &&
+                                jobTitleForm.get('job_description').touched
                     ">
                                 <small *ngIf="
-                                    jobDetailForm.get('job_description').invalid &&
-                                    jobDetailForm.get('job_description').touched
+                                    jobTitleForm.get('job_description').invalid &&
+                                    jobTitleForm.get('job_description').touched
                       " class="text-danger">
                                     *Field is required</small>
                             </div>
@@ -101,7 +101,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="editSubSkill(row)"
+                        <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="editJobSkill(row)"
                             *ngFor="let row of jobSkills; let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
@@ -125,52 +125,27 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{formTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                    (click)="closeUploadModal()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="addSubSkill(subSkillForm)" [formGroup]="subSkillForm">
+                <form (ngSubmit)="addJobSkill(jobSkillForm)" [formGroup]="jobSkillForm">
                     <div class="row">
-                        <!-- <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Job Title<span class="text-danger">*</span></label>
-                                <select class="form-control" [class.invalid]="
-                                subSkillForm.get('job_title').invalid &&
-                                subSkillForm.get('job_title').touched" formControlName="job_title"
-                                    (change)=getJobId($event)>
-                                    <option selected value="">Select Job Title</option>
-
-                                    <option *ngFor="let row of jobTitles" value="{{row.job_title}}">{{row.job_title}}
-                                    </option>
-                                </select>
-                                <div *ngIf="
-                                subSkillForm.get('job_title').invalid &&
-                                subSkillForm.get('job_title').touched
-                    ">
-                                    <small *ngIf="
-                                    subSkillForm.get('job_title').invalid &&
-                                    subSkillForm.get('job_title').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div> -->
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Skill<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                subSkillForm.get('skill').invalid &&
-                                subSkillForm.get('skill').touched
+                                jobSkillForm.get('skill').invalid &&
+                                jobSkillForm.get('skill').touched
                     " formControlName="skill" />
                                 <div *ngIf="
-                                subSkillForm.get('skill').invalid &&
-                                subSkillForm.get('skill').touched
+                                jobSkillForm.get('skill').invalid &&
+                                jobSkillForm.get('skill').touched
                     ">
                                     <small *ngIf="
-                                    subSkillForm.get('skill').invalid &&
-                                    subSkillForm.get('skill').touched
+                                    jobSkillForm.get('skill').invalid &&
+                                    jobSkillForm.get('skill').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -180,16 +155,16 @@
                             <div class="form-group">
                                 <label class="col-form-label">Weight<span class="text-danger">*</span></label>
                                 <input class="form-control" type="number" min="1" [class.invalid]="
-                                subSkillForm.get('weight').invalid &&
-                                subSkillForm.get('weight').touched
+                                jobSkillForm.get('weight').invalid &&
+                                jobSkillForm.get('weight').touched
                     " formControlName="weight" />
                                 <div *ngIf="
-                                subSkillForm.get('weight').invalid &&
-                                subSkillForm.get('weight').touched
+                                jobSkillForm.get('weight').invalid &&
+                                jobSkillForm.get('weight').touched
                     ">
                                     <small *ngIf="
-                                    subSkillForm.get('weight').invalid &&
-                                    subSkillForm.get('weight').touched
+                                    jobSkillForm.get('weight').invalid &&
+                                    jobSkillForm.get('weight').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -199,16 +174,16 @@
                             <div class="form-group">
                                 <label class="col-form-label">Description<span class="text-danger">*</span></label>
                                 <textarea class="form-control" type="text" rows="5" [class.invalid]="
-                                subSkillForm.get('description').invalid &&
-                                subSkillForm.get('description').touched
+                                jobSkillForm.get('description').invalid &&
+                                jobSkillForm.get('description').touched
                     " formControlName="description"></textarea>
                                 <div *ngIf="
-                                subSkillForm.get('description').invalid &&
-                                subSkillForm.get('description').touched
+                                jobSkillForm.get('description').invalid &&
+                                jobSkillForm.get('description').touched
                     ">
                                     <small *ngIf="
-                                    subSkillForm.get('description').invalid &&
-                                    subSkillForm.get('description').touched
+                                    jobSkillForm.get('description').invalid &&
+                                    jobSkillForm.get('description').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -229,19 +204,21 @@
         </div>
     </div>
 </div>
-<!-- /Add Employee Modal -->
-<!-- Upload Job Detail Modal -->
+<!-- /Add Job Skill Modal -->
+
+<!-- Upload Job Skill Modal -->
 <div id="upload_sub_skill" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Upload Job Skill</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="closeUploadModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body px-5">
-                <form (ngSubmit)="uploadSubSkill()" [formGroup]="subSkillUploadForm">
+                <form (ngSubmit)="uploadjobSkill()" [formGroup]="jobSkillUploadForm">
                     <div class="row">
 
                         <div class="form-group row">
@@ -268,7 +245,7 @@
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadSubSkill()"
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadJobSkill()"
                             [disabled]="spinner">
                             <span *ngIf="!spinner">Submit</span>
                             <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
@@ -279,4 +256,4 @@
         </div>
     </div>
 </div>
-<!-- /Upload Job Grade Modal -->
+<!-- /Upload Job Skill Modal -->

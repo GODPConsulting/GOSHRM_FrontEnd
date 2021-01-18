@@ -36,7 +36,7 @@ export class GymWorkoutComponent implements OnInit {
         search: "_INPUT_",
         searchPlaceholder: "Start typing to search by any field",
       },
-      columns: [{ orderable: false }, null, null, null, null],
+      columns: [{ orderable: false }, null, null, null, null, null],
       order: [[1, "asc"]],
     };
     this.getGymWorkout();
@@ -136,6 +136,7 @@ export class GymWorkoutComponent implements OnInit {
       id: [0],
       gym: ["", Validators.required],
       contact_phone_number: ["", Validators.required],
+      email: ["", Validators.required],
       address: ["", Validators.required],
       ratings: ["", Validators.required],
       other_comments: ["", Validators.required],
@@ -218,10 +219,9 @@ export class GymWorkoutComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId) {
-      if (this.selectedId.length === 0) {
-        return swal.fire("Error", "Select items to delete", "error");
-      }
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    } else {
       payload = {
         itemIds: this.selectedId,
       };
