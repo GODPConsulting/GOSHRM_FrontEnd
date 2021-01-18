@@ -25,40 +25,6 @@
     </div>
     <!-- /Page Header -->
 
-    <!-- Search Filter 
-    <div class="row filter-row">
-        <div class="col-sm-6 col-md-3">
-            <div class="form-group form-focus">
-                <input type="text" class="form-control floating" (input)="searchId($event.target.value)"
-                    (focusout)="rerender()">
-                <label class="focus-label">Employee ID</label>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-            <div class="form-group form-focus">
-                <input type="text" class="form-control floating" (input)="searchName($event.target.value)"
-                    (focusout)="rerender()">
-                <label class="focus-label">Employee Name</label>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-            <div class="form-group form-focus select-focus">
-                <select class="select form-control" (input)="searchByDesignation($event.target.value)"
-                    (focusout)="rerender()">
-                    <option value="">Select Designation</option>
-                    <option>Web Developer</option>
-                    <option>Web Designer</option>
-                    <option>Android Developer</option>
-                    <option>Ios Developer</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-sm-6 col-md-3">
-            <a class="btn btn-success btn-block"> Search </a>
-        </div>
-    </div>-->
-    <!-- /Search Filter -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -91,7 +57,7 @@
                             <td>row.jobGrade</td>
                             <td>{{row.staffOfficeName}}</td>
                             <td>{{row.email}}</td>
-                            <td>row.joindate | customDate</td>
+                            <td>row.joindate</td>
                             <td>
                                 row.reportingTo
                             </td>

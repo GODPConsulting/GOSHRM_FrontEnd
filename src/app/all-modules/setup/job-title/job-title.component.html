@@ -17,7 +17,7 @@
                 <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
                         class="fa fa-upload"></i></a>
 
-                <a class="btn add-btn hint" data-toggle="modal" routerLink="/setup/job-sub-skill"><span
+                <a class="btn add-btn hint" data-toggle="modal" routerLink="/setup/job-skill"><span
                         class="hint-text">Add</span><i class="fa fa-plus"></i></a>
                 <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
                         class="fa fa-trash"></i></a>
@@ -34,7 +34,7 @@
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === jobDetails.length"
+                                <input type="checkbox" [checked]="selectedId.length === jobTitles.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
@@ -44,7 +44,7 @@
                     </thead>
                     <tbody>
                         <tr data-toggle="modal" class="pointer" data-target="#edit_employee"
-                            *ngFor="let row of jobDetails | filter:searchText; let i = index">
+                            *ngFor="let row of jobTitles; let i = index">
 
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
@@ -64,79 +64,18 @@
 </div>
 <!-- /Page Content -->
 
-<!-- Add Job Title Modal -->
-<!--<div id="add_job_detail" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content w-75 mx-auto">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Job Title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form (ngSubmit)="addJobDetail(jobDetailForm)" [formGroup]="jobDetailForm">
-                    <div class="form-group">
-                        <label class="col-form-label">Job Title<span class="text-danger">*</span></label>
-                        <input class="form-control" type="text" [class.invalid]="
-                                jobDetailForm.get('job_title').invalid &&
-                                jobDetailForm.get('job_title').touched
-                    " formControlName="job_title" />
-                        <div *ngIf="
-                                jobDetailForm.get('job_title').invalid &&
-                                jobDetailForm.get('job_title').touched
-                    ">
-                            <small *ngIf="
-                                    jobDetailForm.get('job_title').invalid &&
-                                    jobDetailForm.get('job_title').touched
-                      " class="text-danger">
-                                *Field is required</small>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-form-label">Description<span class="text-danger">*</span></label>
-                        <textarea class="form-control" type="text" rows="5" [class.invalid]="
-                                jobDetailForm.get('job_description').invalid &&
-                                jobDetailForm.get('job_description').touched
-                    " formControlName="job_description"> </textarea>
-                        <div *ngIf="
-                                jobDetailForm.get('job_description').invalid &&
-                                jobDetailForm.get('job_description').touched
-                    ">
-                            <small *ngIf="
-                                    jobDetailForm.get('job_description').invalid &&
-                                    jobDetailForm.get('job_description').touched
-                      " class="text-danger">
-                                *Field is required</small>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            </div>
-           
-        </div>
-    </div>
-</div> -->
-
-
-<!-- /Add Job Title Modal -->
-<!-- Upload Job Detail Modal -->
-<div id="upload_job_detail" class="modal custom-modal fade" role="dialog">
+<!-- Upload Job Title Modal -->
+<div id="upload_job_title" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Upload Job Title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" #fileInput
-                    (click)="closeModal()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body px-5">
-                <form (ngSubmit)="uploadJobDetail()" [formGroup]="jobDetailUploadForm">
+                <form (ngSubmit)="uploadJobTitle()" [formGroup]="jobTitleUploadForm">
                     <div class="row">
                         <div class="form-group row">
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
@@ -146,8 +85,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="row">
                         <p>Please use the guide below for your sheet</p>
                         <table class="table table-bordered">
@@ -162,7 +99,7 @@
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadJobDetail()"
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadJobTitle()"
                             [disabled]="spinner">
                             <span *ngIf="!spinner">Submit</span>
                             <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>

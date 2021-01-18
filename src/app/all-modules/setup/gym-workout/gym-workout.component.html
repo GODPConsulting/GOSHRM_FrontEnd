@@ -39,6 +39,7 @@
                             <th>S/N</th>
                             <th>Gym</th>
                             <th>Phone Number</th>
+                            <th>Email</th>
                             <th>Ratings</th>
                         </tr>
                     </thead>
@@ -52,6 +53,7 @@
                             <td>{{ i + 1 }}</td>
                             <td>{{ row.gym }}</td>
                             <td>{{ row.contact_phone_number }}</td>
+                            <td>{{row.email}}</td>
                             <td>{{ row.ratings }}</td>
                         </tr>
                     </tbody>
@@ -115,18 +117,18 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Address <span class="text-danger">*</span></label>
-                                <textarea class="form-control" type="text" rows="5" [class.invalid]="
-                                gymWorkoutForm.get('address').invalid &&
-                                gymWorkoutForm.get('address').touched
-                    " formControlName="address"> </textarea>
+                                <label class="col-form-label">Email<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                gymWorkoutForm.get('email').invalid &&
+                                gymWorkoutForm.get('email').touched
+                    " formControlName="email" />
                                 <div *ngIf="
-                                gymWorkoutForm.get('address').invalid &&
-                                gymWorkoutForm.get('address').touched
+                                gymWorkoutForm.get('email').invalid &&
+                                gymWorkoutForm.get('email').touched
                     ">
                                     <small *ngIf="
-                                    gymWorkoutForm.get('address').invalid &&
-                                    gymWorkoutForm.get('address').touched
+                                    gymWorkoutForm.get('email').invalid &&
+                                    gymWorkoutForm.get('email').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -152,6 +154,25 @@
                             </div>
                         </div>
 
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Address <span class="text-danger">*</span></label>
+                                <textarea class="form-control" type="text" rows="5" [class.invalid]="
+                                gymWorkoutForm.get('address').invalid &&
+                                gymWorkoutForm.get('address').touched
+                    " formControlName="address"> </textarea>
+                                <div *ngIf="
+                                gymWorkoutForm.get('address').invalid &&
+                                gymWorkoutForm.get('address').touched
+                    ">
+                                    <small *ngIf="
+                                    gymWorkoutForm.get('address').invalid &&
+                                    gymWorkoutForm.get('address').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Comments <span class="text-danger">*</span></label>
@@ -216,6 +237,7 @@
                             <tr>
                                 <th>Gym</th>
                                 <th>Phone Number</th>
+                                <th>Email</th>
                                 <th>Address</th>
                                 <th>Ratings</th>
                                 <th>Comments</th>
