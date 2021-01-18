@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+// import { NgSelectModule } from '@ng-select/ng-select';
 
 //Bootstrap DataTable
 import { DataTablesModule } from 'angular-datatables';
@@ -21,6 +22,7 @@ import {HttpTokenInterceptor} from "./services/http.interceptor.service";
     AppRoutingModule,
     HttpClientModule,
     DataTablesModule,
+    // NgSelectModule,
     ToastrModule.forRoot(
       {
         timeOut: 1500,
