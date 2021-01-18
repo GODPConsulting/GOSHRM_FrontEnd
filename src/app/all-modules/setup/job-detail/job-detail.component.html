@@ -51,9 +51,9 @@
                                     (change)="addItemId($event, row.id)" />
                             </td>
 
-                            <td> <a [routerLink]="['/job-detail',row.id]">{{ i + 1 }}</a></td>
-                            <td> <a [routerLink]="['/job-detail',row.id]">{{ row.job_title }}</a></td>
-                            <td> <a [routerLink]="['/job-detail',row.id]">{{ row.totalSkillWeight }}</a></td>
+                            <td> <a [routerLink]="[row.id]">{{ i + 1 }}</a></td>
+                            <td> <a [routerLink]="[row.id]">{{ row.job_title }}</a></td>
+                            <td> <a [routerLink]="[row.id]">{{ row.totalSkillWeight }}</a></td>
 
                         </tr>
                     </tbody>
