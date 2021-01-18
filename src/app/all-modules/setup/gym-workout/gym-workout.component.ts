@@ -1,4 +1,3 @@
-import { DatePipe } from "@angular/common";
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
@@ -14,17 +13,13 @@ export class GymWorkoutComponent implements OnInit {
   @ViewChild("fileInput") fileInput: ElementRef;
   public dtOptions: DataTables.Settings = {};
   public gymWorkouts: any[] = [];
-  public rows = [];
-  public srch = [];
-  pageLoading: boolean;
-
-  spinner: boolean = false;
-  public formTitle = "Add Gym/Workout";
-  public pipe = new DatePipe("en-US");
+  public pageLoading: boolean;
+  public spinner: boolean = false;
+  public formTitle: string = "Add Gym/Workout";
   public gymWorkoutForm: FormGroup;
-  selectedId: any[] = [];
+  public selectedId: any[] = [];
   public gymWorkoutUploadForm: FormGroup;
-  file: File;
+  public file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,13 +27,6 @@ export class GymWorkoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    $(".floating")
-      .on("focus blur", function (e) {
-        $(this)
-          .parents(".form-focus")
-          .toggleClass("focused", e.type === "focus" || this.value.length > 0);
-      })
-      .trigger("blur");
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -55,10 +43,12 @@ export class GymWorkoutComponent implements OnInit {
     this.initializeForm();
   }
 
-  stopParentEvent(event) {
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
+  // Appends a selected file to "uploadInput"
   onSelectedFile(event) {
     this.file = event.target.files[0];
     this.gymWorkoutUploadForm.patchValue({
@@ -67,53 +57,52 @@ export class GymWorkoutComponent implements OnInit {
   }
 
   downloadFile() {
-    this.setupService.exportExcelFile("/hrmsetup/download/gymworkouts").subscribe(
-      (resp) => {
-        //this.blob = resp;
-        const data = resp;
-        if (data != undefined) {
-          const byteString = atob(data);
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
-          for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
+    this.setupService
+      .exportExcelFile("/hrmsetup/download/gymworkouts")
+      .subscribe(
+        (resp) => {
+          const data = resp;
+          if (data != undefined) {
+            const byteString = atob(data);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+              ia[i] = byteString.charCodeAt(i);
+            }
+            const bb = new Blob([ab]);
+            try {
+              const file = new File([bb], "gym/workout.xlsx", {
+                type: "application/vnd.ms-excel",
+              });
+              console.log(file, bb);
+              saveAs(file);
+            } catch (err) {
+              const textFileAsBlob = new Blob([bb], {
+                type: "application/vnd.ms-excel",
+              });
+              window.navigator.msSaveBlob(
+                textFileAsBlob,
+                "Deposit Category.xlsx"
+              );
+            }
+          } else {
+            return swal.fire(`GOS HRM`, "Unable to download data", "error");
           }
-          const bb = new Blob([ab]);
-          try {
-            const file = new File([bb], "gym/workout.xlsx", {
-              type: "application/vnd.ms-excel",
-            });
-            console.log(file, bb);
-            saveAs(file);
-          } catch (err) {
-            const textFileAsBlob = new Blob([bb], {
-              type: "application/vnd.ms-excel",
-            });
-            window.navigator.msSaveBlob(
-              textFileAsBlob,
-              "Deposit Category.xlsx"
-            );
-          }
-        } else {
-          return swal.fire(`GOS HRM`, "Unable to download data", "error");
-        }
-      },
-      (err) => {}
-    );
+        },
+        (err) => {}
+      );
   }
 
   uploadGymWorkout() {
+    if (!this.file) {
+      return swal.fire("Error", "Select a file", "error");
+    }
     const formData = new FormData();
     formData.append(
       "uploadInput",
       this.gymWorkoutUploadForm.get("uploadInput").value
     );
-    if (!this.file) {
-      return swal.fire("Error", "Select a file", "error");
-    }
-    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
-
     return this.setupService
       .updateData("/hrmsetup/upload/gymworkout", formData)
       .subscribe(
@@ -123,7 +112,6 @@ export class GymWorkoutComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = "";
             $("#upload_gym_workout").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -139,6 +127,7 @@ export class GymWorkoutComponent implements OnInit {
   }
 
   openUploadModal() {
+    this.fileInput.nativeElement.value = "";
     $("#upload_gym_workout").modal("show");
   }
 
@@ -163,8 +152,6 @@ export class GymWorkoutComponent implements OnInit {
         this.pageLoading = false;
         //console.log(data);
         this.gymWorkouts = data.setuplist;
-        this.rows = this.gymWorkouts;
-        this.srch = [...this.rows];
       },
       (err) => {
         this.pageLoading = false;
@@ -182,18 +169,20 @@ export class GymWorkoutComponent implements OnInit {
     this.initializeForm();
   }
 
-  // Add employee  Modal Api Call
-  addGymWorkout(Form: FormGroup) {
-    if (!Form.valid) {
+  // Add Gym/workout  Modal Api Call
+  addGymWorkout(form: FormGroup) {
+    if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = Form.value;
+    const payload = form.value;
     console.log(payload);
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/add/update/gymworkout", payload)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           //console.log(message);
           if (res.status.isSuccessful) {
@@ -206,6 +195,7 @@ export class GymWorkoutComponent implements OnInit {
           this.getGymWorkout();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -226,16 +216,9 @@ export class GymWorkoutComponent implements OnInit {
     $("#add_gym_workout").modal("show");
   }
 
-  delete(id: any) {
-    let payload;
-    if (id) {
-      const body = [id];
-      //body.push(id);
-      //console.log(body);
-      payload = {
-        itemIds: body,
-      };
-    } else if (this.selectedId) {
+  delete() {
+    let payload: object;
+    if (this.selectedId) {
       if (this.selectedId.length === 0) {
         return swal.fire("Error", "Select items to delete", "error");
       }
@@ -254,7 +237,6 @@ export class GymWorkoutComponent implements OnInit {
       })
       .then((result) => {
         //console.log(result);
-
         if (result.value) {
           return this.setupService
             .deleteData("/hrmsetup/delete/gymworkout", payload)
@@ -278,8 +260,8 @@ export class GymWorkoutComponent implements OnInit {
     this.selectedId = [];
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
       this.selectedId = this.gymWorkouts.map((item) => {
         return item.id;
       });
@@ -288,8 +270,8 @@ export class GymWorkoutComponent implements OnInit {
     }
   }
 
-  addItemId(event, id) {
-    if (event.target.checked) {
+  addItemId(event: Event, id: number) {
+    if ((<HTMLInputElement>event.target).checked) {
       if (!this.selectedId.includes(id)) {
         this.selectedId.push(id);
       }

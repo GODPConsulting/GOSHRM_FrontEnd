@@ -11,18 +11,14 @@ declare const $: any;
 })
 export class HighSchoolGradeComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
-  @ViewChild('fileInput') fileInput: ElementRef
+  @ViewChild("fileInput") fileInput: ElementRef;
   public grades: any[] = [];
-  public rows = [];
-  public srch = [];
-  pageLoading: boolean;
-
-  spinner: boolean = false; 
-  public formTitle = "Add High School Grade";
+  public pageLoading: boolean;
+  public spinner: boolean = false;
+  public formTitle: string = "Add High School Grade";
   public highSchoolGradeForm: FormGroup;
-  selectedId: any[] = [];
+  public selectedId: number[] = [];
   public highSchoolGradeUploadForm: FormGroup;
-  file: File;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,13 +26,6 @@ export class HighSchoolGradeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    $(".floating")
-      .on("focus blur", function (e) {
-        $(this)
-          .parents(".form-focus")
-          .toggleClass("focused", e.type === "focus" || this.value.length > 0);
-      })
-      .trigger("blur");
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -53,64 +42,66 @@ export class HighSchoolGradeComponent implements OnInit {
     this.initializeForm();
   }
 
-  stopParentEvent(event) {
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
-  onSelectedFile(event) {
-    this.file = event.target.files[0];
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event) {
+    const file = (<HTMLInputElement>event.target).files[0];
     this.highSchoolGradeUploadForm.patchValue({
-      uploadInput: this.file,
+      uploadInput: file,
     });
   }
 
   downloadFile() {
-    this.setupService.exportExcelFile("/hrmsetup/download/highschoolgrades").subscribe(
-      (resp) => {
-        //this.blob = resp;
-        const data = resp;
-        if (data != undefined) {
-          const byteString = atob(data);
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
-          for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
+    this.setupService
+      .exportExcelFile("/hrmsetup/download/highschoolgrades")
+      .subscribe(
+        (resp) => {
+          const data = resp;
+          if (data != undefined) {
+            const byteString = atob(data);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+              ia[i] = byteString.charCodeAt(i);
+            }
+            const bb = new Blob([ab]);
+            try {
+              const file = new File([bb], "High School Grade.xlsx", {
+                type: "application/vnd.ms-excel",
+              });
+              console.log(file, bb);
+              saveAs(file);
+            } catch (err) {
+              const textFileAsBlob = new Blob([bb], {
+                type: "application/vnd.ms-excel",
+              });
+              window.navigator.msSaveBlob(
+                textFileAsBlob,
+                "High School Grade.xlsx"
+              );
+            }
+          } else {
+            return swal.fire(`GOS HRM`, "Unable to download data", "error");
           }
-          const bb = new Blob([ab]);
-          try {
-            const file = new File([bb], "HighSchoolGrade.xlsx", {
-              type: "application/vnd.ms-excel",
-            });
-            console.log(file, bb);
-            saveAs(file);
-          } catch (err) {
-            const textFileAsBlob = new Blob([bb], {
-              type: "application/vnd.ms-excel",
-            });
-            window.navigator.msSaveBlob(
-              textFileAsBlob,
-              "Deposit Category.xlsx"
-            );
-          }
-        } else {
-          return swal.fire(`GOS HRM`, "Unable to download data", "error");
-        }
-      },
-      (err) => {}
-    );
+        },
+        (err) => {}
+      );
   }
 
   uploadHighSchoolGrade() {
+    if (!this.highSchoolGradeUploadForm.get("uploadInput").value) {
+      return swal.fire("Error", "Select a file", "error");
+    }
     const formData = new FormData();
     formData.append(
       "uploadInput",
       this.highSchoolGradeUploadForm.get("uploadInput").value
     );
-    if (!this.file) {
-      return swal.fire('Error', 'Select a file', 'error')
-    }
 
-    //console.log(formData, this.jobGradeUploadForm.get("uploadInput").value);
     this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/upload/highschoolgrade", formData)
@@ -121,7 +112,6 @@ export class HighSchoolGradeComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = ''
             $("#upload_high_school_grade").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -137,6 +127,8 @@ export class HighSchoolGradeComponent implements OnInit {
   }
 
   openUploadModal() {
+    // Resets the upload form
+    this.fileInput.nativeElement.value = "";
     $("#upload_high_school_grade").modal("show");
   }
 
@@ -161,8 +153,6 @@ export class HighSchoolGradeComponent implements OnInit {
           this.pageLoading = false;
           //console.log(data);
           this.grades = data.setuplist;
-          this.rows = this.grades;
-          this.srch = [...this.rows];
         },
         (err) => {
           this.pageLoading = false;
@@ -170,16 +160,22 @@ export class HighSchoolGradeComponent implements OnInit {
         }
       );
   }
+
   // Add employee  Modal Api Call
-  addHighSchoolGrade(highSchoolGradeForm: FormGroup) {
-    const payload = highSchoolGradeForm.value;
+  addHighSchoolGrade(form: FormGroup) {
+    if (!form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+    const payload = form.value;
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/add/update/highschoolgrade", payload)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           //console.log(message);
-
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
@@ -190,11 +186,13 @@ export class HighSchoolGradeComponent implements OnInit {
           this.getHighSchoolGrade();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
       );
   }
+
   openModal() {
     $("#add_high_school_grade").modal("show");
   }
@@ -203,8 +201,9 @@ export class HighSchoolGradeComponent implements OnInit {
     $("#add_high_school_grade").modal("hide");
     this.initializeForm();
   }
-  checkAll(event) {
-    if (event.target.checked) {
+
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
       this.selectedId = this.grades.map((item) => {
         return item.id;
       });
@@ -212,6 +211,7 @@ export class HighSchoolGradeComponent implements OnInit {
       this.selectedId = [];
     }
   }
+
   editHighSchoolGrade(row) {
     this.formTitle = "Edit High School Grade";
     this.highSchoolGradeForm.patchValue({
@@ -223,8 +223,8 @@ export class HighSchoolGradeComponent implements OnInit {
     $("#add_high_school_grade").modal("show");
   }
 
-  addItemId(event, id) {
-    if (event.target.checked) {
+  addItemId(event: Event, id: number) {
+    if ((<HTMLInputElement>event.target).checked) {
       if (!this.selectedId.includes(id)) {
         this.selectedId.push(id);
       }
@@ -235,17 +235,9 @@ export class HighSchoolGradeComponent implements OnInit {
     }
   }
 
-  delete(id: any) {
-    let payload;
-
-    if (id) {
-      const body = [id];
-      //body.push(id);
-      //console.log(body);
-      payload = {
-        itemIds: body,
-      };
-    } else if (this.selectedId) {
+  delete() {
+    let payload: object;
+    if (this.selectedId) {
       if (this.selectedId.length === 0) {
         return swal.fire("Error", "Select items to delete", "error");
       }
@@ -254,7 +246,6 @@ export class HighSchoolGradeComponent implements OnInit {
       };
       //console.log(this.selectedId);
     }
-
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -265,7 +256,6 @@ export class HighSchoolGradeComponent implements OnInit {
       })
       .then((result) => {
         //console.log(result);
-
         if (result.value) {
           return this.setupService
             .deleteData("/hrmsetup/delete/highschoolgrade", payload)
@@ -286,5 +276,6 @@ export class HighSchoolGradeComponent implements OnInit {
             );
         }
       });
+    this.selectedId = [];
   }
 }

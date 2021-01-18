@@ -43,8 +43,7 @@
                     </thead>
                     <tbody>
                         <tr data-toggle="modal" class="pointer" data-target="#edit_employee"
-                            (click)="editHighSchoolGrade(row)"
-                            *ngFor="let row of grades | filter:searchText; let i = index">
+                            (click)="editHighSchoolGrade(row)" *ngFor="let row of grades; let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
@@ -61,7 +60,7 @@
 </div>
 <!-- /Page Content -->
 
-<!-- Add HMO Modal -->
+<!-- Add High School Grade Modal -->
 <div id="add_high_school_grade" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content w-75 mx-auto">
@@ -134,32 +133,9 @@
         </div>
     </div>
 </div>
+<!-- /Add High School Grade Modal -->
 
-<!-- Delete Employee Modal -->
-<div class="modal custom-modal fade" id="delete_employee" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="form-header">
-                    <h3>Delete Employee</h3>
-                    <p>Are you sure want to delete?</p>
-                </div>
-                <div class="modal-btn delete-action">
-                    <div class="row">
-                        <div class="col-6">
-                            <a class="btn btn-primary continue-btn" (click)="deleteEmployee()">Delete</a>
-                        </div>
-                        <div class="col-6">
-                            <a data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- /Delete Employee Modal -->
-<!-- Upload Job Grade Modal -->
+<!-- Upload High School Grade Modal -->
 <div id="upload_high_school_grade" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -196,9 +172,10 @@
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadHighSchoolGrade()" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span> 
-                            <span *ngIf="spinner" ><i class="fa fa-spinner fa-spin"></i></span>
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadHighSchoolGrade()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>
@@ -206,4 +183,4 @@
         </div>
     </div>
 </div>
-<!-- /Upload Job Grade Modal -->
+<!-- /Upload High School Grade Modal -->

@@ -1,10 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
-import { DataTableDirective } from "angular-datatables";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { DatePipe } from "@angular/common";
-import { Subject } from "rxjs";
-import { ToastrService } from "ngx-toastr";
 import swal from "sweetalert2";
 
 declare const $: any;
@@ -15,43 +11,22 @@ declare const $: any;
 })
 export class LanguageComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
-  @ViewChild(DataTableDirective, { static: false })
   @ViewChild("fileInput")
   fileInput: ElementRef;
-  public dtElement: DataTableDirective;
-  public lstEmployee: any;
   public languages: any[] = [];
-  public url: any = "languagelist";
-
   public languageUploadForm: FormGroup;
-  file: File;
-  public editEmployeeForm: FormGroup;
-  formTitle: string = "Add language";
-  public rows = [];
-  public srch = [];
-  public statusValue;
-  pageLoading: boolean;
-
-  spinner: boolean = false;
-  value: any;
-  selectedId: any[] = [];
-  languageForm: FormGroup;
+  public formTitle: string = "Add Language";
+  public pageLoading: boolean;
+  public spinner: boolean = false;
+  public selectedId: number[] = [];
+  public languageForm: FormGroup;
 
   constructor(
     private setupService: SetupService,
-    private formBuilder: FormBuilder,
-    private toastr: ToastrService
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    $(".floating")
-      .on("focus blur", function (e) {
-        $(this)
-          .parents(".form-focus")
-          .toggleClass("focused", e.type === "focus" || this.value.length > 0);
-      })
-      .trigger("blur");
-
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -65,24 +40,25 @@ export class LanguageComponent implements OnInit {
       order: [[1, "asc"]],
     };
     this.initializeForm();
-    this.getLanguage();
+    this.getLanguages();
   }
 
-  stopParentEvent(event) {
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
-  onSelectedFile(event) {
-    this.file = event.target.files[0];
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event) {
+    const file = (<HTMLInputElement>event.target).files[0];
     this.languageUploadForm.patchValue({
-      uploadInput: this.file,
+      uploadInput: file,
     });
   }
 
   downloadFile() {
     this.setupService.exportExcelFile("/hrmsetup/download/languages").subscribe(
       (resp) => {
-        //this.blob = resp;
         const data = resp;
         if (data != undefined) {
           const byteString = atob(data);
@@ -102,10 +78,7 @@ export class LanguageComponent implements OnInit {
             const textFileAsBlob = new Blob([bb], {
               type: "application/vnd.ms-excel",
             });
-            window.navigator.msSaveBlob(
-              textFileAsBlob,
-              "Deposit Category.xlsx"
-            );
+            window.navigator.msSaveBlob(textFileAsBlob, "Language.xlsx");
           }
         } else {
           return swal.fire(`GOS HRM`, "Unable to download data", "error");
@@ -116,17 +89,15 @@ export class LanguageComponent implements OnInit {
   }
 
   uploadLanguage() {
+    if (!this.languageUploadForm.get("uploadInput").value) {
+      return swal.fire("Error", "Select a file", "error");
+    }
     const formData = new FormData();
     formData.append(
       "uploadInput",
       this.languageUploadForm.get("uploadInput").value
     );
-    if (!this.file) {
-      return swal.fire("Error", "Select a file", "error");
-    }
-    //console.log(formData, this.languageForm.get("uploadInput").value);
     this.spinner = true;
-
     return this.setupService
       .updateData("/hrmsetup/upload/language", formData)
       .subscribe(
@@ -137,12 +108,11 @@ export class LanguageComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            this.fileInput.nativeElement.value = "";
             $("#upload_language").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getLanguage();
+          this.getLanguages();
         },
         (err) => {
           this.spinner = false;
@@ -151,7 +121,9 @@ export class LanguageComponent implements OnInit {
         }
       );
   }
+
   openUploadModal() {
+    this.fileInput.nativeElement.value = "";
     $("#upload_language").modal("show");
   }
 
@@ -165,15 +137,14 @@ export class LanguageComponent implements OnInit {
       uploadInput: [""],
     });
   }
-  getLanguage() {
+
+  getLanguages() {
     this.pageLoading = true;
     return this.setupService.getData("/hrmsetup/get/all/languages").subscribe(
       (data) => {
         this.pageLoading = false;
         //console.log(data);
         this.languages = data.setuplist;
-        this.rows = this.languages;
-        this.srch = [...this.rows];
       },
       (err) => {
         this.pageLoading = false;
@@ -182,92 +153,50 @@ export class LanguageComponent implements OnInit {
     );
   }
 
-  //search by Id
-  searchId(val) {
-    this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function (d) {
-      val = val.toLowerCase();
-      return d.subject.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    this.rows.push(...temp);
-  }
-
-  //search by name
-  searchName(val) {
-    this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function (d) {
-      val = val.toLowerCase();
-      return d.description.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    this.rows.push(...temp);
-  }
-
-  //search by purchase
-  searchByDesignation(val) {
-    this.rows.splice(0, this.rows.length);
-    let temp = this.srch.filter(function (d) {
-      val = val.toLowerCase();
-      return d.designation.toLowerCase().indexOf(val) !== -1 || !val;
-    });
-    this.rows.push(...temp);
-  }
-
-  //getting the status value
-  getStatus(data) {
-    this.statusValue = data;
-  }
-
   openModal() {
+    this.initializeForm();
     $("#add_language").modal("show");
   }
 
   closeModal() {
     $("#add_language").modal("hide");
-    this.initializeForm();
-    this.fileInput.nativeElement.value = "";
-
   }
 
-  addLanguage(languageForm: FormGroup) {
-    if (!languageForm.valid) {
+  addLanguage(form: FormGroup) {
+    if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = languageForm.value;
+    const payload = form.value;
+    this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/add/update/language", payload)
       .subscribe(
         (res) => {
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           //console.log(message);
 
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
-            this.initializeForm();
+            //this.initializeForm();
             $("#add_language").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getLanguage();
+          this.getLanguages();
         },
         (err) => {
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
       );
   }
 
-  delete(id: any) {
-    let payload;
-
-    if (id) {
-      const body = [id];
-      //body.push(id);
-      //console.log(body);
-      payload = {
-        itemIds: body,
-      };
-    } else if (this.selectedId) {
+  delete() {
+    let payload: object;
+    if (this.selectedId) {
       if (this.selectedId.length === 0) {
         return swal.fire("Error", "Select items to delete", "error");
       }
@@ -276,7 +205,6 @@ export class LanguageComponent implements OnInit {
       };
       //console.log(this.selectedId);
     }
-
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -296,7 +224,7 @@ export class LanguageComponent implements OnInit {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("Success", message, "success").then(() => {
-                    this.getLanguage();
+                    this.getLanguages();
                   });
                 } else {
                   swal.fire("Error", message, "error");
@@ -311,8 +239,8 @@ export class LanguageComponent implements OnInit {
     this.selectedId = [];
   }
 
-  addItemId(event, id) {
-    if (event.target.checked) {
+  addItemId(event: Event, id: number) {
+    if ((<HTMLInputElement>event.target).checked) {
       if (!this.selectedId.includes(id)) {
         this.selectedId.push(id);
       }
@@ -323,8 +251,8 @@ export class LanguageComponent implements OnInit {
     }
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
       this.selectedId = this.languages.map((item) => {
         return item.id;
       });
