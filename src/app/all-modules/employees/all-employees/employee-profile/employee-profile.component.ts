@@ -12,6 +12,9 @@ export class EmployeeProfileComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
   public addEmployeeForm: FormGroup;
+  public rows = [];
+  public srch = [];
+  public statusValue;
   setupService: any;
   file: any;
   
@@ -35,6 +38,8 @@ export class EmployeeProfileComponent implements OnInit {
 
   onSubmit() {
     this.toastr.success("Bank & statutory added", "Success");
+    this.fileInput.nativeElement.value = "";
+    
   }
 
   uploadReferee() {
@@ -73,4 +78,5 @@ export class EmployeeProfileComponent implements OnInit {
         }
       );
   }
+
 }
