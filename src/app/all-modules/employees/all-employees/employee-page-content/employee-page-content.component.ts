@@ -26,7 +26,7 @@ export class EmployeePageContentComponent implements OnInit {
   public rows = [];
   public srch = [];
   public statusValue;
-  public employeeList = [];
+  public employeesList: any[] = [];
   public pageLoading: boolean;
 
   constructor(
@@ -77,15 +77,15 @@ export class EmployeePageContentComponent implements OnInit {
       this.rows = this.lstEmployee;
       this.srch = [...this.rows];
     });
-  } /**/
+  }
 
   loadEmployees() {
     this.pageLoading = true;
-    return this.employeeService.getData("/admin/get/all/staff").subscribe(
+    this.employeeService.getEmployees().subscribe(
       (data) => {
         this.pageLoading = false;
         console.log(data.staff);
-        this.employeeList = data.staff;
+        this.employeesList = data.staff;
       },
       (err) => {
         this.pageLoading = false;

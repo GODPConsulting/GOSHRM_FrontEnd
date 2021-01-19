@@ -7,13 +7,25 @@ import { ApiService } from "./api.service";
   providedIn: "root",
 })
 export class EmployeeService {
-  constructor(private apiService: ApiService) {}
+  allEmployeeUrl: string = "/admin/get/all/staff";
+  singleEmployeeUrl: string = "/admin/get/single/staff/staffId?StaffId=";
 
+  constructor(private apiService: ApiService) {}
+  /* 
   getData(url: string): Observable<any> {
     return this.apiService.get(url).pipe(
       tap((data) => {
         return data;
       })
     );
+  } */
+
+  // Get All Employees
+  getEmployees() {
+    return this.apiService.get(this.allEmployeeUrl);
+  }
+
+  getSingleEmployee(id: number) {
+    return this.apiService.get(`${this.singleEmployeeUrl}${id}`);
   }
 }

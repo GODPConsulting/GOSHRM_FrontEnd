@@ -6,10 +6,9 @@ import {
   OnDestroy,
   AfterViewInit,
 } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DataTableDirective } from "angular-datatables";
-import { Subject } from "rxjs";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 
@@ -25,7 +24,7 @@ export class JobSkillComponent implements OnInit {
   public jobSkill: any[] = [];
   public pageLoading: boolean;
   public spinner: boolean = false;
-  public formTitle = "Add Job Sub Skill";
+  public formTitle: string = "Add Job Sub Skill";
   public jobSkillForm: FormGroup;
   public selectedId: number[] = [];
   public jobSkillUploadForm: FormGroup;

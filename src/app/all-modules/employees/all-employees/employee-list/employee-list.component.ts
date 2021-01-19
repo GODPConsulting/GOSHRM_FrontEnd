@@ -6,6 +6,7 @@ import { DatePipe } from "@angular/common";
 import { Subject } from "rxjs";
 import { DataTableDirective } from "angular-datatables";
 import { EmployeeService } from "src/app/services/employee.service";
+import { ApiService } from "src/app/services/api.service";
 
 declare const $: any;
 @Component({
@@ -31,14 +32,15 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   public statusValue;
   public dtTrigger: Subject<any> = new Subject();
   public DateJoin;
-  public employeeList = [];
+  public employeesList: any = [];
   public pageLoading: boolean;
 
   constructor(
     private srvModuleService: AllModulesService,
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private apiService: ApiService
   ) {}
 
   ngOnInit() {
@@ -132,11 +134,11 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
   // Get All Employees
   loadEmployees() {
     this.pageLoading = true;
-    return this.employeeService.getData("/admin/get/all/staff").subscribe(
+    this.employeeService.getEmployees().subscribe(
       (data) => {
         this.pageLoading = false;
         console.log(data.staff);
-        this.employeeList = data.staff;
+        this.employeesList = data.staff;
       },
       (err) => {
         this.pageLoading = false;

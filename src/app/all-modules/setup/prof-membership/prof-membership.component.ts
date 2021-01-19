@@ -20,6 +20,7 @@ export class ProfMembershipComponent implements OnInit {
   public spinner: boolean = false;
   public selectedId: number[] = [];
   public professionalMembershipForm: FormGroup;
+  public;
 
   constructor(
     private setupService: SetupService,
