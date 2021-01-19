@@ -110,7 +110,7 @@ export class GymWorkoutComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#upload_gym_workout").modal("hide");
           } else {
@@ -187,7 +187,7 @@ export class GymWorkoutComponent implements OnInit {
           const message = res.status.message.friendlyMessage;
           //console.log(message);
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#add_gym_workout").modal("hide");
           } else {
@@ -244,7 +244,7 @@ export class GymWorkoutComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getGymWorkout();
                   });
                 } else {

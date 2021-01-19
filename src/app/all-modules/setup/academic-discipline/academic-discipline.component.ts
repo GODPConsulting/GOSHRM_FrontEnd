@@ -76,7 +76,7 @@ export class AcademicDisciplineComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             $("#upload_academic_discipline").modal("hide");
           } else {
             swal.fire("Error", message, "error");
@@ -176,7 +176,7 @@ export class AcademicDisciplineComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#add_academic_discipline").modal("hide");
           } else {
@@ -240,7 +240,7 @@ export class AcademicDisciplineComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getAcademicDisplines();
                   });
                 } else {

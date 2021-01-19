@@ -115,7 +115,7 @@ export class AcademicQualificationComponent implements OnInit {
           const message = res.status.message.friendlyMessage;
 
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             this.fileInput.nativeElement.value = "";
             $("#upload_academic_qualification").modal("hide");
@@ -176,7 +176,7 @@ export class AcademicQualificationComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#add_academic_qualification").modal("hide");
           } else {
@@ -218,7 +218,7 @@ export class AcademicQualificationComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getAcademicQualifications();
                   });
                 } else {

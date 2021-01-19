@@ -63,7 +63,7 @@ export class EmployeeListComponent implements OnInit, OnDestroy {
         searchPlaceholder: "Start typing to search by any field",
       },
 
-      columns: [{ orderable: false }, null, null, null, null, null, null, null],
+      columns: [{ orderable: false }, null, null, null, null, null, null],
       //order: [[1, "asc"]],
     };
 
