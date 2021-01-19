@@ -109,7 +109,7 @@ export class AcademicGradeComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#upload_academic_grade").modal("hide");
           } else {
@@ -186,7 +186,7 @@ export class AcademicGradeComponent implements OnInit {
           const message = res.status.message.friendlyMessage;
           //console.log(message);
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#add-academic-grade").modal("hide");
           } else {
@@ -242,7 +242,7 @@ export class AcademicGradeComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getAcademicGrade();
                   });
                 } else {

@@ -102,7 +102,7 @@ export class HmoComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#upload_hmo").modal("hide");
           } else {
@@ -182,7 +182,7 @@ export class HmoComponent implements OnInit {
           const message = res.status.message.friendlyMessage;
           //console.log(message);
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#add_hmo").modal("hide");
           } else {
@@ -241,7 +241,7 @@ export class HmoComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getHmo();
                   });
                 } else {

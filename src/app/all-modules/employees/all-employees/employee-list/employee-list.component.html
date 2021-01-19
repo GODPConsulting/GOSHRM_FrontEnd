@@ -38,13 +38,12 @@
                             <th>Office</th>
                             <th>Email</th>
                             <th class="text-nowrap">Join Date</th>
-                            <th>Reports to</th>
+                            <!-- <th>Reports to</th> -->
                             <th class="text-right no-sort">Mobile Number</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let row of employeeList;let i = index">
-
                             <td>
                                 <h2 class="table-avatar">
                                     <a routerLink="/employees/employeeprofile" class="avatar"><img alt=""
@@ -58,9 +57,9 @@
                             <td>{{row.staffOfficeName}}</td>
                             <td>{{row.email}}</td>
                             <td>row.joindate</td>
-                            <td>
+                            <!-- <td>
                                 row.reportingTo
-                            </td>
+                            </td> -->
                             <td class="text-right">
                                 {{row.phoneNumber}}
                             </td>
