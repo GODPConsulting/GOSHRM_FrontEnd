@@ -261,6 +261,8 @@
                   urlComplete.subUrl === 'job-detail') ||
                   (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'location') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'hospital-management') ||
                 (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'prof-certification') ||
                   (urlComplete.mainUrl === 'setup' &&
@@ -313,6 +315,8 @@
                     urlComplete.subUrl === 'high-school-grade') ||
                     (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'location') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'hospital-management') ||
                   (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'job-detail') ||
                     (urlComplete.mainUrl === 'setup' &&
@@ -385,6 +389,8 @@
                     urlComplete.subUrl === 'high-school-grade') ||
                     (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'location') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'hospital-management') ||
                     (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'job-detail') ||
                     (urlComplete.mainUrl === 'setup' &&
@@ -459,6 +465,11 @@
               </li>
               <li routerLink="/setup/location">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'location' }">Location
+                </a>
+              </li>
+              <li routerLink="/setup/hospital-management">
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'hospital-management' }">Hospital
+                  Management
                 </a>
               </li>
               <li routerLink="/setup/job-detail">

@@ -1,0 +1,329 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+<!-- Page Content -->
+<div *ngIf="!pageLoading" class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Hospital Management</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
+                    <li class="breadcrumb-item active">Hospital Management</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn download-btn hint" (click)="downloadFile() "><span class="hint-text">Download</span><i
+                        class="fa fa-download"></i></a>
+                <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
+                        class="fa fa-upload"></i></a>
+                <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span
+                        class="hint-text">Add</span><i class="fa fa-plus"></i></a>
+                <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
+                        class="fa fa-trash"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions"
+                    [dtTrigger]="dtTrigger">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === locations.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>S/N</th>
+                            <th>Location</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Country</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)"
+                            *ngFor="let row of locations; let i = index">
+                            <td (click)="stopParentEvent($event)">
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ row.location }}</td>
+                            <td>{{ row.address }}</td>
+                            <td>{{ row.city }}</td>
+                            <td>{{ row.state }}</td>
+                            <td>{{row.country}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Location Modal -->
+<div id="add_hospital_management" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{formTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="add_hospital_management(hospitalManagementForm)" [formGroup]="hospitalManaementForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Hospital Management<span
+                                        class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                locationForm.get('location').invalid &&
+                                locationForm.get('location').touched
+                    " formControlName="location" />
+                                <div *ngIf="
+                                locationForm.get('location').invalid &&
+                                locationForm.get('location').touched
+                    ">
+                                    <small *ngIf="
+                                    locationForm.get('location').invalid &&
+                                    locationForm.get('location').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Address<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                locationForm.get('location_address').invalid &&
+                                locationForm.get('location_address').touched
+                    " formControlName="location" />
+                                <div *ngIf="
+                                locationForm.get('location_address').invalid &&
+                                locationForm.get('location_address').touched
+                    ">
+                                    <small *ngIf="
+                                    locationForm.get('location_address').invalid &&
+                                    locationForm.get('location_address').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">City<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                locationForm.get('location_city').invalid &&
+                                locationForm.get('location_city').touched
+                    " formControlName="location" />
+                                <div *ngIf="
+                                locationForm.get('location_city').invalid &&
+                                locationForm.get('location_city').touched
+                    ">
+                                    <small *ngIf="
+                                    locationForm.get('location_city').invalid &&
+                                    locationForm.get('location_city').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">State<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                locationForm.get('location_state').invalid &&
+                                locationForm.get('location_state').touched
+                    " formControlName="location" />
+                                <div *ngIf="
+                                locationForm.get('location_state').invalid &&
+                                locationForm.get('location_state').touched
+                    ">
+                                    <small *ngIf="
+                                    locationForm.get('location_state').invalid &&
+                                    locationForm.get('location_state').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Country<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                locationForm.get('location_country').invalid &&
+                                locationForm.get('location_country').touched
+                    " formControlName="location" />
+                                <div *ngIf="
+                                locationForm.get('location_country').invalid &&
+                                locationForm.get('location_country').touched
+                    ">
+                                    <small *ngIf="
+                                    locationForm.get('location_country').invalid &&
+                                    locationForm.get('location_country').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Reporting To<span class="text-danger">*</span></label>
+                                <!--  <textarea class="form-control" type="text" [class.invalid]="
+                                jobGradeForm.get('job_grade_reporting_to').invalid &&
+                                jobGradeForm.get('job_grade_reporting_to').touched
+                    " formControlName="job_grade_reporting_to"></textarea> -->
+                        <!--<select class="form-control" [class.invalid]="
+                    locationForm.get('location_reporting_to').invalid &&
+                    locationForm.get('location_reporting_to').touched" formControlName="location_reporting_to">
+                                    <option value="N/A">N/A</option>
+                                    <option selected value="">Select Reporting to</option>
+
+                                    <option *ngFor="let row of locations" value="{{row.location}}">{{row.location}}
+                                    </option>
+                                </select>
+                                <div *ngIf="
+                                locationForm.get('location_reporting_to').invalid &&
+                                locationForm.get('location_reporting_to').touched
+                    ">
+                                    <small *ngIf="
+                                    locationForm.get('location_reporting_to').invalid &&
+                                    locationForm.get('location_reporting_to').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Rank <span class="text-danger">*</span></label>
+                                <input class="form-control" type="number" [class.invalid]="
+                                locationForm.get('rank').invalid &&
+                                locationForm.get('rank').touched
+                    " formControlName="rank" min="1" />
+                                <div *ngIf="
+                                locationForm.get('rank').invalid &&
+                                locationForm.get('rank').touched
+                    ">
+                                    <small *ngIf="
+                                    locationForm.get('rank').invalid &&
+                                    locationForm.get('rank').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Probation Period <span
+                                        class="text-danger">*</span></label>
+                                <input class="form-control" type="number" [class.invalid]="
+                                locationForm.get('probation_period_in_months').invalid &&
+                                locationForm.get('probation_period_in_months').touched
+                    " formControlName="probation_period_in_months" min="1" />
+                                <div *ngIf="
+                                locationForm.get('probation_period_in_months').invalid &&
+                                locationForm.get('probation_period_in_months').touched
+                    ">
+                                    <small *ngIf="
+                                    locationForm.get('probation_period_in_months').invalid &&
+                                    locationForm.get('probation_period_in_months').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>-->
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="col-form-label">Description <span class="text-danger">*</span></label>
+
+                                <textarea rows="5" class="form-control" [class.invalid]="
+                    locationForm.get('description').invalid &&
+                    locationForm.get('description').touched
+                    " formControlName="description"></textarea>
+                                <div *ngIf="
+                                locationForm.get('description').invalid &&
+                                locationForm.get('description').touched
+                    ">
+                                    <small *ngIf="
+                                    locationForm.get('description').invalid &&
+                                    locationForm.get('description').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Location Modal -->
+
+<!-- Upload Location Modal -->
+<div id="upload_location" class="modal custom-modal fade " role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Location</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-5">
+                <form (ngSubmit)="uploadLocation()" [formGroup]="locationUploadForm">
+                    <div class="row">
+
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-5">Choose File (excel format)</label>
+                            <div class="col-md-7">
+                                <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
+                                    (change)="onSelectedFile($event)">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <p>Please use the guide below for your sheet</p>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Job Grade</th>
+                                <th>Description</th>
+                                <th>Report To</th>
+                                <th>Rank</th>
+                                <th>Probation Period</th>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadLocation()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Upload Location Modal -->

@@ -18,6 +18,7 @@ import { JobDetailComponent } from "src/app/all-modules/setup/job-detail/job-det
 import { ProfCertificationComponent } from "./prof-certification/prof-certification.component";
 import { JobSubSkillComponent } from "./job-sub-skill/job-sub-skill.component";
 import { LocationComponent } from "./location/location.component";
+import { HospitalManagementComponent } from "./hospital-management/hospital-management.component";
 
 const routes: Routes = [
   {
@@ -91,6 +92,10 @@ const routes: Routes = [
       {
         path: "location",
         component: LocationComponent,
+      },
+      {
+        path: "hospital-management",
+        component: HospitalManagementComponent,
       },
     ],
   },

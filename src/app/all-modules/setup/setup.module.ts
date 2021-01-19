@@ -27,6 +27,7 @@ import { JobDetailComponent } from "src/app/all-modules/setup/job-detail/job-det
 import { ProfCertificationComponent } from "./prof-certification/prof-certification.component";
 import { JobSubSkillComponent } from './job-sub-skill/job-sub-skill.component';
 import { LocationComponent } from './location/location.component';
+import { HospitalManagementComponent } from './hospital-management/hospital-management.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { LocationComponent } from './location/location.component';
     ProfMembershipComponent,
     JobSubSkillComponent,
     LocationComponent,
+    HospitalManagementComponent,
   ],
   imports: [
     CommonModule,
