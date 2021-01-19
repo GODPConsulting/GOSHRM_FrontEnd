@@ -206,10 +206,9 @@ export class EmploymentTypeComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId) {
-      if (this.selectedId.length === 0) {
-        return swal.fire("Error", "Select items to delete", "error");
-      }
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    } else {
       payload = {
         itemIds: this.selectedId,
       };

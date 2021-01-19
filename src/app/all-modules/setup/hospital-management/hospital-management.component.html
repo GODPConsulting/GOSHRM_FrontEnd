@@ -33,30 +33,35 @@
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === locations.length"
+                                <input type="checkbox" [checked]="selectedId.length === hospital_management.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Location</th>
+                            <th>Medical Center</th>
+                            <th>HMO name</th>
+                            <th>Contact Number</th>
+                            <th>Contact Email</th>
                             <th>Address</th>
-                            <th>City</th>
-                            <th>State</th>
-                            <th>Country</th>
+                            <th>Rating</th>
+                            <th>Other comments</th>
+
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)"
-                            *ngFor="let row of locations; let i = index">
+                            *ngFor="let row of hospitalManagements; let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.location }}</td>
-                            <td>{{ row.address }}</td>
-                            <td>{{ row.city }}</td>
-                            <td>{{ row.state }}</td>
-                            <td>{{row.country}}</td>
+                            <td>{{ row.medical_Center }}</td>
+                            <td>{{ row.hmo_name }}</td>
+                            <td>{{ row.contact_number }}</td>
+                            <td>{{ row.contact_email }}</td>
+                            <td>{{row.address}}</td>
+                            <td>{{ row.rating }}</td>
+                            <td>{{row.other_comments}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -77,23 +82,79 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="add_hospital_management(hospitalManagementForm)" [formGroup]="hospitalManaementForm">
+                <form (ngSubmit)="add_hospital_management(hospitalManagementForm)" [formGroup]="hospitalManagementForm">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Hospital Management<span
-                                        class="text-danger">*</span></label>
+                                <label class="col-form-label">Medical Center<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                locationForm.get('location').invalid &&
-                                locationForm.get('location').touched
-                    " formControlName="location" />
+                                hospitalManagementForm.get('medical_center').invalid &&
+                                hospitalManagementForm.get('medical_center').touched
+                    " formControlName="medical_center" />
                                 <div *ngIf="
-                                locationForm.get('location').invalid &&
-                                locationForm.get('location').touched
+                                hospitalManagementForm.get('medical_center').invalid &&
+                                hospitalManagementForm.get('medical_center').touched
                     ">
                                     <small *ngIf="
-                                    locationForm.get('location').invalid &&
-                                    locationForm.get('location').touched
+                                    hospitalManagementForm.get('medical_center').invalid &&
+                                    hospitalManagementForm.get('medical_center').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">HMO Name<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                hospitalManagementForm.get('hmo_name').invalid &&
+                                hospitalManagementForm.get('hmo_name').touched
+                    " formControlName="hmo_name" />
+                                <div *ngIf="
+                                hospitalManagementForm.get('hmo_name').invalid &&
+                                hospitalManagementForm.get('hmo_name').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalManagementForm.get('hmo_name').invalid &&
+                                    hospitalManagementForm.get('hmo_name').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Contact Number<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                hospitalManagementForm.get('contact_number').invalid &&
+                                hospitalManagementForm.get('contact_number').touched
+                    " formControlName="contact_number" />
+                                <div *ngIf="
+                                hospitalManagementForm.get('contact_number').invalid &&
+                                hospitalManagementForm.get('contact_number').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalManagementForm.get('contact_number').invalid &&
+                                    hospitalManagementForm.get('contact_number').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">contact Email<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                hospitalManagementForm.get('contact_email').invalid &&
+                                hospitalManagementForm.get('contact_email').touched
+                    " formControlName="contact_email" />
+                                <div *ngIf="
+                                hospitalManagementForm.get('contact_email').invalid &&
+                                hospitalManagementForm.get('contact_email').touched
+                    ">
+                                    <small *ngIf="
+                                    hospital_management.get('contact_email').invalid &&
+                                    hospitalManagementForm.get('contact_email').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -103,160 +164,36 @@
                             <div class="form-group">
                                 <label class="col-form-label">Address<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                locationForm.get('location_address').invalid &&
-                                locationForm.get('location_address').touched
-                    " formControlName="location" />
+                                hospitalManagementForm.get('address').invalid &&
+                                hospitalManagementForm.get('address').touched
+                    " formControlName="address" />
                                 <div *ngIf="
-                                locationForm.get('location_address').invalid &&
-                                locationForm.get('location_address').touched
+                                hospitalManagementForm.get('address').invalid &&
+                                hospitalManagementForm.get('address').touched
                     ">
                                     <small *ngIf="
-                                    locationForm.get('location_address').invalid &&
-                                    locationForm.get('location_address').touched
+                                    hospitalManagementForm.get('address').invalid &&
+                                    hospitalManagementForm.get('address').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">City<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                locationForm.get('location_city').invalid &&
-                                locationForm.get('location_city').touched
-                    " formControlName="location" />
-                                <div *ngIf="
-                                locationForm.get('location_city').invalid &&
-                                locationForm.get('location_city').touched
-                    ">
-                                    <small *ngIf="
-                                    locationForm.get('location_city').invalid &&
-                                    locationForm.get('location_city').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">State<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                locationForm.get('location_state').invalid &&
-                                locationForm.get('location_state').touched
-                    " formControlName="location" />
-                                <div *ngIf="
-                                locationForm.get('location_state').invalid &&
-                                locationForm.get('location_state').touched
-                    ">
-                                    <small *ngIf="
-                                    locationForm.get('location_state').invalid &&
-                                    locationForm.get('location_state').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Country<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                locationForm.get('location_country').invalid &&
-                                locationForm.get('location_country').touched
-                    " formControlName="location" />
-                                <div *ngIf="
-                                locationForm.get('location_country').invalid &&
-                                locationForm.get('location_country').touched
-                    ">
-                                    <small *ngIf="
-                                    locationForm.get('location_country').invalid &&
-                                    locationForm.get('location_country').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <!--<div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Reporting To<span class="text-danger">*</span></label>
-                                <!--  <textarea class="form-control" type="text" [class.invalid]="
-                                jobGradeForm.get('job_grade_reporting_to').invalid &&
-                                jobGradeForm.get('job_grade_reporting_to').touched
-                    " formControlName="job_grade_reporting_to"></textarea> -->
-                        <!--<select class="form-control" [class.invalid]="
-                    locationForm.get('location_reporting_to').invalid &&
-                    locationForm.get('location_reporting_to').touched" formControlName="location_reporting_to">
-                                    <option value="N/A">N/A</option>
-                                    <option selected value="">Select Reporting to</option>
 
-                                    <option *ngFor="let row of locations" value="{{row.location}}">{{row.location}}
-                                    </option>
-                                </select>
-                                <div *ngIf="
-                                locationForm.get('location_reporting_to').invalid &&
-                                locationForm.get('location_reporting_to').touched
-                    ">
-                                    <small *ngIf="
-                                    locationForm.get('location_reporting_to').invalid &&
-                                    locationForm.get('location_reporting_to').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Rank <span class="text-danger">*</span></label>
-                                <input class="form-control" type="number" [class.invalid]="
-                                locationForm.get('rank').invalid &&
-                                locationForm.get('rank').touched
-                    " formControlName="rank" min="1" />
-                                <div *ngIf="
-                                locationForm.get('rank').invalid &&
-                                locationForm.get('rank').touched
-                    ">
-                                    <small *ngIf="
-                                    locationForm.get('rank').invalid &&
-                                    locationForm.get('rank').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Probation Period <span
-                                        class="text-danger">*</span></label>
-                                <input class="form-control" type="number" [class.invalid]="
-                                locationForm.get('probation_period_in_months').invalid &&
-                                locationForm.get('probation_period_in_months').touched
-                    " formControlName="probation_period_in_months" min="1" />
-                                <div *ngIf="
-                                locationForm.get('probation_period_in_months').invalid &&
-                                locationForm.get('probation_period_in_months').touched
-                    ">
-                                    <small *ngIf="
-                                    locationForm.get('probation_period_in_months').invalid &&
-                                    locationForm.get('probation_period_in_months').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>-->
                         <div class="col">
                             <div class="form-group">
-                                <label class="col-form-label">Description <span class="text-danger">*</span></label>
-
-                                <textarea rows="5" class="form-control" [class.invalid]="
-                    locationForm.get('description').invalid &&
-                    locationForm.get('description').touched
-                    " formControlName="description"></textarea>
+                                <label class="col-form-label">Rating <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                hospitalManagementForm.get('rating').invalid &&
+                                hospitalManagementForm.get('rating').touched
+                    " formControlName="rating" />
                                 <div *ngIf="
-                                locationForm.get('description').invalid &&
-                                locationForm.get('description').touched
+                                hospitalManagementForm.get('rating').invalid &&
+                                hospitalManagementForm.get('rating').touched
                     ">
                                     <small *ngIf="
-                                    locationForm.get('description').invalid &&
-                                    locationForm.get('description').touched
+                                    hospitalManagementForm.get('rating').invalid &&
+                                    hospitalManagementForm.get('rating').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -274,20 +211,20 @@
         </div>
     </div>
 </div>
-<!-- /Add Location Modal -->
+<!-- /Add Hospital Mangement Modal -->
 
-<!-- Upload Location Modal -->
-<div id="upload_location" class="modal custom-modal fade " role="dialog">
+<!-- Upload Hospital Mangement Modal -->
+<div id="upload_hospital_management" class="modal custom-modal fade " role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Upload Location</h5>
+                <h5 class="modal-title">Upload Hospital Management</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body px-5">
-                <form (ngSubmit)="uploadLocation()" [formGroup]="locationUploadForm">
+                <form (ngSubmit)="uploadHospitalManagement()" [formGroup]="HospitalManagementUploadForm">
                     <div class="row">
 
                         <div class="form-group row">
@@ -305,17 +242,19 @@
                         <p>Please use the guide below for your sheet</p>
                         <table class="table table-bordered">
                             <tr>
-                                <th>Job Grade</th>
-                                <th>Description</th>
-                                <th>Report To</th>
-                                <th>Rank</th>
-                                <th>Probation Period</th>
+                                <th>Medical Center</th>
+                                <th>HMO name</th>
+                                <th>Contact Number</th>
+                                <th>Contact Email</th>
+                                <th>Address</th>
+                                <th>Rating</th>
+                                <th>Other comments</th>
                             </tr>
                         </table>
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadLocation()"
+                        <button class="btn btn-primary submit-btn" type="submit, uploadHospitalManagement()"
                             [disabled]="spinner">
                             <span *ngIf="!spinner">Submit</span>
                             <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
@@ -326,4 +265,4 @@
         </div>
     </div>
 </div>
-<!-- /Upload Location Modal -->
+<!-- /Upload Hospital Management Modal -->

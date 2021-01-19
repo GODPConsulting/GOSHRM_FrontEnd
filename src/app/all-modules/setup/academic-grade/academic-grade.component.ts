@@ -171,11 +171,10 @@ export class AcademicGradeComponent implements OnInit {
 
   // Add academic grade  Modal
   addAcademicGrade(form: FormGroup) {
-    if (form.valid) {
+    if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-
     const payload = form.value;
     payload.rank = +payload.rank;
     this.spinner = true;
@@ -218,10 +217,9 @@ export class AcademicGradeComponent implements OnInit {
   // Deleting items from table
   delete() {
     let payload: object;
-    if (this.selectedId) {
-      if (this.selectedId.length === 0) {
-        return swal.fire("Error", "Select items to delete", "error");
-      }
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    } else {
       payload = {
         itemIds: this.selectedId,
       };

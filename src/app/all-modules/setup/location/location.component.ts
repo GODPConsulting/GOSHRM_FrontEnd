@@ -254,10 +254,10 @@ export class LocationComponent implements OnInit {
     this.locationForm.patchValue({
       id: row.id,
       location: row.location,
-      location_reporting_to: row.location_reporting_to,
-      rank: row.rank,
-      probation_period_in_months: row.probation_period_in_months,
-      description: row.description,
+      address: row.address,
+      city: row.city,
+      state: row.state,
+      country: row.country,
     });
     $("#add_location").modal("show");
   }

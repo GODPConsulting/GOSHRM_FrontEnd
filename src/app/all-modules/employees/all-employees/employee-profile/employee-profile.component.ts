@@ -12,12 +12,18 @@ export class EmployeeProfileComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
   public addEmployeeForm: FormGroup;
+  public rows = [];
+  public srch = [];
+  public statusValue;
   setupService: any;
   file: any;
-  spinner: boolean;
+  
   employee_profileUploadForm: any;
   initializeForm: any;
   getEmployee_Profile: any;
+  pageLoading: boolean;
+  spinner: boolean = false;
+  value: any;
   constructor(
     private toastr: ToastrService,
     private formBuilder: FormBuilder
@@ -32,9 +38,11 @@ export class EmployeeProfileComponent implements OnInit {
 
   onSubmit() {
     this.toastr.success("Bank & statutory added", "Success");
+    this.fileInput.nativeElement.value = "";
+    
   }
 
-  uploadLanguage() {
+  uploadReferee() {
     const formData = new FormData();
     formData.append(
       "uploadInput",
@@ -70,4 +78,5 @@ export class EmployeeProfileComponent implements OnInit {
         }
       );
   }
+
 }

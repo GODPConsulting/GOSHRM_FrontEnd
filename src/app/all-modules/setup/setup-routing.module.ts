@@ -14,9 +14,9 @@ import { HmoComponent } from "./hmo/hmo.component";
 import { GymWorkoutComponent } from "./gym-workout/gym-workout.component";
 import { HighSchoolGradeComponent } from "./high-school-grade/high-school-grade.component";
 import { AcademicGradeComponent } from "./academic-grade/academic-grade.component";
-import { JobDetailComponent } from "src/app/all-modules/setup/job-detail/job-detail.component";
+import { JobTitleComponent } from "src/app/all-modules/setup/job-title/job-title.component";
 import { ProfCertificationComponent } from "./prof-certification/prof-certification.component";
-import { JobSubSkillComponent } from "./job-sub-skill/job-sub-skill.component";
+import { JobSkillComponent } from "./job-skill/job-skill.component";
 import { LocationComponent } from "./location/location.component";
 import { HospitalManagementComponent } from "./hospital-management/hospital-management.component";
 
@@ -74,20 +74,20 @@ const routes: Routes = [
         component: AcademicGradeComponent,
       },
       {
-        path: "job-detail",
-        component: JobDetailComponent,
+        path: "job-title",
+        component: JobTitleComponent,
       },
       {
-        path: "job-detail/:id",
-        component: JobSubSkillComponent,
+        path: "job-title/:id",
+        component: JobSkillComponent,
       },
       {
         path: "prof-certification",
         component: ProfCertificationComponent,
       },
       {
-        path: "job-sub-skill",
-        component: JobSubSkillComponent,
+        path: "job-skill",
+        component: JobSkillComponent,
       },
       {
         path: "location",
