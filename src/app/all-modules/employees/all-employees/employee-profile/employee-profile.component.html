@@ -1,5 +1,7 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+
 <!-- Page Content -->
-<div class="content container-fluid">
+<div *ngIf="!pageLoading" class="content container-fluid">
 
     <!-- Page Header -->
     <div class="page-header">
@@ -29,56 +31,46 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="profile-info-left">
-                                        <h3 class="user-name m-t-0 mb-0">John Doe</h3>
-                                        <h6 class="text-muted">UI/UX Design Team</h6>
-                                        <small class="text-muted">Web Designer</small>
-                                        <div class="staff-id">Employee ID : FT-0001</div>
-                                        <div class="small doj text-muted">Date of Join : 1st Jan 2013</div>
-                                        <div class="staff-msg"><a class="btn btn-custom" routerLink="/apps/chat">Send
-                                                Message</a></div>
+                                        <h3 class="user-name m-t-0 mb-0">{{employeeDetails.firstName}}
+                                            {{employeeDetails.middleName}}
+                                            {{employeeDetails.lastName}}</h3>
+                                        <!-- <h6 class="text-muted">{{employeeDetails.jobTitleName}}</h6> -->
+                                        <small class="text-muted">{{employeeDetails.jobTitleName}} Web Designer</small>
+                                        <div class="staff-id">Staff Code : {{employeeDetails.staffCode}}</div>
+                                        <div class="small doj text-muted">Date of Join : 1st Jan 2013(unavailable)</div>
+                                        <!-- <div class="staff-msg"><a class="btn btn-custom" routerLink="/apps/chat">Send
+                                                Message</a></div> -->
                                     </div>
                                 </div>
                                 <div class="col-md-7">
                                     <ul class="personal-info">
                                         <li>
                                             <div class="title">Gender:</div>
-                                            <div class="text">Male</div>
+                                            <div class="text">{{employeeDetails.gender}}</div>
                                         </li>
                                         <li>
                                             <div class="title">Phone:</div>
-                                            <div class="text"><a href="">9876543210</a></div>
+                                            <div class="text"><a href="">{{employeeDetails.phoneNumber}}</a></div>
                                         </li>
                                         <li>
                                             <div class="title">Email:</div>
-                                            <div class="text"><a href="">eelole@example.com</a></div>
+                                            <div class="text"><a href="">{{employeeDetails.email}}</a></div>
                                         </li>
                                         <li>
                                             <div class="title">Birthday:</div>
-                                            <div class="text">24th July</div>
+                                            <div class="text">{{employeeDetails.dateOfBirth | date :"mediumDate"}}
+                                            </div>
                                         </li>
                                         <li>
                                             <div class="title">Address:</div>
-                                            <div class="text">76 Mobolaji Bank Anthony Way,</div>
-                                        </li>
-                                        <li>
-                                            <div class="title">Reports to:</div>
-                                            <div class="text">
-                                                <div class="avatar-box">
-                                                    <div class="avatar avatar-xs">
-                                                        <img src="assets/img/profiles/avatar-016.jpg" alt="">
-                                                    </div>
-                                                </div>
-                                                <a routerLink="/employees/employeeprofile">
-                                                    Jeffery Lalor
-                                                </a>
-                                            </div>
+                                            <div class="text">{{employeeDetails.address}}</div>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                        <div class="pro-edit"><a data-target="#profile_info" data-toggle="modal" class="edit-icon"><i
-                                    class="fa fa-pencil"></i></a></div>
+                        <div class="pro-edit"><a routerLink="/employees/employee-form" data-target="#profile_info"
+                                data-toggle="modal" class="edit-icon"><i class="fa fa-pencil"></i></a></div>
                     </div>
                 </div>
             </div>
@@ -374,300 +366,6 @@
         </div>
         <!-- /Profile Info Tab -->
 
-        <!-- Projects Tab -->
-        <!--<div class="tab-pane fade" id="emp_projects">
-            <div class="row">
-                <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="dropdown profile-action">
-                                <a aria-expanded="false" data-toggle="dropdown" class="action-icon dropdown-toggle"><i
-                                        class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a data-target="#edit_project" data-toggle="modal" class="dropdown-item"><i
-                                            class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a data-target="#delete_project" data-toggle="modal" class="dropdown-item"><i
-                                            class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="project-title"><a href="project-view.html">Office Management</a></h4>
-                            <small class="block text-ellipsis m-b-15">
-                                <span class="text-xs">1</span> <span class="text-muted">open tasks, </span>
-                                <span class="text-xs">9</span> <span class="text-muted">tasks completed</span>
-                            </small>
-                            <p class="text-muted">Lorem Ipsum is simply dummy text of the printing and
-                                typesetting industry. When an unknown printer took a galley of type and
-                                scrambled it...
-                            </p>
-                            <div class="pro-deadline m-b-15">
-                                <div class="sub-title">
-                                    Deadline:
-                                </div>
-                                <div class="text-muted">
-                                    17 Apr 2019
-                                </div>
-                            </div>
-                            <div class="project-members m-b-15">
-                                <div>Project Leader :</div>
-                                <ul class="team-members">
-                                    <li>
-                                        <a data-toggle="tooltip" title="Danniel david"><img alt=""
-                                                src="assets/img/profiles/avatar-019.jpg"></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="project-members m-b-15">
-                                <div>Team :</div>
-                                <ul class="team-members">
-                                    <li>
-                                        <a data-toggle="tooltip" title="John Doe"><img alt=""
-                                                src="assets/img/profiles/avatar-02.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="Richard Miles"><img alt=""
-                                                src="assets/img/profiles/avatar-09.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="John Smith"><img alt=""
-                                                src="assets/img/profiles/avatar-010.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="Mike Litorus"><img alt=""
-                                                src="assets/img/profiles/avatar-05.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a class="all-users">+15</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <p class="m-b-5">Progress <span class="text-success float-right">40%</span></p>
-                            <div class="progress progress-xs mb-0">
-                                <div style="width: 40%" title="" data-toggle="tooltip" role="progressbar"
-                                    class="progress-bar bg-success" data-original-title="40%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="dropdown profile-action">
-                                <a aria-expanded="false" data-toggle="dropdown" class="action-icon dropdown-toggle"><i
-                                        class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a data-target="#edit_project" data-toggle="modal" class="dropdown-item"><i
-                                            class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a data-target="#delete_project" data-toggle="modal" class="dropdown-item"><i
-                                            class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="project-title"><a href="project-view.html">Project Management</a></h4>
-                            <small class="block text-ellipsis m-b-15">
-                                <span class="text-xs">2</span> <span class="text-muted">open tasks, </span>
-                                <span class="text-xs">5</span> <span class="text-muted">tasks completed</span>
-                            </small>
-                            <p class="text-muted">Lorem Ipsum is simply dummy text of the printing and
-                                typesetting industry. When an unknown printer took a galley of type and
-                                scrambled it...
-                            </p>
-                            <div class="pro-deadline m-b-15">
-                                <div class="sub-title">
-                                    Deadline:
-                                </div>
-                                <div class="text-muted">
-                                    17 Apr 2019
-                                </div>
-                            </div>
-                            <div class="project-members m-b-15">
-                                <div>Project Leader :</div>
-                                <ul class="team-members">
-                                    <li>
-                                        <a data-toggle="tooltip" title="Micard hentry"><img alt=""
-                                                src="assets/img/profiles/avatar-08.jpg"></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="project-members m-b-15">
-                                <div>Team :</div>
-                                <ul class="team-members">
-                                    <li>
-                                        <a data-toggle="tooltip" title="John Doe"><img alt=""
-                                                src="assets/img/profiles/avatar-02.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="Richard Miles"><img alt=""
-                                                src="assets/img/profiles/avatar-09.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="John Smith"><img alt=""
-                                                src="assets/img/profiles/avatar-010.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="Mike Litorus"><img alt=""
-                                                src="assets/img/profiles/avatar-05.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a class="all-users">+15</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <p class="m-b-5">Progress <span class="text-success float-right">40%</span></p>
-                            <div class="progress progress-xs mb-0">
-                                <div style="width: 40%" title="" data-toggle="tooltip" role="progressbar"
-                                    class="progress-bar bg-success" data-original-title="40%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="dropdown profile-action">
-                                <a aria-expanded="false" data-toggle="dropdown" class="action-icon dropdown-toggle"><i
-                                        class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a data-target="#edit_project" data-toggle="modal" class="dropdown-item"><i
-                                            class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a data-target="#delete_project" data-toggle="modal" class="dropdown-item"><i
-                                            class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="project-title"><a href="project-view.html">Video Calling App</a></h4>
-                            <small class="block text-ellipsis m-b-15">
-                                <span class="text-xs">3</span> <span class="text-muted">open tasks, </span>
-                                <span class="text-xs">3</span> <span class="text-muted">tasks completed</span>
-                            </small>
-                            <p class="text-muted">Lorem Ipsum is simply dummy text of the printing and
-                                typesetting industry. When an unknown printer took a galley of type and
-                                scrambled it...
-                            </p>
-                            <div class="pro-deadline m-b-15">
-                                <div class="sub-title">
-                                    Deadline:
-                                </div>
-                                <div class="text-muted">
-                                    17 Apr 2019
-                                </div>
-                            </div>
-                            <div class="project-members m-b-15">
-                                <div>Project Leader :</div>
-                                <ul class="team-members">
-                                    <li>
-                                        <a data-toggle="tooltip" title="Richard hert"><img alt=""
-                                                src="assets/img/profiles/avatar-011.jpg"></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="project-members m-b-15">
-                                <div>Team :</div>
-                                <ul class="team-members">
-                                    <li>
-                                        <a data-toggle="tooltip" title="John Doe"><img alt=""
-                                                src="assets/img/profiles/avatar-02.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="Richard Miles"><img alt=""
-                                                src="assets/img/profiles/avatar-09.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="John Smith"><img alt=""
-                                                src="assets/img/profiles/avatar-010.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="Mike Litorus"><img alt=""
-                                                src="assets/img/profiles/avatar-05.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a class="all-users">+15</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <p class="m-b-5">Progress <span class="text-success float-right">40%</span></p>
-                            <div class="progress progress-xs mb-0">
-                                <div style="width: 40%" title="" data-toggle="tooltip" role="progressbar"
-                                    class="progress-bar bg-success" data-original-title="40%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-sm-6 col-md-4 col-xl-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="dropdown profile-action">
-                                <a aria-expanded="false" data-toggle="dropdown" class="action-icon dropdown-toggle"><i
-                                        class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a data-target="#edit_project" data-toggle="modal" class="dropdown-item"><i
-                                            class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a data-target="#delete_project" data-toggle="modal" class="dropdown-item"><i
-                                            class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div>
-                            </div>
-                            <h4 class="project-title"><a href="project-view.html">Hospital Administration</a></h4>
-                            <small class="block text-ellipsis m-b-15">
-                                <span class="text-xs">12</span> <span class="text-muted">open tasks, </span>
-                                <span class="text-xs">4</span> <span class="text-muted">tasks completed</span>
-                            </small>
-                            <p class="text-muted">Lorem Ipsum is simply dummy text of the printing and
-                                typesetting industry. When an unknown printer took a galley of type and
-                                scrambled it...
-                            </p>
-                            <div class="pro-deadline m-b-15">
-                                <div class="sub-title">
-                                    Deadline:
-                                </div>
-                                <div class="text-muted">
-                                    17 Apr 2019
-                                </div>
-                            </div>
-                            <div class="project-members m-b-15">
-                                <div>Project Leader :</div>
-                                <ul class="team-members">
-                                    <li>
-                                        <a data-toggle="tooltip" title="Micard hentry"><img alt=""
-                                                src="assets/img/profiles/avatar-012.jpg"></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="project-members m-b-15">
-                                <div>Team :</div>
-                                <ul class="team-members">
-                                    <li>
-                                        <a data-toggle="tooltip" title="John Doe"><img alt=""
-                                                src="assets/img/profiles/avatar-02.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="Richard Miles"><img alt=""
-                                                src="assets/img/profiles/avatar-09.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="John Smith"><img alt=""
-                                                src="assets/img/profiles/avatar-010.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tooltip" title="Mike Litorus"><img alt=""
-                                                src="assets/img/profiles/avatar-05.jpg"></a>
-                                    </li>
-                                    <li>
-                                        <a class="all-users">+15</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <p class="m-b-5">Progress <span class="text-success float-right">40%</span></p>
-                            <div class="progress progress-xs mb-0">
-                                <div style="width: 40%" title="" data-toggle="tooltip" role="progressbar"
-                                    class="progress-bar bg-success" data-original-title="40%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /Projects Tab -->
-
         <!-- Assets Tab -->
         <div id="emp_assets" class="tab-pane fade">
             <div class="row">
@@ -712,7 +410,6 @@
                 <!-- assets Contact Modal -->
             </div>
         </div>
-
         <!-- /Assets Tab -->
 
         <!-- Careers Tab -->
@@ -849,19 +546,18 @@
                 </div>
             </div>
         </div>
-
         <!-- /Careers Tab -->
 
-        <!--Hobbies Tab -->
+        <!--Hobbies Tab 
         <div id="emp_hobbies" class="tab-pane fade">
             <div class="row">
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
                             <h3 class="card-title">Hobbies <a class="edit-icon" data-toggle="modal"
-                                    data-target="#hobbies_modal"><i class="fa fa-pencil"></i></a></h3>
-                            <!-- <h5 class="section-title">Primary</h5> -->
-                            <ul class="personal-info">
+                                    data-target="#hobbies_modal"><i class="fa fa-pencil"></i></a></h3>-->
+        <!-- <h5 class="section-title">Primary</h5> -->
+        <!-- <ul class="personal-info">
                                 <li>
                                     <div class="title">Name of Hobbies</div>
                                     <div class="text">John Doe</div>
@@ -896,18 +592,17 @@
                 </div>
             </div>
         </div>
+         /Hobbies Tab -->
 
-        <!-- /Hobbies Tab -->
+        <!-- HMO Tab -->
+        <!-- /HMO Tab -->
     </div>
-
 
 </div>
 
 
-<!-- HMO Tab -->
-<!-- /HMO Tab -->
 
-<!-- Profile Modal -->
+<!-- Profile Modal
 <div id="profile_info" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1061,11 +756,10 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- /Profile Modal -->
 
-
-<!-- Personal Info Modal -->
+<!-- Personal Info Modal 
 <div id="personal_info_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1124,10 +818,10 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <!-- /Personal Info Modal -->
 
-<!-- Dependent Contacts Modal -->
+<!-- Dependent Contacts Modal 
 <div id="dependent_contacts_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1200,10 +894,10 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <!-- /Dependent Contacts Modal -->
 
-<!-- /Referees Contact Modal -->
+<!-- /Referees Contact Modal 
 <div id="referees_contact_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1304,11 +998,10 @@
             </div>
         </div>
     </div>
-</div>
-
+</div>-->
 <!-- /Referees Contact Modal -->
 
-<!-- Emergency Contact Modal -->
+<!-- Emergency Contact Modal 
 <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1381,10 +1074,10 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <!-- /Emergency Contact Modal -->
 
-<!-- Assets Contact Modal -->
+<!-- Assets Contact Modal 
 <div id="assets_contact_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1487,13 +1180,10 @@
             </div>
         </div>
     </div>
-</div>
-
+</div>-->
 <!-- /Assets Contact Modal -->
 
-
-
-<!-- Hobbies Modal -->
+<!-- Hobbies Modal
 <div id="hobbies_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1559,10 +1249,10 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- /Hobbies Modal -->
 
-<!-- Experience Modal -->
+<!-- Experience Modal 
 <div id="experience_info" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1679,10 +1369,10 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <!-- Experience Modal -->
 
-<!-- Professional Cerification Modal -->
+<!-- Professional Cerification Modal 
 <div id="professional_cert_info" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1787,5 +1477,5 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <!-- Professinal Certification Modal -->

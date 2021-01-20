@@ -6,10 +6,8 @@ import {
   OnDestroy,
   AfterViewInit,
 } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { DataTableDirective } from "angular-datatables";
-import { Subject } from "rxjs";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 
@@ -25,7 +23,7 @@ export class JobSkillComponent implements OnInit {
   public jobSkill: any[] = [];
   public pageLoading: boolean;
   public spinner: boolean = false;
-  public formTitle = "Add Job Sub Skill";
+  public formTitle: string = "Add Job Sub Skill";
   public jobSkillForm: FormGroup;
   public selectedId: number[] = [];
   public jobSkillUploadForm: FormGroup;
@@ -127,7 +125,7 @@ export class JobSkillComponent implements OnInit {
           //console.log(message);
 
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             // Populate job title form field
             this.jobTitleForm.patchValue({
               id: payload.id,
@@ -217,7 +215,8 @@ export class JobSkillComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
+            this.getSingleJobTitle(this.jobTitleId);
             this.initializeForm();
             $("#upload_sub_skill").modal("hide");
           } else {
@@ -343,7 +342,7 @@ export class JobSkillComponent implements OnInit {
           //console.log(message);
           this.spinner = false;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#add_sub_skill").modal("hide");
           } else {
@@ -404,7 +403,7 @@ export class JobSkillComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     //this.getSubSkill();
                     this.getSingleJobTitle(this.jobTitleId);
                   });

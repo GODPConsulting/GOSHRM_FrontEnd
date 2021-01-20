@@ -1,5 +1,16 @@
-<!-- Page Content -->
-<div class="content container-fluid">
+<app-loading *ngIf="pageLoading"></app-loading>
+<div *ngIf="!pageLoading" class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="col">
+            <h3 class="page-title">Employees Form</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item">Employee</li>
+                <li class="breadcrumb-item active">Employees Form</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Page Content -->
     <div class="modal-body">
         <form (ngSubmit)="addEmployee(EmployeeForm)" [formGroup]="EmployeeForm">
             <div class="row">
@@ -243,14 +254,6 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>User Role<span class="text-danger">*</span></label>
-                        <!-- <select class="select form-control"
-                            [class.invalid]="EmployeeForm.get('userRoleNames').invalid && EmployeeForm.get('userRoleNames').touched"
-                            formControlName="userRoleNames">
-                            <option>Select User Roles</option>
-                            <option *ngFor="let row of roles" value="{{row.roleId}}">{{row.roleName}}
-                            </option>
-                        </select> -->
-
                         <ng-select [items]="roles" bindValue="roleName" bindLabel="roleName"
                             formControlName="userRoleNames" [multiple]="true" [closeOnSelect]="false"
                             placeholder="Select user role(s)">
@@ -294,7 +297,8 @@
                             formControlName="accessLevelId"
                             (change)=getAccessLevelsByAccessLevelId($event.target.value)>
                             <option>Select Access</option>
-                            <option *ngFor="let row of access" value="{{row.structureDefinitionId}}">{{row.definition}}
+                            <option *ngFor="let row of access" value="{{row.structureDefinitionId}}">
+                                {{row.definition}}
                             </option>
                         </select>
                         <div
@@ -308,14 +312,6 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>Access Level<span class="text-danger">*</span></label>
-                        <!-- <select class="select form-control"
-                            [class.invalid]="EmployeeForm.get('userAccessLevels').invalid && EmployeeForm.get('userAccessLevels').touched"
-                            formControlName="userAccessLevels">
-                            <option>Select Access Level</option>
-                            <option *ngFor="let row of accessLevel" value="{{row.companyStructureId}}">{{row.name}}
-                            </option>
-                            
-                        </select> -->
                         <ng-select [items]="accessLevel" bindValue="companyStructureId" bindLabel="name"
                             formControlName="userAccessLevels" [multiple]="true" [closeOnSelect]="false"
                             placeholder="Select user Access Level">
@@ -334,7 +330,10 @@
                 </div>
             </div>
             <div class="submit-section">
-                <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                <button class="btn btn-primary submit-btn" type="submit">
+                    <span *ngIf="!loading">Submit</span>
+                    <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+                </button>
             </div>
         </form>
     </div>

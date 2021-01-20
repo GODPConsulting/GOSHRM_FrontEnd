@@ -106,7 +106,7 @@ export class LanguageComponent implements OnInit {
           const message = res.status.message.friendlyMessage;
 
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#upload_language").modal("hide");
           } else {
@@ -178,7 +178,7 @@ export class LanguageComponent implements OnInit {
           //console.log(message);
 
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             //this.initializeForm();
             $("#add_language").modal("hide");
           } else {
@@ -222,7 +222,7 @@ export class LanguageComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getLanguages();
                   });
                 } else {

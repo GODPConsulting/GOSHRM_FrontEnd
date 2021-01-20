@@ -111,7 +111,7 @@ export class EmploymentLevelComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             this.fileInput.nativeElement.value = "";
             $("#upload_employment_level").modal("hide");
@@ -174,7 +174,7 @@ export class EmploymentLevelComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#add_employment_level").modal("hide");
           } else {
@@ -230,7 +230,7 @@ export class EmploymentLevelComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getEmploymentLevels();
                   });
                 } else {

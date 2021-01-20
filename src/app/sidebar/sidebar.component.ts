@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, Event, NavigationEnd } from "@angular/router";
 import { AllModulesService } from "../all-modules/all-modules.service";
-import {JwtService} from "../services/jwt.service";
+import { JwtService } from "../services/jwt.service";
 
 @Component({
   selector: "app-sidebar",
@@ -31,8 +31,8 @@ export class SidebarComponent implements OnInit {
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
-        $(".main-wrapper").removeClass('slide-nav');
-        $(".sidebar-overlay").removeClass('opened');
+        $(".main-wrapper").removeClass("slide-nav");
+        $(".sidebar-overlay").removeClass("opened");
         const url = event.url.split("/");
         this.urlComplete.mainUrl = url[1];
         this.urlComplete.subUrl = url[2];
