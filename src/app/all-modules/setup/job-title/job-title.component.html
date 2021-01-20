@@ -49,9 +49,10 @@
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
-                            <td> <a class="text-dark" [routerLink]="[row.id]">{{ i + 1 }}</a></td>
-                            <td> <a class="text-dark" [routerLink]="[row.id]">{{ row.job_title }}</a></td>
-                            <td> <a class="text-dark" [routerLink]="[row.id]">{{ row.totalSkillWeight }}</a></td>
+                            <td> <a class="text-dark d-block" [routerLink]="[row.id]">{{ i + 1 }}</a></td>
+                            <td> <a class="text-dark d-block" [routerLink]="[row.id]">{{ row.job_title }}</a></td>
+                            <td> <a class="text-dark d-block" [routerLink]="[row.id]">{{ row.totalSkillWeight }}</a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
