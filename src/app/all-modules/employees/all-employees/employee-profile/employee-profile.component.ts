@@ -43,7 +43,7 @@ export class EmployeeProfileComponent implements OnInit {
     this.employeeService.getSingleEmployee(id).subscribe(
       (data) => {
         console.log(data);
-        console.log(this.employeeDetails);
+        //console.log(this.employeeDetails);
         this.employeeDetails = data.staff[0];
         this.pageLoading = false;
         if (this.employeeDetails.gender === "2") {
