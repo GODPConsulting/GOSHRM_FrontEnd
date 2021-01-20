@@ -138,7 +138,26 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Country<span class="text-danger">*</span></label>
+                                <select class="form-control" [class.invalid]="locationForm.get('countryId').invalid &&
+                                locationForm.get('countryId').touched" formControlName="countryId"
+                                    (change)=getStatesByCountryId($event.target.value)>
+                                    <option selected value="">Country</option>
+                                    <option *ngFor="let row of countries" value="{{row.lookupId}}">{{row.lookupName}}
+                                    </option>
+                                </select>
+                                <div *ngIf="
+                                locationForm.get('countryId').invalid &&
+                                locationForm.get('countryId').touched">
+                                    <small *ngIf="
+                                    locationForm.get('countryId').invalid &&
+                                    locationForm.get('countryId').touched" class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>State<span class="text-danger">*</span></label>
@@ -154,25 +173,6 @@
                                     <small
                                         *ngIf="locationForm.get('stateId').invalid && locationForm.get('stateId').touched"
                                         class="text-danger"> *State is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Country<span class="text-danger">*</span></label>
-                                <select class="form-control" [class.invalid]="locationForm.get('countryId').invalid &&
-                                locationForm.get('countryId').touched" formControlName="countryId">
-                                    <option>Country</option>
-                                    <option *ngFor="let row of countries" value="{{row.lookupId}}">{{row.lookupName}}
-                                    </option>
-                                </select>
-                                <div *ngIf="
-                                locationForm.get('countryId').invalid &&
-                                locationForm.get('countryId').touched">
-                                    <small *ngIf="
-                                    locationForm.get('countryId').invalid &&
-                                    locationForm.get('countryId').touched" class="text-danger">
-                                        *Field is required</small>
                                 </div>
                             </div>
                         </div>

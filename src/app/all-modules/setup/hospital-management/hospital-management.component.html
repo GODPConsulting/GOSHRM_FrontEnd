@@ -37,10 +37,10 @@
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Medical Center</th>
+                            <th>Hospital</th>
                             <th>HMO Name</th>
                             <th>Contact Number</th>
-                            <th>Contact Email</th>
+                            <th>Email</th>
                             <th>Address</th>
                             <th>Rating</th>
                             <th>Other Comments</th>
@@ -55,13 +55,13 @@
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{ i + 1 }}</td>
-                            <td>{{ row.medical_center }}</td>
-                            <td>{{ row.hmo_name }}</td>
-                            <td>{{ row.contact_number }}</td>
-                            <td>{{ row.contact_email }}</td>
+                            <td>{{ row.hospital }}</td>
+                            <td>{{ row.hmoName }}</td>
+                            <td>{{ row.contactPhoneNo }}</td>
+                            <td>{{ row.email }}</td>
                             <td>{{row.address}}</td>
                             <td>{{ row.rating }}</td>
-                            <td>{{row.other_comments}}</td>
+                            <!-- <td>{{row.otherComments}}</td> -->
                         </tr>
                     </tbody>
                 </table>
@@ -88,16 +88,16 @@
                             <div class="form-group">
                                 <label class="col-form-label">Medical Center<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                hospitalManagementForm.get('medical_center').invalid &&
-                                hospitalManagementForm.get('medical_center').touched
-                    " formControlName="medical_center" />
+                                hospitalManagementForm.get('hospital').invalid &&
+                                hospitalManagementForm.get('hospital').touched
+                    " formControlName="hospital" />
                                 <div *ngIf="
-                                hospitalManagementForm.get('medical_center').invalid &&
-                                hospitalManagementForm.get('medical_center').touched
+                                hospitalManagementForm.get('hospital').invalid &&
+                                hospitalManagementForm.get('hospital').touched
                     ">
                                     <small *ngIf="
-                                    hospitalManagementForm.get('medical_center').invalid &&
-                                    hospitalManagementForm.get('medical_center').touched
+                                    hospitalManagementForm.get('hospital').invalid &&
+                                    hospitalManagementForm.get('hospital').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -107,16 +107,16 @@
                             <div class="form-group">
                                 <label class="col-form-label">HMO Name<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                hospitalManagementForm.get('hmo_name').invalid &&
-                                hospitalManagementForm.get('hmo_name').touched
-                    " formControlName="hmo_name" />
+                                hospitalManagementForm.get('hmoName').invalid &&
+                                hospitalManagementForm.get('hmoName').touched
+                    " formControlName="hmoName" />
                                 <div *ngIf="
-                                hospitalManagementForm.get('hmo_name').invalid &&
-                                hospitalManagementForm.get('hmo_name').touched
+                                hospitalManagementForm.get('hmoName').invalid &&
+                                hospitalManagementForm.get('hmoName').touched
                     ">
                                     <small *ngIf="
-                                    hospitalManagementForm.get('hmo_name').invalid &&
-                                    hospitalManagementForm.get('hmo_name').touched
+                                    hospitalManagementForm.get('hmoName').invalid &&
+                                    hospitalManagementForm.get('hmoName').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -126,16 +126,16 @@
                             <div class="form-group">
                                 <label class="col-form-label">Contact Number<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                hospitalManagementForm.get('contact_number').invalid &&
-                                hospitalManagementForm.get('contact_number').touched
-                    " formControlName="contact_number" />
+                                hospitalManagementForm.get('contactPhoneNo').invalid &&
+                                hospitalManagementForm.get('contactPhoneNo').touched
+                    " formControlName="contactPhoneNo" />
                                 <div *ngIf="
-                                hospitalManagementForm.get('contact_number').invalid &&
-                                hospitalManagementForm.get('contact_number').touched
+                                hospitalManagementForm.get('contactPhoneNo').invalid &&
+                                hospitalManagementForm.get('contactPhoneNo').touched
                     ">
                                     <small *ngIf="
-                                    hospitalManagementForm.get('contact_number').invalid &&
-                                    hospitalManagementForm.get('contact_number').touched
+                                    hospitalManagementForm.get('contactPhoneNo').invalid &&
+                                    hospitalManagementForm.get('contactPhoneNo').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -145,16 +145,16 @@
                             <div class="form-group">
                                 <label class="col-form-label">contact Email<span class="text-danger">*</span></label>
                                 <input class="form-control" type="email" [class.invalid]="
-                                hospitalManagementForm.get('contact_email').invalid &&
-                                hospitalManagementForm.get('contact_email').touched
-                                " formControlName="contact_email" />
+                                hospitalManagementForm.get('email').invalid &&
+                                hospitalManagementForm.get('email').touched
+                                " formControlName="email" />
                                 <div *ngIf="
-                                hospitalManagementForm.get('contact_email').invalid &&
-                                hospitalManagementForm.get('contact_email').touched
+                                hospitalManagementForm.get('email').invalid &&
+                                hospitalManagementForm.get('email').touched
                                  ">
                                     <small *ngIf="
-                                    hospitalManagementForm.get('contact_email').invalid &&
-                                    hospitalManagementForm.get('contact_email').touched
+                                    hospitalManagementForm.get('email').invalid &&
+                                    hospitalManagementForm.get('email').touched
                                     " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -203,16 +203,16 @@
                             <div class="form-group">
                                 <label class="col-form-label">Other Comments </label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                hospitalManagementForm.get('other_comments').invalid &&
-                                hospitalManagementForm.get('other_comments').touched
-                                " formControlName="other_comments" />
+                                hospitalManagementForm.get('otherComments').invalid &&
+                                hospitalManagementForm.get('otherComments').touched
+                                " formControlName="otherComments" />
                                 <div *ngIf="
-                                hospitalManagementForm.get('other_comments').invalid &&
-                                hospitalManagementForm.get('other_comments').touched
+                                hospitalManagementForm.get('otherComments').invalid &&
+                                hospitalManagementForm.get('otherComments').touched
                                  ">
                                     <small *ngIf="
-                                    hospitalManagementForm.get('other_comments').invalid &&
-                                    hospitalManagementForm.get('other_comments').touched
+                                    hospitalManagementForm.get('otherComments').invalid &&
+                                    hospitalManagementForm.get('otherComments').touched
                                     " class="">
                                     </small>
                                 </div>

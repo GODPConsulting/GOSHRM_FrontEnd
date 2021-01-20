@@ -20,6 +20,9 @@ export class LocationComponent implements OnInit {
   public spinner: boolean = false;
   public locationForm: FormGroup;
   locationUploadForm: FormGroup;
+  public countries: any[] = [];
+  public countryId: number;
+  public states: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +43,7 @@ export class LocationComponent implements OnInit {
       order: [[1, "asc"]],
     };
     this.getLocation();
+    this.getCountry();
     this.initializeForm();
   }
 
@@ -263,6 +267,34 @@ export class LocationComponent implements OnInit {
     });
     $("#add_location").modal("show");
   }
+
+  getCountry() {
+    this.pageLoading = true;
+   return this.setupService.getData("/common/countries").subscribe(
+     (data) => {
+       this.pageLoading = false;
+       this.countries = data.commonLookups;
+     },
+     (err) => {
+       this.pageLoading = false;
+       console.log(err);
+     }
+   );
+ }
+
+ getStatesByCountryId(id) {
+   this.pageLoading = true;
+  return this.setupService.getData(`/common/get/states/countryId?CountryId=${id}`).subscribe(
+   (data) => {
+     this.pageLoading= false;
+     this.states = data.commonLookups;
+   },
+   (err) => {
+     this.pageLoading = false;
+     console.log(err);
+   }
+ );
+ }
 
   checkAll(event: Event) {
     if ((<HTMLInputElement>event.target).checked) {

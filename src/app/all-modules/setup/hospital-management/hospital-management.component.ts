@@ -35,7 +35,7 @@ export class HospitalManagementComponent implements OnInit {
         search: "_INPUT_",
         searchPlaceholder: "Start typing to search by any field",
       },
-      columns: [{ orderable: false }, null, null, null, null, null, null, null, null],
+      columns: [{ orderable: false }, null, null, null, null, null, null, null],
       order: [[1, "asc"]],
     };
     this.getHospitalManagement();
@@ -108,7 +108,7 @@ export class HospitalManagementComponent implements OnInit {
             swal.fire("Success", message, "success");
             this.initializeForm();
             this.fileInput.nativeElement.value = "";
-            $("#upload_hospital_management").modal("hide");
+            $("#uploadHospitalManagement").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
@@ -125,13 +125,13 @@ export class HospitalManagementComponent implements OnInit {
   initializeForm() {
     this.hospitalManagementForm = this.formBuilder.group({
       id: [0],
-      medical_center: ["", Validators.required],
-      hmo_name: ["", Validators.required],
-      contact_number: ["", Validators.required],
-      contact_email: ["", Validators.required],
+      hospital: ["", Validators.required],
+      hmoName: ["", Validators.required],
+      contactPhoneNo: ["", Validators.required],
+      email: ["", Validators.required],
       address: ["", Validators.required],
       rating: ["", Validators.required],
-      other_comments: ["", Validators.required],
+      otherComments: ["", Validators.required],
     });
     //initialize upload form
     this.hospitalManagementUploadForm = this.formBuilder.group({
@@ -156,7 +156,7 @@ export class HospitalManagementComponent implements OnInit {
   }
 
   closeModal() {
-    $("#add_hospital_management").modal("hide");
+    $("#addHospitalManagement").modal("hide");
   }
 
   getHospitalManagement() {
@@ -193,7 +193,7 @@ export class HospitalManagementComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            $("#add_hospital_management").modal("hide");
+            $("#addHospitalManagement").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
@@ -254,15 +254,15 @@ export class HospitalManagementComponent implements OnInit {
     this.formTitle = "Edit Hospital Mangement";
     this.hospitalManagementForm.patchValue({
       id: row.id,
-      medical_center: row.medical_center,
-      hmo_name: row.hmo_name,
-      contact_number: row.contact_number,
-      contact_email: row.contact_email,
+      hospital: row.hospital,
+      hmoName: row.hmoName,
+      contactPhoneNo: row.contactPhoneNo,
+      email: row.email,
       address: row.address,
       rating: row.rating,
-      other_comments: row.other_comments
+      // otherComments: row.otherComments
     });
-    $("#add_hospital_Management").modal("show");
+    $("#addHospitalManagement").modal("show");
   }
 
   checkAll(event: Event) {
