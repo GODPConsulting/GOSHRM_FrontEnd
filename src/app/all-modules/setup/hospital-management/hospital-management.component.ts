@@ -176,6 +176,7 @@ export class HospitalManagementComponent implements OnInit {
 
   // Add Hospital Management Api Call
   addHospitalManagement(form: FormGroup) {
+    console.log(form.value);
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
