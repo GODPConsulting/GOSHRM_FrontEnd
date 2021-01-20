@@ -23,7 +23,7 @@ export class JobSkillComponent implements OnInit {
   public jobSkill: any[] = [];
   public pageLoading: boolean;
   public spinner: boolean = false;
-  public formTitle = "Add Job Sub Skill";
+  public formTitle: string = "Add Job Sub Skill";
   public jobSkillForm: FormGroup;
   public selectedId: number[] = [];
   public jobSkillUploadForm: FormGroup;
