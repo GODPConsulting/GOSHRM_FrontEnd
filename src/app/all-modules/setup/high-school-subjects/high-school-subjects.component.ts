@@ -108,7 +108,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             this.fileInput.nativeElement.value = "";
             $("#upload_high_school_subject").modal("hide");
@@ -171,7 +171,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             this.fileInput.nativeElement.value = "";
             $("#add_high_school_subject").modal("hide");
@@ -259,7 +259,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getHighSchoolSub();
                   });
                 } else {

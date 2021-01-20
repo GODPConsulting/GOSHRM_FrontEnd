@@ -105,7 +105,7 @@ export class JobGradeComponent implements OnInit {
           const message = res.status.message.friendlyMessage;
 
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             this.fileInput.nativeElement.value = "";
             $("#upload_job_grade").modal("hide");
@@ -188,7 +188,7 @@ export class JobGradeComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#add_job_grade").modal("hide");
           } else {
@@ -230,7 +230,7 @@ export class JobGradeComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getJobGrade();
                   });
                 } else {

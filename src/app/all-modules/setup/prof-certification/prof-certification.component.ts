@@ -109,7 +109,7 @@ export class ProfCertificationComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#upload_prof_certification").modal("hide");
           } else {
@@ -174,7 +174,7 @@ export class ProfCertificationComponent implements OnInit {
           this.spinner = true;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#add-prof-certification").modal("hide");
           } else {
@@ -238,7 +238,7 @@ export class ProfCertificationComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getprofCertification();
                   });
                 } else {

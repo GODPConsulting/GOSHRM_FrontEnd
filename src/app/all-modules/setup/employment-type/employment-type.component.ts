@@ -110,7 +110,7 @@ export class EmploymentTypeComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             this.fileInput.nativeElement.value = "";
             $("#upload_employment_type").modal("hide");
@@ -188,7 +188,7 @@ export class EmploymentTypeComponent implements OnInit {
           //console.log(message);
 
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#add_employment_type").modal("hide");
           } else {
@@ -231,7 +231,7 @@ export class EmploymentTypeComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getEmploymentType();
                   });
                 } else {

@@ -111,7 +111,7 @@ export class ProfMembershipComponent implements OnInit {
           const message = res.status.message.friendlyMessage;
 
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#upload_prof_membership").modal("hide");
           } else {
@@ -194,7 +194,7 @@ export class ProfMembershipComponent implements OnInit {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
+            swal.fire("GOSHRM", message, "success");
             this.initializeForm();
             $("#add_prof_membership").modal("hide");
           } else {
@@ -236,7 +236,7 @@ export class ProfMembershipComponent implements OnInit {
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
+                  swal.fire("GOSHRM", message, "success").then(() => {
                     this.getProfMembershipForm();
                   });
                 } else {

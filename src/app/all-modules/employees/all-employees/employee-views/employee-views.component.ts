@@ -81,6 +81,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
     this.list = !this.list;
   }
 
+  // Disposes the tooltip after the view is changed
   ngAfterViewChecked() {
     $('[data-toggle="tooltip"]').on("click", function () {
       $(this).tooltip("dispose");
