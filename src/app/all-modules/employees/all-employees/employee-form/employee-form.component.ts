@@ -36,8 +36,6 @@ export class EmployeeFormComponent implements OnInit {
     this.getStaffDepartments();
     this.getUserRole();
     this.getAccess();
-
-  
   }
 
  initializeForm() {
@@ -78,6 +76,7 @@ export class EmployeeFormComponent implements OnInit {
     payload.accessLevelId = +payload.accessLevelId;
     payload.countryId = +payload.countryId;
    
+
     // validations to check if the form fields have value
     if (!payload.firstName) {
 
@@ -239,7 +238,6 @@ return this.setupService.getData("/admin/get/all/role").subscribe(
 );
  }
 
-
  getAccess(){
   this.pageLoading=true;
   return this.setupService.getData("/company/get/all/companystructureDefinition").subscribe(
@@ -253,7 +251,6 @@ return this.setupService.getData("/admin/get/all/role").subscribe(
     }
   );
    }
-
 
    getAccessLevelsByAccessLevelId(id){
     this.pageLoading=true;
