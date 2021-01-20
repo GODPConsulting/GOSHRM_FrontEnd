@@ -89,7 +89,7 @@ export class LocationComponent implements OnInit {
   }
 
   uploadLocation() {
-    if (this.locationUploadForm.get("uploadInput").value) {
+    if (!this.locationUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
     }
     const formData = new FormData();
@@ -127,10 +127,10 @@ export class LocationComponent implements OnInit {
     this.locationForm = this.formBuilder.group({
       id: [0],
       location: ["", Validators.required],
-      location_address: ["", Validators.required],
-      location_city: ["", Validators.required],
-      location_state: ["", Validators.required],
-      location_country: ["", Validators.required],
+      address: ["", Validators.required],
+      city: ["", Validators.required],
+      stateId: ["", Validators.required],
+      countryId: ["", Validators.required],
       description: ["", Validators.required],
     });
     //initialize upload form
@@ -176,6 +176,7 @@ export class LocationComponent implements OnInit {
 
   // Add Location Modal Api Call
   addLocation(form: FormGroup) {
+    console.log(form.value);
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -256,8 +257,9 @@ export class LocationComponent implements OnInit {
       location: row.location,
       address: row.address,
       city: row.city,
-      state: row.state,
-      country: row.country,
+      stateId: row.state,
+      countryId: row.country,
+      // additional_information: row.additional_information,
     });
     $("#add_location").modal("show");
   }

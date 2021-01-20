@@ -35,7 +35,7 @@ export class HospitalManagementComponent implements OnInit {
         search: "_INPUT_",
         searchPlaceholder: "Start typing to search by any field",
       },
-      columns: [{ orderable: false }, null, null, null, null, null, null, null],
+      columns: [{ orderable: false }, null, null, null, null, null, null, null, null],
       order: [[1, "asc"]],
     };
     this.getHospitalManagement();
@@ -142,12 +142,12 @@ export class HospitalManagementComponent implements OnInit {
   openUploadModal() {
     // Reset upload form
     this.fileInput.nativeElement.value = "";
-    $("#upload_hospital_management").modal("show");
+    $("#uploadHospitalManagement").modal("show");
   }
 
   openModal() {
     this.initializeForm();
-    $("#add_hospital_management").modal("show");
+    $("#addHospitalManagement").modal("show");
     /* if (this.jobGrades.length === 0) {
       this.jobGradeForm.get("job_grade_reporting_to").disable();
     } else {
@@ -174,8 +174,8 @@ export class HospitalManagementComponent implements OnInit {
     );
   }
 
-  // Add Job Grade Modal Api Call
-  addJobGrade(form: FormGroup) {
+  // Add Hospital Management Api Call
+  addHospitalManagement(form: FormGroup) {
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -250,7 +250,7 @@ export class HospitalManagementComponent implements OnInit {
 
   // Set Values To Edit Modal Form
   edit(row) {
-    this.formTitle = "Edit Job Grade";
+    this.formTitle = "Edit Hospital Mangement";
     this.hospitalManagementForm.patchValue({
       id: row.id,
       medical_center: row.medical_center,
