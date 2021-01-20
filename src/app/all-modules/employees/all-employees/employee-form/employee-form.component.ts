@@ -23,6 +23,7 @@ export class EmployeeFormComponent implements OnInit {
   public roles: any[] = [];
   public access:any[] = [];
   public accessLevel:any[] = [];
+  loading: boolean
  
   constructor( 
     private formBuilder: FormBuilder,
@@ -35,8 +36,6 @@ export class EmployeeFormComponent implements OnInit {
     this.getStaffDepartments();
     this.getUserRole();
     this.getAccess();
-
-  
   }
 
  initializeForm() {
@@ -62,9 +61,7 @@ export class EmployeeFormComponent implements OnInit {
       accessLevelId: ["", ],
       userAccessLevels: [[],],
       userRoleNames: [[],],
-      password: ["", ],
-
-     
+      password: ["", ], 
   })
 }
 
@@ -78,15 +75,80 @@ export class EmployeeFormComponent implements OnInit {
     payload.staffOfficeId = +payload.staffOfficeId;
     payload.accessLevelId = +payload.accessLevelId;
     payload.countryId = +payload.countryId;
-    // payload.userAccessLevels = [+payload.userAccessLevels];
-    // payload.userRoleNames = [payload.userRoleNames]
-    // return console.log(payload)
+   
+
+    // validations to check if the form fields have value
+    if (!payload.firstName) {
+
+      // if first name is empty string, undefined or null
+
+      return swal.fire('Error', 'First Name is required', 'error')
+    }
+    if (!payload.lastName) {
+      return swal.fire('Error', 'Last Name is required', 'error')
+    }
+    if (!payload.middleName) {
+      return swal.fire('Error', 'Middle Name is required', 'error')
+    }
+    if (!payload.staffCode) {
+      return swal.fire('Error', 'Staff Code is required', 'error')
+    }
+    if (!payload.dateOfBirth) {
+      return swal.fire('Error', 'Date Of Birth is required', 'error')
+    }
+    if (!payload.gender) {
+      return swal.fire('Error', 'Gender is required', 'error')
+    }
+    if (!payload.jobTitle) {
+      return swal.fire('Error', 'Job Title is required', 'error')
+    }
+    if (!payload.email) {
+      return swal.fire('Error', 'Email is required', 'error')
+    }
+    if (!payload.countryId) {
+      return swal.fire('Error', 'Country is required', 'error')
+    }
+    if (!payload.stateId) {
+      return swal.fire('Error', 'State is required', 'error')
+    }
+    if (!payload.staffOfficeId) {
+      return swal.fire('Error', 'Office/Department is required', 'error')
+    }
+    if (!payload.staffLimit) {
+      return swal.fire('Error', 'Staff Limit is required', 'error')
+    }
+    if (!payload.address) {
+      return swal.fire('Error', 'Address is required', 'error')
+    }
+    if (!payload.phoneNumber) {
+      return swal.fire('Error', 'Phone Number is required', 'error')
+    }
+    if (!payload.userName) {
+      return swal.fire('Error', 'User Name is required', 'error')
+    }
+    if (!payload.password) {
+      return swal.fire('Error', 'Password is required', 'error')
+    }
+    if (!payload.userRoleNames) {
+      return swal.fire('Error', 'User Role is required', 'error')
+    }
+    if (!payload.userStatus) {
+      return swal.fire('Error', 'Status is required', 'error')
+    }
+    if (!payload.accessLevelId) {
+      return swal.fire('Error', 'Access is required', 'error')
+    }
+    if (!payload.userAccessLevels) {
+      return swal.fire('Error', 'Access Level is required', 'error')
+    }
+
+    this.loading = true;
     return this.setupService
       .updateData("/admin/add/update/staff", payload)
       .subscribe(
         (res) => {
+          this.loading = false;
           const message = res.status.message.friendlyMessage;
-          //console.log(message);
 
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
@@ -95,9 +157,10 @@ export class EmployeeFormComponent implements OnInit {
           } else {
             swal.fire("Error", message, "error");
           }
-          // this.getJobGrade();
+
         },
         (err) => {
+          this.loading = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
@@ -118,17 +181,6 @@ export class EmployeeFormComponent implements OnInit {
       }
     );
   }
-
-  // getJobId(event) {
-  //   console.log(event.target.value);
-  //   console.log(this.jobTitles);
-  //    for (const obj of this.jobTitles) {
-  //     if (obj.job_title === event.target.value) {
-  //       this.jobTitleId = obj.id;
-  //       console.log(this.jobTitleId);
-  //     }
-  //   }
-  // }
 
   getCountry() {
      this.pageLoading = true;
@@ -186,7 +238,6 @@ return this.setupService.getData("/admin/get/all/role").subscribe(
 );
  }
 
-
  getAccess(){
   this.pageLoading=true;
   return this.setupService.getData("/company/get/all/companystructureDefinition").subscribe(
@@ -200,7 +251,6 @@ return this.setupService.getData("/admin/get/all/role").subscribe(
     }
   );
    }
-
 
    getAccessLevelsByAccessLevelId(id){
     this.pageLoading=true;
