@@ -15,6 +15,10 @@ const routes: Routes = [
         component: EmployeeViewsComponent,
       },
       {
+        path: "employeeprofile/:id",
+        component: EmployeeProfileComponent,
+      },
+      {
         path: "employeeprofile",
         component: EmployeeProfileComponent,
       },

@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
-import {JwtService} from "../../services/jwt.service";
-import {AuthService} from "../../services/auth.service";
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { JwtService } from "../../services/jwt.service";
+import { AuthService } from "../../services/auth.service";
 import swal from "sweetalert2";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     private jwtService: JwtService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit() {
     // this.setTitle('GOS ERP | Login');
@@ -37,20 +37,22 @@ export class LoginComponent implements OnInit {
     } else {
       this.router.navigate(["/"]);
     }
+
     this.loginForm = this.fb.group({
-      userName: [''],
-      password: ['']
-    })
+      userName: [""],
+      password: [""],
+    });
   }
+
   getUserDetails() {
     return this.authService.getProfile().subscribe(
-      data => {
+      (data) => {
         if (data != null) {
           console.log(data);
           this.jwtService.saveUserDetails(data);
           let activities;
           if (data.activities != null) {
-            activities = data.activities.map(item => {
+            activities = data.activities.map((item) => {
               return item.toLocaleLowerCase();
             });
             this.jwtService.saveUserActivities(activities).then(() => {
@@ -69,24 +71,28 @@ export class LoginComponent implements OnInit {
           }
         }
       },
-      error => {
+      (error) => {
         const message = error.status.message.friendlyMessage;
         swal.fire(`Error`, message, "error");
       }
     );
   }
+
   login(loginForm: FormGroup) {
     const payload = loginForm.value;
     this.loading = true;
-    return this.authService.userLogin(payload).subscribe(res => {
-      this.loading = false;
-     this.jwtService.saveToken(res.token).then(() => {
-       this.getUserDetails()
-       // this.router.navigateByUrl('/')
-     })
-    }, err => {
-      this.loading = false;
-      console.log(err);
-    })
+    return this.authService.userLogin(payload).subscribe(
+      (res) => {
+        this.loading = false;
+        this.jwtService.saveToken(res.token).then(() => {
+          this.getUserDetails();
+          // this.router.navigateByUrl('/')
+        });
+      },
+      (err) => {
+        this.loading = false;
+        console.log(err);
+      }
+    );
   }
 }
