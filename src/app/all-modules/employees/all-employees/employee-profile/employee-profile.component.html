@@ -46,7 +46,7 @@
                                     <ul class="personal-info">
                                         <li>
                                             <div class="title">Gender:</div>
-                                            <div class="text">{{employeeDetails.gender}}</div>
+                                            <div class="text">{{employeeDetails.gender === "1"?"Male": "Female"}}</div>
                                         </li>
                                         <li>
                                             <div class="title">Phone:</div>
@@ -99,7 +99,9 @@
 
         <!-- Profile Info Tab -->
         <div id="emp_profile" class="pro-overview tab-pane fade show active">
+            <!-- Row 1 -->
             <div class="row">
+                <!-- Personal Info -->
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
@@ -108,7 +110,9 @@
                             <ul class="personal-info">
                                 <li>
                                     <div class="title">Name</div>
-                                    <div class="text">John Doe</div>
+                                    <div class="text">{{employeeDetails.firstName}}
+                                        {{employeeDetails.middleName}}
+                                        {{employeeDetails.lastName}}</div>
                                 </li>
                                 <hr>
                                 <li>
@@ -153,6 +157,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- /Personal Info -->
+                <!-- Emergency Contact Lola -->
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
@@ -208,8 +214,12 @@
                         </div>
                     </div>
                 </div>
+                <!-- /Emergency Contact -->
             </div>
+            <!-- /Row 1 -->
+            <!-- Row 2 -->
             <div class="row">
+                <!-- Bank information -->
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
@@ -238,6 +248,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- /Bank information -->
+                <!-- Dependent Cotacts -->
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
@@ -285,7 +297,10 @@
                         </div>
                     </div>
                 </div>
+                <!-- /Dependent Cotacts -->
             </div>
+            <!-- /Row 2 -->
+
             <!-- Referee Card -->
             <div class="row">
                 <div class="col-md-6 d-flex">
@@ -1001,7 +1016,7 @@
 </div>-->
 <!-- /Referees Contact Modal -->
 
-<!-- Emergency Contact Modal 
+<!-- Emergency Contact Modal -->
 <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1074,7 +1089,7 @@
             </div>
         </div>
     </div>
-</div>-->
+</div>
 <!-- /Emergency Contact Modal -->
 
 <!-- Assets Contact Modal 
@@ -1180,7 +1195,7 @@
             </div>
         </div>
     </div>
-</div>-->
+</div>
 <!-- /Assets Contact Modal -->
 
 <!-- Hobbies Modal

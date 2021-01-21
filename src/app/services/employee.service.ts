@@ -11,16 +11,7 @@ export class EmployeeService {
   singleEmployeeUrl: string = "/admin/get/single/staff/staffId?StaffId=";
 
   constructor(private apiService: ApiService) {}
-  /* 
-  getData(url: string): Observable<any> {
-    return this.apiService.get(url).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
-  } */
 
-  // Get All Employees
   getEmployees() {
     return this.apiService.get(this.allEmployeeUrl);
   }

@@ -30,7 +30,7 @@
         <!-- Search -->
         <li class="nav-item">
             <div class="top-nav-search">
-                <a  class="responsive-search">
+                <a class="responsive-search">
                     <i class="fa fa-search"></i>
                 </a>
                 <form (ngSubmit)="onSubmit()">
@@ -47,16 +47,16 @@
                 <img src="assets/img/flags/us.png" alt="" height="20"> <span>English</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a  class="dropdown-item">
+                <a class="dropdown-item">
                     <img src="assets/img/flags/us.png" alt="" height="16"> English
                 </a>
-                <a  class="dropdown-item">
+                <a class="dropdown-item">
                     <img src="assets/img/flags/fr.png" alt="" height="16"> French
                 </a>
-                <a  class="dropdown-item">
+                <a class="dropdown-item">
                     <img src="assets/img/flags/es.png" alt="" height="16"> Spanish
                 </a>
-                <a  class="dropdown-item">
+                <a class="dropdown-item">
                     <img src="assets/img/flags/de.png" alt="" height="16"> German
                 </a>
             </div>
@@ -143,7 +143,7 @@
                 <span>Admin</span>
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" routerLink="/employees/employeeprofile">My Profile</a>
+                <a class="dropdown-item" [routerLink]="['/employees/employeeprofile/',user.staffId]">My Profile</a>
                 <a class="dropdown-item" routerLink="/settings/company-settings">Settings</a>
                 <a class="dropdown-item" style="cursor: pointer" (click)="logOut()">Logout</a>
             </div>
