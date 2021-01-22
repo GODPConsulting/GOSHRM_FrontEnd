@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  OnDestroy,
-  AfterViewInit,
-} from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SetupService } from "src/app/services/setup.service";
@@ -20,14 +13,12 @@ declare const $: any;
 export class JobSkillComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild("fileInput") fileInput: ElementRef;
-  public jobSkill: any[] = [];
   public pageLoading: boolean;
   public spinner: boolean = false;
   public formTitle: string = "Add Job Sub Skill";
   public jobSkillForm: FormGroup;
   public selectedId: number[] = [];
   public jobSkillUploadForm: FormGroup;
-  public jobTitles;
   public jobTitleForm;
   public jobTitleId;
   public jobSkills: any[] = [];

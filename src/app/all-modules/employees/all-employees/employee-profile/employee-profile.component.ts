@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 import { data } from "jquery";
 import { ToastrService } from "ngx-toastr";
 import { EmployeeService } from "src/app/services/employee.service";
@@ -16,18 +17,25 @@ export class EmployeeProfileComponent implements OnInit {
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
-  public addEmployeeForm: FormGroup;
+  //public addEmployeeForm: FormGroup;
   spinner: boolean = false;
-  value: any;
+  //value: any;
 
   constructor(
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.getSingleEmployee(3);
+    this.route.paramMap.subscribe((params) => {
+      console.log(+params.get("id"));
+      if (!+params.get("id")) {
+        console.log("new");
+      }
+      this.getSingleEmployee(+params.get("id"));
+    });
     /* this.addEmployeeForm = this.formBuilder.group({
       client: ["", [Validators.required]],
     }); */
@@ -38,6 +46,8 @@ export class EmployeeProfileComponent implements OnInit {
     this.fileInput.nativeElement.value = "";
   }
 
+  /* Employee profile */
+
   getSingleEmployee(id: number) {
     this.pageLoading = true;
     this.employeeService.getSingleEmployee(id).subscribe(
@@ -46,11 +56,6 @@ export class EmployeeProfileComponent implements OnInit {
         //console.log(this.employeeDetails);
         this.employeeDetails = data.staff[0];
         this.pageLoading = false;
-        if (this.employeeDetails.gender === "2") {
-          this.employeeDetails.gender = "Female";
-        } else {
-          this.employeeDetails.gender = "Male";
-        }
         console.log(this.employeeDetails);
       },
       (err) => {
@@ -59,6 +64,12 @@ export class EmployeeProfileComponent implements OnInit {
       }
     );
   }
+
+  /* Employee profile */
+
+  /* Emergency Contact */
+
+  /* Emergency Contact */
 
   /*  uploadReferee() {
     const formData = new FormData();
@@ -94,5 +105,6 @@ export class EmployeeProfileComponent implements OnInit {
           swal.fire("Error", message, "error");
         }
       );
-  } */
+  } 
+  */
 }
