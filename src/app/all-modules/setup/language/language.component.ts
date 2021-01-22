@@ -238,6 +238,16 @@ export class LanguageComponent implements OnInit {
     this.selectedId = [];
   }
 
+  edit(row) {
+    this.formTitle = "Edit Language";
+    this.languageForm.patchValue({
+      id: row.id,
+      language: row.language,
+      description: row.description
+    });
+    $("#add_language").modal("show");
+  }
+
   addItemId(event: Event, id: number) {
     if ((<HTMLInputElement>event.target).checked) {
       if (!this.selectedId.includes(id)) {

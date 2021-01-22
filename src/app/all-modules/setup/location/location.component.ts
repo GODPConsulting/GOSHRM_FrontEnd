@@ -8,7 +8,7 @@ declare const $: any;
 @Component({
   selector: 'app-location',
   templateUrl: './location.component.html',
-  styleUrls: ['./location.component.css']
+  styleUrls: ['./location.component.css', "../setup.component.css"]
 })
 export class LocationComponent implements OnInit {
   public formTitle: string = "Add Location";
@@ -135,7 +135,7 @@ export class LocationComponent implements OnInit {
       city: ["", Validators.required],
       stateId: ["", Validators.required],
       countryId: ["", Validators.required],
-      description: ["", Validators.required],
+      additionalInformation: ["", Validators.required],
     });
     //initialize upload form
     this.locationUploadForm = this.formBuilder.group({
@@ -152,11 +152,6 @@ export class LocationComponent implements OnInit {
   openModal() {
     this.initializeForm();
     $("#add_location").modal("show");
-    /* if (this.jobGrades.length === 0) {
-      this.jobGradeForm.get("job_grade_reporting_to").disable();
-    } else {
-      this.jobGradeForm.get("job_grade_reporting_to").enable(); 
-    }*/
   }
 
   closeModal() {
@@ -168,7 +163,6 @@ export class LocationComponent implements OnInit {
     return this.setupService.getData("/hrmsetup/get/all/location").subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
         this.locations = data.setuplist;
       },
       (err) => {
@@ -188,6 +182,8 @@ export class LocationComponent implements OnInit {
     const payload = form.value;
     console.log(payload);
     this.spinner = true;
+    payload.stateId = +payload.stateId;
+    payload.countryId = +payload.countryId;
     return this.setupService
       .updateData("/hrmsetup/add/update/location", payload)
       .subscribe(
@@ -255,15 +251,16 @@ export class LocationComponent implements OnInit {
 
   // Set Values To Edit Modal Form
   edit(row) {
+    this.getStatesByCountryId(row.countryId);
     this.formTitle = "Edit Location";
     this.locationForm.patchValue({
       id: row.id,
       location: row.location,
       address: row.address,
       city: row.city,
-      stateId: row.state,
-      countryId: row.country,
-      // additional_information: row.additional_information,
+      stateId: row.stateId,
+      countryId: row.countryId,
+      additionalInformation: row.additionalInformation,
     });
     $("#add_location").modal("show");
   }

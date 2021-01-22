@@ -162,25 +162,6 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Address <span class="text-danger">*</span></label>
-                                <textarea class="form-control" type="text" [class.invalid]="
-                                hmoForm.get('address').invalid &&
-                                hmoForm.get('address').touched
-                    " formControlName="address"> </textarea>
-                                <div *ngIf="
-                                hmoForm.get('address').invalid &&
-                                hmoForm.get('address').touched
-                    ">
-                                    <small *ngIf="
-                                    hmoForm.get('address').invalid &&
-                                    hmoForm.get('address').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
                                 <label class="col-form-label">Registration Date <span
                                         class="text-danger">*</span></label>
                                 <input class="form-control" type="date" [class.invalid]="
@@ -218,10 +199,30 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Address <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="4" type="text" [class.invalid]="
+                                hmoForm.get('address').invalid &&
+                                hmoForm.get('address').touched
+                    " formControlName="address"> </textarea>
+                                <div *ngIf="
+                                hmoForm.get('address').invalid &&
+                                hmoForm.get('address').touched
+                    ">
+                                    <small *ngIf="
+                                    hmoForm.get('address').invalid &&
+                                    hmoForm.get('address').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Comments <span class="text-danger">*</span></label>
-                                <textarea class="form-control" type="text" [class.invalid]="
+                                <textarea class="form-control" rows="4" type="text" [class.invalid]="
                                 hmoForm.get('other_comments').invalid &&
                                 hmoForm.get('other_comments').touched
                     " formControlName="other_comments"> </textarea>

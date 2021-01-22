@@ -42,7 +42,6 @@
                             <th>City</th>
                             <th>State</th>
                             <th>Country</th>
-                            <!-- <th>Additional Information</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -56,9 +55,8 @@
                             <td>{{ row.location }}</td>
                             <td>{{ row.address }}</td>
                             <td>{{ row.city }}</td>
-                            <td>{{ row.stateId }}</td>
-                            <td>{{ row.countryId }}</td>
-                            <!-- <td>{{ row.additional_information }}</td> -->
+                            <td>{{ row.stateName }}</td>
+                            <td>{{ row.countryName }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -178,19 +176,19 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label class="col-form-label">Description <span class="text-danger">*</span></label>
+                                <label class="col-form-label">Additional Information <span class="text-danger">*</span></label>
 
-                                <textarea rows="5" class="form-control" [class.invalid]="
-                    locationForm.get('description').invalid &&
-                    locationForm.get('description').touched
-                    " formControlName="description"></textarea>
+                                <textarea rows="4" class="form-control" [class.invalid]="
+                    locationForm.get('additionalInformation').invalid &&
+                    locationForm.get('additionalInformation').touched
+                    " formControlName="additionalInformation"></textarea>
                                 <div *ngIf="
-                                locationForm.get('description').invalid &&
-                                locationForm.get('description').touched
+                                locationForm.get('additionalInformation').invalid &&
+                                locationForm.get('additionalInformation').touched
                     ">
                                     <small *ngIf="
-                                    locationForm.get('description').invalid &&
-                                    locationForm.get('description').touched
+                                    locationForm.get('additionalInformation').invalid &&
+                                    locationForm.get('additionalInformation').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>

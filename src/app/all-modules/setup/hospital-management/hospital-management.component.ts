@@ -7,7 +7,7 @@ declare const $: any;
 @Component({
   selector: 'app-hospital-management',
   templateUrl: './hospital-management.component.html',
-  styleUrls: ['./hospital-management.component.css']
+  styleUrls: ['./hospital-management.component.css', "../setup.component.css"]
 })
 export class HospitalManagementComponent implements OnInit {
   public formTitle: string = "Hospital Management";
@@ -19,6 +19,7 @@ export class HospitalManagementComponent implements OnInit {
   public pageLoading: boolean;
   public spinner: boolean = false;
   public hospitalManagementUploadForm: FormGroup;
+  public hmos: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,11 +36,12 @@ export class HospitalManagementComponent implements OnInit {
         search: "_INPUT_",
         searchPlaceholder: "Start typing to search by any field",
       },
-      columns: [{ orderable: false }, null, null, null, null, null, null, null],
+      columns: [{ orderable: false }, null, null, null, null, null, null],
       order: [[1, "asc"]],
     };
     this.getHospitalManagement();
     this.initializeForm();
+    this.getHmos();
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -82,19 +84,19 @@ export class HospitalManagementComponent implements OnInit {
   // Appends a selected file to "uploadInput"
   onSelectedFile(event) {
     const file = event.target.files[0];
-    this.hospitalManagementForm.patchValue({
+    this.hospitalManagementUploadForm.patchValue({
       uploadInput: file,
     });
   }
 
   uploadHospitalManagement() {
-    if (!this.hospitalManagementForm.get("uploadInput").value) {
+    if (!this.hospitalManagementUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
     }
     const formData = new FormData();
     formData.append(
       "uploadInput",
-      this.hospitalManagementForm.get("uploadInput").value
+      this.hospitalManagementUploadForm.get("uploadInput").value
     );
     this.spinner = true;
     return this.setupService
@@ -126,7 +128,7 @@ export class HospitalManagementComponent implements OnInit {
     this.hospitalManagementForm = this.formBuilder.group({
       id: [0],
       hospital: ["", Validators.required],
-      hmoName: ["", Validators.required],
+      hmoId: ["", Validators.required],
       contactPhoneNo: ["", Validators.required],
       email: ["", Validators.required],
       address: ["", Validators.required],
@@ -148,23 +150,31 @@ export class HospitalManagementComponent implements OnInit {
   openModal() {
     this.initializeForm();
     $("#addHospitalManagement").modal("show");
-    /* if (this.jobGrades.length === 0) {
-      this.jobGradeForm.get("job_grade_reporting_to").disable();
-    } else {
-      this.jobGradeForm.get("job_grade_reporting_to").enable(); 
-    }*/
   }
 
   closeModal() {
     $("#addHospitalManagement").modal("hide");
   }
 
+  getHmos() {
+    this.pageLoading = true;
+   return this.setupService.getData("/hrmsetup/get/all/hmos").subscribe(
+     (data) => {
+       this.pageLoading = false;
+       this.hmos = data.setuplist;
+     },
+     (err) => {
+       this.pageLoading = false;
+       console.log(err);
+     }
+   );
+ }
+
   getHospitalManagement() {
     this.pageLoading = true;
     return this.setupService.getData("/hrmsetup/get/all/hospital-managements").subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
         this.hospitalManagements = data.setuplist;
       },
       (err) => {
@@ -182,6 +192,7 @@ export class HospitalManagementComponent implements OnInit {
       return;
     }
     const payload = form.value;
+    payload.hmoId = +payload.hmoId;
     console.log(payload);
     this.spinner = true;
     return this.setupService
@@ -215,7 +226,6 @@ export class HospitalManagementComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -255,12 +265,12 @@ export class HospitalManagementComponent implements OnInit {
     this.hospitalManagementForm.patchValue({
       id: row.id,
       hospital: row.hospital,
-      hmoName: row.hmoName,
+      hmoId: row.hmoId,
       contactPhoneNo: row.contactPhoneNo,
       email: row.email,
       address: row.address,
       rating: row.rating,
-      // otherComments: row.otherComments
+      otherComments: row.otherComments
     });
     $("#addHospitalManagement").modal("show");
   }
