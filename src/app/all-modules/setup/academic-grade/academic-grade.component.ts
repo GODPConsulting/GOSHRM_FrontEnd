@@ -126,7 +126,7 @@ export class AcademicGradeComponent implements OnInit {
   }
 
   initializeForm() {
-    // Initialise the add modal form
+    // Initialize the add modal form
     this.academicGradeForm = this.formBuilder.group({
       id: [0],
       grade: ["", Validators.required],
@@ -134,7 +134,7 @@ export class AcademicGradeComponent implements OnInit {
       rank: ["", Validators.required],
     });
 
-    // Initialise the upload form
+    // Initialize the upload form
     this.academicGradeUploadForm = this.formBuilder.group({
       uploadInput: [""],
     });
