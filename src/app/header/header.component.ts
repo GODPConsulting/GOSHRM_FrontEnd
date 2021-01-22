@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
+import { NavigationEnd, Router } from "@angular/router";
 import { HeaderService } from "./header.service";
 import { AuthService } from "../services/auth.service";
 
@@ -9,7 +9,7 @@ import { AuthService } from "../services/auth.service";
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.css"],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   jsonData: any = {
     notification: [],
     message: [],
@@ -17,12 +17,26 @@ export class HeaderComponent implements OnInit {
   notifications: any;
   messagesData: any;
   user: any = {};
+  mySubscription: any;
 
   constructor(
     private headerService: HeaderService,
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) {
+    // This solves the issue of not being able to navigate to user profile when on another profile (Method 2)
+    // Working but reloads all components on the view
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+
+    this.mySubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+      }
+    });
+  }
 
   ngOnInit() {
     // this.getDatas("notification");
@@ -101,6 +115,12 @@ export class HeaderComponent implements OnInit {
     ];
   }
 
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
+  }
+
   getDatas(section) {
     this.headerService.getDataFromJson(section).subscribe((data) => {
       this.jsonData[section] = data;
@@ -122,6 +142,15 @@ export class HeaderComponent implements OnInit {
     this.authService.getProfile().subscribe((data) => {
       console.log(data);
       this.user = data;
+    });
+  }
+
+  // This solves the issue of not being able to navigate to user profile when on another profile (Method 1)
+  //However, navigating backwards has same issue
+  viewUserProfile() {
+    const currentRoute: string = `/employees/employeeprofile/${this.user.staffId}`;
+    this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentRoute]);
     });
   }
 }

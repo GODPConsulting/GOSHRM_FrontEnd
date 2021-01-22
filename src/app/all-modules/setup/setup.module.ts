@@ -26,6 +26,9 @@ import { LanguageComponent } from "./language/language.component";
 import { JobTitleComponent } from "src/app/all-modules/setup/job-title/job-title.component";
 import { ProfCertificationComponent } from "./prof-certification/prof-certification.component";
 import { JobSkillComponent } from "./job-skill/job-skill.component";
+import { LocationComponent } from './location/location.component';
+import { HospitalManagementComponent } from './hospital-management/hospital-management.component';
+
 
 @NgModule({
   declarations: [
@@ -46,6 +49,8 @@ import { JobSkillComponent } from "./job-skill/job-skill.component";
     ProfCertificationComponent,
     ProfMembershipComponent,
     JobSkillComponent,
+    LocationComponent,
+    HospitalManagementComponent,
   ],
   imports: [
     CommonModule,
