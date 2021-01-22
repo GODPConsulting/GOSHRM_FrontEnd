@@ -38,8 +38,8 @@
                                         <small class="text-muted">{{employeeDetails.jobTitleName}} Web Designer</small>
                                         <div class="staff-id">Staff Code : {{employeeDetails.staffCode}}</div>
                                         <div class="small doj text-muted">Date of Join : 1st Jan 2013(unavailable)</div>
-                                        <!-- <div class="staff-msg"><a class="btn btn-custom" routerLink="/apps/chat">Send
-                                                Message</a></div> -->
+                                        <div class="staff-msg"><a class="btn btn-custom" routerLink="/apps/chat">Send
+                                                Message</a></div>
                                     </div>
                                 </div>
                                 <div class="col-md-7">
@@ -62,8 +62,8 @@
                                             </div>
                                         </li>
                                         <li>
-                                            <div class="title">Address:</div>
-                                            <div class="text">{{employeeDetails.address}}</div>
+                                            <div class="title">Office:</div>
+                                            <div class="text">{{employeeDetails.staffOfficeName}}ABC</div>
                                         </li>
                                     </ul>
                                 </div>
@@ -101,63 +101,51 @@
         <div id="emp_profile" class="pro-overview tab-pane fade show active">
             <!-- Row 1 -->
             <div class="row">
-                <!-- Personal Info -->
+                <!-- Identification Card -->
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
-                            <h3 class="card-title">Personal Informations <a class="edit-icon" data-toggle="modal"
-                                    data-target="#personal_info_modal"><i class="fa fa-pencil"></i></a></h3>
+                            <h3 class="card-title">Identification <a (click)="initIdentificationForm()"
+                                    class="edit-icon" data-toggle="modal" data-target="#identification_modal"><i
+                                        class="fa fa-pencil"></i></a></h3>
                             <ul class="personal-info">
                                 <li>
-                                    <div class="title">Name</div>
-                                    <div class="text">{{employeeDetails.firstName}}
-                                        {{employeeDetails.middleName}}
-                                        {{employeeDetails.lastName}}</div>
+                                    <div class="title">Identification</div>
+                                    <div class="text">{{employeeIdentification.identification}}</div>
                                 </li>
                                 <hr>
                                 <li>
                                     <div class="title">Identification No.</div>
-                                    <div class="text">9876543210</div>
+                                    <div class="text">{{employeeIdentification.identification_number}}</div>
                                 </li>
                                 <hr>
                                 <li>
                                     <div class="title">ID Issued Date.</div>
-                                    <div class="text">01-21-2021</div>
+                                    <div class="text">{{employeeIdentification.idIssues}}</div>
                                 </li>
                                 <hr>
                                 <li>
-                                    <div class="title">ID Expiry Date.</div>
-                                    <div class="text">01-21-2025</div>
+                                    <div class="title">ID Expiry Date</div>
+                                    <div class="text">{{employeeIdentification.idExpiry_date | date :"mediumDate"}}
+                                    </div>
                                 </li>
-                                <!-- <li>
-                                    <div class="title">Tel</div>
-                                    <div class="text"><a href="">9876543210</a></div>
-                                </li>
+                                <hr>
                                 <li>
-                                    <div class="title">Nationality</div>
-                                    <div class="text">Indian</div>
+                                    <div class="title">Approval Status</div>
+                                    <div class="text">{{employeeIdentification.approval_status_name}}</div>
                                 </li>
+                                <hr>
                                 <li>
-                                    <div class="title">Religion</div>
-                                    <div class="text">Christian</div>
+                                    <div class="title">Approve Button</div>
+                                    <div class="text"><button>Approve</button></div>
+                                    <div class="text"><button>Pending</button></div>
+                                    <div class="text"><button>Decline</button></div>
                                 </li>
-                                <li>
-                                    <div class="title">Marital status</div>
-                                    <div class="text">Married</div>
-                                </li>
-                                <li>
-                                    <div class="title">Employment of spouse</div>
-                                    <div class="text">No</div>
-                                </li>
-                                <li>
-                                    <div class="title">No. of children</div>
-                                    <div class="text">2</div>
-                                </li> -->
                             </ul>
                         </div>
                     </div>
                 </div>
-                <!-- /Personal Info -->
+                <!-- /Identification Card -->
                 <!-- Emergency Contact Lola -->
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
@@ -301,10 +289,10 @@
             </div>
             <!-- /Row 2 -->
 
-            <!-- Referee Card -->
+            <!-- Row 3 -->
             <div class="row">
+                <!-- Referee Card -->
                 <div class="col-md-6 d-flex">
-
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
                             <h3 class="card-title">Referees <a class="edit-icon" data-toggle="modal"
@@ -376,8 +364,9 @@
                         </div>
                     </div>
                 </div>
+                <!-- /Referee Card -->
             </div>
-            <!-- /Referee Card -->
+            <!-- /Row 3 -->
         </div>
         <!-- /Profile Info Tab -->
 
@@ -774,57 +763,129 @@
 </div> -->
 <!-- /Profile Modal -->
 
-<!-- Personal Info Modal 
-<div id="personal_info_modal" class="modal custom-modal fade" role="dialog">
+<!-- Identification Modal -->
+<div id="identification_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Personal Information</h5>
+                <h5 class="modal-title">{{cardFormTitle}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form (ngSubmit)="submitIdentificationForm(identificationForm)" [formGroup]="identificationForm">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control">
+                                <label>Identification</label>
+                                <input type="text" class="form-control" [class.invalid]="
+                                identificationForm.get('identification').invalid &&
+                                identificationForm.get('identification').touched" formControlName="identification">
+                                <div *ngIf="
+                                identificationForm.get('identification').invalid &&
+                                identificationForm.get('identification').touched
+                    ">
+                                    <small *ngIf="
+                                    identificationForm.get('identification').invalid &&
+                                    identificationForm.get('identification').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Identification No</label>
-                                <input type="text" class="form-control">
+                                <label>Identification Number</label>
+                                <input type="number" min="1" class="form-control" [class.invalid]="
+                                identificationForm.get('identification_number').invalid &&
+                                identificationForm.get('identification_number').touched"
+                                    formControlName="identification_number">
+                                <div *ngIf="
+                                identificationForm.get('identification_number').invalid &&
+                                identificationForm.get('identification_number').touched
+                    ">
+                                    <small *ngIf="
+                                    identificationForm.get('identification_number').invalid &&
+                                    identificationForm.get('identification_number').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>ID Issues <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker type="date"
-                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
+                                <input class="form-control" type="date" type="text" [class.invalid]="
+                                identificationForm.get('idIssues').invalid &&
+                                identificationForm.get('idIssues').touched" formControlName="idIssues">
+                                <div *ngIf="
+                                identificationForm.get('idIssues').invalid &&
+                                identificationForm.get('idIssues').touched
+                    ">
+                                    <small *ngIf="
+                                    identificationForm.get('idIssues').invalid &&
+                                    identificationForm.get('idIssues').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>ID Expiry Date <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker type="date"
-                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }">
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
+                                    identificationForm.get('idExpiry_date').invalid &&
+                                    identificationForm.get('idExpiry_date').touched" formControlName="idExpiry_date">
+                                <div *ngIf="
+                                identificationForm.get('idExpiry_date').invalid &&
+                                identificationForm.get('idExpiry_date').touched
+                    ">
+                                    <small *ngIf="
+                                    identificationForm.get('idExpiry_date').invalid &&
+                                    identificationForm.get('idExpiry_date').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-form-label col-md-5">ID upload (file format)</label>
-                            <div class="col-md-7">
-                                <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                                    (change)="onSelectedFile($event)">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>ID upload (file format)</label>
+                                <input class="form-control" name="identicationFile" #fileInput type="file"
+                                    (change)="onSelectedFile($event)" [class.invalid]="
+                                    identificationForm.get('identicationFile').invalid &&
+                                    identificationForm.get('identicationFile').touched">
                             </div>
                         </div>
-
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Approval Status</label>
+                                <select class="form-control" [class.invalid]="
+                                identificationForm.get('approval_status').invalid &&
+                                identificationForm.get('approval_status').touched" formControlName="approval_status">
+                                    <option selected value="">Select Status</option>
+                                    <option value="1">Approve</option>
+                                    <option value="2">Pending</option>
+                                    <option value="3">Decline</option>
+                                </select>
+                                <div *ngIf="
+                                identificationForm.get('approval_status').invalid &&
+                                identificationForm.get('approval_status').touched
+                    ">
+                                    <small *ngIf="
+                                    identificationForm.get('approval_status').invalid &&
+                                    identificationForm.get('approval_status').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadEmployee_profile()"
-                            [disabled]="spinner">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
                             <span *ngIf="!spinner">Submit</span>
                             <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
@@ -833,8 +894,8 @@
             </div>
         </div>
     </div>
-</div>-->
-<!-- /Personal Info Modal -->
+</div>
+<!-- /Identification Modal -->
 
 <!-- Dependent Contacts Modal 
 <div id="dependent_contacts_modal" class="modal custom-modal fade" role="dialog">

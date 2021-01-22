@@ -6,6 +6,7 @@ import { ToastrService } from "ngx-toastr";
 import { EmployeeService } from "src/app/services/employee.service";
 import swal from "sweetalert2";
 
+declare const $: any;
 @Component({
   selector: "app-employee-profile",
   templateUrl: "./employee-profile.component.html",
@@ -13,7 +14,11 @@ import swal from "sweetalert2";
 })
 export class EmployeeProfileComponent implements OnInit {
   employeeDetails: any = {};
+  employeeIdentification: any = {};
+  identificationForm: FormGroup;
   pageLoading: boolean = false; // controls the visibility of the page loader
+  employeeId: number;
+  cardFormTitle: string;
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -30,15 +35,13 @@ export class EmployeeProfileComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
-      console.log(+params.get("id"));
-      if (!+params.get("id")) {
-        console.log("new");
-      }
-      this.getSingleEmployee(+params.get("id"));
+      this.employeeId = +params.get("id");
+      console.log(this.employeeId);
     });
-    /* this.addEmployeeForm = this.formBuilder.group({
-      client: ["", [Validators.required]],
-    }); */
+
+    this.getSingleEmployee(this.employeeId);
+    this.getEmployeeIdentification(this.employeeId);
+    this.initIdentificationForm();
   }
 
   onSubmit() {
@@ -50,9 +53,8 @@ export class EmployeeProfileComponent implements OnInit {
 
   getSingleEmployee(id: number) {
     this.pageLoading = true;
-    this.employeeService.getSingleEmployee(id).subscribe(
+    this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
-        console.log(data);
         //console.log(this.employeeDetails);
         this.employeeDetails = data.staff[0];
         this.pageLoading = false;
@@ -66,6 +68,80 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   /* Employee profile */
+
+  /* Identification */
+  initIdentificationForm() {
+    this.cardFormTitle = "Add Identification";
+    this.identificationForm = this.formBuilder.group({
+      id: [0],
+      identification: ["", Validators.required],
+      identification_number: ["", Validators.required],
+      idIssues: ["", Validators.required],
+      idExpiry_date: ["", Validators.required],
+      approval_status: ["", Validators.required],
+      staffId: [this.employeeId],
+      identicationFile: ["", Validators.required],
+    });
+    if (this.employeeIdentification !== undefined) {
+      this.cardFormTitle = "Edit Identification";
+      this.identificationForm.patchValue({
+        id: [0],
+        identification: this.employeeIdentification.identification,
+        identification_number: this.employeeIdentification
+          .identification_number,
+        idIssues: this.employeeIdentification.idIssues,
+        idExpiry_date: this.employeeIdentification.idExpiry_date,
+        approval_status: this.employeeIdentification.approval_status,
+        staffId: [this.employeeId],
+        identicationFile: this.employeeIdentification.identicationFile,
+      });
+    }
+  }
+
+  submitIdentificationForm(form: FormGroup) {
+    if (!form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+    const payload = form.value;
+    payload.approval_status = +payload.approval_status;
+    console.log(payload);
+    this.spinner = true;
+    return this.employeeService.postIdentification(payload).subscribe(
+      (res) => {
+        console.log(res);
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          $("#identification_modal").modal("hide");
+        }
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
+  }
+
+  getEmployeeIdentification(id: number) {
+    this.employeeService.getIdentificationByStaffId(id).subscribe((data) => {
+      this.employeeIdentification = data.employeeList[0];
+      //console.log(this.employeeIdentification);
+    });
+  }
+
+  // Appends a selected file to "identicationFile"
+  onSelectedFile(event: Event) {
+    const file = (<HTMLInputElement>event.target).files[0];
+    this.identificationForm.patchValue({
+      identicationFile: file,
+    });
+    //console.log(this.identificationForm.get("identicationFile").value);
+  }
+
+  /* Identification */
 
   /* Emergency Contact */
 

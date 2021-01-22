@@ -8,7 +8,10 @@ import { ApiService } from "./api.service";
 })
 export class EmployeeService {
   allEmployeeUrl: string = "/admin/get/all/staff";
-  singleEmployeeUrl: string = "/admin/get/single/staff/staffId?StaffId=";
+  EmployeeByIdUrl: string = "/admin/get/single/staff/staffId?StaffId=";
+  identificationByStaffIdUrl: string =
+    "/hrm/get/single/employee/identification/staffId?staffId=";
+  addIdentificationUrl: string = "/hrm/add/update/employee/identification";
 
   constructor(private apiService: ApiService) {}
 
@@ -16,7 +19,15 @@ export class EmployeeService {
     return this.apiService.get(this.allEmployeeUrl);
   }
 
-  getSingleEmployee(id: number) {
-    return this.apiService.get(`${this.singleEmployeeUrl}${id}`);
+  getEmployeeById(id: number) {
+    return this.apiService.get(`${this.EmployeeByIdUrl}${id}`);
+  }
+
+  getIdentificationByStaffId(id: number) {
+    return this.apiService.get(`${this.identificationByStaffIdUrl}${id}`);
+  }
+
+  postIdentification(payload: Object) {
+    return this.apiService.post(`${this.addIdentificationUrl}`, payload);
   }
 }
