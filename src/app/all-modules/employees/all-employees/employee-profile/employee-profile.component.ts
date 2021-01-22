@@ -5,6 +5,7 @@ import { data } from "jquery";
 import { ToastrService } from "ngx-toastr";
 import { EmployeeService } from "src/app/services/employee.service";
 import swal from "sweetalert2";
+declare const $: any;
 
 @Component({
   selector: "app-employee-profile",
@@ -14,27 +15,48 @@ import swal from "sweetalert2";
 export class EmployeeProfileComponent implements OnInit {
   employeeDetails: any = {};
   pageLoading: boolean = false; // controls the visibility of the page loader
+  emmergencyContactForm: FormGroup;
+  approvalStatus: any = {};
+  countries: any[] = [];
+  emmergencyContacts: any;
+
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
   //public addEmployeeForm: FormGroup;
   spinner: boolean = false;
   //value: any;
+  staffId: number;
 
   constructor(
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private route: ActivatedRoute
-  ) {}
+
+  ) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
+    this.emmergencyContactForm = this.formBuilder.group({
+      id: [0],
+      fullName: [''],
+      contact_phone_number: [''],
+      email: ["",],
+      relationship: [''],
+      address: [''],
+      countryId: [0],
+      countryName: [''],
+      approval_status: [],
+      approval_status_name: [''],
+      staffId: [''],
+    })
+    this.getCountry();
+        this.route.paramMap.subscribe((params) => {
       console.log(+params.get("id"));
-      if (!+params.get("id")) {
-        console.log("new");
-      }
+      this.staffId = +params.get('id')
+
       this.getSingleEmployee(+params.get("id"));
+      this.getSavedEmergencyContact(this.staffId);
     });
     /* this.addEmployeeForm = this.formBuilder.group({
       client: ["", [Validators.required]],
@@ -68,43 +90,96 @@ export class EmployeeProfileComponent implements OnInit {
   /* Employee profile */
 
   /* Emergency Contact */
+  addEmmergencyContact(emmergencyContactForm) {
+    const payload = emmergencyContactForm.value
+    payload.staffId = this.staffId;
+    payload.approval_status = +payload.approval_status;
+    payload.countryId = +payload.countryId;
 
-  /* Emergency Contact */
 
-  /*  uploadReferee() {
-    const formData = new FormData();
-    formData.append(
-      "uploadInput",
-      this.employee_profileUploadForm.get("uploadInput").value
-    );
-    if (!this.file) {
-      return swal.fire("Error", "Select a file", "error");
-    }
-    //console.log(formData, this.languageForm.get("uploadInput").value);
-    this.spinner = true;
-
-    return this.setupService
-      .updateData("/hrmsetup/upload/language", formData)
+    this.pageLoading = true;
+    this.employeeService.addEmmergencyContact(payload)
       .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-
-          if (res.status.isSuccessful) {
+        (data) => {
+          this.pageLoading = false;
+          const message = data.status.message.friendlyMessage;
+          if (data.status.isSuccessful) {
             swal.fire("Success", message, "success");
-            this.initializeForm();
-            this.fileInput.nativeElement.value = "";
+            this.getSavedEmergencyContact(this.staffId);
+            $("#emergency_contact_modal").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getEmployee_Profile();
         },
         (err) => {
-          this.spinner = false;
+          this.pageLoading = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }
-      );
-  } 
-  */
+
+      )
+  }
+
+  getCountry() {
+    return this.employeeService.getCountry().subscribe(
+      (data) => {
+        this.countries = data.commonLookups;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+  /* Emergency Contact */
+  getSavedEmergencyContact(id) {
+    return this.employeeService.getSavedEmergencyContact(id).subscribe(
+      (data) => {
+        this.emmergencyContacts = data.employeeList[0]
+      },
+      (err) => {
+        console.log(err);
+      }
+
+
+    )
+  }
 }
+
+
+/*  uploadReferee() {
+  const formData = new FormData();
+  formData.append(
+    "uploadInput",
+    this.employee_profileUploadForm.get("uploadInput").value
+  );
+  if (!this.file) {
+    return swal.fire("Error", "Select a file", "error");
+  }
+  //console.log(formData, this.languageForm.get("uploadInput").value);
+  this.spinner = true;
+
+  return this.setupService
+    .updateData("/hrmsetup/upload/language", formData)
+    .subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+
+        if (res.status.isSuccessful) {
+          swal.fire("Success", message, "success");
+          this.initializeForm();
+          this.fileInput.nativeElement.value = "";
+        } else {
+          swal.fire("Error", message, "error");
+        }
+        this.getEmployee_Profile();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
+}
+*/
+

@@ -158,7 +158,7 @@
                     </div>
                 </div>
                 <!-- /Personal Info -->
-                <!-- Emergency Contact Lola -->
+                <!-- Emergency Contact card Lola -->
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
@@ -168,32 +168,37 @@
                             <ul class="personal-info">
                                 <li>
                                     <div class="title">Full Name</div>
-                                    <div class="text">John Doe</div>
+                                    <div class="text">{{emmergencyContacts.fullName}}</div>
                                 </li>
                                 <hr>
                                 <li>
                                     <div class="title">Relationship</div>
-                                    <div class="text">Father</div>
+                                    <div class="text">{{emmergencyContacts.relationship}}</div>
                                 </li>
                                 <hr>
                                 <li>
                                     <div class="title">Email </div>
-                                    <div class="text">ellleiek@godp.com.uk</div>
+                                    <div class="text">{{emmergencyContacts.email}}</div>
                                 </li>
                                 <hr>
                                 <li>
-                                    <div class="title">Phone </div>
-                                    <div class="text">9876543210, 9876543210</div>
+                                    <div class="title">contact_phone_number </div>
+                                    <div class="text">{{emmergencyContacts.contact_phone_number}}</div>
                                 </li>
                                 <hr>
                                 <li>
                                     <div class="title">Address </div>
-                                    <div class="text">76 Mobolaji Bank Anthony Way,</div>
+                                    <div class="text">{{emmergencyContacts.address}}</div>
                                 </li>
                                 <hr>
                                 <li>
                                     <div class="title">Country </div>
-                                    <div class="text">Nigeria</div>
+                                    <div class="text">{{emmergencyContacts.countryId}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">ApprovalStatus </div>
+                                    <div class="text">{{emmergencyContacts.approval_status_name}}</div>
                                 </li>
                             </ul>
                             <!-- <h5 class="section-title">Secondary</h5>
@@ -1016,7 +1021,7 @@
 </div>-->
 <!-- /Referees Contact Modal -->
 
-<!-- Emergency Contact Modal -->
+<!-- Emergency Contact Modal Lola -->
 <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -1027,7 +1032,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form (ngSubmit)="addEmmergencyContact(emmergencyContactForm)" [formGroup]="emmergencyContactForm">
                     <div class="card">
                         <div class="card-body">
                             <h3 class="card-title">Primary Contact</h3>
@@ -1035,43 +1040,54 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Full Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control" formControlName="fullName">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Relationship <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="relationship">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Phone <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Phone 2</label>
-                                        <input class="form-control" type="text">
+                                        <label>Contact Phone Number<span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" formControlName="contact_phone_number">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Email <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="email">
+                                        <input class="form-control" type="email" formControlName="email">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Country <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
+                                        <select class="form-control" [class.invalid]="emmergencyContactForm.get('countryId').invalid &&
+                                        emmergencyContactForm.get('countryId').touched" formControlName="countryId">
+                            <option selected value="">Country</option>
+                            <option *ngFor="let row of countries" value="{{row.lookupId}}">{{row.lookupName}}
+                            </option>
+                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Address <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
+                                        <input class="form-control" type="text" formControlName="address">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Approval Status<span class="text-danger">*</span></label>
+                                        <select class="select form-control" formControlName="approval_status">
+                                            <option disabled>Select Status</option>
+                                            <option value="1">Approved</option>
+                                            <option value="2">Pending</option>
+                                            <option value="3">Declined</option>
+                                            
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -1079,10 +1095,9 @@
                     </div>
 
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadLanguage()"
-                            [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        <button class="btn btn-primary submit-btn" type="submit">
+                            <span *ngIf="!loading">Submit</span>
+                            <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
                 </form>
