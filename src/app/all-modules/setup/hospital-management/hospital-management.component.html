@@ -1,0 +1,284 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+<!-- Page Content -->
+<div *ngIf="!pageLoading" class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Hospital Management</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
+                    <li class="breadcrumb-item active">Hospital Management</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn download-btn hint" (click)="downloadFile() "><span class="hint-text">Download</span><i
+                        class="fa fa-download"></i></a>
+                <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
+                        class="fa fa-upload"></i></a>
+                <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span
+                        class="hint-text">Add</span><i class="fa fa-plus"></i></a>
+                <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
+                        class="fa fa-trash"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions"
+                    [dtTrigger]="dtTrigger">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === hospitalManagements.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>S/N</th>
+                            <th>Hospital</th>
+                            <th>HMO Name</th>
+                            <th>Contact Number</th>
+                            <th>Email</th>
+                            <th>Rating</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)"
+                            *ngFor="let row of hospitalManagements let i = index">
+                            <td (click)="stopParentEvent($event)">
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ row.hospital }}</td>
+                            <td>{{ row.hmoName }}</td>
+                            <td>{{ row.contactPhoneNo }}</td>
+                            <td>{{ row.email }}</td>
+                            <td>{{ row.rating }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Hospital Management Modal -->
+<div id="addHospitalManagement" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{formTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addHospitalManagement(hospitalManagementForm)" [formGroup]="hospitalManagementForm">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Medical Center<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                hospitalManagementForm.get('hospital').invalid &&
+                                hospitalManagementForm.get('hospital').touched
+                    " formControlName="hospital" />
+                                <div *ngIf="
+                                hospitalManagementForm.get('hospital').invalid &&
+                                hospitalManagementForm.get('hospital').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalManagementForm.get('hospital').invalid &&
+                                    hospitalManagementForm.get('hospital').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Hmo Name<span class="text-danger">*</span></label>
+                                <select class="form-control" [class.invalid]="hospitalManagementForm.get('hmoId').invalid &&
+                                hospitalManagementForm.get('hmoId').touched" formControlName="hmoId">
+                                    <option selected value="">Select Hmo</option>
+                                    <option *ngFor="let row of hmos" value="{{row.id}}">{{row.hmo_name}}
+                                    </option>
+                                </select>
+                                <div *ngIf="
+                                hospitalManagementForm.get('hmoId').invalid &&
+                                hospitalManagementForm.get('hmoId').touched">
+                                    <small *ngIf="
+                                    hospitalManagementForm.get('hmoId').invalid &&
+                                    hospitalManagementForm.get('hmoId').touched" class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Contact Number<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                hospitalManagementForm.get('contactPhoneNo').invalid &&
+                                hospitalManagementForm.get('contactPhoneNo').touched
+                    " formControlName="contactPhoneNo" />
+                                <div *ngIf="
+                                hospitalManagementForm.get('contactPhoneNo').invalid &&
+                                hospitalManagementForm.get('contactPhoneNo').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalManagementForm.get('contactPhoneNo').invalid &&
+                                    hospitalManagementForm.get('contactPhoneNo').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Contact Email<span class="text-danger">*</span></label>
+                                <input class="form-control" type="email" [class.invalid]="
+                                hospitalManagementForm.get('email').invalid &&
+                                hospitalManagementForm.get('email').touched
+                                " formControlName="email" />
+                                <div *ngIf="
+                                hospitalManagementForm.get('email').invalid &&
+                                hospitalManagementForm.get('email').touched
+                                 ">
+                                    <small *ngIf="
+                                    hospitalManagementForm.get('email').invalid &&
+                                    hospitalManagementForm.get('email').touched
+                                    " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Address<span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="4" type="text" [class.invalid]="
+                                hospitalManagementForm.get('address').invalid &&
+                                hospitalManagementForm.get('address').touched
+                                " formControlName="address" ></textarea>
+                                <div *ngIf="
+                                hospitalManagementForm.get('address').invalid &&
+                                hospitalManagementForm.get('address').touched
+                                 ">
+                                    <small *ngIf="
+                                    hospitalManagementForm.get('address').invalid &&
+                                    hospitalManagementForm.get('address').touched
+                                    " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Other Comments </label>
+                                <textarea class="form-control" rows="4" type="text" [class.invalid]="
+                                hospitalManagementForm.get('otherComments').invalid &&
+                                hospitalManagementForm.get('otherComments').touched
+                                " formControlName="otherComments"></textarea>
+                                <div *ngIf="
+                                hospitalManagementForm.get('otherComments').invalid &&
+                                hospitalManagementForm.get('otherComments').touched
+                                 ">
+                                    <small *ngIf="
+                                    hospitalManagementForm.get('otherComments').invalid &&
+                                    hospitalManagementForm.get('otherComments').touched
+                                    " class="">
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Rating <span class="text-danger">*</span></label>
+                            <input class="form-control" type="number" min="1" [class.invalid]="
+                            hospitalManagementForm.get('rating').invalid &&
+                            hospitalManagementForm.get('rating').touched
+                            " formControlName="rating" />
+                            <div *ngIf="
+                            hospitalManagementForm.get('rating').invalid &&
+                            hospitalManagementForm.get('rating').touched
+                            ">
+                                <small *ngIf="
+                                hospitalManagementForm.get('rating').invalid &&
+                                hospitalManagementForm.get('rating').touched
+                                " class="text-danger">
+                                    *Field is required</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add Hospital Mangement Modal -->
+
+<!-- Upload Hospital Mangement Modal -->
+<div id="uploadHospitalManagement" class="modal custom-modal fade " role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Hospital Management</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-5">
+                <form (ngSubmit)="uploadHospitalManagement()" [formGroup]="hospitalManagementUploadForm">
+                    <div class="row">
+
+                        <div class="form-group row">
+                            <label class="col-form-label col-md-5">Choose File (excel format)</label>
+                            <div class="col-md-7">
+                                <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
+                                    (change)="onSelectedFile($event)">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <p>Please use the guide below for your sheet</p>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Medical Center</th>
+                                <th>HMO name</th>
+                                <th>Contact Number</th>
+                                <th>Contact Email</th>
+                                <th>Address</th>
+                                <th>Rating</th>
+                                <th>Other comments</th>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadHospitalManagement()"
+                            [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Upload Hospital Management Modal -->

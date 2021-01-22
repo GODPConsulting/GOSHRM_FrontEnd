@@ -17,6 +17,8 @@ import { AcademicGradeComponent } from "./academic-grade/academic-grade.componen
 import { JobTitleComponent } from "src/app/all-modules/setup/job-title/job-title.component";
 import { ProfCertificationComponent } from "./prof-certification/prof-certification.component";
 import { JobSkillComponent } from "./job-skill/job-skill.component";
+import { LocationComponent } from "./location/location.component";
+import { HospitalManagementComponent } from "./hospital-management/hospital-management.component";
 
 const routes: Routes = [
   {
@@ -86,6 +88,14 @@ const routes: Routes = [
       {
         path: "job-skill",
         component: JobSkillComponent,
+      },
+      {
+        path: "location",
+        component: LocationComponent,
+      },
+      {
+        path: "hospital-management",
+        component: HospitalManagementComponent,
       },
     ],
   },

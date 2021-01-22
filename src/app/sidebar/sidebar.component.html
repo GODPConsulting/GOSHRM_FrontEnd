@@ -87,7 +87,11 @@
                   (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'hmo') ||
                   (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'job-title') ||
+                  urlComplete.subUrl === 'job-detail') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'location') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'hospital-management') ||
                 (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'prof-certification') ||
                   (urlComplete.mainUrl === 'setup' &&
@@ -120,6 +124,10 @@
                     urlComplete.subUrl === 'academic-qualification') ||
                       (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'high-school-grade') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'location') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'hospital-management') ||
                   (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'job-title') ||
                     (urlComplete.mainUrl === 'setup' &&
@@ -167,7 +175,11 @@
                       (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'high-school-grade') ||
                     (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'job-title') ||
+                    urlComplete.subUrl === 'location') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'hospital-management') ||
+                    (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'job-detail') ||
                     (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'job-skill')
                     ? 'block'
@@ -221,6 +233,15 @@
               <li routerLink="/setup/high-school-grade">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'high-school-grade' }">High School
                   Grade</a>
+              </li>
+              <li routerLink="/setup/location">
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'location' }">Location
+                </a>
+              </li>
+              <li routerLink="/setup/hospital-management">
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'hospital-management' }">Hospital
+                  Management
+                </a>
               </li>
               <li routerLink="/setup/job-title">
                 <a href="javascript:" [ngClass]="{

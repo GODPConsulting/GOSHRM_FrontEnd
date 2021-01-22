@@ -1,29 +1,29 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: "app-language",
-  templateUrl: "./language.component.html",
-  styleUrls: ["./language.component.css", "../setup.component.css"],
+  selector: 'app-hospital-management',
+  templateUrl: './hospital-management.component.html',
+  styleUrls: ['./hospital-management.component.css', "../setup.component.css"]
 })
-export class LanguageComponent implements OnInit {
+export class HospitalManagementComponent implements OnInit {
+  public formTitle: string = "Hospital Management";
   public dtOptions: DataTables.Settings = {};
-  @ViewChild("fileInput")
-  fileInput: ElementRef;
-  public languages: any[] = [];
-  public languageUploadForm: FormGroup;
-  public formTitle: string = "Add Language";
+  @ViewChild("fileInput") fileInput: ElementRef;
+  public hospitalManagementForm: FormGroup;
+  public hospitalManagements: any[] = [];
+  public selectedId: number[] = [];
   public pageLoading: boolean;
   public spinner: boolean = false;
-  public selectedId: number[] = [];
-  public languageForm: FormGroup;
+  public hospitalManagementUploadForm: FormGroup;
+  public hmos: any[] = [];
 
   constructor(
-    private setupService: SetupService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private setupService: SetupService
   ) {}
 
   ngOnInit(): void {
@@ -36,11 +36,12 @@ export class LanguageComponent implements OnInit {
         search: "_INPUT_",
         searchPlaceholder: "Start typing to search by any field",
       },
-      columns: [{ orderable: false }, null, null],
+      columns: [{ orderable: false }, null, null, null, null, null, null],
       order: [[1, "asc"]],
     };
+    this.getHospitalManagement();
     this.initializeForm();
-    this.getLanguages();
+    this.getHmos();
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -48,16 +49,8 @@ export class LanguageComponent implements OnInit {
     event.stopPropagation();
   }
 
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event: Event) {
-    const file = (<HTMLInputElement>event.target).files[0];
-    this.languageUploadForm.patchValue({
-      uploadInput: file,
-    });
-  }
-
   downloadFile() {
-    this.setupService.exportExcelFile("/hrmsetup/download/languages").subscribe(
+    this.setupService.exportExcelFile("/hrmsetup/download/hospital-management").subscribe(
       (resp) => {
         const data = resp;
         if (data != undefined) {
@@ -69,7 +62,7 @@ export class LanguageComponent implements OnInit {
           }
           const bb = new Blob([ab]);
           try {
-            const file = new File([bb], "Language.xlsx", {
+            const file = new File([bb], "Hospital Management.xlsx", {
               type: "application/vnd.ms-excel",
             });
             console.log(file, bb);
@@ -78,7 +71,7 @@ export class LanguageComponent implements OnInit {
             const textFileAsBlob = new Blob([bb], {
               type: "application/vnd.ms-excel",
             });
-            window.navigator.msSaveBlob(textFileAsBlob, "Language.xlsx");
+            window.navigator.msSaveBlob(textFileAsBlob, "Hospital Management.xlsx");
           }
         } else {
           return swal.fire(`GOS HRM`, "Unable to download data", "error");
@@ -88,31 +81,40 @@ export class LanguageComponent implements OnInit {
     );
   }
 
-  uploadLanguage() {
-    if (!this.languageUploadForm.get("uploadInput").value) {
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event) {
+    const file = event.target.files[0];
+    this.hospitalManagementUploadForm.patchValue({
+      uploadInput: file,
+    });
+  }
+
+  uploadHospitalManagement() {
+    if (!this.hospitalManagementUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
     }
     const formData = new FormData();
     formData.append(
       "uploadInput",
-      this.languageUploadForm.get("uploadInput").value
+      this.hospitalManagementUploadForm.get("uploadInput").value
     );
     this.spinner = true;
     return this.setupService
-      .updateData("/hrmsetup/upload/language", formData)
+      .updateData("/hrmsetup/upload/hospital-management", formData)
       .subscribe(
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
 
           if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
+            swal.fire("Success", message, "success");
             this.initializeForm();
-            $("#upload_language").modal("hide");
+            this.fileInput.nativeElement.value = "";
+            $("#uploadHospitalManagement").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getLanguages();
+          this.getHospitalManagement();
         },
         (err) => {
           this.spinner = false;
@@ -122,29 +124,58 @@ export class LanguageComponent implements OnInit {
       );
   }
 
-  openUploadModal() {
-    this.fileInput.nativeElement.value = "";
-    $("#upload_language").modal("show");
-  }
-
   initializeForm() {
-    this.languageForm = this.formBuilder.group({
+    this.hospitalManagementForm = this.formBuilder.group({
       id: [0],
-      language: ["", Validators.required],
-      description: ["", Validators.required],
+      hospital: ["", Validators.required],
+      hmoId: ["", Validators.required],
+      contactPhoneNo: ["", Validators.required],
+      email: ["", Validators.required],
+      address: ["", Validators.required],
+      rating: ["", Validators.required],
+      otherComments: ["", Validators.required],
     });
-    this.languageUploadForm = this.formBuilder.group({
+    //initialize upload form
+    this.hospitalManagementUploadForm = this.formBuilder.group({
       uploadInput: [""],
     });
   }
 
-  getLanguages() {
+  openUploadModal() {
+    // Reset upload form
+    this.fileInput.nativeElement.value = "";
+    $("#uploadHospitalManagement").modal("show");
+  }
+
+  openModal() {
+    this.initializeForm();
+    $("#addHospitalManagement").modal("show");
+  }
+
+  closeModal() {
+    $("#addHospitalManagement").modal("hide");
+  }
+
+  getHmos() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/languages").subscribe(
+   return this.setupService.getData("/hrmsetup/get/all/hmos").subscribe(
+     (data) => {
+       this.pageLoading = false;
+       this.hmos = data.setuplist;
+     },
+     (err) => {
+       this.pageLoading = false;
+       console.log(err);
+     }
+   );
+ }
+
+  getHospitalManagement() {
+    this.pageLoading = true;
+    return this.setupService.getData("/hrmsetup/get/all/hospital-managements").subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
-        this.languages = data.setuplist;
+        this.hospitalManagements = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
@@ -153,38 +184,31 @@ export class LanguageComponent implements OnInit {
     );
   }
 
-  openModal() {
-    this.initializeForm();
-    $("#add_language").modal("show");
-  }
-
-  closeModal() {
-    $("#add_language").modal("hide");
-  }
-
-  addLanguage(form: FormGroup) {
+  // Add Hospital Management Api Call
+  addHospitalManagement(form: FormGroup) {
+    console.log(form.value);
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
+    payload.hmoId = +payload.hmoId;
+    console.log(payload);
     this.spinner = true;
     return this.setupService
-      .updateData("/hrmsetup/add/update/language", payload)
+      .updateData("/hrmsetup/add/update/hospital-management", payload)
       .subscribe(
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
-          //console.log(message);
-
           if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            //this.initializeForm();
-            $("#add_language").modal("hide");
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            $("#addHospitalManagement").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }
-          this.getLanguages();
+          this.getHospitalManagement();
         },
         (err) => {
           this.spinner = false;
@@ -202,7 +226,6 @@ export class LanguageComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -213,17 +236,15 @@ export class LanguageComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
-
         if (result.value) {
           return this.setupService
-            .deleteData("/hrmsetup/delete/language", payload)
+            .deleteData("/hrmsetup/delete/hospital-management", payload)
             .subscribe(
               (res) => {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getLanguages();
+                  swal.fire("Success", message, "success").then(() => {
+                    this.getHospitalManagement();
                   });
                 } else {
                   swal.fire("Error", message, "error");
@@ -238,14 +259,30 @@ export class LanguageComponent implements OnInit {
     this.selectedId = [];
   }
 
+  // Set Values To Edit Modal Form
   edit(row) {
-    this.formTitle = "Edit Language";
-    this.languageForm.patchValue({
+    this.formTitle = "Edit Hospital Mangement";
+    this.hospitalManagementForm.patchValue({
       id: row.id,
-      language: row.language,
-      description: row.description
+      hospital: row.hospital,
+      hmoId: row.hmoId,
+      contactPhoneNo: row.contactPhoneNo,
+      email: row.email,
+      address: row.address,
+      rating: row.rating,
+      otherComments: row.otherComments
     });
-    $("#add_language").modal("show");
+    $("#addHospitalManagement").modal("show");
+  }
+
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
+      this.selectedId = this.hospitalManagements.map((item) => {
+        return item.id;
+      });
+    } else {
+      this.selectedId = [];
+    }
   }
 
   addItemId(event: Event, id: number) {
@@ -257,16 +294,6 @@ export class LanguageComponent implements OnInit {
       this.selectedId = this.selectedId.filter((_id) => {
         return _id !== id;
       });
-    }
-  }
-
-  checkAll(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.languages.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
     }
   }
 }
