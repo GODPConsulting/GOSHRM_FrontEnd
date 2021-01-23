@@ -153,7 +153,7 @@ export class EmployeeFormComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            $("#add_employee_form").modal("hide");
+            // $("#add_employee_form").modal("hide");
           } else {
             swal.fire("Error", message, "error");
           }

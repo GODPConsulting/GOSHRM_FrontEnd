@@ -12,7 +12,8 @@ export class EmployeeService {
   identificationByStaffIdUrl: string =
     "/hrm/get/single/employee/identification/staffId?staffId=";
   addIdentificationUrl: string = "/hrm/add/update/employee/identification";
-
+addEmmergencyContactUrl: string = "/hrm/add/update/employee/emergency_contact";
+  getCountryUrl: string = "/common/countries";
   constructor(private apiService: ApiService) {}
 
   getEmployees() {
@@ -29,5 +30,17 @@ export class EmployeeService {
 
   postIdentification(payload: Object) {
     return this.apiService.post(`${this.addIdentificationUrl}`, payload);
+  }
+
+  addEmmergencyContact(payload) {
+    return this.apiService.post("/hrm/add/update/employee/emergency_contact", payload).pipe((tap(data => {
+      return data;
+    })))
+  }
+  getCountry(){
+    return this.apiService.get(this.getCountryUrl)
+  }
+  getSavedEmergencyContact(id){
+    return this.apiService.get(`/hrm/get/single/employee/emergency_contact/Id?EmpId=${id}`);
   }
 }
