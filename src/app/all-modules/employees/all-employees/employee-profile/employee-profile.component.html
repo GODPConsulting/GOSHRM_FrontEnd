@@ -106,8 +106,10 @@
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
                             <h3 class="card-title">Identification <a (click)="initIdentificationForm()"
-                                    class="edit-icon" data-toggle="modal" data-target="#identification_modal"><i
-                                        class="fa fa-pencil"></i></a></h3>
+                                    class="hint edit-icon" data-toggle="modal" data-target="#identification_modal"><span
+                                        class="hint-text">{{cardFormTitle}}</span><i class="fa fa-pencil"></i></a><a
+                                    class="edit-icon hint mr-1" (click)="downloadFile()" download><span
+                                        class="hint-text">Download</span><i class="fa fa-download"></i></a></h3>
                             <ul class="personal-info">
                                 <li>
                                     <div class="title">Identification</div>
@@ -136,10 +138,13 @@
                                 </li>
                                 <hr>
                                 <li>
-                                    <div class="title">Approve Button</div>
-                                    <div class="text"><button>Approve</button></div>
-                                    <div class="text"><button>Pending</button></div>
-                                    <div class="text"><button>Decline</button></div>
+                                    <div class="text">
+                                        <button type="button"
+                                            class=" btn btn-success btn-sm col-3 mx-3">Approve</button>
+                                        <button type="button"
+                                            class=" btn btn-secondary btn-sm col-3 mx-3">Pending</button>
+                                        <button type="button" class=" btn btn-danger btn-sm col-3 mx-3">Decline</button>
+                                    </div>
                                 </li>
                             </ul>
                         </div>
@@ -855,7 +860,7 @@
                             <div class="form-group">
                                 <label>ID upload (file format)</label>
                                 <input class="form-control" name="identicationFile" #fileInput type="file"
-                                    (change)="onSelectedFile($event)" [class.invalid]="
+                                    (change)="onSelectedFile($event,identificationForm)" [class.invalid]="
                                     identificationForm.get('identicationFile').invalid &&
                                     identificationForm.get('identicationFile').touched">
                             </div>

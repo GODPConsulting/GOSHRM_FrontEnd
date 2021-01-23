@@ -4,6 +4,7 @@ import { ActivatedRoute } from "@angular/router";
 import { data } from "jquery";
 import { ToastrService } from "ngx-toastr";
 import { EmployeeService } from "src/app/services/employee.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 
 declare const $: any;
@@ -30,7 +31,8 @@ export class EmployeeProfileComponent implements OnInit {
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit() {
@@ -71,18 +73,22 @@ export class EmployeeProfileComponent implements OnInit {
 
   /* Identification */
   initIdentificationForm() {
-    this.cardFormTitle = "Add Identification";
-    this.identificationForm = this.formBuilder.group({
-      id: [0],
-      identification: ["", Validators.required],
-      identification_number: ["", Validators.required],
-      idIssues: ["", Validators.required],
-      idExpiry_date: ["", Validators.required],
-      approval_status: ["", Validators.required],
-      staffId: [this.employeeId],
-      identicationFile: ["", Validators.required],
-    });
-    if (this.employeeIdentification !== undefined) {
+    if (Object.keys(this.employeeIdentification).length === 0) {
+      console.log(this.employeeIdentification);
+      this.cardFormTitle = "Add Identification";
+      this.identificationForm = this.formBuilder.group({
+        id: [0],
+        identification: ["", Validators.required],
+        identification_number: ["", Validators.required],
+        idIssues: ["", Validators.required],
+        idExpiry_date: ["", Validators.required],
+        approval_status: ["", Validators.required],
+        staffId: this.employeeId,
+        identicationFile: ["", Validators.required],
+      });
+    } else {
+      console.log(this.employeeIdentification);
+
       this.cardFormTitle = "Edit Identification";
       this.identificationForm.patchValue({
         id: [0],
@@ -92,7 +98,7 @@ export class EmployeeProfileComponent implements OnInit {
         idIssues: this.employeeIdentification.idIssues,
         idExpiry_date: this.employeeIdentification.idExpiry_date,
         approval_status: this.employeeIdentification.approval_status,
-        staffId: [this.employeeId],
+        staffId: this.employeeId,
         identicationFile: this.employeeIdentification.identicationFile,
       });
     }
@@ -105,9 +111,14 @@ export class EmployeeProfileComponent implements OnInit {
     }
     const payload = form.value;
     payload.approval_status = +payload.approval_status;
-    console.log(payload);
+    const formData = new FormData();
+    for (const key in form.value) {
+      //console.log(key, this.identificationForm.get(key).value);
+      formData.append(key, this.identificationForm.get(key).value);
+    }
+
     this.spinner = true;
-    return this.employeeService.postIdentification(payload).subscribe(
+    return this.employeeService.postIdentification(formData).subscribe(
       (res) => {
         console.log(res);
         this.spinner = false;
@@ -129,16 +140,12 @@ export class EmployeeProfileComponent implements OnInit {
     this.employeeService.getIdentificationByStaffId(id).subscribe((data) => {
       this.employeeIdentification = data.employeeList[0];
       //console.log(this.employeeIdentification);
+      this.initIdentificationForm();
     });
   }
 
-  // Appends a selected file to "identicationFile"
-  onSelectedFile(event: Event) {
-    const file = (<HTMLInputElement>event.target).files[0];
-    this.identificationForm.patchValue({
-      identicationFile: file,
-    });
-    //console.log(this.identificationForm.get("identicationFile").value);
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 
   /* Identification */
