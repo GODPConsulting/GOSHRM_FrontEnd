@@ -8,17 +8,28 @@ import { ApiService } from "./api.service";
 })
 export class EmployeeService {
   allEmployeeUrl: string = "/admin/get/all/staff";
-  singleEmployeeUrl: string = "/admin/get/single/staff/staffId?StaffId=";
-  addEmmergencyContactUrl: string = "/hrm/add/update/employee/emergency_contact";
+  EmployeeByIdUrl: string = "/admin/get/single/staff/staffId?StaffId=";
+  identificationByStaffIdUrl: string =
+    "/hrm/get/single/employee/identification/staffId?staffId=";
+  addIdentificationUrl: string = "/hrm/add/update/employee/identification";
+addEmmergencyContactUrl: string = "/hrm/add/update/employee/emergency_contact";
   getCountryUrl: string = "/common/countries";
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {}
 
   getEmployees() {
     return this.apiService.get(this.allEmployeeUrl);
   }
 
   getSingleEmployee(id: number) {
-    return this.apiService.get(`${this.singleEmployeeUrl}${id}`);
+    return this.apiService.get(`${this.EmployeeByIdUrl}${id}`);
+  }
+
+  getIdentificationByStaffId(id: number) {
+    return this.apiService.get(`${this.identificationByStaffIdUrl}${id}`);
+  }
+
+  postIdentification(payload: Object) {
+    return this.apiService.post(`${this.addIdentificationUrl}`, payload);
   }
 
   addEmmergencyContact(payload) {
@@ -30,6 +41,6 @@ export class EmployeeService {
     return this.apiService.get(this.getCountryUrl)
   }
   getSavedEmergencyContact(id){
-    return this.apiService.get(`/hrm/get/single/employee/emergency_contact/Id?EmpId=${id}`);
+    return this.apiService.get(`/hrm/get/single/employee/emergency_contact/StaffId?StaffId=${id}`);
   }
 }

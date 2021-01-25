@@ -134,13 +134,13 @@ export class EmployeeProfileComponent implements OnInit {
   getSavedEmergencyContact(id) {
     return this.employeeService.getSavedEmergencyContact(id).subscribe(
       (data) => {
-        this.emmergencyContacts = data.employeeList[0]
+        console.log(data);
+        
+        this.emmergencyContacts = data.employeeList[(data.employeeList.length)-1]
       },
       (err) => {
         console.log(err);
       }
-
-
     )
   }
 }
