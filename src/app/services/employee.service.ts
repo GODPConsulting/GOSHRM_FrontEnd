@@ -12,8 +12,13 @@ export class EmployeeService {
   identificationByStaffIdUrl: string =
     "/hrm/get/single/employee/identification/staffId?staffId=";
   addIdentificationUrl: string = "/hrm/add/update/employee/identification";
-addEmmergencyContactUrl: string = "/hrm/add/update/employee/emergency_contact";
-  getCountryUrl: string = "/common/countries";
+  emergencyContactByStaffIdUrl: string =
+    "/hrm/get/single/employee/emergency_contact/StaffId?StaffId=";
+  addEmergencyContactUrl: string = "/hrm/add/update/employee/emergency_contact";
+  addRefereeUrl: string = "/hrm/add/update/employee/referee";
+  refereeByStaffIdUrl: string =
+    "/hrm/get/single/employee/referee/staffId?StaffId=";
+
   constructor(private apiService: ApiService) {}
 
   getEmployees() {
@@ -33,14 +38,21 @@ addEmmergencyContactUrl: string = "/hrm/add/update/employee/emergency_contact";
   }
 
   addEmmergencyContact(payload) {
-    return this.apiService.post("/hrm/add/update/employee/emergency_contact", payload).pipe((tap(data => {
-      return data;
-    })))
+    return this.apiService.post(this.addEmergencyContactUrl, payload).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
   }
-  getCountry(){
-    return this.apiService.get(this.getCountryUrl)
+
+  getEmergencyContactByStaffId(id: number) {
+    return this.apiService.get(`${this.emergencyContactByStaffIdUrl}${id}`);
   }
-  getSavedEmergencyContact(id){
-    return this.apiService.get(`/hrm/get/single/employee/emergency_contact/Id?EmpId=${id}`);
+  postReferee(payload: Object) {
+    return this.apiService.post(`${this.addRefereeUrl}`, payload);
+  }
+
+  getRefereeByStaffId(id: number) {
+    return this.apiService.get(`${this.refereeByStaffIdUrl}${id}`);
   }
 }

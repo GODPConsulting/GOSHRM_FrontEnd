@@ -5,6 +5,8 @@ import { data } from "jquery";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { isEmpty } from "lodash";
+import { AuthService } from "src/app/services/auth.service";
 declare const $: any;
 
 @Component({
@@ -18,14 +20,18 @@ export class EmployeeProfileComponent implements OnInit {
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
+  currentUser: string[] = []; // contains the data of the current user
+  currentUserId: number;
 
   // Forms
   identificationForm: FormGroup;
   emmergencyContactForm: FormGroup;
+  refereeForm: FormGroup;
 
   // To hold data for each card
   employeeIdentification: any = {};
   emmergencyContacts: any;
+  employeeReferee: any = {};
 
   approvalStatus: any = {};
   countries: any[] = [];
@@ -37,10 +43,12 @@ export class EmployeeProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+    this.getUserData();
     this.emmergencyContactForm = this.formBuilder.group({
       id: [0],
       fullName: [""],
@@ -65,6 +73,8 @@ export class EmployeeProfileComponent implements OnInit {
     this.getEmployeeIdentification(this.employeeId);
     this.initIdentificationForm();
     this.getSavedEmergencyContact(this.employeeId);
+    this.getEmployeeReferee(this.employeeId);
+    this.initRefereeForm();
   }
 
   /* Employee profile */
@@ -89,8 +99,8 @@ export class EmployeeProfileComponent implements OnInit {
 
   /* Identification */
   initIdentificationForm() {
-    if (Object.keys(this.employeeIdentification).length === 0) {
-      console.log(this.employeeIdentification);
+    if (isEmpty(this.employeeIdentification)) {
+      console.log("empty", this.employeeIdentification);
       this.cardFormTitle = "Add Identification";
       this.identificationForm = this.formBuilder.group({
         id: [0],
@@ -154,14 +164,14 @@ export class EmployeeProfileComponent implements OnInit {
 
   getEmployeeIdentification(id: number) {
     this.employeeService.getIdentificationByStaffId(id).subscribe((data) => {
-      this.employeeIdentification = data.employeeList[0];
+      console.log(data.employeeList[0]);
+
+      if (data.employeeList[0]) {
+        this.employeeIdentification = data.employeeList[0];
+      }
       //console.log(this.employeeIdentification);
       this.initIdentificationForm();
     });
-  }
-
-  onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
   }
 
   /* Identification */
@@ -195,7 +205,7 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   getCountry() {
-    return this.employeeService.getCountry().subscribe(
+    return this.utilitiesService.getCountry().subscribe(
       (data) => {
         this.countries = data.commonLookups;
       },
@@ -204,16 +214,121 @@ export class EmployeeProfileComponent implements OnInit {
       }
     );
   }
-  /* Emergency Contact */
-  getSavedEmergencyContact(id) {
-    return this.employeeService.getSavedEmergencyContact(id).subscribe(
+
+  getSavedEmergencyContact(id: number) {
+    return this.employeeService.getEmergencyContactByStaffId(id).subscribe(
       (data) => {
-        this.emmergencyContacts = data.employeeList[0];
+        console.log(data);
+
+        this.emmergencyContacts =
+          data.employeeList[data.employeeList.length - 1];
       },
       (err) => {
         console.log(err);
       }
     );
+  }
+  /* Emergency Contact */
+
+  /* Referees */
+
+  initRefereeForm() {
+    if (isEmpty(this.employeeReferee)) {
+      console.log("empty", this.employeeReferee);
+      this.cardFormTitle = "Add Referee";
+      this.refereeForm = this.formBuilder.group({
+        id: [0],
+        fullName: ["", Validators.required],
+        phoneNumber: ["", Validators.required],
+        email: ["", Validators.required],
+        relationship: ["", Validators.required],
+        numberOfYears: ["", Validators.required],
+        organization: ["", Validators.required],
+        address: ["", Validators.required],
+        confirmationReceived: ["", Validators.required],
+        confirmationDate: ["", Validators.required],
+        approvalStatus: ["", Validators.required],
+        staffId: this.employeeId,
+        refereeFile: ["", Validators.required],
+      });
+    } else {
+      console.log(this.employeeReferee);
+
+      this.cardFormTitle = "Edit Referee";
+      this.refereeForm.patchValue({
+        id: [0],
+        fullName: this.employeeReferee.fullName,
+        phoneNumber: this.employeeReferee.phoneNumber,
+        email: this.employeeReferee.email,
+        relationship: this.employeeReferee.relationship,
+        numberOfYears: this.employeeReferee.numberOfYears,
+        organization: this.employeeReferee.organization,
+        address: this.employeeReferee.address,
+        confirmationReceived: this.employeeReferee.confirmationReceived,
+        confirmationDate: this.employeeReferee.confirmationDate,
+        approvalStatus: this.employeeReferee.approvalStatus,
+        staffId: this.employeeId,
+        refereeFile: this.employeeReferee.refereeFile,
+      });
+    }
+  }
+
+  submitRefereeForm(form: FormGroup) {
+    if (!form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+    const payload = form.value;
+    console.log(payload);
+
+    payload.approvalStatus = +payload.approvalStatus;
+    payload.numberOfYears = +payload.numberOfYears;
+    const formData = new FormData();
+    for (const key in form.value) {
+      //console.log(key, this.identificationForm.get(key).value);
+      formData.append(key, this.refereeForm.get(key).value);
+    }
+    this.spinner = true;
+    return this.employeeService.postReferee(formData).subscribe(
+      (res) => {
+        console.log(res);
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          $("#referee_modal").modal("hide");
+        }
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
+  }
+
+  getEmployeeReferee(id: number) {
+    this.employeeService.getRefereeByStaffId(id).subscribe((data) => {
+      if (data.employeeList[0]) {
+        this.employeeReferee = data.employeeList[0];
+      }
+      //console.log(this.employeeIdentification);
+      this.initRefereeForm();
+    });
+  }
+
+  /* Referees */
+
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
+  }
+
+  getUserData() {
+    this.authService.getProfile().subscribe((data) => {
+      console.log(data);
+      this.currentUser = data.roles;
+      this.currentUserId = data.staffId;
+    });
   }
 }
 
