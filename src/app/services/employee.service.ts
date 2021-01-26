@@ -12,6 +12,7 @@ export class EmployeeService {
   identificationByStaffIdUrl: string =
     "/hrm/get/single/employee/identification/staffId?staffId=";
   addIdentificationUrl: string = "/hrm/add/update/employee/identification";
+  deleteIdentificationUrl: string = "/hrm/delete/employee/identification";
   emergencyContactByStaffIdUrl: string =
     "/hrm/get/single/employee/emergency_contact/StaffId?StaffId=";
   addEmergencyContactUrl: string = "/hrm/add/update/employee/emergency_contact";
@@ -35,6 +36,10 @@ export class EmployeeService {
 
   postIdentification(payload: Object) {
     return this.apiService.post(`${this.addIdentificationUrl}`, payload);
+  }
+
+  deleteIdentification(payload) {
+    return this.apiService.post(`${this.deleteIdentificationUrl}`, payload);
   }
 
   addEmmergencyContact(payload) {
