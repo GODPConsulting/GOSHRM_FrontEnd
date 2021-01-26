@@ -8559,3 +8559,12 @@ div.dataTables_wrapper div.dataTables_filter label {
   display: block;
 }
 /* Datatable search */
+
+/* Additions to be categorised */
+.pointer {
+  cursor: pointer;
+}
+
+.table-hover tbody tr:hover td {
+  background-color: #ffebda;
+}
