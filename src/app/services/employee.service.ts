@@ -9,16 +9,15 @@ import { ApiService } from "./api.service";
 export class EmployeeService {
   allEmployeeUrl: string = "/admin/get/all/staff";
   EmployeeByIdUrl: string = "/admin/get/single/staff/staffId?StaffId=";
-  identificationByStaffIdUrl: string =
-    "/hrm/get/single/employee/identification/staffId?staffId=";
+  identificationByStaffIdUrl: string ="/hrm/get/single/employee/identification/staffId?staffId=";
   addIdentificationUrl: string = "/hrm/add/update/employee/identification";
-  emergencyContactByStaffIdUrl: string =
-    "/hrm/get/single/employee/emergency_contact/StaffId?StaffId=";
+  emergencyContactByStaffIdUrl: string ="/hrm/get/single/employee/emergency_contact/StaffId?StaffId=";
   addEmergencyContactUrl: string = "/hrm/add/update/employee/emergency_contact";
+  // allLanguagesUrl:string="/hrmsetup/get/all/languages"
+  addLanguageUrl:string="/hrm/add/update/employee/language";
   addRefereeUrl: string = "/hrm/add/update/employee/referee";
-  refereeByStaffIdUrl: string =
-    "/hrm/get/single/employee/referee/staffId?StaffId=";
-
+  refereeByStaffIdUrl: string ="/hrm/get/single/employee/referee/staffId?StaffId=";
+  languageByStaffIdUrl:string = "/hrm/get/single/employee/language/staffId?staffId=";
   constructor(private apiService: ApiService) {}
 
   getEmployees() {
@@ -44,7 +43,19 @@ export class EmployeeService {
       })
     );
   }
-
+  addLanguage(payload){
+    return this.apiService.post(this.addLanguageUrl ,payload).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+  getLanguages(){
+    return this.apiService.get("/hrmsetup/get/all/languages");
+  }
+  getlanguageByStaffId(id: number) {
+    return this.apiService.get(`${this.languageByStaffIdUrl}${id}`);
+  }
   getEmergencyContactByStaffId(id: number) {
     return this.apiService.get(`${this.emergencyContactByStaffIdUrl}${id}`);
   }

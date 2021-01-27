@@ -161,8 +161,8 @@
                                     data-target="#emergency_contact_modal"><i class="fa fa-plus"></i></a></h3>
                             <!-- <h5 class="section-title">Primary</h5> -->
                             <div class="table-responsive">
-                                <table class="table table-nowrap">
-                                    <thead>
+                                <table class="table table-nowrap table-hover">
+                                    <thead >
                                         <tr>
                                             <th>S/N</th>
                                             <th>Full Name</th>
@@ -175,25 +175,65 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let item of emmergencyContacts; let i = index" class="cursor" (click)="editContact(item)">
-                                           <td>{{ i + 1 }}</td> 
-                                            <td >{{item.fullName}}</td>
+                                        <tr *ngFor="let item of emmergencyContacts; let i = index"
+                                            (click)="editContact(item)" class="pointer">
+                                            <td>{{ i + 1 }}</td>
+                                            <td>{{item.fullName}}</td>
                                             <td>{{item.contact_phone_number}}</td>
                                             <td>{{item.email}}</td>
                                             <td>{{item.relationship}}</td>
                                             <td>{{item.address}}</td>
                                             <td>{{item.countryName}}</td>
                                             <td>{{item.approval_status_name}}</td>
-                                            
+
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
                 <!-- /Emergency Contact -->
+
+                <!-- Language -->
+                <div class="col-md-12">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Language <a class="edit-icon" data-toggle="modal"
+                                    data-target="#language_modal"><i class="fa fa-plus"></i></a></h3>
+                            <div class="table-responsive">
+                                <table class="table table-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>S/N</th>
+                                            <th>Language</th>
+                                            <th>Reading Rating</th>
+                                            <th>Writing Rating</th>
+                                            <th>Speaking Rating</th>
+                                            <th>Approval Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr *ngFor="let language of languagerating; let i = index" (click)="editLanguageRating(language)"> 
+                                        <td (click)="stopParentEvent($event)"> </td>
+                                        
+                                            <td>{{ i + 1 }}</td>
+                                            <td>{{language.language}}</td>
+                                            <td>{{language.reading_Rating}}</td>
+                                            <td>{{language.writing_Rating}}</td>
+                                            <td>{{language.speaking_Rating}}</td>
+                                            <td>{{language.approval_status_name}}</td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Language -->
             </div>
             <!-- /Row 1 -->
             <!-- Row 2 -->
@@ -903,7 +943,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Personal Information</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()"> 
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -983,6 +1023,83 @@
     </div>
 </div>
 <!-- /Emergency Contact Modal -->
+<!-- language Modal -->
+<div id="language_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> Add Language(s) </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeLanguageModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addLanguage(languageForm)" [formGroup]="languageForm">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Language Proficiency</h3>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Language<span class="text-danger">*</span></label>
+                                        <select class="form-control" [class.invalid]="languageForm.get('languageId').invalid &&
+                                        languageForm.get('countryId').touched" formControlName="languageId">
+                                            <option selected value="">Languages</option>
+                                            <option *ngFor="let row of languages" value="{{row.id}}">
+                                                {{row.language}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Reading Rating <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" formControlName="reading_Rating">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Writing Rating<span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" formControlName="writing_Rating">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Speaking Rating <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="email" formControlName="speaking_Rating">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Approval Status<span class="text-danger">*</span></label>
+                                        <select class="select form-control" formControlName="approval_status">
+                                            <option disabled>Select Status</option>
+                                            <option value="1">Approved</option>
+                                            <option value="2">Pending</option>
+                                            <option value="3">Declined</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">
+                            <span *ngIf="!loading">Submit</span>
+                            <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Language modal -->
 
 <!-- Assets Contact Modal 
 <div id="assets_contact_modal" class="modal custom-modal fade" role="dialog">
@@ -1385,4 +1502,4 @@
         </div>
     </div>
 </div>-->
-<!-- Professinal Certification Modal -->
+<!-- Professional Certification Modal -->
