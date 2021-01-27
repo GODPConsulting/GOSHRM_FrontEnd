@@ -46,22 +46,25 @@ export class EmployeeProfileComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private authService: AuthService
   ) {}
-
+initializeForm(){
+  this.emmergencyContactForm = this.formBuilder.group({
+    id: [0],
+    fullName: [""],
+    contact_phone_number: [""],
+    email: [""],
+    relationship: [""],
+    address: [""],
+    countryId: [0],
+    countryName: [""],
+    approval_status: [],
+    approval_status_name: [""],
+    staffId: [""],
+  });
+}
   ngOnInit() {
     this.getUserData();
-    this.emmergencyContactForm = this.formBuilder.group({
-      id: [0],
-      fullName: [""],
-      contact_phone_number: [""],
-      email: [""],
-      relationship: [""],
-      address: [""],
-      countryId: [0],
-      countryName: [""],
-      approval_status: [],
-      approval_status_name: [""],
-      staffId: [""],
-    });
+   
+    this.initializeForm();
     this.getCountry();
 
     this.route.paramMap.subscribe((params) => {
@@ -218,10 +221,9 @@ export class EmployeeProfileComponent implements OnInit {
   getSavedEmergencyContact(id: number) {
     return this.employeeService.getEmergencyContactByStaffId(id).subscribe(
       (data) => {
-        console.log(data);
+        
 
-        this.emmergencyContacts =
-          data.employeeList[data.employeeList.length - 1];
+        this.emmergencyContacts = data.employeeList;
       },
       (err) => {
         console.log(err);
@@ -329,6 +331,32 @@ export class EmployeeProfileComponent implements OnInit {
       this.currentUser = data.roles;
       this.currentUserId = data.staffId;
     });
+  }
+
+  editContact(item) {
+    this.emmergencyContactForm.patchValue({
+      id: item.id,
+      fullName: item.fullName,
+      contact_phone_number: item.contact_phone_number,
+      email: item.email,
+      relationship: item.relationship,
+      address:item.address ,
+      countryId: item.countryId,
+      countryName:item.countryName,
+      approval_status:item.approval_status,
+      approval_status_name:item.approval_status_name,
+      staffId:item.staffId,
+    })
+    $("#emergency_contact_modal").modal("show");
+  }
+
+  closeModal() {
+    // close the modal
+    // 2 re initialise the emergency contact form
+    $("#emergency_contact_modal").modal("hide");
+    this.initializeForm()
+
+
   }
 }
 
