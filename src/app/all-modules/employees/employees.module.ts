@@ -16,6 +16,7 @@ import { HttpTokenInterceptor } from "../../services/http.interceptor.service";
 import { EmployeeFormComponent } from "./all-employees/employee-form/employee-form.component";
 import { SharedModule } from "src/app/shared/shared.module";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { IdentificationComponent } from './all-employees/employee-profile/identification/identification.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
     EmployeeViewsComponent,
     EmployeeProfileComponent,
     EmployeeFormComponent,
+    IdentificationComponent,
   ],
   imports: [
     CommonModule,
