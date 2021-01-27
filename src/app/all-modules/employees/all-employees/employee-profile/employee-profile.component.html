@@ -99,53 +99,151 @@
 
         <!-- Profile Info Tab -->
         <div id="emp_profile" class="pro-overview tab-pane fade show active">
-            <!-- Identification Card -->
-            <app-identification [staffId]="employeeId"></app-identification>
-            <!-- /Identification Card -->
-            <!-- Emergency Contact Lola -->
-            <div class="col-md-6 d-flex">
-                <div class="card profile-box flex-fill">
-                    <div class="card-body">
-                        <h3 class="card-title">Emergency Contact <a class="edit-icon" data-toggle="modal"
-                                data-target="#emergency_contact_modal"><i class="fa fa-pencil"></i></a></h3>
-                        <!-- <h5 class="section-title">Primary</h5> -->
-                        <ul class="personal-info">
-                            <li>
-                                <div class="title">Full Name</div>
-                                <div class="text">{{emmergencyContacts.fullName}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">Relationship</div>
-                                <div class="text">{{emmergencyContacts.relationship}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">Email </div>
-                                <div class="text">{{emmergencyContacts.email}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">contact_phone_number </div>
-                                <div class="text">{{emmergencyContacts.contact_phone_number}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">Address </div>
-                                <div class="text">{{emmergencyContacts.address}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">Country</div>
-                                <div class="text">{{emmergencyContacts.countryId}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">ApprovalStatus </div>
-                                <div class="text">{{emmergencyContacts.approval_status_name}}</div>
-                            </li>
-                        </ul>
-                        <!-- <h5 class="section-title">Secondary</h5>
+            <!-- Row 1 -->
+            <div class="row">
+                <!-- Identification Card -->
+                <div class="col-md-6 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Identification <a *ngIf="currentUserId === employeeId"
+                                    (click)="initIdentificationForm()" class="hint edit-icon" data-toggle="modal"
+                                    data-target="#identification_modal"><span
+                                        class="hint-text">{{cardFormTitle}}</span><i class="fa fa-pencil"></i></a><a
+                                    class="edit-icon hint mr-1" (click)="downloadFile()" download><span
+                                        class="hint-text">Download</span><i class="fa fa-download"></i></a></h3>
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title">Identification</div>
+                                    <div class="text">{{employeeIdentification.identification}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">Identification No.</div>
+                                    <div class="text">{{employeeIdentification.identification_number}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">ID Issued Date.</div>
+                                    <div class="text">{{employeeIdentification.idIssues}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">ID Expiry Date</div>
+                                    <div class="text">{{employeeIdentification.idExpiry_date | date :"mediumDate"}}
+                                    </div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">Approval Status</div>
+                                    <div class="text">{{employeeIdentification.approval_status_name}}</div>
+                                </li>
+                                <hr>
+                                <li *ngIf="currentUser.includes('Superadmin')">
+                                    <div class="text">
+                                        <button type="button"
+                                            class=" btn btn-success btn-sm col-md-3 mx-3">Approve</button>
+                                        <button type="button"
+                                            class=" btn btn-secondary btn-sm col-md-3 mx-xl-3">Pending</button>
+                                        <button type="button"
+                                            class=" btn btn-danger btn-sm col-md-3 mx-3">Decline</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Identification Card -->
+                <!-- Hobbies Card -->
+                <div class="col-md-6 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Hobbies <a *ngIf="currentUserId === employeeId"
+                                    (click)="initHobbiesForm()" class="hint edit-icon" data-toggle="modal"
+                                    data-target="#hobbies_modal"><span class="hint-text">{{cardFormTitle}}</span><i
+                                        class="fa fa-pencil"></i></a><a class="edit-icon hint mr-1"
+                                    (click)="downloadFile()" download><span class="hint-text">Download</span><i
+                                        class="fa fa-download"></i></a></h3>
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title">Name of Hobbies</div>
+                                    <div class="text">{{employeeHobbies.hobbies_name}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">Description</div>
+                                    <div class="text">{{employeeHobbies.description}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">Rating</div>
+                                    <div class="text">{{employeeHobbies.rating}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">Approval Status</div>
+                                    <div class="text">{{employeeHobbies.approval_status_name}}</div>
+                                </li>
+                                <hr>
+                                <li *ngIf="currentUser.includes('Superadmin')">
+                                    <div class="text">
+                                        <button type="button"
+                                            class=" btn btn-success btn-sm col-md-3 mx-3">Approve</button>
+                                        <button type="button"
+                                            class=" btn btn-secondary btn-sm col-md-3 mx-xl-3">Pending</button>
+                                        <button type="button"
+                                            class=" btn btn-danger btn-sm col-md-3 mx-3">Decline</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Hobbies Card -->
+
+                <!-- Emergency Contact Lola -->
+                <div class="col-md-6 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Emergency Contact <a class="edit-icon" data-toggle="modal"
+                                    data-target="#emergency_contact_modal"><i class="fa fa-pencil"></i></a></h3>
+                            <!-- <h5 class="section-title">Primary</h5> -->
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title">Full Name</div>
+                                    <div class="text">{{emmergencyContacts.fullName}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">Relationship</div>
+                                    <div class="text">{{emmergencyContacts.relationship}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">Email </div>
+                                    <div class="text">{{emmergencyContacts.email}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">contact_phone_number </div>
+                                    <div class="text">{{emmergencyContacts.contact_phone_number}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">Address </div>
+                                    <div class="text">{{emmergencyContacts.address}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">Country</div>
+                                    <div class="text">{{emmergencyContacts.countryId}}</div>
+                                </li>
+                                <hr>
+                                <li>
+                                    <div class="title">ApprovalStatus </div>
+                                    <div class="text">{{emmergencyContacts.approval_status_name}}</div>
+                                </li>
+                            </ul>
+                            <!-- <h5 class="section-title">Secondary</h5>
                             <ul class="personal-info">
                                 <li>
                                     <div class="title">Name</div>
@@ -160,11 +258,13 @@
                                     <div class="text">9876543210, 9876543210</div>
                                 </li>
                             </ul> -->
+                        </div>
                     </div>
                 </div>
+                <!-- /Emergency Contact -->
             </div>
-            <!-- /Emergency Contact -->
-
+            <!-- /Row 1 -->
+            <!-- Row 2 -->
             <div class="row">
                 <!-- Referee Card -->
                 <div class="col-md-6 d-flex">
@@ -287,7 +387,7 @@
                 </div>
                 <!-- /Dependent Cotacts -->
             </div>
-
+            <!-- /Row 2 -->
         </div>
         <!-- /Profile Info Tab -->
 
@@ -527,7 +627,139 @@
 
 <!-- Pop up Modals below -->
 
-
+<!-- Identification Modal -->
+<div id="identification_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{cardFormTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="submitIdentificationForm(identificationForm)" [formGroup]="identificationForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Identification</label>
+                                <input type="text" class="form-control" [class.invalid]="
+                                identificationForm.get('identification').invalid &&
+                                identificationForm.get('identification').touched" formControlName="identification">
+                                <div *ngIf="
+                                identificationForm.get('identification').invalid &&
+                                identificationForm.get('identification').touched
+                    ">
+                                    <small *ngIf="
+                                    identificationForm.get('identification').invalid &&
+                                    identificationForm.get('identification').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Identification Number</label>
+                                <input type="number" min="1" class="form-control" [class.invalid]="
+                                identificationForm.get('identification_number').invalid &&
+                                identificationForm.get('identification_number').touched"
+                                    formControlName="identification_number">
+                                <div *ngIf="
+                                identificationForm.get('identification_number').invalid &&
+                                identificationForm.get('identification_number').touched
+                    ">
+                                    <small *ngIf="
+                                    identificationForm.get('identification_number').invalid &&
+                                    identificationForm.get('identification_number').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>ID Issues <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                identificationForm.get('idIssues').invalid &&
+                                identificationForm.get('idIssues').touched" formControlName="idIssues">
+                                <div *ngIf="
+                                identificationForm.get('idIssues').invalid &&
+                                identificationForm.get('idIssues').touched
+                    ">
+                                    <small *ngIf="
+                                    identificationForm.get('idIssues').invalid &&
+                                    identificationForm.get('idIssues').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>ID Expiry Date <span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" bsDatepicker
+                                    [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
+                                    identificationForm.get('idExpiry_date').invalid &&
+                                    identificationForm.get('idExpiry_date').touched" formControlName="idExpiry_date">
+                                <div *ngIf="
+                                identificationForm.get('idExpiry_date').invalid &&
+                                identificationForm.get('idExpiry_date').touched
+                    ">
+                                    <small *ngIf="
+                                    identificationForm.get('idExpiry_date').invalid &&
+                                    identificationForm.get('idExpiry_date').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>ID upload (file format)</label>
+                                <input class="form-control" name="identicationFile" #fileInput type="file"
+                                    (change)="onSelectedFile($event,identificationForm)" [class.invalid]="
+                                    identificationForm.get('identicationFile').invalid &&
+                                    identificationForm.get('identicationFile').touched">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Approval Status</label>
+                                <select class="form-control" [class.invalid]="
+                                identificationForm.get('approval_status').invalid &&
+                                identificationForm.get('approval_status').touched" formControlName="approval_status">
+                                    <option selected value="">Select Status</option>
+                                    <option value="1">Approve</option>
+                                    <option value="2">Pending</option>
+                                    <option value="3">Decline</option>
+                                </select>
+                                <div *ngIf="
+                                identificationForm.get('approval_status').invalid &&
+                                identificationForm.get('approval_status').touched
+                    ">
+                                    <small *ngIf="
+                                    identificationForm.get('approval_status').invalid &&
+                                    identificationForm.get('approval_status').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Identification Modal -->
 
 <!-- Dependent Contacts Modal 
 <div id="dependent_contacts_modal" class="modal custom-modal fade" role="dialog">
