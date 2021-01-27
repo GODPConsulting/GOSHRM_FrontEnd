@@ -47,7 +47,7 @@ export class HobbiesComponent implements OnInit {
     this.cardFormTitle = "Add Hobby";
     this.hobbyForm = this.formBuilder.group({
       id: [0],
-      hobby: ["", Validators.required],
+      hobbyName: ["", Validators.required],
       description: ["", Validators.required],
       rating: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
@@ -66,15 +66,15 @@ export class HobbiesComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    payload.approval_status = +payload.approval_status;
-    const formData = new FormData();
-    for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.hobbyForm.get(key).value);
-    }
+    payload.approvalStatus = +payload.approvalStatus;
+    // const formData = new FormData();
+    // for (const key in form.value) {
+    //   //console.log(key, this.identificationForm.get(key).value);
+    //   formData.append(key, this.hobbyForm.get(key).value);
+    // }
 
     this.spinner = true;
-    return this.employeeService.postHobby(formData).subscribe(
+    return this.employeeService.postHobby(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
@@ -95,7 +95,8 @@ export class HobbiesComponent implements OnInit {
   getEmployeeHobby(id: number) {
     this.employeeService.getHobbyByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
-        this.getEmployeeHobby = data.employeeList;
+        this.employeeHobby = data.employeeList;
+        console.log(data.employeeList);
       }
     });
   }
@@ -111,7 +112,7 @@ export class HobbiesComponent implements OnInit {
       rating: row.rating,
       // idIssues: row.idIssues,
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
-      approvalStatus: row.approvalStatus,
+      approval_status_name: row.approval_status_name,
       staffId: this.staffId,
       hobbyFile: row.hobbyFile,
     });

@@ -20,7 +20,7 @@ export class EmployeeService {
   refereeByStaffIdUrl: string =
     "/hrm/get/single/employee/referee/staffId?StaffId=";
   hobbyByStaffIdUrl: string =
-    "./hrm/get/single/employee/hobby/staffId?StaffId";
+    "/hrm/get/single/employee/hobby/staffId?StaffId=";
   addHobbyUrl: string = "/hrm/add/update/employee/hobby";
   deleteHobbyUrl: string = "/hrm/delete/employee/hobby";
 

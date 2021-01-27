@@ -32,11 +32,11 @@
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
-                            <td>{{row.id}}</td>
+
                             <td>{{row.hobbyName}}</td>
                             <td>{{row.description}}</td>
                             <td>{{row.rating}}</td>
-                            <td>{{row.approvalStatus}}</td>
+                            <td>{{row.approval_status_name}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -62,15 +62,15 @@
                             <div class="form-group">
                                 <label>Hobbies</label>
                                 <input type="text" class="form-control" [class.invalid]="
-                                hobbyForm.get('hobby').invalid &&
-                                hobbyForm.get('hobby').touched" formControlName="hobby">
+                                hobbyForm.get('hobbyName').invalid &&
+                                hobbyForm.get('hobbyName').touched" formControlName="hobbyName">
                                 <div *ngIf="
-                                hobbyForm.get('hobby').invalid &&
-                                hobbyForm.get('hobby').touched
+                                hobbyForm.get('hobbyName').invalid &&
+                                hobbyForm.get('hobbyName').touched
                     ">
                                     <small *ngIf="
-                                    hobbyForm.get('hobby').invalid &&
-                                    hobbyForm.get('hobby').touched
+                                    hobbyForm.get('hobbyName').invalid &&
+                                    hobbyForm.get('hobbyName').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -143,20 +143,20 @@
                             <div class="form-group">
                                 <label>Approval Status</label>
                                 <select class="form-control" [class.invalid]="
-                                hobbyForm.get('approval_status').invalid &&
-                                hobbyForm.get('approval_status').touched" formControlName="approval_status">
+                                hobbyForm.get('approvalStatus').invalid &&
+                                hobbyForm.get('approvalStatus').touched" formControlName="approvalStatus">
                                     <option selected value="">Select Status</option>
                                     <option value="1">Approve</option>
                                     <option value="2">Pending</option>
                                     <option value="3">Decline</option>
                                 </select>
                                 <div *ngIf="
-                                hobbyForm.get('approval_status').invalid &&
-                                hobbyForm.get('approval_status').touched
+                                hobbyForm.get('approvalStatus').invalid &&
+                                hobbyForm.get('approvalStatus').touched
                     ">
                                     <small *ngIf="
-                                    hobbyForm.get('approval_status').invalid &&
-                                    hobbyForm.get('approval_status').touched
+                                    hobbyForm.get('approvalStatus').invalid &&
+                                    hobbyForm.get('approvalStatus').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
