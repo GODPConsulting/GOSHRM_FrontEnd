@@ -144,6 +144,7 @@
 
                     </div>
                 </div>
+                <!-- /Emergency Contact -->
             </div>
 
             <!-- /Emergency Contact -->
@@ -270,7 +271,7 @@
                 </div>
                 <!-- /Dependent Cotacts -->
             </div>
-
+            <!-- /Row 2 -->
         </div>
         <!-- /Profile Info Tab -->
 
@@ -456,16 +457,20 @@
         </div>
         <!-- /Careers Tab -->
 
-        <!--Hobbies Tab 
-        <div id="emp_hobbies" class="tab-pane fade">
-            <div class="row">
+        <!--Hobbies Tab -->
+        <div id="emp_hobbies" class="pro-overview tab-pane fade show active">
+            <!-- Hobbies Card -->
+            <div>
+                <app-hobbies [staffId]="employeeId"></app-hobbies>
+            </div>
+            <!-- <div class="row">
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
                             <h3 class="card-title">Hobbies <a class="edit-icon" data-toggle="modal"
                                     data-target="#hobbies_modal"><i class="fa fa-pencil"></i></a></h3>-->
-        <!-- <h5 class="section-title">Primary</h5> -->
-        <!-- <ul class="personal-info">
+            <!-- <h5 class="section-title">Primary</h5> -->
+            <!-- <ul class="personal-info">
                                 <li>
                                     <div class="title">Name of Hobbies</div>
                                     <div class="text">John Doe</div>
@@ -493,14 +498,14 @@
                                     </div>
 
                                 </li>
-                            </ul>
+                            </ul> -->
 
-                        </div>
+            <!-- </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
-         /Hobbies Tab -->
+        <!-- /Hobbies Tab -->
 
         <!-- HMO Tab -->
         <!-- /HMO Tab -->
@@ -509,7 +514,6 @@
 </div>
 
 <!-- Pop up Modals below -->
-
 
 
 <!-- Dependent Contacts Modal 

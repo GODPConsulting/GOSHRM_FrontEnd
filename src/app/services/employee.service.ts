@@ -19,6 +19,10 @@ export class EmployeeService {
   addRefereeUrl: string = "/hrm/add/update/employee/referee";
   refereeByStaffIdUrl: string =
     "/hrm/get/single/employee/referee/staffId?StaffId=";
+    hobbyByStaffIdUrl: string =
+    ".hrm/get/single/employee/hobby/staffId?StaffId"
+  addHobbyUrl: string = "/hrm/add/update/employee/hobby";
+  deleteHobbyUrl: string = "/hrm/delete/employee/hobby";
 
   constructor(private apiService: ApiService) {}
 
@@ -59,5 +63,17 @@ export class EmployeeService {
 
   getRefereeByStaffId(id: number) {
     return this.apiService.get(`${this.refereeByStaffIdUrl}${id}`);
+  }
+
+  getHobbyByStaffId(id: number) {
+    return this.apiService.get(`${this.hobbyByStaffIdUrl}${id}`);
+  }
+
+  postHobby(payload: Object) {
+    return this.apiService.post(`${this.addHobbyUrl}`, payload);
+  }
+
+  deleteHobby(payload) {
+    return this.apiService.post(`${this.deleteHobbyUrl}`, payload);
   }
 }
