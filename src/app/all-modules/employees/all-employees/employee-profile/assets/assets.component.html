@@ -1,0 +1,177 @@
+<div>
+    <div class="card profile-box flex-fill">
+        <div class="card-body">
+            <h3 class="card-title">Assets<a class="edit-icon hint" (click)="delete()"><span
+                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
+                <a class="edit-icon hint mr-1" (click)="downloadFile()" download><span
+                        class="hint-text">Download</span><i class="fa fa-download"></i></a>
+                <a *ngIf="currentUserId === employeeId" (click)="initHobbyForm()" class="hint edit-icon mr-1"
+                    data-toggle="modal" data-target="#hobby_modal"><span class="hint-text">Add
+                        Hobbies</span><i class="fa fa-pencil"></i></a>
+            </h3>
+            <div class="table-responsive">
+                <table class="table table-nowrap table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === employeeAssets.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>Name of Assets</th>
+                            <th>Asset Number</th>
+                            <th>Description</th>
+                            <th>Classification</th>
+                            <th>Physical Condition</th>
+                            <th>Approval Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="modal" class="pointer" data-target="#assets_modal" (click)="edit(row)"
+                            *ngFor="let row of hack(employeeAssets); let i = index">
+                            <td (click)="stopParentEvent($event)">
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+
+                            <td>{{row.hobbyName}}</td>
+                            <td>{{row.description}}</td>
+                            <td>{{row.rating}}</td>
+                            <td>{{row.approval_status_name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Asset Modal -->
+<div id="assets_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{cardFormTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="submitAssetsForm(assetsForm)" [formGroup]="assetsForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Assets</label>
+                                <input type="text" class="form-control" [class.invalid]="
+                                assetsForm.get('assetsName').invalid &&
+                                assetsForm.get('assetsName').touched" formControlName="assetsName">
+                                <div *ngIf="
+                                assetsForm.get('assetsName').invalid &&
+                                assetsForm.get('assetsName').touched
+                    ">
+                                    <small *ngIf="
+                                    hobbyForm.get('assetsName').invalid &&
+                                    hobbyForm.get('assetsName').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input type="text" class="form-control" [class.invalid]="
+                                assetsForm.get('description').invalid &&
+                                assetsForm.get('description').touched" formControlName="description">
+                                <div *ngIf="
+                                assetsForm.get('description').invalid &&
+                                assetsForm.get('description').touched
+                    ">
+                                    <small *ngIf="
+                                    assetsForm.get('description').invalid &&
+                                    assetsForm.get('description').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Rating <span class="text-danger">*</span></label>
+                                <input class="form-control" type="number" [class.invalid]="
+                                assetsForm.get('rating').invalid &&
+                                assetsForm.get('rating').touched" formControlName="rating">
+                                <div *ngIf="
+                                assetsForm.get('rating').invalid &&
+                                assetsForm.get('rating').touched
+                    ">
+                                    <small *ngIf="
+                                    assetsForm.get('rating').invalid &&
+                                    assetsForm.get('rating').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6">
+                            <div class="form-group">
+                                <label>ID Expiry Date <span class="text-danger">*</span></label>
+                                <input class="form-control" type="date" [class.invalid]="
+                                    identificationForm.get('idExpiry_date').invalid &&
+                                    identificationForm.get('idExpiry_date').touched" formControlName="idExpiry_date">
+                                <div *ngIf="
+                                identificationForm.get('idExpiry_date').invalid &&
+                                identificationForm.get('idExpiry_date').touched
+                    ">
+                                    <small *ngIf="
+                                    identificationForm.get('idExpiry_date').invalid &&
+                                    identificationForm.get('idExpiry_date').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>ID upload (file format)</label>
+                                <input class="form-control" name="identicationFile" #fileInput type="file"
+                                    (change)="onSelectedFile($event,identificationForm)" [class.invalid]="
+                                    identificationForm.get('identicationFile').invalid &&
+                                    identificationForm.get('identicationFile').touched">
+                            </div>
+                        </div> -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Approval Status</label>
+                                <select class="form-control" [class.invalid]="
+                                hobbyForm.get('approvalStatus').invalid &&
+                                hobbyForm.get('approvalStatus').touched" formControlName="approvalStatus">
+                                    <option selected value="">Select Status</option>
+                                    <option value="1">Approve</option>
+                                    <option value="2">Pending</option>
+                                    <option value="3">Decline</option>
+                                </select>
+                                <div *ngIf="
+                                hobbyForm.get('approvalStatus').invalid &&
+                                hobbyForm.get('approvalStatus').touched
+                    ">
+                                    <small *ngIf="
+                                    hobbyForm.get('approvalStatus').invalid &&
+                                    hobbyForm.get('approvalStatus').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Hobby Modal -->

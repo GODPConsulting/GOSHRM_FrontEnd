@@ -18,6 +18,7 @@ import { SharedModule } from "src/app/shared/shared.module";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { IdentificationComponent } from './all-employees/employee-profile/identification/identification.component';
 import { HobbiesComponent } from './all-employees/employee-profile/hobbies/hobbies.component';
+import { AssetsComponent } from './all-employees/employee-profile/assets/assets.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { HobbiesComponent } from './all-employees/employee-profile/hobbies/hobbi
     EmployeeFormComponent,
     IdentificationComponent,
     HobbiesComponent,
+    AssetsComponent,
   ],
   imports: [
     CommonModule,

@@ -275,8 +275,16 @@
         </div>
         <!-- /Profile Info Tab -->
 
-        <!-- Assets Tab -->
-        <div id="emp_assets" class="tab-pane fade">
+
+        <!--Assets Tab -->
+        <div id="emp_assets" class="pro-overview tab-pane fade show active">
+            <!-- Hobbies Card -->
+            <div>
+                <app-assets [staffId]="employeeId"></app-assets>
+            </div>
+        </div>
+        <!-- /Assets Tab -->
+        <!-- <div id="emp_assets" class="tab-pane fade">
             <div class="row">
                 <div class="col-md-6 d-flex">
                     <div class="card profile-box flex-fill">
@@ -285,7 +293,7 @@
                                     data-target="#assets_contact_modal"><i class="fa fa-pencil"></i></a></h3>
                             <!-- <h5 class="section-title">Primary</h5>
                              <br> -->
-                            <ul class="personal-info">
+        <!-- <ul class="personal-info">
                                 <li>
                                     <div class="title">Asset Name</div>
                                     <div class="text">GODP Shares</div>
@@ -310,15 +318,15 @@
                                     <div class="title">Physical Condition </div>
                                     <div class="text">Active</div>
                                 </li>
-                            </ul>
-
+                            </ul> -->
+        <!-- 
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <!-- assets Contact Modal -->
-            </div>
-        </div>
+        <!-- assets Contact Modal -->
+        <!-- </div>
+        </div> --> -->
         <!-- /Assets Tab -->
 
         <!-- Careers Tab -->
@@ -463,47 +471,6 @@
             <div>
                 <app-hobbies [staffId]="employeeId"></app-hobbies>
             </div>
-            <!-- <div class="row">
-                <div class="col-md-6 d-flex">
-                    <div class="card profile-box flex-fill">
-                        <div class="card-body">
-                            <h3 class="card-title">Hobbies <a class="edit-icon" data-toggle="modal"
-                                    data-target="#hobbies_modal"><i class="fa fa-pencil"></i></a></h3>-->
-            <!-- <h5 class="section-title">Primary</h5> -->
-            <!-- <ul class="personal-info">
-                                <li>
-                                    <div class="title">Name of Hobbies</div>
-                                    <div class="text">John Doe</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Description</div>
-                                    <div class="text">Father</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Star </div>
-                                    <div class="text">ellleiek@godp.com.uk</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Status </div>
-                                    <div class="form-group">
-                                        <label class="col-form-label"></label>
-                                        <select class="select form-control" formControlName="client">
-                                            <option>Approved</option>
-                                            <option>Pending</option>
-                                            <option>Declined</option>
-                                        </select>
-                                    </div>
-
-                                </li>
-                            </ul> -->
-
-            <!-- </div>
-                    </div>
-                </div>
-            </div> -->
         </div>
         <!-- /Hobbies Tab -->
 
