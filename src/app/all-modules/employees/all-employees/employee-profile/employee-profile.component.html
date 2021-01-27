@@ -100,69 +100,52 @@
         <!-- Profile Info Tab -->
         <div id="emp_profile" class="pro-overview tab-pane fade show active">
             <!-- Identification Card -->
-            <app-identification [staffId]="employeeId"></app-identification>
+            <div>
+                <app-identification [staffId]="employeeId"></app-identification>
+            </div>
             <!-- /Identification Card -->
             <!-- Emergency Contact Lola -->
-            <div class="col-md-6 d-flex">
+            <div>
                 <div class="card profile-box flex-fill">
                     <div class="card-body">
                         <h3 class="card-title">Emergency Contact <a class="edit-icon" data-toggle="modal"
-                                data-target="#emergency_contact_modal"><i class="fa fa-pencil"></i></a></h3>
+                                data-target="#emergency_contact_modal"><i class="fa fa-plus"></i></a></h3>
                         <!-- <h5 class="section-title">Primary</h5> -->
-                        <ul class="personal-info">
-                            <li>
-                                <div class="title">Full Name</div>
-                                <div class="text">{{emmergencyContacts.fullName}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">Relationship</div>
-                                <div class="text">{{emmergencyContacts.relationship}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">Email </div>
-                                <div class="text">{{emmergencyContacts.email}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">contact_phone_number </div>
-                                <div class="text">{{emmergencyContacts.contact_phone_number}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">Address </div>
-                                <div class="text">{{emmergencyContacts.address}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">Country</div>
-                                <div class="text">{{emmergencyContacts.countryId}}</div>
-                            </li>
-                            <hr>
-                            <li>
-                                <div class="title">ApprovalStatus </div>
-                                <div class="text">{{emmergencyContacts.approval_status_name}}</div>
-                            </li>
-                        </ul>
-                        <!-- <h5 class="section-title">Secondary</h5>
-                            <ul class="personal-info">
-                                <li>
-                                    <div class="title">Name</div>
-                                    <div class="text">Karen Wills</div>
-                                </li>
-                                <li>
-                                    <div class="title">Relationship</div>
-                                    <div class="text">Brother</div>
-                                </li>
-                                <li>
-                                    <div class="title">Phone </div>
-                                    <div class="text">9876543210, 9876543210</div>
-                                </li>
-                            </ul> -->
+                        <div class="table-responsive">
+                            <table class="table table-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>Full Name</th>
+                                        <th>Contact phone number</th>
+                                        <th>Email</th>
+                                        <th>Relationship</th>
+                                        <th>Address</th>
+                                        <th>Country</th>
+                                        <th>Approval status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of emmergencyContacts; let i = index" class="cursor"
+                                        (click)="editContact(item)">
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{item.fullName}}</td>
+                                        <td>{{item.contact_phone_number}}</td>
+                                        <td>{{item.email}}</td>
+                                        <td>{{item.relationship}}</td>
+                                        <td>{{item.address}}</td>
+                                        <td>{{item.countryName}}</td>
+                                        <td>{{item.approval_status_name}}</td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>
+
             <!-- /Emergency Contact -->
 
             <div class="row">
@@ -739,7 +722,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Personal Information</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
