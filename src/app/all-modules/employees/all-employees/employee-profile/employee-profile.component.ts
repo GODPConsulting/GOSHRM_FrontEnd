@@ -24,12 +24,10 @@ export class EmployeeProfileComponent implements OnInit {
   currentUserId: number;
 
   // Forms
-  identificationForm: FormGroup;
   emmergencyContactForm: FormGroup;
   refereeForm: FormGroup;
 
   // To hold data for each card
-  employeeIdentification: any = {};
   emmergencyContacts: any;
   employeeReferee: any = {};
 
@@ -73,8 +71,7 @@ initializeForm(){
     });
 
     this.getSingleEmployee(this.employeeId);
-    this.getEmployeeIdentification(this.employeeId);
-    this.initIdentificationForm();
+
     this.getSavedEmergencyContact(this.employeeId);
     this.getEmployeeReferee(this.employeeId);
     this.initRefereeForm();
@@ -99,85 +96,6 @@ initializeForm(){
   }
 
   /* Employee profile */
-
-  /* Identification */
-  initIdentificationForm() {
-    if (isEmpty(this.employeeIdentification)) {
-      console.log("empty", this.employeeIdentification);
-      this.cardFormTitle = "Add Identification";
-      this.identificationForm = this.formBuilder.group({
-        id: [0],
-        identification: ["", Validators.required],
-        identification_number: ["", Validators.required],
-        idIssues: ["", Validators.required],
-        idExpiry_date: ["", Validators.required],
-        approval_status: ["", Validators.required],
-        staffId: this.employeeId,
-        identicationFile: ["", Validators.required],
-      });
-    } else {
-      console.log(this.employeeIdentification);
-
-      this.cardFormTitle = "Edit Identification";
-      this.identificationForm.patchValue({
-        id: [0],
-        identification: this.employeeIdentification.identification,
-        identification_number: this.employeeIdentification
-          .identification_number,
-        idIssues: this.employeeIdentification.idIssues,
-        idExpiry_date: this.employeeIdentification.idExpiry_date,
-        approval_status: this.employeeIdentification.approval_status,
-        staffId: this.employeeId,
-        identicationFile: this.employeeIdentification.identicationFile,
-      });
-    }
-  }
-
-  submitIdentificationForm(form: FormGroup) {
-    if (!form.valid) {
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    }
-    const payload = form.value;
-    payload.approval_status = +payload.approval_status;
-    const formData = new FormData();
-    for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.identificationForm.get(key).value);
-    }
-
-    this.spinner = true;
-    return this.employeeService.postIdentification(formData).subscribe(
-      (res) => {
-        console.log(res);
-        this.spinner = false;
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#identification_modal").modal("hide");
-        }
-      },
-      (err) => {
-        this.spinner = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
-      }
-    );
-  }
-
-  getEmployeeIdentification(id: number) {
-    this.employeeService.getIdentificationByStaffId(id).subscribe((data) => {
-      console.log(data.employeeList[0]);
-
-      if (data.employeeList[0]) {
-        this.employeeIdentification = data.employeeList[0];
-      }
-      //console.log(this.employeeIdentification);
-      this.initIdentificationForm();
-    });
-  }
-
-  /* Identification */
 
   /* Emergency Contact */
   addEmmergencyContact(emmergencyContactForm) {
