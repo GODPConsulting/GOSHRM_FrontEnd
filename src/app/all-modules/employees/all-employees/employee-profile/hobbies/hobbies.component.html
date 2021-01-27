@@ -1,13 +1,16 @@
 <div>
     <div class="card profile-box flex-fill">
         <div class="card-body">
-            <h3 class="card-title">Hobbies<a class="edit-icon hint" (click)="delete()"><span
-                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a> <a class="edit-icon hint mr-1"
-                    (click)="downloadFile()" download><span class="hint-text">Download</span><i
-                        class="fa fa-download"></i></a><a *ngIf="currentUserId === employeeId" (click)="initHobbyForm()"
-                    class="hint edit-icon mr-1" data-toggle="modal" data-target="#hobby_modal"><span
-                        class="hint-text">Add
-                        Hobbies</span><i class="fa fa-pencil"></i></a></h3>
+            <h3 class="card-title">Hobbies
+
+                <a class="edit-icon hint" (click)="delete()"><span class="hint-text">Delete</span><i
+                        class="fa fa-trash"></i></a>
+                <a class="edit-icon hint mr-1" (click)="downloadFile()" download><span
+                        class="hint-text">Download</span><i class="fa fa-download"></i></a>
+                <a *ngIf="currentUserId === employeeId" (click)="initHobbyForm()" class="hint edit-icon mr-1"
+                    data-toggle="modal" data-target="#hobby_modal"><span class="hint-text">Add
+                        Hobbies</span><i class="fa fa-pencil"></i></a>
+            </h3>
             <div class="table-responsive">
                 <table class="table table-nowrap table-hover">
                     <thead>
@@ -29,10 +32,11 @@
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
-                            <td>{{row.name_of_hobby}}</td>
+                            <td>{{row.id}}</td>
+                            <td>{{row.hobbyName}}</td>
                             <td>{{row.description}}</td>
                             <td>{{row.rating}}</td>
-                            <td>{{row.approval_status_name}}</td>
+                            <td>{{row.approvalStatus}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -75,7 +79,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Description</label>
-                                <input type="number" class="form-control" [class.invalid]="
+                                <input type="text" class="form-control" [class.invalid]="
                                 hobbyForm.get('description').invalid &&
                                 hobbyForm.get('description').touched" formControlName="description">
                                 <div *ngIf="
@@ -95,7 +99,7 @@
                                 <label>Rating <span class="text-danger">*</span></label>
                                 <input class="form-control" type="number" [class.invalid]="
                                 hobbyForm.get('rating').invalid &&
-                                hobbyForm.get('rating').touched" formControlName="idIssues">
+                                hobbyForm.get('rating').touched" formControlName="rating">
                                 <div *ngIf="
                                 hobbyForm.get('rating').invalid &&
                                 hobbyForm.get('rating').touched

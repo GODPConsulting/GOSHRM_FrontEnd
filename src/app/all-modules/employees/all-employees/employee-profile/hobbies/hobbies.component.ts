@@ -47,15 +47,15 @@ export class HobbiesComponent implements OnInit {
     this.cardFormTitle = "Add Hobby";
     this.hobbyForm = this.formBuilder.group({
       id: [0],
-      name_of_hobby: ["", Validators.required],
+      hobby: ["", Validators.required],
       description: ["", Validators.required],
       rating: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      approval_status: ["", Validators.required],
+      approvalStatus: ["", Validators.required],
       staffId: this.staffId,
       // identicationFile: ["", Validators.required],
     });
-    this.fileInput.nativeElement.value = "";
+    //this.fileInput.nativeElement.value = "";
   }
 
   submitHobbyForm(form: FormGroup) {
@@ -106,11 +106,12 @@ export class HobbiesComponent implements OnInit {
     //row.idExpiry_date = new Date(row.idExpiry_date).toLocaleDateString("en-CA");
     this.hobbyForm.patchValue({
       id: row.id,
-      name_of_hobby: row.name_of_hobby,
+      hobbyName: row.hobbyName,
       description: row.description,
+      rating: row.rating,
       // idIssues: row.idIssues,
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
-      approval_status: row.approval_status,
+      approvalStatus: row.approvalStatus,
       staffId: this.staffId,
       hobbyFile: row.hobbyFile,
     });
