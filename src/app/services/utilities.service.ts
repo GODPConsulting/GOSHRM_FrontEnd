@@ -18,6 +18,25 @@ export class UtilitiesService {
     });
   }
 
+  deleteArray(event: Event, id: number, idsArray: number[]) {
+    if ((<HTMLInputElement>event.target).checked) {
+      if (!idsArray.includes(id)) {
+        idsArray.push(id);
+      }
+    } else {
+      idsArray = idsArray.filter((_id) => {
+        return _id !== id;
+      });
+    }
+  }
+
+  checkAllBoxes(event: Event, dataArray: any[]) {
+    if ((<HTMLInputElement>event.target).checked) {
+      return dataArray.map((item) => item.id);
+    }
+    return [];
+  }
+
   getCountry() {
     return this.apiService.get(this.getCountryUrl);
   }

@@ -44,24 +44,24 @@ export class EmployeeProfileComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private authService: AuthService
   ) {}
-initializeForm(){
-  this.emmergencyContactForm = this.formBuilder.group({
-    id: [0],
-    fullName: [""],
-    contact_phone_number: [""],
-    email: [""],
-    relationship: [""],
-    address: [""],
-    countryId: [0],
-    countryName: [""],
-    approval_status: [],
-    approval_status_name: [""],
-    staffId: [""],
-  });
-}
+  initializeForm() {
+    this.emmergencyContactForm = this.formBuilder.group({
+      id: [0],
+      fullName: [""],
+      contact_phone_number: [""],
+      email: [""],
+      relationship: [""],
+      address: [""],
+      countryId: [0],
+      countryName: [""],
+      approval_status: [],
+      approval_status_name: [""],
+      staffId: [""],
+    });
+  }
   ngOnInit() {
     this.getUserData();
-   
+
     this.initializeForm();
     this.getCountry();
 
@@ -73,8 +73,6 @@ initializeForm(){
     this.getSingleEmployee(this.employeeId);
 
     this.getSavedEmergencyContact(this.employeeId);
-    this.getEmployeeReferee(this.employeeId);
-    this.initRefereeForm();
   }
 
   /* Employee profile */
@@ -139,8 +137,6 @@ initializeForm(){
   getSavedEmergencyContact(id: number) {
     return this.employeeService.getEmergencyContactByStaffId(id).subscribe(
       (data) => {
-        
-
         this.emmergencyContacts = data.employeeList;
       },
       (err) => {
@@ -258,13 +254,13 @@ initializeForm(){
       contact_phone_number: item.contact_phone_number,
       email: item.email,
       relationship: item.relationship,
-      address:item.address ,
+      address: item.address,
       countryId: item.countryId,
-      countryName:item.countryName,
-      approval_status:item.approval_status,
-      approval_status_name:item.approval_status_name,
-      staffId:item.staffId,
-    })
+      countryName: item.countryName,
+      approval_status: item.approval_status,
+      approval_status_name: item.approval_status_name,
+      staffId: item.staffId,
+    });
     $("#emergency_contact_modal").modal("show");
   }
 
@@ -272,45 +268,6 @@ initializeForm(){
     // close the modal
     // 2 re initialise the emergency contact form
     $("#emergency_contact_modal").modal("hide");
-    this.initializeForm()
-
-
+    this.initializeForm();
   }
 }
-
-/*  uploadReferee() {
-  const formData = new FormData();
-  formData.append(
-    "uploadInput",
-    this.employee_profileUploadForm.get("uploadInput").value
-  );
-  if (!this.file) {
-    return swal.fire("Error", "Select a file", "error");
-  }
-  //console.log(formData, this.languageForm.get("uploadInput").value);
-  this.spinner = true;
-
-  return this.setupService
-    .updateData("/hrmsetup/upload/language", formData)
-    .subscribe(
-      (res) => {
-        this.spinner = false;
-        const message = res.status.message.friendlyMessage;
-
-        if (res.status.isSuccessful) {
-          swal.fire("Success", message, "success");
-          this.initializeForm();
-          this.fileInput.nativeElement.value = "";
-        } else {
-          swal.fire("Error", message, "error");
-        }
-        this.getEmployee_Profile();
-      },
-      (err) => {
-        this.spinner = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
-      }
-    );
-}
-*/
