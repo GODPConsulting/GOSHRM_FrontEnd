@@ -25,10 +25,10 @@ export class AssetsComponent implements OnInit {
   @Input() staffId: number;
 
   // Forms
-  assetsForm: FormGroup;
+  assetForm: FormGroup;
 
   // To hold data for each card
-  employeeAssets: any = {};
+  employeeAsset: any = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,26 +39,31 @@ export class AssetsComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.staffId);
 
-    this.getEmployeeAssets(this.staffId);
-    this.initAssetsForm();
+    this.getEmployeeAsset(this.staffId);
+    this.initAssetForm();
   }
 
-  initAssetsForm() {
-    this.cardFormTitle = "Add Assets";
-    this.assetsForm = this.formBuilder.group({
+  initAssetForm() {
+    this.cardFormTitle = "Add Asset";
+    this.assetForm = this.formBuilder.group({
       id: [0],
-      hobbyName: ["", Validators.required],
+      employeeName: ["", Validators.required],
+      office: ["", Validators.required],
+      assetName: ["", Validators.required],
+      assetNumber: ["", Validators.required],
       description: ["", Validators.required],
-      rating: ["", Validators.required],
+      classification: ["", Validators.required],
+      physicalCondition: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      approvalStatus: ["", Validators.required],
+      requestApprovalStatusName: ["", Validators.required],
+      returnApprovalStatusName: ["", Validators.required],
       staffId: this.staffId,
       // identicationFile: ["", Validators.required],
     });
     //this.fileInput.nativeElement.value = "";
   }
 
-  submitAssetsForm(form: FormGroup) {
+  submitAssetForm(form: FormGroup) {
     console.log(form.value);
 
     if (!form.valid) {
@@ -74,15 +79,15 @@ export class AssetsComponent implements OnInit {
     // }
 
     this.spinner = true;
-    return this.employeeService.postAssets(payload).subscribe(
+    return this.employeeService.postAsset(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
-          $("#assets_modal").modal("hide");
+          $("#asset_modal").modal("hide");
         }
-        this.getEmployeeAssets(this.staffId);
+        this.getEmployeeAsset(this.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -92,10 +97,10 @@ export class AssetsComponent implements OnInit {
     );
   }
 
-  getEmployeeAssets(id: number) {
-    this.employeeService.getAssetsByStaffId(id).subscribe((data) => {
+  getEmployeeAsset(id: number) {
+    this.employeeService.getAssetByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
-        this.employeeAssets = data.employeeList;
+        this.employeeAsset = data.employeeList;
         console.log(data.employeeList);
       }
     });
@@ -103,20 +108,25 @@ export class AssetsComponent implements OnInit {
 
   // Set Values To Edit Modal Form
   edit(row) {
-    this.cardFormTitle = "Edit Assets";
+    this.cardFormTitle = "Edit Asset";
     //row.idExpiry_date = new Date(row.idExpiry_date).toLocaleDateString("en-CA");
-    this.assetsForm.patchValue({
+    this.assetForm.patchValue({
       id: row.id,
-      hobbyName: row.hobbyName,
+      employeeName: row.employeNamme,
+      office: row.office,
+      assetName: row.assetName,
+      assetNumber: row.assetNumber,
       description: row.description,
-      rating: row.rating,
+      classification: row.classification,
+      physicalCondition: row.physicalCondition,
       // idIssues: row.idIssues,
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
-      approval_status_name: row.approval_status_name,
+      requestApprovalStatusName: row.requestApprovalStatusName,
+      returnApprovalStatusName: row.returnApprovalStatusName,
       staffId: this.staffId,
-      hobbyFile: row.hobbyFile,
+      assetFile: row.assetFile,
     });
-    $("#assets_modal").modal("show");
+    $("#asset_modal").modal("show");
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
@@ -153,12 +163,12 @@ export class AssetsComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          return this.employeeService.deleteAssets(payload).subscribe(
+          return this.employeeService.deleteAsset(payload).subscribe(
             (res) => {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeAssets(this.staffId);
+                  this.getEmployeeAsset(this.staffId);
                 });
               } else {
                 swal.fire("Error", message, "error");
@@ -187,7 +197,7 @@ export class AssetsComponent implements OnInit {
 
   checkAll(event) {
     if (event.target.checked) {
-      this.selectedId = this.employeeAssets.map((item) => {
+      this.selectedId = this.employeeAsset.map((item) => {
         return item.id;
       });
     } else {

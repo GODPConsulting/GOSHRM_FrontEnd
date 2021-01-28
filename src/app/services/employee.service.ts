@@ -23,6 +23,10 @@ export class EmployeeService {
     "/hrm/get/single/employee/hobby/staffId?StaffId=";
   addHobbyUrl: string = "/hrm/add/update/employee/hobby";
   deleteHobbyUrl: string = "/hrm/delete/employee/hobby";
+  assetByStaffIdUrl: string =
+    "/hrm/get/single/employee/asset/staffId?StaffId=";
+  addAssetUrl: string = "/hrm/add/update/employee/asset";
+  deleteAssetUrl: string = "/hrm/delete/employee/asset";
 
   constructor(private apiService: ApiService) {}
 
@@ -75,5 +79,17 @@ export class EmployeeService {
 
   deleteHobby(payload) {
     return this.apiService.post(`${this.deleteHobbyUrl}`, payload);
+  }
+
+  getAssetByStaffId(id: number) {
+    return this.apiService.get(`${this.assetByStaffIdUrl}${id}`);
+  }
+
+  postAsset(payload: Object) {
+    return this.apiService.post(`${this.addAssetUrl}`, payload);
+  }
+
+  deleteAsset(payload) {
+    return this.apiService.post(`${this.deleteAssetUrl}`, payload);
   }
 }

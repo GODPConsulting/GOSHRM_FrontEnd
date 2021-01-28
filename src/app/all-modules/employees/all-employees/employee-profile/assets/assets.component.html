@@ -5,38 +5,46 @@
                         class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
                 <a class="edit-icon hint mr-1" (click)="downloadFile()" download><span
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
-                <a *ngIf="currentUserId === employeeId" (click)="initHobbyForm()" class="hint edit-icon mr-1"
-                    data-toggle="modal" data-target="#hobby_modal"><span class="hint-text">Add
-                        Hobbies</span><i class="fa fa-pencil"></i></a>
+                <a *ngIf="currentUserId === employeeId" (click)="initAssetForm()" class="hint edit-icon mr-1"
+                    data-toggle="modal" data-target="#asset_modal"><span class="hint-text">Add
+                    </span><i class="fa fa-pencil"></i></a>
             </h3>
             <div class="table-responsive">
                 <table class="table table-nowrap table-hover">
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === employeeAssets.length"
+                                <input type="checkbox" [checked]="selectedId.length === employeeAsset.length"
                                     (change)="checkAll($event)" />
                             </th>
-                            <th>Name of Assets</th>
+                            <th>Employee Name</th>
+                            <th>Office</th>
+                            <th>Asset Name</th>
                             <th>Asset Number</th>
                             <th>Description</th>
                             <th>Classification</th>
                             <th>Physical Condition</th>
-                            <th>Approval Status</th>
+                            <th>Request Approval Status</th>
+                            <th>Return Approval Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#assets_modal" (click)="edit(row)"
-                            *ngFor="let row of hack(employeeAssets); let i = index">
+                        <tr data-toggle="modal" class="pointer" data-target="#asset_modal" (click)="edit(row)"
+                            *ngFor="let row of hack(employeeAsset); let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
 
-                            <td>{{row.hobbyName}}</td>
+                            <td>{{row.employeeName}}</td>
+                            <td>{{row.office}}</td>
+                            <td>{{row.assetName}}</td>
+                            <td>{{row.assetNumber}}</td>
                             <td>{{row.description}}</td>
-                            <td>{{row.rating}}</td>
-                            <td>{{row.approval_status_name}}</td>
+                            <td>{{row.classification}}</td>
+                            <td>{{row.physicalCondition}}</td>
+                            <td>{{row.requestApprovalStatusName}}</td>
+                            <td>{{row.returnApprovalStatusName}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -46,7 +54,7 @@
 </div>
 
 <!-- Asset Modal -->
-<div id="assets_modal" class="modal custom-modal fade" role="dialog">
+<div id="asset_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -56,21 +64,75 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="submitAssetsForm(assetsForm)" [formGroup]="assetsForm">
+                <form (ngSubmit)="submitAssetForm(assetForm)" [formGroup]="assetForm">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Assets</label>
+                                <label>Employee Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" [class.invalid]="
-                                assetsForm.get('assetsName').invalid &&
-                                assetsForm.get('assetsName').touched" formControlName="assetsName">
+                                assetForm.get('employeeName').invalid &&
+                                assetForm.get('employeeName').touched" formControlName="employeeName">
                                 <div *ngIf="
-                                assetsForm.get('assetsName').invalid &&
-                                assetsForm.get('assetsName').touched
+                                assetForm.get('employeeName').invalid &&
+                                assetForm.get('employeeName').touched
                     ">
                                     <small *ngIf="
-                                    hobbyForm.get('assetsName').invalid &&
-                                    hobbyForm.get('assetsName').touched
+                                    assetForm.get('employeeName').invalid &&
+                                    assetForm.get('employeeName').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Office <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" [class.invalid]="
+                                assetForm.get('office').invalid &&
+                                assetForm.get('office').touched" formControlName="office">
+                                <div *ngIf="
+                                assetForm.get('office').invalid &&
+                                assetForm.get('office').touched
+                    ">
+                                    <small *ngIf="
+                                    assetForm.get('office').invalid &&
+                                    assetForm.get('office').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Asset Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" [class.invalid]="
+                                assetForm.get('assetName').invalid &&
+                                assetForm.get('assetName').touched" formControlName="assetName">
+                                <div *ngIf="
+                                assetForm.get('assetName').invalid &&
+                                assetForm.get('assetName').touched
+                    ">
+                                    <small *ngIf="
+                                    assetForm.get('assetName').invalid &&
+                                    assetForm.get('assetName').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Asset Number <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" [class.invalid]="
+                                assetForm.get('assetNumber').invalid &&
+                                assetForm.get('assetNumber').touched" formControlName="assetNumber">
+                                <div *ngIf="
+                                assetForm.get('assetNumber').invalid &&
+                                assetForm.get('assetNumber').touched
+                    ">
+                                    <small *ngIf="
+                                    assetForm.get('assetNumber').invalid &&
+                                    assetForm.get('assetNumber').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -80,15 +142,15 @@
                             <div class="form-group">
                                 <label>Description</label>
                                 <input type="text" class="form-control" [class.invalid]="
-                                assetsForm.get('description').invalid &&
-                                assetsForm.get('description').touched" formControlName="description">
+                                assetForm.get('description').invalid &&
+                                assetForm.get('description').touched" formControlName="description">
                                 <div *ngIf="
-                                assetsForm.get('description').invalid &&
-                                assetsForm.get('description').touched
+                                assetForm.get('description').invalid &&
+                                assetForm.get('description').touched
                     ">
                                     <small *ngIf="
-                                    assetsForm.get('description').invalid &&
-                                    assetsForm.get('description').touched
+                                    assetForm.get('description').invalid &&
+                                    assetForm.get('description').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -96,35 +158,17 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Rating <span class="text-danger">*</span></label>
-                                <input class="form-control" type="number" [class.invalid]="
-                                assetsForm.get('rating').invalid &&
-                                assetsForm.get('rating').touched" formControlName="rating">
+                                <label>Classification <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" [class.invalid]="
+                                assetForm.get('classification').invalid &&
+                                assetForm.get('classification').touched" formControlName="classification">
                                 <div *ngIf="
-                                assetsForm.get('rating').invalid &&
-                                assetsForm.get('rating').touched
+                                assetForm.get('classification').invalid &&
+                                assetForm.get('classification').touched
                     ">
                                     <small *ngIf="
-                                    assetsForm.get('rating').invalid &&
-                                    assetsForm.get('rating').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <div class="col-md-6">
-                            <div class="form-group">
-                                <label>ID Expiry Date <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" [class.invalid]="
-                                    identificationForm.get('idExpiry_date').invalid &&
-                                    identificationForm.get('idExpiry_date').touched" formControlName="idExpiry_date">
-                                <div *ngIf="
-                                identificationForm.get('idExpiry_date').invalid &&
-                                identificationForm.get('idExpiry_date').touched
-                    ">
-                                    <small *ngIf="
-                                    identificationForm.get('idExpiry_date').invalid &&
-                                    identificationForm.get('idExpiry_date').touched
+                                    assetForm.get('classification').invalid &&
+                                    assetForm.get('classification').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -132,31 +176,71 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>ID upload (file format)</label>
-                                <input class="form-control" name="identicationFile" #fileInput type="file"
-                                    (change)="onSelectedFile($event,identificationForm)" [class.invalid]="
-                                    identificationForm.get('identicationFile').invalid &&
-                                    identificationForm.get('identicationFile').touched">
-                            </div>
-                        </div> -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Approval Status</label>
+                                <label>Physical Condition <span class="text-danger">*</span></label>
                                 <select class="form-control" [class.invalid]="
-                                hobbyForm.get('approvalStatus').invalid &&
-                                hobbyForm.get('approvalStatus').touched" formControlName="approvalStatus">
+                                assetForm.get('physicalCondition').invalid &&
+                                assetForm.get('physicalCondition').touched" formControlName="physicalCondition">
+                                    <option selected value="">Select Condition</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">Inactive</option>
+                                    <option value="3">Decline</option>
+                                </select>
+                                <div *ngIf="
+                                assetForm.get('physicalCondition').invalid &&
+                                assetForm.get('physicalCondition').touched
+                    ">
+                                    <small *ngIf="
+                                    assetForm.get('physicalCondition').invalid &&
+                                    assetForm.get('physicalCondition').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Request Approval Status <span class="text-danger">*</span></label>
+                                <select class="form-control" [class.invalid]="
+                                assetForm.get('requestApprovalStatusName').invalid &&
+                                assetForm.get('requestApprovalStatusName').touched"
+                                    formControlName="requestApprovalStatusName">
                                     <option selected value="">Select Status</option>
                                     <option value="1">Approve</option>
                                     <option value="2">Pending</option>
                                     <option value="3">Decline</option>
                                 </select>
                                 <div *ngIf="
-                                hobbyForm.get('approvalStatus').invalid &&
-                                hobbyForm.get('approvalStatus').touched
+                                assetForm.get('requestApprovalStatusName').invalid &&
+                                assetForm.get('requestApprovalStatusName').touched
                     ">
                                     <small *ngIf="
-                                    hobbyForm.get('approvalStatus').invalid &&
-                                    hobbyForm.get('approvalStatus').touched
+                                    assetForm.get('requestApprovalStatusName').invalid &&
+                                    assetForm.get('requestApprovalStatusName').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Return Approval Status</label>
+                                <select class="form-control" [class.invalid]="
+                                assetForm.get('returnApprovalStatusName').invalid &&
+                                assetForm.get('returnApprovalStatusName').touched"
+                                    formControlName="returnApprovalStatusName">
+                                    <option selected value="">Select Status</option>
+                                    <option value="1">Approve</option>
+                                    <option value="2">Pending</option>
+                                    <option value="3">Decline</option>
+                                    <option value="4">Not Returned</option>
+                                </select>
+                                <div *ngIf="
+                                assetForm.get('returnApprovalStatusName').invalid &&
+                                assetForm.get('returnApprovalStatusName').touched
+                    ">
+                                    <small *ngIf="
+                                    assetForm.get('returnApprovalStatusName').invalid &&
+                                    assetForm.get('returnApprovalStatusName').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -174,4 +258,4 @@
         </div>
     </div>
 </div>
-<!-- /Hobby Modal -->
+<!-- /Asset Modal -->
