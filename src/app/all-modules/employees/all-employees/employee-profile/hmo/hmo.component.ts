@@ -6,23 +6,23 @@ import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: "app-identification",
-  templateUrl: "./identification.component.html",
-  styleUrls: ["./identification.component.css"],
+  selector: "app-hmo",
+  templateUrl: "./hmo.component.html",
+  styleUrls: ["./hmo.component.css"],
 })
-export class IdentificationComponent implements OnInit {
+export class HmoComponent implements OnInit {
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   public selectedId: number[] = [];
-  identificationForm: FormGroup;
+  hmoForm: FormGroup;
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
   @Input() staffId: number;
 
   // To hold data for each card
-  employeeIdentification: any[] = [];
+  employeeHmo: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,46 +31,43 @@ export class IdentificationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initIdentificationForm();
-    this.getEmployeeIdentification(this.staffId);
+    this.initHmoForm();
+    this.getEmployeeHmo(this.staffId);
   }
 
-  initIdentificationForm() {
-    this.cardFormTitle = "Add Identification";
-    this.identificationForm = this.formBuilder.group({
+  initHmoForm() {
+    this.cardFormTitle = "Add HMO";
+    this.hmoForm = this.formBuilder.group({
       id: [0],
-      identification: ["", Validators.required],
-      identification_number: ["", Validators.required],
-      idIssues: ["", Validators.required],
-      idExpiry_date: ["", Validators.required],
+      HmoName: ["", Validators.required],
+      hmo_rating: ["", Validators.required],
+      contactPhoneNo: ["", Validators.required],
+      startDate: ["", Validators.required],
+      end_Date: ["", Validators.required],
       approval_status: ["", Validators.required],
       staffId: this.staffId,
-      identicationFile: ["", Validators.required],
     });
-    // Resets the upload input of the add form
-    if (this.fileInput) {
-      this.fileInput.nativeElement.value = "";
-    }
   }
 
-  // Set Values To Edit Modal Form
   editForm(row) {
-    this.cardFormTitle = "Edit Identification";
-    this.identificationForm.patchValue({
+    this.cardFormTitle = "Edit HMO";
+    this.hmoForm.patchValue({
       id: row.id,
-      identification: row.identification,
-      identification_number: row.identification_number,
-      idIssues: row.idIssues,
-      idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
+      existingHmo: row.existingHmo,
+      rating: row.rating,
+      contactPhoneNo: row.contactPhoneNo,
+      startDate: row.startDate,
+      end_Date: row.end_Date,
       approval_status: row.approval_status,
       staffId: this.staffId,
-      identicationFile: row.identicationFile,
     });
     this.fileInput.nativeElement.value = "";
-    $("#identification_modal").modal("show");
+    $("#hmo_modal").modal("show");
   }
 
-  submitIdentificationForm(form: FormGroup) {
+  submitHmoForm(form: FormGroup) {
+    console.log(form.value);
+
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -80,19 +77,19 @@ export class IdentificationComponent implements OnInit {
     const formData = new FormData();
     for (const key in form.value) {
       //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.identificationForm.get(key).value);
+      formData.append(key, this.hmoForm.get(key).value);
     }
 
     this.spinner = true;
-    return this.employeeService.postIdentification(formData).subscribe(
+    return this.employeeService.postHmo(formData).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
-          $("#identification_modal").modal("hide");
+          $("#hmo_modal").modal("hide");
         }
-        this.getEmployeeIdentification(this.staffId);
+        this.getEmployeeHmo(this.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -102,12 +99,12 @@ export class IdentificationComponent implements OnInit {
     );
   }
 
-  getEmployeeIdentification(id: number) {
+  getEmployeeHmo(id: number) {
     this.pageLoading = true;
-    this.employeeService.getIdentificationByStaffId(id).subscribe(
+    this.employeeService.getHmoByStaffId(id).subscribe(
       (data) => {
         this.pageLoading = false;
-        this.employeeIdentification = data.employeeList;
+        this.employeeHmo = data.employeeList;
       },
       (err) => {
         this.spinner = false;
@@ -127,7 +124,6 @@ export class IdentificationComponent implements OnInit {
   }
 
   delete() {
-    console.log(this.selectedId);
     let payload: object;
     if (this.selectedId.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
@@ -146,12 +142,12 @@ export class IdentificationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          return this.employeeService.deleteIdentification(payload).subscribe(
+          return this.employeeService.deleteHmo(payload).subscribe(
             (res) => {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeIdentification(this.staffId);
+                  this.getEmployeeHmo(this.staffId);
                 });
               } else {
                 swal.fire("Error", message, "error");
@@ -175,7 +171,7 @@ export class IdentificationComponent implements OnInit {
   checkAll(event: Event) {
     this.selectedId = this.utilitiesService.checkAllBoxes(
       event,
-      this.employeeIdentification
+      this.employeeHmo
     );
   }
 

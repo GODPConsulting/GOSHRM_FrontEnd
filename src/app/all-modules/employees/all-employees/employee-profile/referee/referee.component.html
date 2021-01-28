@@ -1,0 +1,185 @@
+<!-- Referee Card -->
+<div>
+    <div class="card profile-box flex-fill">
+        <div class="card-body">
+            <h3 class="card-title">Referee<a class="edit-icon hint" (click)="delete()"><span
+                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a> <a class="edit-icon hint mr-1"
+                    (click)="downloadFile()" download><span class="hint-text">Download</span><i
+                        class="fa fa-download"></i></a><a *ngIf="currentUserId === employeeId"
+                    (click)="initRefereeForm()" class="hint edit-icon mr-1" data-toggle="modal"
+                    data-target="#referee_modal"><span class="hint-text">Add
+                        Referee</span><i class="fa fa-pencil"></i></a></h3>
+            <div class="table-responsive">
+                <table class="table table-nowrap table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === employeeReferee.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>S/N</th>
+                            <th>Full Name</th>
+                            <th>Phone Number</th>
+                            <th>Email</th>
+                            <th>Relationship</th>
+                            <th>Relationship Duration</th>
+                            <th>Organization</th>
+                            <th>Address</th>
+                            <th>Confirmation Received</th>
+                            <th>Confirmation Date</th>
+                            <th>Approval status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="modal" class="pointer" data-target="#referee_modal" (click)="edit(row)"
+                            *ngFor="let row of hack(employeeReferee); let i = index">
+                            <td (click)="stopParentEvent($event)">
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+                            <td>{{i +1}}</td>
+                            <td>{{row.fullName}}</td>
+                            <td>{{row.phoneNumber}}</td>
+                            <td>{{row.email}}</td>
+                            <td>{{row.relationship}}</td>
+                            <td>{{row.numberOfYears}}</td>
+                            <td>{{row.organization}}</td>
+                            <td>{{row.address}}</td>
+                            <td>{{row.confirmationReceived}}</td>
+                            <td>{{row.confirmationDate}}</td>
+                            <td>{{row.approvalStatus}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Referee Card -->
+<!-- /Referee Modal -->
+<div id="referee_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{cardFormTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="submitRefereeForm(refereeForm)" [formGroup]="refereeForm">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Primary Contact</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Full Name <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" formControlName="fullName">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Phone No <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" formControlName="phoneNumber">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Email <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="email" formControlName="email">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Relationship <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" formControlName="relationship">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Number of years (Relationship) <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="number" min="1"
+                                            formControlName="numberOfYears">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Organisation <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" formControlName="organization">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <input class="form-control" type="text" formControlName="address">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Confirmation Recieved <span class="text-danger">*</span></label>
+                                        <div>
+                                            <input class="mx-2" type="radio" [value]="true" id="yes"
+                                                formControlName="confirmationReceived">
+                                            <label for="yes">Yes</label><br>
+                                            <input class="mx-2" type="radio" [value]="false" id="no"
+                                                formControlName="confirmationReceived">
+                                            <label for="no">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Confirmation Date <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date" formControlName="confirmationDate">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Confirmation upload (file format)<span
+                                                class="text-danger">*</span></label>
+                                        <input class="form-control" name="refereeFile" #fileInput type="file"
+                                            (change)="onSelectedFile($event, refereeForm)"
+                                            formControlName="approvalStatus">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Approval Status</label>
+                                        <select class="form-control" [class.invalid]="
+                                        refereeForm.get('approvalStatus').invalid &&
+                                        refereeForm.get('approvalStatus').touched" formControlName="approvalStatus">
+                                            <option selected value="">Select Status</option>
+                                            <option value="1">Approve</option>
+                                            <option value="2">Pending</option>
+                                            <option value="3">Decline</option>
+                                        </select>
+                                        <div *ngIf="
+                                        refereeForm.get('approvalStatus').invalid &&
+                                        refereeForm.get('approvalStatus').touched
+                            ">
+                                            <small *ngIf="
+                                            refereeForm.get('approvalStatus').invalid &&
+                                            refereeForm.get('approvalStatus').touched
+                              " class="text-danger">
+                                                *Field is required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Referee Modal -->

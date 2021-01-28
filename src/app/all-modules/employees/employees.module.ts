@@ -17,8 +17,14 @@ import { EmployeeFormComponent } from "./all-employees/employee-form/employee-fo
 import { SharedModule } from "src/app/shared/shared.module";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { IdentificationComponent } from './all-employees/employee-profile/identification/identification.component';
+<<<<<<< HEAD
 import { HobbiesComponent } from './all-employees/employee-profile/hobbies/hobbies.component';
 import { AssetsComponent } from './all-employees/employee-profile/assets/assets.component';
+=======
+import { RefereeComponent } from './all-employees/employee-profile/referee/referee.component';
+import { HmoComponent } from './all-employees/employee-profile/hmo/hmo.component';
+import { ProfCertComponent } from './all-employees/employee-profile/prof-cert/prof-cert.component';
+>>>>>>> dev
 
 @NgModule({
   declarations: [
@@ -28,8 +34,14 @@ import { AssetsComponent } from './all-employees/employee-profile/assets/assets.
     EmployeeProfileComponent,
     EmployeeFormComponent,
     IdentificationComponent,
+<<<<<<< HEAD
     HobbiesComponent,
     AssetsComponent,
+=======
+    RefereeComponent,
+    HmoComponent,
+    ProfCertComponent,
+>>>>>>> dev
   ],
   imports: [
     CommonModule,

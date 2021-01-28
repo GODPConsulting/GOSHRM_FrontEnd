@@ -7,89 +7,118 @@ import { ApiService } from "./api.service";
   providedIn: "root",
 })
 export class EmployeeService {
-  allEmployeeUrl: string = "/admin/get/all/staff";
-  EmployeeByIdUrl: string = "/admin/get/single/staff/staffId?StaffId=";
-  identificationByStaffIdUrl: string =
-    "/hrm/get/single/employee/identification/staffId?staffId=";
-  addIdentificationUrl: string = "/hrm/add/update/employee/identification";
-  deleteIdentificationUrl: string = "/hrm/delete/employee/identification";
-  emergencyContactByStaffIdUrl: string =
-    "/hrm/get/single/employee/emergency_contact/StaffId?StaffId=";
-  addEmergencyContactUrl: string = "/hrm/add/update/employee/emergency_contact";
-  addRefereeUrl: string = "/hrm/add/update/employee/referee";
-  refereeByStaffIdUrl: string =
-    "/hrm/get/single/employee/referee/staffId?StaffId=";
-  hobbyByStaffIdUrl: string =
-    "/hrm/get/single/employee/hobby/staffId?StaffId=";
-  addHobbyUrl: string = "/hrm/add/update/employee/hobby";
-  deleteHobbyUrl: string = "/hrm/delete/employee/hobby";
-  assetByStaffIdUrl: string =
-    "/hrm/get/single/employee/asset/staffId?StaffId=";
-  addAssetUrl: string = "/hrm/add/update/employee/asset";
-  deleteAssetUrl: string = "/hrm/delete/employee/asset";
-
   constructor(private apiService: ApiService) {}
 
   getEmployees() {
-    return this.apiService.get(this.allEmployeeUrl);
+    return this.apiService.get("/admin/get/all/staff");
   }
 
   getEmployeeById(id: number) {
-    return this.apiService.get(`${this.EmployeeByIdUrl}${id}`);
+    return this.apiService.get(`/admin/get/single/staff/staffId?StaffId=${id}`);
   }
 
   getIdentificationByStaffId(id: number) {
-    return this.apiService.get(`${this.identificationByStaffIdUrl}${id}`);
-  }
-
-  postIdentification(payload: Object) {
-    return this.apiService.post(`${this.addIdentificationUrl}`, payload);
-  }
-
-  deleteIdentification(payload) {
-    return this.apiService.post(`${this.deleteIdentificationUrl}`, payload);
-  }
-
-  addEmmergencyContact(payload) {
-    return this.apiService.post(this.addEmergencyContactUrl, payload).pipe(
-      tap((data) => {
-        return data;
-      })
+    return this.apiService.get(
+      `/hrm/get/single/employee/identification/staffId?staffId=${id}`
     );
   }
 
-  getEmergencyContactByStaffId(id: number) {
-    return this.apiService.get(`${this.emergencyContactByStaffIdUrl}${id}`);
+  postIdentification(payload: Object) {
+    return this.apiService.post(
+      "/hrm/add/update/employee/identification",
+      payload
+    );
   }
+
+  deleteIdentification(payload) {
+    return this.apiService.post("/hrm/delete/employee/identification", payload);
+  }
+
+  addEmmergencyContact(payload) {
+    return this.apiService
+      .post("/hrm/add/update/employee/emergency_contact", payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
+  getEmergencyContactByStaffId(id: number) {
+    return this.apiService.get(
+      `/hrm/get/single/employee/emergency_contact/StaffId?StaffId=${id}`
+    );
+  }
+
   postReferee(payload: Object) {
-    return this.apiService.post(`${this.addRefereeUrl}`, payload);
+    return this.apiService.post("/hrm/add/update/employee/referee", payload);
   }
 
   getRefereeByStaffId(id: number) {
-    return this.apiService.get(`${this.refereeByStaffIdUrl}${id}`);
+    return this.apiService.get(
+      `/hrm/get/single/employee/referee/staffId?StaffId=${id}`
+    );
+  }
+
+  deleteReferee(payload: Object) {
+    return this.apiService.post("/hrm/delete/employee/referee", payload);
+  }
+
+  getHmoByStaffId(id: number) {
+    return this.apiService.get(
+      `/hrm/get/single/employee/hmo/staffId?StaffId=${id}`
+    );
+  }
+
+  postHmo(payload: FormData) {
+    return this.apiService.post("/hrm/add/update/employee/hmo", payload);
+  }
+
+  deleteHmo(payload: object) {
+    return this.apiService.post("/hrm/delete/employee/hmo", payload);
+  }
+
+  getProfCertByStaffId(id: number) {
+    return this.apiService.get(
+      `/hrm/get/single/employee/prof-certification/staffId?StaffId=${id}`
+    );
+  }
+
+  postProfCert(payload: FormData) {
+    return this.apiService.post(
+      "/hrm/add/update/employee/prof-certification",
+      payload
+    );
+  }
+
+  deleteProfCert(payload: object) {
+    return this.apiService.post(
+      "/hrm/delete/employee/prof-certification",
+      payload
+    );
   }
 
   getHobbyByStaffId(id: number) {
-    return this.apiService.get(`${this.hobbyByStaffIdUrl}${id}`);
+    return this.apiService.get(`/hrm/get/single/employee/hobby/staffId?StaffId=${id}`);
   }
 
   postHobby(payload: Object) {
-    return this.apiService.post(`${this.addHobbyUrl}`, payload);
+    return this.apiService.post("/hrm/add/update/employee/hobby", payload);
   }
 
   deleteHobby(payload) {
-    return this.apiService.post(`${this.deleteHobbyUrl}`, payload);
+    return this.apiService.post("/hrm/delete/employee/hobby", payload);
   }
 
   getAssetByStaffId(id: number) {
-    return this.apiService.get(`${this.assetByStaffIdUrl}${id}`);
+    return this.apiService.get(`/hrm/get/single/employee/asset/staffId?StaffId=${id}`);
   }
 
   postAsset(payload: Object) {
-    return this.apiService.post(`${this.addAssetUrl}`, payload);
+    return this.apiService.post("/hrm/add/update/employee/asset", payload);
   }
 
   deleteAsset(payload) {
-    return this.apiService.post(`${this.deleteAssetUrl}`, payload);
+    return this.apiService.post("/hrm/delete/employee/asset", payload);
   }
 }
