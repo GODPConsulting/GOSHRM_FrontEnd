@@ -17,6 +17,7 @@
                                 <input type="checkbox" [checked]="selectedId.length === employeeAsset.length"
                                     (change)="checkAll($event)" />
                             </th>
+                            <th>S/N</th>
                             <th>Employee Name</th>
                             <th>Office</th>
                             <th>Asset Name</th>
@@ -35,8 +36,9 @@
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
-
+                            <td>{{i +1}}</td>
                             <td>{{row.employeeName}}</td>
+                            <td>{{row.staffId}}</td>
                             <td>{{row.office}}</td>
                             <td>{{row.assetName}}</td>
                             <td>{{row.assetNumber}}</td>
@@ -79,6 +81,24 @@
                                     <small *ngIf="
                                     assetForm.get('employeeName').invalid &&
                                     assetForm.get('employeeName').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Staff Id <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" [class.invalid]="
+                                assetForm.get('staffId').invalid &&
+                                assetForm.get('staffId').touched" formControlName="staffId">
+                                <div *ngIf="
+                                assetForm.get('staffId').invalid &&
+                                assetForm.get('staffId').touched
+                    ">
+                                    <small *ngIf="
+                                    assetForm.get('staffId').invalid &&
+                                    assetForm.get('staffId').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>

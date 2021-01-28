@@ -17,6 +17,7 @@
                                 <input type="checkbox" [checked]="selectedId.length === employeeHobby.length"
                                     (change)="checkAll($event)" />
                             </th>
+                            <th>S/N</th>
                             <th>Name of Hobby</th>
                             <th>Description</th>
                             <th>Rating</th>
@@ -30,7 +31,7 @@
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
-
+                            <td>{{i +1}}</td>
                             <td>{{row.hobbyName}}</td>
                             <td>{{row.description}}</td>
                             <td>{{row.rating}}</td>

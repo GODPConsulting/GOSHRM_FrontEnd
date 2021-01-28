@@ -72,14 +72,14 @@ export class AssetsComponent implements OnInit {
     }
     const payload = form.value;
     payload.approvalStatus = +payload.approvalStatus;
-    // const formData = new FormData();
-    // for (const key in form.value) {
-    //   //console.log(key, this.identificationForm.get(key).value);
-    //   formData.append(key, this.hobbyForm.get(key).value);
-    // }
+    const formData = new FormData();
+    for (const key in form.value) {
+      //console.log(key, this.identificationForm.get(key).value);
+      formData.append(key, this.assetForm.get(key).value);
+    }
 
     this.spinner = true;
-    return this.employeeService.postAsset(payload).subscribe(
+    return this.employeeService.postAsset(formData).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
