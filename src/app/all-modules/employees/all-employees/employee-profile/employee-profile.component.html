@@ -108,13 +108,24 @@
             <div>
                 <div class="card profile-box flex-fill">
                     <div class="card-body">
-                        <h3 class="card-title">Emergency Contact <a class="edit-icon" data-toggle="modal"
-                                data-target="#emergency_contact_modal"><i class="fa fa-plus"></i></a></h3>
-                        <!-- <h5 class="section-title">Primary</h5> -->
+                        <h3 class="card-title">Emergency Contact
+                             <div class="col-auto float-right ml-auto">
+                                <a class="btn add-btn" data-toggle="modal"
+                                data-target="#emergency_contact_modal"><i class="fa fa-plus"></i>
+                            </a>
+                            <a class="btn delete-btn hint" (click)="deleteEmergencyContact()"><span class="hint-text">Delete</span><i
+                                class="fa fa-trash"></i>
+                            </a>
+                             </div>
+                            </h3>
                         <div class="table-responsive">
                             <table class="table table-nowrap table-hover">
                                 <thead >
                                     <tr>
+                                        <th>
+                                            <input type="checkbox" [checked]="selectedId.length === languageRating.length"
+                                                (change)="checkAllEmergency($event)" />
+                                        </th>
                                         <th>S/N</th>
                                         <th>Full Name</th>
                                         <th>Contact phone number</th>
@@ -126,8 +137,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of emmergencyContacts; let i = index"
-                                        (click)="editContact(item)" class="pointer">
+                                    <tr *ngFor="let item of emergencyContacts; let i = index"
+                                        (click)="editEmergencyContact(item)" class="pointer">
+                                        <td (click)="stopParentEvent($event)">
+                                            <input type="checkbox" [checked]="selectedId.includes(item.id)"
+                                                (change)="addItemId($event, item.id)"/>
+                                        </td>
                                         <td>{{ i + 1 }}</td>
                                         <td>{{item.fullName}}</td>
                                         <td>{{item.contact_phone_number}}</td>
@@ -141,7 +156,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
                 <!-- /Emergency Contact -->
@@ -150,12 +164,24 @@
                 <div >
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
-                            <h3 class="card-title">Language <a class="edit-icon" data-toggle="modal"
-                                    data-target="#language_modal"><i class="fa fa-plus"></i></a></h3>
+                            <h3 class="card-title">Language Rating 
+                                <div class="col-auto float-right ml-auto">
+                                    <a class="btn add-btn" data-toggle="modal"
+                                    data-target="#language_Rating_modal"><i class="fa fa-plus"></i>
+                                </a>
+                                    <a class="btn delete-btn hint" (click)="deleteLanguageRating()"><span class="hint-text">Delete</span><i
+                                        class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                                </h3>
                             <div class="table-responsive">
-                                <table class="table table-nowrap">
+                                <table class="table table-nowrap table-hover">
                                     <thead>
                                         <tr>
+                                            <th>
+                                                <input type="checkbox" [checked]="selectedId.length === languageRating.length"
+                                                    (change)="checkAll($event)" />
+                                            </th>
                                             <th>S/N</th>
                                             <th>Language</th>
                                             <th>Reading Rating</th>
@@ -165,9 +191,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       <tr *ngFor="let language of languagerating; let i = index" (click)="editLanguageRating(language)"> 
-                                        <td (click)="stopParentEvent($event)"> </td>
-                                        
+                                       <tr *ngFor="let language of languageRating; let i = index" (click)="editLanguageRating(language)"class="pointer"
+                                         (click)="stopParentEvent($event)"> 
+                                         <td (click)="stopParentEvent($event)">
+                                            <input type="checkbox" [checked]="selectedId.includes(language.id)"
+                                                (change)="addItemId($event, language.id)"/>
+                                        </td> 
                                             <td>{{ i + 1 }}</td>
                                             <td>{{language.language}}</td>
                                             <td>{{language.reading_Rating}}</td>
@@ -767,7 +796,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="addEmmergencyContact(emmergencyContactForm)" [formGroup]="emmergencyContactForm">
+                <form (ngSubmit)="addEmergencyContact(emergencyContactForm)" [formGroup]="emergencyContactForm">
                     <div class="card">
                         <div class="card-body">
                             <h3 class="card-title">Primary Contact</h3>
@@ -799,8 +828,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Country <span class="text-danger">*</span></label>
-                                        <select class="form-control" [class.invalid]="emmergencyContactForm.get('countryId').invalid &&
-                                        emmergencyContactForm.get('countryId').touched" formControlName="countryId">
+                                        <select class="form-control" [class.invalid]="emergencyContactForm.get('countryId').invalid &&
+                                        emergencyContactForm.get('countryId').touched" formControlName="countryId">
                                             <option selected value="">Country</option>
                                             <option *ngFor="let row of countries" value="{{row.lookupId}}">
                                                 {{row.lookupName}}
@@ -854,17 +883,17 @@
 
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="addLanguage(languageForm)" [formGroup]="languageForm">
+                <form (ngSubmit)="addLanguageRating(languageRatingForm)" [formGroup]="languageRatingForm">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title">Language Proficiency</h3>
+                            <h3 class="card-title">Language Rating</h3>
                             <div class="row">
 
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Language<span class="text-danger">*</span></label>
-                                        <select class="form-control" [class.invalid]="languageForm.get('languageId').invalid &&
-                                        languageForm.get('countryId').touched" formControlName="languageId">
+                                        <select class="form-control" [class.invalid]="languageRatingForm.get('languageId').invalid &&
+                                        languageRatingForm.get('languageId').touched" formControlName="languageId">
                                             <option selected value="">Languages</option>
                                             <option *ngFor="let row of languages" value="{{row.id}}">
                                                 {{row.language}}
