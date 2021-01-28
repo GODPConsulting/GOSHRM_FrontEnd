@@ -121,4 +121,16 @@ export class EmployeeService {
   deleteAsset(payload) {
     return this.apiService.post("/hrm/delete/employee/asset", payload);
   }
+
+  getDependentContactByStaffId(id: number) {
+    return this.apiService.get(`/hrm/get/single/employee/dependent_contact/staffId?StaffId=${id}`);
+  }
+
+  postDependentContact(payload: Object) {
+    return this.apiService.post("/hrm/add/update/employee/dependent_contactt", payload);
+  }
+
+  deleteDependentContact(payload) {
+    return this.apiService.post("/hrm/delete/employee/dependent_contact", payload);
+  }
 }
