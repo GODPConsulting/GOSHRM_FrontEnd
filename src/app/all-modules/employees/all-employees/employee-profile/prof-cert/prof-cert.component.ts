@@ -6,23 +6,23 @@ import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: "app-identification",
-  templateUrl: "./identification.component.html",
-  styleUrls: ["./identification.component.css"],
+  selector: "app-prof-cert",
+  templateUrl: "./prof-cert.component.html",
+  styleUrls: ["./prof-cert.component.css"],
 })
-export class IdentificationComponent implements OnInit {
+export class ProfCertComponent implements OnInit {
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   public selectedId: number[] = [];
-  identificationForm: FormGroup;
+  profCertForm: FormGroup;
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
   @Input() staffId: number;
 
   // To hold data for each card
-  employeeIdentification: any[] = [];
+  employeeProfCert: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,21 +31,24 @@ export class IdentificationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initIdentificationForm();
-    this.getEmployeeIdentification(this.staffId);
+    console.log(this.staffId);
+
+    this.initProfCertForm();
+    this.getEmployeeProfCert(this.staffId);
   }
 
-  initIdentificationForm() {
-    this.cardFormTitle = "Add Identification";
-    this.identificationForm = this.formBuilder.group({
+  initProfCertForm() {
+    this.cardFormTitle = "Add Professional Certification";
+    this.profCertForm = this.formBuilder.group({
       id: [0],
-      identification: ["", Validators.required],
-      identification_number: ["", Validators.required],
-      idIssues: ["", Validators.required],
-      idExpiry_date: ["", Validators.required],
-      approval_status: ["", Validators.required],
+      certificationId: ["", Validators.required],
+      institution: ["", Validators.required],
+      dateGranted: ["", Validators.required],
+      expiryDate: ["", Validators.required],
+      approvalStatus: ["", Validators.required],
       staffId: this.staffId,
-      identicationFile: ["", Validators.required],
+      gradeId: ["", Validators.required],
+      profCertificationFile: ["", Validators.required],
     });
     // Resets the upload input of the add form
     if (this.fileInput) {
@@ -55,36 +58,36 @@ export class IdentificationComponent implements OnInit {
 
   // Set Values To Edit Modal Form
   editForm(row) {
-    this.cardFormTitle = "Edit Identification";
-    this.identificationForm.patchValue({
+    this.cardFormTitle = "Edit Professional Certification";
+    this.profCertForm.patchValue({
       id: row.id,
-      identification: row.identification,
-      identification_number: row.identification_number,
-      idIssues: row.idIssues,
-      idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
-      approval_status: row.approval_status,
+      certificationId: row.certificationId,
+      institution: row.institution,
+      dateGranted: row.dateGranted,
+      expiryDate: new Date(row.expiryDate).toLocaleDateString("en-CA"),
+      approvalStatus: row.approvalStatus,
       staffId: this.staffId,
-      identicationFile: row.identicationFile,
+      gradeId: row.gradeId,
+      profCertificationFile: row.profCertificationFile,
     });
     this.fileInput.nativeElement.value = "";
-    $("#identification_modal").modal("show");
+    $("#prof_cert_modal").modal("show");
   }
 
-  submitIdentificationForm(form: FormGroup) {
+  submitProfCertForm(form: FormGroup) {
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
-    payload.approval_status = +payload.approval_status;
+    payload.approvalStatus = +payload.approvalStatus;
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.identificationForm.get(key).value);
+      formData.append(key, this.profCertForm.get(key).value);
     }
 
     this.spinner = true;
-    return this.employeeService.postIdentification(formData).subscribe(
+    return this.employeeService.postProfCert(formData).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
@@ -92,7 +95,7 @@ export class IdentificationComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#identification_modal").modal("hide");
         }
-        this.getEmployeeIdentification(this.staffId);
+        this.getEmployeeProfCert(this.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -102,12 +105,12 @@ export class IdentificationComponent implements OnInit {
     );
   }
 
-  getEmployeeIdentification(id: number) {
+  getEmployeeProfCert(id: number) {
     this.pageLoading = true;
-    this.employeeService.getIdentificationByStaffId(id).subscribe(
+    this.employeeService.getProfCertByStaffId(id).subscribe(
       (data) => {
         this.pageLoading = false;
-        this.employeeIdentification = data.employeeList;
+        this.employeeProfCert = data.employeeList;
       },
       (err) => {
         this.spinner = false;
@@ -127,7 +130,6 @@ export class IdentificationComponent implements OnInit {
   }
 
   delete() {
-    console.log(this.selectedId);
     let payload: object;
     if (this.selectedId.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
@@ -146,12 +148,12 @@ export class IdentificationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          return this.employeeService.deleteIdentification(payload).subscribe(
+          return this.employeeService.deleteProfCert(payload).subscribe(
             (res) => {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeIdentification(this.staffId);
+                  this.getEmployeeProfCert(this.staffId);
                 });
               } else {
                 swal.fire("Error", message, "error");
@@ -175,7 +177,7 @@ export class IdentificationComponent implements OnInit {
   checkAll(event: Event) {
     this.selectedId = this.utilitiesService.checkAllBoxes(
       event,
-      this.employeeIdentification
+      this.employeeProfCert
     );
   }
 

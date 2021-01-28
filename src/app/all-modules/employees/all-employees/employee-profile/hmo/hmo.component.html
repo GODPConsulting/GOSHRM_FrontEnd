@@ -1,43 +1,44 @@
-<!-- Identification Card -->
+<!-- Hmo Card -->
 <div>
     <div class="card profile-box flex-fill">
         <div class="card-body">
-            <h3 class="card-title">Identification<a class="edit-icon hint" (click)="delete()"><span
+            <h3 class="card-title">HMO<a class="edit-icon hint" (click)="delete()"><span
                         class="hint-text">Delete</span><i class="fa fa-trash"></i></a> <a class="edit-icon hint mr-1"
                     (click)="downloadFile()" download><span class="hint-text">Download</span><i
-                        class="fa fa-download"></i></a><a *ngIf="currentUserId === employeeId"
-                    (click)="initIdentificationForm()" class="hint edit-icon mr-1" data-toggle="modal"
-                    data-target="#identification_modal"><span class="hint-text">Add
-                        Identification</span><i class="fa fa-pencil"></i></a></h3>
+                        class="fa fa-download"></i></a><a *ngIf="currentUserId === employeeId" (click)="initHmoForm()"
+                    class="hint edit-icon mr-1" data-toggle="modal" data-target="#hmo_modal"><span class="hint-text">Add
+                        HMO</span><i class="fa fa-pencil"></i></a></h3>
             <div class="table-responsive">
                 <app-loading *ngIf="pageLoading"></app-loading>
                 <table *ngIf="!pageLoading" class="table table-nowrap table-hover">
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === employeeIdentification.length"
+                                <input type="checkbox" [checked]="selectedId.length === employeeHmo.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Identification</th>
-                            <th>Identification No.</th>
-                            <th>ID Issued Date.</th>
-                            <th>ID Expiry Date</th>
+                            <th>HMO</th>
+                            <th>HMO rating</th>
+                            <th>HMO Contact Phone number</th>
+                            <th>Start date</th>
+                            <th>End date</th>
                             <th>Approval Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#identification_modal"
-                            (click)="editForm(row)" *ngFor="let row of hack(employeeIdentification); let i = index">
+                        <tr data-toggle="modal" class="pointer" data-target="#hmo_modal" (click)="editForm(row)"
+                            *ngFor="let row of hack(employeeHmo); let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{i +1}}</td>
-                            <td>{{row.identification}}</td>
-                            <td>{{row.identification_number}}</td>
-                            <td>{{row.idIssues}}</td>
-                            <td>{{row.idExpiry_date | date :"mediumDate"}}</td>
+                            <td>{{row.HmoName}}</td>
+                            <td>{{row.hmo_rating}}</td>
+                            <td>{{row.contactPhoneNo}}</td>
+                            <td>{{row.startDate| date :"mediumDate"}}</td>
+                            <td>{{row.end_Date | date :"mediumDate"}}</td>
                             <td>{{row.approval_status_name}}</td>
                         </tr>
                     </tbody>
@@ -46,9 +47,9 @@
         </div>
     </div>
 </div>
-<!-- /Identification Card -->
-<!-- Identification Modal -->
-<div id="identification_modal" class="modal custom-modal fade" role="dialog">
+<!-- /Hmo Card -->
+<!-- Hmo Modal -->
+<div id="hmo_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -58,21 +59,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="submitIdentificationForm(identificationForm)" [formGroup]="identificationForm">
+                <form (ngSubmit)="submitHmoForm(hmoForm)" [formGroup]="hmoForm">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Identification</label>
+                                <label>HMO</label>
                                 <input type="text" class="form-control" [class.invalid]="
-                                identificationForm.get('identification').invalid &&
-                                identificationForm.get('identification').touched" formControlName="identification">
+                                hmoForm.get('HmoName').invalid &&
+                                hmoForm.get('HmoName').touched" formControlName="HmoName">
                                 <div *ngIf="
-                                identificationForm.get('identification').invalid &&
-                                identificationForm.get('identification').touched
+                                hmoForm.get('HmoName').invalid &&
+                                hmoForm.get('HmoName').touched
                     ">
                                     <small *ngIf="
-                                    identificationForm.get('identification').invalid &&
-                                    identificationForm.get('identification').touched
+                                    hmoForm.get('HmoName').invalid &&
+                                    hmoForm.get('HmoName').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -80,18 +81,17 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Identification Number</label>
+                                <label>Rating</label>
                                 <input type="number" class="form-control" [class.invalid]="
-                                identificationForm.get('identification_number').invalid &&
-                                identificationForm.get('identification_number').touched"
-                                    formControlName="identification_number">
+                                hmoForm.get('hmo_rating').invalid &&
+                                hmoForm.get('hmo_rating').touched" formControlName="hmo_rating">
                                 <div *ngIf="
-                                identificationForm.get('identification_number').invalid &&
-                                identificationForm.get('identification_number').touched
+                                hmoForm.get('hmo_rating').invalid &&
+                                hmoForm.get('hmo_rating').touched
                     ">
                                     <small *ngIf="
-                                    identificationForm.get('identification_number').invalid &&
-                                    identificationForm.get('identification_number').touched
+                                    hmoForm.get('hmo_rating').invalid &&
+                                    hmoForm.get('hmo_rating').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -99,17 +99,17 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>ID Issues <span class="text-danger">*</span></label>
+                                <label>Contact PhoneNo<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                identificationForm.get('idIssues').invalid &&
-                                identificationForm.get('idIssues').touched" formControlName="idIssues">
+                                hmoForm.get('contactPhoneNo').invalid &&
+                                hmoForm.get('contactPhoneNo').touched" formControlName="contactPhoneNo">
                                 <div *ngIf="
-                                identificationForm.get('idIssues').invalid &&
-                                identificationForm.get('idIssues').touched
+                                hmoForm.get('contactPhoneNo').invalid &&
+                                hmoForm.get('contactPhoneNo').touched
                     ">
                                     <small *ngIf="
-                                    identificationForm.get('idIssues').invalid &&
-                                    identificationForm.get('idIssues').touched
+                                    hmoForm.get('contactPhoneNo').invalid &&
+                                    hmoForm.get('contactPhoneNo').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -117,17 +117,17 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>ID Expiry Date <span class="text-danger">*</span></label>
+                                <label>Start Date <span class="text-danger">*</span></label>
                                 <input class="form-control" type="date" [class.invalid]="
-                                    identificationForm.get('idExpiry_date').invalid &&
-                                    identificationForm.get('idExpiry_date').touched" formControlName="idExpiry_date">
+                                    hmoForm.get('startDate').invalid &&
+                                    hmoForm.get('startDate').touched" formControlName="startDate">
                                 <div *ngIf="
-                                identificationForm.get('idExpiry_date').invalid &&
-                                identificationForm.get('idExpiry_date').touched
+                                hmoForm.get('startDate').invalid &&
+                                hmoForm.get('startDate').touched
                     ">
                                     <small *ngIf="
-                                    identificationForm.get('idExpiry_date').invalid &&
-                                    identificationForm.get('idExpiry_date').touched
+                                    hmoForm.get('startDate').invalid &&
+                                    hmoForm.get('startDate').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -135,31 +135,40 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>ID upload (file format)</label>
-                                <input class="form-control" name="identicationFile" #fileInput type="file"
-                                    (change)="onSelectedFile($event,identificationForm)" [class.invalid]="
-                                    identificationForm.get('identicationFile').invalid &&
-                                    identificationForm.get('identicationFile').touched">
+                                <label>Start Date <span class="text-danger">*</span></label>
+                                <input class="form-control" type="date" [class.invalid]="
+                                    hmoForm.get('end_Date').invalid &&
+                                    hmoForm.get('end_Date').touched" formControlName="end_Date">
+                                <div *ngIf="
+                                hmoForm.get('end_Date').invalid &&
+                                hmoForm.get('end_Date').touched
+                    ">
+                                    <small *ngIf="
+                                    hmoForm.get('end_Date').invalid &&
+                                    hmoForm.get('end_Date').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Approval Status</label>
                                 <select class="form-control" [class.invalid]="
-                                identificationForm.get('approval_status').invalid &&
-                                identificationForm.get('approval_status').touched" formControlName="approval_status">
+                                hmoForm.get('approval_status').invalid &&
+                                hmoForm.get('approval_status').touched" formControlName="approval_status">
                                     <option selected value="">Select Status</option>
                                     <option value="1">Approve</option>
                                     <option value="2">Pending</option>
                                     <option value="3">Decline</option>
                                 </select>
                                 <div *ngIf="
-                                identificationForm.get('approval_status').invalid &&
-                                identificationForm.get('approval_status').touched
+                                hmoForm.get('approval_status').invalid &&
+                                hmoForm.get('approval_status').touched
                     ">
                                     <small *ngIf="
-                                    identificationForm.get('approval_status').invalid &&
-                                    identificationForm.get('approval_status').touched
+                                    hmoForm.get('approval_status').invalid &&
+                                    hmoForm.get('approval_status').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -177,4 +186,4 @@
         </div>
     </div>
 </div>
-<!-- /Identification Modal -->
+<!-- /Hmo Modal -->
