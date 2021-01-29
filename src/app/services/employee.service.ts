@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { data } from "jquery";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import { ApiService } from "./api.service";
@@ -34,22 +35,48 @@ export class EmployeeService {
     return this.apiService.post("/hrm/delete/employee/identification", payload);
   }
 
-  addEmmergencyContact(payload) {
-    return this.apiService
-      .post("/hrm/add/update/employee/emergency_contact", payload)
-      .pipe(
-        tap((data) => {
-          return data;
-        })
-      );
+  addEmergencyContact(payload) {
+    return this.apiService.post("/hrm/add/update/employee/emergency_contact", payload).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+deleteEmergencyContact(payload){
+  return this.apiService.post("/hrm/delete/employee/emergency_contact", payload).pipe(
+    tap((data) => {
+      return data;
+    })
+  );
+}
+  getEmergencyContactByStaffId(id: number) {
+    return this.apiService.get(`/hrm/get/single/employee/emergency_contact/StaffId?StaffId=${id}`);
   }
 
-  getEmergencyContactByStaffId(id: number) {
-    return this.apiService.get(
-      `/hrm/get/single/employee/emergency_contact/StaffId?StaffId=${id}`
+  addLanguageRating(payload){
+    return this.apiService.post("/hrm/add/update/employee/language" ,payload).pipe(
+      tap((data) => {
+        return data;
+      })
     );
   }
 
+  getLanguages(){
+    return this.apiService.get("/hrmsetup/get/all/languages");
+  }
+
+  deleteLanguageRating(payload){
+    return this.apiService.post("/hrm/delete/employee/language",payload).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
+  getLanguageRatingByStaffId(id: number) {
+    return this.apiService.get(`/hrm/get/single/employee/language/staffId?staffId=${id}`);
+  }
+  
   postReferee(payload: Object) {
     return this.apiService.post("/hrm/add/update/employee/referee", payload);
   }
