@@ -276,7 +276,7 @@ export class EmployeeProfileComponent implements OnInit {
       }
     );
   }
-
+ Z
   deleteLanguageRating() {
     let payload: object;
     if (this.selectedId.length === 0) {
