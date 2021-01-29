@@ -143,7 +143,7 @@ export class HmoComponent implements OnInit {
 
   getHmo() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/hmos").subscribe(
+    return this.setupService.getAllHmos().subscribe(
       (data) => {
         this.pageLoading = false;
         //console.log(data);

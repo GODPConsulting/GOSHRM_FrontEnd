@@ -5,7 +5,6 @@ import { data } from "jquery";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
-import { isEmpty } from "lodash";
 import { AuthService } from "src/app/services/auth.service";
 declare const $: any;
 
@@ -46,7 +45,7 @@ export class EmployeeProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private utilitiesService: UtilitiesService,
     private authService: AuthService
-  ) { }
+  ) {}
   initializeForm() {
     this.emergencyContactForm = this.formBuilder.group({
       id: [0],
@@ -73,7 +72,7 @@ export class EmployeeProfileComponent implements OnInit {
       approval_status: [],
       approval_status_name: [""],
       staffId: [""],
-    })
+    });
   }
   ngOnInit() {
     this.getUserData();
@@ -89,8 +88,6 @@ export class EmployeeProfileComponent implements OnInit {
     this.getSingleEmployee(this.employeeId);
 
     this.getSavedEmergencyContact(this.employeeId);
-    this.getEmployeeReferee(this.employeeId);
-    this.initRefereeForm();
     this.getSavedLanguageRating(this.employeeId);
   }
 
@@ -120,7 +117,6 @@ export class EmployeeProfileComponent implements OnInit {
     payload.staffId = this.employeeId;
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
-
 
     this.pageLoading = true;
     this.employeeService.addEmergencyContact(payload).subscribe(
@@ -157,8 +153,6 @@ export class EmployeeProfileComponent implements OnInit {
   getSavedEmergencyContact(id: number) {
     return this.employeeService.getEmergencyContactByStaffId(id).subscribe(
       (data) => {
-
-
         this.emergencyContacts = data.employeeList;
       },
       (err) => {
@@ -189,23 +183,21 @@ export class EmployeeProfileComponent implements OnInit {
         //console.log(result);
 
         if (result.value) {
-          return this.employeeService
-            .deleteEmergencyContact(payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getSavedEmergencyContact(this.employeeId);
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.employeeService.deleteEmergencyContact(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getSavedEmergencyContact(this.employeeId);
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
@@ -234,20 +226,17 @@ export class EmployeeProfileComponent implements OnInit {
       approval_status: item.approval_status,
       approval_status_name: item.approval_status_name,
       staffId: item.staffId,
-    })
+    });
     $("#emergency_contact_modal").modal("show");
   }
 
   closeModal() {
     $("#emergency_contact_modal").modal("hide");
-    this.initializeForm()
-
-
+    this.initializeForm();
   }
   /* Emergency Contact */
-
-   /* Language */
-   addLanguageRating(languageRatingForm) {
+  /* Language */
+  addLanguageRating(languageRatingForm) {
     const payload = languageRatingForm.value;
     payload.staffId = this.employeeId;
     payload.approval_status = +payload.approval_status;
@@ -258,7 +247,6 @@ export class EmployeeProfileComponent implements OnInit {
     this.pageLoading = true;
     this.employeeService.addLanguageRating(payload).subscribe(
       (data) => {
-
         this.pageLoading = false;
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
@@ -276,7 +264,7 @@ export class EmployeeProfileComponent implements OnInit {
       }
     );
   }
- Z
+
   deleteLanguageRating() {
     let payload: object;
     if (this.selectedId.length === 0) {
@@ -299,23 +287,21 @@ export class EmployeeProfileComponent implements OnInit {
         //console.log(result);
 
         if (result.value) {
-          return this.employeeService
-            .deleteLanguageRating(payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getSavedLanguageRating(this.employeeId);
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.employeeService.deleteLanguageRating(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getSavedLanguageRating(this.employeeId);
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
@@ -325,27 +311,27 @@ export class EmployeeProfileComponent implements OnInit {
     return this.employeeService.getLanguages().subscribe(
       (data) => {
         this.languages = data.setuplist;
-        console.log(data)
+        console.log(data);
       },
       (err) => {
         console.log(err);
       }
     );
   }
-// Prevents the edit modal from popping up when checkbox is clicked
-stopParentEvent(event: MouseEvent) {
-  event.stopPropagation();
-}
-
-checkAll(event: Event) {
-  if ((<HTMLInputElement>event.target).checked) {
-    this.selectedId = this.languageRating.map((item) => {
-      return item.id;
-    });
-  } else {
-    this.selectedId = [];
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
   }
-}
+
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
+      this.selectedId = this.languageRating.map((item) => {
+        return item.id;
+      });
+    } else {
+      this.selectedId = [];
+    }
+  }
 
   addItemId(event: Event, id: number) {
     if ((<HTMLInputElement>event.target).checked) {
@@ -382,103 +368,14 @@ checkAll(event: Event) {
       approval_status: language.approval_status,
       approval_status_name: language.approval_status_name,
       staffId: language.staffId,
-    })
+    });
     $("#language_rating_modal").modal("show");
   }
 
   closelanguageRatingModal() {
     $("#language_rating_modal").modal("hide");
-    this.initLaguageRatingForm()
+    this.initLaguageRatingForm();
   }
-
-  /* Referees */
-
-  initRefereeForm() {
-    if (isEmpty(this.employeeReferee)) {
-      console.log("empty", this.employeeReferee);
-      this.cardFormTitle = "Add Referee";
-      this.refereeForm = this.formBuilder.group({
-        id: [0],
-        fullName: ["", Validators.required],
-        phoneNumber: ["", Validators.required],
-        email: ["", Validators.required],
-        relationship: ["", Validators.required],
-        numberOfYears: ["", Validators.required],
-        organization: ["", Validators.required],
-        address: ["", Validators.required],
-        confirmationReceived: ["", Validators.required],
-        confirmationDate: ["", Validators.required],
-        approvalStatus: ["", Validators.required],
-        staffId: this.employeeId,
-        refereeFile: ["", Validators.required],
-      });
-    } else {
-      console.log(this.employeeReferee);
-
-      this.cardFormTitle = "Edit Referee";
-      this.refereeForm.patchValue({
-        id: [0],
-        fullName: this.employeeReferee.fullName,
-        phoneNumber: this.employeeReferee.phoneNumber,
-        email: this.employeeReferee.email,
-        relationship: this.employeeReferee.relationship,
-        numberOfYears: this.employeeReferee.numberOfYears,
-        organization: this.employeeReferee.organization,
-        address: this.employeeReferee.address,
-        confirmationReceived: this.employeeReferee.confirmationReceived,
-        confirmationDate: this.employeeReferee.confirmationDate,
-        approvalStatus: this.employeeReferee.approvalStatus,
-        staffId: this.employeeId,
-        refereeFile: this.employeeReferee.refereeFile,
-      });
-    }
-  }
-
-  submitRefereeForm(form: FormGroup) {
-    if (!form.valid) {
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    }
-    const payload = form.value;
-    console.log(payload);
-
-    payload.approvalStatus = +payload.approvalStatus;
-    payload.numberOfYears = +payload.numberOfYears;
-    const formData = new FormData();
-    for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.refereeForm.get(key).value);
-    }
-    this.spinner = true;
-    return this.employeeService.postReferee(formData).subscribe(
-      (res) => {
-        console.log(res);
-        this.spinner = false;
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#referee_modal").modal("hide");
-        }
-      },
-      (err) => {
-        this.spinner = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
-      }
-    );
-  }
-
-  getEmployeeReferee(id: number) {
-    this.employeeService.getRefereeByStaffId(id).subscribe((data) => {
-      if (data.employeeList[0]) {
-        this.employeeReferee = data.employeeList[0];
-      }
-      //console.log(this.employeeIdentification);
-      this.initRefereeForm();
-    });
-  }
-
-  /* Referees */
 
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.patchFile(event, form);
@@ -491,8 +388,4 @@ checkAll(event: Event) {
       this.currentUserId = data.staffId;
     });
   }
-
-
 }
-
-

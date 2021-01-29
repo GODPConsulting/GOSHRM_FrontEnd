@@ -7,8 +7,8 @@
                     (click)="downloadFile()" download><span class="hint-text">Download</span><i
                         class="fa fa-download"></i></a><a *ngIf="currentUserId === employeeId"
                     (click)="initIdentificationForm()" class="hint edit-icon mr-1" data-toggle="modal"
-                    data-target="#identification_modal"><span class="hint-text">Add
-                        Identification</span><i class="fa fa-pencil"></i></a></h3>
+                    data-target="#identification_modal"><span class="hint-text">Add Identification</span><i
+                        class="fa fa-pencil"></i></a></h3>
             <div class="table-responsive">
                 <app-loading *ngIf="pageLoading"></app-loading>
                 <table *ngIf="!pageLoading" class="table table-nowrap table-hover">
@@ -73,15 +73,14 @@
                                     <small *ngIf="
                                     identificationForm.get('identification').invalid &&
                                     identificationForm.get('identification').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Identification Number</label>
-                                <input type="number" class="form-control" [class.invalid]="
+                                <input type="text" class="form-control" [class.invalid]="
                                 identificationForm.get('identification_number').invalid &&
                                 identificationForm.get('identification_number').touched"
                                     formControlName="identification_number">
@@ -92,8 +91,7 @@
                                     <small *ngIf="
                                     identificationForm.get('identification_number').invalid &&
                                     identificationForm.get('identification_number').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -110,8 +108,7 @@
                                     <small *ngIf="
                                     identificationForm.get('idIssues').invalid &&
                                     identificationForm.get('idIssues').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -128,8 +125,7 @@
                                     <small *ngIf="
                                     identificationForm.get('idExpiry_date').invalid &&
                                     identificationForm.get('idExpiry_date').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -160,8 +156,7 @@
                                     <small *ngIf="
                                     identificationForm.get('approval_status').invalid &&
                                     identificationForm.get('approval_status').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
