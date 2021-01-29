@@ -17,6 +17,7 @@ import { EmployeeFormComponent } from "./all-employees/employee-form/employee-fo
 import { SharedModule } from "src/app/shared/shared.module";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { IdentificationComponent } from './all-employees/employee-profile/identification/identification.component';
+import { SkillsComponent } from './all-employees/employee-profile/skills/skills.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { IdentificationComponent } from './all-employees/employee-profile/identi
     EmployeeProfileComponent,
     EmployeeFormComponent,
     IdentificationComponent,
+    SkillsComponent,
   ],
   imports: [
     CommonModule,
