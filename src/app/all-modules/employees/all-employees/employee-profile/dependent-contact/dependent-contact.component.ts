@@ -18,6 +18,8 @@ export class DependentContactComponent implements OnInit {
   currentUser: string[] = []; // contains the data of the current user
   currentUserId: number;
   public selectedId: number[] = [];
+  public countryId: number;
+  public countries: any[] = []
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -30,7 +32,6 @@ export class DependentContactComponent implements OnInit {
   // To hold data for each card
   employeeDependentContact: any = {};
   setupService: any;
-  countries: any;
   
 
   constructor(
@@ -76,6 +77,8 @@ export class DependentContactComponent implements OnInit {
     }
     const payload = form.value;
     payload.approvalStatus = +payload.approvalStatus;
+    payload.countryId = +payload.countryId;
+    console.log(payload.countryId);
     // const formData = new FormData();
     // for (const key in form.value) {
     //   //console.log(key, this.identificationForm.get(key).value);
