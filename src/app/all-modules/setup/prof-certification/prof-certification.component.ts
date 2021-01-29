@@ -144,18 +144,16 @@ export class ProfCertificationComponent implements OnInit {
 
   getprofCertification() {
     this.pageLoading = true;
-    return this.setupService
-      .getData("/hrmsetup/get/all/prof_certification")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          this.certifications = data.setuplist;
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
+    return this.setupService.getAllProfCerts().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.certifications = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   // Add Professional Certification Api Call
@@ -171,7 +169,7 @@ export class ProfCertificationComponent implements OnInit {
       .updateData("/hrmsetup/add/update/prof_certification", payload)
       .subscribe(
         (res) => {
-          this.spinner = true;
+          this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", message, "success");
@@ -183,7 +181,7 @@ export class ProfCertificationComponent implements OnInit {
           this.getprofCertification();
         },
         (err) => {
-          this.spinner = true;
+          this.spinner = false;
           const message = err.status.message.friendlyMessage;
           swal.fire("Error", message, "error");
         }

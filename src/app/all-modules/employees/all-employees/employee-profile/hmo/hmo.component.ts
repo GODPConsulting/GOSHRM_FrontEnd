@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Observable } from "rxjs";
 import { EmployeeService } from "src/app/services/employee.service";
+import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 declare const $: any;
@@ -16,6 +18,7 @@ export class HmoComponent implements OnInit {
   spinner: boolean = false;
   public selectedId: number[] = [];
   hmoForm: FormGroup;
+  hmoChangeReqForm: FormGroup;
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
@@ -23,15 +26,19 @@ export class HmoComponent implements OnInit {
 
   // To hold data for each card
   employeeHmo: any[] = [];
+  // Observable to subscribe to in the template
+  allHmos$: Observable<any> = this.setupService.getAllHmos();
 
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private setupService: SetupService
   ) {}
 
   ngOnInit(): void {
     this.initHmoForm();
+    this.initHmochangeForm();
     this.getEmployeeHmo(this.staffId);
   }
 
@@ -39,12 +46,25 @@ export class HmoComponent implements OnInit {
     this.cardFormTitle = "Add HMO";
     this.hmoForm = this.formBuilder.group({
       id: [0],
-      HmoName: ["", Validators.required],
+      hmoId: ["", Validators.required],
       hmo_rating: ["", Validators.required],
       contactPhoneNo: ["", Validators.required],
       startDate: ["", Validators.required],
       end_Date: ["", Validators.required],
-      approval_status: ["", Validators.required],
+      approvalStatus: ["", Validators.required],
+      staffId: this.staffId,
+    });
+  }
+
+  initHmochangeForm() {
+    this.cardFormTitle = "HMO Change Request";
+    this.hmoChangeReqForm = this.formBuilder.group({
+      id: [0],
+      hmoId: ["", Validators.required],
+      suggestedHmo: ["", Validators.required],
+      dateOfRequest: ["", Validators.required],
+      expectedDateOfChange: ["", Validators.required],
+      hmoFile: ["", Validators.required],
       staffId: this.staffId,
     });
   }
@@ -58,7 +78,7 @@ export class HmoComponent implements OnInit {
       contactPhoneNo: row.contactPhoneNo,
       startDate: row.startDate,
       end_Date: row.end_Date,
-      approval_status: row.approval_status,
+      approvalStatus: row.approval_status,
       staffId: this.staffId,
     });
     this.fileInput.nativeElement.value = "";
@@ -66,14 +86,13 @@ export class HmoComponent implements OnInit {
   }
 
   submitHmoForm(form: FormGroup) {
-    console.log(form.value);
-
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
-    payload.approval_status = +payload.approval_status;
+    payload.approvalStatus = +payload.approvalStatus;
+    payload.hmoId = +payload.hmoId;
     const formData = new FormData();
     for (const key in form.value) {
       //console.log(key, this.identificationForm.get(key).value);
@@ -99,6 +118,39 @@ export class HmoComponent implements OnInit {
     );
   }
 
+  submitHmoChangeReqForm(form: FormGroup) {
+    if (!form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+    const payload = form.value;
+    payload.suggestedHmo = +payload.suggestedHmo;
+    payload.hmoId = +payload.hmoId;
+    const formData = new FormData();
+    for (const key in form.value) {
+      //console.log(key, this.identificationForm.get(key).value);
+      formData.append(key, this.hmoChangeReqForm.get(key).value);
+    }
+
+    this.spinner = true;
+    return this.employeeService.postHmoChangeRequest(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          $("#hmo_req_change_modal").modal("hide");
+        }
+        this.getEmployeeHmo(this.staffId);
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
+  }
+
   getEmployeeHmo(id: number) {
     this.pageLoading = true;
     this.employeeService.getHmoByStaffId(id).subscribe(
@@ -112,10 +164,6 @@ export class HmoComponent implements OnInit {
         swal.fire("Error", message, "error");
       }
     );
-  }
-
-  onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -173,6 +221,14 @@ export class HmoComponent implements OnInit {
       event,
       this.employeeHmo
     );
+  }
+
+  setDateToPresent(form: FormGroup, formControlName: string) {
+    this.utilitiesService.setDateToPresent(form, formControlName);
+  }
+
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"

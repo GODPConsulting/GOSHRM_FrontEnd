@@ -39,6 +39,18 @@ export class SetupService {
     );
   }
 
+  getAllHmos() {
+    return this.apiService.get("/hrmsetup/get/all/hmos");
+  }
+
+  getAllJobGrades() {
+    return this.apiService.get("/hrmsetup/get/all/jobgrades");
+  }
+
+  getAllProfCerts() {
+    return this.apiService.get("/hrmsetup/get/all/prof_certification");
+  }
+
   /*  using xhr method
   upload(path: string, file: File): Promise<any> {
     return this.apiService.uploadExcel(path, file).then((data) => {

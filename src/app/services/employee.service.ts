@@ -119,6 +119,13 @@ deleteEmergencyContact(payload){
     return this.apiService.post("/hrm/add/update/employee/hmo", payload);
   }
 
+  postHmoChangeRequest(payload: FormData) {
+    return this.apiService.post(
+      "/hrm/add/update/employee/hmo-request",
+      payload
+    );
+  }
+
   deleteHmo(payload: object) {
     return this.apiService.post("/hrm/delete/employee/hmo", payload);
   }
