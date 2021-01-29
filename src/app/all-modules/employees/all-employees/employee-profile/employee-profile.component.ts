@@ -5,7 +5,6 @@ import { data } from "jquery";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
-import { isEmpty } from "lodash";
 import { AuthService } from "src/app/services/auth.service";
 declare const $: any;
 
@@ -145,95 +144,6 @@ export class EmployeeProfileComponent implements OnInit {
     );
   }
   /* Emergency Contact */
-
-  /* Referees */
-
-  initRefereeForm() {
-    if (isEmpty(this.employeeReferee)) {
-      console.log("empty", this.employeeReferee);
-      this.cardFormTitle = "Add Referee";
-      this.refereeForm = this.formBuilder.group({
-        id: [0],
-        fullName: ["", Validators.required],
-        phoneNumber: ["", Validators.required],
-        email: ["", Validators.required],
-        relationship: ["", Validators.required],
-        numberOfYears: ["", Validators.required],
-        organization: ["", Validators.required],
-        address: ["", Validators.required],
-        confirmationReceived: ["", Validators.required],
-        confirmationDate: ["", Validators.required],
-        approvalStatus: ["", Validators.required],
-        staffId: this.employeeId,
-        refereeFile: ["", Validators.required],
-      });
-    } else {
-      console.log(this.employeeReferee);
-
-      this.cardFormTitle = "Edit Referee";
-      this.refereeForm.patchValue({
-        id: [0],
-        fullName: this.employeeReferee.fullName,
-        phoneNumber: this.employeeReferee.phoneNumber,
-        email: this.employeeReferee.email,
-        relationship: this.employeeReferee.relationship,
-        numberOfYears: this.employeeReferee.numberOfYears,
-        organization: this.employeeReferee.organization,
-        address: this.employeeReferee.address,
-        confirmationReceived: this.employeeReferee.confirmationReceived,
-        confirmationDate: this.employeeReferee.confirmationDate,
-        approvalStatus: this.employeeReferee.approvalStatus,
-        staffId: this.employeeId,
-        refereeFile: this.employeeReferee.refereeFile,
-      });
-    }
-  }
-
-  submitRefereeForm(form: FormGroup) {
-    if (!form.valid) {
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    }
-    const payload = form.value;
-    console.log(payload);
-
-    payload.approvalStatus = +payload.approvalStatus;
-    payload.numberOfYears = +payload.numberOfYears;
-    const formData = new FormData();
-    for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.refereeForm.get(key).value);
-    }
-    this.spinner = true;
-    return this.employeeService.postReferee(formData).subscribe(
-      (res) => {
-        console.log(res);
-        this.spinner = false;
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#referee_modal").modal("hide");
-        }
-      },
-      (err) => {
-        this.spinner = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
-      }
-    );
-  }
-
-  getEmployeeReferee(id: number) {
-    this.employeeService.getRefereeByStaffId(id).subscribe((data) => {
-      if (data.employeeList[0]) {
-        this.employeeReferee = data.employeeList[0];
-      }
-      //console.log(this.employeeIdentification);
-      this.initRefereeForm();
-    });
-  }
-
-  /* Referees */
 
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.patchFile(event, form);

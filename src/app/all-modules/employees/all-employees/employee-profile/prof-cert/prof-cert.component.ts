@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Observable } from "rxjs";
 import { EmployeeService } from "src/app/services/employee.service";
+import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 declare const $: any;
@@ -21,18 +23,19 @@ export class ProfCertComponent implements OnInit {
 
   @Input() staffId: number;
 
-  // To hold data for each card
+  // To hold data for card
   employeeProfCert: any[] = [];
+  allCertificates$: Observable<any> = this.setupService.getAllProfCerts();
+  allJobGrades$: Observable<any> = this.setupService.getAllJobGrades();
 
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private setupService: SetupService
   ) {}
 
   ngOnInit(): void {
-    console.log(this.staffId);
-
     this.initProfCertForm();
     this.getEmployeeProfCert(this.staffId);
   }
@@ -179,6 +182,10 @@ export class ProfCertComponent implements OnInit {
       event,
       this.employeeProfCert
     );
+  }
+
+  setDateToPresent(form: FormGroup, formControlName: string) {
+    this.utilitiesService.setDateToPresent(form, formControlName);
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"

@@ -16,11 +16,11 @@ import { HttpTokenInterceptor } from "../../services/http.interceptor.service";
 import { EmployeeFormComponent } from "./all-employees/employee-form/employee-form.component";
 import { SharedModule } from "src/app/shared/shared.module";
 import { NgSelectModule } from "@ng-select/ng-select";
-import { IdentificationComponent } from './all-employees/employee-profile/identification/identification.component';
-import { RefereeComponent } from './all-employees/employee-profile/referee/referee.component';
-import { HmoComponent } from './all-employees/employee-profile/hmo/hmo.component';
-import { ProfCertComponent } from './all-employees/employee-profile/prof-cert/prof-cert.component';
-
+import { IdentificationComponent } from "./all-employees/employee-profile/identification/identification.component";
+import { RefereeComponent } from "./all-employees/employee-profile/referee/referee.component";
+import { HmoComponent } from "./all-employees/employee-profile/hmo/hmo.component";
+import { ProfCertComponent } from "./all-employees/employee-profile/prof-cert/prof-cert.component";
+import { RatingConfig, RatingModule } from "ngx-bootstrap/rating";
 @NgModule({
   declarations: [
     EmployeesComponent,
@@ -44,6 +44,7 @@ import { ProfCertComponent } from './all-employees/employee-profile/prof-cert/pr
     DataTablesModule,
     SharedModule,
     NgSelectModule,
+    RatingModule.forRoot(),
   ],
   providers: [
     {

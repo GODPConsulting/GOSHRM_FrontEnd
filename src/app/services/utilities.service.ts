@@ -37,6 +37,10 @@ export class UtilitiesService {
     return [];
   }
 
+  setDateToPresent(form: FormGroup, formControlName: string) {
+    form.get(formControlName).setValue("Present");
+  }
+
   getCountry() {
     return this.apiService.get(this.getCountryUrl);
   }
