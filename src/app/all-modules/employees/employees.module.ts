@@ -23,6 +23,7 @@ import { RefereeComponent } from './all-employees/employee-profile/referee/refer
 import { HmoComponent } from './all-employees/employee-profile/hmo/hmo.component';
 import { ProfCertComponent } from './all-employees/employee-profile/prof-cert/prof-cert.component';
 import { DependentContactComponent } from './all-employees/employee-profile/dependent-contact/dependent-contact.component';
+import { CareerComponent } from './all-employees/employee-profile/career/career.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { DependentContactComponent } from './all-employees/employee-profile/depe
     HmoComponent,
     ProfCertComponent,
     DependentContactComponent,
+    CareerComponent,
   ],
   imports: [
     CommonModule,

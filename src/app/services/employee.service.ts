@@ -127,10 +127,22 @@ export class EmployeeService {
   }
 
   postDependentContact(payload: Object) {
-    return this.apiService.post("/hrm/add/update/employee/dependent_contactt", payload);
+    return this.apiService.post("/hrm/add/update/employee/dependent_contact", payload);
   }
 
   deleteDependentContact(payload) {
     return this.apiService.post("/hrm/delete/employee/dependent_contact", payload);
+  }
+
+  getCareerByStaffId(id: number) {
+    return this.apiService.get(`/hrm/get/single/employee/career/staffId?StaffId=${id}`);
+  }
+
+  postCareer(payload: Object) {
+    return this.apiService.post("/hrm/add/update/employee/career", payload);
+  }
+
+  deleteCareer(payload) {
+    return this.apiService.post("/hrm/delete/employee/career", payload);
   }
 }
