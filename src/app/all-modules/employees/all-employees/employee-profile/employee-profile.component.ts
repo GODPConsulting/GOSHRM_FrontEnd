@@ -495,39 +495,4 @@ checkAll(event: Event) {
 
 }
 
-/*  uploadReferee() {
-  const formData = new FormData();
-  formData.append(
-    "uploadInput",
-    this.employee_profileUploadForm.get("uploadInput").value
-  );
-  if (!this.file) {
-    return swal.fire("Error", "Select a file", "error");
-  }
-  //console.log(formData, this.languageForm.get("uploadInput").value);
-  this.spinner = true;
 
-  return this.setupService
-    .updateData("/hrmsetup/upload/language", formData)
-    .subscribe(
-      (res) => {
-        this.spinner = false;
-        const message = res.status.message.friendlyMessage;
-
-        if (res.status.isSuccessful) {
-          swal.fire("Success", message, "success");
-          this.initializeForm();
-          this.fileInput.nativeElement.value = "";
-        } else {
-          swal.fire("Error", message, "error");
-        }
-        this.getEmployee_Profile();
-      },
-      (err) => {
-        this.spinner = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
-      }
-    );
-}
-*/
