@@ -18,6 +18,9 @@ import { SharedModule } from "src/app/shared/shared.module";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { IdentificationComponent } from './all-employees/employee-profile/identification/identification.component';
 import { SkillsComponent } from './all-employees/employee-profile/skills/skills.component';
+import { RefereeComponent } from './all-employees/employee-profile/referee/referee.component';
+import { HmoComponent } from './all-employees/employee-profile/hmo/hmo.component';
+import { ProfCertComponent } from './all-employees/employee-profile/prof-cert/prof-cert.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,9 @@ import { SkillsComponent } from './all-employees/employee-profile/skills/skills.
     EmployeeFormComponent,
     IdentificationComponent,
     SkillsComponent,
+    RefereeComponent,
+    HmoComponent,
+    ProfCertComponent,
   ],
   imports: [
     CommonModule,
