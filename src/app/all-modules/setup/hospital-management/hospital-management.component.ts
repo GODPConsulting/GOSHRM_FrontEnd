@@ -5,9 +5,9 @@ import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: 'app-hospital-management',
-  templateUrl: './hospital-management.component.html',
-  styleUrls: ['./hospital-management.component.css', "../setup.component.css"]
+  selector: "app-hospital-management",
+  templateUrl: "./hospital-management.component.html",
+  styleUrls: ["./hospital-management.component.css", "../setup.component.css"],
 })
 export class HospitalManagementComponent implements OnInit {
   public formTitle: string = "Hospital Management";
@@ -50,35 +50,40 @@ export class HospitalManagementComponent implements OnInit {
   }
 
   downloadFile() {
-    this.setupService.exportExcelFile("/hrmsetup/download/hospital-management").subscribe(
-      (resp) => {
-        const data = resp;
-        if (data != undefined) {
-          const byteString = atob(data);
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
-          for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
+    this.setupService
+      .exportExcelFile("/hrmsetup/download/hospital-management")
+      .subscribe(
+        (resp) => {
+          const data = resp;
+          if (data != undefined) {
+            const byteString = atob(data);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+              ia[i] = byteString.charCodeAt(i);
+            }
+            const bb = new Blob([ab]);
+            try {
+              const file = new File([bb], "Hospital Management.xlsx", {
+                type: "application/vnd.ms-excel",
+              });
+              console.log(file, bb);
+              saveAs(file);
+            } catch (err) {
+              const textFileAsBlob = new Blob([bb], {
+                type: "application/vnd.ms-excel",
+              });
+              window.navigator.msSaveBlob(
+                textFileAsBlob,
+                "Hospital Management.xlsx"
+              );
+            }
+          } else {
+            return swal.fire(`GOS HRM`, "Unable to download data", "error");
           }
-          const bb = new Blob([ab]);
-          try {
-            const file = new File([bb], "Hospital Management.xlsx", {
-              type: "application/vnd.ms-excel",
-            });
-            console.log(file, bb);
-            saveAs(file);
-          } catch (err) {
-            const textFileAsBlob = new Blob([bb], {
-              type: "application/vnd.ms-excel",
-            });
-            window.navigator.msSaveBlob(textFileAsBlob, "Hospital Management.xlsx");
-          }
-        } else {
-          return swal.fire(`GOS HRM`, "Unable to download data", "error");
-        }
-      },
-      (err) => {}
-    );
+        },
+        (err) => {}
+      );
   }
 
   // Appends a selected file to "uploadInput"
@@ -132,8 +137,7 @@ export class HospitalManagementComponent implements OnInit {
       contactPhoneNo: ["", Validators.required],
       email: ["", Validators.required],
       address: ["", Validators.required],
-      rating: ["", Validators.required],
-      otherComments: ["", Validators.required],
+      otherComments: [""],
     });
     //initialize upload form
     this.hospitalManagementUploadForm = this.formBuilder.group({
@@ -158,21 +162,21 @@ export class HospitalManagementComponent implements OnInit {
 
   getHmos() {
     this.pageLoading = true;
-   return this.setupService.getData("/hrmsetup/get/all/hmos").subscribe(
-     (data) => {
-       this.pageLoading = false;
-       this.hmos = data.setuplist;
-     },
-     (err) => {
-       this.pageLoading = false;
-       console.log(err);
-     }
-   );
- }
+    return this.setupService.getAllHmos().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.hmos = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
+  }
 
   getHospitalManagement() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/hospital-managements").subscribe(
+    return this.setupService.getAllHospitals().subscribe(
       (data) => {
         this.pageLoading = false;
         this.hospitalManagements = data.setuplist;
@@ -270,7 +274,7 @@ export class HospitalManagementComponent implements OnInit {
       email: row.email,
       address: row.address,
       rating: row.rating,
-      otherComments: row.otherComments
+      otherComments: row.otherComments,
     });
     $("#addHospitalManagement").modal("show");
   }

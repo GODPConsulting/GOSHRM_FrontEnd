@@ -133,8 +133,7 @@ export class HmoComponent implements OnInit {
       contact_email: ["", Validators.required],
       address: ["", Validators.required],
       reg_date: ["", Validators.required],
-      rating: ["", Validators.required],
-      other_comments: ["", Validators.required],
+      other_comments: [""],
     });
     this.hmoUploadForm = this.formBuilder.group({
       uploadInput: [""],

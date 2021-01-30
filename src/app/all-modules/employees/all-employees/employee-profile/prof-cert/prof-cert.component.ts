@@ -96,7 +96,7 @@ export class ProfCertComponent implements OnInit {
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
-          $("#identification_modal").modal("hide");
+          $("#prof_cert_modal").modal("hide");
         }
         this.getEmployeeProfCert(this.staffId);
       },
@@ -184,8 +184,8 @@ export class ProfCertComponent implements OnInit {
     );
   }
 
-  setDateToPresent(form: FormGroup, formControlName: string) {
-    this.utilitiesService.setDateToPresent(form, formControlName);
+  setDateToPresent(event: Event, form: FormGroup, formControlName: string) {
+    this.utilitiesService.setDateToPresent(event, form, formControlName);
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"

@@ -38,37 +38,45 @@ export class EmployeeService {
   }
 
   addEmergencyContact(payload) {
-    return this.apiService.post("/hrm/add/update/employee/emergency_contact", payload).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
+    return this.apiService
+      .post("/hrm/add/update/employee/emergency_contact", payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
   }
-deleteEmergencyContact(payload){
-  return this.apiService.post("/hrm/delete/employee/emergency_contact", payload).pipe(
-    tap((data) => {
-      return data;
-    })
-  );
-}
+  deleteEmergencyContact(payload) {
+    return this.apiService
+      .post("/hrm/delete/employee/emergency_contact", payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
   getEmergencyContactByStaffId(id: number) {
-    return this.apiService.get(`/hrm/get/single/employee/emergency_contact/StaffId?StaffId=${id}`);
-  }
-
-  addLanguageRating(payload){
-    return this.apiService.post("/hrm/add/update/employee/language" ,payload).pipe(
-      tap((data) => {
-        return data;
-      })
+    return this.apiService.get(
+      `/hrm/get/single/employee/emergency_contact/StaffId?StaffId=${id}`
     );
   }
 
-  getLanguages(){
+  addLanguageRating(payload) {
+    return this.apiService
+      .post("/hrm/add/update/employee/language", payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
+  getLanguages() {
     return this.apiService.get("/hrmsetup/get/all/languages");
   }
 
-  deleteLanguageRating(payload){
-    return this.apiService.post("/hrm/delete/employee/language",payload).pipe(
+  deleteLanguageRating(payload) {
+    return this.apiService.post("/hrm/delete/employee/language", payload).pipe(
       tap((data) => {
         return data;
       })
@@ -76,9 +84,11 @@ deleteEmergencyContact(payload){
   }
 
   getLanguageRatingByStaffId(id: number) {
-    return this.apiService.get(`/hrm/get/single/employee/language/staffId?staffId=${id}`);
+    return this.apiService.get(
+      `/hrm/get/single/employee/language/staffId?staffId=${id}`
+    );
   }
-  
+
   postReferee(payload: Object) {
     return this.apiService.post("/hrm/add/update/employee/referee", payload);
   }
@@ -112,6 +122,34 @@ deleteEmergencyContact(payload){
 
   deleteHmo(payload: object) {
     return this.apiService.post("/hrm/delete/employee/hmo", payload);
+  }
+
+  getHospitalByStaffId(id: number) {
+    return this.apiService.get(
+      `/hrm/get/single/employee/hospital/staffId?StaffId=${id}`
+    );
+  }
+
+  postHospital(payload: FormData) {
+    return this.apiService.post("/hrm/add/update/employee/hospital", payload);
+  }
+
+  postHospitalChangeRequest(payload: FormData) {
+    return this.apiService.post(
+      "/hrm/add/update/employee/hospital-request",
+      payload
+    );
+  }
+
+  deleteHospital(payload: object) {
+    return this.apiService.post("/hrm/delete/employee/hospital", payload);
+  }
+
+  postBookHospitalMeeting(payload: FormData) {
+    return this.apiService.post(
+      "/api/v1/hrm/add/update/employee/hospital-meeting",
+      payload
+    );
   }
 
   getProfCertByStaffId(id: number) {
