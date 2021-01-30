@@ -98,7 +98,7 @@ export class EmployeeProfileComponent implements OnInit {
     this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
         //console.log(this.employeeDetails);
-        this.employeeDetails = data.staff[0];
+        this.employeeDetails = data.employeeList[0];
         this.pageLoading = false;
         console.log(this.employeeDetails);
       },

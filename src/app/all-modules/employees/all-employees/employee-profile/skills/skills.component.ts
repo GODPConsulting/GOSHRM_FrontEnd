@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { SetupService } from 'src/app/services/setup.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
 import swal from "sweetalert2";
 declare const $: any;
@@ -12,35 +13,42 @@ declare const $: any;
 })
 export class SkillsComponent implements OnInit {
   employeeDetails: any = {};
+  currentUser: string[] = []; // contains the data of the current user
+  currentUserId: number;
+
+  ////
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
-  currentUser: string[] = []; // contains the data of the current user
-  currentUserId: number;
   public selectedId: number[] = [];
-
+  public jobTitleId: number;
+  skillsForm: FormGroup;
+  public jobSkills: any[] = [];
+  public jobTitle;
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
   @Input() staffId: number;
-  
-   // Forms
-   skillsForm: FormGroup;
-
+///
+ 
    // To hold data for each card
    employeeSkills: any = {};
+   staffs: any = {};
    
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private setupService: SetupService,
   ) { }
 
   ngOnInit(): void {
-    console.log(this.staffId);
-
+    //console.log(this.staffId);
     this.getEmployeeSkills(this.staffId);
     this.initSkillsForm();
+    this.getSingleStaffById(this.staffId);
+    this.getSingleJobTitle(this.jobTitleId) ;
+    //console.log(this.jobTitleId);
   }
 
   initSkillsForm() {
@@ -55,13 +63,26 @@ export class SkillsComponent implements OnInit {
       staffId: this.staffId,
       skillFile: ["", Validators.required],
     });
-    this.fileInput.nativeElement.value = "";
+    // Resets the upload input of the add form
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = "";
+    }
   }
 
   getEmployeeSkills(id: number) {
     this.employeeService.getSkillByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
         this.employeeSkills = data.employeeList;
+      }
+    });
+  }
+
+  getSingleStaffById(id: number) {
+    this.employeeService.getEmployeeById(id).subscribe((data) => {
+      if (data.staff) {
+        this.staffs = data.employeeList;
+        this.jobTitleId = data.employeeList[0].jobTitle;
+        console.log(this.jobTitleId)
       }
     });
   }
@@ -98,6 +119,30 @@ export class SkillsComponent implements OnInit {
         swal.fire("Error", message, "error");
       }
     );
+  }
+
+  getSingleJobTitle(id: number) {
+    this.pageLoading = true;
+    return this.setupService
+      .getData(`/hrmsetup/get/single/jobtitle?SetupId=${id}`)
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          //console.log("id", id);
+
+          //console.log("data", data);
+          this.jobTitle = data.setuplist[0];
+          //this.rows = this.jobTitle.sub_Skills;
+          if (id !== 0) {
+            this.jobSkills = this.jobTitle.sub_Skills;
+            console.log(this.jobSkills);
+          }
+        },
+        (err) => {
+          this.pageLoading = false;
+          console.log(err);
+        }
+      );
   }
 
   // Set Values To Edit Modal Form

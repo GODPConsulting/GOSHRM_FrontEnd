@@ -35,7 +35,7 @@
                                             {{employeeDetails.middleName}}
                                             {{employeeDetails.lastName}}</h3>
                                         <!-- <h6 class="text-muted">{{employeeDetails.jobTitleName}}</h6> -->
-                                        <small class="text-muted">{{employeeDetails.jobTitleName}} Web Designer</small>
+                                        <small class="text-muted">{{employeeDetails.jobTitleName}}</small>
                                         <div class="staff-id">Staff Code : {{employeeDetails.staffCode}}</div>
                                         <div class="small doj text-muted">Date of Join : 1st Jan 2013(unavailable)</div>
                                         <div class="staff-msg"><a class="btn btn-custom" routerLink="/apps/chat">Send
@@ -323,6 +323,7 @@
         <div id="emp_careers" class="tab-pane fade show active">
             <!-- Professional Certification card -->
             <app-prof-cert [staffId]="employeeId"></app-prof-cert>
+            <app-skills [staffId]="employeeId"></app-skills>
             <!-- /Professional Certification card -->
         </div>
         <!-- /Careers Tab -->

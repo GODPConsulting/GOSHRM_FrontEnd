@@ -13,28 +13,28 @@
                     <thead>
                         <tr>
                             <th>
-                                <input type="checkbox" [checked]="selectedId.length === employeeskills.length"
+                                <input type="checkbox" [checked]="selectedId.length === employeeSkills.length"
                                     (change)="checkAll($event)" />
                             </th>
                             <th>Skills</th>
                             <th>Expected Score</th>
-                            <th>Actual Score<th>
+                            <th>Actual Score</th>
                             <th>Proof of Skills</th>
                             <th>Approval Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr data-toggle="modal" class="pointer" data-target="#skills_modal" (click)="edit(row)"
-                            *ngFor="let row of hack(employeeakills); let i = index">
+                            *ngFor="let row of hack(employeeSkills); let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{row.skillName}}</td>
-                            <td>{{row.ExpectedScore}}</td>
-                            <td>{{row.ActualScore}}</td>
-                            <td>{{row.ProofOfSkills}}</td>
-                            <td>{{row.ApprovalStatusName}}</td>
+                            <td>{{row.expectedScore}}</td>
+                            <td>{{row.actualScore}}</td>
+                            <td>{{row.proofOfSkills}}</td>
+                            <td>{{row.approvalStatusName}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -114,7 +114,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Proof of Skills <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" [class.invalid]="
+                                <input class="form-control" type="text" [class.invalid]="
                                     skillsForm.get('proofOfSkills').invalid &&
                                     skillsForm.get('proofOfSkills').touched" formControlName="proofOfSkills">
                                 <div *ngIf="

@@ -59,15 +59,15 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
       selector: '[data-toggle="tooltip"]',
     });
   }
-
+  //this.setupService.getData
   // Get All Employees
   loadEmployees() {
     this.pageLoading = true;
     this.employeeService.getEmployees().subscribe(
       (data) => {
         this.pageLoading = false;
-        console.log(data.staff);
-        this.employeesList = data.staff;
+        console.log(data.employeeList);
+        this.employeesList = data.employeeList;
       },
       (err) => {
         this.pageLoading = false;

@@ -8,32 +8,16 @@ import { ApiService } from "./api.service";
   providedIn: "root",
 })
 export class EmployeeService {
-  allEmployeeUrl: string = "/admin/get/all/staff";
-  EmployeeByIdUrl: string = "/admin/get/single/staff/staffId?StaffId=";
-  identificationByStaffIdUrl: string =
-    "/hrm/get/single/employee/identification/staffId?staffId=";
-  addIdentificationUrl: string = "/hrm/add/update/employee/identification";
-  deleteIdentificationUrl: string = "/hrm/delete/employee/identification";
-  emergencyContactByStaffIdUrl: string =
-    "/hrm/get/single/employee/emergency_contact/StaffId?StaffId=";
-  addEmergencyContactUrl: string = "/hrm/add/update/employee/emergency_contact";
-  addRefereeUrl: string = "/hrm/add/update/employee/referee";
-  refereeByStaffIdUrl: string =
-    "/hrm/get/single/employee/referee/staffId?StaffId=";
-
-  // Employee Skills
-  skillsByStaffIdUrl: string = "/hrm/get/single/employee/skill/staffId?staffId=";
-  addSkillUrl: string = "/hrm/add/update/employee/skill";
-  deleteSkilsUrl: string = "/hrm/delete/employee/skill";
-
+  
   constructor(private apiService: ApiService) {}
 
   getEmployees() {
-    return this.apiService.get("/admin/get/all/staff");
+    return this.apiService.get("/hrm/get/all/staff");
   }
 
   getEmployeeById(id: number) {
-    return this.apiService.get(`/admin/get/single/staff/staffId?StaffId=${id}`);
+    //return this.apiService.get(`/admin/get/single/staff/staffId?StaffId=${id}`);
+    return this.apiService.get(`/hrm/get/single/staff/Id?StaffId=${id}`);
   }
 
   getIdentificationByStaffId(id: number) {
@@ -153,16 +137,16 @@ deleteEmergencyContact(payload){
   //Employee Skills
   getSkillByStaffId(id: number)
   {
-    return this.apiService.get(`${this.skillsByStaffIdUrl}${id}`);
+    return this.apiService.get(`/hrm/get/single/employee/skill/staffId?StaffId=${id}`);
   }
 
   addSkill(payload: Object) 
   {
-    return this.apiService.post(`${this.addSkillUrl}`, payload);
+    return this.apiService.post(`/hrm/add/update/employee/skill`, payload);
   }
 
   deleteSkills(payload) 
   {
-    return this.apiService.post(`${this.deleteSkilsUrl}`, payload);
+    return this.apiService.post(`/hrm/delete/employee/skill`, payload);
   }
 }
