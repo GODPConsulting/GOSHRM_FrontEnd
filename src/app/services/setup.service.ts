@@ -51,6 +51,10 @@ export class SetupService {
     return this.apiService.get("/hrmsetup/get/all/prof_certification");
   }
 
+  getAllHospitals() {
+    return this.apiService.get("/hrmsetup/get/all/hospital-managements");
+  }
+
   /*  using xhr method
   upload(path: string, file: File): Promise<any> {
     return this.apiService.uploadExcel(path, file).then((data) => {
