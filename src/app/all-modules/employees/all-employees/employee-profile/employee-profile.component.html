@@ -1,8 +1,6 @@
 <app-loading *ngIf="pageLoading"></app-loading>
-
 <!-- Page Content -->
 <div *ngIf="!pageLoading" class="content container-fluid">
-
     <!-- Page Header -->
     <div class="page-header">
         <div class="row">
@@ -16,7 +14,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="card mb-0">
         <div class="card-body">
             <div class="row">
@@ -32,8 +29,7 @@
                                 <div class="col-md-5">
                                     <div class="profile-info-left">
                                         <h3 class="user-name m-t-0 mb-0">{{employeeDetails.firstName}}
-                                            {{employeeDetails.middleName}}
-                                            {{employeeDetails.lastName}}</h3>
+                                            {{employeeDetails.middleName}} {{employeeDetails.lastName}}</h3>
                                         <!-- <h6 class="text-muted">{{employeeDetails.jobTitleName}}</h6> -->
                                         <small class="text-muted">{{employeeDetails.jobTitleName}} Web Designer</small>
                                         <div class="staff-id">Staff Code : {{employeeDetails.staffCode}}</div>
@@ -76,7 +72,6 @@
             </div>
         </div>
     </div>
-
     <div class="card tab-box">
         <div class="row user-tabs">
             <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
@@ -93,9 +88,7 @@
             </div>
         </div>
     </div>
-
     <div class="tab-content">
-
         <!-- Profile Info Tab -->
         <div id="emp_profile" class="pro-overview tab-pane fade  ">
             <!-- Identification Card -->
@@ -107,22 +100,23 @@
             <div>
                 <div class="card profile-box flex-fill">
                     <div class="card-body">
-                        <h3 class="card-title">Emergency Contact
-                             <div class="col-auto float-right ml-auto">
+                        <h3 class="card-title">Emergency Contact <div class="col-auto float-right ml-auto">
                                 <a class="btn add-btn hint" data-toggle="modal"
-                                data-target="#emergency_contact_modal"><span class="hint-text">Add</span><i class="fa fa-plus"></i>
-                            </a>
-                            <a class="btn delete-btn hint" (click)="deleteEmergencyContact()"><span class="hint-text">Delete</span><i
-                                class="fa fa-trash"></i>
-                            </a>
-                             </div>
-                            </h3>
+                                    data-target="#emergency_contact_modal"><span class="hint-text">Add</span><i
+                                        class="fa fa-plus"></i>
+                                </a>
+                                <a class="btn delete-btn hint" (click)="deleteEmergencyContact()"><span
+                                        class="hint-text">Delete</span><i class="fa fa-trash"></i>
+                                </a>
+                            </div>
+                        </h3>
                         <div class="table-responsive">
                             <table class="table table-nowrap table-hover">
-                                <thead >
+                                <thead>
                                     <tr>
                                         <th>
-                                            <input type="checkbox" [checked]="selectedId.length === languageRating.length"
+                                            <input type="checkbox"
+                                                [checked]="selectedId.length === languageRating.length"
                                                 (change)="checkAllEmergency($event)" />
                                         </th>
                                         <th>S/N</th>
@@ -140,7 +134,7 @@
                                         (click)="editEmergencyContact(item)" class="pointer">
                                         <td (click)="stopParentEvent($event)">
                                             <input type="checkbox" [checked]="selectedId.includes(item.id)"
-                                                (change)="addItemId($event, item.id)"/>
+                                                (change)="addItemId($event, item.id)" />
                                         </td>
                                         <td>{{ i + 1 }}</td>
                                         <td>{{item.fullName}}</td>
@@ -150,7 +144,6 @@
                                         <td>{{item.address}}</td>
                                         <td>{{item.countryName}}</td>
                                         <td>{{item.approval_status_name}}</td>
-
                                     </tr>
                                 </tbody>
                             </table>
@@ -158,27 +151,27 @@
                     </div>
                 </div>
                 <!-- /Emergency Contact -->
-
                 <!-- Language -->
-                <div >
+                <div>
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
-                            <h3 class="card-title">Language Rating 
-                                <div class="col-auto float-right ml-auto">
+                            <h3 class="card-title">Language Rating <div class="col-auto float-right ml-auto">
                                     <a class="btn add-btn hint" data-toggle="modal"
-                                    data-target="#language_rating_modal"><span class="hint-text">Add</span><i class="fa fa-plus"></i>
-                                </a>
-                                    <a class="btn delete-btn hint" (click)="deleteLanguageRating()"><span class="hint-text">Delete</span><i
-                                        class="fa fa-trash"></i>
+                                        data-target="#language_rating_modal"><span class="hint-text">Add</span><i
+                                            class="fa fa-plus"></i>
+                                    </a>
+                                    <a class="btn delete-btn hint" (click)="deleteLanguageRating()"><span
+                                            class="hint-text">Delete</span><i class="fa fa-trash"></i>
                                     </a>
                                 </div>
-                                </h3>
+                            </h3>
                             <div class="table-responsive">
                                 <table class="table table-nowrap table-hover">
                                     <thead>
                                         <tr>
                                             <th>
-                                                <input type="checkbox" [checked]="selectedId.length === languageRating.length"
+                                                <input type="checkbox"
+                                                    [checked]="selectedId.length === languageRating.length"
                                                     (change)="checkAll($event)" />
                                             </th>
                                             <th>S/N</th>
@@ -190,12 +183,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       <tr *ngFor="let language of languageRating; let i = index" (click)="editLanguageRating(language)"class="pointer"
-                                         (click)="stopParentEvent($event)"> 
-                                         <td (click)="stopParentEvent($event)">
-                                            <input type="checkbox" [checked]="selectedId.includes(language.id)"
-                                                (change)="addItemId($event, language.id)"/>
-                                        </td> 
+                                        <tr *ngFor="let language of languageRating; let i = index"
+                                            (click)="editLanguageRating(language)" class="pointer"
+                                            (click)="stopParentEvent($event)">
+                                            <td (click)="stopParentEvent($event)">
+                                                <input type="checkbox" [checked]="selectedId.includes(language.id)"
+                                                    (change)="addItemId($event, language.id)" />
+                                            </td>
                                             <td>{{ i + 1 }}</td>
                                             <td>{{language.language}}</td>
                                             <td>{{language.reading_Rating}}</td>
@@ -206,7 +200,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -216,9 +209,6 @@
             <!-- Referee Card -->
             <app-referee [staffId]="employeeId"></app-referee>
             <!-- /Referee Card -->
-
-
-
             <!-- Dependent Cotacts -->
             <div>
                 <div class="card profile-box flex-fill">
@@ -253,8 +243,7 @@
                                                     class="action-icon dropdown-toggle"><i
                                                         class="material-icons">more_vert</i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item"><i class="fa fa-pencil m-r-5"></i>
-                                                        Edit</a>
+                                                    <a class="dropdown-item"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                                     <a class="dropdown-item"><i class="fa fa-trash-o m-r-5"></i>
                                                         Delete</a>
                                                 </div>
@@ -268,11 +257,8 @@
                 </div>
             </div>
             <!-- /Dependent Cotacts -->
-
-
         </div>
         <!-- /Profile Info Tab -->
-
         <!-- Assets Tab -->
         <div id="emp_assets" class="tab-pane fade">
             <div class="row">
@@ -309,24 +295,20 @@
                                     <div class="text">Active</div>
                                 </li>
                             </ul>
-
                         </div>
                     </div>
                 </div>
-
                 <!-- assets Contact Modal -->
             </div>
         </div>
         <!-- /Assets Tab -->
-
         <!-- Careers Tab -->
-        <div id="emp_careers" class="tab-pane fade show active">
+        <div id="emp_careers" class="tab-pane fade ">
             <!-- Professional Certification card -->
             <app-prof-cert [staffId]="employeeId"></app-prof-cert>
             <!-- /Professional Certification card -->
         </div>
         <!-- /Careers Tab -->
-
         <!--Hobbies Tab 
         <div id="emp_hobbies" class="tab-pane fade">
             <div class="row">
@@ -372,22 +354,19 @@
             </div>
         </div>
          /Hobbies Tab -->
-
         <!-- Health and Wellness Tab -->
-        <div id="emp_health_well" class="tab-pane fade ">
+        <div id="emp_health_well" class="tab-pane fade show active">
             <!-- Hmo card -->
             <app-hmo [staffId]="employeeId"></app-hmo>
             <!-- /Hmo card -->
+            <!-- Hospital card -->
+            <app-hospital [staffId]="employeeId"></app-hospital>
+            <!-- /Hospital card -->
         </div>
         <!-- /Health and Wellness Tab -->
     </div>
-
 </div>
-
 <!-- Pop up Modals below -->
-
-
-
 <!-- Dependent Contacts Modal 
 <div id="dependent_contacts_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -463,7 +442,6 @@
     </div>
 </div>-->
 <!-- /Dependent Contacts Modal -->
-
 <!-- Emergency Contact Modal -->
 <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -511,8 +489,7 @@
                                         emergencyContactForm.get('countryId').touched" formControlName="countryId">
                                             <option selected value="">Country</option>
                                             <option *ngFor="let row of countries" value="{{row.lookupId}}">
-                                                {{row.lookupName}}
-                                            </option>
+                                                {{row.lookupName}} </option>
                                         </select>
                                     </div>
                                 </div>
@@ -530,14 +507,12 @@
                                             <option value="1">Approved</option>
                                             <option value="2">Pending</option>
                                             <option value="3">Declined</option>
-
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             <span *ngIf="!loading">Submit</span>
@@ -556,10 +531,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"> Add Language(s) </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closelanguageRatingModal()">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="closelanguageRatingModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
-
             </div>
             <div class="modal-body">
                 <form (ngSubmit)="addLanguageRating(languageRatingForm)" [formGroup]="languageRatingForm">
@@ -567,20 +542,17 @@
                         <div class="card-body">
                             <h3 class="card-title">Language Rating</h3>
                             <div class="row">
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Language<span class="text-danger">*</span></label>
                                         <select class="form-control" [class.invalid]="languageRatingForm.get('languageId').invalid &&
                                         languageRatingForm.get('languageId').touched" formControlName="languageId">
                                             <option selected value="">Languages</option>
-                                            <option *ngFor="let row of languages" value="{{row.id}}">
-                                                {{row.language}}
+                                            <option *ngFor="let row of languages" value="{{row.id}}"> {{row.language}}
                                             </option>
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Reading Rating <span class="text-danger">*</span></label>
@@ -607,14 +579,12 @@
                                             <option value="1">Approved</option>
                                             <option value="2">Pending</option>
                                             <option value="3">Declined</option>
-
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             <span *ngIf="!loading">Submit</span>
@@ -627,7 +597,6 @@
     </div>
 </div>
 <!-- Language modal -->
-
 <!-- Assets Contact Modal 
 <div id="assets_contact_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -733,7 +702,6 @@
     </div>
 </div>
  /Assets Contact Modal -->
-
 <!-- Hobbies Modal
 <div id="hobbies_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -802,7 +770,6 @@
     </div>
 </div> -->
 <!-- /Hobbies Modal -->
-
 <!-- Experience Modal 
 <div id="experience_info" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

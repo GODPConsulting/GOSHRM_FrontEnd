@@ -9,7 +9,7 @@
                 <a *ngIf="currentUserId === employeeId" (click)="initHmoForm()" class="hint edit-icon mr-1"
                     data-toggle="modal" data-target="#hmo_modal">
                     <span class="hint-text">Add HMO</span><i class="fa fa-pencil"></i></a>
-                <a (click)="initHmochangeForm()" class="hint edit-icon mr-1" data-toggle="modal"
+                <a (click)="initHmoChangeForm()" class="hint edit-icon mr-1" data-toggle="modal"
                     data-target="#hmo_req_change_modal"><span class="hint-text">Request Change</span><i
                         class="fa fa-ticket"></i></a>
             </h3>
@@ -25,25 +25,30 @@
                             <th>S/N</th>
                             <th>HMO</th>
                             <th>HMO rating</th>
-                            <th>HMO Contact Phone number</th>
+                            <th>Phone number</th>
                             <th>Start date</th>
                             <th>End date</th>
                             <th>Approval Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#hmo_modal" (click)="editForm(row)"
+                        <tr data-toggle="modal" class="pointer" data-target="#hmo_modal"
                             *ngFor="let row of hack(employeeHmo); let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{i +1}}</td>
-                            <td>{{row.hmoId}}</td>
-                            <td>{{row.hmo_rating}}</td>
+                            <td>{{row.hmoName}}</td>
+                            <td>
+                                <rating [max]="5" [(ngModel)]="row.hmo_rating"
+                                    [titles]="['Poor','Below Average','Average','Above Average','Excellent']"
+                                    [readonly]="true">
+                                </rating>
+                            </td>
                             <td>{{row.contactPhoneNo}}</td>
                             <td>{{row.startDate| date :"mediumDate"}}</td>
-                            <td>{{row.end_Date | date :"mediumDate"}}</td>
+                            <td>{{row.end_Date==="Present"? row.end_Date: row.end_Date | date :"mediumDate"}}</td>
                             <td>{{row.approvalStatusName}}</td>
                         </tr>
                     </tbody>
@@ -144,7 +149,8 @@
                                 <label>End Date <span class="text-danger">*</span></label>
                                 <span class="float-right ">
                                     <input type="checkbox" name="currentDate" value=""
-                                        (change)="setDateToPresent(hmoForm,'end_Date')">
+                                        (change)="setDateToPresent($event,hmoForm,'end_Date')"
+                                        formControlName="setCurrentDate">
                                     <label for="currentDate" class="mx-1">Does not expire</label>
                                 </span>
                                 <input class="form-control" type="date" [class.invalid]="

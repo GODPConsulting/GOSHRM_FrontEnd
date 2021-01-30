@@ -8,26 +8,28 @@ import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: "app-hmo",
-  templateUrl: "./hmo.component.html",
-  styleUrls: ["./hmo.component.css"],
+  selector: "app-hospital",
+  templateUrl: "./hospital.component.html",
+  styleUrls: ["./hospital.component.css"],
 })
-export class HmoComponent implements OnInit {
+export class HospitalComponent implements OnInit {
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   public selectedId: number[] = [];
-  hmoForm: FormGroup;
-  hmoChangeReqForm: FormGroup;
+  hospitalForm: FormGroup;
+  hospitalChangeReqForm: FormGroup;
+  bookHospitalForm: FormGroup;
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
   @Input() staffId: number;
 
   // To hold data for each card
-  employeeHmo: any[] = [];
+  employeeHospital: any[] = [];
   // Observable to subscribe to in the template
-  allHmos$: Observable<any> = this.setupService.getAllHmos();
+  allHospitals$: Observable<any> = this.setupService.getAllHospitals();
+  value = 3;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,67 +39,82 @@ export class HmoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initHmoForm();
-    this.initHmoChangeForm();
-    this.getEmployeeHmo(this.staffId);
+    this.initHospitalForm();
+    this.initHospitalChangeForm();
+    this.initBookHospitalForm();
+    this.getEmployeeHospital(this.staffId);
   }
 
-  initHmoForm() {
-    this.cardFormTitle = "Add HMO";
-    this.hmoForm = this.formBuilder.group({
+  initHospitalForm() {
+    this.cardFormTitle = "Add Hospital";
+    this.hospitalForm = this.formBuilder.group({
       id: [0],
-      hmoId: ["", Validators.required],
-      hmo_rating: ["", Validators.required],
+      hospitalId: ["", Validators.required],
+      hospitalRating: ["", Validators.required],
       contactPhoneNo: ["", Validators.required],
       startDate: ["", Validators.required],
-      end_Date: ["", Validators.required],
+      endDate: ["", Validators.required],
       approvalStatus: ["", Validators.required],
       staffId: this.staffId,
       setCurrentDate: [""],
     });
   }
 
-  initHmoChangeForm() {
-    this.cardFormTitle = "HMO Change Request";
-    this.hmoChangeReqForm = this.formBuilder.group({
+  initHospitalChangeForm() {
+    this.cardFormTitle = "Hospital Change Request";
+    this.hospitalChangeReqForm = this.formBuilder.group({
       id: [0],
-      hmoId: ["", Validators.required],
-      suggestedHmo: ["", Validators.required],
+      hospitalId: ["", Validators.required],
+      suggestedHospital: ["", Validators.required],
       dateOfRequest: [
         { value: new Date().toLocaleDateString("en-CA"), disabled: true },
         Validators.required,
       ],
       expectedDateOfChange: ["", Validators.required],
-      hmoFile: ["", Validators.required],
+      hospitalFile: ["", Validators.required],
       staffId: this.staffId,
     });
   }
 
-  submitHmoForm(form: FormGroup) {
-    this.hmoChangeReqForm.get("dateOfRequest").enabled;
+  initBookHospitalForm() {
+    this.cardFormTitle = "Book Hospital Meeting";
+    this.bookHospitalForm = this.formBuilder.group({
+      id: [0],
+      hospitalId: ["", Validators.required],
+      dateOfRequest: [
+        { value: new Date().toLocaleDateString("en-CA"), disabled: true },
+        Validators.required,
+      ],
+      proposedMeetingDate: ["", Validators.required],
+      reasonsForMeeting: ["", Validators.required],
+      hospitalMeetingFile: ["", Validators.required],
+      staffId: this.staffId,
+    });
+  }
+
+  submitHospitalForm(form: FormGroup) {
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
     payload.approvalStatus = +payload.approvalStatus;
-    payload.hmoId = +payload.hmoId;
-    /* const formData = new FormData();
+    payload.hospitalId = +payload.hospitalId;
+    /*  const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.hmoForm.get(key).value);
-    } */
-
+      formData.append(key, this.hospitalForm.get(key).value);
+    }
+ */
     this.spinner = true;
-    return this.employeeService.postHmo(payload).subscribe(
+    return this.employeeService.postHospital(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
-          $("#hmo_modal").modal("hide");
+          $("#hospital_modal").modal("hide");
         }
-        this.getEmployeeHmo(this.staffId);
+        this.getEmployeeHospital(this.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -107,25 +124,24 @@ export class HmoComponent implements OnInit {
     );
   }
 
-  submitHmoChangeReqForm(form: FormGroup) {
-    this.hmoChangeReqForm.get("dateOfRequest").enable();
+  submitHospitalChangeReqForm(form: FormGroup) {
+    this.hospitalChangeReqForm.get("dateOfRequest").enable();
+
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    /* const payload = form.value;
-    payload.suggestedHmo = +payload.suggestedHmo;
-    payload.hmoId = +payload.hmoId; */
+    const payload = form.value;
+    payload.suggestedHospital = +payload.suggestedHmo;
+    payload.hospitalId = +payload.hospitalId;
     const formData = new FormData();
-    formData.append("approvalStatus", "2");
-    formData.append("contactPhoneNo", "09088777886");
     for (const key in form.value) {
       //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.hmoChangeReqForm.get(key)?.value);
+      formData.append(key, this.hospitalChangeReqForm.get(key).value);
     }
 
     this.spinner = true;
-    return this.employeeService.postHmoChangeRequest(formData).subscribe(
+    return this.employeeService.postHospitalChangeRequest(formData).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
@@ -133,6 +149,7 @@ export class HmoComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#hmo_req_change_modal").modal("hide");
         }
+        this.getEmployeeHospital(this.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -142,12 +159,44 @@ export class HmoComponent implements OnInit {
     );
   }
 
-  getEmployeeHmo(id: number) {
+  submitBookHospitalForm(form: FormGroup) {
+    this.bookHospitalForm.get("dateOfRequest").enable();
+
+    if (!form.valid) {
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+
+    const formData = new FormData();
+    for (const key in form.value) {
+      //console.log(key, this.identificationForm.get(key).value);
+      formData.append(key, this.bookHospitalForm.get(key).value);
+    }
+
+    this.spinner = true;
+    return this.employeeService.postBookHospitalMeeting(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          $("#hospital_book_meeting_modal").modal("hide");
+        }
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
+  }
+
+  getEmployeeHospital(id: number) {
     this.pageLoading = true;
-    this.employeeService.getHmoByStaffId(id).subscribe(
+    this.employeeService.getHospitalByStaffId(id).subscribe(
       (data) => {
         this.pageLoading = false;
-        this.employeeHmo = data.employeeList;
+        this.employeeHospital = data.employeeList;
       },
       (err) => {
         this.spinner = false;
@@ -181,12 +230,12 @@ export class HmoComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          return this.employeeService.deleteHmo(payload).subscribe(
+          return this.employeeService.deleteHospital(payload).subscribe(
             (res) => {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeHmo(this.staffId);
+                  this.getEmployeeHospital(this.staffId);
                 });
               } else {
                 swal.fire("Error", message, "error");
@@ -210,7 +259,7 @@ export class HmoComponent implements OnInit {
   checkAll(event: Event) {
     this.selectedId = this.utilitiesService.checkAllBoxes(
       event,
-      this.employeeHmo
+      this.employeeHospital
     );
   }
 

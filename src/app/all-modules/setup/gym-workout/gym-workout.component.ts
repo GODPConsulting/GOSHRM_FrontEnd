@@ -138,8 +138,7 @@ export class GymWorkoutComponent implements OnInit {
       contact_phone_number: ["", Validators.required],
       email: ["", Validators.required],
       address: ["", Validators.required],
-      ratings: ["", Validators.required],
-      other_comments: ["", Validators.required],
+      other_comments: [""],
     });
     this.gymWorkoutUploadForm = this.formBuilder.group({
       uploadInput: [""],

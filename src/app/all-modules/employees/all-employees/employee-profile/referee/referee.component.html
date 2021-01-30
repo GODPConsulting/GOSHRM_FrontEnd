@@ -7,8 +7,8 @@
                     (click)="downloadFile()" download><span class="hint-text">Download</span><i
                         class="fa fa-download"></i></a><a *ngIf="currentUserId === employeeId"
                     (click)="initRefereeForm()" class="hint edit-icon mr-1" data-toggle="modal"
-                    data-target="#referee_modal"><span class="hint-text">Add
-                        Referee</span><i class="fa fa-pencil"></i></a></h3>
+                    data-target="#referee_modal"><span class="hint-text">Add Referee</span><i
+                        class="fa fa-pencil"></i></a></h3>
             <div class="table-responsive">
                 <table class="table table-nowrap table-hover">
                     <thead>
@@ -46,7 +46,7 @@
                             <td>{{row.organization}}</td>
                             <td>{{row.address}}</td>
                             <td>{{row.confirmationReceived}}</td>
-                            <td>{{row.confirmationDate}}</td>
+                            <td>{{row.confirmationDate | date:"mediumDate"}}</td>
                             <td>{{row.approvalStatus}}</td>
                         </tr>
                     </tbody>
@@ -134,7 +134,6 @@
                                         <input class="form-control" type="date" formControlName="confirmationDate">
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Confirmation upload (file format)<span
@@ -162,8 +161,7 @@
                                             <small *ngIf="
                                             refereeForm.get('approvalStatus').invalid &&
                                             refereeForm.get('approvalStatus').touched
-                              " class="text-danger">
-                                                *Field is required</small>
+                              " class="text-danger"> *Field is required</small>
                                         </div>
                                     </div>
                                 </div>
@@ -176,7 +174,6 @@
                             <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
                     </div>
-
                 </form>
             </div>
         </div>
