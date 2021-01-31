@@ -27,9 +27,7 @@ export class HospitalComponent implements OnInit {
 
   // To hold data for each card
   employeeHospital: any[] = [];
-  // Observable to subscribe to in the template
-  allHospitals$: Observable<any> = this.setupService.getAllHospitals();
-  value = 3;
+  allHospitals$: Observable<any>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,6 +41,8 @@ export class HospitalComponent implements OnInit {
     this.initHospitalChangeForm();
     this.initBookHospitalForm();
     this.getEmployeeHospital(this.staffId);
+    // Observable to subscribe to in the template
+    this.allHospitals$ = this.setupService.getHospitalMgt();
   }
 
   initHospitalForm() {
@@ -125,9 +125,10 @@ export class HospitalComponent implements OnInit {
   }
 
   submitHospitalChangeReqForm(form: FormGroup) {
-    this.hospitalChangeReqForm.get("dateOfRequest").enable();
+    form.get("dateOfRequest").enable();
 
     if (!form.valid) {
+      form.get("dateOfRequest").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -152,6 +153,7 @@ export class HospitalComponent implements OnInit {
         this.getEmployeeHospital(this.staffId);
       },
       (err) => {
+        form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("Error", message, "error");
@@ -160,9 +162,10 @@ export class HospitalComponent implements OnInit {
   }
 
   submitBookHospitalForm(form: FormGroup) {
-    this.bookHospitalForm.get("dateOfRequest").enable();
+    form.get("dateOfRequest").enable();
 
     if (!form.valid) {
+      form.get("dateOfRequest").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -184,6 +187,7 @@ export class HospitalComponent implements OnInit {
         }
       },
       (err) => {
+        form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("Error", message, "error");
@@ -199,7 +203,7 @@ export class HospitalComponent implements OnInit {
         this.employeeHospital = data.employeeList;
       },
       (err) => {
-        this.spinner = false;
+        this.pageLoading = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("Error", message, "error");
       }

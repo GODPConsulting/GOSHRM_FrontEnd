@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SetupService } from "src/app/services/setup.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 
 declare const $: any;
@@ -29,7 +30,8 @@ export class JobSkillComponent implements OnInit {
     private formBuilder: FormBuilder,
     private setupService: SetupService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -51,46 +53,42 @@ export class JobSkillComponent implements OnInit {
       };
     });
 
-    //this.getSubSkill();
     this.initializeForm();
     this.initializeJobTitleForm();
-    //this.getJobTitle();
   }
 
   getSingleJobTitle(id: number) {
     this.pageLoading = true;
-    return this.setupService
-      .getData(`/hrmsetup/get/single/jobtitle?SetupId=${id}`)
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          //console.log("id", id);
+    return this.setupService.getSingleJobTitleById(id).subscribe(
+      (data) => {
+        this.pageLoading = false;
+        //console.log("id", id);
 
-          //console.log("data", data);
-          this.jobTitle = data.setuplist[0];
-          //this.rows = this.jobTitle.sub_Skills;
-          if (id !== 0) {
-            this.jobFormTitle = "Edit Job Title";
-            this.jobSkills = this.jobTitle.sub_Skills;
+        //console.log("data", data);
+        this.jobTitle = data.setuplist[0];
+        //this.rows = this.jobTitle.sub_Skills;
+        if (id !== 0) {
+          this.jobFormTitle = "Edit Job Title";
+          this.jobSkills = this.jobTitle.sub_Skills;
 
-            //this.rerender();
-            //console.log(this.jobTitle.job_title);
-            this.jobSkillForm.patchValue({
-              job_title: this.jobTitle.job_title,
-            });
-            //this.srch = [...this.rows];
-            this.jobTitleForm.patchValue({
-              id: this.jobTitle.id,
-              job_title: this.jobTitle.job_title,
-              job_description: this.jobTitle.job_description,
-            });
-          }
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
+          //this.rerender();
+          //console.log(this.jobTitle.job_title);
+          this.jobSkillForm.patchValue({
+            job_title: this.jobTitle.job_title,
+          });
+          //this.srch = [...this.rows];
+          this.jobTitleForm.patchValue({
+            id: this.jobTitle.id,
+            job_title: this.jobTitle.job_title,
+            job_description: this.jobTitle.job_description,
+          });
         }
-      );
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   // Add Job Title  Modal Api Call
@@ -105,56 +103,41 @@ export class JobSkillComponent implements OnInit {
 
     console.log(payload);
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/jobtitle", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          console.log(res);
-          this.jobTitleId = res.setup_id;
-          const message = res.status.message.friendlyMessage;
-          //console.log(message);
+    return this.setupService.addJobTitle(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        console.log(res);
+        this.jobTitleId = res.setup_id;
+        const message = res.status.message.friendlyMessage;
+        //console.log(message);
 
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            // Populate job title form field
-            this.jobTitleForm.patchValue({
-              id: payload.id,
-              job_title: payload.job_title,
-              job_description: payload.job_description,
-            });
-            //$("#add_job_title").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.router.navigate(["/setup/job-title", this.jobTitleId]);
-          // this.getJobDetail();
-          /* this.getSingleJobTitle(this.jobTitleId);
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          // Populate job title form field
+          this.jobTitleForm.patchValue({
+            id: payload.id,
+            job_title: payload.job_title,
+            job_description: payload.job_description,
+          });
+          //$("#add_job_title").modal("hide");
+        } else {
+          swal.fire("Error", message, "error");
+        }
+        this.router.navigate(["/setup/job-title", this.jobTitleId]);
+        // this.getJobDetail();
+        /* this.getSingleJobTitle(this.jobTitleId);
           this.jobDetailForm.patchValue({
             id: res.setup_id,
             job_title: payload.job_title,
             job_description: payload.job_description,
           }); */
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
-          swal.fire("Error", message, "error");
-        }
-      );
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event: Event) {
-    const file = (<HTMLInputElement>event.target).files[0];
-    this.jobSkillUploadForm.patchValue({
-      uploadInput: file,
-    });
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   downloadFile() {
@@ -207,28 +190,26 @@ export class JobSkillComponent implements OnInit {
       this.jobSkillUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/sub_skill", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.getSingleJobTitle(this.jobTitleId);
-            this.initializeForm();
-            $("#upload_sub_skill").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          //this.getSubSkill();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.uploadJobSkill(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.getSingleJobTitle(this.jobTitleId);
+          this.initializeForm();
+          $("#upload_sub_skill").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        //this.getSubSkill();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   /*  initializeForm() {
@@ -321,41 +302,37 @@ export class JobSkillComponent implements OnInit {
   // Add Job Skill  Modal Api Call
   addJobSkill(form: FormGroup) {
     const payload = form.value;
-    console.log(payload);
     //this.subSkillForm.get("job_title").enable();
     /* this.jobSkillForm.patchValue({
       job_details_Id: this.jobTitleId,
       job_title: payload.job_title,
     }); */
-    console.log(payload);
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/sub_skill", payload)
-      .subscribe(
-        (res) => {
-          const message = res.status.message.friendlyMessage;
-          //console.log(message);
-          this.spinner = false;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add_sub_skill").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          //this.getSubSkill();
-          this.getSingleJobTitle(this.jobTitleId);
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addJobSkill(payload).subscribe(
+      (res) => {
+        const message = res.status.message.friendlyMessage;
+        //console.log(message);
+        this.spinner = false;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add_sub_skill").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        //this.getSubSkill();
+        this.getSingleJobTitle(this.jobTitleId);
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   // Set Values To Edit Modal Form
@@ -396,48 +373,45 @@ export class JobSkillComponent implements OnInit {
       .then((result) => {
         //console.log(result);
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/sub_skill", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    //this.getSubSkill();
-                    this.getSingleJobTitle(this.jobTitleId);
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteJobSkill(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  //this.getSubSkill();
+                  this.getSingleJobTitle(this.jobTitleId);
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
   }
 
   checkAll(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.jobSkills.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.jobSkills
+    );
   }
 
   addItemId(event: Event, id: number) {
-    if ((<HTMLInputElement>event.target).checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
   }
 }

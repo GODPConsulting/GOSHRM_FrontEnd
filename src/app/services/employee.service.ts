@@ -8,7 +8,6 @@ import { ApiService } from "./api.service";
   providedIn: "root",
 })
 export class EmployeeService {
-  
   constructor(private apiService: ApiService) {}
 
   getEmployees() {
@@ -173,18 +172,17 @@ export class EmployeeService {
   }
 
   //Employee Skills
-  getSkillByStaffId(id: number)
-  {
-    return this.apiService.get(`/hrm/get/single/employee/skill/staffId?StaffId=${id}`);
+  getSkillByStaffId(id: number) {
+    return this.apiService.get(
+      `/hrm/get/single/employee/skill/staffId?StaffId=${id}`
+    );
   }
 
-  addSkill(payload: Object) 
-  {
+  addSkill(payload: Object) {
     return this.apiService.post(`/hrm/add/update/employee/skill`, payload);
   }
 
-  deleteSkills(payload) 
-  {
+  deleteSkills(payload) {
     return this.apiService.post(`/hrm/delete/employee/skill`, payload);
   }
 }

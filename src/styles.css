@@ -8584,3 +8584,10 @@ rating span {
   align-items: center;
   height: 30px;
 }
+
+/* Sticky tab-box */
+.tab-box {
+  position: sticky;
+  top: 62px;
+  z-index: 1002;
+}

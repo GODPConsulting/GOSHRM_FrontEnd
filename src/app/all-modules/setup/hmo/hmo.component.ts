@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 
 declare const $: any;
@@ -23,7 +24,8 @@ export class HmoComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -41,19 +43,6 @@ export class HmoComponent implements OnInit {
     };
     this.getHmo();
     this.initializeForm();
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event: Event) {
-    const file = (<HTMLInputElement>event.target).files[0];
-    this.hmoUploadForm.patchValue({
-      uploadInput: file,
-    });
   }
 
   downloadFile() {
@@ -95,27 +84,25 @@ export class HmoComponent implements OnInit {
     const formData = new FormData();
     formData.append("uploadInput", this.hmoUploadForm.get("uploadInput").value);
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/hmo", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#upload_hmo").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getHmo();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.uploadHmo(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#upload_hmo").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getHmo();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   openUploadModal() {
@@ -142,7 +129,7 @@ export class HmoComponent implements OnInit {
 
   getHmo() {
     this.pageLoading = true;
-    return this.setupService.getAllHmos().subscribe(
+    return this.setupService.getHmo().subscribe(
       (data) => {
         this.pageLoading = false;
         //console.log(data);
@@ -173,28 +160,26 @@ export class HmoComponent implements OnInit {
     const payload = form.value;
     console.log(payload);
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/hmo", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          //console.log(message);
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add_hmo").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getHmo();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addHmo(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        //console.log(message);
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add_hmo").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getHmo();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   // To Set Values To Edit Modal Form
@@ -234,47 +219,41 @@ export class HmoComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/hmo", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getHmo();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteHmo(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getHmo();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
   }
 
   checkAll(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.hmos.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+    this.selectedId = this.utilitiesService.checkAllBoxes(event, this.hmos);
   }
 
   addItemId(event: Event, id: number) {
-    if ((<HTMLInputElement>event.target).checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

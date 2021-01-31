@@ -1,54 +1,58 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmployeeService } from 'src/app/services/employee.service';
-import { SetupService } from 'src/app/services/setup.service';
-import { UtilitiesService } from 'src/app/services/utilities.service';
+import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { EmployeeService } from "src/app/services/employee.service";
+import { SetupService } from "src/app/services/setup.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: 'app-skills',
-  templateUrl: './skills.component.html',
-  styleUrls: ['./skills.component.css']
+  selector: "app-skills",
+  templateUrl: "./skills.component.html",
+  styleUrls: ["./skills.component.css"],
 })
 export class SkillsComponent implements OnInit {
-  employeeDetails: any = {};
-  currentUser: string[] = []; // contains the data of the current user
-  currentUserId: number;
-
-  ////
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
-  public selectedId: number[] = [];
-  public jobTitleId: number;
+  selectedId: number[] = [];
+  jobTitleId: number;
+  jobSkills: any[] = [
+    { skill: "test", id: 1, weight: 10 },
+    { skill: "try", id: 2, weight: 20 },
+    { skill: "hmm", id: 3, weight: 30 },
+  ];
   skillsForm: FormGroup;
-  public jobSkills: any[] = [];
-  public jobTitle;
   @ViewChild("fileInput")
   fileInput: ElementRef;
-
   @Input() staffId: number;
-///
- 
-   // To hold data for each card
-   employeeSkills: any = {};
-   staffs: any = {};
-   
+
+  // To hold data for each card
+  employeeSkills: any = {};
+  staffs: any = {};
+  jobTitle: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private utilitiesService: UtilitiesService,
-    private setupService: SetupService,
-  ) { }
+    private setupService: SetupService
+  ) {}
 
   ngOnInit(): void {
     //console.log(this.staffId);
     this.getEmployeeSkills(this.staffId);
     this.initSkillsForm();
     this.getSingleStaffById(this.staffId);
-    this.getSingleJobTitle(this.jobTitleId) ;
+
     //console.log(this.jobTitleId);
+  }
+
+  setWeight(event: Event) {
+    let chosenSkill = this.jobSkills.filter(
+      (skill) => skill.id == (<HTMLInputElement>event.target).value
+    );
+    this.skillsForm.get("expectedScore").setValue(chosenSkill[0].weight);
   }
 
   initSkillsForm() {
@@ -56,8 +60,8 @@ export class SkillsComponent implements OnInit {
     this.skillsForm = this.formBuilder.group({
       id: [0],
       skillId: ["", Validators.required],
-      expectedScore: ["", Validators.required],
-      actualScore: ["", Validators.required],
+      expectedScore: [{ value: "", disabled: true }, Validators.required],
+      actualScore: [""],
       proofOfSkills: ["", Validators.required],
       approvalStatus: ["", Validators.required],
       staffId: this.staffId,
@@ -71,7 +75,7 @@ export class SkillsComponent implements OnInit {
 
   getEmployeeSkills(id: number) {
     this.employeeService.getSkillByStaffId(id).subscribe((data) => {
-      if (data.employeeList) {
+      if (data) {
         this.employeeSkills = data.employeeList;
       }
     });
@@ -79,23 +83,42 @@ export class SkillsComponent implements OnInit {
 
   getSingleStaffById(id: number) {
     this.employeeService.getEmployeeById(id).subscribe((data) => {
-      if (data.staff) {
+      if (data) {
         this.staffs = data.employeeList;
+
         this.jobTitleId = data.employeeList[0].jobTitle;
-        console.log(this.jobTitleId)
+        console.log(this.jobTitleId);
+        this.getSingleJobTitle(this.jobTitleId);
       }
     });
   }
 
-  submitSkiilsForm(form: FormGroup) {
+  getSingleJobTitle(id: number) {
+    this.pageLoading = true;
+    return this.setupService.getSingleJobTitle(id).subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.jobTitle = data.setuplist[0];
+        this.jobSkills = this.jobTitle.sub_Skills;
+        console.log(this.jobSkills);
+      },
+      (err) => {
+        this.pageLoading = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
+  }
+
+  submitSkillsForm(form: FormGroup) {
     console.log(form.value);
 
+    form.get("expectedScore").enable();
     if (!form.valid) {
+      form.get("expectedScore").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = form.value;
-    payload.approval_status = +payload.approvalStatus;
     const formData = new FormData();
     for (const key in form.value) {
       //console.log(key, this.skillsForm.get(key).value);
@@ -114,35 +137,12 @@ export class SkillsComponent implements OnInit {
         this.getEmployeeSkills(this.staffId);
       },
       (err) => {
+        form.get("expectedScore").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("Error", message, "error");
       }
     );
-  }
-
-  getSingleJobTitle(id: number) {
-    this.pageLoading = true;
-    return this.setupService
-      .getData(`/hrmsetup/get/single/jobtitle?SetupId=${id}`)
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          //console.log("id", id);
-
-          //console.log("data", data);
-          this.jobTitle = data.setuplist[0];
-          //this.rows = this.jobTitle.sub_Skills;
-          if (id !== 0) {
-            this.jobSkills = this.jobTitle.sub_Skills;
-            console.log(this.jobSkills);
-          }
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
   }
 
   // Set Values To Edit Modal Form
@@ -161,15 +161,6 @@ export class SkillsComponent implements OnInit {
     $("#skills_modal").modal("show");
   }
 
-  // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
-  hack(val: any[]) {
-    return Array.from(val);
-  }
-
-  onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
-  }
-
   // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
@@ -183,7 +174,6 @@ export class SkillsComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -215,27 +205,23 @@ export class SkillsComponent implements OnInit {
     this.selectedId = [];
   }
 
-  addItemId(event, id: number) {
-    if (event.target.checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+  addItemId(event: Event, id: number) {
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.employeeSkills.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+  checkAll(event: Event) {
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.jobSkills
+    );
   }
 
+  // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
+  hack(val: any[]) {
+    return Array.from(val);
+  }
 
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
+  }
 }

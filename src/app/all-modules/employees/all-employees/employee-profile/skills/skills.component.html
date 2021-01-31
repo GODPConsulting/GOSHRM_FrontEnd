@@ -6,8 +6,8 @@
                     (click)="downloadFile()" download><span class="hint-text">Download</span><i
                         class="fa fa-download"></i></a><a *ngIf="currentUserId === employeeId"
                     (click)="initSkillsForm()" class="hint edit-icon mr-1" data-toggle="modal"
-                    data-target="#skills_modal"><span class="hint-text">Add
-                        Skills</span><i class="fa fa-pencil"></i></a></h3>
+                    data-target="#skills_modal"><span class="hint-text">Add Skills</span><i
+                        class="fa fa-pencil"></i></a></h3>
             <div class="table-responsive">
                 <table class="table table-nowrap table-hover">
                     <thead>
@@ -42,7 +42,6 @@
         </div>
     </div>
 </div>
-
 <!-- Skills Modal -->
 <div id="skills_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -54,14 +53,18 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="submitSkiilsForm(skillsForm)" [formGroup]="skillsForm">
+                <form (ngSubmit)="submitSkillsForm(skillsForm)" [formGroup]="skillsForm">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Skills</label>
-                                <input type="text" class="form-control" [class.invalid]="
+                                <select (change)="setWeight($event)" class="form-control" [class.invalid]="
                                 skillsForm.get('skillId').invalid &&
                                 skillsForm.get('skillId').touched" formControlName="skillId">
+                                    <option selected value="">Select Skills</option>
+                                    <option *ngFor="let skill of jobSkills" value="{{skill.id}}"> {{skill.skill}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
                                 skillsForm.get('skillId').invalid &&
                                 skillsForm.get('skillId').touched
@@ -69,8 +72,7 @@
                                     <small *ngIf="
                                     skillsForm.get('skillId').invalid &&
                                     skillsForm.get('skillId').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -79,8 +81,7 @@
                                 <label>Expected Score</label>
                                 <input type="number" class="form-control" [class.invalid]="
                                 skillsForm.get('expectedScore').invalid &&
-                                skillsForm.get('expectedScore').touched"
-                                    formControlName="expectedScore">
+                                skillsForm.get('expectedScore').touched" formControlName="expectedScore">
                                 <div *ngIf="
                                 skillsForm.get('expectedScore').invalid &&
                                 skillsForm.get('expectedScore').touched
@@ -88,15 +89,14 @@
                                     <small *ngIf="
                                     skillsForm.get('expectedScore').invalid &&
                                     skillsForm.get('expectedScore').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Actual Score<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <input class="form-control" type="number" [class.invalid]="
                                 skillsForm.get('actualScore').invalid &&
                                 skillsForm.get('actualScore').touched" formControlName="actualScore">
                                 <div *ngIf="
@@ -106,8 +106,7 @@
                                     <small *ngIf="
                                     skillsForm.get('actualScore').invalid &&
                                     skillsForm.get('actualScore').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -124,8 +123,7 @@
                                     <small *ngIf="
                                     skillsForm.get('proofOfSkills').invalid &&
                                     skillsForm.get('proofOfSkills').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -156,8 +154,7 @@
                                     <small *ngIf="
                                     skillsForm.get('approvalStatus').invalid &&
                                     skillsForm.get('approvalStatus').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>

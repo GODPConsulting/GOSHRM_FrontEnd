@@ -3,6 +3,7 @@ import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
 import { saveAs } from "file-saver";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 declare const $: any;
 @Component({
@@ -25,7 +26,8 @@ export class AcademicDisciplineComponent implements OnInit {
 
   constructor(
     private setupService: SetupService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -46,19 +48,6 @@ export class AcademicDisciplineComponent implements OnInit {
     this.getAcademicDisplines();
   }
 
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event) {
-    this.file = event.target.files[0];
-    this.academicDisciplineUploadForm.patchValue({
-      uploadInput: this.file,
-    });
-  }
-
   uploadAcademicDiscipline() {
     if (!this.file) {
       return swal.fire("Error", "Select a file", "error");
@@ -69,26 +58,24 @@ export class AcademicDisciplineComponent implements OnInit {
       this.academicDisciplineUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/academic/discipline", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            $("#upload_academic_discipline").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getAcademicDisplines();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.uploadAcademicDiscipline(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          $("#upload_academic_discipline").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getAcademicDisplines();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   downloadFile() {
@@ -147,18 +134,16 @@ export class AcademicDisciplineComponent implements OnInit {
 
   getAcademicDisplines() {
     this.pageLoading = true;
-    return this.setupService
-      .getData("/hrmsetup/get/all/academic/disciplines")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          this.disciplines = data.setuplist;
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
+    return this.setupService.getAcademicDisplines().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.disciplines = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   // Add Academic Discipline  Modal
@@ -169,27 +154,25 @@ export class AcademicDisciplineComponent implements OnInit {
     }
     const payload: object = form.value;
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/academic/discipline", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add_academic_discipline").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getAcademicDisplines();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addAcademicDiscipline(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add_academic_discipline").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getAcademicDisplines();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   // Set Values To Edit Modal Form
@@ -234,47 +217,44 @@ export class AcademicDisciplineComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/academic/discipline", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getAcademicDisplines();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteAcademicDiscipline(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getAcademicDisplines();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
   }
 
-  addItemId(event, id: number) {
-    if (event.target.checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+  addItemId(event: Event, id: number) {
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.disciplines.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+  checkAll(event: Event) {
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.disciplines
+    );
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

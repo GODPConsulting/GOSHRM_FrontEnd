@@ -303,11 +303,13 @@
         </div>
         <!-- /Assets Tab -->
         <!-- Careers Tab -->
-        <div id="emp_careers" class="tab-pane fade ">
+        <div id="emp_careers" class="tab-pane fade show active">
             <!-- Professional Certification card -->
             <app-prof-cert [staffId]="employeeId"></app-prof-cert>
-            <app-skills [staffId]="employeeId"></app-skills>
             <!-- /Professional Certification card -->
+            <!-- Skills card -->
+            <app-skills [staffId]="employeeId"></app-skills>
+            <!-- /Skills card -->
         </div>
         <!-- /Careers Tab -->
         <!--Hobbies Tab 
@@ -356,7 +358,7 @@
         </div>
          /Hobbies Tab -->
         <!-- Health and Wellness Tab -->
-        <div id="emp_health_well" class="tab-pane fade show active">
+        <div id="emp_health_well" class="tab-pane fade ">
             <!-- Hmo card -->
             <app-hmo [staffId]="employeeId"></app-hmo>
             <!-- /Hmo card -->
