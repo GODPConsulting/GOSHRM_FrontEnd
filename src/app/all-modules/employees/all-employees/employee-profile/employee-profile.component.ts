@@ -42,6 +42,9 @@ export class EmployeeProfileComponent implements OnInit {
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
+  selectedEmergencyId: any[] = []
+  selectedLanguageId: any[] = []
+  selectedQualificationId: any[] = []
 
   constructor(
     private formBuilder: FormBuilder,
@@ -188,11 +191,11 @@ export class EmployeeProfileComponent implements OnInit {
 
   deleteEmergencyContact() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectedEmergencyId.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
     } else {
       payload = {
-        itemIds: this.selectedId,
+        itemIds: this.selectedEmergencyId,
       };
       //console.log(this.selectedId);
     }
@@ -230,8 +233,8 @@ export class EmployeeProfileComponent implements OnInit {
     this.selectedId = [];
   }
 
-  checkAllBoxes(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+  checkAllEmergency(event: Event) {
+   this.selectedEmergencyId = this.utilitiesService.checkAllBoxes(event, this.emergencyContacts)
   }
 
   editEmergencyContact(item) {
@@ -348,6 +351,13 @@ export class EmployeeProfileComponent implements OnInit {
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
+
+
+  checkAllLanguage(event: Event) {
+    this.selectedLanguageId = this.utilitiesService.checkAllBoxes(event, this.languageRating)
+   }
+
+
 
   addItemId(event: Event, id: number) {
     if ((<HTMLInputElement>event.target).checked) {
@@ -496,6 +506,10 @@ export class EmployeeProfileComponent implements OnInit {
     $("#employee_qualification_modal").modal("hide");
     this.initEmployeeQualificationForm()
   }
+
+  checkAllQualification(event: Event) {
+    this.selectedQualificationId = this.utilitiesService.checkAllBoxes(event, this.employeeQualification)
+   }
 
   deleteEmployeeQualification() {
     let payload: object;

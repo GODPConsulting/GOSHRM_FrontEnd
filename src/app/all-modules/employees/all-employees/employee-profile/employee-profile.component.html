@@ -124,7 +124,7 @@
                                     <tr>
                                         <th>
                                             <input type="checkbox"
-                                                [checked]="selectedId.length === languageRating.length"
+                                                [checked]="selectedEmergencyId.length === emergencyContacts.length"
                                                 (change)="checkAllEmergency($event)" />
                                         </th>
                                         <th>S/N</th>
@@ -141,7 +141,7 @@
                                     <tr *ngFor="let item of emergencyContacts; let i = index"
                                         (click)="editEmergencyContact(item)" class="pointer">
                                         <td (click)="stopParentEvent($event)">
-                                            <input type="checkbox" [checked]="selectedId.includes(item.id)"
+                                            <input type="checkbox" [checked]="selectedEmergencyId.includes(item.id)"
                                                 (change)="addItemId($event, item.id)" />
                                         </td>
                                         <td>{{ i + 1 }}</td>
@@ -152,7 +152,6 @@
                                         <td>{{item.address}}</td>
                                         <td>{{item.countryName}}</td>
                                         <td>{{item.approval_status_name}}</td>
-
                                     </tr>
                                 </tbody>
                             </table>
@@ -182,8 +181,8 @@
                                         <tr>
                                             <th>
                                                 <input type="checkbox"
-                                                    [checked]="selectedId.length === languageRating.length"
-                                                    (change)="checkAll($event)" />
+                                                    [checked]="selectedLanguageId.length === languageRating.length"
+                                                    (change)="checkAllLanguage($event)" />
                                             </th>
                                             <th>S/N</th>
                                             <th>Language</th>
@@ -198,7 +197,7 @@
                                             (click)="editLanguageRating(language)" class="pointer"
                                             (click)="stopParentEvent($event)">
                                             <td (click)="stopParentEvent($event)">
-                                                <input type="checkbox" [checked]="selectedId.includes(language.id)"
+                                                <input type="checkbox" [checked]="selectedLanguageId.includes(language.id)"
                                                     (change)="addItemId($event, language.id)" />
                                             </td>
                                             <td>{{ i + 1 }}</td>
@@ -237,8 +236,8 @@
                                         <tr>
                                             <th>
                                                 <input type="checkbox"
-                                                    [checked]="selectedId.length === employeeQualification.length"
-                                                    (change)="checkAll($event)" />
+                                                    [checked]="selectedQualificationId.length === employeeQualification.length"
+                                                    (change)=" checkAllQualification($event)" />
                                             </th>
                                             <th>S/N</th>
                                             <th>Certificate</th>
@@ -254,7 +253,7 @@
                                             (click)="editEmployeeQualification(qualification)" class="pointer"
                                             (click)="stopParentEvent($event)">
                                             <td (click)="stopParentEvent($event)">
-                                                <input type="checkbox" [checked]="selectedId.includes(qualification.id)"
+                                                <input type="checkbox" [checked]="selectedQualificationId.includes(qualification.id)"
                                                     (change)="addItemId($event, qualification.id)" />
                                             </td>
                                             <td>{{ i + 1 }}</td>
