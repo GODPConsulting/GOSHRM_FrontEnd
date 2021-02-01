@@ -61,7 +61,7 @@ export class DependentContactComponent implements OnInit {
       address: ["", Validators.required],
       countryId: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      approvalStatus: ["", Validators.required],
+      Approval_status: ["", Validators.required],
       staffId: this.staffId,
       // identicationFile: ["", Validators.required],
     });
@@ -76,7 +76,7 @@ export class DependentContactComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    payload.approvalStatus = +payload.approvalStatus;
+    payload.Approval_status = +payload.Approval_status;
     payload.countryId = +payload.countryId;
     console.log(payload.countryId);
     // const formData = new FormData();
@@ -140,7 +140,7 @@ export class DependentContactComponent implements OnInit {
       countryId: row.countryId,
       // idIssues: row.idIssues,
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
-      approval_status_name: row.approval_status_name,
+      Approval_status: row.Approval_status,
       staffId: this.staffId,
       dependentContactFile: row.dependentContactFile,
     });

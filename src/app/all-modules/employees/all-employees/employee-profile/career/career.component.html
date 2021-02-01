@@ -158,10 +158,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Location<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" [class.invalid]="
+                                <select class="form-control" [class.invalid]="
                                 careerForm.get('locationId').invalid &&
                                 careerForm.get('locationId').touched" formControlName="locationId">
-
+                                    <option selected value="">Location</option>
+                                    <option *ngFor="let row of countries" value="{{row.id}}">{{row.location}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
                                 careerForm.get('locationId').invalid &&
                                 careerForm.get('locationId').touched

@@ -48,6 +48,7 @@ export class AssetsComponent implements OnInit {
     this.assetForm = this.formBuilder.group({
       id: [0],
       employeeName: ["", Validators.required],
+      locationId: ["", Validators.required],
       office: ["", Validators.required],
       assetName: ["", Validators.required],
       assetNumber: ["", Validators.required],
@@ -55,8 +56,8 @@ export class AssetsComponent implements OnInit {
       classification: ["", Validators.required],
       physicalCondition: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      requestApprovalStatusName: ["", Validators.required],
-      returnApprovalStatusName: ["", Validators.required],
+      requestApprovalStatus: ["", Validators.required],
+      returnApprovalStatus: ["", Validators.required],
       staffId: this.staffId,
       // identicationFile: ["", Validators.required],
     });
@@ -71,15 +72,19 @@ export class AssetsComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    payload.approvalStatus = +payload.approvalStatus;
-    const formData = new FormData();
+    payload.physicalCondition = +payload.physicalCondition;
+    payload.locationId = +payload.locationId;
+    payload.returnApprovalStatus = +payload.returnApprovalStatus;
+    payload.requestApprovalStatus = +payload.requestApprovalStatus;
+  
+    /* const formData = new FormData();
     for (const key in form.value) {
       //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.assetForm.get(key).value);
     }
-
+ */console.log(payload)
     this.spinner = true;
-    return this.employeeService.postAsset(formData).subscribe(
+    return this.employeeService.postAsset(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
@@ -112,7 +117,8 @@ export class AssetsComponent implements OnInit {
     //row.idExpiry_date = new Date(row.idExpiry_date).toLocaleDateString("en-CA");
     this.assetForm.patchValue({
       id: row.id,
-      employeeName: row.employeNamme,
+      employeeName: row.employeeName,
+      locationId: row.locationId,
       office: row.office,
       assetName: row.assetName,
       assetNumber: row.assetNumber,
@@ -121,9 +127,9 @@ export class AssetsComponent implements OnInit {
       physicalCondition: row.physicalCondition,
       // idIssues: row.idIssues,
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
-      requestApprovalStatusName: row.requestApprovalStatusName,
-      returnApprovalStatusName: row.returnApprovalStatusName,
-      staffId: this.staffId,
+      requestApprovalStatus: row.requestApprovalStatus,
+      returnApprovalStatus: row.returnApprovalStatus,
+      // staffId: this.staffId,
       assetFile: row.assetFile,
     });
     $("#asset_modal").modal("show");

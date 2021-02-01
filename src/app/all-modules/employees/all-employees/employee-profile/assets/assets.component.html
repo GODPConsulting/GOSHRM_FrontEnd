@@ -18,8 +18,8 @@
                                     (change)="checkAll($event)" />
                             </th>
                             <th>S/N</th>
-                            <th>Employee Name</th>
-                            <th>Office</th>
+                            <!-- <th>Employee Name</th>
+                            <th>Office</th> -->
                             <th>Asset Name</th>
                             <th>Asset Number</th>
                             <th>Description</th>
@@ -37,9 +37,9 @@
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{i +1}}</td>
-                            <td>{{row.employeeName}}</td>
-                            <td>{{row.staffId}}</td>
-                            <td>{{row.office}}</td>
+                            <!-- <td>{{row.employeeName}}</td>
+
+                            <td>{{row.office}}</td> -->
                             <td>{{row.assetName}}</td>
                             <td>{{row.assetNumber}}</td>
                             <td>{{row.description}}</td>
@@ -88,17 +88,17 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Staff Id <span class="text-danger">*</span></label>
+                                <label>Location Id <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" [class.invalid]="
-                                assetForm.get('staffId').invalid &&
-                                assetForm.get('staffId').touched" formControlName="staffId">
+                                assetForm.get('locationId').invalid &&
+                                assetForm.get('locationId').touched" formControlName="locationId">
                                 <div *ngIf="
-                                assetForm.get('staffId').invalid &&
-                                assetForm.get('staffId').touched
+                                assetForm.get('locationId').invalid &&
+                                assetForm.get('locationId').touched
                     ">
                                     <small *ngIf="
-                                    assetForm.get('staffId').invalid &&
-                                    assetForm.get('staffId').touched
+                                    assetForm.get('locationId').invalid &&
+                                    assetForm.get('locationId').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -221,21 +221,21 @@
                             <div class="form-group">
                                 <label>Request Approval Status <span class="text-danger">*</span></label>
                                 <select class="form-control" [class.invalid]="
-                                assetForm.get('requestApprovalStatusName').invalid &&
-                                assetForm.get('requestApprovalStatusName').touched"
-                                    formControlName="requestApprovalStatusName">
+                                assetForm.get('requestApprovalStatus').invalid &&
+                                assetForm.get('requestApprovalStatus').touched"
+                                    formControlName="requestApprovalStatus">
                                     <option selected value="">Select Status</option>
                                     <option value="1">Approve</option>
                                     <option value="2">Pending</option>
                                     <option value="3">Decline</option>
                                 </select>
                                 <div *ngIf="
-                                assetForm.get('requestApprovalStatusName').invalid &&
-                                assetForm.get('requestApprovalStatusName').touched
+                                assetForm.get('requestApprovalStatus').invalid &&
+                                assetForm.get('requestApprovalStatus').touched
                     ">
                                     <small *ngIf="
-                                    assetForm.get('requestApprovalStatusName').invalid &&
-                                    assetForm.get('requestApprovalStatusName').touched
+                                    assetForm.get('requestApprovalStatus').invalid &&
+                                    assetForm.get('requestApprovalStatus').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -245,9 +245,8 @@
                             <div class="form-group">
                                 <label>Return Approval Status</label>
                                 <select class="form-control" [class.invalid]="
-                                assetForm.get('returnApprovalStatusName').invalid &&
-                                assetForm.get('returnApprovalStatusName').touched"
-                                    formControlName="returnApprovalStatusName">
+                                assetForm.get('returnApprovalStatus').invalid &&
+                                assetForm.get('returnApprovalStatus').touched" formControlName="returnApprovalStatus">
                                     <option selected value="">Select Status</option>
                                     <option value="1">Approve</option>
                                     <option value="2">Pending</option>
@@ -255,12 +254,12 @@
                                     <option value="4">Not Returned</option>
                                 </select>
                                 <div *ngIf="
-                                assetForm.get('returnApprovalStatusName').invalid &&
-                                assetForm.get('returnApprovalStatusName').touched
+                                assetForm.get('returnApprovalStatus').invalid &&
+                                assetForm.get('returnApprovalStatus').touched
                     ">
                                     <small *ngIf="
-                                    assetForm.get('returnApprovalStatusName').invalid &&
-                                    assetForm.get('returnApprovalStatusName').touched
+                                    assetForm.get('returnApprovalStatus').invalid &&
+                                    assetForm.get('returnApprovalStatus').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>

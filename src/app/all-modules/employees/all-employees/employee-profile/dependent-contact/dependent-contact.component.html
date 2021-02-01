@@ -44,7 +44,7 @@
                             <td>{{row.dateOfBirth}}</td>
                             <td>{{row.address}}</td>
                             <td>{{row.countryId}}</td>
-                            <td>{{row.approval_status_name}}</td>
+                            <td>{{row.Approval_status}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -202,20 +202,20 @@
                             <div class="form-group">
                                 <label>Approval Status</label>
                                 <select class="form-control" [class.invalid]="
-                                dependentContactForm.get('approvalStatus').invalid &&
-                                dependentContactForm.get('approvalStatus').touched" formControlName="approvalStatus">
+                                dependentContactForm.get('Approval_status').invalid &&
+                                dependentContactForm.get('Approval_status').touched" formControlName="Approval_status">
                                     <option selected value="">Select Status</option>
                                     <option value="1">Approve</option>
                                     <option value="2">Pending</option>
                                     <option value="3">Decline</option>
                                 </select>
                                 <div *ngIf="
-                                dependentContactForm.get('approvalStatus').invalid &&
-                                dependentContactForm.get('approvalStatus').touched
+                                dependentContactForm.get('Approval_status').invalid &&
+                                dependentContactForm.get('Approval_status').touched
                     ">
                                     <small *ngIf="
-                                    dependentContactForm.get('approvalStatus').invalid &&
-                                    dependentContactForm.get('approvalStatus').touched
+                                    dependentContactForm.get('Approval_status').invalid &&
+                                    dependentContactForm.get('Approval_status').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
