@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 declare const $: any;
 @Component({
@@ -21,7 +22,8 @@ export class AcademicGradeComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -54,19 +56,6 @@ export class AcademicGradeComponent implements OnInit {
           console.log(err);
         }
       );
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event) {
-    this.file = event.target.files[0];
-    this.academicGradeUploadForm.patchValue({
-      uploadInput: this.file,
-    });
   }
 
   downloadFile() {
@@ -117,27 +106,25 @@ export class AcademicGradeComponent implements OnInit {
       this.academicGradeUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/academic/grade", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#upload_academic_grade").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getAcademicGrade();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.uploadAcademicGrade(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#upload_academic_grade").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getAcademicGrade();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   initializeForm() {
@@ -145,7 +132,7 @@ export class AcademicGradeComponent implements OnInit {
     this.academicGradeForm = this.formBuilder.group({
       id: [0],
       grade: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
       rank: ["", Validators.required],
     });
 
@@ -178,28 +165,26 @@ export class AcademicGradeComponent implements OnInit {
     const payload = form.value;
     payload.rank = +payload.rank;
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/academic/grade", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          //console.log(message);
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add-academic-grade").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getAcademicGrade();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addAcademicDiscipline(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        //console.log(message);
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add-academic-grade").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getAcademicGrade();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   // Set Values To Edit Modal Form
@@ -236,49 +221,43 @@ export class AcademicGradeComponent implements OnInit {
       .then((result) => {
         //console.log(result);
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/academic/grade", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getAcademicGrade();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteAcademicGrade(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getAcademicGrade();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
   }
 
   // Checks all items in table
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.grades.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+  checkAll(event: Event) {
+    this.selectedId = this.utilitiesService.checkAllBoxes(event, this.grades);
   }
 
   // Adds selected items to an array for multi delete
-  addItemId(event, id: number) {
-    if (event.target.checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+  addItemId(event: Event, id: number) {
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

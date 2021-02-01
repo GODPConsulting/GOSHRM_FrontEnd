@@ -24,7 +24,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -40,10 +39,7 @@
                             <th>Code</th>
                             <th>Phone Number</th>
                             <th>Email</th>
-                            <!-- <th>Address</th>
-                            <th>Reg Date</th> -->
                             <th>Rating</th>
-                            <!-- <th>Comments</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -58,10 +54,7 @@
                             <td>{{ row.hmo_code }}</td>
                             <td>{{ row.contact_phone_number }}</td>
                             <td>{{ row.contact_email }}</td>
-                            <!-- <td>{{ row.address }}</td>
-                            <td>{{ row.reg_date | date }}</td> -->
                             <td>{{ row.rating }}</td>
-                            <!-- <td>{{ row.other_comments }}</td> -->
                         </tr>
                     </tbody>
                 </table>
@@ -70,7 +63,6 @@
     </div>
 </div>
 <!-- /Page Content -->
-
 <!-- Add HMO Modal -->
 <div id="add_hmo" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -98,8 +90,7 @@
                                     <small *ngIf="
                                     hmoForm.get('hmo_name').invalid &&
                                     hmoForm.get('hmo_name').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -117,8 +108,7 @@
                                     <small *ngIf="
                                     hmoForm.get('hmo_code').invalid &&
                                     hmoForm.get('hmo_code').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -136,8 +126,7 @@
                                     <small *ngIf="
                                     hmoForm.get('contact_phone_number').invalid &&
                                     hmoForm.get('contact_phone_number').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -155,8 +144,7 @@
                                     <small *ngIf="
                                     hmoForm.get('contact_email').invalid &&
                                     hmoForm.get('contact_email').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -175,31 +163,10 @@
                                     <small *ngIf="
                                     hmoForm.get('reg_date').invalid &&
                                     hmoForm.get('reg_date').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Rating<span class="text-danger">*</span></label>
-                                <input class="form-control" type="number" [class.invalid]="
-                                hmoForm.get('rating').invalid &&
-                                hmoForm.get('rating').touched
-                    " formControlName="rating" min="1" max="5" />
-                                <div *ngIf="
-                                hmoForm.get('rating').invalid &&
-                                hmoForm.get('rating').touched
-                    ">
-                                    <small *ngIf="
-                                    hmoForm.get('rating').invalid &&
-                                    hmoForm.get('rating').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Address <span class="text-danger">*</span></label>
@@ -214,8 +181,7 @@
                                     <small *ngIf="
                                     hmoForm.get('address').invalid &&
                                     hmoForm.get('address').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -233,8 +199,7 @@
                                     <small *ngIf="
                                     hmoForm.get('other_comments').invalid &&
                                     hmoForm.get('other_comments').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -251,7 +216,6 @@
     </div>
 </div>
 <!-- /Add HMO Modal -->
-
 <!-- Upload HMO Modal -->
 <div id="upload_hmo" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -265,18 +229,14 @@
             <div class="modal-body px-5">
                 <form (ngSubmit)="uploadHmo()" [formGroup]="hmoUploadForm">
                     <div class="row">
-
                         <div class="form-group row">
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                                    (change)="onSelectedFile($event)">
+                                    (change)="onSelectedFile($event,hmoUploadForm)">
                             </div>
                         </div>
-
                     </div>
-
-
                     <div class="row">
                         <p>Please use the guide below for your sheet</p>
                         <table class="table table-bordered">
@@ -286,11 +246,9 @@
                                 <th>Phone Number</th>
                                 <th>Email</th>
                                 <th>Rating</th>
-
                             </tr>
                         </table>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadHmo()"
                             [disabled]="spinner">

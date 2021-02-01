@@ -7,8 +7,8 @@
                     (click)="downloadFile()" download><span class="hint-text">Download</span><i
                         class="fa fa-download"></i></a><a *ngIf="currentUserId === employeeId"
                     (click)="initProfCertForm()" class="hint edit-icon mr-1" data-toggle="modal"
-                    data-target="#prof_cert_modal"><span class="hint-text">Add
-                        Professional Certification</span><i class="fa fa-pencil"></i></a></h3>
+                    data-target="#prof_cert_modal"><span class="hint-text">Add Professional Certification</span><i
+                        class="fa fa-pencil"></i></a></h3>
             <div class="table-responsive">
                 <app-loading *ngIf="pageLoading"></app-loading>
                 <table *ngIf="!pageLoading" class="table table-nowrap table-hover">
@@ -23,7 +23,6 @@
                             <th>Institution</th>
                             <th>Date Granted</th>
                             <th>Expiry Date</th>
-                            <th>Attachment</th>
                             <th>Approval Status</th>
                         </tr>
                     </thead>
@@ -35,11 +34,10 @@
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{i +1}}</td>
-                            <td>{{certification}}</td>
+                            <td>{{row.certificateName}}</td>
                             <td>{{row.institution}}</td>
-                            <td>{{row.dateGranted}}</td>
-                            <td>{{row.expiryDate | date :"mediumDate"}}</td>
-                            <td>{{row.attachment}}</td>
+                            <td>{{row.dateGranted | date :"mediumDate"}}</td>
+                            <td>{{row.expiryDate==="Present"? row.expiryDate: row.expiryDate | date :"mediumDate"}}</td>
                             <td>{{row.approvalStatus}}</td>
                         </tr>
                     </tbody>
@@ -65,9 +63,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Certification</label>
-                                <input type="text" class="form-control" [class.invalid]="
+                                <select class="form-control" [class.invalid]="
                                 profCertForm.get('certificationId').invalid &&
                                 profCertForm.get('certificationId').touched" formControlName="certificationId">
+                                    <option selected value="">Select Certificate</option>
+                                    <option *ngFor="let certificate of (allCertificates$ |async)?.setuplist"
+                                        value="{{certificate.id}}">{{certificate.certification}}</option>
+                                </select>
                                 <div *ngIf="
                                 profCertForm.get('certificationId').invalid &&
                                 profCertForm.get('certificationId').touched
@@ -75,15 +77,14 @@
                                     <small *ngIf="
                                     profCertForm.get('certificationId').invalid &&
                                     profCertForm.get('certificationId').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Institution</label>
-                                <input type="number" class="form-control" [class.invalid]="
+                                <input type="text" class="form-control" [class.invalid]="
                                 profCertForm.get('institution').invalid &&
                                 profCertForm.get('institution').touched" formControlName="institution">
                                 <div *ngIf="
@@ -93,15 +94,16 @@
                                     <small *ngIf="
                                     profCertForm.get('institution').invalid &&
                                     profCertForm.get('institution').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Start Date <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" [class.invalid]="
+                                <label>Date Granted <span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
                                 profCertForm.get('dateGranted').invalid &&
                                 profCertForm.get('dateGranted').touched" formControlName="dateGranted">
                                 <div *ngIf="
@@ -111,15 +113,21 @@
                                     <small *ngIf="
                                     profCertForm.get('dateGranted').invalid &&
                                     profCertForm.get('dateGranted').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>End Date <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" [class.invalid]="
+                                <label>Expiry Date <span class="text-danger">*</span></label>
+                                <span class="float-right ">
+                                    <input type="checkbox" name="currentDate" value=""
+                                        (change)="setDateToPresent($event,profCertForm,'expiryDate')">
+                                    <label for="currentDate" class="mx-1">Does not expire</label>
+                                </span>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
                                     profCertForm.get('expiryDate').invalid &&
                                     profCertForm.get('expiryDate').touched" formControlName="expiryDate">
                                 <div *ngIf="
@@ -129,8 +137,28 @@
                                     <small *ngIf="
                                     profCertForm.get('expiryDate').invalid &&
                                     profCertForm.get('expiryDate').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Grade</label>
+                                <select class="form-control" [class.invalid]="
+                                profCertForm.get('gradeId').invalid &&
+                                profCertForm.get('gradeId').touched" formControlName="gradeId">
+                                    <option selected value="">Select Job Grade</option>
+                                    <option *ngFor="let jobGrade of (allJobGrades$ | async)?.setuplist"
+                                        value="{{jobGrade.id}}">{{jobGrade.job_grade}}</option>
+                                </select>
+                                <div *ngIf="
+                                profCertForm.get('gradeId').invalid &&
+                                profCertForm.get('gradeId').touched
+                    ">
+                                    <small *ngIf="
+                                    profCertForm.get('gradeId').invalid &&
+                                    profCertForm.get('gradeId').touched
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -141,27 +169,6 @@
                                     (change)="onSelectedFile($event,profCertForm)" [class.invalid]="
                                     profCertForm.get('profCertificationFile').invalid &&
                                     profCertForm.get('profCertificationFile').touched">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Grade</label>
-                                <select class="form-control" [class.invalid]="
-                                profCertForm.get('gradeId').invalid &&
-                                profCertForm.get('gradeId').touched" formControlName="gradeId">
-                                    <option selected value="">Get from JG setup</option>
-
-                                </select>
-                                <div *ngIf="
-                                profCertForm.get('gradeId').invalid &&
-                                profCertForm.get('gradeId').touched
-                    ">
-                                    <small *ngIf="
-                                    profCertForm.get('gradeId').invalid &&
-                                    profCertForm.get('gradeId').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -182,8 +189,7 @@
                                     <small *ngIf="
                                     profCertForm.get('approvalStatus').invalid &&
                                     profCertForm.get('approvalStatus').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>

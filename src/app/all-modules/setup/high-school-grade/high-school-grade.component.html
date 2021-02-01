@@ -24,7 +24,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -59,7 +58,6 @@
     </div>
 </div>
 <!-- /Page Content -->
-
 <!-- Add High School Grade Modal -->
 <div id="add_high_school_grade" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -85,8 +83,7 @@
                             <small *ngIf="
                                     highSchoolGradeForm.get('grade').invalid &&
                                     highSchoolGradeForm.get('grade').touched
-                      " class="text-danger">
-                                *Grade Field is required</small>
+                      " class="text-danger"> *Grade Field is required</small>
                         </div>
                     </div>
                     <div class="form-group">
@@ -102,8 +99,7 @@
                             <small *ngIf="
                                     highSchoolGradeForm.get('rank').invalid &&
                                     highSchoolGradeForm.get('rank').touched
-                      " class="text-danger">
-                                *Rank Field is required</small>
+                      " class="text-danger"> *Rank Field is required</small>
                         </div>
                     </div>
                     <div class="form-group">
@@ -119,14 +115,11 @@
                             <small *ngIf="
                                     highSchoolGradeForm.get('description').invalid &&
                                     highSchoolGradeForm.get('description').touched
-                      " class="text-danger">
-                                *Description Field is required</small>
+                      " class="text-danger"> *Description Field is required</small>
                         </div>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">
-                            Submit
-                        </button>
+                        <button class="btn btn-primary submit-btn" type="submit"> Submit </button>
                     </div>
                 </form>
             </div>
@@ -134,7 +127,6 @@
     </div>
 </div>
 <!-- /Add High School Grade Modal -->
-
 <!-- Upload High School Grade Modal -->
 <div id="upload_high_school_grade" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -148,18 +140,14 @@
             <div class="modal-body px-5">
                 <form (ngSubmit)="uploadHighSchoolGrade()" [formGroup]="highSchoolGradeUploadForm">
                     <div class="row">
-
                         <div class="form-group row">
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                                    (change)="onSelectedFile($event)">
+                                    (change)="onSelectedFile($event,highSchoolGradeUploadForm)">
                             </div>
                         </div>
-
                     </div>
-
-
                     <div class="row">
                         <p>Please use the guide below for your sheet</p>
                         <table class="table table-bordered">
@@ -170,7 +158,6 @@
                             </tr>
                         </table>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadHighSchoolGrade()"
                             [disabled]="spinner">

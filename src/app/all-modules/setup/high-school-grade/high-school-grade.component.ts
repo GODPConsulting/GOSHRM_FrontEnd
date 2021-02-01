@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 
 declare const $: any;
@@ -22,7 +23,8 @@ export class HighSchoolGradeComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -40,19 +42,6 @@ export class HighSchoolGradeComponent implements OnInit {
     };
     this.getHighSchoolGrade();
     this.initializeForm();
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event: Event) {
-    const file = (<HTMLInputElement>event.target).files[0];
-    this.highSchoolGradeUploadForm.patchValue({
-      uploadInput: file,
-    });
   }
 
   downloadFile() {
@@ -103,27 +92,25 @@ export class HighSchoolGradeComponent implements OnInit {
     );
 
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/highschoolgrade", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#upload_high_school_grade").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getHighSchoolGrade();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.uploadHighSchoolGrade(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#upload_high_school_grade").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getHighSchoolGrade();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   openUploadModal() {
@@ -136,7 +123,7 @@ export class HighSchoolGradeComponent implements OnInit {
     this.highSchoolGradeForm = this.formBuilder.group({
       id: [0],
       grade: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
       rank: ["", Validators.required],
     });
     this.highSchoolGradeUploadForm = this.formBuilder.group({
@@ -146,19 +133,17 @@ export class HighSchoolGradeComponent implements OnInit {
 
   getHighSchoolGrade() {
     this.pageLoading = true;
-    return this.setupService
-      .getData("/hrmsetup/get/all/highschoolgrades")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          //console.log(data);
-          this.grades = data.setuplist;
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
+    return this.setupService.getHighSchoolGrade().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        //console.log(data);
+        this.grades = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   // Add employee  Modal Api Call
@@ -169,28 +154,26 @@ export class HighSchoolGradeComponent implements OnInit {
     }
     const payload = form.value;
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/highschoolgrade", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          //console.log(message);
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add_high_school_grade").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getHighSchoolGrade();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addHighSchoolGrade(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        //console.log(message);
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add_high_school_grade").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getHighSchoolGrade();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   openModal() {
@@ -202,16 +185,6 @@ export class HighSchoolGradeComponent implements OnInit {
     this.initializeForm();
   }
 
-  checkAll(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.grades.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
-  }
-
   editHighSchoolGrade(row) {
     this.formTitle = "Edit High School Grade";
     this.highSchoolGradeForm.patchValue({
@@ -221,18 +194,6 @@ export class HighSchoolGradeComponent implements OnInit {
       description: row.description,
     });
     $("#add_high_school_grade").modal("show");
-  }
-
-  addItemId(event: Event, id: number) {
-    if ((<HTMLInputElement>event.target).checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
   }
 
   delete() {
@@ -256,25 +217,41 @@ export class HighSchoolGradeComponent implements OnInit {
       .then((result) => {
         //console.log(result);
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/highschoolgrade", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getHighSchoolGrade();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteHighSchoolGrade(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getHighSchoolGrade();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
+  }
+
+  checkAll(event: Event) {
+    this.selectedId = this.utilitiesService.checkAllBoxes(event, this.grades);
+  }
+
+  addItemId(event: Event, id: number) {
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 }

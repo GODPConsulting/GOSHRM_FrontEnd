@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 declare const $: any;
 @Component({
@@ -22,7 +23,8 @@ export class ProfCertificationComponent implements OnInit {
 
   constructor(
     private setupService: SetupService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -40,19 +42,6 @@ export class ProfCertificationComponent implements OnInit {
     };
     this.initializeForm();
     this.getprofCertification();
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event: Event) {
-    const file = (<HTMLInputElement>event.target).files[0];
-    this.profCertUploadForm.patchValue({
-      uploadInput: file,
-    });
   }
 
   downloadFile() {
@@ -102,27 +91,25 @@ export class ProfCertificationComponent implements OnInit {
       this.profCertUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/prof_certification", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#upload_prof_certification").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getprofCertification();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.uploadProfCert(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#upload_prof_certification").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getprofCertification();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   openUploadModal() {
@@ -134,7 +121,7 @@ export class ProfCertificationComponent implements OnInit {
     this.profCertificationForm = this.formBuilder.group({
       id: [0],
       certification: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
       rank: ["", Validators.required],
     });
     this.profCertUploadForm = this.formBuilder.group({
@@ -144,18 +131,16 @@ export class ProfCertificationComponent implements OnInit {
 
   getprofCertification() {
     this.pageLoading = true;
-    return this.setupService
-      .getData("/hrmsetup/get/all/prof_certification")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          this.certifications = data.setuplist;
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
+    return this.setupService.getProfCerts().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.certifications = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   // Add Professional Certification Api Call
@@ -167,27 +152,25 @@ export class ProfCertificationComponent implements OnInit {
     const payload = form.value;
     payload.rank = parseInt(payload.rank); //continue from here
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/prof_certification", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = true;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add-prof-certification").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getprofCertification();
-        },
-        (err) => {
-          this.spinner = true;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addProfCert(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add-prof-certification").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getprofCertification();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
@@ -232,47 +215,44 @@ export class ProfCertificationComponent implements OnInit {
       .then((result) => {
         //console.log(result);
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/prof_certification", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getprofCertification();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteProfCert(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getprofCertification();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
   }
 
   addItemId(event: Event, id: number) {
-    if ((<HTMLInputElement>event.target).checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
   checkAll(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.certifications.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.certifications
+    );
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

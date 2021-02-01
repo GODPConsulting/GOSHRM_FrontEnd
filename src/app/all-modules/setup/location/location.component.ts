@@ -1,14 +1,15 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SetupService } from 'src/app/services/setup.service';
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { SetupService } from "src/app/services/setup.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 
 declare const $: any;
 
 @Component({
-  selector: 'app-location',
-  templateUrl: './location.component.html',
-  styleUrls: ['./location.component.css', "../setup.component.css"]
+  selector: "app-location",
+  templateUrl: "./location.component.html",
+  styleUrls: ["./location.component.css", "../setup.component.css"],
 })
 export class LocationComponent implements OnInit {
   public formTitle: string = "Add Location";
@@ -26,7 +27,8 @@ export class LocationComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -45,11 +47,6 @@ export class LocationComponent implements OnInit {
     this.getLocation();
     this.getCountry();
     this.initializeForm();
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
   }
 
   downloadFile() {
@@ -84,14 +81,6 @@ export class LocationComponent implements OnInit {
     );
   }
 
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event) {
-    const file = event.target.files[0];
-    this.locationUploadForm.patchValue({
-      uploadInput: file,
-    });
-  }
-
   uploadLocation() {
     if (!this.locationUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
@@ -102,29 +91,27 @@ export class LocationComponent implements OnInit {
       this.locationUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/location", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
+    return this.setupService.uploadLocation(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
 
-          if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
-            this.initializeForm();
-            this.fileInput.nativeElement.value = "";
-            $("#upload_location").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getLocation();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("Success", message, "success");
+          this.initializeForm();
+          this.fileInput.nativeElement.value = "";
+          $("#upload_location").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getLocation();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   initializeForm() {
@@ -135,7 +122,7 @@ export class LocationComponent implements OnInit {
       city: ["", Validators.required],
       stateId: ["", Validators.required],
       countryId: ["", Validators.required],
-      additionalInformation: ["", Validators.required],
+      additionalInformation: [""],
     });
     //initialize upload form
     this.locationUploadForm = this.formBuilder.group({
@@ -160,7 +147,7 @@ export class LocationComponent implements OnInit {
 
   getLocation() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/location").subscribe(
+    return this.setupService.getLocation().subscribe(
       (data) => {
         this.pageLoading = false;
         this.locations = data.setuplist;
@@ -184,27 +171,25 @@ export class LocationComponent implements OnInit {
     this.spinner = true;
     payload.stateId = +payload.stateId;
     payload.countryId = +payload.countryId;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/location", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
-            this.initializeForm();
-            $("#add_location").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getLocation();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addLocation(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("Success", message, "success");
+          this.initializeForm();
+          $("#add_location").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getLocation();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   delete() {
@@ -227,23 +212,21 @@ export class LocationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/location", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
-                    this.getLocation();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteLocation(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("Success", message, "success").then(() => {
+                  this.getLocation();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
@@ -265,53 +248,55 @@ export class LocationComponent implements OnInit {
     $("#add_location").modal("show");
   }
 
+  /* Put in utilities service */
   getCountry() {
     this.pageLoading = true;
-   return this.setupService.getData("/common/countries").subscribe(
-     (data) => {
-       this.pageLoading = false;
-       this.countries = data.commonLookups;
-     },
-     (err) => {
-       this.pageLoading = false;
-       console.log(err);
-     }
-   );
- }
-
- getStatesByCountryId(id) {
-   this.pageLoading = true;
-  return this.setupService.getData(`/common/get/states/countryId?CountryId=${id}`).subscribe(
-   (data) => {
-     this.pageLoading= false;
-     this.states = data.commonLookups;
-   },
-   (err) => {
-     this.pageLoading = false;
-     console.log(err);
-   }
- );
- }
-
-  checkAll(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.locations.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+    return this.setupService.getData("/common/countries").subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.countries = data.commonLookups;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
+  getStatesByCountryId(id) {
+    this.pageLoading = true;
+    return this.setupService
+      .getData(`/common/get/states/countryId?CountryId=${id}`)
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          this.states = data.commonLookups;
+        },
+        (err) => {
+          this.pageLoading = false;
+          console.log(err);
+        }
+      );
+  }
+
+  /* Put in utilities service */
+
   addItemId(event: Event, id: number) {
-    if ((<HTMLInputElement>event.target).checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
+  }
+
+  checkAll(event: Event) {
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.locations
+    );
+  }
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

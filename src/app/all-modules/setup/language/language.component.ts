@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 declare const $: any;
 @Component({
@@ -23,7 +24,8 @@ export class LanguageComponent implements OnInit {
 
   constructor(
     private setupService: SetupService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -41,19 +43,6 @@ export class LanguageComponent implements OnInit {
     };
     this.initializeForm();
     this.getLanguages();
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event: Event) {
-    const file = (<HTMLInputElement>event.target).files[0];
-    this.languageUploadForm.patchValue({
-      uploadInput: file,
-    });
   }
 
   downloadFile() {
@@ -98,28 +87,26 @@ export class LanguageComponent implements OnInit {
       this.languageUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/language", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
+    return this.setupService.uploadLanguage(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
 
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#upload_language").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getLanguages();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#upload_language").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getLanguages();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   openUploadModal() {
@@ -131,7 +118,7 @@ export class LanguageComponent implements OnInit {
     this.languageForm = this.formBuilder.group({
       id: [0],
       language: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
     });
     this.languageUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -140,7 +127,7 @@ export class LanguageComponent implements OnInit {
 
   getLanguages() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/languages").subscribe(
+    return this.setupService.getLanguage().subscribe(
       (data) => {
         this.pageLoading = false;
         //console.log(data);
@@ -169,29 +156,27 @@ export class LanguageComponent implements OnInit {
     }
     const payload = form.value;
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/language", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          //console.log(message);
+    return this.setupService.addLanguage(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        //console.log(message);
 
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            //this.initializeForm();
-            $("#add_language").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getLanguages();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          //this.initializeForm();
+          $("#add_language").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getLanguages();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   delete() {
@@ -216,23 +201,21 @@ export class LanguageComponent implements OnInit {
         //console.log(result);
 
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/language", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getLanguages();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteLanguage(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getLanguages();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
@@ -243,30 +226,29 @@ export class LanguageComponent implements OnInit {
     this.languageForm.patchValue({
       id: row.id,
       language: row.language,
-      description: row.description
+      description: row.description,
     });
     $("#add_language").modal("show");
   }
 
   addItemId(event: Event, id: number) {
-    if ((<HTMLInputElement>event.target).checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
   checkAll(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.languages.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.languages
+    );
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

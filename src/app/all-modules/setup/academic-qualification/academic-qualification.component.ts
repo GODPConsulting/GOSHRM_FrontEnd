@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 import swal from "sweetalert2";
 
@@ -27,7 +28,8 @@ export class AcademicQualificationComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -45,19 +47,6 @@ export class AcademicQualificationComponent implements OnInit {
     };
     this.getAcademicQualifications();
     this.initializeForm();
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event) {
-    this.file = event.target.files[0];
-    this.academicQualificationUploadForm.patchValue({
-      uploadInput: this.file,
-    });
   }
 
   downloadFile() {
@@ -107,36 +96,34 @@ export class AcademicQualificationComponent implements OnInit {
       this.academicQualificationUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/academic/qualification", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
+    return this.setupService.uploadAcademicDiscipline(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
 
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            this.fileInput.nativeElement.value = "";
-            $("#upload_academic_qualification").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getAcademicQualifications();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          this.fileInput.nativeElement.value = "";
+          $("#upload_academic_qualification").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getAcademicQualifications();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   initializeForm() {
     this.academicQualificationForm = this.formBuilder.group({
       id: [0],
       qualification: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
       rank: ["", Validators.required],
     });
     this.academicQualificationUploadForm = this.formBuilder.group({
@@ -146,19 +133,17 @@ export class AcademicQualificationComponent implements OnInit {
 
   getAcademicQualifications() {
     this.pageLoading = true;
-    return this.setupService
-      .getData("/hrmsetup/get/all/academic/qualifications")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          //console.log(data);
-          this.qualifications = data.setuplist;
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
+    return this.setupService.getAcademicQualification().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        //console.log(data);
+        this.qualifications = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   // Add Academic Qualification
@@ -169,27 +154,25 @@ export class AcademicQualificationComponent implements OnInit {
     }
     const payload: object = form.value;
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/academic/qualification", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add_academic_qualification").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getAcademicQualifications();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addAcademicQualification(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add_academic_qualification").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getAcademicQualifications();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   delete() {
@@ -213,7 +196,7 @@ export class AcademicQualificationComponent implements OnInit {
       .then((result) => {
         if (result.value) {
           return this.setupService
-            .deleteData("/hrmsetup/delete/academic/qualification", payload)
+            .deleteAcademicQualification(payload)
             .subscribe(
               (res) => {
                 const message = res.status.message.friendlyMessage;
@@ -260,25 +243,24 @@ export class AcademicQualificationComponent implements OnInit {
     this.initializeForm();
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.qualifications.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+  checkAll(event: Event) {
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.qualifications
+    );
   }
 
-  addItemId(event, id: number) {
-    if (event.target.checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+  addItemId(event: Event, id: number) {
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

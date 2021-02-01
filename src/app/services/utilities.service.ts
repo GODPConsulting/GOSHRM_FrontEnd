@@ -8,6 +8,7 @@ import { ApiService } from "./api.service";
 export class UtilitiesService {
   getCountryUrl: string = "/common/countries";
 
+  getLocationUrl: string = "/hrmsetup/get/all/location";
   constructor(private apiService: ApiService) {}
 
   // Appends a selected file to the form property
@@ -37,7 +38,19 @@ export class UtilitiesService {
     return [];
   }
 
+  setDateToPresent(event: Event, form: FormGroup, formControlName: string) {
+    if ((<HTMLInputElement>event.target).checked) {
+      form.get(formControlName).setValue("Present");
+    } else {
+      form.get(formControlName).setValue("");
+    }
+  }
+
   getCountry() {
     return this.apiService.get(this.getCountryUrl);
+  }
+
+  getLocation() {
+    return this.apiService.get(this.getLocationUrl);
   }
 }

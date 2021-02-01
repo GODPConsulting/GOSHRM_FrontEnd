@@ -5,7 +5,6 @@ import { data } from "jquery";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
-import { isEmpty } from "lodash";
 import { AuthService } from "src/app/services/auth.service";
 declare const $: any;
 
@@ -52,7 +51,7 @@ export class EmployeeProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private utilitiesService: UtilitiesService,
     private authService: AuthService
-  ) { }
+  ) {}
   initializeForm() {
     this.emergencyContactForm = this.formBuilder.group({
       id: [0],
@@ -123,7 +122,7 @@ export class EmployeeProfileComponent implements OnInit {
     this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
         //console.log(this.employeeDetails);
-        this.employeeDetails = data.staff[0];
+        this.employeeDetails = data.employeeList[0];
         this.pageLoading = false;
         console.log(this.employeeDetails);
       },
@@ -142,7 +141,6 @@ export class EmployeeProfileComponent implements OnInit {
     payload.staffId = this.employeeId;
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
-
 
     this.pageLoading = true;
     this.employeeService.addEmergencyContact(payload).subscribe(
@@ -179,8 +177,6 @@ export class EmployeeProfileComponent implements OnInit {
   getSavedEmergencyContact(id: number) {
     return this.employeeService.getEmergencyContactByStaffId(id).subscribe(
       (data) => {
-
-
         this.emergencyContacts = data.employeeList;
       },
       (err) => {
@@ -211,23 +207,21 @@ export class EmployeeProfileComponent implements OnInit {
         //console.log(result);
 
         if (result.value) {
-          return this.employeeService
-            .deleteEmergencyContact(payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getSavedEmergencyContact(this.employeeId);
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.employeeService.deleteEmergencyContact(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getSavedEmergencyContact(this.employeeId);
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
@@ -250,15 +244,13 @@ export class EmployeeProfileComponent implements OnInit {
       approval_status: item.approval_status,
       approval_status_name: item.approval_status_name,
       staffId: item.staffId,
-    })
+    });
     $("#emergency_contact_modal").modal("show");
   }
 
   closeModal() {
     $("#emergency_contact_modal").modal("hide");
-    this.initializeForm()
-
-
+    this.initializeForm();
   }
   /* Emergency Contact */
 
@@ -274,7 +266,6 @@ export class EmployeeProfileComponent implements OnInit {
     this.pageLoading = true;
     this.employeeService.addLanguageRating(payload).subscribe(
       (data) => {
-
         this.pageLoading = false;
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
@@ -315,23 +306,21 @@ export class EmployeeProfileComponent implements OnInit {
         //console.log(result);
 
         if (result.value) {
-          return this.employeeService
-            .deleteLanguageRating(payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getSavedLanguageRating(this.employeeId);
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.employeeService.deleteLanguageRating(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getSavedLanguageRating(this.employeeId);
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
@@ -394,7 +383,7 @@ export class EmployeeProfileComponent implements OnInit {
       approval_status: language.approval_status,
       approval_status_name: language.approval_status_name,
       staffId: language.staffId,
-    })
+    });
     $("#language_rating_modal").modal("show");
   }
 
@@ -556,5 +545,3 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
 }
-
-

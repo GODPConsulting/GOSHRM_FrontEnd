@@ -24,7 +24,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -42,7 +41,6 @@
                             <th>Contact Number</th>
                             <th>Email</th>
                             <th>Rating</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -66,7 +64,6 @@
     </div>
 </div>
 <!-- /Page Content -->
-
 <!-- Add Hospital Management Modal -->
 <div id="addHospitalManagement" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -94,8 +91,7 @@
                                     <small *ngIf="
                                     hospitalManagementForm.get('hospital').invalid &&
                                     hospitalManagementForm.get('hospital').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -105,16 +101,15 @@
                                 <select class="form-control" [class.invalid]="hospitalManagementForm.get('hmoId').invalid &&
                                 hospitalManagementForm.get('hmoId').touched" formControlName="hmoId">
                                     <option selected value="">Select Hmo</option>
-                                    <option *ngFor="let row of hmos" value="{{row.id}}">{{row.hmo_name}}
-                                    </option>
+                                    <option *ngFor="let row of hmos" value="{{row.id}}">{{row.hmo_name}} </option>
                                 </select>
                                 <div *ngIf="
                                 hospitalManagementForm.get('hmoId').invalid &&
                                 hospitalManagementForm.get('hmoId').touched">
                                     <small *ngIf="
                                     hospitalManagementForm.get('hmoId').invalid &&
-                                    hospitalManagementForm.get('hmoId').touched" class="text-danger">
-                                        *Field is required</small>
+                                    hospitalManagementForm.get('hmoId').touched" class="text-danger"> *Field is
+                                        required</small>
                                 </div>
                             </div>
                         </div>
@@ -132,8 +127,7 @@
                                     <small *ngIf="
                                     hospitalManagementForm.get('contactPhoneNo').invalid &&
                                     hospitalManagementForm.get('contactPhoneNo').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -151,8 +145,7 @@
                                     <small *ngIf="
                                     hospitalManagementForm.get('email').invalid &&
                                     hospitalManagementForm.get('email').touched
-                                    " class="text-danger">
-                                        *Field is required</small>
+                                    " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -162,7 +155,7 @@
                                 <textarea class="form-control" rows="4" type="text" [class.invalid]="
                                 hospitalManagementForm.get('address').invalid &&
                                 hospitalManagementForm.get('address').touched
-                                " formControlName="address" ></textarea>
+                                " formControlName="address"></textarea>
                                 <div *ngIf="
                                 hospitalManagementForm.get('address').invalid &&
                                 hospitalManagementForm.get('address').touched
@@ -170,12 +163,10 @@
                                     <small *ngIf="
                                     hospitalManagementForm.get('address').invalid &&
                                     hospitalManagementForm.get('address').touched
-                                    " class="text-danger">
-                                        *Field is required</small>
+                                    " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Other Comments </label>
@@ -196,26 +187,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label class="col-form-label">Rating <span class="text-danger">*</span></label>
-                            <input class="form-control" type="number" min="1" [class.invalid]="
-                            hospitalManagementForm.get('rating').invalid &&
-                            hospitalManagementForm.get('rating').touched
-                            " formControlName="rating" />
-                            <div *ngIf="
-                            hospitalManagementForm.get('rating').invalid &&
-                            hospitalManagementForm.get('rating').touched
-                            ">
-                                <small *ngIf="
-                                hospitalManagementForm.get('rating').invalid &&
-                                hospitalManagementForm.get('rating').touched
-                                " class="text-danger">
-                                    *Field is required</small>
-                            </div>
-                        </div>
-                    </div>
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
                             <span *ngIf="!spinner">Submit</span>
@@ -228,7 +199,6 @@
     </div>
 </div>
 <!-- /Add Hospital Mangement Modal -->
-
 <!-- Upload Hospital Mangement Modal -->
 <div id="uploadHospitalManagement" class="modal custom-modal fade " role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -242,18 +212,14 @@
             <div class="modal-body px-5">
                 <form (ngSubmit)="uploadHospitalManagement()" [formGroup]="hospitalManagementUploadForm">
                     <div class="row">
-
                         <div class="form-group row">
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                                    (change)="onSelectedFile($event)">
+                                    (change)="onSelectedFile($event,hospitalManagementUploadForm)">
                             </div>
                         </div>
-
                     </div>
-
-
                     <div class="row">
                         <p>Please use the guide below for your sheet</p>
                         <table class="table table-bordered">
@@ -268,7 +234,6 @@
                             </tr>
                         </table>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadHospitalManagement()"
                             [disabled]="spinner">

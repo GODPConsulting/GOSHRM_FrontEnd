@@ -1,8 +1,6 @@
 <app-loading *ngIf="pageLoading"></app-loading>
-
 <!-- Page Content -->
 <div *ngIf="!pageLoading" class="content container-fluid">
-
     <!-- Page Header -->
     <div class="page-header">
         <div class="row">
@@ -16,7 +14,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="card mb-0">
         <div class="card-body">
             <div class="row">
@@ -32,10 +29,9 @@
                                 <div class="col-md-5">
                                     <div class="profile-info-left">
                                         <h3 class="user-name m-t-0 mb-0">{{employeeDetails.firstName}}
-                                            {{employeeDetails.middleName}}
-                                            {{employeeDetails.lastName}}</h3>
+                                            {{employeeDetails.middleName}} {{employeeDetails.lastName}}</h3>
                                         <!-- <h6 class="text-muted">{{employeeDetails.jobTitleName}}</h6> -->
-                                        <small class="text-muted">{{employeeDetails.jobTitleName}} Web Designer</small>
+                                        <small class="text-muted">{{employeeDetails.jobTitleName}}</small>
                                         <div class="staff-id">Staff Code : {{employeeDetails.staffCode}}</div>
                                         <div class="small doj text-muted">Date of Join : 1st Jan 2013(unavailable)</div>
                                         <div class="staff-msg"><a class="btn btn-custom" routerLink="/apps/chat">Send
@@ -76,28 +72,25 @@
             </div>
         </div>
     </div>
-
     <div class="card tab-box">
         <div class="row user-tabs">
             <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
                 <ul class="nav nav-tabs nav-tabs-bottom">
-                    <li class="nav-item"><a href="#emp_profile" data-toggle="tab" class="nav-link ">Profile</a>
+                    <li class="nav-item"><a href="#emp_profile" data-toggle="tab" class="nav-link active">Profile</a>
                     </li>
                     <li class="nav-item"><a href="#emp_assets" data-toggle="tab" class="nav-link">Assets</a></li>
-                    <li class="nav-item"><a href="#emp_careers" data-toggle="tab" class="nav-link active">Careers</a>
+                    <li class="nav-item"><a href="#emp_careers" data-toggle="tab" class="nav-link ">Careers</a>
                     </li>
                     <li class="nav-item"><a href="#emp_hobbies" data-toggle="tab" class="nav-link">Hobbies</a></li>
-                    <li class="nav-item"><a href="#emp_health_well" data-toggle="tab" class="nav-link ">Health an
+                    <li class="nav-item"><a href="#emp_health_well" data-toggle="tab" class="nav-link ">Health and
                             Wellness</a></li>
                 </ul>
             </div>
         </div>
     </div>
-
     <div class="tab-content">
-
         <!-- Profile Info Tab -->
-        <div id="emp_profile" class="pro-overview tab-pane fade  ">
+        <div id="emp_profile" class="pro-overview tab-pane fade show active ">
             <!-- Identification Card -->
             <div>
                 <app-identification [staffId]="employeeId"></app-identification>
@@ -159,7 +152,6 @@
                     </div>
                 </div>
                 <!-- /Emergency Contact -->
-
                 <!-- Language -->
                 <div>
                     <div class="card profile-box flex-fill">
@@ -210,7 +202,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -277,132 +268,59 @@
             <!-- Referee Card -->
             <app-referee [staffId]="employeeId"></app-referee>
             <!-- /Referee Card -->
-
-
-
-            <!-- Dependent Cotacts -->
+            <!-- Dependent Contact Tab -->
             <div>
-                <div class="card profile-box flex-fill">
-                    <div class="card-body">
-                        <h3 class="card-title">Dependent Cotacts<a class="edit-icon" data-toggle="modal"
-                                data-target="#dependent_contacts_modal"><i class="fa fa-pencil"></i></a></h3>
-                        <div class="table-responsive">
-                            <table class="table table-nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>Full Name</th>
-                                        <th>Phone No.</th>
-                                        <th>Email</th>
-                                        <th>Date of Birth</th>
-                                        <th>Relationship</th>
-                                        <th>Address</th>
-                                        <th>Country</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Leo leo</td>
-                                        <td>0900000000</td>
-                                        <td>elo@godp.co.uk</td>
-                                        <td>Feb 16th, 2019</td>
-                                        <td>Brother</td>
-                                        <td>ikeja</td>
-                                        <td>Nigeria</td>
-                                        <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a aria-expanded="false" data-toggle="dropdown"
-                                                    class="action-icon dropdown-toggle"><i
-                                                        class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item"><i class="fa fa-pencil m-r-5"></i>
-                                                        Edit</a>
-                                                    <a class="dropdown-item"><i class="fa fa-trash-o m-r-5"></i>
-                                                        Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <app-dependent-contact [staffId]="employeeId"></app-dependent-contact>
             </div>
-            <!-- /Dependent Cotacts -->
-
-
+            <!-- /dependent Contact Tab-->
         </div>
         <!-- /Profile Info Tab -->
-
-        <!-- Assets Tab -->
+        <!--Assets Tab -->
         <div id="emp_assets" class="tab-pane fade">
-            <div class="row">
-                <div class="col-md-6 d-flex">
-                    <div class="card profile-box flex-fill">
-                        <div class="card-body">
-                            <h3 class="card-title">Assets <a class="edit-icon" data-toggle="modal"
-                                    data-target="#assets_contact_modal"><i class="fa fa-pencil"></i></a></h3>
-                            <!-- <h5 class="section-title">Primary</h5>
-                             <br> -->
-                            <ul class="personal-info">
-                                <li>
-                                    <div class="title">Asset Name</div>
-                                    <div class="text">GODP Shares</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Asset No. </div>
-                                    <div class="text">GODP101</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Description</div>
-                                    <div class="text">Good news from GOD.</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Classification</div>
-                                    <div class="text">19</div>
-                                </li>
-                                <hr>
-                                <li>
-                                    <div class="title">Physical Condition </div>
-                                    <div class="text">Active</div>
-                                </li>
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
-
-                <!-- assets Contact Modal -->
+            <!-- Assets card -->
+            <div>
+                <app-assets [staffId]="employeeId"></app-assets>
             </div>
+            <!-- Assets card -->
         </div>
         <!-- /Assets Tab -->
-
         <!-- Careers Tab -->
-        <div id="emp_careers" class="tab-pane fade show active">
+        <div id="emp_careers" class="tab-pane fade ">
+            <!-- Career card -->
+            <app-career [staffId]="employeeId"></app-career>
+            <!-- /Career card -->
             <!-- Professional Certification card -->
             <app-prof-cert [staffId]="employeeId"></app-prof-cert>
             <!-- /Professional Certification card -->
+            <!-- Skills card -->
+            <app-skills [staffId]="employeeId"></app-skills>
+            <!-- /Skills card -->
         </div>
         <!-- /Careers Tab -->
-
-
-
+        <!--Hobbies Tab -->
+        <div id="emp_hobbies" class=" tab-pane fade">
+            <!-- Hobbies Card -->
+            <div>
+                <app-hobbies [staffId]="employeeId"></app-hobbies>
+            </div>
+        </div>
+        <!-- /Hobbies Tab -->
         <!-- Health and Wellness Tab -->
         <div id="emp_health_well" class="tab-pane fade ">
-            <!-- Hmo card -->
-            <app-hmo [staffId]="employeeId"></app-hmo>
-            <!-- /Hmo card -->
+            <!-- Employee Hmo card -->
+            <app-employee-hmo [staffId]="employeeId"></app-employee-hmo>
+            <!-- Employee /Hmo card -->
+            <!-- Hospital card -->
+            <app-hospital [staffId]="employeeId"></app-hospital>
+            <!-- /Hospital card -->
+            <!-- Employee Gym card -->
+            <app-employee-gym [staffId]="employeeId"></app-employee-gym>
+            <!-- /Employee Gym card -->
         </div>
         <!-- /Health and Wellness Tab -->
     </div>
-
 </div>
-
 <!-- Pop up Modals below -->
-
 <!-- Emergency Contact Modal -->
 <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -452,8 +370,7 @@
                                         emergencyContactForm.get('countryId').touched" formControlName="countryId">
                                             <option selected value="">Country</option>
                                             <option *ngFor="let row of countries" value="{{row.lookupId}}">
-                                                {{row.lookupName}}
-                                            </option>
+                                                {{row.lookupName}} </option>
                                         </select>
                                     </div>
                                 </div>
@@ -471,14 +388,12 @@
                                             <option value="1">Approved</option>
                                             <option value="2">Pending</option>
                                             <option value="3">Declined</option>
-
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             <span *ngIf="!loading">Submit</span>
@@ -501,7 +416,6 @@
                     (click)="closelanguageRatingModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
-
             </div>
             <div class="modal-body">
                 <form (ngSubmit)="addLanguageRating(languageRatingForm)" [formGroup]="languageRatingForm">
@@ -509,20 +423,17 @@
                         <div class="card-body">
                             <h3 class="card-title">Language Rating</h3>
                             <div class="row">
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Language<span class="text-danger">*</span></label>
                                         <select class="form-control" [class.invalid]="languageRatingForm.get('languageId').invalid &&
                                         languageRatingForm.get('languageId').touched" formControlName="languageId">
                                             <option selected value="">Languages</option>
-                                            <option *ngFor="let row of languages" value="{{row.id}}">
-                                                {{row.language}}
+                                            <option *ngFor="let row of languages" value="{{row.id}}"> {{row.language}}
                                             </option>
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Reading Rating <span class="text-danger">*</span></label>
@@ -549,14 +460,12 @@
                                             <option value="1">Approved</option>
                                             <option value="2">Pending</option>
                                             <option value="3">Declined</option>
-
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             <span *ngIf="!loading">Submit</span>
