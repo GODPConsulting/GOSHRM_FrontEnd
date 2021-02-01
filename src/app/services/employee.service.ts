@@ -171,6 +171,53 @@ export class EmployeeService {
     );
   }
 
+  getHobbyByStaffId(id: number) {
+    return this.apiService.get(`/hrm/get/single/employee/hobby/staffId?StaffId=${id}`);
+  }
+
+  postHobby(payload: Object) {
+    return this.apiService.post("/hrm/add/update/employee/hobby", payload);
+  }
+
+  deleteHobby(payload) {
+    return this.apiService.post("/hrm/delete/employee/hobby", payload);
+  }
+
+  getAssetByStaffId(id: number) {
+    return this.apiService.get(`/hrm/get/single/employee/asset/staffId?StaffId=${id}`);
+  }
+
+  postAsset(payload: Object) {
+    return this.apiService.post("/hrm/add/update/employee/asset", payload);
+  }
+
+  deleteAsset(payload) {
+    return this.apiService.post("/hrm/delete/employee/asset", payload);
+  }
+
+  getDependentContactByStaffId(id: number) {
+    return this.apiService.get(`/hrm/get/single/employee/dependent_contact/staffId?StaffId=${id}`);
+  }
+
+  postDependentContact(payload: Object) {
+    return this.apiService.post("/hrm/add/update/employee/dependent_contact", payload);
+  }
+
+  deleteDependentContact(payload) {
+    return this.apiService.post("/hrm/delete/employee/dependent_contact", payload);
+  }
+
+  getCareerByStaffId(id: number) {
+    return this.apiService.get(`/hrm/get/single/employee/career/staffId?StaffId=${id}`);
+  }
+
+  postCareer(payload: Object) {
+    return this.apiService.post("/hrm/add/update/employee/career", payload);
+  }
+
+  deleteCareer(payload) {
+    return this.apiService.post("/hrm/delete/employee/career", payload);
+  }
   //Employee Skills
   getSkillByStaffId(id: number) {
     return this.apiService.get(
