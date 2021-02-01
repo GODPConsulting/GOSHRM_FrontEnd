@@ -116,7 +116,7 @@ export class JobGradeComponent implements OnInit {
       job_grade_reporting_to: ["", Validators.required],
       rank: ["", Validators.required],
       probation_period_in_months: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
     });
     //initialize upload form
     this.jobGradeUploadForm = this.formBuilder.group({

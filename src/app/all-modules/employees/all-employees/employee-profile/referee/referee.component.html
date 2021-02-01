@@ -131,7 +131,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Confirmation Date <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="date" formControlName="confirmationDate">
+                                        <input class="form-control datetimepicker" type="date" bsDatepicker
+                                            [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                            formControlName="confirmationDate">
                                     </div>
                                 </div>
                                 <div class="col-md-6">

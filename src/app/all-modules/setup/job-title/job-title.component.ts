@@ -117,7 +117,7 @@ export class JobTitleComponent implements OnInit {
     this.jobTitleForm = this.formBuilder.group({
       id: [0],
       job_title: ["", Validators.required],
-      job_description: ["", Validators.required],
+      job_description: [""],
     });
     this.jobTitleUploadForm = this.formBuilder.group({
       uploadInput: [""],

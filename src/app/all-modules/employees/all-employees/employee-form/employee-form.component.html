@@ -68,7 +68,8 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-form-label">Date Of Birth <span class="text-danger">*</span></label>
-                        <input class="form-control" type="date"
+                        <input class="form-control datetimepicker" type="date" bsDatepicker
+                            [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
                             [class.invalid]="EmployeeForm.get('dateOfBirth').invalid && EmployeeForm.get('dateOfBirth').touched"
                             formControlName="dateOfBirth">
                         <div *ngIf="EmployeeForm.get('dateOfBirth').invalid && EmployeeForm.get('dateOfBirth').touched">
@@ -95,27 +96,23 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-form-label">Job Title<span class="text-danger">*</span></label>
                         <select class="form-control" [class.invalid]="EmployeeForm.get('jobTitle').invalid &&
                         EmployeeForm.get('jobTitle').touched" formControlName="jobTitle">
                             <option selected value="">Select Job Title</option>
-                            <option *ngFor="let row of jobTitles" value="{{row.id}}">{{row.job_title}}
-                            </option>
+                            <option *ngFor="let row of jobTitles" value="{{row.id}}">{{row.job_title}} </option>
                         </select>
                         <div *ngIf="
                         EmployeeForm.get('jobTitle').invalid &&
                         EmployeeForm.get('jobTitle').touched">
                             <small *ngIf="
                             EmployeeForm.get('jobTitle').invalid &&
-                            EmployeeForm.get('jobTitle').touched" class="text-danger">
-                                *Field is required</small>
+                            EmployeeForm.get('jobTitle').touched" class="text-danger"> *Field is required</small>
                         </div>
                     </div>
                 </div>
-
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-form-label">Email <span class="text-danger">*</span></label>
@@ -135,16 +132,14 @@
                         EmployeeForm.get('countryId').touched" formControlName="countryId"
                             (change)=getStatesByCountryId($event.target.value)>
                             <option selected value="">Country</option>
-                            <option *ngFor="let row of countries" value="{{row.lookupId}}">{{row.lookupName}}
-                            </option>
+                            <option *ngFor="let row of countries" value="{{row.lookupId}}">{{row.lookupName}} </option>
                         </select>
                         <div *ngIf="
                         EmployeeForm.get('countryId').invalid &&
                         EmployeeForm.get('countryId').touched">
                             <small *ngIf="
                             EmployeeForm.get('countryId').invalid &&
-                            EmployeeForm.get('countryId').touched" class="text-danger">
-                                *Field is required</small>
+                            EmployeeForm.get('countryId').touched" class="text-danger"> *Field is required</small>
                         </div>
                     </div>
                 </div>
@@ -155,9 +150,7 @@
                             [class.invalid]="EmployeeForm.get('stateId').invalid && EmployeeForm.get('stateId').touched"
                             formControlName="stateId">
                             <option>Select State</option>
-                            <option *ngFor="let row of states" value="{{row.lookupId}}">{{row.lookupName}}
-                            </option>
-
+                            <option *ngFor="let row of states" value="{{row.lookupId}}">{{row.lookupName}} </option>
                         </select>
                         <div *ngIf="EmployeeForm.get('stateId').invalid && EmployeeForm.get('stateId').touched">
                             <small *ngIf="EmployeeForm.get('stateId').invalid && EmployeeForm.get('stateId').touched"
@@ -221,9 +214,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
             <h5>User Credentials</h5>
             <hr>
             <div class="row">
@@ -262,8 +253,6 @@
                                     [ngModelOptions]="{standalone: true}" /> {{item.roleName}}
                             </ng-template>
                         </ng-select>
-
-
                         <div
                             *ngIf="EmployeeForm.get('userRoleNames').invalid && EmployeeForm.get('userRoleNames').touched">
                             <small
@@ -297,8 +286,7 @@
                             formControlName="accessLevelId"
                             (change)=getAccessLevelsByAccessLevelId($event.target.value)>
                             <option>Select Access</option>
-                            <option *ngFor="let row of access" value="{{row.structureDefinitionId}}">
-                                {{row.definition}}
+                            <option *ngFor="let row of access" value="{{row.structureDefinitionId}}"> {{row.definition}}
                             </option>
                         </select>
                         <div

@@ -118,7 +118,7 @@ export class LanguageComponent implements OnInit {
     this.languageForm = this.formBuilder.group({
       id: [0],
       language: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
     });
     this.languageUploadForm = this.formBuilder.group({
       uploadInput: [""],

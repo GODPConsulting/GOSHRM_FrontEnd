@@ -117,7 +117,7 @@ export class AcademicGradeComponent implements OnInit {
     this.academicGradeForm = this.formBuilder.group({
       id: [0],
       grade: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
       rank: ["", Validators.required],
     });
 

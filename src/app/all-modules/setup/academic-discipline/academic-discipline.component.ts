@@ -124,7 +124,7 @@ export class AcademicDisciplineComponent implements OnInit {
     this.academicDisciplineForm = this.formBuilder.group({
       id: [0],
       discipline: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
       rank: ["", Validators.required],
     });
     this.academicDisciplineUploadForm = this.formBuilder.group({

@@ -123,7 +123,7 @@ export class HighSchoolGradeComponent implements OnInit {
     this.highSchoolGradeForm = this.formBuilder.group({
       id: [0],
       grade: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
       rank: ["", Validators.required],
     });
     this.highSchoolGradeUploadForm = this.formBuilder.group({

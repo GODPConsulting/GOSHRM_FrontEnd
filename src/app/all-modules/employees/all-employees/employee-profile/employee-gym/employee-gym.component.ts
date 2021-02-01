@@ -127,14 +127,12 @@ export class EmployeeGymComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = form.value;
-    payload.suggestedGym = +payload.suggestedGym;
-    payload.gymId = +payload.gymId;
+
     const formData = new FormData();
     for (const key in form.value) {
       formData.append(key, this.gymChangeReqForm.get(key).value);
     }
-
+    form.get("dateOfRequest").disable();
     this.spinner = true;
     return this.employeeService.postGymChangeRequest(formData).subscribe(
       (res) => {
@@ -169,7 +167,7 @@ export class EmployeeGymComponent implements OnInit {
       //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.bookGymForm.get(key).value);
     }
-
+    form.get("dateOfRequest").disable();
     this.spinner = true;
     return this.employeeService.postBookGymMeeting(formData).subscribe(
       (res) => {

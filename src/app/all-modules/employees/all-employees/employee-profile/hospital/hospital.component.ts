@@ -140,7 +140,7 @@ export class HospitalComponent implements OnInit {
       //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.hospitalChangeReqForm.get(key).value);
     }
-
+    form.get("dateOfRequest").disable();
     this.spinner = true;
     return this.employeeService.postHospitalChangeRequest(formData).subscribe(
       (res) => {
@@ -175,7 +175,7 @@ export class HospitalComponent implements OnInit {
       //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.bookHospitalForm.get(key).value);
     }
-
+    form.get("dateOfRequest").disable();
     this.spinner = true;
     return this.employeeService.postBookHospitalMeeting(formData).subscribe(
       (res) => {

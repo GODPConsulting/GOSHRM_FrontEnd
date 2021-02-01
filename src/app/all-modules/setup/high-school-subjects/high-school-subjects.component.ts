@@ -120,7 +120,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
     this.highSchoolForm = this.formBuilder.group({
       id: [0],
       subject: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
     });
     this.highSchoolSubUploadForm = this.formBuilder.group({
       uploadInput: [""],

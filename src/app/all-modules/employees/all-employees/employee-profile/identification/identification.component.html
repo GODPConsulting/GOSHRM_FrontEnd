@@ -115,7 +115,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>ID Expiry Date <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" [class.invalid]="
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
                                     identificationForm.get('idExpiry_date').invalid &&
                                     identificationForm.get('idExpiry_date').touched" formControlName="idExpiry_date">
                                 <div *ngIf="
