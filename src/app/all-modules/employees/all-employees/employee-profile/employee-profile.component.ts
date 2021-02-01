@@ -67,7 +67,6 @@ export class EmployeeProfileComponent implements OnInit {
 
     this.route.paramMap.subscribe((params) => {
       this.employeeId = +params.get("id");
-      console.log(this.employeeId);
     });
 
     this.getSingleEmployee(this.employeeId);
@@ -81,14 +80,14 @@ export class EmployeeProfileComponent implements OnInit {
     this.pageLoading = true;
     this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
-        //console.log(this.employeeDetails);
+
         this.employeeDetails = data.staff[0];
         this.pageLoading = false;
-        console.log(this.employeeDetails);
+
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
+
       }
     );
   }
@@ -129,7 +128,7 @@ export class EmployeeProfileComponent implements OnInit {
         this.countries = data.commonLookups;
       },
       (err) => {
-        console.log(err);
+
       }
     );
   }
@@ -140,7 +139,6 @@ export class EmployeeProfileComponent implements OnInit {
         this.emmergencyContacts = data.employeeList;
       },
       (err) => {
-        console.log(err);
       }
     );
   }
@@ -150,7 +148,6 @@ export class EmployeeProfileComponent implements OnInit {
 
   initRefereeForm() {
     if (isEmpty(this.employeeReferee)) {
-      console.log("empty", this.employeeReferee);
       this.cardFormTitle = "Add Referee";
       this.refereeForm = this.formBuilder.group({
         id: [0],
@@ -168,7 +165,7 @@ export class EmployeeProfileComponent implements OnInit {
         refereeFile: ["", Validators.required],
       });
     } else {
-      console.log(this.employeeReferee);
+
 
       this.cardFormTitle = "Edit Referee";
       this.refereeForm.patchValue({
@@ -195,19 +192,19 @@ export class EmployeeProfileComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    console.log(payload);
+
 
     payload.approvalStatus = +payload.approvalStatus;
     payload.numberOfYears = +payload.numberOfYears;
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
+
       formData.append(key, this.refereeForm.get(key).value);
     }
     this.spinner = true;
     return this.employeeService.postReferee(formData).subscribe(
       (res) => {
-        console.log(res);
+
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
@@ -228,7 +225,7 @@ export class EmployeeProfileComponent implements OnInit {
       if (data.employeeList[0]) {
         this.employeeReferee = data.employeeList[0];
       }
-      //console.log(this.employeeIdentification);
+
       this.initRefereeForm();
     });
   }
@@ -241,7 +238,6 @@ export class EmployeeProfileComponent implements OnInit {
 
   getUserData() {
     this.authService.getProfile().subscribe((data) => {
-      console.log(data);
       this.currentUser = data.roles;
       this.currentUserId = data.staffId;
     });

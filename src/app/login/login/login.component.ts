@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     return this.authService.getProfile().subscribe(
       (data) => {
         if (data != null) {
-          console.log(data);
+
           this.jwtService.saveUserDetails(data);
           let activities;
           if (data.activities != null) {
@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit {
       },
       (err) => {
         this.loading = false;
-        console.log(err);
+
       }
     );
   }

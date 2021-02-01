@@ -76,7 +76,7 @@ export class ApiService {
           } else {
             reject(xhr.response);
           }
-          console.log(xhr.response);
+
         }
       };
       xhr.open("POST", url, true);

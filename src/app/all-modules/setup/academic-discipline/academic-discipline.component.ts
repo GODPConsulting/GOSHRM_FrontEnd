@@ -109,7 +109,6 @@ export class AcademicDisciplineComponent implements OnInit {
               const file = new File([bb], "Academic Discipline.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -156,7 +155,6 @@ export class AcademicDisciplineComponent implements OnInit {
         },
         (err) => {
           this.pageLoading = false;
-          console.log(err);
         }
       );
   }
@@ -222,7 +220,7 @@ export class AcademicDisciplineComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
+
     }
     swal
       .fire({
@@ -248,7 +246,7 @@ export class AcademicDisciplineComponent implements OnInit {
                 }
               },
               (err) => {
-                console.log(err);
+
               }
             );
         }

@@ -16,7 +16,15 @@ export class SetupService {
       })
     );
   }
-
+  getAcademicGrade():Observable<any> {
+    return this.apiService
+      .get("/hrmsetup/get/all/academic/grades")
+      .pipe(
+        tap(data => {
+          return data
+        })
+      );
+  }
   updateData(url: string, payload: object): Observable<any> {
     return this.apiService.post(url, payload).pipe((res) => {
       return res;

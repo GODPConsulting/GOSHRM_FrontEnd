@@ -75,7 +75,7 @@ export class EmploymentLevelComponent implements OnInit {
               const file = new File([bb], "Employment Level.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -154,7 +154,7 @@ export class EmploymentLevelComponent implements OnInit {
         },
         (err) => {
           this.pageLoading = false;
-          console.log(err);
+
         }
       );
   }
@@ -211,7 +211,7 @@ export class EmploymentLevelComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
+
     }
     swal
       .fire({
@@ -222,7 +222,7 @@ export class EmploymentLevelComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
+
         if (result.value) {
           return this.setupService
             .deleteData("/hrmsetup/delete/employmentlevel", payload)
@@ -238,7 +238,7 @@ export class EmploymentLevelComponent implements OnInit {
                 }
               },
               (err) => {
-                console.log(err);
+
               }
             );
         }

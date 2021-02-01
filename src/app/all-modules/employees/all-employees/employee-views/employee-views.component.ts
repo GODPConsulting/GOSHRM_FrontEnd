@@ -66,12 +66,11 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
     this.employeeService.getEmployees().subscribe(
       (data) => {
         this.pageLoading = false;
-        console.log(data.staff);
         this.employeesList = data.staff;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
+       
       }
     );
   }

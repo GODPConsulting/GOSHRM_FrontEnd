@@ -65,7 +65,7 @@ export class HospitalManagementComponent implements OnInit {
             const file = new File([bb], "Hospital Management.xlsx", {
               type: "application/vnd.ms-excel",
             });
-            console.log(file, bb);
+
             saveAs(file);
           } catch (err) {
             const textFileAsBlob = new Blob([bb], {
@@ -165,7 +165,7 @@ export class HospitalManagementComponent implements OnInit {
      },
      (err) => {
        this.pageLoading = false;
-       console.log(err);
+
      }
    );
  }
@@ -179,21 +179,21 @@ export class HospitalManagementComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
+
       }
     );
   }
 
   // Add Hospital Management Api Call
   addHospitalManagement(form: FormGroup) {
-    console.log(form.value);
+
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
     payload.hmoId = +payload.hmoId;
-    console.log(payload);
+
     this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/add/update/hospital-management", payload)
@@ -251,7 +251,7 @@ export class HospitalManagementComponent implements OnInit {
                 }
               },
               (err) => {
-                console.log(err);
+
               }
             );
         }

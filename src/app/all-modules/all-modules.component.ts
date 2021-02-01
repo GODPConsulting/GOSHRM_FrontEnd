@@ -301,7 +301,7 @@ export class AllModulesComponent implements OnInit {
   }
 
   onTopbarSubItemClick(event) {
-    console.log(event)
+
   }
 
   onRightPanelButtonClick(event) {

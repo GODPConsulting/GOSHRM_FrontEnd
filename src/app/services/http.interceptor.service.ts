@@ -26,8 +26,6 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     private location: Location
   ) {
     this.route.url.subscribe((data) => {
-      // console.log(data);
-      // Get the last piece of the URL
       this.routePath = data[0].path;
     });
   }
@@ -42,7 +40,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     };
 
     const token = this.jwtService.getToken();
-    // console.log(token);
+
     if (token) {
       headersConfig["Authorization"] = `Bearer ${token}`;
     }
@@ -68,7 +66,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
         //       this.location.back()
         //     });
         //   }
-        //   // console.log(error.error.Status.Message.FriendlyMessage)
+        //
         //   // this.handleAuthError();
         // }
         // if (error.status === 502) {

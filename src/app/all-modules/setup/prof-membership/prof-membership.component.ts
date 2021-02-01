@@ -75,7 +75,7 @@ export class ProfMembershipComponent implements OnInit {
               const file = new File([bb], "Professional Membership.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -150,12 +150,11 @@ export class ProfMembershipComponent implements OnInit {
       .subscribe(
         (data) => {
           this.pageLoading = false;
-          //console.log(data);
           this.profMemberships = data.setuplist;
         },
         (err) => {
           this.pageLoading = false;
-          console.log(err);
+
         }
       );
   }
@@ -218,7 +217,7 @@ export class ProfMembershipComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
+
     }
     swal
       .fire({
@@ -244,7 +243,7 @@ export class ProfMembershipComponent implements OnInit {
                 }
               },
               (err) => {
-                console.log(err);
+
               }
             );
         }

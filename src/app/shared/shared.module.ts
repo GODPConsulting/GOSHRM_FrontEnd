@@ -5,6 +5,7 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
 import {AppMenuComponent, AppSubMenuComponent} from "./app.menu.component";
 import {RouterModule} from "@angular/router";
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 
 
@@ -13,8 +14,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
   imports: [
     CommonModule,
     RouterModule,
+    ImageCropperModule
     // NgSelectModule
   ],
-  exports: [LoadingComponent, AppMenuComponent, AppSubMenuComponent]
+  exports: [LoadingComponent, AppMenuComponent, AppSubMenuComponent, ImageCropperModule]
 })
 export class SharedModule { }

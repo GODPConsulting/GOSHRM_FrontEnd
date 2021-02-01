@@ -66,8 +66,6 @@ export class HmoComponent implements OnInit {
   }
 
   submitHmoForm(form: FormGroup) {
-    console.log(form.value);
-
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -76,7 +74,7 @@ export class HmoComponent implements OnInit {
     payload.approval_status = +payload.approval_status;
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
+
       formData.append(key, this.hmoForm.get(key).value);
     }
 

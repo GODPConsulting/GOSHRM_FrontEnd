@@ -63,7 +63,6 @@ export class JobGradeComponent implements OnInit {
             const file = new File([bb], "Job Grade.xlsx", {
               type: "application/vnd.ms-excel",
             });
-            console.log(file, bb);
             saveAs(file);
           } catch (err) {
             const textFileAsBlob = new Blob([bb], {
@@ -149,7 +148,7 @@ export class JobGradeComponent implements OnInit {
     /* if (this.jobGrades.length === 0) {
       this.jobGradeForm.get("job_grade_reporting_to").disable();
     } else {
-      this.jobGradeForm.get("job_grade_reporting_to").enable(); 
+      this.jobGradeForm.get("job_grade_reporting_to").enable();
     }*/
   }
 
@@ -162,12 +161,12 @@ export class JobGradeComponent implements OnInit {
     return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.jobGrades = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
+
       }
     );
   }
@@ -179,7 +178,7 @@ export class JobGradeComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    console.log(payload);
+
     this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/add/update/jobgrade", payload)
@@ -212,7 +211,7 @@ export class JobGradeComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
+
     }
     swal
       .fire({
@@ -238,7 +237,7 @@ export class JobGradeComponent implements OnInit {
                 }
               },
               (err) => {
-                console.log(err);
+
               }
             );
         }

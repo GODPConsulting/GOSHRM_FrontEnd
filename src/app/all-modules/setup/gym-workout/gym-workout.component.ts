@@ -74,7 +74,7 @@ export class GymWorkoutComponent implements OnInit {
               const file = new File([bb], "gym/workout.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -151,12 +151,12 @@ export class GymWorkoutComponent implements OnInit {
     return this.setupService.getData("/hrmsetup/get/all/gymworkouts").subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.gymWorkouts = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
+
       }
     );
   }
@@ -177,7 +177,7 @@ export class GymWorkoutComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    console.log(payload);
+
     this.spinner = true;
     return this.setupService
       .updateData("/hrmsetup/add/update/gymworkout", payload)
@@ -185,7 +185,7 @@ export class GymWorkoutComponent implements OnInit {
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
-          //console.log(message);
+
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", message, "success");
             this.initializeForm();
@@ -225,7 +225,7 @@ export class GymWorkoutComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
+
     }
     swal
       .fire({
@@ -236,7 +236,7 @@ export class GymWorkoutComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
+
         if (result.value) {
           return this.setupService
             .deleteData("/hrmsetup/delete/gymworkout", payload)
@@ -252,7 +252,7 @@ export class GymWorkoutComponent implements OnInit {
                 }
               },
               (err) => {
-                console.log(err);
+
               }
             );
         }

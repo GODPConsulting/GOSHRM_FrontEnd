@@ -20,6 +20,7 @@ import { IdentificationComponent } from './all-employees/employee-profile/identi
 import { RefereeComponent } from './all-employees/employee-profile/referee/referee.component';
 import { HmoComponent } from './all-employees/employee-profile/hmo/hmo.component';
 import { ProfCertComponent } from './all-employees/employee-profile/prof-cert/prof-cert.component';
+import {ImageCropperModule} from "ngx-image-cropper";
 
 @NgModule({
   declarations: [

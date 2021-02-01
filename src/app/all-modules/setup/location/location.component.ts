@@ -68,7 +68,7 @@ export class LocationComponent implements OnInit {
             const file = new File([bb], "Location.xlsx", {
               type: "application/vnd.ms-excel",
             });
-            console.log(file, bb);
+
             saveAs(file);
           } catch (err) {
             const textFileAsBlob = new Blob([bb], {
@@ -167,20 +167,20 @@ export class LocationComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
+
       }
     );
   }
 
   // Add Location Modal Api Call
   addLocation(form: FormGroup) {
-    console.log(form.value);
+
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
-    console.log(payload);
+
     this.spinner = true;
     payload.stateId = +payload.stateId;
     payload.countryId = +payload.countryId;
@@ -241,7 +241,7 @@ export class LocationComponent implements OnInit {
                 }
               },
               (err) => {
-                console.log(err);
+
               }
             );
         }
@@ -274,7 +274,7 @@ export class LocationComponent implements OnInit {
      },
      (err) => {
        this.pageLoading = false;
-       console.log(err);
+
      }
    );
  }
@@ -288,7 +288,7 @@ export class LocationComponent implements OnInit {
    },
    (err) => {
      this.pageLoading = false;
-     console.log(err);
+
    }
  );
  }

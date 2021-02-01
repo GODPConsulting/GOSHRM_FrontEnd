@@ -72,7 +72,7 @@ export class AcademicGradeComponent implements OnInit {
               const file = new File([bb], "Academic Grade.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -143,7 +143,7 @@ export class AcademicGradeComponent implements OnInit {
   getAcademicGrade() {
     this.pageLoading = true;
     return this.setupService
-      .getData("/hrmsetup/get/all/academic/grades")
+      .getAcademicGrade()
       .subscribe(
         (data) => {
           this.pageLoading = false;
@@ -151,7 +151,7 @@ export class AcademicGradeComponent implements OnInit {
         },
         (err) => {
           this.pageLoading = false;
-          console.log(err);
+
         }
       );
   }
@@ -184,7 +184,7 @@ export class AcademicGradeComponent implements OnInit {
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
-          //console.log(message);
+
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", message, "success");
             this.initializeForm();
@@ -223,7 +223,7 @@ export class AcademicGradeComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
+
     }
     swal
       .fire({
@@ -234,7 +234,7 @@ export class AcademicGradeComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
+
         if (result.value) {
           return this.setupService
             .deleteData("/hrmsetup/delete/academic/grade", payload)
@@ -250,7 +250,7 @@ export class AcademicGradeComponent implements OnInit {
                 }
               },
               (err) => {
-                console.log(err);
+
               }
             );
         }

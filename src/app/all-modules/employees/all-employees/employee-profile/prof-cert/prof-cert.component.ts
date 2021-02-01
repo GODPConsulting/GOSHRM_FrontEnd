@@ -31,7 +31,7 @@ export class ProfCertComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.staffId);
+
 
     this.initProfCertForm();
     this.getEmployeeProfCert(this.staffId);
