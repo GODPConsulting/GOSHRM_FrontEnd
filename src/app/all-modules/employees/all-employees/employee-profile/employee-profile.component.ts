@@ -23,19 +23,22 @@ export class EmployeeProfileComponent implements OnInit {
   currentUser: string[] = []; // contains the data of the current user
   currentUserId: number;
   public selectedId: number[] = [];
+  fileToUpload: File
 
   // Forms
   emergencyContactForm: FormGroup;
-  refereeForm: FormGroup;
   languageRatingForm: FormGroup;
+  employeeQualificationForm: FormGroup;
+
 
   // To hold data for each card
   emergencyContacts: any;
-  employeeReferee: any = {};
   languageRating: any[] = [];
+  employeeQualification: any[] = [];
   approvalStatus: any = {};
   countries: any[] = [];
   languages: any[] = [];
+  grades: any[] = [];
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -73,25 +76,41 @@ export class EmployeeProfileComponent implements OnInit {
       approval_status: [],
       approval_status_name: [""],
       staffId: [""],
-    })
+    });
   }
+
+  initEmployeeQualificationForm() {
+    this.employeeQualificationForm = this.formBuilder.group({
+      id: [0],
+      certificate: [""],
+      institution: [""],
+      startDate: [""],
+      endDate: [""],
+      gradeId: [""],
+      approvalStatus: 2,
+      staffId: this.employeeId,
+      qualificationFile: [""]
+    });
+  }
+
+
+
   ngOnInit() {
+    this.route.paramMap.subscribe((params) => {
+      this.employeeId = +params.get("id");
+      console.log(this.employeeId);
+    });
     this.getUserData();
     this.initializeForm();
     this.getCountry();
     this.initLaguageRatingForm();
     this.getLanguages();
-    this.route.paramMap.subscribe((params) => {
-      this.employeeId = +params.get("id");
-      console.log(this.employeeId);
-    });
-
+    this.initEmployeeQualificationForm();
+    this.getGrades();
     this.getSingleEmployee(this.employeeId);
-
     this.getSavedEmergencyContact(this.employeeId);
-    this.getEmployeeReferee(this.employeeId);
-    this.initRefereeForm();
     this.getSavedLanguageRating(this.employeeId);
+    this.getSavedEmployeeQualification(this.employeeId);
   }
 
   /* Employee profile */
@@ -211,14 +230,8 @@ export class EmployeeProfileComponent implements OnInit {
     this.selectedId = [];
   }
 
-  checkAllEmergency(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.emergencyContacts.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+  checkAllBoxes(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 
   editEmergencyContact(item) {
@@ -246,8 +259,8 @@ export class EmployeeProfileComponent implements OnInit {
   }
   /* Emergency Contact */
 
-   /* Language */
-   addLanguageRating(languageRatingForm) {
+  /* Language */
+  addLanguageRating(languageRatingForm) {
     const payload = languageRatingForm.value;
     payload.staffId = this.employeeId;
     payload.approval_status = +payload.approval_status;
@@ -276,7 +289,7 @@ export class EmployeeProfileComponent implements OnInit {
       }
     );
   }
- Z
+
   deleteLanguageRating() {
     let payload: object;
     if (this.selectedId.length === 0) {
@@ -325,27 +338,16 @@ export class EmployeeProfileComponent implements OnInit {
     return this.employeeService.getLanguages().subscribe(
       (data) => {
         this.languages = data.setuplist;
-        console.log(data)
       },
       (err) => {
         console.log(err);
       }
     );
   }
-// Prevents the edit modal from popping up when checkbox is clicked
-stopParentEvent(event: MouseEvent) {
-  event.stopPropagation();
-}
-
-checkAll(event: Event) {
-  if ((<HTMLInputElement>event.target).checked) {
-    this.selectedId = this.languageRating.map((item) => {
-      return item.id;
-    });
-  } else {
-    this.selectedId = [];
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
   }
-}
 
   addItemId(event: Event, id: number) {
     if ((<HTMLInputElement>event.target).checked) {
@@ -390,96 +392,6 @@ checkAll(event: Event) {
     $("#language_rating_modal").modal("hide");
     this.initLaguageRatingForm()
   }
-
-  /* Referees */
-
-  initRefereeForm() {
-    if (isEmpty(this.employeeReferee)) {
-      console.log("empty", this.employeeReferee);
-      this.cardFormTitle = "Add Referee";
-      this.refereeForm = this.formBuilder.group({
-        id: [0],
-        fullName: ["", Validators.required],
-        phoneNumber: ["", Validators.required],
-        email: ["", Validators.required],
-        relationship: ["", Validators.required],
-        numberOfYears: ["", Validators.required],
-        organization: ["", Validators.required],
-        address: ["", Validators.required],
-        confirmationReceived: ["", Validators.required],
-        confirmationDate: ["", Validators.required],
-        approvalStatus: ["", Validators.required],
-        staffId: this.employeeId,
-        refereeFile: ["", Validators.required],
-      });
-    } else {
-      console.log(this.employeeReferee);
-
-      this.cardFormTitle = "Edit Referee";
-      this.refereeForm.patchValue({
-        id: [0],
-        fullName: this.employeeReferee.fullName,
-        phoneNumber: this.employeeReferee.phoneNumber,
-        email: this.employeeReferee.email,
-        relationship: this.employeeReferee.relationship,
-        numberOfYears: this.employeeReferee.numberOfYears,
-        organization: this.employeeReferee.organization,
-        address: this.employeeReferee.address,
-        confirmationReceived: this.employeeReferee.confirmationReceived,
-        confirmationDate: this.employeeReferee.confirmationDate,
-        approvalStatus: this.employeeReferee.approvalStatus,
-        staffId: this.employeeId,
-        refereeFile: this.employeeReferee.refereeFile,
-      });
-    }
-  }
-
-  submitRefereeForm(form: FormGroup) {
-    if (!form.valid) {
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    }
-    const payload = form.value;
-    console.log(payload);
-
-    payload.approvalStatus = +payload.approvalStatus;
-    payload.numberOfYears = +payload.numberOfYears;
-    const formData = new FormData();
-    for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.refereeForm.get(key).value);
-    }
-    this.spinner = true;
-    return this.employeeService.postReferee(formData).subscribe(
-      (res) => {
-        console.log(res);
-        this.spinner = false;
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#referee_modal").modal("hide");
-        }
-      },
-      (err) => {
-        this.spinner = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
-      }
-    );
-  }
-
-  getEmployeeReferee(id: number) {
-    this.employeeService.getRefereeByStaffId(id).subscribe((data) => {
-      if (data.employeeList[0]) {
-        this.employeeReferee = data.employeeList[0];
-      }
-      //console.log(this.employeeIdentification);
-      this.initRefereeForm();
-    });
-  }
-
-  /* Referees */
-
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.patchFile(event, form);
   }
@@ -491,7 +403,143 @@ checkAll(event: Event) {
       this.currentUserId = data.staffId;
     });
   }
+  handleFile(event) {
+    this.fileToUpload = event.target.files[0]
+  }
+  // EmployeeQualification
+  addEmployeeQualification(employeeQualificationForm) {
+    const payload = employeeQualificationForm.value;
+    if(!payload.certificate) {
+      return swal.fire('Error!', ' Certificate is empty', 'error')
+    }
+    if(!payload.institution){
+      return swal.fire('Error!', 'Institution is empty', 'error')
+    }
+    if(!payload.startDate){
+      return swal.fire('Error!', 'Start Date is empty', 'error')
+    }
+    if(!payload.endDate){
+      return swal.fire('Error!', 'End Date is empty', 'error')
+    }
+    if(!payload.gradeId){
+      return swal.fire('Error!', 'Grade is empty', 'error')
+    }
+    if(!this.fileToUpload) {
+      return swal.fire('Error!', 'Select a file', 'error')
+    }
+    if(!payload.approvalStatus){
+      return swal.fire('Error!', 'Select a status', 'error')
+    }
+    this.spinner = true;
+    this.employeeService.addEmployeeQualification(payload, this.fileToUpload).then(
+      (data) => {
+        this.spinner = false;
+        const message = data.status.message.friendlyMessage;
+        if (data.status.isSuccessful) {
+          swal.fire("Success", message, "success").then(() => {
+            this.getSavedEmployeeQualification(this.employeeId);
+            this.closeEmployeeQualificationModal()
+          })
+          
+        } else {
+          swal.fire("Error", message, "error");
+        }
+      }
+    ).catch(err => {
+        this.spinner = false;
+        console.log(err)
+         const message = err.status.message.friendlyMessage;
+         swal.fire("Error", message, "error");
+    
+    });
+  }
 
+  getSavedEmployeeQualification(id: number) {
+    return this.employeeService.getEmployeeQualificationByStaffId(id).subscribe(
+      (data) => {
+        this.employeeQualification = data.employeeList;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  getGrades() {
+    return this.employeeService.getGrades().subscribe(
+      (data) => {
+        this.grades = data.setuplist;
+        console.log(data)
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  editEmployeeQualification(qualification) {
+    this.employeeQualificationForm.patchValue({
+      id: qualification.id,
+      certificate: qualification.certificate,
+      institution: qualification.institution,
+      startDate: qualification.startDate,
+      enddate: qualification.enddate,
+      gradeId: qualification.gradeId,
+      approvalStatus: qualification.countryId,
+      staffId: qualification.staffId,
+      qualificationFile: qualification.qualificationFile,
+    })
+    $("#employee_qualification_modal").modal("show");
+  }
+
+  closeEmployeeQualificationModal() {
+    $("#employee_qualification_modal").modal("hide");
+    this.initEmployeeQualificationForm()
+  }
+
+  deleteEmployeeQualification() {
+    let payload: object;
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    } else {
+      payload = {
+        itemIds: this.selectedId,
+      };
+      //console.log(this.selectedId);
+    }
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        //console.log(result);
+
+        if (result.value) {
+          return this.employeeService
+            .deleteEmployeeQualification(payload)
+            .subscribe(
+              (res) => {
+                const message = res.status.message.friendlyMessage;
+                if (res.status.isSuccessful) {
+                  swal.fire("GOSHRM", message, "success").then(() => {
+                    this.getSavedEmployeeQualification(this.employeeId);
+                  });
+                } else {
+                  swal.fire("Error", message, "error");
+                }
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
+        }
+      });
+    this.selectedId = [];
+  }
 
 }
 

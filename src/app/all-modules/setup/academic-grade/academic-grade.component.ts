@@ -40,6 +40,21 @@ export class AcademicGradeComponent implements OnInit {
     this.getAcademicGrade();
     this.initializeForm();
   }
+  getAcademicGrade() {
+    this.pageLoading = true;
+    return this.setupService
+      .getAcademicGrade()
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          this.grades = data.setuplist;
+        },
+        (err) => {
+          this.pageLoading = false;
+          console.log(err);
+        }
+      );
+  }
 
   // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
@@ -140,22 +155,7 @@ export class AcademicGradeComponent implements OnInit {
     });
   }
 
-  getAcademicGrade() {
-    this.pageLoading = true;
-    return this.setupService
-      .getData("/hrmsetup/get/all/academic/grades")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          this.grades = data.setuplist;
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
-  }
-
+  
   openUploadModal() {
     $("#upload_academic_grade").modal("show");
   }

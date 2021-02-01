@@ -21,6 +21,7 @@ import { RefereeComponent } from './all-employees/employee-profile/referee/refer
 import { HmoComponent } from './all-employees/employee-profile/hmo/hmo.component';
 import { ProfCertComponent } from './all-employees/employee-profile/prof-cert/prof-cert.component';
 
+
 @NgModule({
   declarations: [
     EmployeesComponent,
@@ -32,6 +33,7 @@ import { ProfCertComponent } from './all-employees/employee-profile/prof-cert/pr
     RefereeComponent,
     HmoComponent,
     ProfCertComponent,
+   
   ],
   imports: [
     CommonModule,
