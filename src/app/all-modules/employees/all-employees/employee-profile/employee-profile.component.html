@@ -359,12 +359,15 @@
          /Hobbies Tab -->
         <!-- Health and Wellness Tab -->
         <div id="emp_health_well" class="tab-pane fade ">
-            <!-- Hmo card -->
-            <app-hmo [staffId]="employeeId"></app-hmo>
-            <!-- /Hmo card -->
+            <!-- Employee Hmo card -->
+            <app-employee-hmo [staffId]="employeeId"></app-employee-hmo>
+            <!-- Employee /Hmo card -->
             <!-- Hospital card -->
             <app-hospital [staffId]="employeeId"></app-hospital>
             <!-- /Hospital card -->
+            <!-- Employee Gym card -->
+            <app-employee-gym [staffId]="employeeId"></app-employee-gym>
+            <!-- /Employee Gym card -->
         </div>
         <!-- /Health and Wellness Tab -->
     </div>

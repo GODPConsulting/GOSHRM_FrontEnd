@@ -185,4 +185,32 @@ export class EmployeeService {
   deleteSkills(payload) {
     return this.apiService.post(`/hrm/delete/employee/skill`, payload);
   }
+
+  getGymByStaffId(id: number) {
+    return this.apiService.get(
+      `/hrm/get/single/employee/gym/staffId?StaffId=${id}`
+    );
+  }
+
+  postGym(payload: FormData) {
+    return this.apiService.post("/hrm/add/update/employee/gym", payload);
+  }
+
+  postGymChangeRequest(payload: FormData) {
+    return this.apiService.post(
+      "/hrm/add/update/employee/gym-request",
+      payload
+    );
+  }
+
+  deleteGym(payload: object) {
+    return this.apiService.post("/hrm/delete/employee/gym", payload);
+  }
+
+  postBookGymMeeting(payload: FormData) {
+    return this.apiService.post(
+      "/api/v1/hrm/add/update/employee/gym-meeting",
+      payload
+    );
+  }
 }

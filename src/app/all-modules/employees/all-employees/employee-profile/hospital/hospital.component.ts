@@ -133,7 +133,7 @@ export class HospitalComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    payload.suggestedHospital = +payload.suggestedHmo;
+    payload.suggestedHospital = +payload.suggestedHospital;
     payload.hospitalId = +payload.hospitalId;
     const formData = new FormData();
     for (const key in form.value) {
