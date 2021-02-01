@@ -5,7 +5,6 @@ import { data } from "jquery";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
-import { isEmpty } from "lodash";
 import { AuthService } from "src/app/services/auth.service";
 declare const $: any;
 
@@ -22,17 +21,20 @@ export class EmployeeProfileComponent implements OnInit {
   spinner: boolean = false;
   currentUser: string[] = []; // contains the data of the current user
   currentUserId: number;
+  public selectedId: number[] = [];
 
   // Forms
-  emmergencyContactForm: FormGroup;
+  emergencyContactForm: FormGroup;
   refereeForm: FormGroup;
+  languageRatingForm: FormGroup;
 
   // To hold data for each card
-  emmergencyContacts: any;
+  emergencyContacts: any;
   employeeReferee: any = {};
-
+  languageRating: any[] = [];
   approvalStatus: any = {};
   countries: any[] = [];
+  languages: any[] = [];
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -45,7 +47,7 @@ export class EmployeeProfileComponent implements OnInit {
     private authService: AuthService
   ) {}
   initializeForm() {
-    this.emmergencyContactForm = this.formBuilder.group({
+    this.emergencyContactForm = this.formBuilder.group({
       id: [0],
       fullName: [""],
       contact_phone_number: [""],
@@ -59,12 +61,25 @@ export class EmployeeProfileComponent implements OnInit {
       staffId: [""],
     });
   }
+  initLaguageRatingForm() {
+    this.languageRatingForm = this.formBuilder.group({
+      id: [0],
+      languageId: [0],
+      language: [""],
+      reading_Rating: [0],
+      writing_Rating: [0],
+      speaking_Rating: [0],
+      approval_status: [],
+      approval_status_name: [""],
+      staffId: [""],
+    });
+  }
   ngOnInit() {
     this.getUserData();
-
     this.initializeForm();
     this.getCountry();
-
+    this.initLaguageRatingForm();
+    this.getLanguages();
     this.route.paramMap.subscribe((params) => {
       this.employeeId = +params.get("id");
       console.log(this.employeeId);
@@ -73,6 +88,7 @@ export class EmployeeProfileComponent implements OnInit {
     this.getSingleEmployee(this.employeeId);
 
     this.getSavedEmergencyContact(this.employeeId);
+    this.getSavedLanguageRating(this.employeeId);
   }
 
   /* Employee profile */
@@ -82,7 +98,7 @@ export class EmployeeProfileComponent implements OnInit {
     this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
         //console.log(this.employeeDetails);
-        this.employeeDetails = data.staff[0];
+        this.employeeDetails = data.employeeList[0];
         this.pageLoading = false;
         console.log(this.employeeDetails);
       },
@@ -96,14 +112,14 @@ export class EmployeeProfileComponent implements OnInit {
   /* Employee profile */
 
   /* Emergency Contact */
-  addEmmergencyContact(emmergencyContactForm) {
-    const payload = emmergencyContactForm.value;
+  addEmergencyContact(emergencyContactForm) {
+    const payload = emergencyContactForm.value;
     payload.staffId = this.employeeId;
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
 
     this.pageLoading = true;
-    this.employeeService.addEmmergencyContact(payload).subscribe(
+    this.employeeService.addEmergencyContact(payload).subscribe(
       (data) => {
         this.pageLoading = false;
         const message = data.status.message.friendlyMessage;
@@ -137,118 +153,68 @@ export class EmployeeProfileComponent implements OnInit {
   getSavedEmergencyContact(id: number) {
     return this.employeeService.getEmergencyContactByStaffId(id).subscribe(
       (data) => {
-        this.emmergencyContacts = data.employeeList;
+        this.emergencyContacts = data.employeeList;
       },
       (err) => {
         console.log(err);
       }
     );
   }
-  /* Emergency Contact */
 
-  /* Referees */
+  deleteEmergencyContact() {
+    let payload: object;
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    } else {
+      payload = {
+        itemIds: this.selectedId,
+      };
+      //console.log(this.selectedId);
+    }
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        //console.log(result);
 
-  initRefereeForm() {
-    if (isEmpty(this.employeeReferee)) {
-      console.log("empty", this.employeeReferee);
-      this.cardFormTitle = "Add Referee";
-      this.refereeForm = this.formBuilder.group({
-        id: [0],
-        fullName: ["", Validators.required],
-        phoneNumber: ["", Validators.required],
-        email: ["", Validators.required],
-        relationship: ["", Validators.required],
-        numberOfYears: ["", Validators.required],
-        organization: ["", Validators.required],
-        address: ["", Validators.required],
-        confirmationReceived: ["", Validators.required],
-        confirmationDate: ["", Validators.required],
-        approvalStatus: ["", Validators.required],
-        staffId: this.employeeId,
-        refereeFile: ["", Validators.required],
+        if (result.value) {
+          return this.employeeService.deleteEmergencyContact(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getSavedEmergencyContact(this.employeeId);
+                });
+              } else {
+                swal.fire("Error", message, "error");
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        }
+      });
+    this.selectedId = [];
+  }
+
+  checkAllEmergency(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
+      this.selectedId = this.emergencyContacts.map((item) => {
+        return item.id;
       });
     } else {
-      console.log(this.employeeReferee);
-
-      this.cardFormTitle = "Edit Referee";
-      this.refereeForm.patchValue({
-        id: [0],
-        fullName: this.employeeReferee.fullName,
-        phoneNumber: this.employeeReferee.phoneNumber,
-        email: this.employeeReferee.email,
-        relationship: this.employeeReferee.relationship,
-        numberOfYears: this.employeeReferee.numberOfYears,
-        organization: this.employeeReferee.organization,
-        address: this.employeeReferee.address,
-        confirmationReceived: this.employeeReferee.confirmationReceived,
-        confirmationDate: this.employeeReferee.confirmationDate,
-        approvalStatus: this.employeeReferee.approvalStatus,
-        staffId: this.employeeId,
-        refereeFile: this.employeeReferee.refereeFile,
-      });
+      this.selectedId = [];
     }
   }
 
-  submitRefereeForm(form: FormGroup) {
-    if (!form.valid) {
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    }
-    const payload = form.value;
-    console.log(payload);
-
-    payload.approvalStatus = +payload.approvalStatus;
-    payload.numberOfYears = +payload.numberOfYears;
-    const formData = new FormData();
-    for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.refereeForm.get(key).value);
-    }
-    this.spinner = true;
-    return this.employeeService.postReferee(formData).subscribe(
-      (res) => {
-        console.log(res);
-        this.spinner = false;
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#referee_modal").modal("hide");
-        }
-      },
-      (err) => {
-        this.spinner = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
-      }
-    );
-  }
-
-  getEmployeeReferee(id: number) {
-    this.employeeService.getRefereeByStaffId(id).subscribe((data) => {
-      if (data.employeeList[0]) {
-        this.employeeReferee = data.employeeList[0];
-      }
-      //console.log(this.employeeIdentification);
-      this.initRefereeForm();
-    });
-  }
-
-  /* Referees */
-
-  onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
-  }
-
-  getUserData() {
-    this.authService.getProfile().subscribe((data) => {
-      console.log(data);
-      this.currentUser = data.roles;
-      this.currentUserId = data.staffId;
-    });
-  }
-
-  editContact(item) {
-    this.emmergencyContactForm.patchValue({
+  editEmergencyContact(item) {
+    this.emergencyContactForm.patchValue({
       id: item.id,
       fullName: item.fullName,
       contact_phone_number: item.contact_phone_number,
@@ -265,9 +231,161 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   closeModal() {
-    // close the modal
-    // 2 re initialise the emergency contact form
     $("#emergency_contact_modal").modal("hide");
     this.initializeForm();
+  }
+  /* Emergency Contact */
+  /* Language */
+  addLanguageRating(languageRatingForm) {
+    const payload = languageRatingForm.value;
+    payload.staffId = this.employeeId;
+    payload.approval_status = +payload.approval_status;
+    payload.reading_Rating = +payload.reading_Rating;
+    payload.writing_Rating = +payload.writing_Rating;
+    payload.speaking_Rating = +payload.speaking_Rating;
+    payload.languageId = +payload.languageId;
+    this.pageLoading = true;
+    this.employeeService.addLanguageRating(payload).subscribe(
+      (data) => {
+        this.pageLoading = false;
+        const message = data.status.message.friendlyMessage;
+        if (data.status.isSuccessful) {
+          swal.fire("Success", message, "success");
+          this.getSavedLanguageRating(this.employeeId);
+          $("#language_rating_modal").modal("hide");
+        } else {
+          swal.fire("Error", message, "error");
+        }
+      },
+      (err) => {
+        this.pageLoading = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
+  }
+
+  deleteLanguageRating() {
+    let payload: object;
+    if (this.selectedId.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
+    } else {
+      payload = {
+        itemIds: this.selectedId,
+      };
+      //console.log(this.selectedId);
+    }
+    swal
+      .fire({
+        title: "Are you sure you want to delete this record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        //console.log(result);
+
+        if (result.value) {
+          return this.employeeService.deleteLanguageRating(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getSavedLanguageRating(this.employeeId);
+                });
+              } else {
+                swal.fire("Error", message, "error");
+              }
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
+        }
+      });
+    this.selectedId = [];
+  }
+
+  getLanguages() {
+    return this.employeeService.getLanguages().subscribe(
+      (data) => {
+        this.languages = data.setuplist;
+        console.log(data);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  checkAll(event: Event) {
+    if ((<HTMLInputElement>event.target).checked) {
+      this.selectedId = this.languageRating.map((item) => {
+        return item.id;
+      });
+    } else {
+      this.selectedId = [];
+    }
+  }
+
+  addItemId(event: Event, id: number) {
+    if ((<HTMLInputElement>event.target).checked) {
+      if (!this.selectedId.includes(id)) {
+        this.selectedId.push(id);
+      }
+    } else {
+      this.selectedId = this.selectedId.filter((_id) => {
+        return _id !== id;
+      });
+    }
+  }
+
+  // get saved language(s)
+  getSavedLanguageRating(id: number) {
+    return this.employeeService.getLanguageRatingByStaffId(id).subscribe(
+      (data) => {
+        this.languageRating = data.employeeList;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  editLanguageRating(language) {
+    this.languageRatingForm.patchValue({
+      id: language.id,
+      languageId: language.languageId,
+      language: language.language,
+      reading_Rating: language.reading_Rating,
+      writing_Rating: language.writing_Rating,
+      speaking_Rating: language.speaking_Rating,
+      approval_status: language.approval_status,
+      approval_status_name: language.approval_status_name,
+      staffId: language.staffId,
+    });
+    $("#language_rating_modal").modal("show");
+  }
+
+  closelanguageRatingModal() {
+    $("#language_rating_modal").modal("hide");
+    this.initLaguageRatingForm();
+  }
+
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
+  }
+
+  getUserData() {
+    this.authService.getProfile().subscribe((data) => {
+      console.log(data);
+      this.currentUser = data.roles;
+      this.currentUserId = data.staffId;
+    });
   }
 }

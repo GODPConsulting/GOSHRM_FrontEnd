@@ -16,7 +16,6 @@
                         class="fa fa-download"></i></a>
                 <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
                         class="fa fa-upload"></i></a>
-
                 <a class="btn add-btn hint" data-toggle="modal" routerLink="/setup/job-skill"><span
                         class="hint-text">Add</span><i class="fa fa-plus"></i></a>
                 <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
@@ -25,7 +24,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -61,7 +59,6 @@
     </div>
 </div>
 <!-- /Page Content -->
-
 <!-- Upload Job Title Modal -->
 <div id="upload_job_title" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -79,7 +76,7 @@
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                                    (change)="onSelectedFile($event)">
+                                    (change)="onSelectedFile($event,jobTitleUploadForm)">
                             </div>
                         </div>
                     </div>
@@ -95,7 +92,6 @@
                             </tr>
                         </table>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadJobTitle()"
                             [disabled]="spinner">

@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 
 declare const $: any;
@@ -23,7 +24,8 @@ export class EmploymentTypeComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -41,19 +43,6 @@ export class EmploymentTypeComponent implements OnInit {
     };
     this.initializeForm();
     this.getEmploymentType();
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event) {
-    this.file = event.target.files[0];
-    this.employmentTypeUploadForm.patchValue({
-      uploadInput: this.file,
-    });
   }
 
   downloadFile() {
@@ -103,28 +92,26 @@ export class EmploymentTypeComponent implements OnInit {
       this.employmentTypeUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/employmenttype", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            this.fileInput.nativeElement.value = "";
-            $("#upload_employment_type").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getEmploymentType();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.uploadEmploymentType(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          this.fileInput.nativeElement.value = "";
+          $("#upload_employment_type").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getEmploymentType();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   openUploadModal() {
@@ -136,7 +123,7 @@ export class EmploymentTypeComponent implements OnInit {
     this.employmentTypeForm = this.formBuilder.group({
       id: [0],
       employment_type: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
     });
     this.employmentTypeUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -155,19 +142,17 @@ export class EmploymentTypeComponent implements OnInit {
 
   getEmploymentType() {
     this.pageLoading = true;
-    return this.setupService
-      .getData("/hrmsetup/get/all/employmenttypes")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          //console.log(data);
-          this.employmentTypes = data.setuplist;
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
+    return this.setupService.getEmploymentType().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        //console.log(data);
+        this.employmentTypes = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   // Add employment via reactive form Modal Api Call
@@ -179,29 +164,27 @@ export class EmploymentTypeComponent implements OnInit {
     const payload: object = form.value;
     console.log(payload);
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/employmenttype", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          //console.log(message);
+    return this.setupService.addEmploymentType(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        //console.log(message);
 
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add_employment_type").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getEmploymentType();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add_employment_type").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getEmploymentType();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   delete() {
@@ -225,23 +208,21 @@ export class EmploymentTypeComponent implements OnInit {
       .then((result) => {
         //console.log(result);
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/employmenttype", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getEmploymentType();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteEmploymentType(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getEmploymentType();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
@@ -258,25 +239,24 @@ export class EmploymentTypeComponent implements OnInit {
     $("#add_employment_type").modal("show");
   }
 
-  addItemId(event, id: number) {
-    if (event.target.checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+  addItemId(event: Event, id: number) {
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.employmentTypes.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+  checkAll(event: Event) {
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.employmentTypes
+    );
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

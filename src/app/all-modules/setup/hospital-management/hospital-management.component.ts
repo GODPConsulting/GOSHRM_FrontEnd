@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
-  selector: 'app-hospital-management',
-  templateUrl: './hospital-management.component.html',
-  styleUrls: ['./hospital-management.component.css', "../setup.component.css"]
+  selector: "app-hospital-management",
+  templateUrl: "./hospital-management.component.html",
+  styleUrls: ["./hospital-management.component.css", "../setup.component.css"],
 })
 export class HospitalManagementComponent implements OnInit {
   public formTitle: string = "Hospital Management";
@@ -23,7 +24,8 @@ export class HospitalManagementComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -44,49 +46,41 @@ export class HospitalManagementComponent implements OnInit {
     this.getHmos();
   }
 
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
   downloadFile() {
-    this.setupService.exportExcelFile("/hrmsetup/download/hospital-management").subscribe(
-      (resp) => {
-        const data = resp;
-        if (data != undefined) {
-          const byteString = atob(data);
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
-          for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
+    this.setupService
+      .exportExcelFile("/hrmsetup/download/hospital-management")
+      .subscribe(
+        (resp) => {
+          const data = resp;
+          if (data != undefined) {
+            const byteString = atob(data);
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+              ia[i] = byteString.charCodeAt(i);
+            }
+            const bb = new Blob([ab]);
+            try {
+              const file = new File([bb], "Hospital Management.xlsx", {
+                type: "application/vnd.ms-excel",
+              });
+              console.log(file, bb);
+              saveAs(file);
+            } catch (err) {
+              const textFileAsBlob = new Blob([bb], {
+                type: "application/vnd.ms-excel",
+              });
+              window.navigator.msSaveBlob(
+                textFileAsBlob,
+                "Hospital Management.xlsx"
+              );
+            }
+          } else {
+            return swal.fire(`GOS HRM`, "Unable to download data", "error");
           }
-          const bb = new Blob([ab]);
-          try {
-            const file = new File([bb], "Hospital Management.xlsx", {
-              type: "application/vnd.ms-excel",
-            });
-            console.log(file, bb);
-            saveAs(file);
-          } catch (err) {
-            const textFileAsBlob = new Blob([bb], {
-              type: "application/vnd.ms-excel",
-            });
-            window.navigator.msSaveBlob(textFileAsBlob, "Hospital Management.xlsx");
-          }
-        } else {
-          return swal.fire(`GOS HRM`, "Unable to download data", "error");
-        }
-      },
-      (err) => {}
-    );
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event) {
-    const file = event.target.files[0];
-    this.hospitalManagementUploadForm.patchValue({
-      uploadInput: file,
-    });
+        },
+        (err) => {}
+      );
   }
 
   uploadHospitalManagement() {
@@ -99,29 +93,27 @@ export class HospitalManagementComponent implements OnInit {
       this.hospitalManagementUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/hospital-management", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
+    return this.setupService.uploadHospitalMgt(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
 
-          if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
-            this.initializeForm();
-            this.fileInput.nativeElement.value = "";
-            $("#uploadHospitalManagement").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getHospitalManagement();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("Success", message, "success");
+          this.initializeForm();
+          this.fileInput.nativeElement.value = "";
+          $("#uploadHospitalManagement").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getHospitalManagement();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   initializeForm() {
@@ -132,8 +124,7 @@ export class HospitalManagementComponent implements OnInit {
       contactPhoneNo: ["", Validators.required],
       email: ["", Validators.required],
       address: ["", Validators.required],
-      rating: ["", Validators.required],
-      otherComments: ["", Validators.required],
+      otherComments: [""],
     });
     //initialize upload form
     this.hospitalManagementUploadForm = this.formBuilder.group({
@@ -158,21 +149,21 @@ export class HospitalManagementComponent implements OnInit {
 
   getHmos() {
     this.pageLoading = true;
-   return this.setupService.getData("/hrmsetup/get/all/hmos").subscribe(
-     (data) => {
-       this.pageLoading = false;
-       this.hmos = data.setuplist;
-     },
-     (err) => {
-       this.pageLoading = false;
-       console.log(err);
-     }
-   );
- }
+    return this.setupService.getHmo().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.hmos = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
+  }
 
   getHospitalManagement() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/hospital-managements").subscribe(
+    return this.setupService.getHospitalMgt().subscribe(
       (data) => {
         this.pageLoading = false;
         this.hospitalManagements = data.setuplist;
@@ -195,27 +186,25 @@ export class HospitalManagementComponent implements OnInit {
     payload.hmoId = +payload.hmoId;
     console.log(payload);
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/hospital-management", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
-            this.initializeForm();
-            $("#addHospitalManagement").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getHospitalManagement();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addHospitalMgt(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("Success", message, "success");
+          this.initializeForm();
+          $("#addHospitalManagement").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getHospitalManagement();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   delete() {
@@ -237,23 +226,21 @@ export class HospitalManagementComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/hospital-management", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("Success", message, "success").then(() => {
-                    this.getHospitalManagement();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteHospitalMgt(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("Success", message, "success").then(() => {
+                  this.getHospitalManagement();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
@@ -270,30 +257,28 @@ export class HospitalManagementComponent implements OnInit {
       email: row.email,
       address: row.address,
       rating: row.rating,
-      otherComments: row.otherComments
+      otherComments: row.otherComments,
     });
     $("#addHospitalManagement").modal("show");
   }
 
-  checkAll(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.hospitalManagements.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+  addItemId(event: Event, id: number) {
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
-  addItemId(event: Event, id: number) {
-    if ((<HTMLInputElement>event.target).checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+  checkAll(event: Event) {
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.hospitalManagements
+    );
+  }
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

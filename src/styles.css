@@ -8566,5 +8566,45 @@ div.dataTables_wrapper div.dataTables_filter label {
 }
 
 .table-hover tbody tr:hover td {
+  /* tables */
   background-color: #ffebda;
+}
+
+/* Rating stars */
+span.bs-rating-star {
+  color: #d4af37;
+  font-size: 30px;
+  margin: 10px;
+}
+
+rating span {
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+}
+
+/* Sticky tab-box */
+.tab-box {
+  position: sticky;
+  top: 62px;
+  z-index: 2;
+}
+
+.datetimepicker::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.datetimepicker:after {
+  background: none;
+  display: block;
+  font-family: "FontAwesome";
+  content: "\f073";
+  width: 15px;
+  height: 20px;
+  top: 12px;
+  right: 6px;
+  color: black;
+  cursor: pointer;
 }

@@ -16,7 +16,6 @@
                         class="fa fa-download"></i></a>
                 <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
                         class="fa fa-upload"></i></a>
-
                 <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span
                         class="hint-text">Add</span><i class="fa fa-plus"></i></a>
                 <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
@@ -25,7 +24,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -56,7 +54,6 @@
     </div>
 </div>
 <!-- /Page Content -->
-
 <!-- Add language Modal -->
 <div id="add_language" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -82,8 +79,7 @@
                             <small *ngIf="
                                     languageForm.get('language').invalid &&
                                     languageForm.get('language').touched
-                      " class="text-danger">
-                                *Language Field is required</small>
+                      " class="text-danger"> *Language Field is required</small>
                         </div>
                     </div>
                     <div class="form-group">
@@ -99,8 +95,7 @@
                             <small *ngIf="
                                     languageForm.get('description').invalid &&
                                     languageForm.get('description').touched
-                      " class="text-danger">
-                                *Description Field is required</small>
+                      " class="text-danger"> *Description Field is required</small>
                         </div>
                     </div>
                     <div class="submit-section">
@@ -115,7 +110,6 @@
     </div>
 </div>
 <!-- /Add language Modal -->
-
 <!-- Upload Language Modal -->
 <div class="modal custom-modal fade" id="upload_language" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -129,18 +123,14 @@
             <div class="modal-body px-5">
                 <form (ngSubmit)="uploadLanguage()" [formGroup]="languageUploadForm">
                     <div class="row">
-
                         <div class="form-group row">
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                                    (change)="onSelectedFile($event)">
+                                    (change)="onSelectedFile($event,languageUploadForm)">
                             </div>
                         </div>
-
                     </div>
-
-
                     <div class="row">
                         <p>Please use the guide below for your sheet</p>
                         <table class="table table-bordered">
@@ -150,7 +140,6 @@
                             </tr>
                         </table>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadLanguage()"
                             [disabled]="spinner">

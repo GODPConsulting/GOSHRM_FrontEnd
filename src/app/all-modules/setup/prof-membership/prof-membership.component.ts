@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 declare const $: any;
 @Component({
@@ -24,7 +25,8 @@ export class ProfMembershipComponent implements OnInit {
 
   constructor(
     private setupService: SetupService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -42,19 +44,6 @@ export class ProfMembershipComponent implements OnInit {
     };
     this.initializeForm();
     this.getProfMembershipForm();
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event: Event) {
-    const file = (<HTMLInputElement>event.target).files[0];
-    this.professionalMembershipUploadForm.patchValue({
-      uploadInput: file,
-    });
   }
 
   downloadFile() {
@@ -104,26 +93,24 @@ export class ProfMembershipComponent implements OnInit {
       this.professionalMembershipUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/prof_membership", formData)
-      .subscribe(
-        (res) => {
-          const message = res.status.message.friendlyMessage;
+    return this.setupService.uploadProfMem(formData).subscribe(
+      (res) => {
+        const message = res.status.message.friendlyMessage;
 
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#upload_prof_membership").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#upload_prof_membership").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   openUploadModal() {
@@ -136,7 +123,7 @@ export class ProfMembershipComponent implements OnInit {
     this.professionalMembershipForm = this.formBuilder.group({
       id: [0],
       professional_membership: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
     });
     this.professionalMembershipUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -145,19 +132,17 @@ export class ProfMembershipComponent implements OnInit {
 
   getProfMembershipForm() {
     this.pageLoading = true;
-    return this.setupService
-      .getData("/hrmsetup/get/all/prof_membership")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          //console.log(data);
-          this.profMemberships = data.setuplist;
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
+    return this.setupService.getProfMems().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        //console.log(data);
+        this.profMemberships = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   // Set Values To Edit Modal Form
@@ -187,27 +172,25 @@ export class ProfMembershipComponent implements OnInit {
     }
     const payload = form.value;
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/prof_membership", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add_prof_membership").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getProfMembershipForm();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addProfMem(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add_prof_membership").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getProfMembershipForm();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   delete() {
@@ -230,47 +213,44 @@ export class ProfMembershipComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/prof_membership", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getProfMembershipForm();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteProfMem(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getProfMembershipForm();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
   }
 
   addItemId(event: Event, id: number) {
-    if ((<HTMLInputElement>event.target).checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
   checkAll(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.profMemberships.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.profMemberships
+    );
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

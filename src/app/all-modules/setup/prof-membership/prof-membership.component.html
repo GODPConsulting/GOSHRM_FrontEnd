@@ -24,7 +24,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -58,7 +57,6 @@
     </div>
 </div>
 <!-- /Page Content -->
-
 <!-- Add_Prof_membership Modal -->
 <div id="add_prof_membership" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -85,8 +83,7 @@
                             <small *ngIf="
                                     professionalMembershipForm.get('professional_membership').invalid &&
                                     professionalMembershipForm.get('professional_membership').touched
-                      " class="text-danger">
-                                *Prof Membership Field is required</small>
+                      " class="text-danger"> *Prof Membership Field is required</small>
                         </div>
                     </div>
                     <div class="form-group">
@@ -102,8 +99,7 @@
                             <small *ngIf="
                                     professionalMembershipForm.get('description').invalid &&
                                     professionalMembershipForm.get('description').touched
-                      " class="text-danger">
-                                *Description Field is required</small>
+                      " class="text-danger"> *Description Field is required</small>
                         </div>
                     </div>
                     <div class="submit-section">
@@ -117,9 +113,7 @@
         </div>
     </div>
 </div>
-
 <!-- /Add Prof Membership Modal -->
-
 <!-- Upload Prof Membership Modal -->
 <div class="modal custom-modal fade" id="upload_prof_membership" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -137,10 +131,9 @@
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" type="file"
-                                    (change)="onSelectedFile($event)" #fileInput>
+                                    (change)="onSelectedFile($event,professionalMembershipUploadForm)" #fileInput>
                             </div>
                         </div>
-
                     </div>
                     <div class="row">
                         <p>Please use the guide below for your sheet</p>

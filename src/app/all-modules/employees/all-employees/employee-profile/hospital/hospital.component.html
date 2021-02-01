@@ -1,0 +1,440 @@
+<!-- Hospital Card -->
+<div>
+    <div class="card profile-box flex-fill">
+        <div class="card-body">
+            <h3 class="card-title">Hospital<a class="edit-icon hint" (click)="delete()">
+                    <span class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
+                <a class="edit-icon hint mr-1" (click)="downloadFile()" download><span
+                        class="hint-text">Download</span><i class="fa fa-download"></i></a>
+                <a *ngIf="currentUserId === employeeId" (click)="initHospitalForm()" class="hint edit-icon mr-1"
+                    data-toggle="modal" data-target="#hospital_modal">
+                    <span class="hint-text">Add Hospital</span><i class="fa fa-pencil"></i></a>
+                <a (click)="initHospitalChangeForm()" class="hint edit-icon mr-1" data-toggle="modal"
+                    data-target="#hospital_req_change_modal"><span class="hint-text">Request Change</span><i
+                        class="fa fa-ticket"></i></a>
+                <a (click)="initBookHospitalForm()" class="hint edit-icon mr-1" data-toggle="modal"
+                    data-target="#hospital_book_meeting_modal"><span class="hint-text">Book Meeting</span><i
+                        class="fa fa-calendar"></i></a>
+            </h3>
+            <div class="table-responsive">
+                <app-loading *ngIf="pageLoading"></app-loading>
+                <table *ngIf="!pageLoading" class="table table-nowrap table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === employeeHospital.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>S/N</th>
+                            <th>Hospital</th>
+                            <th>Hospital rating</th>
+                            <th>Phone number</th>
+                            <th>Start date</th>
+                            <th>End date</th>
+                            <th>Approval Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="modal" class="pointer" data-target="#hospital_modal"
+                            *ngFor="let row of hack(employeeHospital); let i = index">
+                            <td (click)="stopParentEvent($event)">
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+                            <td>{{i +1}}</td>
+                            <td>{{row.hospitalName}}</td>
+                            <td>
+                                <rating [max]="5" [(ngModel)]="row.hospitalRating"
+                                    [titles]="['Poor','Below Average','Average','Above Average','Excellent']"
+                                    [readonly]="true">
+                                </rating>
+                            </td>
+                            <td>{{row.contactPhoneNo}}</td>
+                            <td>{{row.startDate| date :"mediumDate"}}</td>
+                            <td>{{row.endDate ==="Present"? row.endDate: row.endDate | date :"mediumDate"}}</td>
+                            <td>{{row.approvalStatusName}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Hospital Card -->
+<!-- Hospital Modal -->
+<div id="hospital_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{cardFormTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="submitHospitalForm(hospitalForm)" [formGroup]="hospitalForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>hospital</label>
+                                <select class="form-control" [class.invalid]="
+                                hospitalForm.get('hospitalId').invalid && hospitalForm.get('hospitalId').touched"
+                                    formControlName="hospitalId">
+                                    <option selected value="">Select Hospital</option>
+                                    <option *ngFor="let hospital of (allHospitals$ | async)?.setuplist"
+                                        value="{{hospital.id}}"> {{hospital.hospital}} </option>
+                                </select>
+                                <div *ngIf="
+                                hospitalForm.get('hospitalId').invalid &&
+                                hospitalForm.get('hospitalId').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalForm.get('hospitalId').invalid &&
+                                    hospitalForm.get('hospitalId').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Rating</label>
+                                <rating [max]="5" [readonly]="false" class="form-control" [class.invalid]="
+                                hospitalForm.get('hospitalRating').invalid &&
+                                hospitalForm.get('hospitalRating').touched" formControlName="hospitalRating"></rating>
+                                <div *ngIf="
+                                hospitalForm.get('hospitalRating').invalid &&
+                                hospitalForm.get('hospitalRating').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalForm.get('hospitalRating').invalid &&
+                                    hospitalForm.get('hospitalRating').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Contact Phone Number<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                hospitalForm.get('contactPhoneNo').invalid &&
+                                hospitalForm.get('contactPhoneNo').touched" formControlName="contactPhoneNo">
+                                <div *ngIf="
+                                hospitalForm.get('contactPhoneNo').invalid &&
+                                hospitalForm.get('contactPhoneNo').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalForm.get('contactPhoneNo').invalid &&
+                                    hospitalForm.get('contactPhoneNo').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Start Date <span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
+                                    hospitalForm.get('startDate').invalid &&
+                                    hospitalForm.get('startDate').touched" formControlName="startDate">
+                                <div *ngIf="
+                                hospitalForm.get('startDate').invalid &&
+                                hospitalForm.get('startDate').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalForm.get('startDate').invalid &&
+                                    hospitalForm.get('startDate').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>End Date <span class="text-danger">*</span></label>
+                                <span class="float-right ">
+                                    <input type="checkbox" name="currentDate" value=""
+                                        (change)="setDateToPresent($event,hospitalForm,'endDate')"
+                                        formControlName="setCurrentDate">
+                                    <label for="currentDate" class="mx-1">Does not expire</label>
+                                </span>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
+                                    hospitalForm.get('endDate').invalid &&
+                                    hospitalForm.get('endDate').touched" formControlName="endDate">
+                                <div *ngIf="
+                                hospitalForm.get('endDate').invalid &&
+                                hospitalForm.get('endDate').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalForm.get('endDate').invalid &&
+                                    hospitalForm.get('endDate').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Approval Status</label>
+                                <select class="form-control" [class.invalid]="
+                                hospitalForm.get('approvalStatus').invalid &&
+                                hospitalForm.get('approvalStatus').touched" formControlName="approvalStatus">
+                                    <option selected value="">Select Status</option>
+                                    <option value="1">Approve</option>
+                                    <option value="2">Pending</option>
+                                    <option value="3">Decline</option>
+                                </select>
+                                <div *ngIf="
+                                hospitalForm.get('approvalStatus').invalid &&
+                                hospitalForm.get('approvalStatus').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalForm.get('approvalStatus').invalid &&
+                                    hospitalForm.get('approvalStatus').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Hospital Modal -->
+<!-- Hospital Request Change Modal -->
+<div id="hospital_req_change_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{cardFormTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="submitHospitalChangeReqForm(hospitalChangeReqForm)"
+                    [formGroup]="hospitalChangeReqForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Existing Hospital</label>
+                                <select class="form-control" [class.invalid]="
+                                hospitalChangeReqForm.get('hospitalId').invalid &&
+                                hospitalChangeReqForm.get('hospitalId').touched" formControlName="hospitalId">
+                                    <option selected value="">Select Hospital</option>
+                                    <option *ngFor="let emphospital of employeeHospital" value="{{emphospital.id}}">
+                                        {{emphospital.hospitalName}} </option>
+                                </select>
+                                <div *ngIf="
+                                hospitalChangeReqForm.get('hospitalId').invalid &&
+                                hospitalChangeReqForm.get('hospitalId').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalChangeReqForm.get('hospitalId').invalid &&
+                                    hospitalChangeReqForm.get('hospitalId').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Suggested Hospital</label>
+                                <select class="form-control" [class.invalid]="
+                                hospitalChangeReqForm.get('suggestedHospital').invalid &&
+                                hospitalChangeReqForm.get('suggestedHospital').touched"
+                                    formControlName="suggestedHospital">
+                                    <option selected value="">Select Hospital</option>
+                                    <option *ngFor="let hospital of (allHospitals$ | async)?.setuplist"
+                                        value="{{hospital.id}}"> {{hospital.hospital}} </option>
+                                </select>
+                                <div *ngIf="
+                                hospitalChangeReqForm.get('suggestedHospital').invalid &&
+                                hospitalChangeReqForm.get('suggestedHospital').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalChangeReqForm.get('suggestedHospital').invalid &&
+                                    hospitalChangeReqForm.get('suggestedHospital').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date of Request <span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
+                                hospitalChangeReqForm.get('dateOfRequest').invalid &&
+                                hospitalChangeReqForm.get('dateOfRequest').touched" formControlName="dateOfRequest">
+                                <div *ngIf="
+                                hospitalChangeReqForm.get('dateOfRequest').invalid &&
+                                hospitalChangeReqForm.get('dateOfRequest').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalChangeReqForm.get('dateOfRequest').invalid &&
+                                    hospitalChangeReqForm.get('dateOfRequest').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Expected Change Date <span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
+                                hospitalChangeReqForm.get('expectedDateOfChange').invalid &&
+                                hospitalChangeReqForm.get('expectedDateOfChange').touched"
+                                    formControlName="expectedDateOfChange">
+                                <div *ngIf="
+                                hospitalChangeReqForm.get('expectedDateOfChange').invalid &&
+                                hospitalChangeReqForm.get('expectedDateOfChange').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalChangeReqForm.get('expectedDateOfChange').invalid &&
+                                    hospitalChangeReqForm.get('expectedDateOfChange').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Form upload (file format)</label>
+                                <input class="form-control" name="hospitalFile" #fileInput type="file"
+                                    (change)="onSelectedFile($event,hospitalChangeReqForm)" [class.invalid]="
+                                    hospitalChangeReqForm.get('hospitalFile').invalid &&
+                                    hospitalChangeReqForm.get('hospitalFile').touched">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Hospital Request Change Modal -->
+<!-- Book Meeting Modal -->
+<div id="hospital_book_meeting_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{cardFormTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="submitBookHospitalForm(bookHospitalForm)" [formGroup]="bookHospitalForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Hospital Name</label>
+                                <select class="form-control" [class.invalid]="
+                                bookHospitalForm.get('hospitalId').invalid &&
+                                bookHospitalForm.get('hospitalId').touched" formControlName="hospitalId">
+                                    <option selected value="">Select Hospital</option>
+                                    <option *ngFor="let emphospital of employeeHospital" value="{{emphospital.id}}">
+                                        {{emphospital.hospitalName}} </option>
+                                </select>
+                                <div *ngIf="
+                                bookHospitalForm.get('hospitalId').invalid &&
+                                bookHospitalForm.get('hospitalId').touched
+                    ">
+                                    <small *ngIf="
+                                    bookHospitalForm.get('hospitalId').invalid &&
+                                    bookHospitalForm.get('hospitalId').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date of Request <span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
+                                bookHospitalForm.get('dateOfRequest').invalid &&
+                                bookHospitalForm.get('dateOfRequest').touched" formControlName="dateOfRequest">
+                                <div *ngIf="
+                                bookHospitalForm.get('dateOfRequest').invalid &&
+                                bookHospitalForm.get('dateOfRequest').touched
+                    ">
+                                    <small *ngIf="
+                                    bookHospitalForm.get('dateOfRequest').invalid &&
+                                    bookHospitalForm.get('dateOfRequest').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Proposed Meeting Date <span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
+                                bookHospitalForm.get('proposedMeetingDate').invalid &&
+                                bookHospitalForm.get('proposedMeetingDate').touched"
+                                    formControlName="proposedMeetingDate">
+                                <div *ngIf="
+                                bookHospitalForm.get('proposedMeetingDate').invalid &&
+                                bookHospitalForm.get('proposedMeetingDate').touched
+                    ">
+                                    <small *ngIf="
+                                    bookHospitalForm.get('proposedMeetingDate').invalid &&
+                                    bookHospitalForm.get('proposedMeetingDate').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Contact Phone Number<span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" [class.invalid]="
+                                bookHospitalForm.get('reasonsForMeeting').invalid &&
+                                bookHospitalForm.get('reasonsForMeeting').touched" formControlName="reasonsForMeeting">
+                                <div *ngIf="
+                                bookHospitalForm.get('reasonsForMeeting').invalid &&
+                                bookHospitalForm.get('reasonsForMeeting').touched
+                    ">
+                                    <small *ngIf="
+                                    bookHospitalForm.get('reasonsForMeeting').invalid &&
+                                    bookHospitalForm.get('reasonsForMeeting').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Form upload (file format)</label>
+                                <input class="form-control" name="hospitalMeetingFile" #fileInput type="file"
+                                    (change)="onSelectedFile($event,bookHospitalForm)" [class.invalid]="
+                                    bookHospitalForm.get('hospitalMeetingFile').invalid &&
+                                    bookHospitalForm.get('hospitalMeetingFile').touched">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Book Meeting Modal Modal -->

@@ -1,7 +1,6 @@
 <app-loading *ngIf="pageLoading"></app-loading>
 <!-- Page Content -->
 <div *ngIf="!pageLoading" class="content container-fluid">
-
     <!-- Add Job Title Modal -->
     <div id="add_job_title" role="dialog">
         <div class="mb-3">
@@ -27,8 +26,7 @@
                                 <small *ngIf="
                                     jobTitleForm.get('job_title').invalid &&
                                     jobTitleForm.get('job_title').touched
-                      " class="text-danger">
-                                    *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                             </div>
                         </div>
                         <div class="form-group">
@@ -44,8 +42,7 @@
                                 <small *ngIf="
                                     jobTitleForm.get('job_description').invalid &&
                                     jobTitleForm.get('job_description').touched
-                      " class="text-danger">
-                                    *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                             </div>
                         </div>
                         <div class="submit-section">
@@ -83,7 +80,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -118,7 +114,6 @@
     </div>
 </div>
 <!-- /Page Content -->
-
 <!-- Add Job Skill Modal -->
 <div id="add_sub_skill" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -146,8 +141,7 @@
                                     <small *ngIf="
                                     jobSkillForm.get('skill').invalid &&
                                     jobSkillForm.get('skill').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -165,8 +159,7 @@
                                     <small *ngIf="
                                     jobSkillForm.get('weight').invalid &&
                                     jobSkillForm.get('weight').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -184,15 +177,11 @@
                                     <small *ngIf="
                                     jobSkillForm.get('description').invalid &&
                                     jobSkillForm.get('description').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
                             <span *ngIf="!spinner">Submit</span>
@@ -205,7 +194,6 @@
     </div>
 </div>
 <!-- /Add Job Skill Modal -->
-
 <!-- Upload Job Skill Modal -->
 <div id="upload_sub_skill" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -220,18 +208,14 @@
             <div class="modal-body px-5">
                 <form (ngSubmit)="uploadJobSkill()" [formGroup]="jobSkillUploadForm">
                     <div class="row">
-
                         <div class="form-group row">
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                                    (change)="onSelectedFile($event)">
+                                    (change)="onSelectedFile($event,jobSkillUploadForm)">
                             </div>
                         </div>
-
                     </div>
-
-
                     <div class="row">
                         <p>Please use the guide below for your sheet</p>
                         <table class="table table-bordered">
@@ -243,7 +227,6 @@
                             </tr>
                         </table>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
                             <span *ngIf="!spinner">Submit</span>

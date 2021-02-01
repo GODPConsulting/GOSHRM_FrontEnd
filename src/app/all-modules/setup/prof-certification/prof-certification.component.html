@@ -24,7 +24,6 @@
     </div>
   </div>
   <!-- /Page Header -->
-
   <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
@@ -38,7 +37,6 @@
               <th>S/N</th>
               <th>Certification</th>
               <th>Rank</th>
-
             </tr>
           </thead>
           <tbody>
@@ -50,7 +48,6 @@
               <td>{{ i + 1 }}</td>
               <td>{{ row.certification }}</td>
               <td>{{ row.rank }}</td>
-
             </tr>
           </tbody>
         </table>
@@ -59,7 +56,6 @@
   </div>
 </div>
 <!-- /Page Content -->
-
 <!-- Add Professional Certification Modal -->
 <div id="add-prof-certification" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -85,8 +81,7 @@
               <small *ngIf="
                       profCertificationForm.get('certification').invalid &&
                       profCertificationForm.get('certification').touched
-                      " class="text-danger">
-                *Certification is required</small>
+                      " class="text-danger"> *Certification is required</small>
             </div>
           </div>
           <div class="form-group">
@@ -102,8 +97,7 @@
               <small *ngIf="
                       profCertificationForm.get('rank').invalid &&
                       profCertificationForm.get('rank').touched
-                      " class="text-danger">
-                *Rank is required</small>
+                      " class="text-danger"> *Rank is required</small>
             </div>
           </div>
           <div class="form-group">
@@ -119,8 +113,7 @@
               <small *ngIf="
                       profCertificationForm.get('description').invalid &&
                       profCertificationForm.get('description').touched
-                      " class="text-danger">
-                *Description is required</small>
+                      " class="text-danger"> *Description is required</small>
             </div>
           </div>
           <div class="submit-section">
@@ -135,7 +128,6 @@
   </div>
 </div>
 <!-- /Add Professional Certification Modal -->
-
 <!-- Upload Prof Certification Modal -->
 <div id="upload_prof_certification" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -149,15 +141,13 @@
       <div class="modal-body px-5">
         <form (ngSubmit)="uploadProfCert()" [formGroup]="profCertUploadForm">
           <div class="row">
-
             <div class="form-group row">
               <label class="col-form-label col-md-5">Choose File (excel format)</label>
               <div class="col-md-7">
                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                  (change)="onSelectedFile($event)">
+                  (change)="onSelectedFile($event,profCertUploadForm)">
               </div>
             </div>
-
           </div>
           <div class="row">
             <p>Please use the guide below for your sheet</p>
@@ -169,7 +159,6 @@
               </tr>
             </table>
           </div>
-
           <div class="submit-section">
             <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadProfCert()" [disabled]="spinner">
               <span *ngIf="!spinner">Submit</span>

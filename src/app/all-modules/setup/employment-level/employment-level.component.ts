@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 declare const $: any;
 @Component({
@@ -24,7 +25,8 @@ export class EmploymentLevelComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -42,19 +44,6 @@ export class EmploymentLevelComponent implements OnInit {
     };
     this.initializeForm();
     this.getEmploymentLevels();
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event) {
-    this.file = event.target.files[0];
-    this.employmentLevelUploadForm.patchValue({
-      uploadInput: this.file,
-    });
   }
 
   downloadFile() {
@@ -104,28 +93,26 @@ export class EmploymentLevelComponent implements OnInit {
       this.employmentLevelUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/employmentlevel", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            this.fileInput.nativeElement.value = "";
-            $("#upload_employment_level").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getEmploymentLevels();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.uploadEmploymentLevel(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          this.fileInput.nativeElement.value = "";
+          $("#upload_employment_level").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getEmploymentLevels();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   openUploadModal() {
@@ -136,7 +123,7 @@ export class EmploymentLevelComponent implements OnInit {
     this.employmentLevelForm = this.formBuilder.group({
       id: [0],
       employment_level: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
     });
     this.employmentLevelUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -145,18 +132,16 @@ export class EmploymentLevelComponent implements OnInit {
 
   getEmploymentLevels() {
     this.pageLoading = true;
-    return this.setupService
-      .getData("/hrmsetup/get/all/emplpymentlevels")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          this.levels = data.setuplist;
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
+    return this.setupService.getEmploymentLevel().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.levels = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   // Add employment level Api Call
@@ -167,27 +152,25 @@ export class EmploymentLevelComponent implements OnInit {
     }
     const payload = form.value;
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/employmentlevel", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add_employment_level").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getEmploymentLevels();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addEmploymentLevel(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add_employment_level").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getEmploymentLevels();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   openModal() {
@@ -224,23 +207,21 @@ export class EmploymentLevelComponent implements OnInit {
       .then((result) => {
         //console.log(result);
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/employmentlevel", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getEmploymentLevels();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteEmploymentLevel(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getEmploymentLevels();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
@@ -257,25 +238,22 @@ export class EmploymentLevelComponent implements OnInit {
     $("#add_employment_level").modal("show");
   }
 
-  addItemId(event, id: number) {
-    if (event.target.checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+  addItemId(event: Event, id: number) {
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.levels.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+  checkAll(event: Event) {
+    this.selectedId = this.utilitiesService.checkAllBoxes(event, this.levels);
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

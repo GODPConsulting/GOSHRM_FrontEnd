@@ -1,8 +1,6 @@
 <app-loading *ngIf="pageLoading"></app-loading>
-
 <!-- Page Content -->
 <div *ngIf="!pageLoading" class="content container-fluid">
-
     <!-- Page Header -->
     <div class="page-header">
         <div class="row">
@@ -16,7 +14,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="card mb-0">
         <div class="card-body">
             <div class="row">
@@ -32,10 +29,9 @@
                                 <div class="col-md-5">
                                     <div class="profile-info-left">
                                         <h3 class="user-name m-t-0 mb-0">{{employeeDetails.firstName}}
-                                            {{employeeDetails.middleName}}
-                                            {{employeeDetails.lastName}}</h3>
+                                            {{employeeDetails.middleName}} {{employeeDetails.lastName}}</h3>
                                         <!-- <h6 class="text-muted">{{employeeDetails.jobTitleName}}</h6> -->
-                                        <small class="text-muted">{{employeeDetails.jobTitleName}} Web Designer</small>
+                                        <small class="text-muted">{{employeeDetails.jobTitleName}}</small>
                                         <div class="staff-id">Staff Code : {{employeeDetails.staffCode}}</div>
                                         <div class="small doj text-muted">Date of Join : 1st Jan 2013(unavailable)</div>
                                         <div class="staff-msg"><a class="btn btn-custom" routerLink="/apps/chat">Send
@@ -76,28 +72,25 @@
             </div>
         </div>
     </div>
-
     <div class="card tab-box">
         <div class="row user-tabs">
             <div class="col-lg-12 col-md-12 col-sm-12 line-tabs">
                 <ul class="nav nav-tabs nav-tabs-bottom">
-                    <li class="nav-item"><a href="#emp_profile" data-toggle="tab" class="nav-link ">Profile</a>
+                    <li class="nav-item"><a href="#emp_profile" data-toggle="tab" class="nav-link active">Profile</a>
                     </li>
                     <li class="nav-item"><a href="#emp_assets" data-toggle="tab" class="nav-link">Assets</a></li>
-                    <li class="nav-item"><a href="#emp_careers" data-toggle="tab" class="nav-link active">Careers</a>
+                    <li class="nav-item"><a href="#emp_careers" data-toggle="tab" class="nav-link ">Careers</a>
                     </li>
                     <li class="nav-item"><a href="#emp_hobbies" data-toggle="tab" class="nav-link">Hobbies</a></li>
-                    <li class="nav-item"><a href="#emp_health_well" data-toggle="tab" class="nav-link ">Health an
+                    <li class="nav-item"><a href="#emp_health_well" data-toggle="tab" class="nav-link ">Health and
                             Wellness</a></li>
                 </ul>
             </div>
         </div>
     </div>
-
     <div class="tab-content">
-
         <!-- Profile Info Tab -->
-        <div id="emp_profile" class="pro-overview tab-pane fade  ">
+        <div id="emp_profile" class="pro-overview tab-pane fade show active ">
             <!-- Identification Card -->
             <div>
                 <app-identification [staffId]="employeeId"></app-identification>
@@ -107,13 +100,25 @@
             <div>
                 <div class="card profile-box flex-fill">
                     <div class="card-body">
-                        <h3 class="card-title">Emergency Contact <a class="edit-icon" data-toggle="modal"
-                                data-target="#emergency_contact_modal"><i class="fa fa-plus"></i></a></h3>
-                        <!-- <h5 class="section-title">Primary</h5> -->
+                        <h3 class="card-title">Emergency Contact <div class="col-auto float-right ml-auto">
+                                <a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#emergency_contact_modal"><span class="hint-text">Add</span><i
+                                        class="fa fa-plus"></i>
+                                </a>
+                                <a class="btn delete-btn hint" (click)="deleteEmergencyContact()"><span
+                                        class="hint-text">Delete</span><i class="fa fa-trash"></i>
+                                </a>
+                            </div>
+                        </h3>
                         <div class="table-responsive">
-                            <table class="table table-nowrap">
+                            <table class="table table-nowrap table-hover">
                                 <thead>
                                     <tr>
+                                        <th>
+                                            <input type="checkbox"
+                                                [checked]="selectedId.length === languageRating.length"
+                                                (change)="checkAllEmergency($event)" />
+                                        </th>
                                         <th>S/N</th>
                                         <th>Full Name</th>
                                         <th>Contact phone number</th>
@@ -125,8 +130,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let item of emmergencyContacts; let i = index" class="cursor"
-                                        (click)="editContact(item)">
+                                    <tr *ngFor="let item of emergencyContacts; let i = index"
+                                        (click)="editEmergencyContact(item)" class="pointer">
+                                        <td (click)="stopParentEvent($event)">
+                                            <input type="checkbox" [checked]="selectedId.includes(item.id)"
+                                                (change)="addItemId($event, item.id)" />
+                                        </td>
                                         <td>{{ i + 1 }}</td>
                                         <td>{{item.fullName}}</td>
                                         <td>{{item.contact_phone_number}}</td>
@@ -135,15 +144,66 @@
                                         <td>{{item.address}}</td>
                                         <td>{{item.countryName}}</td>
                                         <td>{{item.approval_status_name}}</td>
-
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
                 <!-- /Emergency Contact -->
+                <!-- Language -->
+                <div>
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Language Rating <div class="col-auto float-right ml-auto">
+                                    <a class="btn add-btn hint" data-toggle="modal"
+                                        data-target="#language_rating_modal"><span class="hint-text">Add</span><i
+                                            class="fa fa-plus"></i>
+                                    </a>
+                                    <a class="btn delete-btn hint" (click)="deleteLanguageRating()"><span
+                                            class="hint-text">Delete</span><i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                            </h3>
+                            <div class="table-responsive">
+                                <table class="table table-nowrap table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox"
+                                                    [checked]="selectedId.length === languageRating.length"
+                                                    (change)="checkAll($event)" />
+                                            </th>
+                                            <th>S/N</th>
+                                            <th>Language</th>
+                                            <th>Reading Rating</th>
+                                            <th>Writing Rating</th>
+                                            <th>Speaking Rating</th>
+                                            <th>Approval Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let language of languageRating; let i = index"
+                                            (click)="editLanguageRating(language)" class="pointer"
+                                            (click)="stopParentEvent($event)">
+                                            <td (click)="stopParentEvent($event)">
+                                                <input type="checkbox" [checked]="selectedId.includes(language.id)"
+                                                    (change)="addItemId($event, language.id)" />
+                                            </td>
+                                            <td>{{ i + 1 }}</td>
+                                            <td>{{language.language}}</td>
+                                            <td>{{language.reading_Rating}}</td>
+                                            <td>{{language.writing_Rating}}</td>
+                                            <td>{{language.speaking_Rating}}</td>
+                                            <td>{{language.approval_status_name}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Language -->
             </div>
             <!-- /Emergency Contact -->
             <!-- Referee Card -->
@@ -175,7 +235,6 @@
         <!-- </div>
         </div> -->
         <!-- /Assets Tab -->
-
         <!-- Careers Tab -->
         <div id="emp_careers" class="tab-pane fade show active">
             <!-- Career card -->
@@ -185,6 +244,9 @@
             <!-- Professional Certification card -->
             <app-prof-cert [staffId]="employeeId"></app-prof-cert>
             <!-- /Professional Certification card -->
+            <!-- Skills card -->
+            <app-skills [staffId]="employeeId"></app-skills>
+            <!-- /Skills card -->
         </div>
         <!-- /Careers Tab -->
 
@@ -199,15 +261,19 @@
 
         <!-- Health and Wellness Tab -->
         <div id="emp_health_well" class="tab-pane fade ">
-            <!-- Hmo card -->
-            <app-hmo [staffId]="employeeId"></app-hmo>
-            <!-- /Hmo card -->
+            <!-- Employee Hmo card -->
+            <app-employee-hmo [staffId]="employeeId"></app-employee-hmo>
+            <!-- Employee /Hmo card -->
+            <!-- Hospital card -->
+            <app-hospital [staffId]="employeeId"></app-hospital>
+            <!-- /Hospital card -->
+            <!-- Employee Gym card -->
+            <app-employee-gym [staffId]="employeeId"></app-employee-gym>
+            <!-- /Employee Gym card -->
         </div>
         <!-- /Health and Wellness Tab -->
     </div>
-
 </div>
-
 <!-- Pop up Modals below -->
 
 
@@ -224,7 +290,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="addEmmergencyContact(emmergencyContactForm)" [formGroup]="emmergencyContactForm">
+                <form (ngSubmit)="addEmergencyContact(emergencyContactForm)" [formGroup]="emergencyContactForm">
                     <div class="card">
                         <div class="card-body">
                             <h3 class="card-title">Primary Contact</h3>
@@ -256,12 +322,11 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Country <span class="text-danger">*</span></label>
-                                        <select class="form-control" [class.invalid]="emmergencyContactForm.get('countryId').invalid &&
-                                        emmergencyContactForm.get('countryId').touched" formControlName="countryId">
+                                        <select class="form-control" [class.invalid]="emergencyContactForm.get('countryId').invalid &&
+                                        emergencyContactForm.get('countryId').touched" formControlName="countryId">
                                             <option selected value="">Country</option>
                                             <option *ngFor="let row of countries" value="{{row.lookupId}}">
-                                                {{row.lookupName}}
-                                            </option>
+                                                {{row.lookupName}} </option>
                                         </select>
                                     </div>
                                 </div>
@@ -279,14 +344,12 @@
                                             <option value="1">Approved</option>
                                             <option value="2">Pending</option>
                                             <option value="3">Declined</option>
-
                                         </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             <span *ngIf="!loading">Submit</span>
@@ -299,7 +362,78 @@
     </div>
 </div>
 <!-- /Emergency Contact Modal -->
-
+<!-- language Modal -->
+<div id="language_rating_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"> Add Language(s) </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="closelanguageRatingModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="addLanguageRating(languageRatingForm)" [formGroup]="languageRatingForm">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Language Rating</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Language<span class="text-danger">*</span></label>
+                                        <select class="form-control" [class.invalid]="languageRatingForm.get('languageId').invalid &&
+                                        languageRatingForm.get('languageId').touched" formControlName="languageId">
+                                            <option selected value="">Languages</option>
+                                            <option *ngFor="let row of languages" value="{{row.id}}"> {{row.language}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Reading Rating <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" formControlName="reading_Rating">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Writing Rating<span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" formControlName="writing_Rating">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Speaking Rating <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="email" formControlName="speaking_Rating">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Approval Status<span class="text-danger">*</span></label>
+                                        <select class="select form-control" formControlName="approval_status">
+                                            <option disabled>Select Status</option>
+                                            <option value="1">Approved</option>
+                                            <option value="2">Pending</option>
+                                            <option value="3">Declined</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit">
+                            <span *ngIf="!loading">Submit</span>
+                            <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Language modal -->
 <!-- Assets Contact Modal 
 <div id="assets_contact_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -405,7 +539,6 @@
     </div>
 </div>
  /Assets Contact Modal -->
-
 <!-- Hobbies Modal
 <div id="hobbies_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -474,7 +607,6 @@
     </div>
 </div> -->
 <!-- /Hobbies Modal -->
-
 <!-- Experience Modal 
 <div id="experience_info" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

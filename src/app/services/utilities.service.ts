@@ -38,6 +38,14 @@ export class UtilitiesService {
     return [];
   }
 
+  setDateToPresent(event: Event, form: FormGroup, formControlName: string) {
+    if ((<HTMLInputElement>event.target).checked) {
+      form.get(formControlName).setValue("Present");
+    } else {
+      form.get(formControlName).setValue("");
+    }
+  }
+
   getCountry() {
     return this.apiService.get(this.getCountryUrl);
   }
