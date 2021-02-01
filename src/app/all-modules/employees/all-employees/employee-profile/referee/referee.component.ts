@@ -74,7 +74,6 @@ export class RefereeComponent implements OnInit {
       confirmationDate: row.confirmationDate,
       approvalStatus: row.approvalStatus,
       staffId: this.staffId,
-      refereeFile: row.refereeFile,
     });
     this.fileInput.nativeElement.value = "";
     $("#referee_modal").modal("show");

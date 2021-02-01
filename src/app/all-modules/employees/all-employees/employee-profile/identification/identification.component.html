@@ -11,7 +11,8 @@
                         class="fa fa-pencil"></i></a></h3>
             <div class="table-responsive">
                 <app-loading *ngIf="pageLoading"></app-loading>
-                <table *ngIf="!pageLoading" class="table table-nowrap table-hover">
+                <table *ngIf="!pageLoading" class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"
+                    [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
                             <th>

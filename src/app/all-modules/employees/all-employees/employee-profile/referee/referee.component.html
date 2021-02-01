@@ -31,7 +31,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#referee_modal" (click)="edit(row)"
+                        <tr data-toggle="modal" class="pointer" data-target="#referee_modal" (click)="editForm(row)"
                             *ngFor="let row of hack(employeeReferee); let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
