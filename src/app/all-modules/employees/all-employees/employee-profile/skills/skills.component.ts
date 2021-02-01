@@ -95,7 +95,7 @@ export class SkillsComponent implements OnInit {
 
   getSingleJobTitle(id: number) {
     this.pageLoading = true;
-    return this.setupService.getSingleJobTitle(id).subscribe(
+    return this.setupService.getSingleJobTitleById(id).subscribe(
       (data) => {
         this.pageLoading = false;
         this.jobTitle = data.setuplist[0];

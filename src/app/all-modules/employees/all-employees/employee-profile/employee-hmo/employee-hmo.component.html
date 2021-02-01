@@ -69,26 +69,26 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form (ngSubmit)="submitHmoForm(hmoForm)" [formGroup]="hmoForm">
+                <form (ngSubmit)="submitHmoForm(employeeHmoForm)" [formGroup]="employeeHmoForm">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>HMO</label>
                                 <select class="form-control"
                                     [class.invalid]="
-                                hmoForm.get('hmoId').invalid &&                                hmoForm.get('hmoId').touched"
+                                employeeHmoForm.get('hmoId').invalid &&                                employeeHmoForm.get('hmoId').touched"
                                     formControlName="hmoId">
                                     <option selected value="">Select HMO</option>
                                     <option *ngFor="let hmo of (allHmos$ | async)?.setuplist" value="{{hmo.id}}">
                                         {{hmo.hmo_name}} </option>
                                 </select>
                                 <div *ngIf="
-                                hmoForm.get('hmoId').invalid &&
-                                hmoForm.get('hmoId').touched
+                                employeeHmoForm.get('hmoId').invalid &&
+                                employeeHmoForm.get('hmoId').touched
                     ">
                                     <small *ngIf="
-                                    hmoForm.get('hmoId').invalid &&
-                                    hmoForm.get('hmoId').touched
+                                    employeeHmoForm.get('hmoId').invalid &&
+                                    employeeHmoForm.get('hmoId').touched
                       " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
@@ -97,15 +97,15 @@
                             <div class="form-group">
                                 <label>Rating</label>
                                 <rating [max]="5" [readonly]="false" class="form-control" [class.invalid]="
-                                hmoForm.get('hmo_rating').invalid &&
-                                hmoForm.get('hmo_rating').touched" formControlName="hmo_rating"></rating>
+                                employeeHmoForm.get('hmo_rating').invalid &&
+                                employeeHmoForm.get('hmo_rating').touched" formControlName="hmo_rating"></rating>
                                 <div *ngIf="
-                                hmoForm.get('hmo_rating').invalid &&
-                                hmoForm.get('hmo_rating').touched
+                                employeeHmoForm.get('hmo_rating').invalid &&
+                                employeeHmoForm.get('hmo_rating').touched
                     ">
                                     <small *ngIf="
-                                    hmoForm.get('hmo_rating').invalid &&
-                                    hmoForm.get('hmo_rating').touched
+                                    employeeHmoForm.get('hmo_rating').invalid &&
+                                    employeeHmoForm.get('hmo_rating').touched
                       " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
@@ -114,15 +114,15 @@
                             <div class="form-group">
                                 <label>Contact Phone Number<span class="text-danger">*</span></label>
                                 <input class="form-control" type="text" [class.invalid]="
-                                hmoForm.get('contactPhoneNo').invalid &&
-                                hmoForm.get('contactPhoneNo').touched" formControlName="contactPhoneNo">
+                                employeeHmoForm.get('contactPhoneNo').invalid &&
+                                employeeHmoForm.get('contactPhoneNo').touched" formControlName="contactPhoneNo">
                                 <div *ngIf="
-                                hmoForm.get('contactPhoneNo').invalid &&
-                                hmoForm.get('contactPhoneNo').touched
+                                employeeHmoForm.get('contactPhoneNo').invalid &&
+                                employeeHmoForm.get('contactPhoneNo').touched
                     ">
                                     <small *ngIf="
-                                    hmoForm.get('contactPhoneNo').invalid &&
-                                    hmoForm.get('contactPhoneNo').touched
+                                    employeeHmoForm.get('contactPhoneNo').invalid &&
+                                    employeeHmoForm.get('contactPhoneNo').touched
                       " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
@@ -131,15 +131,15 @@
                             <div class="form-group">
                                 <label>Start Date <span class="text-danger">*</span></label>
                                 <input class="form-control" type="date" [class.invalid]="
-                                    hmoForm.get('startDate').invalid &&
-                                    hmoForm.get('startDate').touched" formControlName="startDate">
+                                    employeeHmoForm.get('startDate').invalid &&
+                                    employeeHmoForm.get('startDate').touched" formControlName="startDate">
                                 <div *ngIf="
-                                hmoForm.get('startDate').invalid &&
-                                hmoForm.get('startDate').touched
+                                employeeHmoForm.get('startDate').invalid &&
+                                employeeHmoForm.get('startDate').touched
                     ">
                                     <small *ngIf="
-                                    hmoForm.get('startDate').invalid &&
-                                    hmoForm.get('startDate').touched
+                                    employeeHmoForm.get('startDate').invalid &&
+                                    employeeHmoForm.get('startDate').touched
                       " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
@@ -149,20 +149,20 @@
                                 <label>End Date <span class="text-danger">*</span></label>
                                 <span class="float-right ">
                                     <input type="checkbox" name="currentDate" value=""
-                                        (change)="setDateToPresent($event,hmoForm,'end_Date')"
+                                        (change)="setDateToPresent($event,employeeHmoForm,'end_Date')"
                                         formControlName="setCurrentDate">
                                     <label for="currentDate" class="mx-1">Does not expire</label>
                                 </span>
                                 <input class="form-control" type="date" [class.invalid]="
-                                    hmoForm.get('end_Date').invalid &&
-                                    hmoForm.get('end_Date').touched" formControlName="end_Date">
+                                    employeeHmoForm.get('end_Date').invalid &&
+                                    employeeHmoForm.get('end_Date').touched" formControlName="end_Date">
                                 <div *ngIf="
-                                hmoForm.get('end_Date').invalid &&
-                                hmoForm.get('end_Date').touched
+                                employeeHmoForm.get('end_Date').invalid &&
+                                employeeHmoForm.get('end_Date').touched
                     ">
                                     <small *ngIf="
-                                    hmoForm.get('end_Date').invalid &&
-                                    hmoForm.get('end_Date').touched
+                                    employeeHmoForm.get('end_Date').invalid &&
+                                    employeeHmoForm.get('end_Date').touched
                       " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
@@ -171,20 +171,20 @@
                             <div class="form-group">
                                 <label>Approval Status</label>
                                 <select class="form-control" [class.invalid]="
-                                hmoForm.get('approvalStatus').invalid &&
-                                hmoForm.get('approvalStatus').touched" formControlName="approvalStatus">
+                                employeeHmoForm.get('approvalStatus').invalid &&
+                                employeeHmoForm.get('approvalStatus').touched" formControlName="approvalStatus">
                                     <option selected value="">Select Status</option>
                                     <option value="1">Approve</option>
                                     <option value="2">Pending</option>
                                     <option value="3">Decline</option>
                                 </select>
                                 <div *ngIf="
-                                hmoForm.get('approvalStatus').invalid &&
-                                hmoForm.get('approvalStatus').touched
+                                employeeHmoForm.get('approvalStatus').invalid &&
+                                employeeHmoForm.get('approvalStatus').touched
                     ">
                                     <small *ngIf="
-                                    hmoForm.get('approvalStatus').invalid &&
-                                    hmoForm.get('approvalStatus').touched
+                                    employeeHmoForm.get('approvalStatus').invalid &&
+                                    employeeHmoForm.get('approvalStatus').touched
                       " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>

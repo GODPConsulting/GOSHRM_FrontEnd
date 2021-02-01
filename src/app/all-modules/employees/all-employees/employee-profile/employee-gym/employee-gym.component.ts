@@ -8,26 +8,26 @@ import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: "app-hmo",
-  templateUrl: "./hmo.component.html",
-  styleUrls: ["./hmo.component.css"],
+  selector: "app-employee-gym",
+  templateUrl: "./employee-gym.component.html",
+  styleUrls: ["./employee-gym.component.css"],
 })
-export class HmoComponent implements OnInit {
+export class EmployeeGymComponent implements OnInit {
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   public selectedId: number[] = [];
-  hmoForm: FormGroup;
-  hmoChangeReqForm: FormGroup;
+  employeeGymForm: FormGroup;
+  gymChangeReqForm: FormGroup;
+  bookGymForm: FormGroup;
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
   @Input() staffId: number;
 
   // To hold data for each card
-  employeeHmo: any[] = [];
-  // Observable to subscribe to in the template
-  allHmos$: Observable<any> = this.setupService.getHmo();
+  employeeGym: any[] = [];
+  allGyms$: Observable<any>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,18 +37,21 @@ export class HmoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initHmoForm();
-    this.initHmoChangeForm();
-    this.getEmployeeHmo(this.staffId);
+    this.initGymForm();
+    this.initGymChangeForm();
+    this.initBookGymForm();
+    this.getEmployeeGym(this.staffId);
+    // Observable to subscribe to in the template
+    this.allGyms$ = this.setupService.getGymWorkout();
   }
 
-  initHmoForm() {
-    this.cardFormTitle = "Add HMO";
-    this.hmoForm = this.formBuilder.group({
+  initGymForm() {
+    this.cardFormTitle = "Add Gym";
+    this.employeeGymForm = this.formBuilder.group({
       id: [0],
-      hmoId: ["", Validators.required],
-      hmo_rating: ["", Validators.required],
-      contactPhoneNo: ["", Validators.required],
+      gymId: ["", Validators.required],
+      gymRating: ["", Validators.required],
+      gymContactPhoneNo: ["", Validators.required],
       startDate: ["", Validators.required],
       end_Date: ["", Validators.required],
       approvalStatus: ["", Validators.required],
@@ -57,46 +60,56 @@ export class HmoComponent implements OnInit {
     });
   }
 
-  initHmoChangeForm() {
-    this.cardFormTitle = "HMO Change Request";
-    this.hmoChangeReqForm = this.formBuilder.group({
+  initGymChangeForm() {
+    this.cardFormTitle = "Gym Change Request";
+    this.gymChangeReqForm = this.formBuilder.group({
       id: [0],
-      hmoId: ["", Validators.required],
-      suggestedHmo: ["", Validators.required],
+      gymId: ["", Validators.required],
+      suggestedGym: ["", Validators.required],
       dateOfRequest: [
         { value: new Date().toLocaleDateString("en-CA"), disabled: true },
         Validators.required,
       ],
       expectedDateOfChange: ["", Validators.required],
-      hmoFile: ["", Validators.required],
+      gymFile: ["", Validators.required],
       staffId: this.staffId,
     });
   }
 
-  submitHmoForm(form: FormGroup) {
+  initBookGymForm() {
+    this.cardFormTitle = "Book Gym Meeting";
+    this.bookGymForm = this.formBuilder.group({
+      id: [0],
+      gymId: ["", Validators.required],
+      dateOfRequest: [
+        { value: new Date().toLocaleDateString("en-CA"), disabled: true },
+        Validators.required,
+      ],
+      proposedMeetingDate: ["", Validators.required],
+      reasonsForMeeting: ["", Validators.required],
+      gymMeetingFile: ["", Validators.required],
+      staffId: this.staffId,
+    });
+  }
+
+  submitGymForm(form: FormGroup) {
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
     payload.approvalStatus = +payload.approvalStatus;
-    payload.hmoId = +payload.hmoId;
-    /* const formData = new FormData();
-    for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.hmoForm.get(key).value);
-    } */
-
+    payload.gymId = +payload.gymId;
     this.spinner = true;
-    return this.employeeService.postHmo(payload).subscribe(
+    return this.employeeService.postGym(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
-          $("#hmo_modal").modal("hide");
+          $("#gym_modal").modal("hide");
         }
-        this.getEmployeeHmo(this.staffId);
+        this.getEmployeeGym(this.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -106,32 +119,65 @@ export class HmoComponent implements OnInit {
     );
   }
 
-  submitHmoChangeReqForm(form: FormGroup) {
+  submitGymChangeReqForm(form: FormGroup) {
     form.get("dateOfRequest").enable();
+
     if (!form.valid) {
       form.get("dateOfRequest").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    /* const payload = form.value;
-    payload.suggestedHmo = +payload.suggestedHmo;
-    payload.hmoId = +payload.hmoId; */
+    const payload = form.value;
+    payload.suggestedGym = +payload.suggestedGym;
+    payload.gymId = +payload.gymId;
     const formData = new FormData();
-    formData.append("approvalStatus", "2");
-    formData.append("contactPhoneNo", "09088777886");
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
-      formData.append(key, this.hmoChangeReqForm.get(key)?.value);
+      formData.append(key, this.gymChangeReqForm.get(key).value);
     }
 
     this.spinner = true;
-    return this.employeeService.postHmoChangeRequest(formData).subscribe(
+    return this.employeeService.postGymChangeRequest(formData).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
           $("#hmo_req_change_modal").modal("hide");
+        }
+        this.getEmployeeGym(this.staffId);
+      },
+      (err) => {
+        form.get("dateOfRequest").disable();
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
+  }
+
+  submitBookGymForm(form: FormGroup) {
+    form.get("dateOfRequest").enable();
+
+    if (!form.valid) {
+      form.get("dateOfRequest").disable();
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+
+    const formData = new FormData();
+    for (const key in form.value) {
+      //console.log(key, this.identificationForm.get(key).value);
+      formData.append(key, this.bookGymForm.get(key).value);
+    }
+
+    this.spinner = true;
+    return this.employeeService.postBookGymMeeting(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          $("#gym_book_meeting_modal").modal("hide");
         }
       },
       (err) => {
@@ -143,15 +189,15 @@ export class HmoComponent implements OnInit {
     );
   }
 
-  getEmployeeHmo(id: number) {
+  getEmployeeGym(id: number) {
     this.pageLoading = true;
-    this.employeeService.getHmoByStaffId(id).subscribe(
+    this.employeeService.getGymByStaffId(id).subscribe(
       (data) => {
         this.pageLoading = false;
-        this.employeeHmo = data.employeeList;
+        this.employeeGym = data.employeeList;
       },
       (err) => {
-        this.spinner = false;
+        this.pageLoading = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("Error", message, "error");
       }
@@ -182,12 +228,12 @@ export class HmoComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          return this.employeeService.deleteHmo(payload).subscribe(
+          return this.employeeService.deleteGym(payload).subscribe(
             (res) => {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeHmo(this.staffId);
+                  this.getEmployeeGym(this.staffId);
                 });
               } else {
                 swal.fire("Error", message, "error");
@@ -211,7 +257,7 @@ export class HmoComponent implements OnInit {
   checkAll(event: Event) {
     this.selectedId = this.utilitiesService.checkAllBoxes(
       event,
-      this.employeeHmo
+      this.employeeGym
     );
   }
 
