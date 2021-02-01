@@ -11,11 +11,12 @@ export class EmployeeService {
   constructor(private apiService: ApiService) {}
 
   getEmployees() {
-    return this.apiService.get("/admin/get/all/staff");
+    return this.apiService.get("/hrm/get/all/staff");
   }
 
   getEmployeeById(id: number) {
-    return this.apiService.get(`/admin/get/single/staff/staffId?StaffId=${id}`);
+    //return this.apiService.get(`/admin/get/single/staff/staffId?StaffId=${id}`);
+    return this.apiService.get(`/hrm/get/single/staff/Id?StaffId=${id}`);
   }
 
   getIdentificationByStaffId(id: number) {
@@ -168,5 +169,20 @@ export class EmployeeService {
       "/hrm/delete/employee/prof-certification",
       payload
     );
+  }
+
+  //Employee Skills
+  getSkillByStaffId(id: number) {
+    return this.apiService.get(
+      `/hrm/get/single/employee/skill/staffId?StaffId=${id}`
+    );
+  }
+
+  addSkill(payload: Object) {
+    return this.apiService.post(`/hrm/add/update/employee/skill`, payload);
+  }
+
+  deleteSkills(payload) {
+    return this.apiService.post(`/hrm/delete/employee/skill`, payload);
   }
 }

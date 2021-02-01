@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 
 declare const $: any;
@@ -23,7 +24,8 @@ export class JobTitleComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -41,19 +43,6 @@ export class JobTitleComponent implements OnInit {
     };
     this.getJobTitle();
     this.initializeForm();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event: Event) {
-    const file = (<HTMLInputElement>event.target).files[0];
-    this.jobTitleUploadForm.patchValue({
-      uploadInput: file,
-    });
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
   }
 
   downloadFile() {
@@ -98,27 +87,25 @@ export class JobTitleComponent implements OnInit {
       this.jobTitleUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/jobtitle", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#upload_job_title").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getJobTitle();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.uploadJobTitle(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#upload_job_title").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getJobTitle();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   openUploadModal() {
@@ -139,7 +126,7 @@ export class JobTitleComponent implements OnInit {
 
   getJobTitle() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
+    return this.setupService.getJobTitle().subscribe(
       (data) => {
         this.pageLoading = false;
         console.log(data);
@@ -165,25 +152,23 @@ export class JobTitleComponent implements OnInit {
     }
     const payload = form.value;
     console.log(payload);
-    return this.setupService
-      .updateData("/hrmsetup/add/update/jobtitle", payload)
-      .subscribe(
-        (res) => {
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add_job_title").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getJobTitle();
-        },
-        (err) => {
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addJobTitle(payload).subscribe(
+      (res) => {
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add_job_title").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getJobTitle();
+      },
+      (err) => {
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   // Set Values To Edit Modal Form
@@ -218,49 +203,46 @@ export class JobTitleComponent implements OnInit {
       .then((result) => {
         //console.log(result);
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/jobtitle", payload)
-            .subscribe(
-              (res) => {
-                console.log(res);
+          return this.setupService.deleteJobTitle(payload).subscribe(
+            (res) => {
+              console.log(res);
 
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getJobTitle();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getJobTitle();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
   }
 
-  checkAll(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.jobTitles.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+  addItemId(event: Event, id: number) {
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
-  addItemId(event: Event, id: number) {
-    if ((<HTMLInputElement>event.target).checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+  checkAll(event: Event) {
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.jobTitles
+    );
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
   }
 }

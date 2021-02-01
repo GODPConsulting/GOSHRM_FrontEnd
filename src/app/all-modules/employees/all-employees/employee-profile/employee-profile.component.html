@@ -31,7 +31,7 @@
                                         <h3 class="user-name m-t-0 mb-0">{{employeeDetails.firstName}}
                                             {{employeeDetails.middleName}} {{employeeDetails.lastName}}</h3>
                                         <!-- <h6 class="text-muted">{{employeeDetails.jobTitleName}}</h6> -->
-                                        <small class="text-muted">{{employeeDetails.jobTitleName}} Web Designer</small>
+                                        <small class="text-muted">{{employeeDetails.jobTitleName}}</small>
                                         <div class="staff-id">Staff Code : {{employeeDetails.staffCode}}</div>
                                         <div class="small doj text-muted">Date of Join : 1st Jan 2013(unavailable)</div>
                                         <div class="staff-msg"><a class="btn btn-custom" routerLink="/apps/chat">Send
@@ -303,10 +303,13 @@
         </div>
         <!-- /Assets Tab -->
         <!-- Careers Tab -->
-        <div id="emp_careers" class="tab-pane fade ">
+        <div id="emp_careers" class="tab-pane fade show active">
             <!-- Professional Certification card -->
             <app-prof-cert [staffId]="employeeId"></app-prof-cert>
             <!-- /Professional Certification card -->
+            <!-- Skills card -->
+            <app-skills [staffId]="employeeId"></app-skills>
+            <!-- /Skills card -->
         </div>
         <!-- /Careers Tab -->
         <!--Hobbies Tab 
@@ -355,7 +358,7 @@
         </div>
          /Hobbies Tab -->
         <!-- Health and Wellness Tab -->
-        <div id="emp_health_well" class="tab-pane fade show active">
+        <div id="emp_health_well" class="tab-pane fade ">
             <!-- Hmo card -->
             <app-hmo [staffId]="employeeId"></app-hmo>
             <!-- /Hmo card -->

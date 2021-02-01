@@ -24,7 +24,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -63,7 +62,6 @@
     </div>
 </div>
 <!-- /Page Content -->
-
 <!-- Add Job Grade Modal -->
 <div id="add_job_grade" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -91,8 +89,7 @@
                                     <small *ngIf="
                                     jobGradeForm.get('job_grade').invalid &&
                                     jobGradeForm.get('job_grade').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +105,6 @@
                     jobGradeForm.get('job_grade_reporting_to').touched" formControlName="job_grade_reporting_to">
                                     <option value="N/A">N/A</option>
                                     <option selected value="">Select Reporting to</option>
-
                                     <option *ngFor="let row of jobGrades" value="{{row.job_grade}}">{{row.job_grade}}
                                     </option>
                                 </select>
@@ -119,8 +115,7 @@
                                     <small *ngIf="
                                     jobGradeForm.get('job_grade_reporting_to').invalid &&
                                     jobGradeForm.get('job_grade_reporting_to').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -138,8 +133,7 @@
                                     <small *ngIf="
                                     jobGradeForm.get('rank').invalid &&
                                     jobGradeForm.get('rank').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -158,15 +152,13 @@
                                     <small *ngIf="
                                     jobGradeForm.get('probation_period_in_months').invalid &&
                                     jobGradeForm.get('probation_period_in_months').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
                                 <label class="col-form-label">Description <span class="text-danger">*</span></label>
-
                                 <textarea rows="5" class="form-control" [class.invalid]="
                     jobGradeForm.get('description').invalid &&
                     jobGradeForm.get('description').touched
@@ -178,8 +170,7 @@
                                     <small *ngIf="
                                     jobGradeForm.get('description').invalid &&
                                     jobGradeForm.get('description').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -196,7 +187,6 @@
     </div>
 </div>
 <!-- /Add Job Grade Modal -->
-
 <!-- Upload Job Grade Modal -->
 <div id="upload_job_grade" class="modal custom-modal fade " role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -210,18 +200,14 @@
             <div class="modal-body px-5">
                 <form (ngSubmit)="uploadJobGrade()" [formGroup]="jobGradeUploadForm">
                     <div class="row">
-
                         <div class="form-group row">
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                                    (change)="onSelectedFile($event)">
+                                    (change)="onSelectedFile($event,jobGradeUploadForm)">
                             </div>
                         </div>
-
                     </div>
-
-
                     <div class="row">
                         <p>Please use the guide below for your sheet</p>
                         <table class="table table-bordered">
@@ -234,7 +220,6 @@
                             </tr>
                         </table>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadJobGrade()"
                             [disabled]="spinner">

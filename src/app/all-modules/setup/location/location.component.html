@@ -24,7 +24,6 @@
         </div>
     </div>
     <!-- /Page Header -->
-
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -65,7 +64,6 @@
     </div>
 </div>
 <!-- /Page Content -->
-
 <!-- Add Location Modal -->
 <div id="add_location" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -93,8 +91,7 @@
                                     <small *ngIf="
                                     locationForm.get('location').invalid &&
                                     locationForm.get('location').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -112,8 +109,7 @@
                                     <small *ngIf="
                                     locationForm.get('address').invalid &&
                                     locationForm.get('address').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -131,8 +127,7 @@
                                     <small *ngIf="
                                     locationForm.get('city').invalid &&
                                     locationForm.get('city').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -151,8 +146,8 @@
                                 locationForm.get('countryId').touched">
                                     <small *ngIf="
                                     locationForm.get('countryId').invalid &&
-                                    locationForm.get('countryId').touched" class="text-danger">
-                                        *Field is required</small>
+                                    locationForm.get('countryId').touched" class="text-danger"> *Field is
+                                        required</small>
                                 </div>
                             </div>
                         </div>
@@ -165,7 +160,6 @@
                                     <option>Select State</option>
                                     <option *ngFor="let row of states" value="{{row.lookupId}}">{{row.lookupName}}
                                     </option>
-
                                 </select>
                                 <div *ngIf="locationForm.get('stateId').invalid && locationForm.get('stateId').touched">
                                     <small
@@ -176,8 +170,8 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label class="col-form-label">Additional Information <span class="text-danger">*</span></label>
-
+                                <label class="col-form-label">Additional Information <span
+                                        class="text-danger">*</span></label>
                                 <textarea rows="4" class="form-control" [class.invalid]="
                     locationForm.get('additionalInformation').invalid &&
                     locationForm.get('additionalInformation').touched
@@ -189,8 +183,7 @@
                                     <small *ngIf="
                                     locationForm.get('additionalInformation').invalid &&
                                     locationForm.get('additionalInformation').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -207,7 +200,6 @@
     </div>
 </div>
 <!-- /Add Location Modal -->
-
 <!-- Upload Location Modal -->
 <div id="upload_location" class="modal custom-modal fade " role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -221,18 +213,14 @@
             <div class="modal-body px-5">
                 <form (ngSubmit)="uploadLocation()" [formGroup]="locationUploadForm">
                     <div class="row">
-
                         <div class="form-group row">
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
                             <div class="col-md-7">
                                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                                    (change)="onSelectedFile($event)">
+                                    (change)="onSelectedFile($event,locationUploadForm)">
                             </div>
                         </div>
-
                     </div>
-
-
                     <div class="row">
                         <p>Please use the guide below for your sheet</p>
                         <table class="table table-bordered">
@@ -246,7 +234,6 @@
                             </tr>
                         </table>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadLocation()"
                             [disabled]="spinner">

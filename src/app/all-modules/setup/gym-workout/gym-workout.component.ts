@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 
 declare const $: any;
@@ -23,7 +24,8 @@ export class GymWorkoutComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -41,19 +43,6 @@ export class GymWorkoutComponent implements OnInit {
     };
     this.getGymWorkout();
     this.initializeForm();
-  }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
-  stopParentEvent(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event) {
-    this.file = event.target.files[0];
-    this.gymWorkoutUploadForm.patchValue({
-      uploadInput: this.file,
-    });
   }
 
   downloadFile() {
@@ -103,27 +92,25 @@ export class GymWorkoutComponent implements OnInit {
       this.gymWorkoutUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/upload/gymworkout", formData)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#upload_gym_workout").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getGymWorkout();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.uploadGymWorkout(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#upload_gym_workout").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getGymWorkout();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   openUploadModal() {
@@ -147,7 +134,7 @@ export class GymWorkoutComponent implements OnInit {
 
   getGymWorkout() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/gymworkouts").subscribe(
+    return this.setupService.getGymWorkout().subscribe(
       (data) => {
         this.pageLoading = false;
         //console.log(data);
@@ -178,28 +165,26 @@ export class GymWorkoutComponent implements OnInit {
     const payload = form.value;
     console.log(payload);
     this.spinner = true;
-    return this.setupService
-      .updateData("/hrmsetup/add/update/gymworkout", payload)
-      .subscribe(
-        (res) => {
-          this.spinner = false;
-          const message = res.status.message.friendlyMessage;
-          //console.log(message);
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.initializeForm();
-            $("#add_gym_workout").modal("hide");
-          } else {
-            swal.fire("Error", message, "error");
-          }
-          this.getGymWorkout();
-        },
-        (err) => {
-          this.spinner = false;
-          const message = err.status.message.friendlyMessage;
+    return this.setupService.addGymWorkout(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        //console.log(message);
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#add_gym_workout").modal("hide");
+        } else {
           swal.fire("Error", message, "error");
         }
-      );
+        this.getGymWorkout();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("Error", message, "error");
+      }
+    );
   }
 
   // To Get The employee Edit Id And Set Values To Edit Modal Form
@@ -237,47 +222,44 @@ export class GymWorkoutComponent implements OnInit {
       .then((result) => {
         //console.log(result);
         if (result.value) {
-          return this.setupService
-            .deleteData("/hrmsetup/delete/gymworkout", payload)
-            .subscribe(
-              (res) => {
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getGymWorkout();
-                  });
-                } else {
-                  swal.fire("Error", message, "error");
-                }
-              },
-              (err) => {
-                console.log(err);
+          return this.setupService.deleteGymWorkout(payload).subscribe(
+            (res) => {
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.getGymWorkout();
+                });
+              } else {
+                swal.fire("Error", message, "error");
               }
-            );
+            },
+            (err) => {
+              console.log(err);
+            }
+          );
         }
       });
     this.selectedId = [];
   }
 
-  checkAll(event: Event) {
-    if ((<HTMLInputElement>event.target).checked) {
-      this.selectedId = this.gymWorkouts.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
+  addItemId(event: Event, id: number) {
+    this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
-  addItemId(event: Event, id: number) {
-    if ((<HTMLInputElement>event.target).checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
+  checkAll(event: Event) {
+    this.selectedId = this.utilitiesService.checkAllBoxes(
+      event,
+      this.gymWorkouts
+    );
+  }
+
+  // Prevents the edit modal from popping up when checkbox is clicked
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  // Appends a selected file to "uploadInput"
+  onSelectedFile(event: Event, form: FormGroup) {
+    this.utilitiesService.patchFile(event, form);
   }
 }

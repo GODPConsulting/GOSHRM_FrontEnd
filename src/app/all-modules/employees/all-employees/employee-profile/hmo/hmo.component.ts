@@ -27,7 +27,7 @@ export class HmoComponent implements OnInit {
   // To hold data for each card
   employeeHmo: any[] = [];
   // Observable to subscribe to in the template
-  allHmos$: Observable<any> = this.setupService.getAllHmos();
+  allHmos$: Observable<any> = this.setupService.getHmo();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -74,7 +74,6 @@ export class HmoComponent implements OnInit {
   }
 
   submitHmoForm(form: FormGroup) {
-    this.hmoChangeReqForm.get("dateOfRequest").enabled;
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -108,8 +107,9 @@ export class HmoComponent implements OnInit {
   }
 
   submitHmoChangeReqForm(form: FormGroup) {
-    this.hmoChangeReqForm.get("dateOfRequest").enable();
+    form.get("dateOfRequest").enable();
     if (!form.valid) {
+      form.get("dateOfRequest").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -135,6 +135,7 @@ export class HmoComponent implements OnInit {
         }
       },
       (err) => {
+        form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("Error", message, "error");

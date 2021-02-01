@@ -24,7 +24,6 @@
     </div>
   </div>
   <!-- /Page Header -->
-
   <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
@@ -54,7 +53,6 @@
   </div>
 </div>
 <!-- /Page Content -->
-
 <!-- Add Employment Level Modal -->
 <div id="add_employment_level" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -80,8 +78,7 @@
               <small *ngIf="
                       employmentLevelForm.get('employment_level').invalid &&
                       employmentLevelForm.get('employment_level').touched
-                      " class="text-danger">
-                *Employment Level is required</small>
+                      " class="text-danger"> *Employment Level is required</small>
             </div>
           </div>
           <div class="form-group">
@@ -97,8 +94,7 @@
               <small *ngIf="
                       employmentLevelForm.get('description').invalid &&
                       employmentLevelForm.get('description').touched
-                      " class="text-danger">
-                *Description is required</small>
+                      " class="text-danger"> *Description is required</small>
             </div>
           </div>
           <div class="submit-section">
@@ -113,7 +109,6 @@
   </div>
 </div>
 <!-- /Add Employment Level Modal-->
-
 <!-- Upload Employment Level Modal -->
 <div id="upload_employment_level" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -127,18 +122,14 @@
       <div class="modal-body px-5">
         <form (ngSubmit)="uploadEmploymentLevel()" [formGroup]="employmentLevelUploadForm">
           <div class="row">
-
             <div class="form-group row">
               <label class="col-form-label col-md-5">Choose File (excel format)</label>
               <div class="col-md-7">
                 <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                  (change)="onSelectedFile($event)">
+                  (change)="onSelectedFile($event,employmentLevelUploadForm)">
               </div>
             </div>
-
           </div>
-
-
           <div class="row">
             <p>Please use the guide below for your sheet</p>
             <table class="table table-bordered">
@@ -148,7 +139,6 @@
               </tr>
             </table>
           </div>
-
           <div class="submit-section">
             <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
               <span *ngIf="!spinner">Submit</span>
