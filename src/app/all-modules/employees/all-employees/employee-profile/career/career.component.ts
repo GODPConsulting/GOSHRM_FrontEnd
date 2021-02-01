@@ -21,7 +21,8 @@ export class CareerComponent implements OnInit {
   public selectedId: number[] = [];
   public locationId: number;
   public countryId: number;
-  public countries: any[] = []
+  public locations: any[] = [];
+  public countries: any[] = [];
   public jobGrades: any[] = [];
   public jobTitles: any[] = [];
   @ViewChild("fileInput")
@@ -50,6 +51,7 @@ export class CareerComponent implements OnInit {
     this.getCountry();
     this.getJobGrade();
     this.getJobTitle();
+    this.getLocation();
   }
 
   initCareerForm() {
@@ -113,8 +115,9 @@ export class CareerComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    payload.approvalStatus = +payload.approvalStatus;
+    payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
+    payload.locationId = +payload.locationId;
     
 
     this.spinner = true;
@@ -149,6 +152,17 @@ export class CareerComponent implements OnInit {
     return this.utilitiesService.getCountry().subscribe(
       (data) => {
         this.countries = data.commonLookups;
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  getLocation() {
+    return this.utilitiesService.getLocation().subscribe(
+      (data) => {
+        this.locations = data.setuplist;
       },
       (err) => {
         console.log(err);

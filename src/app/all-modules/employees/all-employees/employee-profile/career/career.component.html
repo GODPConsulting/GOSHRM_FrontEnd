@@ -162,7 +162,7 @@
                                 careerForm.get('locationId').invalid &&
                                 careerForm.get('locationId').touched" formControlName="locationId">
                                     <option selected value="">Location</option>
-                                    <option *ngFor="let row of countries" value="{{row.id}}">{{row.location}}
+                                    <option *ngFor="let row of locations" value="{{row.id}}">{{row.location}}
                                     </option>
                                 </select>
                                 <div *ngIf="
