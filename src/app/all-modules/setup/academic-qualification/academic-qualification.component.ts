@@ -123,7 +123,7 @@ export class AcademicQualificationComponent implements OnInit {
     this.academicQualificationForm = this.formBuilder.group({
       id: [0],
       qualification: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
       rank: ["", Validators.required],
     });
     this.academicQualificationUploadForm = this.formBuilder.group({

@@ -121,7 +121,7 @@ export class ProfCertificationComponent implements OnInit {
     this.profCertificationForm = this.formBuilder.group({
       id: [0],
       certification: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
       rank: ["", Validators.required],
     });
     this.profCertUploadForm = this.formBuilder.group({

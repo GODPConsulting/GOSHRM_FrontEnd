@@ -123,7 +123,7 @@ export class ProfMembershipComponent implements OnInit {
     this.professionalMembershipForm = this.formBuilder.group({
       id: [0],
       professional_membership: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
     });
     this.professionalMembershipUploadForm = this.formBuilder.group({
       uploadInput: [""],

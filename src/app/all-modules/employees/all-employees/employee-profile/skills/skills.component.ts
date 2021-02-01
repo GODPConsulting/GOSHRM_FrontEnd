@@ -17,11 +17,7 @@ export class SkillsComponent implements OnInit {
   spinner: boolean = false;
   selectedId: number[] = [];
   jobTitleId: number;
-  jobSkills: any[] = [
-    { skill: "test", id: 1, weight: 10 },
-    { skill: "try", id: 2, weight: 20 },
-    { skill: "hmm", id: 3, weight: 30 },
-  ];
+  jobSkills: any[] = [];
   skillsForm: FormGroup;
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -111,8 +107,6 @@ export class SkillsComponent implements OnInit {
   }
 
   submitSkillsForm(form: FormGroup) {
-    console.log(form.value);
-
     form.get("expectedScore").enable();
     if (!form.valid) {
       form.get("expectedScore").disable();
@@ -124,7 +118,7 @@ export class SkillsComponent implements OnInit {
       //console.log(key, this.skillsForm.get(key).value);
       formData.append(key, this.skillsForm.get(key).value);
     }
-
+    this.skillsForm.get("expectedScore").disable();
     this.spinner = true;
     return this.employeeService.addSkill(formData).subscribe(
       (res) => {
@@ -134,6 +128,7 @@ export class SkillsComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#skills_modal").modal("hide");
         }
+
         this.getEmployeeSkills(this.staffId);
       },
       (err) => {

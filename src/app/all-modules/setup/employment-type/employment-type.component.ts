@@ -123,7 +123,7 @@ export class EmploymentTypeComponent implements OnInit {
     this.employmentTypeForm = this.formBuilder.group({
       id: [0],
       employment_type: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
     });
     this.employmentTypeUploadForm = this.formBuilder.group({
       uploadInput: [""],

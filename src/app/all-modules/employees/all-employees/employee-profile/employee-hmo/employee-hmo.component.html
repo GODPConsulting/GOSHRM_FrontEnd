@@ -130,7 +130,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Start Date <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" [class.invalid]="
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
                                     employeeHmoForm.get('startDate').invalid &&
                                     employeeHmoForm.get('startDate').touched" formControlName="startDate">
                                 <div *ngIf="
@@ -153,7 +155,9 @@
                                         formControlName="setCurrentDate">
                                     <label for="currentDate" class="mx-1">Does not expire</label>
                                 </span>
-                                <input class="form-control" type="date" [class.invalid]="
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
                                     employeeHmoForm.get('end_Date').invalid &&
                                     employeeHmoForm.get('end_Date').touched" formControlName="end_Date">
                                 <div *ngIf="
@@ -260,7 +264,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Date of Request <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" [class.invalid]="
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
                                 hmoChangeReqForm.get('dateOfRequest').invalid &&
                                 hmoChangeReqForm.get('dateOfRequest').touched" formControlName="dateOfRequest">
                                 <div *ngIf="
@@ -277,7 +283,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Expected Change Date <span class="text-danger">*</span></label>
-                                <input class="form-control" type="date" [class.invalid]="
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
                                 hmoChangeReqForm.get('expectedDateOfChange').invalid &&
                                 hmoChangeReqForm.get('expectedDateOfChange').touched"
                                     formControlName="expectedDateOfChange">

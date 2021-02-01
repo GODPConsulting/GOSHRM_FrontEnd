@@ -123,7 +123,7 @@ export class EmploymentLevelComponent implements OnInit {
     this.employmentLevelForm = this.formBuilder.group({
       id: [0],
       employment_level: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
     });
     this.employmentLevelUploadForm = this.formBuilder.group({
       uploadInput: [""],

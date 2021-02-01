@@ -235,7 +235,7 @@ export class JobSkillComponent implements OnInit {
       job_details_Id: [this.jobTitleId],
       id: [0],
       skill: ["", Validators.required],
-      description: ["", Validators.required],
+      description: [""],
       weight: ["", Validators.required],
       job_title: ["", Validators.required],
     });

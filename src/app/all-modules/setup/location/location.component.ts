@@ -122,7 +122,7 @@ export class LocationComponent implements OnInit {
       city: ["", Validators.required],
       stateId: ["", Validators.required],
       countryId: ["", Validators.required],
-      additionalInformation: ["", Validators.required],
+      additionalInformation: [""],
     });
     //initialize upload form
     this.locationUploadForm = this.formBuilder.group({

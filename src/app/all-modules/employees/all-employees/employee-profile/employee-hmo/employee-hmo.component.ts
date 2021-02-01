@@ -8,7 +8,7 @@ import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: "employee-app-hmo",
+  selector: "app-employee-hmo",
   templateUrl: "./employee-hmo.component.html",
   styleUrls: ["./employee-hmo.component.css"],
 })
@@ -123,7 +123,7 @@ export class EmployeeHmoComponent implements OnInit {
       //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.hmoChangeReqForm.get(key)?.value);
     }
-
+    form.get("dateOfRequest").disable();
     this.spinner = true;
     return this.employeeService.postHmoChangeRequest(formData).subscribe(
       (res) => {
