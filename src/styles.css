@@ -8589,7 +8589,7 @@ rating span {
 .tab-box {
   position: sticky;
   top: 62px;
-  z-index: 2;
+  z-index: 1;
 }
 
 .datetimepicker::-webkit-calendar-picker-indicator {
@@ -8607,4 +8607,10 @@ rating span {
   right: 6px;
   color: black;
   cursor: pointer;
+}
+
+@media (min-width: 992px) {
+  #referee_modal .modal-dialog {
+    max-width: 900px;
+  }
 }

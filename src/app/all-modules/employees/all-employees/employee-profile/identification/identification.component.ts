@@ -23,6 +23,7 @@ export class IdentificationComponent implements OnInit {
 
   // To hold data for each card
   employeeIdentification: any[] = [];
+  public dtOptions: DataTables.Settings = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,6 +34,19 @@ export class IdentificationComponent implements OnInit {
   ngOnInit(): void {
     this.initIdentificationForm();
     this.getEmployeeIdentification(this.staffId);
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
   }
 
   initIdentificationForm() {
@@ -75,9 +89,12 @@ export class IdentificationComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = form.value;
-    payload.approval_status = +payload.approval_status;
     const formData = new FormData();
+    form
+      .get("idExpiry_date")
+      .setValue(
+        new Date(form.get("idExpiry_date").value).toLocaleDateString("en-CA")
+      );
     for (const key in form.value) {
       formData.append(key, this.identificationForm.get(key).value);
     }

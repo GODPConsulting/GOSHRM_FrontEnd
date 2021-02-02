@@ -70,7 +70,12 @@ export class EmployeeHmoComponent implements OnInit {
       expectedDateOfChange: ["", Validators.required],
       hmoFile: ["", Validators.required],
       staffId: this.staffId,
+      approvalStatus: ["", Validators.required],
     });
+    // Resets the upload input of the add form
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = "";
+    }
   }
 
   submitHmoForm(form: FormGroup) {
@@ -117,8 +122,15 @@ export class EmployeeHmoComponent implements OnInit {
     payload.suggestedHmo = +payload.suggestedHmo;
     payload.hmoId = +payload.hmoId; */
     const formData = new FormData();
-    formData.append("approvalStatus", "2");
-    formData.append("contactPhoneNo", "09088777886");
+    //let newDate=
+
+    form
+      .get("expectedDateOfChange")
+      .setValue(
+        new Date(form.get("expectedDateOfChange").value).toLocaleDateString(
+          "en-CA"
+        )
+      );
     for (const key in form.value) {
       formData.append(key, this.hmoChangeReqForm.get(key)?.value);
     }
@@ -225,5 +237,9 @@ export class EmployeeHmoComponent implements OnInit {
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
   hack(val: any[]) {
     return Array.from(val);
+  }
+
+  resetCheckbox(form: FormGroup, formControlName: string) {
+    form.get(formControlName).setValue("");
   }
 }

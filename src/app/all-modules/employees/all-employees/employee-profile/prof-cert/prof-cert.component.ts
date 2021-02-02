@@ -82,9 +82,19 @@ export class ProfCertComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = form.value;
-    payload.approvalStatus = +payload.approvalStatus;
+
     const formData = new FormData();
+    form
+      .get("dateGranted")
+      .setValue(
+        new Date(form.get("dateGranted").value).toLocaleDateString("en-CA")
+      );
+
+    form
+      .get("expiryDate")
+      .setValue(
+        new Date(form.get("expiryDate").value).toLocaleDateString("en-CA")
+      );
     for (const key in form.value) {
       formData.append(key, this.profCertForm.get(key).value);
     }
