@@ -58,8 +58,8 @@ export class CareerComponent implements OnInit {
     this.cardFormTitle = "Add Career";
     this.careerForm = this.formBuilder.group({
       id: [0],
-      job_Grade: ["", Validators.required],
-      job_title: ["", Validators.required],
+      job_GradeId: ["", Validators.required],
+      job_titleId: ["", Validators.required],
       job_type: ["", Validators.required],
       countryId: ["", Validators.required],
       locationId: ["", Validators.required],
@@ -118,6 +118,8 @@ export class CareerComponent implements OnInit {
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
     payload.locationId = +payload.locationId;
+    payload.job_GradeId = +payload.job_GradeId;
+    payload.job_titleId = +payload.job_titleId;
     
 
     this.spinner = true;
@@ -176,8 +178,8 @@ export class CareerComponent implements OnInit {
    
     this.careerForm.patchValue({
       id: row.id,
-      jobGrade: row.job_Grade,
-      job_title: row.job_title,
+      job_GradeId: row.job_GradeId,
+      job_titleId: row.job_titleId,
       job_type: row.job_type,
       countryId: row.countryId,
       locationId: row.locationId,
