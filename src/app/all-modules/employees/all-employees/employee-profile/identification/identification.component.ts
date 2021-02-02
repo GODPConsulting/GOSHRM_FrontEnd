@@ -89,9 +89,12 @@ export class IdentificationComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = form.value;
-    payload.approval_status = +payload.approval_status;
     const formData = new FormData();
+    form
+      .get("idExpiry_date")
+      .setValue(
+        new Date(form.get("idExpiry_date").value).toLocaleDateString("en-CA")
+      );
     for (const key in form.value) {
       formData.append(key, this.identificationForm.get(key).value);
     }

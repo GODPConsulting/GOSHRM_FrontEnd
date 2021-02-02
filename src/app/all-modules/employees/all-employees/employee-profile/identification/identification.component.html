@@ -8,7 +8,7 @@
                         class="fa fa-download"></i></a><a *ngIf="currentUserId === employeeId"
                     (click)="initIdentificationForm()" class="hint edit-icon mr-1" data-toggle="modal"
                     data-target="#identification_modal"><span class="hint-text">Add Identification</span><i
-                        class="fa fa-pencil"></i></a></h3>
+                        class="fa fa-plus"></i></a></h3>
             <div class="table-responsive">
                 <app-loading *ngIf="pageLoading"></app-loading>
                 <table *ngIf="!pageLoading" class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"

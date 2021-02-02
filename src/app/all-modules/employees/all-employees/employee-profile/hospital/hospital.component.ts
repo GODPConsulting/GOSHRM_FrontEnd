@@ -73,6 +73,7 @@ export class HospitalComponent implements OnInit {
       expectedDateOfChange: ["", Validators.required],
       hospitalFile: ["", Validators.required],
       staffId: this.staffId,
+      approvalStatus: ["", Validators.required],
     });
   }
 
@@ -98,7 +99,6 @@ export class HospitalComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    payload.approvalStatus = +payload.approvalStatus;
     payload.hospitalId = +payload.hospitalId;
     /*  const formData = new FormData();
     for (const key in form.value) {
@@ -170,6 +170,14 @@ export class HospitalComponent implements OnInit {
     }
 
     const formData = new FormData();
+
+    form
+      .get("proposedMeetingDate")
+      .setValue(
+        new Date(form.get("proposedMeetingDate").value).toLocaleDateString(
+          "en-CA"
+        )
+      );
     for (const key in form.value) {
       formData.append(key, this.bookHospitalForm.get(key).value);
     }
