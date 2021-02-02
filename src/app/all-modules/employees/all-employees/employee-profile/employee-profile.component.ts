@@ -97,7 +97,6 @@ export class EmployeeProfileComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       this.employeeId = +params.get("id");
-      console.log(this.employeeId);
     });
     this.getUserData();
     this.initializeForm();
@@ -118,14 +117,11 @@ export class EmployeeProfileComponent implements OnInit {
     this.pageLoading = true;
     this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
-        //console.log(this.employeeDetails);
         this.employeeDetails = data.employeeList[0];
         this.pageLoading = false;
-        console.log(this.employeeDetails);
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -165,9 +161,7 @@ export class EmployeeProfileComponent implements OnInit {
       (data) => {
         this.countries = data.commonLookups;
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
 
@@ -176,9 +170,7 @@ export class EmployeeProfileComponent implements OnInit {
       (data) => {
         this.emergencyContacts = data.employeeList;
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
 
@@ -190,7 +182,6 @@ export class EmployeeProfileComponent implements OnInit {
       payload = {
         itemIds: this.selectedEmergencyId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -201,8 +192,6 @@ export class EmployeeProfileComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
-
         if (result.value) {
           return this.employeeService.deleteEmergencyContact(payload).subscribe(
             (res) => {
@@ -215,9 +204,7 @@ export class EmployeeProfileComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -292,7 +279,6 @@ export class EmployeeProfileComponent implements OnInit {
       payload = {
         itemIds: this.selectedLanguageId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -303,8 +289,6 @@ export class EmployeeProfileComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
-
         if (result.value) {
           return this.employeeService.deleteLanguageRating(payload).subscribe(
             (res) => {
@@ -317,9 +301,7 @@ export class EmployeeProfileComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -331,9 +313,7 @@ export class EmployeeProfileComponent implements OnInit {
       (data) => {
         this.languages = data.setuplist;
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -358,9 +338,7 @@ export class EmployeeProfileComponent implements OnInit {
       (data) => {
         this.languageRating = data.employeeList;
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
 
@@ -389,7 +367,6 @@ export class EmployeeProfileComponent implements OnInit {
 
   getUserData() {
     this.authService.getProfile().subscribe((data) => {
-      console.log(data);
       this.currentUser = data.roles;
       this.currentUserId = data.staffId;
     });
@@ -438,7 +415,7 @@ export class EmployeeProfileComponent implements OnInit {
       })
       .catch((err) => {
         this.spinner = false;
-        console.log(err);
+
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       });
@@ -449,9 +426,7 @@ export class EmployeeProfileComponent implements OnInit {
       (data) => {
         this.employeeQualification = data.employeeList;
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
 
@@ -459,11 +434,8 @@ export class EmployeeProfileComponent implements OnInit {
     return this.employeeService.getGrades().subscribe(
       (data) => {
         this.grades = data.setuplist;
-        console.log(data);
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
 
@@ -502,7 +474,6 @@ export class EmployeeProfileComponent implements OnInit {
       payload = {
         itemIds: this.selectedQualificationId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -513,8 +484,6 @@ export class EmployeeProfileComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
-
         if (result.value) {
           return this.employeeService
             .deleteEmployeeQualification(payload)
@@ -529,9 +498,7 @@ export class EmployeeProfileComponent implements OnInit {
                   swal.fire("GOSHRM", message, "error");
                 }
               },
-              (err) => {
-                console.log(err);
-              }
+              (err) => {}
             );
         }
       });

@@ -79,7 +79,6 @@ export class IdentificationComponent implements OnInit {
     payload.approval_status = +payload.approval_status;
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.identificationForm.get(key).value);
     }
 
@@ -127,7 +126,6 @@ export class IdentificationComponent implements OnInit {
   }
 
   delete() {
-    console.log(this.selectedId);
     let payload: object;
     if (this.selectedId.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");

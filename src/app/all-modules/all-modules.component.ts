@@ -1,15 +1,22 @@
-import {Component, ElementRef, NgZone, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  NgZone,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
 import { ScrollPanel } from "primeng/scrollpanel";
 enum MenuOrientation {
   STATIC,
   OVERLAY,
   SLIM,
-  HORIZONTAL
+  HORIZONTAL,
 }
 @Component({
-  selector: 'app-all-modules',
-  templateUrl: './all-modules.component.html',
-  styleUrls: ['./all-modules.component.css']
+  selector: "app-all-modules",
+  templateUrl: "./all-modules.component.html",
+  styleUrls: ["./all-modules.component.css"],
 })
 export class AllModulesComponent implements OnInit {
   layoutCompact = true;
@@ -71,11 +78,7 @@ export class AllModulesComponent implements OnInit {
 
   init() {
     this.rippleMouseDownListener = this.rippleMouseDown.bind(this);
-    document.addEventListener(
-      "mousedown",
-      this.rippleMouseDownListener,
-      false
-    );
+    document.addEventListener("mousedown", this.rippleMouseDownListener, false);
   }
 
   rippleMouseDown(e) {
@@ -104,10 +107,8 @@ export class AllModulesComponent implements OnInit {
       p["webkitMatchesSelector"] ||
       p["mozMatchesSelector"] ||
       p["msMatchesSelector"] ||
-      function(s) {
-        return (
-          [].indexOf.call(document.querySelectorAll(s), this) !== -1
-        );
+      function (s) {
+        return [].indexOf.call(document.querySelectorAll(s), this) !== -1;
       };
     return f.call(el, selector);
   }
@@ -127,10 +128,7 @@ export class AllModulesComponent implements OnInit {
       ) {
         element
           .querySelector("span")
-          .insertAdjacentHTML(
-            "afterend",
-            "<span class='ink'></span>"
-          );
+          .insertAdjacentHTML("afterend", "<span class='ink'></span>");
       } else {
         element.appendChild(inkEl);
       }
@@ -200,22 +198,16 @@ export class AllModulesComponent implements OnInit {
         (window.pageXOffset ||
           document.documentElement.scrollLeft ||
           document.body.scrollLeft ||
-          0)
+          0),
     };
   }
 
   unbindRipple() {
     if (this.rippleInitListener) {
-      document.removeEventListener(
-        "DOMContentLoaded",
-        this.rippleInitListener
-      );
+      document.removeEventListener("DOMContentLoaded", this.rippleInitListener);
     }
     if (this.rippleMouseDownListener) {
-      document.removeEventListener(
-        "mousedown",
-        this.rippleMouseDownListener
-      );
+      document.removeEventListener("mousedown", this.rippleMouseDownListener);
     }
   }
 
@@ -264,8 +256,7 @@ export class AllModulesComponent implements OnInit {
       this.overlayMenuActive = !this.overlayMenuActive;
     } else {
       if (this.isDesktop()) {
-        this.staticMenuDesktopInactive = !this
-          .staticMenuDesktopInactive;
+        this.staticMenuDesktopInactive = !this.staticMenuDesktopInactive;
       } else {
         this.staticMenuMobileActive = !this.staticMenuMobileActive;
       }
@@ -300,9 +291,9 @@ export class AllModulesComponent implements OnInit {
     event.preventDefault();
   }
 
-  onTopbarSubItemClick(event) {
-    console.log(event)
-  }
+  /*  onTopbarSubItemClick(event) {
+    
+  } */
 
   onRightPanelButtonClick(event) {
     this.rightPanelClick = true;

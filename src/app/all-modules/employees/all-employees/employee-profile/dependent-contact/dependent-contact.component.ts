@@ -40,8 +40,6 @@ export class DependentContactComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.staffId);
-
     this.getEmployeeDependentContact(this.staffId);
     this.initDependentContactForm();
     this.getCountry();
@@ -67,8 +65,6 @@ export class DependentContactComponent implements OnInit {
   }
 
   submitDependentContactForm(form: FormGroup) {
-    console.log(form.value);
-
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -76,12 +72,6 @@ export class DependentContactComponent implements OnInit {
     const payload = form.value;
     payload.Approval_status = +payload.Approval_status;
     payload.countryId = +payload.countryId;
-    console.log(payload.countryId);
-    // const formData = new FormData();
-    // for (const key in form.value) {
-    //   //console.log(key, this.identificationForm.get(key).value);
-    //   formData.append(key, this.hobbyForm.get(key).value);
-    // }
 
     this.spinner = true;
     return this.employeeService.postDependentContact(payload).subscribe(
@@ -106,7 +96,6 @@ export class DependentContactComponent implements OnInit {
     this.employeeService.getDependentContactByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
         this.employeeDependentContact = data.employeeList;
-        console.log(data.employeeList);
       }
     });
   }
@@ -116,9 +105,7 @@ export class DependentContactComponent implements OnInit {
       (data) => {
         this.countries = data.commonLookups;
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
   // Set Values To Edit Modal Form
@@ -165,7 +152,6 @@ export class DependentContactComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -188,9 +174,7 @@ export class DependentContactComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

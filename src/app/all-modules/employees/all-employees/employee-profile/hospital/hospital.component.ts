@@ -137,7 +137,6 @@ export class HospitalComponent implements OnInit {
     payload.hospitalId = +payload.hospitalId;
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.hospitalChangeReqForm.get(key).value);
     }
     form.get("dateOfRequest").disable();
@@ -172,7 +171,6 @@ export class HospitalComponent implements OnInit {
 
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.bookHospitalForm.get(key).value);
     }
     form.get("dateOfRequest").disable();

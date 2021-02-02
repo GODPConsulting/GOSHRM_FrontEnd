@@ -1,38 +1,35 @@
-+ function($) {
-    'use strict';
++(function ($) {
+  "use strict";
 
-    // UPLOAD CLASS DEFINITION
-    // ======================
+  // UPLOAD CLASS DEFINITION
+  // ======================
 
-    var dropZone = document.getElementById('drop-zone');
-    var uploadForm = document.getElementById('js-upload-form');
+  var dropZone = document.getElementById("drop-zone");
+  var uploadForm = document.getElementById("js-upload-form");
 
-    var startUpload = function(files) {
-        console.log(files)
-    }
+  var startUpload = function (files) {};
 
-    uploadForm.addEventListener('submit', function(e) {
-        var uploadFiles = document.getElementById('js-upload-files').files;
-        e.preventDefault()
+  uploadForm.addEventListener("submit", function (e) {
+    var uploadFiles = document.getElementById("js-upload-files").files;
+    e.preventDefault();
 
-        startUpload(uploadFiles)
-    })
+    startUpload(uploadFiles);
+  });
 
-    dropZone.ondrop = function(e) {
-        e.preventDefault();
-        this.className = 'upload-drop-zone';
+  dropZone.ondrop = function (e) {
+    e.preventDefault();
+    this.className = "upload-drop-zone";
 
-        startUpload(e.dataTransfer.files)
-    }
+    startUpload(e.dataTransfer.files);
+  };
 
-    dropZone.ondragover = function() {
-        this.className = 'upload-drop-zone drop';
-        return false;
-    }
+  dropZone.ondragover = function () {
+    this.className = "upload-drop-zone drop";
+    return false;
+  };
 
-    dropZone.ondragleave = function() {
-        this.className = 'upload-drop-zone';
-        return false;
-    }
-
-}(jQuery);
+  dropZone.ondragleave = function () {
+    this.className = "upload-drop-zone";
+    return false;
+  };
+})(jQuery);

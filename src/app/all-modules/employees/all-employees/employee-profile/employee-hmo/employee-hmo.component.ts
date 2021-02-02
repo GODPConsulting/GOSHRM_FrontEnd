@@ -83,7 +83,7 @@ export class EmployeeHmoComponent implements OnInit {
     payload.hmoId = +payload.hmoId;
     /* const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
+      
       formData.append(key, this.employeeHmoForm.get(key).value);
     } */
 
@@ -120,7 +120,6 @@ export class EmployeeHmoComponent implements OnInit {
     formData.append("approvalStatus", "2");
     formData.append("contactPhoneNo", "09088777886");
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.hmoChangeReqForm.get(key)?.value);
     }
     form.get("dateOfRequest").disable();

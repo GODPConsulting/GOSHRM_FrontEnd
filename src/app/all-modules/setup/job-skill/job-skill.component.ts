@@ -36,7 +36,6 @@ export class JobSkillComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      console.log(+params.get("id"));
       this.jobTitleId = +params.get("id");
       this.getSingleJobTitle(+params.get("id"));
       this.dtOptions = {
@@ -62,9 +61,7 @@ export class JobSkillComponent implements OnInit {
     return this.setupService.getSingleJobTitleById(id).subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log("id", id);
 
-        //console.log("data", data);
         this.jobTitle = data.setuplist[0];
         //this.rows = this.jobTitle.sub_Skills;
         if (id !== 0) {
@@ -72,7 +69,7 @@ export class JobSkillComponent implements OnInit {
           this.jobSkills = this.jobTitle.sub_Skills;
 
           //this.rerender();
-          //console.log(this.jobTitle.job_title);
+
           this.jobSkillForm.patchValue({
             job_title: this.jobTitle.job_title,
           });
@@ -86,7 +83,6 @@ export class JobSkillComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -99,17 +95,14 @@ export class JobSkillComponent implements OnInit {
     }
     const payload = form.value;
     this.jobTitle = payload.job_title;
-    console.log(this.jobTitle);
 
-    console.log(payload);
     this.spinner = true;
     return this.setupService.addJobTitle(payload).subscribe(
       (res) => {
         this.spinner = false;
-        console.log(res);
+
         this.jobTitleId = res.setup_id;
         const message = res.status.message.friendlyMessage;
-        //console.log(message);
 
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
@@ -164,7 +157,7 @@ export class JobSkillComponent implements OnInit {
                   type: "application/vnd.ms-excel",
                 }
               );
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -257,13 +250,13 @@ export class JobSkillComponent implements OnInit {
     return this.setupService.getData("/hrmsetup/get/all/sub_skill").subscribe(
       (data) => {
         this.pageLoading = false;
-        console.log(data);
+        
         this.subSkill = data.setuplist;
         this.rows = this.subSkill;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
+        
       }
     );
   }
@@ -288,7 +281,6 @@ export class JobSkillComponent implements OnInit {
       weight: ["", Validators.required],
       job_title: [this.jobTitle.job_title, Validators.required],
     });
-    console.log(this.jobSkillForm.value);
   }
 
   closeUploadModal() {
@@ -315,7 +307,7 @@ export class JobSkillComponent implements OnInit {
     return this.setupService.addJobSkill(payload).subscribe(
       (res) => {
         const message = res.status.message.friendlyMessage;
-        //console.log(message);
+
         this.spinner = false;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
@@ -346,7 +338,6 @@ export class JobSkillComponent implements OnInit {
       weight: row.weight,
       job_title: this.jobTitle.job_title,
     });
-    //console.log(this.jobSkillForm.value);
 
     //this.subSkillForm.get("job_title").disable();
     $("#add_sub_skill").modal("show");
@@ -360,7 +351,6 @@ export class JobSkillComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -371,7 +361,6 @@ export class JobSkillComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteJobSkill(payload).subscribe(
             (res) => {
@@ -385,9 +374,7 @@ export class JobSkillComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

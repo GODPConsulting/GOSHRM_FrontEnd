@@ -62,7 +62,7 @@ export class HighSchoolGradeComponent implements OnInit {
               const file = new File([bb], "High School Grade.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -136,12 +136,11 @@ export class HighSchoolGradeComponent implements OnInit {
     return this.setupService.getHighSchoolGrade().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.grades = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -158,7 +157,7 @@ export class HighSchoolGradeComponent implements OnInit {
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
-        //console.log(message);
+
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
           this.initializeForm();
@@ -204,7 +203,6 @@ export class HighSchoolGradeComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -215,7 +213,6 @@ export class HighSchoolGradeComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteHighSchoolGrade(payload).subscribe(
             (res) => {
@@ -228,9 +225,7 @@ export class HighSchoolGradeComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

@@ -67,7 +67,7 @@ export class AcademicQualificationComponent implements OnInit {
               const file = new File([bb], "Academic Qualification.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -136,12 +136,11 @@ export class AcademicQualificationComponent implements OnInit {
     return this.setupService.getAcademicQualification().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.qualifications = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -183,7 +182,6 @@ export class AcademicQualificationComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -208,9 +206,7 @@ export class AcademicQualificationComponent implements OnInit {
                   swal.fire("GOSHRM", message, "error");
                 }
               },
-              (err) => {
-                console.log(err);
-              }
+              (err) => {}
             );
         }
       });
