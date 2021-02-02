@@ -46,14 +46,11 @@ export class HobbiesComponent implements OnInit {
     this.hobbyForm = this.formBuilder.group({
       id: [0],
       hobbyName: ["", Validators.required],
-      description: ["", Validators.required],
       rating: ["", Validators.required],
-      // idExpiry_date: ["", Validators.required],
+      description: ["", Validators.required],
       approvalStatus: ["", Validators.required],
       staffId: this.staffId,
-      // identicationFile: ["", Validators.required],
     });
-    //this.fileInput.nativeElement.value = "";
   }
 
   submitHobbyForm(form: FormGroup) {
@@ -94,14 +91,11 @@ export class HobbiesComponent implements OnInit {
   // Set Values To Edit Modal Form
   edit(row) {
     this.cardFormTitle = "Edit Hobby";
-    //row.idExpiry_date = new Date(row.idExpiry_date).toLocaleDateString("en-CA");
     this.hobbyForm.patchValue({
       id: row.id,
       hobbyName: row.hobbyName,
-      description: row.description,
       rating: row.rating,
-      // idIssues: row.idIssues,
-      // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
+      description: row.description,
       approval_status_name: row.approval_status_name,
       staffId: this.staffId,
       hobbyFile: row.hobbyFile,
