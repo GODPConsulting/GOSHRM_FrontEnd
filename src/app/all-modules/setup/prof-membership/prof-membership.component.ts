@@ -102,13 +102,13 @@ export class ProfMembershipComponent implements OnInit {
           this.initializeForm();
           $("#upload_prof_membership").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -181,14 +181,14 @@ export class ProfMembershipComponent implements OnInit {
           this.initializeForm();
           $("#add_prof_membership").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getProfMembershipForm();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -221,7 +221,7 @@ export class ProfMembershipComponent implements OnInit {
                   this.getProfMembershipForm();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

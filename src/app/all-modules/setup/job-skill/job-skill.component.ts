@@ -121,7 +121,7 @@ export class JobSkillComponent implements OnInit {
           });
           //$("#add_job_title").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.router.navigate(["/setup/job-title", this.jobTitleId]);
         // this.getJobDetail();
@@ -135,7 +135,7 @@ export class JobSkillComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -200,14 +200,14 @@ export class JobSkillComponent implements OnInit {
           this.initializeForm();
           $("#upload_sub_skill").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         //this.getSubSkill();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -322,7 +322,7 @@ export class JobSkillComponent implements OnInit {
           this.initializeForm();
           $("#add_sub_skill").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         //this.getSubSkill();
         this.getSingleJobTitle(this.jobTitleId);
@@ -330,7 +330,7 @@ export class JobSkillComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -382,7 +382,7 @@ export class JobSkillComponent implements OnInit {
                   this.getSingleJobTitle(this.jobTitleId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

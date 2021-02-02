@@ -100,8 +100,7 @@
             <div>
                 <div class="card profile-box flex-fill">
                     <div class="card-body">
-                        <h3 class="card-title">Emergency Contact
-                            <div class="col-auto float-right ml-auto">
+                        <h3 class="card-title">Emergency Contact <div class="col-auto float-right ml-auto">
                                 <a class="btn add-btn hint" data-toggle="modal"
                                     data-target="#emergency_contact_modal"><span class="hint-text">Add</span><i
                                         class="fa fa-plus"></i>
@@ -135,7 +134,7 @@
                                         (click)="editEmergencyContact(item)" class="pointer">
                                         <td (click)="stopParentEvent($event)">
                                             <input type="checkbox" [checked]="selectedEmergencyId.includes(item.id)"
-                                                (change)="addItemId($event, item.id)" />
+                                                (change)="addItemId($event, item.id,selectedEmergencyId)" />
                                         </td>
                                         <td>{{ i + 1 }}</td>
                                         <td>{{item.fullName}}</td>
@@ -156,8 +155,7 @@
                 <div>
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
-                            <h3 class="card-title">Language Rating
-                                <div class="col-auto float-right ml-auto">
+                            <h3 class="card-title">Language Rating <div class="col-auto float-right ml-auto">
                                     <a class="btn add-btn hint" data-toggle="modal"
                                         data-target="#language_rating_modal"><span class="hint-text">Add</span><i
                                             class="fa fa-plus"></i>
@@ -189,8 +187,9 @@
                                             (click)="editLanguageRating(language)" class="pointer"
                                             (click)="stopParentEvent($event)">
                                             <td (click)="stopParentEvent($event)">
-                                                <input type="checkbox" [checked]="selectedLanguageId.includes(language.id)"
-                                                    (change)="addItemId($event, language.id)" />
+                                                <input type="checkbox"
+                                                    [checked]="selectedLanguageId.includes(language.id)"
+                                                    (change)="addItemId($event, language.id,selectedLanguageId)" />
                                             </td>
                                             <td>{{ i + 1 }}</td>
                                             <td>{{language.language}}</td>
@@ -210,8 +209,7 @@
                 <div>
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
-                            <h3 class="card-title">Qualification
-                                <div class="col-auto float-right ml-auto">
+                            <h3 class="card-title">Qualification <div class="col-auto float-right ml-auto">
                                     <a class="btn add-btn hint" data-toggle="modal"
                                         data-target="#employee_qualification_modal"><span class="hint-text">Add</span><i
                                             class="fa fa-plus"></i>
@@ -244,8 +242,9 @@
                                             (click)="editEmployeeQualification(qualification)" class="pointer"
                                             (click)="stopParentEvent($event)">
                                             <td (click)="stopParentEvent($event)">
-                                                <input type="checkbox" [checked]="selectedQualificationId.includes(qualification.id)"
-                                                    (change)="addItemId($event, qualification.id)" />
+                                                <input type="checkbox"
+                                                    [checked]="selectedQualificationId.includes(qualification.id)"
+                                                    (change)="addItemId($event, qualification.id,selectedQualificationId)" />
                                             </td>
                                             <td>{{ i + 1 }}</td>
                                             <td>{{qualification.certificate}}</td>
@@ -258,13 +257,11 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
                 <!-- Qualification -->
             </div>
-
             <!-- Referee Card -->
             <app-referee [staffId]="employeeId"></app-referee>
             <!-- /Referee Card -->
@@ -337,14 +334,12 @@
                         <div class="card-body">
                             <h3 class="card-title">Primary Contact</h3>
                             <div class="row">
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Full Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control" formControlName="fullName">
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Relationship <span class="text-danger">*</span></label>
@@ -488,7 +483,6 @@
                     (click)="closeEmployeeQualificationModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
-
             </div>
             <div class="modal-body">
                 <form (ngSubmit)="addEmployeeQualification(employeeQualificationForm)"
@@ -497,14 +491,12 @@
                         <div class="card-body">
                             <h3 class="card-title">Employee Qualification </h3>
                             <div class="row">
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Certificate <span class="text-danger">*</span></label>
                                         <input class="form-control" type="text" formControlName="certificate">
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Institution <span class="text-danger">*</span></label>
@@ -523,31 +515,26 @@
                                         <input class="form-control" type="date" formControlName="endDate">
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Grade<span class="text-danger">*</span></label>
                                         <select class="form-control" [class.invalid]="employeeQualificationForm.get('gradeId').invalid &&
                                         employeeQualificationForm.get('gradeId').touched" formControlName="gradeId">
                                             <option selected value="">Grades</option>
-                                            <option *ngFor="let row of grades" value="{{row.id}}">
-                                                {{row.grade}}
+                                            <option *ngFor="let row of grades" value="{{row.id}}"> {{row.grade}}
                                             </option>
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Attachment (file format)</label>
                                         <input class="form-control" formControlName="qualificationFile" #fileInput
-                                            type="file" (change)="handleFile($event)"
-                                            [class.invalid]="
+                                            type="file" (change)="handleFile($event)" [class.invalid]="
                                             employeeQualificationForm.get('qualificationFile').invalid &&
                                             employeeQualificationForm.get('qualificationFile').touched">
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Approval Status<span class="text-danger">*</span></label>
@@ -562,7 +549,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit">
                             <span *ngIf="!spinner">Submit</span>
@@ -575,7 +561,6 @@
     </div>
 </div>
 <!-- qualification modal ends here -->
-
 <!-- Assets Contact Modal 
 <div id="assets_contact_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -681,7 +666,6 @@
     </div>
 </div>
  /Assets Contact Modal -->
-
 <!-- Hobbies Modal
 <div id="hobbies_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -750,7 +734,6 @@
     </div>
 </div> -->
 <!-- /Hobbies Modal -->
-
 <!-- Experience Modal 
 <div id="experience_info" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

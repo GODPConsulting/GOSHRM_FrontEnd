@@ -97,14 +97,14 @@ export class JobGradeComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#upload_job_grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getJobGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -177,14 +177,14 @@ export class JobGradeComponent implements OnInit {
           this.initializeForm();
           $("#add_job_grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getJobGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -217,7 +217,7 @@ export class JobGradeComponent implements OnInit {
                   this.getJobGrade();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

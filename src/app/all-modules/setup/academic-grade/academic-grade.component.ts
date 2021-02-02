@@ -44,18 +44,16 @@ export class AcademicGradeComponent implements OnInit {
   }
   getAcademicGrade() {
     this.pageLoading = true;
-    return this.setupService
-      .getAcademicGrade()
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          this.grades = data.setuplist;
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
+    return this.setupService.getAcademicGrade().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.grades = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+        console.log(err);
+      }
+    );
   }
 
   downloadFile() {
@@ -115,14 +113,14 @@ export class AcademicGradeComponent implements OnInit {
           this.initializeForm();
           $("#upload_academic_grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -142,7 +140,6 @@ export class AcademicGradeComponent implements OnInit {
     });
   }
 
-  
   openUploadModal() {
     $("#upload_academic_grade").modal("show");
   }
@@ -175,14 +172,14 @@ export class AcademicGradeComponent implements OnInit {
           this.initializeForm();
           $("#add-academic-grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -229,7 +226,7 @@ export class AcademicGradeComponent implements OnInit {
                   this.getAcademicGrade();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

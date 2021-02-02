@@ -1,15 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EmployeeService } from "src/app/services/employee.service";
-import { SetupService } from 'src/app/services/setup.service';
+import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: 'app-career',
-  templateUrl: './career.component.html',
-  styleUrls: ['./career.component.css']
+  selector: "app-career",
+  templateUrl: "./career.component.html",
+  styleUrls: ["./career.component.css"],
 })
 export class CareerComponent implements OnInit {
   employeeDetails: any = {};
@@ -118,7 +118,6 @@ export class CareerComponent implements OnInit {
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
     payload.locationId = +payload.locationId;
-    
 
     this.spinner = true;
     return this.employeeService.postCareer(payload).subscribe(
@@ -134,7 +133,7 @@ export class CareerComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -173,7 +172,7 @@ export class CareerComponent implements OnInit {
   // Set Values To Edit Modal Form
   edit(row) {
     this.cardFormTitle = "Edit Career";
-   
+
     this.careerForm.patchValue({
       id: row.id,
       jobGrade: row.job_Grade,
@@ -238,7 +237,7 @@ export class CareerComponent implements OnInit {
                   this.getEmployeeCareer(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

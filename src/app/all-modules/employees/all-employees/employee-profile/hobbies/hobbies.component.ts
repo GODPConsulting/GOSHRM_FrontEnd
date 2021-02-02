@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
@@ -6,9 +6,9 @@ import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: 'app-hobbies',
-  templateUrl: './hobbies.component.html',
-  styleUrls: ['./hobbies.component.css']
+  selector: "app-hobbies",
+  templateUrl: "./hobbies.component.html",
+  styleUrls: ["./hobbies.component.css"],
 })
 export class HobbiesComponent implements OnInit {
   employeeDetails: any = {};
@@ -87,7 +87,7 @@ export class HobbiesComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -161,7 +161,7 @@ export class HobbiesComponent implements OnInit {
                   this.getEmployeeHobby(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

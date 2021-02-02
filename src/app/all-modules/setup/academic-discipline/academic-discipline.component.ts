@@ -66,14 +66,14 @@ export class AcademicDisciplineComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#upload_academic_discipline").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicDisplines();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -163,14 +163,14 @@ export class AcademicDisciplineComponent implements OnInit {
           this.initializeForm();
           $("#add_academic_discipline").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicDisplines();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -225,7 +225,7 @@ export class AcademicDisciplineComponent implements OnInit {
                   this.getAcademicDisplines();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

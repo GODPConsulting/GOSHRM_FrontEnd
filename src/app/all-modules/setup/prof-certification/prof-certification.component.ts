@@ -100,14 +100,14 @@ export class ProfCertificationComponent implements OnInit {
           this.initializeForm();
           $("#upload_prof_certification").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getprofCertification();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -161,14 +161,14 @@ export class ProfCertificationComponent implements OnInit {
           this.initializeForm();
           $("#add-prof-certification").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getprofCertification();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -223,7 +223,7 @@ export class ProfCertificationComponent implements OnInit {
                   this.getprofCertification();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
