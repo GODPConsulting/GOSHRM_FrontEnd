@@ -38,6 +38,10 @@ export class EmployeeProfileComponent implements OnInit {
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
+  readingRating: number;
+  writingRating: number;
+  speakingRating: number;
+  loading: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -240,17 +244,21 @@ export class EmployeeProfileComponent implements OnInit {
     const payload = languageRatingForm.value;
     payload.staffId = this.employeeId;
     payload.approval_status = +payload.approval_status;
-    payload.reading_Rating = +payload.reading_Rating;
-    payload.writing_Rating = +payload.writing_Rating;
-    payload.speaking_Rating = +payload.speaking_Rating;
+    payload.reading_Rating = this.readingRating;
+    payload.writing_Rating = this.writingRating;
+    payload.speaking_Rating = this.speakingRating;
     payload.languageId = +payload.languageId;
-    this.pageLoading = true;
+    this.loading = true;
     this.employeeService.addLanguageRating(payload).subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loading = false;
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
           swal.fire("Success", message, "success");
+          this.initLaguageRatingForm();
+          this.readingRating = 0;
+          this.writingRating = 0;
+          this.speakingRating = 0;
           this.getSavedLanguageRating(this.employeeId);
           $("#language_rating_modal").modal("hide");
         } else {
@@ -258,7 +266,7 @@ export class EmployeeProfileComponent implements OnInit {
         }
       },
       (err) => {
-        this.pageLoading = false;
+        this.loading = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("Error", message, "error");
       }
@@ -362,19 +370,25 @@ export class EmployeeProfileComponent implements OnInit {
       id: language.id,
       languageId: language.languageId,
       language: language.language,
-      reading_Rating: language.reading_Rating,
-      writing_Rating: language.writing_Rating,
-      speaking_Rating: language.speaking_Rating,
+      // reading_Rating: language.reading_Rating,
+      // writing_Rating: language.writing_Rating,
+      // speaking_Rating: language.speaking_Rating,
       approval_status: language.approval_status,
       approval_status_name: language.approval_status_name,
       staffId: language.staffId,
     });
+    this.readingRating = language.reading_Rating;
+    this.writingRating = language.writing_Rating;
+    this.speakingRating = language.speaking_Rating;
     $("#language_rating_modal").modal("show");
   }
 
   closelanguageRatingModal() {
     $("#language_rating_modal").modal("hide");
     this.initLaguageRatingForm();
+    this.readingRating = 0;
+    this.writingRating = 0;
+    this.speakingRating = 0;
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
@@ -387,5 +401,17 @@ export class EmployeeProfileComponent implements OnInit {
       this.currentUser = data.roles;
       this.currentUserId = data.staffId;
     });
+  }
+
+  getReadingRate(event: number) {
+    this.readingRating = event
+  }
+
+  getSpeakingRate(event: number) {
+    this.speakingRating = event
+  }
+
+  getWritingRate(event: number) {
+    this.writingRating = event;
   }
 }
