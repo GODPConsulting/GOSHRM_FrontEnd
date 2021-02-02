@@ -83,7 +83,7 @@ export class EmployeeHmoComponent implements OnInit {
     payload.hmoId = +payload.hmoId;
     /* const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
+      
       formData.append(key, this.employeeHmoForm.get(key).value);
     } */
 
@@ -101,7 +101,7 @@ export class EmployeeHmoComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -120,7 +120,6 @@ export class EmployeeHmoComponent implements OnInit {
     formData.append("approvalStatus", "2");
     formData.append("contactPhoneNo", "09088777886");
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.hmoChangeReqForm.get(key)?.value);
     }
     form.get("dateOfRequest").disable();
@@ -138,7 +137,7 @@ export class EmployeeHmoComponent implements OnInit {
         form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -153,7 +152,7 @@ export class EmployeeHmoComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -190,13 +189,13 @@ export class EmployeeHmoComponent implements OnInit {
                   this.getEmployeeHmo(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
               this.spinner = false;
               const message = err.status.message.friendlyMessage;
-              swal.fire("Error", message, "error");
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }

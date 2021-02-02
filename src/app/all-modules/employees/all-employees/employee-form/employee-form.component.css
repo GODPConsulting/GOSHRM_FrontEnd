@@ -1,0 +1,29 @@
+.cropper-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.crop-img-input {
+  margin-bottom: 10px;
+}
+image-cropper {
+  width: 50%;
+}
+.cropped-img-container {
+  width: 300px;
+  padding: 10px;
+  border-radius: 50%;
+}
+.cropped-img {
+  width: 100%;
+  border-radius: 100%;
+}
+
+.crop-img-btn {
+  width: 200px;
+  padding: 10px;
+  border: none;
+  background: orange;
+  border-radius: 6px;
+  color: #fff;
+}

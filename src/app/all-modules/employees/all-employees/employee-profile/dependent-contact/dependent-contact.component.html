@@ -2,13 +2,13 @@
 <div>
     <div class="card profile-box flex-fill">
         <div class="card-body">
-            <h3 class="card-title">Dependent Cotacts<a class="edit-icon hint" (click)="delete()"><span
+            <h3 class="card-title">Dependent Contacts<a class="edit-icon hint" (click)="delete()"><span
                         class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
                 <a class="edit-icon hint mr-1" (click)="downloadFile()" download><span
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
                 <a *ngIf="currentUserId === employeeId" (click)="initDependentContactForm()" class="hint edit-icon mr-1"
-                    data-toggle="modal" data-target="#dependent_contact_modal"><span class="hint-text">Add
-                    </span><i class="fa fa-pencil"></i></a>
+                    data-toggle="modal" data-target="#dependent_contact_modal"><span class="hint-text">Add </span><i
+                        class="fa fa-pencil"></i></a>
             </h3>
             <div class="table-responsive">
                 <table class="table table-nowrap table-hover">
@@ -79,8 +79,7 @@
                                     <small *ngIf="
                                     dependentContactForm.get('fullName').invalid &&
                                     dependentContactForm.get('fullName').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -98,8 +97,7 @@
                                     <small *ngIf="
                                     dependentContactForm.get('contact_phone_number').invalid &&
                                     dependentContactForm.get('contact_phone_number').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -116,8 +114,7 @@
                                     <small *ngIf="
                                     dependentContactForm.get('email').invalid &&
                                     dependentContactForm.get('email').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -134,8 +131,7 @@
                                     <small *ngIf="
                                     dependentContactForm.get('relationship').invalid &&
                                     dependentContactForm.get('relationship').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -152,8 +148,7 @@
                                     <small *ngIf="
                                     dependentContactForm.get('dateOfBirth').invalid &&
                                     dependentContactForm.get('dateOfBirth').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -170,8 +165,7 @@
                                     <small *ngIf="
                                     dependentContactForm.get('address').invalid &&
                                     dependentContactForm.get('address').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
@@ -192,12 +186,10 @@
                                     <small *ngIf="
                                     dependentContactForm.get('countryId').invalid &&
                                     dependentContactForm.get('countryId').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Approval Status</label>
@@ -216,8 +208,7 @@
                                     <small *ngIf="
                                     dependentContactForm.get('Approval_status').invalid &&
                                     dependentContactForm.get('Approval_status').touched
-                      " class="text-danger">
-                                        *Field is required</small>
+                      " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
                         </div>

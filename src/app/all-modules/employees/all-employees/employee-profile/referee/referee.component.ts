@@ -86,7 +86,6 @@ export class RefereeComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    console.log(payload);
 
     payload.approvalStatus = +payload.approvalStatus;
     payload.numberOfYears = +payload.numberOfYears;
@@ -97,7 +96,6 @@ export class RefereeComponent implements OnInit {
     this.spinner = true;
     return this.employeeService.postReferee(formData).subscribe(
       (res) => {
-        console.log(res);
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
@@ -109,7 +107,7 @@ export class RefereeComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -126,7 +124,7 @@ export class RefereeComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -167,13 +165,13 @@ export class RefereeComponent implements OnInit {
                   this.getEmployeeReferee(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
               this.spinner = false;
               const message = err.status.message.friendlyMessage;
-              swal.fire("Error", message, "error");
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }

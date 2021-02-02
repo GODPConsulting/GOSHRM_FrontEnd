@@ -67,7 +67,7 @@ export class AcademicQualificationComponent implements OnInit {
               const file = new File([bb], "Academic Qualification.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -107,14 +107,14 @@ export class AcademicQualificationComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#upload_academic_qualification").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicQualifications();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -136,12 +136,11 @@ export class AcademicQualificationComponent implements OnInit {
     return this.setupService.getAcademicQualification().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.qualifications = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -163,14 +162,14 @@ export class AcademicQualificationComponent implements OnInit {
           this.initializeForm();
           $("#add_academic_qualification").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicQualifications();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -183,7 +182,6 @@ export class AcademicQualificationComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -205,12 +203,10 @@ export class AcademicQualificationComponent implements OnInit {
                     this.getAcademicQualifications();
                   });
                 } else {
-                  swal.fire("Error", message, "error");
+                  swal.fire("GOSHRM", message, "error");
                 }
               },
-              (err) => {
-                console.log(err);
-              }
+              (err) => {}
             );
         }
       });

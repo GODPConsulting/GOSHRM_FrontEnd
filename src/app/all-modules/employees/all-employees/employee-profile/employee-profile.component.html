@@ -96,7 +96,7 @@
                 <app-identification [staffId]="employeeId"></app-identification>
             </div>
             <!-- /Identification Card -->
-            <!-- Emergency Contact Lola -->
+            <!-- Emergency Contact -->
             <div>
                 <div class="card profile-box flex-fill">
                     <div class="card-body">
@@ -116,7 +116,7 @@
                                     <tr>
                                         <th>
                                             <input type="checkbox"
-                                                [checked]="selectedId.length === languageRating.length"
+                                                [checked]="selectedEmergencyId.length === emergencyContacts.length"
                                                 (change)="checkAllEmergency($event)" />
                                         </th>
                                         <th>S/N</th>
@@ -133,8 +133,8 @@
                                     <tr *ngFor="let item of emergencyContacts; let i = index"
                                         (click)="editEmergencyContact(item)" class="pointer">
                                         <td (click)="stopParentEvent($event)">
-                                            <input type="checkbox" [checked]="selectedId.includes(item.id)"
-                                                (change)="addItemId($event, item.id)" />
+                                            <input type="checkbox" [checked]="selectedEmergencyId.includes(item.id)"
+                                                (change)="addItemId($event, item.id,selectedEmergencyId)" />
                                         </td>
                                         <td>{{ i + 1 }}</td>
                                         <td>{{item.fullName}}</td>
@@ -171,8 +171,8 @@
                                         <tr>
                                             <th>
                                                 <input type="checkbox"
-                                                    [checked]="selectedId.length === languageRating.length"
-                                                    (change)="checkAll($event)" />
+                                                    [checked]="selectedLanguageId.length === languageRating.length"
+                                                    (change)="checkAllLanguage($event)" />
                                             </th>
                                             <th>S/N</th>
                                             <th>Language</th>
@@ -187,8 +187,9 @@
                                             (click)="editLanguageRating(language)" class="pointer"
                                             (click)="stopParentEvent($event)">
                                             <td (click)="stopParentEvent($event)">
-                                                <input type="checkbox" [checked]="selectedId.includes(language.id)"
-                                                    (change)="addItemId($event, language.id)" />
+                                                <input type="checkbox"
+                                                    [checked]="selectedLanguageId.includes(language.id)"
+                                                    (change)="addItemId($event, language.id,selectedLanguageId)" />
                                             </td>
                                             <td>{{ i + 1 }}</td>
                                             <td>{{language.language}}</td>
@@ -204,43 +205,87 @@
                     </div>
                 </div>
                 <!-- Language -->
+                <!-- Qualification -->
+                <div>
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Qualification <div class="col-auto float-right ml-auto">
+                                    <a class="btn add-btn hint" data-toggle="modal"
+                                        data-target="#employee_qualification_modal"><span class="hint-text">Add</span><i
+                                            class="fa fa-plus"></i>
+                                    </a>
+                                    <a class="btn delete-btn hint" (click)="deleteEmployeeQualification()"><span
+                                            class="hint-text">Delete</span><i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                            </h3>
+                            <div class="table-responsive">
+                                <table class="table table-nowrap table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox"
+                                                    [checked]="selectedQualificationId.length === employeeQualification.length"
+                                                    (change)=" checkAllQualification($event)" />
+                                            </th>
+                                            <th>S/N</th>
+                                            <th>Certificate</th>
+                                            <th>Institution</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                            <th>Grade</th>
+                                            <th>Approval Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let qualification of employeeQualification; let i = index"
+                                            (click)="editEmployeeQualification(qualification)" class="pointer"
+                                            (click)="stopParentEvent($event)">
+                                            <td (click)="stopParentEvent($event)">
+                                                <input type="checkbox"
+                                                    [checked]="selectedQualificationId.includes(qualification.id)"
+                                                    (change)="addItemId($event, qualification.id,selectedQualificationId)" />
+                                            </td>
+                                            <td>{{ i + 1 }}</td>
+                                            <td>{{qualification.certificate}}</td>
+                                            <td>{{qualification.institution}}</td>
+                                            <td>{{qualification.startDate | date :'mediumDate'}}</td>
+                                            <td>{{qualification.endDate | date :'mediumDate'}}</td>
+                                            <td>{{qualification.gradeId}}</td>
+                                            <td>{{qualification.approvalStatus}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Qualification -->
             </div>
-            <!-- /Emergency Contact -->
             <!-- Referee Card -->
             <app-referee [staffId]="employeeId"></app-referee>
             <!-- /Referee Card -->
-
             <!-- Dependent Contact Tab -->
             <div>
                 <app-dependent-contact [staffId]="employeeId"></app-dependent-contact>
             </div>
             <!-- /dependent Contact Tab-->
-
-
-
-
         </div>
         <!-- /Profile Info Tab -->
-
-
         <!--Assets Tab -->
-        <div id="emp_assets" class="pro-overview tab-pane fade show active">
-            <!-- Hobbies Card -->
+        <div id="emp_assets" class="tab-pane fade">
+            <!-- Assets card -->
             <div>
                 <app-assets [staffId]="employeeId"></app-assets>
             </div>
+            <!-- Assets card -->
         </div>
-
-        <!-- assets Contact Modal -->
-        <!-- </div>
-        </div> -->
         <!-- /Assets Tab -->
         <!-- Careers Tab -->
-        <div id="emp_careers" class="tab-pane fade show active">
+        <div id="emp_careers" class="tab-pane fade ">
             <!-- Career card -->
             <app-career [staffId]="employeeId"></app-career>
             <!-- /Career card -->
-
             <!-- Professional Certification card -->
             <app-prof-cert [staffId]="employeeId"></app-prof-cert>
             <!-- /Professional Certification card -->
@@ -249,16 +294,14 @@
             <!-- /Skills card -->
         </div>
         <!-- /Careers Tab -->
-
         <!--Hobbies Tab -->
-        <div id="emp_hobbies" class="pro-overview tab-pane fade show active">
+        <div id="emp_hobbies" class=" tab-pane fade">
             <!-- Hobbies Card -->
             <div>
                 <app-hobbies [staffId]="employeeId"></app-hobbies>
             </div>
         </div>
         <!-- /Hobbies Tab -->
-
         <!-- Health and Wellness Tab -->
         <div id="emp_health_well" class="tab-pane fade ">
             <!-- Employee Hmo card -->
@@ -275,10 +318,6 @@
     </div>
 </div>
 <!-- Pop up Modals below -->
-
-
-
-
 <!-- Emergency Contact Modal -->
 <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -361,7 +400,7 @@
         </div>
     </div>
 </div>
-<!-- /Emergency Contact Modal -->
+<!-- Emergency Contact Modal ends here -->
 <!-- language Modal -->
 <div id="language_rating_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -433,93 +472,77 @@
         </div>
     </div>
 </div>
-<!-- Language modal -->
-<!-- Assets Contact Modal 
-<div id="assets_contact_modal" class="modal custom-modal fade" role="dialog">
+<!-- Language modal ends here -->
+<!-- Qualification modal -->
+<div id="employee_qualification_modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Assets</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title"> Add qualifications(s) </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    (click)="closeEmployeeQualificationModal()">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form (ngSubmit)="addEmployeeQualification(employeeQualificationForm)"
+                    [formGroup]="employeeQualificationForm">
                     <div class="card">
                         <div class="card-body">
+                            <h3 class="card-title">Employee Qualification </h3>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Employee Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control">
+                                        <label>Certificate <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" formControlName="certificate">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Office <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
+                                        <label>Institution <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="text" formControlName="institution">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Asset Name <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
+                                        <label>Start Date<span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date" formControlName="startDate">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Asset Number <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
+                                        <label>End Date <span class="text-danger">*</span></label>
+                                        <input class="form-control" type="date" formControlName="endDate">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Description <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Classification <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Physical Condition<span class="text-danger">*</span></label>
-                                        <select class="select form-control" formControlName="client">
-                                            <option>Approved</option>
-                                            <option>Pending</option>
-                                            <option>Declined</option>
+                                        <label>Grade<span class="text-danger">*</span></label>
+                                        <select class="form-control" [class.invalid]="employeeQualificationForm.get('gradeId').invalid &&
+                                        employeeQualificationForm.get('gradeId').touched" formControlName="gradeId">
+                                            <option selected value="">Grades</option>
+                                            <option *ngFor="let row of grades" value="{{row.id}}"> {{row.grade}}
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Location</label>
-                                        <input class="select form-control" type="text">
+                                        <label>Attachment (file format)</label>
+                                        <input class="form-control" formControlName="qualificationFile" #fileInput
+                                            type="file" (change)="handleFile($event)" [class.invalid]="
+                                            employeeQualificationForm.get('qualificationFile').invalid &&
+                                            employeeQualificationForm.get('qualificationFile').touched">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Request Approval Status<span class="text-danger">*</span></label>
-                                        <select class="select form-control" formControlName="client">
-                                            <option>Select a status</option>
-                                            <option>Approved</option>
-                                            <option>Pending</option>
-                                            <option>Declined</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Return Approval Status <span class="text-danger">*</span></label>
-                                        <select class="select form-control" formControlName="client">
-                                            <option>Select a Status</option>
-                                            <option>Approved</option>
-                                            <option>Pending</option>
-                                            <option>Declined</option>
+                                        <label>Approval Status<span class="text-danger">*</span></label>
+                                        <select class="select form-control" formControlName="approvalStatus">
+                                            <option disabled>Select Status</option>
+                                            <option value="1">Confirmed</option>
+                                            <option value="2">Pending</option>
+                                            <option value="3">Unconfirmed</option>
                                         </select>
                                     </div>
                                 </div>
@@ -527,8 +550,7 @@
                         </div>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadAssets()"
-                            [disabled]="spinner">
+                        <button class="btn btn-primary submit-btn" type="submit">
                             <span *ngIf="!spinner">Submit</span>
                             <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                         </button>
@@ -538,191 +560,4 @@
         </div>
     </div>
 </div>
- /Assets Contact Modal -->
-<!-- Hobbies Modal
-<div id="hobbies_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Hobbies</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Hobbies</h3>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Name of Hobbies <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Description <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Star <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Status <span class="text-danger">*</span></label>
-                                        <select class="select form-control"
-                                            [class.invalid]="addEmployeeForm.get('Gender').invalid && addEmployeeForm.get('Gender').touched"
-                                            formControlName="Gender">
-                                            <option value="Approved selected">Approved</option>
-                                            <option>Pending</option>
-                                            <option>Declined</option>
-                                        </select>
-                                        <div
-                                            *ngIf="addEmployeeForm.get('Status').invalid && addEmployeeForm.get('Status').touched">
-                                            <small
-                                                *ngIf="addEmployeeForm.get('Status').invalid && addEmployeeForm.get('Status').touched"
-                                                class="text-danger"> *Status required</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadLanguage()"
-                            [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div> -->
-<!-- /Hobbies Modal -->
-<!-- Experience Modal 
-<div id="experience_info" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Experience Informations</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-scroll">
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title">Experience Informations <a class="delete-icon"><i
-                                            class="fa fa-trash-o"></i></a></h3>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group form-focus">
-                                            <input type="text" class="form-control floating">
-                                            <label class="focus-label">Company Name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group form-focus">
-                                            <input type="text" class="form-control floating">
-                                            <label class="focus-label">Location</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group form-focus">
-                                            <input type="text" class="form-control floating">
-                                            <label class="focus-label">Job Position</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group form-focus">
-                                            <div class="">
-                                                <input type="date" bsDatepicker type="date"
-                                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
-                                                    class="form-control floating datetimepicker">
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group form-focus">
-                                            <div class="">
-                                                <input type="date" bsDatepicker type="date"
-                                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
-                                                    class="form-control floating datetimepicker">
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title">Experience Informations <a class="delete-icon"><i
-                                            class="fa fa-trash-o"></i></a></h3>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group form-focus">
-                                            <input type="text" class="form-control floating">
-                                            <label class="focus-label">Company Name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group form-focus">
-                                            <input type="text" class="form-control floating">
-                                            <label class="focus-label">Location</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group form-focus">
-                                            <input type="text" class="form-control floating">
-                                            <label class="focus-label">Job Position</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group form-focus">
-                                            <div class="">
-                                                <input type="date" bsDatepicker type="date"
-                                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
-                                                    class="form-control floating datetimepicker">
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group form-focus">
-                                            <div class="">
-                                                <input type="date" bsDatepicker type="date"
-                                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',  returnFocusToInput: true }"
-                                                    class="form-control floating datetimepicker">
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="add-more">
-                                    <a><i class="fa fa-plus-circle"></i> Add More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>-->
-<!-- Experience Modal -->
+<!-- qualification modal ends here -->

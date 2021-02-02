@@ -1,3 +1,4 @@
+<!--  -->
 <app-loading *ngIf="pageLoading"></app-loading>
 <div *ngIf="!pageLoading" class="content container-fluid">
     <!-- Page Header -->
@@ -12,7 +13,17 @@
     </div>
     <!-- Page Content -->
     <div class="modal-body">
-        <form (ngSubmit)="addEmployee(EmployeeForm)" [formGroup]="EmployeeForm">
+        <form [formGroup]="EmployeeForm">
+            <div class="cropper-flex">
+                <input type="file" (change)="fileChangeEvent($event)" class="crop-img-input" />
+                <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" format="png"
+                    (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                    (loadImageFailed)="loadImageFailed()"></image-cropper>
+                <div class="cropped-img-container">
+                    <img [src]="croppedImage" class="cropped-img" />
+                </div>
+                <!--            <button class="crop-img-btn" (click)="uploadImage()">Upload</button>-->
+            </div>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
@@ -318,7 +329,7 @@
                 </div>
             </div>
             <div class="submit-section">
-                <button class="btn btn-primary submit-btn" type="submit">
+                <button class="btn btn-primary submit-btn" type="submit" (click)="addEmployee(EmployeeForm)">
                     <span *ngIf="!loading">Submit</span>
                     <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
                 </button>

@@ -119,7 +119,7 @@ export class HospitalComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -137,7 +137,6 @@ export class HospitalComponent implements OnInit {
     payload.hospitalId = +payload.hospitalId;
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.hospitalChangeReqForm.get(key).value);
     }
     form.get("dateOfRequest").disable();
@@ -156,7 +155,7 @@ export class HospitalComponent implements OnInit {
         form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -172,7 +171,6 @@ export class HospitalComponent implements OnInit {
 
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.bookHospitalForm.get(key).value);
     }
     form.get("dateOfRequest").disable();
@@ -190,7 +188,7 @@ export class HospitalComponent implements OnInit {
         form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -205,7 +203,7 @@ export class HospitalComponent implements OnInit {
       (err) => {
         this.pageLoading = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -242,13 +240,13 @@ export class HospitalComponent implements OnInit {
                   this.getEmployeeHospital(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
               this.spinner = false;
               const message = err.status.message.friendlyMessage;
-              swal.fire("Error", message, "error");
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }

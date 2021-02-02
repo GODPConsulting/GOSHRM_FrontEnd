@@ -64,7 +64,7 @@ export class ProfMembershipComponent implements OnInit {
               const file = new File([bb], "Professional Membership.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -102,13 +102,13 @@ export class ProfMembershipComponent implements OnInit {
           this.initializeForm();
           $("#upload_prof_membership").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -135,12 +135,11 @@ export class ProfMembershipComponent implements OnInit {
     return this.setupService.getProfMems().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.profMemberships = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -181,14 +180,14 @@ export class ProfMembershipComponent implements OnInit {
           this.initializeForm();
           $("#add_prof_membership").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getProfMembershipForm();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -201,7 +200,6 @@ export class ProfMembershipComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -221,12 +219,10 @@ export class ProfMembershipComponent implements OnInit {
                   this.getProfMembershipForm();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
