@@ -37,8 +37,6 @@ export class HobbiesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.staffId);
-
     this.getEmployeeHobby(this.staffId);
     this.initHobbyForm();
   }
@@ -59,19 +57,12 @@ export class HobbiesComponent implements OnInit {
   }
 
   submitHobbyForm(form: FormGroup) {
-    console.log(form.value);
-
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
     payload.approvalStatus = +payload.approvalStatus;
-    // const formData = new FormData();
-    // for (const key in form.value) {
-    //   //console.log(key, this.identificationForm.get(key).value);
-    //   formData.append(key, this.hobbyForm.get(key).value);
-    // }
 
     this.spinner = true;
     return this.employeeService.postHobby(payload).subscribe(
@@ -96,7 +87,6 @@ export class HobbiesComponent implements OnInit {
     this.employeeService.getHobbyByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
         this.employeeHobby = data.employeeList;
-        console.log(data.employeeList);
       }
     });
   }
@@ -141,7 +131,6 @@ export class HobbiesComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -164,9 +153,7 @@ export class HobbiesComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

@@ -37,8 +37,6 @@ export class AssetsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.staffId);
-
     this.getEmployeeAsset(this.staffId);
     this.initAssetForm();
   }
@@ -65,8 +63,6 @@ export class AssetsComponent implements OnInit {
   }
 
   submitAssetForm(form: FormGroup) {
-    console.log(form.value);
-
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -79,12 +75,11 @@ export class AssetsComponent implements OnInit {
 
     /* const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
+      
       formData.append(key, this.assetForm.get(key).value);
     }
- */ console.log(
-      payload
-    );
+ */
+
     this.spinner = true;
     return this.employeeService.postAsset(payload).subscribe(
       (res) => {
@@ -108,7 +103,6 @@ export class AssetsComponent implements OnInit {
     this.employeeService.getAssetByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
         this.employeeAsset = data.employeeList;
-        console.log(data.employeeList);
       }
     });
   }
@@ -159,7 +153,6 @@ export class AssetsComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -182,9 +175,7 @@ export class AssetsComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

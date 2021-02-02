@@ -61,7 +61,7 @@ export class LanguageComponent implements OnInit {
             const file = new File([bb], "Language.xlsx", {
               type: "application/vnd.ms-excel",
             });
-            console.log(file, bb);
+
             saveAs(file);
           } catch (err) {
             const textFileAsBlob = new Blob([bb], {
@@ -130,12 +130,11 @@ export class LanguageComponent implements OnInit {
     return this.setupService.getLanguage().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.languages = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -160,7 +159,6 @@ export class LanguageComponent implements OnInit {
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
-        //console.log(message);
 
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
@@ -187,7 +185,6 @@ export class LanguageComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -198,8 +195,6 @@ export class LanguageComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
-
         if (result.value) {
           return this.setupService.deleteLanguage(payload).subscribe(
             (res) => {
@@ -212,9 +207,7 @@ export class LanguageComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

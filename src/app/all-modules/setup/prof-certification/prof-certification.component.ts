@@ -62,7 +62,7 @@ export class ProfCertificationComponent implements OnInit {
               const file = new File([bb], "Professional Certification.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -138,7 +138,6 @@ export class ProfCertificationComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -202,7 +201,6 @@ export class ProfCertificationComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -213,7 +211,6 @@ export class ProfCertificationComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteProfCert(payload).subscribe(
             (res) => {
@@ -226,9 +223,7 @@ export class ProfCertificationComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

@@ -44,8 +44,6 @@ export class CareerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.staffId);
-
     this.getEmployeeCareer(this.staffId);
     this.initCareerForm();
     this.getCountry();
@@ -83,12 +81,11 @@ export class CareerComponent implements OnInit {
     return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
       (data) => {
         this.pageLoading = false;
-        console.log(data);
+
         this.jobGrades = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -97,19 +94,16 @@ export class CareerComponent implements OnInit {
     return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
       (data) => {
         this.pageLoading = false;
-        console.log(data);
+
         this.jobTitles = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
 
   submitCareerForm(form: FormGroup) {
-    console.log(form.value);
-
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -142,7 +136,6 @@ export class CareerComponent implements OnInit {
     this.employeeService.getCareerByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
         this.employeeCareer = data.employeeList;
-        console.log(data.employeeList);
       }
     });
   }
@@ -152,9 +145,7 @@ export class CareerComponent implements OnInit {
       (data) => {
         this.countries = data.commonLookups;
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
 
@@ -163,9 +154,7 @@ export class CareerComponent implements OnInit {
       (data) => {
         this.locations = data.setuplist;
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
 
@@ -217,7 +206,6 @@ export class CareerComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -240,9 +228,7 @@ export class CareerComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

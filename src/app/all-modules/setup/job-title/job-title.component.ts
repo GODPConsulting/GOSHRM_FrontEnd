@@ -61,7 +61,7 @@ export class JobTitleComponent implements OnInit {
             const file = new File([bb], "Job Title.xlsx", {
               type: "application/vnd.ms-excel",
             });
-            console.log(file, bb);
+
             saveAs(file);
           } catch (err) {
             const textFileAsBlob = new Blob([bb], {
@@ -129,12 +129,11 @@ export class JobTitleComponent implements OnInit {
     return this.setupService.getJobTitle().subscribe(
       (data) => {
         this.pageLoading = false;
-        console.log(data);
+
         this.jobTitles = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -151,7 +150,7 @@ export class JobTitleComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    console.log(payload);
+
     return this.setupService.addJobTitle(payload).subscribe(
       (res) => {
         const message = res.status.message.friendlyMessage;
@@ -190,7 +189,6 @@ export class JobTitleComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -201,12 +199,9 @@ export class JobTitleComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteJobTitle(payload).subscribe(
             (res) => {
-              console.log(res);
-
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -216,9 +211,7 @@ export class JobTitleComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

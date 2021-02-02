@@ -174,12 +174,11 @@ export class EmployeeFormComponent implements OnInit {
     return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
       (data) => {
         this.pageLoading = false;
-        console.log(data);
+
         this.jobTitles = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -193,7 +192,6 @@ export class EmployeeFormComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -209,7 +207,6 @@ export class EmployeeFormComponent implements OnInit {
         },
         (err) => {
           this.pageLoading = false;
-          console.log(err);
         }
       );
   }
@@ -224,7 +221,6 @@ export class EmployeeFormComponent implements OnInit {
         },
         (err) => {
           this.pageLoading = false;
-          console.log(err);
         }
       );
   }
@@ -238,7 +234,6 @@ export class EmployeeFormComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -254,7 +249,6 @@ export class EmployeeFormComponent implements OnInit {
         },
         (err) => {
           this.pageLoading = false;
-          console.log(err);
         }
       );
   }
@@ -270,7 +264,6 @@ export class EmployeeFormComponent implements OnInit {
         },
         (err) => {
           this.pageLoading = false;
-          console.log(err);
         }
       );
   }
@@ -309,8 +302,5 @@ export class EmployeeFormComponent implements OnInit {
 
     return new File([u8arr], filename, { type: mime });
   }
-  uploadImage() {
-    console.log(this.image);
-    // console.log(this.imageChangedEvent)
-  }
+  uploadImage() {}
 }

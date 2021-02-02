@@ -164,7 +164,6 @@ export class EmployeeGymComponent implements OnInit {
 
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.bookGymForm.get(key).value);
     }
     form.get("dateOfRequest").disable();

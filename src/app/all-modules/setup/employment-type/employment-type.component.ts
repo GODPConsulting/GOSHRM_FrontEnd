@@ -63,7 +63,7 @@ export class EmploymentTypeComponent implements OnInit {
               const file = new File([bb], "Employment Type.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -145,12 +145,11 @@ export class EmploymentTypeComponent implements OnInit {
     return this.setupService.getEmploymentType().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.employmentTypes = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -162,13 +161,12 @@ export class EmploymentTypeComponent implements OnInit {
       return;
     }
     const payload: object = form.value;
-    console.log(payload);
+
     this.spinner = true;
     return this.setupService.addEmploymentType(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
-        //console.log(message);
 
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
@@ -195,7 +193,6 @@ export class EmploymentTypeComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -206,7 +203,6 @@ export class EmploymentTypeComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteEmploymentType(payload).subscribe(
             (res) => {
@@ -219,9 +215,7 @@ export class EmploymentTypeComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
