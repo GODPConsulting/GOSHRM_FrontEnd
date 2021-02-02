@@ -71,7 +71,7 @@ export class DependentContactComponent implements OnInit {
       address: ["", Validators.required],
       countryId: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      Approval_status: ["", Validators.required],
+      approval_status_name: ["", Validators.required],
       staffId: this.staffId,
       // identicationFile: ["", Validators.required],
     });
@@ -137,7 +137,7 @@ export class DependentContactComponent implements OnInit {
       countryId: row.countryId,
       // idIssues: row.idIssues,
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
-      Approval_status: row.Approval_status,
+      approval_status_name: row.approval_status_name,
       staffId: this.staffId,
       dependentContactFile: row.dependentContactFile,
     });
