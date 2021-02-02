@@ -100,14 +100,14 @@ export class HighSchoolSubjectsComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#upload_high_school_subject").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHighSchoolSub();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -159,14 +159,14 @@ export class HighSchoolSubjectsComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#add_high_school_subject").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHighSchoolSub();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -222,7 +222,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
                   this.getHighSchoolSub();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

@@ -101,7 +101,7 @@ export class SkillsComponent implements OnInit {
       (err) => {
         this.pageLoading = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -135,7 +135,7 @@ export class SkillsComponent implements OnInit {
         form.get("expectedScore").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -188,7 +188,7 @@ export class SkillsComponent implements OnInit {
                   this.getEmployeeSkills(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

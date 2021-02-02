@@ -102,14 +102,14 @@ export class EmploymentTypeComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#upload_employment_type").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getEmploymentType();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -175,14 +175,14 @@ export class EmploymentTypeComponent implements OnInit {
           this.initializeForm();
           $("#add_employment_type").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getEmploymentType();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -216,7 +216,7 @@ export class EmploymentTypeComponent implements OnInit {
                   this.getEmploymentType();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

@@ -107,14 +107,14 @@ export class AcademicQualificationComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#upload_academic_qualification").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicQualifications();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -163,14 +163,14 @@ export class AcademicQualificationComponent implements OnInit {
           this.initializeForm();
           $("#add_academic_qualification").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicQualifications();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -205,7 +205,7 @@ export class AcademicQualificationComponent implements OnInit {
                     this.getAcademicQualifications();
                   });
                 } else {
-                  swal.fire("Error", message, "error");
+                  swal.fire("GOSHRM", message, "error");
                 }
               },
               (err) => {

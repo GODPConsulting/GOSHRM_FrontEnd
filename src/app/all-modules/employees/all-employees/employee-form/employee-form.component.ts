@@ -158,13 +158,13 @@ export class EmployeeFormComponent implements OnInit {
             this.initializeForm();
             // $("#add_employee_form").modal("hide");
           } else {
-            swal.fire("Error", message, "error");
+            swal.fire("GOSHRM", message, "error");
           }
         },
         (err) => {
           this.loading = false;
           const message = err.status.message.friendlyMessage;
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
       );
   }

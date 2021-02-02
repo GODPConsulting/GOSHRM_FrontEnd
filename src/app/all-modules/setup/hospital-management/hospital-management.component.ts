@@ -104,14 +104,14 @@ export class HospitalManagementComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#uploadHospitalManagement").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHospitalManagement();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -195,14 +195,14 @@ export class HospitalManagementComponent implements OnInit {
           this.initializeForm();
           $("#addHospitalManagement").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHospitalManagement();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -234,7 +234,7 @@ export class HospitalManagementComponent implements OnInit {
                   this.getHospitalManagement();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

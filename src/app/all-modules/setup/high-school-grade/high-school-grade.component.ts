@@ -101,14 +101,14 @@ export class HighSchoolGradeComponent implements OnInit {
           this.initializeForm();
           $("#upload_high_school_grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHighSchoolGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -164,14 +164,14 @@ export class HighSchoolGradeComponent implements OnInit {
           this.initializeForm();
           $("#add_high_school_grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHighSchoolGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -225,7 +225,7 @@ export class HighSchoolGradeComponent implements OnInit {
                   this.getHighSchoolGrade();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

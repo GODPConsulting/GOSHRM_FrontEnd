@@ -101,7 +101,7 @@ export class EmployeeHmoComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -138,7 +138,7 @@ export class EmployeeHmoComponent implements OnInit {
         form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -153,7 +153,7 @@ export class EmployeeHmoComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -190,13 +190,13 @@ export class EmployeeHmoComponent implements OnInit {
                   this.getEmployeeHmo(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
               this.spinner = false;
               const message = err.status.message.friendlyMessage;
-              swal.fire("Error", message, "error");
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }

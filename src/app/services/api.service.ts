@@ -65,9 +65,10 @@ export class ApiService {
   return this.http.get("http://godp.co.uk:72/api/v1/hrmsetup/download/academic/disciplines",{...options,responseType: 'blob'})
 }  */
 
-  /*  uploadExcel(path, file: File) {
+   addCertificate(path, body, file: File) {
     return new Promise((resolve, reject) => {
       let url = `${environment.api_url}${path}`;
+      console.log(url)
       let xhr: XMLHttpRequest = new XMLHttpRequest();
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
@@ -81,10 +82,14 @@ export class ApiService {
       };
       xhr.open("POST", url, true);
       let formData = new FormData();
-      formData.append("uploadInput", file, file.name);
+      formData.append("qualificationFile", file, file.name);
+      for(var key in body) {
+        formData.append(key, body[key])
+      }
       const token = this.jwtService.getToken();
       xhr.setRequestHeader("Authorization", `Bearer ${token}`);
       xhr.send(formData);
     });
-  } */
+  } 
 }
+

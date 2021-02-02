@@ -170,6 +170,28 @@ export class EmployeeService {
       payload
     );
   }
+  addEmployeeQualification(payload: FormData, file: File): Promise<any>{
+    return this.apiService.addCertificate("/hrm/add/update/employee/qualification",payload, file).then(data => {
+      return data;
+    })
+  }
+
+  getEmployeeQualificationByStaffId(id: number) {
+    return this.apiService.get(`/hrm/get/single/employee/qualification/staffId?staffId=${id}`);
+  }
+
+  getGrades(){
+    return this.apiService.get("/hrmsetup/get/all/academic/grades");
+  }
+
+  deleteEmployeeQualification(payload){
+    return this.apiService.post("/hrm/delete/employee/qualification",payload).pipe(
+      tap((data) => {
+        return data;
+      })
+    );
+  }
+
 
   getHobbyByStaffId(id: number) {
     return this.apiService.get(`/hrm/get/single/employee/hobby/staffId?StaffId=${id}`);

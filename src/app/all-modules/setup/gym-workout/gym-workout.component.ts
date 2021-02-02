@@ -101,14 +101,14 @@ export class GymWorkoutComponent implements OnInit {
           this.initializeForm();
           $("#upload_gym_workout").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getGymWorkout();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -175,14 +175,14 @@ export class GymWorkoutComponent implements OnInit {
           this.initializeForm();
           $("#add_gym_workout").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getGymWorkout();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -230,7 +230,7 @@ export class GymWorkoutComponent implements OnInit {
                   this.getGymWorkout();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {

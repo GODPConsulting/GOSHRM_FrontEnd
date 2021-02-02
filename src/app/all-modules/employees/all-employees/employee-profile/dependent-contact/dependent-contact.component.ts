@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
@@ -6,9 +6,9 @@ import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: 'app-dependent-contact',
-  templateUrl: './dependent-contact.component.html',
-  styleUrls: ['./dependent-contact.component.css']
+  selector: "app-dependent-contact",
+  templateUrl: "./dependent-contact.component.html",
+  styleUrls: ["./dependent-contact.component.css"],
 })
 export class DependentContactComponent implements OnInit {
   employeeDetails: any = {};
@@ -19,7 +19,7 @@ export class DependentContactComponent implements OnInit {
   currentUserId: number;
   public selectedId: number[] = [];
   public countryId: number;
-  public countries: any[] = []
+  public countries: any[] = [];
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -32,7 +32,6 @@ export class DependentContactComponent implements OnInit {
   // To hold data for each card
   employeeDependentContact: any = {};
   setupService: any;
-  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -47,7 +46,6 @@ export class DependentContactComponent implements OnInit {
     this.initDependentContactForm();
     this.getCountry();
   }
-
 
   initDependentContactForm() {
     this.cardFormTitle = "Add Dependent Contact";
@@ -85,7 +83,6 @@ export class DependentContactComponent implements OnInit {
     //   formData.append(key, this.hobbyForm.get(key).value);
     // }
 
-
     this.spinner = true;
     return this.employeeService.postDependentContact(payload).subscribe(
       (res) => {
@@ -100,7 +97,7 @@ export class DependentContactComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -113,7 +110,6 @@ export class DependentContactComponent implements OnInit {
       }
     });
   }
-
 
   getCountry() {
     return this.utilitiesService.getCountry().subscribe(
@@ -189,7 +185,7 @@ export class DependentContactComponent implements OnInit {
                   this.getEmployeeDependentContact(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
