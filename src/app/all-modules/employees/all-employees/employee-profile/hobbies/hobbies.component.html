@@ -7,10 +7,10 @@
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
                 <a *ngIf="currentUserId === employeeId" (click)="initHobbyForm()" class="hint edit-icon mr-1"
                     data-toggle="modal" data-target="#hobby_modal"><span class="hint-text">Add
-                    </span><i class="fa fa-pencil"></i></a>
+                    </span><i class="fa fa-plus"></i></a>
             </h3>
             <div class="table-responsive">
-                <table class="table table-nowrap table-hover">
+                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
                             <th>
@@ -34,7 +34,7 @@
                             <td>{{i +1}}</td>
                             <td>{{row.hobbyName}}</td>
                             <td>
-                                <rating [max]="5" [(ngModel)]="row.hobby_rating"
+                                <rating [max]="5" [(ngModel)]="row.rating"
                                     [titles]="['Poor','Below Average','Average','Above Average','Excellent']"
                                     [readonly]="true">
                                 </rating>

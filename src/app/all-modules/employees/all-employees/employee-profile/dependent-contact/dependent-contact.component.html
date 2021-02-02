@@ -8,10 +8,10 @@
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
                 <a *ngIf="currentUserId === employeeId" (click)="initDependentContactForm()" class="hint edit-icon mr-1"
                     data-toggle="modal" data-target="#dependent_contact_modal"><span class="hint-text">Add </span><i
-                        class="fa fa-pencil"></i></a>
+                        class="fa fa-plus"></i></a>
             </h3>
             <div class="table-responsive">
-                <table class="table table-nowrap table-hover">
+                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
                             <th>

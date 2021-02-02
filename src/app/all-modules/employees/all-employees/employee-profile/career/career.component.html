@@ -7,10 +7,10 @@
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
                 <a *ngIf="currentUserId === employeeId" (click)="initCareerForm()" class="hint edit-icon mr-1"
                     data-toggle="modal" data-target="#career_modal"><span class="hint-text">Add
-                    </span><i class="fa fa-pencil"></i></a>
+                    </span><i class="fa fa-plus"></i></a>
             </h3>
             <div class="table-responsive">
-                <table class="table table-nowrap table-hover">
+                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
                             <th>
@@ -25,13 +25,6 @@
                             <th>Location</th>
                             <th>Office</th>
                             <th>Line Manager</th>
-                            <td>First Level Reviewer</td>
-                            <td>Second Level Reviewer</td>
-                            <td>Start Month</td>
-                            <td>Start Year</td>
-                            <td>End_month</td>
-                            <td>End Year</td>
-                            <td>approval Status</td>
 
                         </tr>
                     </thead>
@@ -50,13 +43,6 @@
                             <td>{{row.locationId}}</td>
                             <td>{{row.office}}</td>
                             <td>{{row.line_Manager}}</td>
-                            <td>{{row.first_Level_Reviewer}}</td>
-                            <td>{{row.second_Level_Reviewer}}</td>
-                            <td>{{row.start_month}}</td>
-                            <td>{{row.start_year}}</td>
-                            <td>{{row.end_month}}</td>
-                            <td>{{row.end_year}}</td>
-                            <td>{{row.approval_status}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -260,9 +246,23 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Start Month <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <select class="form-control" [class.invalid]="
                                 careerForm.get('start_month').invalid &&
                                 careerForm.get('start_month').touched" formControlName="start_month">
+                                    <option selected value="">Select Month</option>
+                                    <option value="1">January</option>
+                                    <option value="2">Febuary</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
                                 <div *ngIf="
                                 careerForm.get('start_month').invalid &&
                                 careerForm.get('start_month').touched
@@ -278,9 +278,37 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Start Year <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <select class="form-control" [class.invalid]="
                                 careerForm.get('start_year').invalid &&
                                 careerForm.get('start_year').touched" formControlName="start_year">
+                                    <option selected value="">Select Year</option>
+                                    <option value="1">2015</option>
+                                    <option value="2">2016</option>
+                                    <option value="3">2017</option>
+                                    <option value="4">2018</option>
+                                    <option value="5">2019</option>
+                                    <option value="6">2020</option>
+                                    <option value="7">2021</option>
+                                    <option value="8">2022</option>
+                                    <option value="9">2023</option>
+                                    <option value="10">2024</option>
+                                    <option value="11">2025</option>
+                                    <option value="12">2026</option>
+                                    <option value="13">2027</option>
+                                    <option value="14">2028</option>
+                                    <option value="15">2029</option>
+                                    <option value="16">2030</option>
+                                    <option value="17">2031</option>
+                                    <option value="18">2032</option>
+                                    <option value="19">2033</option>
+                                    <option value="20">2034</option>
+                                    <option value="21">2035</option>
+                                    <option value="22">2036</option>
+                                    <option value="23">2037</option>
+                                    <option value="24">2038</option>
+                                    <option value="25">2039</option>
+                                    <option value="26">2040</option>
+                                </select>
                                 <div *ngIf="
                                 careerForm.get('start_year').invalid &&
                                 careerForm.get('start_year').touched
@@ -296,9 +324,23 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>End Month <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <select class="form-control" [class.invalid]="
                                 careerForm.get('end_month').invalid &&
                                 careerForm.get('end_month').touched" formControlName="end_month">
+                                    <option selected value="">Select Month</option>
+                                    <option value="1">January</option>
+                                    <option value="2">Febuary</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
                                 <div *ngIf="
                                 careerForm.get('end_month').invalid &&
                                 careerForm.get('end_month').touched
@@ -314,9 +356,37 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>End Year <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <select class="form-control" [class.invalid]="
                                 careerForm.get('end_year').invalid &&
                                 careerForm.get('end_year').touched" formControlName="end_year">
+                                    <option selected value="">Select Year</option>
+                                    <option value="1">2015</option>
+                                    <option value="2">2016</option>
+                                    <option value="3">2017</option>
+                                    <option value="4">2018</option>
+                                    <option value="5">2019</option>
+                                    <option value="6">2020</option>
+                                    <option value="7">2021</option>
+                                    <option value="8">2022</option>
+                                    <option value="9">2023</option>
+                                    <option value="10">2024</option>
+                                    <option value="11">2025</option>
+                                    <option value="12">2026</option>
+                                    <option value="13">2027</option>
+                                    <option value="14">2028</option>
+                                    <option value="15">2029</option>
+                                    <option value="16">2030</option>
+                                    <option value="17">2031</option>
+                                    <option value="18">2032</option>
+                                    <option value="19">2033</option>
+                                    <option value="20">2034</option>
+                                    <option value="21">2035</option>
+                                    <option value="22">2036</option>
+                                    <option value="23">2037</option>
+                                    <option value="24">2038</option>
+                                    <option value="25">2039</option>
+                                    <option value="26">2040</option>
+                                </select>
                                 <div *ngIf="
                                 careerForm.get('end_year').invalid &&
                                 careerForm.get('end_year').touched

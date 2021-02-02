@@ -12,6 +12,7 @@ declare const $: any;
   styleUrls: ["./career.component.css"],
 })
 export class CareerComponent implements OnInit {
+  public dtOptions: DataTables.Settings = {};
   employeeDetails: any = {};
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
@@ -44,6 +45,19 @@ export class CareerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
     this.getEmployeeCareer(this.staffId);
     this.initCareerForm();
     this.getCountry();

@@ -7,10 +7,10 @@
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
                 <a *ngIf="currentUserId === employeeId" (click)="initAssetForm()" class="hint edit-icon mr-1"
                     data-toggle="modal" data-target="#asset_modal"><span class="hint-text">Add
-                    </span><i class="fa fa-pencil"></i></a>
+                    </span><i class="fa fa-plus"></i></a>
             </h3>
             <div class="table-responsive">
-                <table class="table table-nowrap table-hover">
+                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
                             <th>
@@ -88,7 +88,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Location Id <span class="text-danger">*</span></label>
+                                <label>Location <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" [class.invalid]="
                                 assetForm.get('locationId').invalid &&
                                 assetForm.get('locationId').touched" formControlName="locationId">
