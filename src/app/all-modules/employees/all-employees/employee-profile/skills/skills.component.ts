@@ -36,12 +36,9 @@ export class SkillsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //console.log(this.staffId);
     this.getEmployeeSkills(this.staffId);
     this.initSkillsForm();
     this.getSingleStaffById(this.staffId);
-
-    //console.log(this.jobTitleId);
   }
 
   setWeight(event: Event) {
@@ -83,7 +80,7 @@ export class SkillsComponent implements OnInit {
         this.staffs = data.employeeList;
 
         this.jobTitleId = data.employeeList[0].jobTitle;
-        console.log(this.jobTitleId);
+
         this.getSingleJobTitle(this.jobTitleId);
       }
     });
@@ -96,12 +93,11 @@ export class SkillsComponent implements OnInit {
         this.pageLoading = false;
         this.jobTitle = data.setuplist[0];
         this.jobSkills = this.jobTitle.sub_Skills;
-        console.log(this.jobSkills);
       },
       (err) => {
         this.pageLoading = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -115,7 +111,6 @@ export class SkillsComponent implements OnInit {
     }
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.skillsForm.get(key).value);
       formData.append(key, this.skillsForm.get(key).value);
     }
     this.skillsForm.get("expectedScore").disable();
@@ -135,7 +130,7 @@ export class SkillsComponent implements OnInit {
         form.get("expectedScore").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -188,12 +183,10 @@ export class SkillsComponent implements OnInit {
                   this.getEmployeeSkills(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

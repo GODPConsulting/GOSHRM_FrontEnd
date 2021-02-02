@@ -63,7 +63,7 @@ export class EmploymentTypeComponent implements OnInit {
               const file = new File([bb], "Employment Type.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -102,14 +102,14 @@ export class EmploymentTypeComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#upload_employment_type").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getEmploymentType();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -145,12 +145,11 @@ export class EmploymentTypeComponent implements OnInit {
     return this.setupService.getEmploymentType().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.employmentTypes = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -162,27 +161,26 @@ export class EmploymentTypeComponent implements OnInit {
       return;
     }
     const payload: object = form.value;
-    console.log(payload);
+
     this.spinner = true;
     return this.setupService.addEmploymentType(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
-        //console.log(message);
 
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
           this.initializeForm();
           $("#add_employment_type").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getEmploymentType();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -195,7 +193,6 @@ export class EmploymentTypeComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -206,7 +203,6 @@ export class EmploymentTypeComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteEmploymentType(payload).subscribe(
             (res) => {
@@ -216,12 +212,10 @@ export class EmploymentTypeComponent implements OnInit {
                   this.getEmploymentType();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

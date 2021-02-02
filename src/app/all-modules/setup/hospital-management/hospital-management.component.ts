@@ -64,7 +64,7 @@ export class HospitalManagementComponent implements OnInit {
               const file = new File([bb], "Hospital Management.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -104,14 +104,14 @@ export class HospitalManagementComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#uploadHospitalManagement").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHospitalManagement();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -156,7 +156,6 @@ export class HospitalManagementComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -170,21 +169,19 @@ export class HospitalManagementComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
 
   // Add Hospital Management Api Call
   addHospitalManagement(form: FormGroup) {
-    console.log(form.value);
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
     payload.hmoId = +payload.hmoId;
-    console.log(payload);
+
     this.spinner = true;
     return this.setupService.addHospitalMgt(payload).subscribe(
       (res) => {
@@ -195,14 +192,14 @@ export class HospitalManagementComponent implements OnInit {
           this.initializeForm();
           $("#addHospitalManagement").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHospitalManagement();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -234,12 +231,10 @@ export class HospitalManagementComponent implements OnInit {
                   this.getHospitalManagement();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
