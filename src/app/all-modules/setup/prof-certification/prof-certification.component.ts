@@ -62,7 +62,7 @@ export class ProfCertificationComponent implements OnInit {
               const file = new File([bb], "Professional Certification.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -100,14 +100,14 @@ export class ProfCertificationComponent implements OnInit {
           this.initializeForm();
           $("#upload_prof_certification").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getprofCertification();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -138,7 +138,6 @@ export class ProfCertificationComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -161,14 +160,14 @@ export class ProfCertificationComponent implements OnInit {
           this.initializeForm();
           $("#add-prof-certification").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getprofCertification();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -202,7 +201,6 @@ export class ProfCertificationComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -213,7 +211,6 @@ export class ProfCertificationComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteProfCert(payload).subscribe(
             (res) => {
@@ -223,12 +220,10 @@ export class ProfCertificationComponent implements OnInit {
                   this.getprofCertification();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

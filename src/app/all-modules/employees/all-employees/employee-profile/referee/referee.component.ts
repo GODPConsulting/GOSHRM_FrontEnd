@@ -74,9 +74,10 @@ export class RefereeComponent implements OnInit {
       confirmationDate: row.confirmationDate,
       approvalStatus: row.approvalStatus,
       staffId: this.staffId,
-      refereeFile: row.refereeFile,
     });
-    this.fileInput.nativeElement.value = "";
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = "";
+    }
     $("#referee_modal").modal("show");
   }
 
@@ -85,11 +86,12 @@ export class RefereeComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = form.value;
-    console.log(payload);
 
-    payload.approvalStatus = +payload.approvalStatus;
-    payload.numberOfYears = +payload.numberOfYears;
+    form
+      .get("confirmationDate")
+      .setValue(
+        new Date(form.get("confirmationDate").value).toLocaleDateString("en-CA")
+      );
     const formData = new FormData();
     for (const key in form.value) {
       formData.append(key, this.refereeForm.get(key).value);
@@ -97,7 +99,6 @@ export class RefereeComponent implements OnInit {
     this.spinner = true;
     return this.employeeService.postReferee(formData).subscribe(
       (res) => {
-        console.log(res);
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
@@ -109,7 +110,7 @@ export class RefereeComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -126,7 +127,7 @@ export class RefereeComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -167,13 +168,13 @@ export class RefereeComponent implements OnInit {
                   this.getEmployeeReferee(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
               this.spinner = false;
               const message = err.status.message.friendlyMessage;
-              swal.fire("Error", message, "error");
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }
