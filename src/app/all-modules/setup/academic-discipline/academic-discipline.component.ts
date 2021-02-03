@@ -49,7 +49,7 @@ export class AcademicDisciplineComponent implements OnInit {
   }
 
   uploadAcademicDiscipline() {
-    if (!this.file) {
+    if (!this.academicDisciplineUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
     }
     const formData = new FormData();
@@ -121,6 +121,8 @@ export class AcademicDisciplineComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Academic Discipline";
+
     this.academicDisciplineForm = this.formBuilder.group({
       id: [0],
       discipline: ["", Validators.required],
@@ -187,9 +189,10 @@ export class AcademicDisciplineComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
+
     this.formTitle = "Add Academic Discipline";
     $("#add_academic_discipline").modal("show");
-    this.initializeForm();
   }
 
   closeModal() {

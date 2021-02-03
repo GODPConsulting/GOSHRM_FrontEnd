@@ -110,6 +110,8 @@ export class JobGradeComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Job Grade";
+
     this.jobGradeForm = this.formBuilder.group({
       id: [0],
       job_grade: ["", Validators.required],

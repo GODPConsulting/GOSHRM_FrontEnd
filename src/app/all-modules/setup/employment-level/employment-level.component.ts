@@ -120,6 +120,8 @@ export class EmploymentLevelComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Employment Level";
+
     this.employmentLevelForm = this.formBuilder.group({
       id: [0],
       employment_level: ["", Validators.required],
@@ -173,16 +175,14 @@ export class EmploymentLevelComponent implements OnInit {
   }
 
   openModal() {
-    this.formTitle = "Add Employment Level";
     $("#add_employment_level").modal("show");
-
+    this.initializeForm();
     // resets the input for upload form
     this.fileInput.nativeElement.value = "";
   }
 
   closeModal() {
     $("#add_employment_level").modal("hide");
-    this.initializeForm();
   }
 
   delete() {

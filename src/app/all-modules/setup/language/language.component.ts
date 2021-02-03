@@ -115,6 +115,7 @@ export class LanguageComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Language";
     this.languageForm = this.formBuilder.group({
       id: [0],
       language: ["", Validators.required],

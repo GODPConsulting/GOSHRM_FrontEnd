@@ -136,7 +136,7 @@ export class JobSkillComponent implements OnInit {
   downloadFile() {
     this.setupService
       .exportExcelFile(
-        `/hrmsetup/download/sub_skill?JobTitleId=${this.jobTitleId}`
+        `/hrmsetup/download/job_skill?JobTitleId=${this.jobTitleId}`
       )
       .subscribe(
         (resp) => {
@@ -224,6 +224,8 @@ export class JobSkillComponent implements OnInit {
  */
 
   initializeForm() {
+    this.formTitle = "Add Job SKill";
+
     this.jobSkillForm = this.formBuilder.group({
       job_details_Id: [this.jobTitleId],
       id: [0],
@@ -270,7 +272,6 @@ export class JobSkillComponent implements OnInit {
 
   openModal() {
     this.initializeForm();
-    this.formTitle = "Add Job SKill";
     $("#add_sub_skill").modal("show");
     //this.subSkillForm.get("job_title").enable();
     this.jobSkillForm = this.formBuilder.group({

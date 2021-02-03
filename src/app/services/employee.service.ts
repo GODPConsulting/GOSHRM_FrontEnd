@@ -11,7 +11,7 @@ export class EmployeeService {
   constructor(private apiService: ApiService) {}
 
   getEmployees() {
-    return this.apiService.get("/hrm/get/all/staff");
+    return this.apiService.get("/hrm/get/all/staffs");
   }
 
   getEmployeeById(id: number) {

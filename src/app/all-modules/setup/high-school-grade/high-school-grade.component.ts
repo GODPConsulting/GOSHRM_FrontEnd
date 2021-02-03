@@ -120,6 +120,7 @@ export class HighSchoolGradeComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add High School Grade";
     this.highSchoolGradeForm = this.formBuilder.group({
       id: [0],
       grade: ["", Validators.required],
@@ -176,12 +177,12 @@ export class HighSchoolGradeComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
     $("#add_high_school_grade").modal("show");
   }
 
   closeModal() {
     $("#add_high_school_grade").modal("hide");
-    this.initializeForm();
   }
 
   editHighSchoolGrade(row) {

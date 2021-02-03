@@ -95,6 +95,7 @@ export class ProfMembershipComponent implements OnInit {
     this.spinner = true;
     return this.setupService.uploadProfMem(formData).subscribe(
       (res) => {
+        this.spinner = false;
         const message = res.status.message.friendlyMessage;
 
         if (res.status.isSuccessful) {
@@ -104,6 +105,7 @@ export class ProfMembershipComponent implements OnInit {
         } else {
           swal.fire("GOSHRM", message, "error");
         }
+        this.getProfMembershipForm();
       },
       (err) => {
         this.spinner = false;
@@ -120,6 +122,7 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Professional Membership";
     this.professionalMembershipForm = this.formBuilder.group({
       id: [0],
       professional_membership: ["", Validators.required],
@@ -146,7 +149,7 @@ export class ProfMembershipComponent implements OnInit {
 
   // Set Values To Edit Modal Form
   edit(row) {
-    this.formTitle = "Edit profMembership";
+    this.formTitle = "Edit Professional Membership";
     this.professionalMembershipForm.patchValue({
       id: row.id,
       professional_membership: row.professional_membership,
@@ -156,12 +159,12 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
     $("#add_prof_membership").modal("show");
   }
 
   closeModal() {
     $("#add_prof_membership").modal("hide");
-    this.initializeForm();
   }
 
   addProfMembership(form: FormGroup) {
