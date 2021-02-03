@@ -44,18 +44,15 @@ export class AcademicGradeComponent implements OnInit {
   }
   getAcademicGrade() {
     this.pageLoading = true;
-    return this.setupService
-      .getAcademicGrade()
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          this.grades = data.setuplist;
-        },
-        (err) => {
-          this.pageLoading = false;
-          console.log(err);
-        }
-      );
+    return this.setupService.getAcademicGrade().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.grades = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+      }
+    );
   }
 
   downloadFile() {
@@ -76,7 +73,7 @@ export class AcademicGradeComponent implements OnInit {
               const file = new File([bb], "Academic Grade.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -115,14 +112,14 @@ export class AcademicGradeComponent implements OnInit {
           this.initializeForm();
           $("#upload_academic_grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -142,7 +139,6 @@ export class AcademicGradeComponent implements OnInit {
     });
   }
 
-  
   openUploadModal() {
     $("#upload_academic_grade").modal("show");
   }
@@ -169,20 +165,20 @@ export class AcademicGradeComponent implements OnInit {
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
-        //console.log(message);
+
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
           this.initializeForm();
           $("#add-academic-grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -208,7 +204,6 @@ export class AcademicGradeComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -219,7 +214,6 @@ export class AcademicGradeComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteAcademicGrade(payload).subscribe(
             (res) => {
@@ -229,12 +223,10 @@ export class AcademicGradeComponent implements OnInit {
                   this.getAcademicGrade();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

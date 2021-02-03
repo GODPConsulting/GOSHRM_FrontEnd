@@ -64,7 +64,7 @@ export class EmploymentLevelComponent implements OnInit {
               const file = new File([bb], "Employment Level.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -103,14 +103,14 @@ export class EmploymentLevelComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#upload_employment_level").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getEmploymentLevels();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -139,7 +139,6 @@ export class EmploymentLevelComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -161,14 +160,14 @@ export class EmploymentLevelComponent implements OnInit {
           this.initializeForm();
           $("#add_employment_level").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getEmploymentLevels();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -194,7 +193,6 @@ export class EmploymentLevelComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -205,7 +203,6 @@ export class EmploymentLevelComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteEmploymentLevel(payload).subscribe(
             (res) => {
@@ -215,12 +212,10 @@ export class EmploymentLevelComponent implements OnInit {
                   this.getEmploymentLevels();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

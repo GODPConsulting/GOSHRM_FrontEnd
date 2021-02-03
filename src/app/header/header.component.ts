@@ -140,7 +140,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   getUserData() {
     this.authService.getProfile().subscribe((data) => {
-      //console.log(data);
       this.user = data;
     });
   }

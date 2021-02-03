@@ -73,6 +73,7 @@ export class EmployeeGymComponent implements OnInit {
       expectedDateOfChange: ["", Validators.required],
       gymFile: ["", Validators.required],
       staffId: this.staffId,
+      approvalStatus: ["", Validators.required],
     });
   }
 
@@ -93,6 +94,8 @@ export class EmployeeGymComponent implements OnInit {
   }
 
   submitGymForm(form: FormGroup) {
+    console.log(form.value);
+
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -114,7 +117,7 @@ export class EmployeeGymComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -148,7 +151,7 @@ export class EmployeeGymComponent implements OnInit {
         form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -163,8 +166,15 @@ export class EmployeeGymComponent implements OnInit {
     }
 
     const formData = new FormData();
+
+    form
+      .get("proposedMeetingDate")
+      .setValue(
+        new Date(form.get("proposedMeetingDate").value).toLocaleDateString(
+          "en-CA"
+        )
+      );
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.bookGymForm.get(key).value);
     }
     form.get("dateOfRequest").disable();
@@ -182,7 +192,7 @@ export class EmployeeGymComponent implements OnInit {
         form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -197,7 +207,7 @@ export class EmployeeGymComponent implements OnInit {
       (err) => {
         this.pageLoading = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -234,13 +244,13 @@ export class EmployeeGymComponent implements OnInit {
                   this.getEmployeeGym(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
               this.spinner = false;
               const message = err.status.message.friendlyMessage;
-              swal.fire("Error", message, "error");
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }
@@ -261,6 +271,10 @@ export class EmployeeGymComponent implements OnInit {
 
   setDateToPresent(event: Event, form: FormGroup, formControlName: string) {
     this.utilitiesService.setDateToPresent(event, form, formControlName);
+  }
+
+  resetCheckbox(form: FormGroup, formControlName: string) {
+    form.get(formControlName).setValue("");
   }
 
   onSelectedFile(event: Event, form: FormGroup) {

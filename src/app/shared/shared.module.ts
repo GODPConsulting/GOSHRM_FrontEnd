@@ -6,6 +6,7 @@ import { AppMenuComponent, AppSubMenuComponent } from "./app.menu.component";
 import { RouterModule } from "@angular/router";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { ImageCropperModule } from "ngx-image-cropper";
+import {RatingModule} from 'ngx-bootstrap/rating';
 
 @NgModule({
   declarations: [LoadingComponent, AppMenuComponent, AppSubMenuComponent],
@@ -13,6 +14,7 @@ import { ImageCropperModule } from "ngx-image-cropper";
     CommonModule,
     RouterModule,
     ImageCropperModule,
+    RatingModule
     // NgSelectModule
   ],
   exports: [
@@ -20,6 +22,7 @@ import { ImageCropperModule } from "ngx-image-cropper";
     AppMenuComponent,
     AppSubMenuComponent,
     ImageCropperModule,
+    RatingModule
   ],
 })
 export class SharedModule {}
