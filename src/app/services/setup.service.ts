@@ -106,7 +106,7 @@ export class SetupService {
   }
 
   getEmploymentLevel() {
-    return this.apiService.get("/hrmsetup/get/all/employmentlevels");
+    return this.apiService.get("/hrmsetup/get/all/employmentlevel");
   }
 
   addEmploymentLevel(payload: Object) {
@@ -256,7 +256,7 @@ export class SetupService {
   }
 
   getJobTitle() {
-    return this.apiService.get("/hrmsetup/get/all/jobtitles");
+    return this.apiService.get("/hrmsetup/get/all/jobtitle");
   }
 
   addJobTitle(payload: Object) {
@@ -304,7 +304,7 @@ export class SetupService {
   }
 
   getLocation() {
-    return this.apiService.get("/hrmsetup/get/all/locations");
+    return this.apiService.get("/hrmsetup/get/all/location");
   }
 
   addLocation(payload: Object) {
