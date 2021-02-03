@@ -112,6 +112,7 @@ export class HmoComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add HMO";
     this.hmoForm = this.formBuilder.group({
       id: [0],
       hmo_name: ["", Validators.required],
@@ -192,7 +193,6 @@ export class HmoComponent implements OnInit {
       contact_email: row.contact_email,
       address: row.address,
       reg_date: row.reg_date,
-      rating: row.rating,
       other_comments: row.other_comments,
     });
     $("#add_hmo").modal("show");

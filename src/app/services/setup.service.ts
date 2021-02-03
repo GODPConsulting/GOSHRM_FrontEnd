@@ -106,7 +106,7 @@ export class SetupService {
   }
 
   getEmploymentLevel() {
-    return this.apiService.get("/hrmsetup/get/all/employmentlevel");
+    return this.apiService.get("/hrmsetup/get/all/employmentlevels");
   }
 
   addEmploymentLevel(payload: Object) {
@@ -256,7 +256,7 @@ export class SetupService {
   }
 
   getJobTitle() {
-    return this.apiService.get("/hrmsetup/get/all/jobtitle");
+    return this.apiService.get("/hrmsetup/get/all/jobtitles");
   }
 
   addJobTitle(payload: Object) {
@@ -272,19 +272,19 @@ export class SetupService {
   }
 
   getJobSkill() {
-    return this.apiService.get("/hrmsetup/get/all/sub_skills");
+    return this.apiService.get("/hrmsetup/get/all/job_skills");
   }
 
   addJobSkill(payload: Object) {
-    return this.apiService.post("/hrmsetup/add/update/sub_skill", payload);
+    return this.apiService.post("/hrmsetup/add/update/job_skill", payload);
   }
 
   uploadJobSkill(payload: FormData) {
-    return this.apiService.post("/hrmsetup/upload/sub_skill", payload);
+    return this.apiService.post("/hrmsetup/upload/job_skill", payload);
   }
 
   deleteJobSkill(payload: Object) {
-    return this.apiService.post("/hrmsetup/delete/sub_skill", payload);
+    return this.apiService.post("/hrmsetup/delete/job_skill", payload);
   }
 
   getLanguage() {
@@ -304,7 +304,7 @@ export class SetupService {
   }
 
   getLocation() {
-    return this.apiService.get("/hrmsetup/get/all/location");
+    return this.apiService.get("/hrmsetup/get/all/locations");
   }
 
   addLocation(payload: Object) {
@@ -320,7 +320,7 @@ export class SetupService {
   }
 
   getProfCerts() {
-    return this.apiService.get("/hrmsetup/get/all/prof_certification");
+    return this.apiService.get("/hrmsetup/get/all/prof_certifications");
   }
 
   addProfCert(payload: Object) {
@@ -339,7 +339,7 @@ export class SetupService {
   }
 
   getProfMems() {
-    return this.apiService.get("/hrmsetup/get/all/prof_membership");
+    return this.apiService.get("/hrmsetup/get/all/prof_memberships");
   }
 
   addProfMem(payload: Object) {

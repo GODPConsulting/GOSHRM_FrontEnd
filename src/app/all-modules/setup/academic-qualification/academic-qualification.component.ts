@@ -87,7 +87,7 @@ export class AcademicQualificationComponent implements OnInit {
   }
 
   uploadAcademicQualification() {
-    if (!this.file) {
+    if (!this.academicQualificationUploadForm.get("uploadInput").value) {
       return swal.fire("error", "select a file", "error");
     }
     const formData = new FormData();
@@ -120,6 +120,8 @@ export class AcademicQualificationComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Academic Qualification";
+
     this.academicQualificationForm = this.formBuilder.group({
       id: [0],
       qualification: ["", Validators.required],
@@ -231,12 +233,12 @@ export class AcademicQualificationComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
     $("#add_academic_qualification").modal("show");
   }
 
   closeModal() {
     $("#add_academic_qualification").modal("hide");
-    this.initializeForm();
   }
 
   checkAll(event: Event) {

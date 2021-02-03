@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 import { ImageCroppedEvent, base64ToFile } from "ngx-image-cropper";
+import { EmployeeService } from "src/app/services/employee.service";
 declare const $: any;
 @Component({
   selector: "app-employee-form",
@@ -31,7 +32,8 @@ export class EmployeeFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private employeeService: EmployeeService
   ) {}
 
   ngOnInit(): void {
@@ -146,32 +148,30 @@ export class EmployeeFormComponent implements OnInit {
     }
 
     this.loading = true;
-    return this.setupService
-      .updateData("/admin/add/update/staff", payload)
-      .subscribe(
-        (res) => {
-          this.loading = false;
-          const message = res.status.message.friendlyMessage;
+    return this.employeeService.getEmployees().subscribe(
+      (res) => {
+        this.loading = false;
+        const message = res.status.message.friendlyMessage;
 
-          if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
-            this.initializeForm();
-            // $("#add_employee_form").modal("hide");
-          } else {
-            swal.fire("GOSHRM", message, "error");
-          }
-        },
-        (err) => {
-          this.loading = false;
-          const message = err.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("Success", message, "success");
+          this.initializeForm();
+          // $("#add_employee_form").modal("hide");
+        } else {
           swal.fire("GOSHRM", message, "error");
         }
-      );
+      },
+      (err) => {
+        this.loading = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("GOSHRM", message, "error");
+      }
+    );
   }
 
   getJobTitle() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
+    return this.setupService.getJobTitle().subscribe(
       (data) => {
         this.pageLoading = false;
 

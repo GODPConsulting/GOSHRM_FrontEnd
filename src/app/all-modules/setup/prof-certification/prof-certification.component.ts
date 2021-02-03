@@ -118,6 +118,7 @@ export class ProfCertificationComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Professional Certificate";
     this.profCertificationForm = this.formBuilder.group({
       id: [0],
       certification: ["", Validators.required],
@@ -185,12 +186,12 @@ export class ProfCertificationComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
     $("#add-prof-certification").modal("show");
   }
 
   closeModal() {
     $("#add-prof-certification").modal("hide");
-    this.initializeForm();
   }
 
   delete() {

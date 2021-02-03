@@ -115,6 +115,8 @@ export class LocationComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Location";
+
     this.locationForm = this.formBuilder.group({
       id: [0],
       location: ["", Validators.required],

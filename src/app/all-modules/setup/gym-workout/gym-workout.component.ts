@@ -83,7 +83,7 @@ export class GymWorkoutComponent implements OnInit {
   }
 
   uploadGymWorkout() {
-    if (!this.file) {
+    if (!this.gymWorkoutUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
     }
     const formData = new FormData();
@@ -119,6 +119,7 @@ export class GymWorkoutComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Gym/Workout";
     this.gymWorkoutForm = this.formBuilder.group({
       id: [0],
       gym: ["", Validators.required],
@@ -147,12 +148,12 @@ export class GymWorkoutComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
     $("#add_gym_workout").modal("show");
   }
 
   closeModal() {
     $("#add_gym_workout").modal("hide");
-    this.initializeForm();
   }
 
   // Add Gym/workout  Modal Api Call
@@ -192,9 +193,9 @@ export class GymWorkoutComponent implements OnInit {
     this.gymWorkoutForm.patchValue({
       id: row.id,
       gym: row.gym,
+      email: row.email,
       contact_phone_number: row.contact_phone_number,
       address: row.address,
-      ratings: row.ratings,
       other_comments: row.other_comments,
     });
     $("#add_gym_workout").modal("show");
