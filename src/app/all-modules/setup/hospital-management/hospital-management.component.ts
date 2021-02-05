@@ -117,6 +117,7 @@ export class HospitalManagementComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Hospital";
     this.hospitalManagementForm = this.formBuilder.group({
       id: [0],
       hospital: ["", Validators.required],
@@ -251,7 +252,6 @@ export class HospitalManagementComponent implements OnInit {
       contactPhoneNo: row.contactPhoneNo,
       email: row.email,
       address: row.address,
-      rating: row.rating,
       otherComments: row.otherComments,
     });
     $("#addHospitalManagement").modal("show");

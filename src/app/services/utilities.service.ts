@@ -8,7 +8,6 @@ import { ApiService } from "./api.service";
 export class UtilitiesService {
   getCountryUrl: string = "/common/countries";
 
-  getLocationUrl: string = "/hrmsetup/get/all/location";
   constructor(private apiService: ApiService) {}
 
   // Appends a selected file to the form property
@@ -48,9 +47,5 @@ export class UtilitiesService {
 
   getCountry() {
     return this.apiService.get(this.getCountryUrl);
-  }
-
-  getLocation() {
-    return this.apiService.get(this.getLocationUrl);
   }
 }
