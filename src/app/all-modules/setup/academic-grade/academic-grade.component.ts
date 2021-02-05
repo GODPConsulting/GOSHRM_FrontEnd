@@ -94,7 +94,7 @@ export class AcademicGradeComponent implements OnInit {
 
   uploadAcademicGrade() {
     // Checks if a file has been selected
-    if (!this.file) {
+    if (!this.academicGradeUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
     }
     const formData = new FormData();
@@ -125,6 +125,8 @@ export class AcademicGradeComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Academic Grade";
+
     // Initialize the add modal form
     this.academicGradeForm = this.formBuilder.group({
       id: [0],
@@ -144,12 +146,13 @@ export class AcademicGradeComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
+
     $("#add-academic-grade").modal("show");
   }
 
   closeModal() {
     $("#add-academic-grade").modal("hide");
-    this.initializeForm();
   }
 
   // Add academic grade  Modal
@@ -161,7 +164,7 @@ export class AcademicGradeComponent implements OnInit {
     const payload = form.value;
     payload.rank = +payload.rank;
     this.spinner = true;
-    return this.setupService.addAcademicDiscipline(payload).subscribe(
+    return this.setupService.addAcademicGrade(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;

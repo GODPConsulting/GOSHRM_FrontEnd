@@ -73,6 +73,7 @@ export class EmployeeGymComponent implements OnInit {
       expectedDateOfChange: ["", Validators.required],
       gymFile: ["", Validators.required],
       staffId: this.staffId,
+      approvalStatus: ["", Validators.required],
     });
   }
 
@@ -93,6 +94,8 @@ export class EmployeeGymComponent implements OnInit {
   }
 
   submitGymForm(form: FormGroup) {
+    console.log(form.value);
+
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -163,6 +166,14 @@ export class EmployeeGymComponent implements OnInit {
     }
 
     const formData = new FormData();
+
+    form
+      .get("proposedMeetingDate")
+      .setValue(
+        new Date(form.get("proposedMeetingDate").value).toLocaleDateString(
+          "en-CA"
+        )
+      );
     for (const key in form.value) {
       formData.append(key, this.bookGymForm.get(key).value);
     }
@@ -260,6 +271,10 @@ export class EmployeeGymComponent implements OnInit {
 
   setDateToPresent(event: Event, form: FormGroup, formControlName: string) {
     this.utilitiesService.setDateToPresent(event, form, formControlName);
+  }
+
+  resetCheckbox(form: FormGroup, formControlName: string) {
+    form.get(formControlName).setValue("");
   }
 
   onSelectedFile(event: Event, form: FormGroup) {

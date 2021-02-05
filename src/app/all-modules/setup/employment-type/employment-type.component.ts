@@ -83,7 +83,7 @@ export class EmploymentTypeComponent implements OnInit {
   }
 
   uploadEmploymentType() {
-    if (!this.file) {
+    if (!this.employmentTypeUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
     }
     const formData = new FormData();
@@ -120,6 +120,7 @@ export class EmploymentTypeComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Employment Type";
     this.employmentTypeForm = this.formBuilder.group({
       id: [0],
       employment_type: ["", Validators.required],
@@ -131,13 +132,13 @@ export class EmploymentTypeComponent implements OnInit {
   }
 
   openModal() {
-    this.formTitle = "Add Employment Type";
+    this.initializeForm();
+
     $("#add_employment_type").modal("show");
   }
 
   closeModal() {
     $("#add_employment_type").modal("hide");
-    this.initializeForm();
   }
 
   getEmploymentType() {

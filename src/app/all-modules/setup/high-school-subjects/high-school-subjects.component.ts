@@ -117,6 +117,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add High School Subject";
     this.highSchoolForm = this.formBuilder.group({
       id: [0],
       subject: ["", Validators.required],
@@ -182,6 +183,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
     this.fileInput.nativeElement.value = "";
     this.formTitle = "Add High School Subject";
     $("#add_high_school_subject").modal("show");
@@ -189,7 +191,6 @@ export class HighSchoolSubjectsComponent implements OnInit {
 
   closeModal() {
     $("#add_high_school_subject").modal("hide");
-    this.initializeForm();
   }
 
   delete() {

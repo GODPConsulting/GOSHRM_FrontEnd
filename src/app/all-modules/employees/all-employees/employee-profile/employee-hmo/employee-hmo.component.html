@@ -8,7 +8,7 @@
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
                 <a *ngIf="currentUserId === employeeId" (click)="initHmoForm()" class="hint edit-icon mr-1"
                     data-toggle="modal" data-target="#hmo_modal">
-                    <span class="hint-text">Add HMO</span><i class="fa fa-pencil"></i></a>
+                    <span class="hint-text">Add HMO</span><i class="fa fa-plus"></i></a>
                 <a (click)="initHmoChangeForm()" class="hint edit-icon mr-1" data-toggle="modal"
                     data-target="#hmo_req_change_modal"><span class="hint-text">Request Change</span><i
                         class="fa fa-ticket"></i></a>
@@ -32,7 +32,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#hmo_modal"
+                        <tr data-toggle="modal" class="pointer" data-target=""
                             *ngFor="let row of hack(employeeHmo); let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
@@ -155,7 +155,8 @@
                                         formControlName="setCurrentDate">
                                     <label for="currentDate" class="mx-1">Does not expire</label>
                                 </span>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                <input (click)="resetCheckbox(employeeHmoForm,'setCurrentDate')"
+                                    class="form-control datetimepicker" type="date" bsDatepicker
                                     [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
                                     [class.invalid]="
                                     employeeHmoForm.get('end_Date').invalid &&
@@ -284,7 +285,7 @@
                             <div class="form-group">
                                 <label>Expected Change Date <span class="text-danger">*</span></label>
                                 <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD' }"
                                     [class.invalid]="
                                 hmoChangeReqForm.get('expectedDateOfChange').invalid &&
                                 hmoChangeReqForm.get('expectedDateOfChange').touched"
@@ -307,6 +308,28 @@
                                     (change)="onSelectedFile($event,hmoChangeReqForm)" [class.invalid]="
                                     hmoChangeReqForm.get('hmoFile').invalid &&
                                     hmoChangeReqForm.get('hmoFile').touched">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Approval Status</label>
+                                <select class="form-control" [class.invalid]="
+                                hmoChangeReqForm.get('approvalStatus').invalid &&
+                                hmoChangeReqForm.get('approvalStatus').touched" formControlName="approvalStatus">
+                                    <option selected value="">Select Status</option>
+                                    <option value="1">Approve</option>
+                                    <option value="2">Pending</option>
+                                    <option value="3">Decline</option>
+                                </select>
+                                <div *ngIf="
+                                hmoChangeReqForm.get('approvalStatus').invalid &&
+                                hmoChangeReqForm.get('approvalStatus').touched
+                    ">
+                                    <small *ngIf="
+                                    hmoChangeReqForm.get('approvalStatus').invalid &&
+                                    hmoChangeReqForm.get('approvalStatus').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -105,7 +105,7 @@ export class CareerComponent implements OnInit {
   }
   getJobTitle() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
+    return this.setupService.getJobTitle().subscribe(
       (data) => {
         this.pageLoading = false;
 
@@ -167,7 +167,7 @@ export class CareerComponent implements OnInit {
   }
 
   getLocation() {
-    return this.utilitiesService.getLocation().subscribe(
+    return this.setupService.getLocation().subscribe(
       (data) => {
         this.locations = data.setuplist;
       },
