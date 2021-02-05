@@ -139,10 +139,12 @@ export class EmployeeProfileComponent implements OnInit {
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
 
-    this.pageLoading = true;
+    //this.pageLoading = true;
+    this.loading = true;
     this.employeeService.addEmergencyContact(payload).subscribe(
       (data) => {
-        this.pageLoading = false;
+        //this.pageLoading = false;
+        this.loading = false;
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
           swal.fire("Success", message, "success");
@@ -153,7 +155,7 @@ export class EmployeeProfileComponent implements OnInit {
         }
       },
       (err) => {
-        this.pageLoading = false;
+        this.loading = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
