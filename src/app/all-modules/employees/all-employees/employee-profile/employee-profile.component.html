@@ -114,11 +114,14 @@
         <div class="card profile-box flex-fill">
           <div class="card-body">
             <h3 class="card-title">Emergency Contact <div class="col-auto float-right ml-auto">
-                <a class="btn add-btn hint" data-toggle="modal" data-target="#emergency_contact_modal"><span
+                <a class="btn add-btn hint mr-1" data-toggle="modal" data-target="#emergency_contact_modal"><span
                     class="hint-text">Add</span><i class="fa fa-plus"></i>
                 </a>
-                <a class="btn delete-btn hint" (click)="deleteEmergencyContact()"><span
+                <a class="btn delete-btn hint mr-1" (click)="deleteEmergencyContact()"><span
                     class="hint-text">Delete</span><i class="fa fa-trash"></i>
+                </a>
+                <a class="btn download-btn hint mr-1" (click)="downloadFile()" download><span
+                    class="hint-text">Download</span><i class="fa fa-download"></i>
                 </a>
               </div>
             </h3>
@@ -325,90 +328,10 @@
 <!-- Pop up Modals below -->
 <!-- Emergency Contact Modal -->
 <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
-<<<<<<< HEAD
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Emergency Contact</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form (ngSubmit)="addEmergencyContact(emergencyContactForm)" [formGroup]="emergencyContactForm">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Emergency Contact</h3>
-                            <div class="row">
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Full Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" formControlName="fullName">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Relationship <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" formControlName="relationship">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Contact Phone Number<span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" formControlName="contact_phone_number">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Email <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="email" formControlName="email">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Country <span class="text-danger">*</span></label>
-                                        <select class="form-control" [class.invalid]="emergencyContactForm.get('countryId').invalid &&
-                                        emergencyContactForm.get('countryId').touched" formControlName="countryId">
-                                            <option selected value="">Country</option>
-                                            <option *ngFor="let row of countries" value="{{row.lookupId}}">
-                                                {{row.lookupName}} </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Address <span class="text-danger">*</span></label>
-                                        <input class="form-control" type="text" formControlName="address">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Approval Status<span class="text-danger">*</span></label>
-                                        <select class="select form-control" formControlName="approval_status">
-                                            <option disabled>Select Status</option>
-                                            <option value="1">Approved</option>
-                                            <option value="2">Pending</option>
-                                            <option value="3">Declined</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit">
-                            <span *ngIf="!loading">Submit</span>
-                            <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
-=======
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Personal Information</h5>
+        <h5 class="modal-title">Emergency Contact</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -417,48 +340,49 @@
         <form (ngSubmit)="addEmergencyContact(emergencyContactForm)" [formGroup]="emergencyContactForm">
           <div class="card">
             <div class="card-body">
-              <h3 class="card-title">Primary Contact</h3>
+              <h3 class="card-title">Emergency Contact</h3>
               <div class="row">
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Full Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" formControlName="fullName" />
+                    <input type="text" class="form-control" formControlName="fullName">
                   </div>
                 </div>
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Relationship <span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" formControlName="relationship" />
+                    <input class="form-control" type="text" formControlName="relationship">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Contact Phone Number<span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" formControlName="contact_phone_number" />
+                    <input class="form-control" type="text" formControlName="contact_phone_number">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Email <span class="text-danger">*</span></label>
-                    <input class="form-control" type="email" formControlName="email" />
+                    <input class="form-control" type="email" formControlName="email">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Country <span class="text-danger">*</span></label>
-                    <select class="form-control" [class.invalid]="
-                        emergencyContactForm.get('countryId').invalid &&
-                        emergencyContactForm.get('countryId').touched
-                      " formControlName="countryId">
+                    <select class="form-control" [class.invalid]="emergencyContactForm.get('countryId').invalid &&
+                                        emergencyContactForm.get('countryId').touched" formControlName="countryId">
                       <option selected value="">Country</option>
-                      <option *ngFor="let row of countries" value="{{ row.lookupId }}"> {{ row.lookupName }} </option>
+                      <option *ngFor="let row of countries" value="{{row.lookupId}}">
+                        {{row.lookupName}} </option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Address <span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" formControlName="address" />
+                    <input class="form-control" type="text" formControlName="address">
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -473,7 +397,6 @@
                   </div>
                 </div>
               </div>
->>>>>>> dev
             </div>
           </div>
           <div class="submit-section">
@@ -487,6 +410,7 @@
     </div>
   </div>
 </div>
+
 <!-- Emergency Contact Modal ends here -->
 <!-- language Modal -->
 <div id="language_rating_modal" class="modal custom-modal fade" role="dialog">
