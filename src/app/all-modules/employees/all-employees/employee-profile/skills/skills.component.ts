@@ -27,6 +27,7 @@ export class SkillsComponent implements OnInit {
   employeeSkills: any = {};
   staffs: any = {};
   jobTitle: any;
+  public dtOptions: DataTables.Settings = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,6 +40,43 @@ export class SkillsComponent implements OnInit {
     this.getEmployeeSkills(this.staffId);
     this.initSkillsForm();
     this.getSingleStaffById(this.staffId);
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
+  }
+
+  downloadFile() {
+    if (this.selectedId.length === 1) {
+      // Filters out the data of selected file to download
+      const idFileToDownload = this.employeeSkills.filter(
+        (empId) => empId.id === this.selectedId[0]
+      );
+
+      // Gets the file name and extension of the file
+      const fileName = idFileToDownload[0].skillName;
+      const extension = idFileToDownload[0].proofOfSkillsUrl.split(".")[1];
+
+      this.employeeService.downloadEmployeeSkill(this.selectedId[0]).subscribe(
+        (resp) => {
+          const data = resp;
+          // Converts response to file and downloads it
+          this.utilitiesService.byteToFile(data, `${fileName}.${extension}`);
+        },
+        (err) => {}
+      );
+    } else {
+      return swal.fire(`GOS HRM`, "Unable to download multiple files", "error");
+    }
   }
 
   setWeight(event: Event) {

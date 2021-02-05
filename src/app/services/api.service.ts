@@ -47,7 +47,7 @@ export class ApiService {
     );
   } */
 
-  getExcel(
+  getDownload(
     path: string,
     params: HttpParams = new HttpParams()
   ): Observable<any> {

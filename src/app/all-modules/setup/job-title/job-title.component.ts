@@ -49,29 +49,9 @@ export class JobTitleComponent implements OnInit {
     this.setupService.exportExcelFile("/hrmsetup/download/jobtitle").subscribe(
       (resp) => {
         const data = resp;
-        if (data != undefined) {
-          const byteString = atob(data);
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
-          for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-          }
-          const bb = new Blob([ab]);
-          try {
-            const file = new File([bb], "Job Title.xlsx", {
-              type: "application/vnd.ms-excel",
-            });
-
-            saveAs(file);
-          } catch (err) {
-            const textFileAsBlob = new Blob([bb], {
-              type: "application/vnd.ms-excel",
-            });
-            window.navigator.msSaveBlob(textFileAsBlob, "Job Title.xlsx");
-          }
-        } else {
-          return swal.fire(`GOS HRM`, "Unable to download data", "error");
-        }
+        this.utilitiesService.byteToFile(data, "Job Title.xlsx", {
+          type: "application/vnd.ms-excel",
+        });
       },
       (err) => {}
     );

@@ -32,7 +32,7 @@ export class SetupService {
   }
 
   exportExcelFile(url: string) {
-    return this.apiService.getExcel(url).pipe(
+    return this.apiService.getDownload(url).pipe(
       map((data) => {
         return data;
       })
@@ -208,6 +208,10 @@ export class SetupService {
 
   deleteHmo(payload: Object) {
     return this.apiService.post("/hrmsetup/delete/hmo", payload);
+  }
+
+  downloadHmo() {
+    return this.apiService.getDownload("/hrmsetup/download/hmo");
   }
 
   getHospitalMgt() {

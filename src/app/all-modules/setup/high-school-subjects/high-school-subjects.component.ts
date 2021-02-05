@@ -49,32 +49,9 @@ export class HighSchoolSubjectsComponent implements OnInit {
       .subscribe(
         (resp) => {
           const data = resp;
-          if (data != undefined) {
-            const byteString = atob(data);
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-              ia[i] = byteString.charCodeAt(i);
-            }
-            const bb = new Blob([ab]);
-            try {
-              const file = new File([bb], "High School Subject.xlsx", {
-                type: "application/vnd.ms-excel",
-              });
-
-              saveAs(file);
-            } catch (err) {
-              const textFileAsBlob = new Blob([bb], {
-                type: "application/vnd.ms-excel",
-              });
-              window.navigator.msSaveBlob(
-                textFileAsBlob,
-                "High School Subject.xlsx"
-              );
-            }
-          } else {
-            return swal.fire(`GOS HRM`, "Unable to download data", "error");
-          }
+          this.utilitiesService.byteToFile(data, "High School Subject.xlsx", {
+            type: "application/vnd.ms-excel",
+          });
         },
         (err) => {}
       );
