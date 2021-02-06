@@ -10,7 +10,9 @@
                     data-target="#referee_modal"><span class="hint-text">Add Referee</span><i
                         class="fa fa-plus"></i></a></h3>
             <div class="table-responsive">
-                <table class="table table-nowrap table-hover">
+                <app-loading *ngIf="pageLoading"></app-loading>
+                <table *ngIf="!pageLoading" class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"
+                    [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
                             <th>

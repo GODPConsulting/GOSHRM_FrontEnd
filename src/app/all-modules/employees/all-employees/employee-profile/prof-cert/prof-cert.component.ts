@@ -27,6 +27,7 @@ export class ProfCertComponent implements OnInit {
   employeeProfCert: any[] = [];
   allCertificates$: Observable<any> = this.setupService.getProfCerts();
   allJobGrades$: Observable<any> = this.setupService.getJobGrades();
+  public dtOptions: DataTables.Settings = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,6 +39,45 @@ export class ProfCertComponent implements OnInit {
   ngOnInit(): void {
     this.initProfCertForm();
     this.getEmployeeProfCert(this.staffId);
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
+  }
+
+  downloadFile() {
+    if (this.selectedId.length === 0) {
+      return swal.fire(`GOS HRM`, "Please select item to download", "error");
+    } else if (this.selectedId.length === 1) {
+      // Filters out the data of selected file to download
+      const idFileToDownload = this.employeeProfCert.filter(
+        (empId) => empId.id === this.selectedId[0]
+      );
+
+      // Gets the file name and extension of the file
+      const fileName = idFileToDownload[0].CertificateName;
+      const extension = idFileToDownload[0].Attachment.split(".")[1];
+
+      this.employeeService.downloadProfCert(this.selectedId[0]).subscribe(
+        (resp) => {
+          const data = resp;
+          // Converts response to file and downloads it
+          this.utilitiesService.byteToFile(data, `${fileName}.${extension}`);
+        },
+        (err) => {}
+      );
+    } else {
+      return swal.fire(`GOS HRM`, "Unable to download multiple files", "error");
+    }
   }
 
   initProfCertForm() {

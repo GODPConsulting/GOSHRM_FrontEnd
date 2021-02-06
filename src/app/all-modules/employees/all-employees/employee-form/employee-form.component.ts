@@ -29,6 +29,7 @@ export class EmployeeFormComponent implements OnInit {
   public accessLevel: any[] = [];
   loading: boolean;
   image: any;
+  allJobGrades$ = this.setupService.getJobGrades();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -69,11 +70,18 @@ export class EmployeeFormComponent implements OnInit {
       userAccessLevels: [[]],
       userRoleNames: [[]],
       password: [""],
+      photoFile: [""],
+      jobGrade: [""],
     });
   }
 
-  // AddEmployee Modal Api Call
-  addEmployee(EmployeeForm: FormGroup) {
+  /*   // Submits form to HRM and ERP endpoints
+  addEmployeeToBoth(form: FormGroup) {
+    this.addEmployeeToHrm(form);
+    this.addEmployeeToErp(form);
+  }
+
+  addEmployeeToErp(EmployeeForm: FormGroup) {
     const payload = EmployeeForm.value;
     payload.jobTitle = +payload.jobTitle;
     payload.stateId = +payload.stateId;
@@ -82,6 +90,8 @@ export class EmployeeFormComponent implements OnInit {
     payload.staffOfficeId = +payload.staffOfficeId;
     payload.accessLevelId = +payload.accessLevelId;
     payload.countryId = +payload.countryId;
+    delete payload.jobGrade;
+    delete payload.photoFile;
 
     // validations to check if the form fields have value
     if (!payload.firstName) {
@@ -148,25 +158,130 @@ export class EmployeeFormComponent implements OnInit {
     }
 
     this.loading = true;
-    return this.employeeService.getEmployees().subscribe(
-      (res) => {
-        this.loading = false;
-        const message = res.status.message.friendlyMessage;
+    return this.setupService
+      .updateData("/admin/add/update/staff", payload)
+      .subscribe(
+        (res) => {
+          this.loading = false;
+          const message = res.status.message.friendlyMessage;
 
-        if (res.status.isSuccessful) {
-          swal.fire("Success", message, "success");
-          this.initializeForm();
-          // $("#add_employee_form").modal("hide");
-        } else {
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            // $("#add_employee_form").modal("hide");
+          } else {
+            swal.fire("GOSHRM", message, "error");
+          }
+        },
+        (err) => {
+          this.loading = false;
+          const message = err.status.message.friendlyMessage;
           swal.fire("GOSHRM", message, "error");
         }
-      },
-      (err) => {
-        this.loading = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("GOSHRM", message, "error");
-      }
+      );
+  }
+ */
+
+  addEmployeeToHrm(EmployeeForm: FormGroup) {
+    let payload = EmployeeForm.value;
+
+    // validations to check if the form fields have value
+    if (!payload.firstName) {
+      // if first name is empty string, undefined or null
+
+      return swal.fire("Error", "First Name is required", "error");
+    }
+    if (!payload.lastName) {
+      return swal.fire("Error", "Last Name is required", "error");
+    }
+    if (!payload.middleName) {
+      return swal.fire("Error", "Middle Name is required", "error");
+    }
+    if (!payload.staffCode) {
+      return swal.fire("Error", "Staff Code is required", "error");
+    }
+    if (!payload.dateOfBirth) {
+      return swal.fire("Error", "Date Of Birth is required", "error");
+    }
+    if (!payload.gender) {
+      return swal.fire("Error", "Gender is required", "error");
+    }
+    if (!payload.jobTitle) {
+      return swal.fire("Error", "Job Title is required", "error");
+    }
+    if (!payload.email) {
+      return swal.fire("Error", "Email is required", "error");
+    }
+    if (!payload.countryId) {
+      return swal.fire("Error", "Country is required", "error");
+    }
+    if (!payload.stateId) {
+      return swal.fire("Error", "State is required", "error");
+    }
+    if (!payload.staffOfficeId) {
+      return swal.fire("Error", "Office/Department is required", "error");
+    }
+    if (!payload.staffLimit) {
+      return swal.fire("Error", "Staff Limit is required", "error");
+    }
+    if (!payload.address) {
+      return swal.fire("Error", "Address is required", "error");
+    }
+    if (!payload.phoneNumber) {
+      return swal.fire("Error", "Phone Number is required", "error");
+    }
+    if (!payload.userName) {
+      return swal.fire("Error", "User Name is required", "error");
+    }
+    if (!payload.password) {
+      return swal.fire("Error", "Password is required", "error");
+    }
+    if (!payload.userRoleNames) {
+      return swal.fire("Error", "User Role is required", "error");
+    }
+    if (!payload.userStatus) {
+      return swal.fire("Error", "Status is required", "error");
+    }
+    if (!payload.accessLevelId) {
+      return swal.fire("Error", "Access is required", "error");
+    }
+    if (!payload.userAccessLevels) {
+      return swal.fire("Error", "Access Level is required", "error");
+    }
+
+    EmployeeForm.get("dateOfBirth").setValue(
+      new Date(EmployeeForm.get("dateOfBirth").value).toLocaleDateString(
+        "en-CA"
+      )
     );
+    let formData = new FormData();
+    for (const key in EmployeeForm.value) {
+      formData.append(key, EmployeeForm.get(key).value);
+    }
+    formData.append("dateOfJoin", new Date().toLocaleDateString("en-CA"));
+
+    this.loading = true;
+    return this.setupService
+      .updateData("/hrm/add/update/staff", formData)
+      .subscribe(
+        (res) => {
+          this.loading = false;
+          const message = res.status.message.friendlyMessage;
+
+          if (res.status.isSuccessful) {
+            swal.fire("Success", message, "success");
+            this.initializeForm();
+            // $("#add_employee_form").modal("hide");
+          } else {
+            swal.fire("GOSHRM", message, "error");
+          }
+        },
+        (err) => {
+          this.loading = false;
+          const message = err.status.message.friendlyMessage;
+          swal.fire("GOSHRM", message, "error");
+        }
+      );
   }
 
   getJobTitle() {
