@@ -250,6 +250,6 @@ export class SkillsComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 }

@@ -4,7 +4,6 @@
     <perfect-scrollbar [scrollIndicators]="false">
       <div id="sidebar-menu" class="sidebar-menu">
         <ul *ngIf="sidebarMenus.default">
-
           <!-- Employee sidebar -->
           <li class="menu-title">
             <span>Employees</span>
@@ -14,14 +13,18 @@
                 (urlComplete.mainUrl === 'employees' &&
                   urlComplete.subUrl === 'employee-form')||
                 (urlComplete.mainUrl === 'employees' &&
-                  urlComplete.subUrl === 'employeeviews')
+                  urlComplete.subUrl === 'employeeviews')||
+                  (urlComplete.mainUrl === 'employees' &&
+                  urlComplete.subUrl === 'employeeprofile')
             }">
             <a href="javascript:" [ngClass]="{
                 subdrop:
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'employee-form') ||
                   (urlComplete.mainUrl === 'employees' &&
-                    urlComplete.subUrl === 'employeeviews')
+                    urlComplete.subUrl === 'employeeviews')||
+                    (urlComplete.mainUrl === 'employees' &&
+                    urlComplete.subUrl === 'employeeprofile')
               }" class="noti-dot"><i class="la la-user"></i> <span> Employees</span>
               <span class="menu-arrow"></span></a>
             <ul style="display: none;" [ngStyle]="{
@@ -29,7 +32,9 @@
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'employee-form')||
                   (urlComplete.mainUrl === 'employees' &&
-                    urlComplete.subUrl === 'employeeviews')
+                    urlComplete.subUrl === 'employeeviews')||
+                    (urlComplete.mainUrl === 'employees' &&
+                    urlComplete.subUrl === 'employeeprofile')
                     ? 'block'
                     : 'none'
               }">
@@ -40,13 +45,16 @@
                       urlComplete.subUrl === 'employeeviews'
                   }">All Employees</a>
               </li>
+              <li routerLink="/employees/employeeprofile/2">
+                <!-- Pass data here -->
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employeeprofile' }">Profile</a>
+              </li>
               <li routerLink="/employees/employee-form">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employee-form' }">employee-form</a>
               </li>
             </ul>
           </li>
           <!-- /Employee sidebar -->
-
           <!-- Setup sidebar -->
           <li *ngIf="userRights.includes('general setup')" class="submenu" [ngClass]="{
               active:
@@ -223,8 +231,7 @@
                   Discipline</a>
               </li>
               <li routerLink="/setup/gym-workout">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'gym-workout' }">Gym/Workout
-                </a>
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'gym-workout' }">Gym/Workout </a>
               </li>
               <li routerLink="/setup/academic-qualification">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-qualification' }">Academic
@@ -235,13 +242,11 @@
                   Grade</a>
               </li>
               <li routerLink="/setup/location">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'location' }">Location
-                </a>
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'location' }">Location </a>
               </li>
               <li routerLink="/setup/hospital-management">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'hospital-management' }">Hospital
-                  Management
-                </a>
+                  Management </a>
               </li>
               <li routerLink="/setup/job-title">
                 <a href="javascript:" [ngClass]="{
