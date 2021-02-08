@@ -141,15 +141,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   getUserData() {
     this.authService.getProfile().subscribe((data) => {
       this.user = data;
+      console.log(this.user);
     });
   }
 
   // This solves the issue of not being able to navigate to user profile when on another profile (Method 1)
   //However, navigating backwards has same issue
-  viewUserProfile() {
+  /* viewUserProfile() {
     const currentRoute: string = `/employees/employeeprofile/${this.user.staffId}`;
     this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => {
       this.router.navigate([currentRoute]);
     });
-  }
+  } */
 }

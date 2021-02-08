@@ -26,6 +26,8 @@ export class EmployeeHmoComponent implements OnInit {
 
   // To hold data for each card
   employeeHmo: any[] = [];
+  public dtOptions: DataTables.Settings = {};
+
   // Observable to subscribe to in the template
   allHmos$: Observable<any> = this.setupService.getHmo();
 
@@ -40,6 +42,19 @@ export class EmployeeHmoComponent implements OnInit {
     this.initHmoForm();
     this.initHmoChangeForm();
     this.getEmployeeHmo(this.staffId);
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
   }
 
   initHmoForm() {

@@ -49,6 +49,32 @@ export class IdentificationComponent implements OnInit {
     };
   }
 
+  downloadFile() {
+    if (this.selectedId.length === 1) {
+      // Filters out the data of selected file to download
+      const idFileToDownload = this.employeeIdentification.filter(
+        (empId) => empId.id === this.selectedId[0]
+      );
+
+      // Gets the file name and extension of the file
+      const fileName = idFileToDownload[0].identification;
+      const extension = idFileToDownload[0].identificationFilePath.split(
+        "."
+      )[1];
+
+      this.employeeService.downloadIdentification(this.selectedId[0]).subscribe(
+        (resp) => {
+          const data = resp;
+          // Converts response to file and downloads it
+          this.utilitiesService.byteToFile(data, `${fileName}.${extension}`);
+        },
+        (err) => {}
+      );
+    } else {
+      return swal.fire(`GOS HRM`, "Unable to download multiple files", "error");
+    }
+  }
+
   initIdentificationForm() {
     this.cardFormTitle = "Add Identification";
     this.identificationForm = this.formBuilder.group({

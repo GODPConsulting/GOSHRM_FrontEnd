@@ -28,6 +28,7 @@ export class EmployeeGymComponent implements OnInit {
   // To hold data for each card
   employeeGym: any[] = [];
   allGyms$: Observable<any>;
+  public dtOptions: DataTables.Settings = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,6 +44,19 @@ export class EmployeeGymComponent implements OnInit {
     this.getEmployeeGym(this.staffId);
     // Observable to subscribe to in the template
     this.allGyms$ = this.setupService.getGymWorkout();
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
   }
 
   initGymForm() {
