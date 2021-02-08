@@ -33,7 +33,7 @@
         <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3" *ngFor="let emp of employeesList;let i = index">
             <div class="profile-widget">
                 <div class="profile-img">
-                    <a [routerLink]="['/employees/employeeprofile/',emp.staffId]" class="avatar"><img
+                    <a [routerLink]="['/employees/employeeprofile/',emp.staffId]" class="avatar img-responsive"><img
                             src="{{emp.photo}}" alt=""></a>
                 </div>
                 <p>Staff Code: {{emp.staffCode}}</p>

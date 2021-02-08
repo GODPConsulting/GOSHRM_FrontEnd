@@ -63,7 +63,9 @@ export class RefereeComponent implements OnInit {
   }
 
   downloadFile() {
-    if (this.selectedId.length === 1) {
+    if (this.selectedId.length === 0) {
+      return swal.fire(`GOS HRM`, "Please select item to download", "error");
+    } else if (this.selectedId.length === 1) {
       // Filters out the data of selected file to download
       const idFileToDownload = this.employeeReferee.filter(
         (empId) => empId.id === this.selectedId[0]
