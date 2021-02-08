@@ -49,7 +49,9 @@ export class LanguageComponent implements OnInit {
     this.setupService.downloadLanguage().subscribe(
       (resp) => {
         const data = resp;
-        this.utilitiesService.byteToFile(data, "Language.xlsx")
+        this.utilitiesService.byteToFile(data, "Language.xlsx", {
+          type: "application/vnd.ms-excel",
+        });
       },
       (err) => {}
     );

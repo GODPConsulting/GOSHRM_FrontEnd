@@ -50,7 +50,9 @@ export class ProfMembershipComponent implements OnInit {
     this.setupService.downloadProfMem().subscribe(
       (resp) => {
         const data = resp;
-        this.utilitiesService.byteToFile(data, "Professional Membership.xlsx")
+        this.utilitiesService.byteToFile(data, "Professional Membership.xlsx", {
+          type: "application/vnd.ms-excel",
+        });
       },
       (err) => {}
     );

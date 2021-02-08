@@ -327,6 +327,10 @@ export class SetupService {
     return this.apiService.post("/hrmsetup/delete/location", payload);
   }
 
+  downloadLocation() {
+    return this.apiService.getDownload("/hrmsetup/download/locations");
+  }
+
   getProfCerts() {
     return this.apiService.get("/hrmsetup/get/all/prof_certifications");
   }
