@@ -307,6 +307,10 @@ export class SetupService {
     return this.apiService.post("/hrmsetup/delete/language", payload);
   }
 
+  downloadLanguage() {
+    return this.apiService.getDownload("/hrmsetup/download/languages");
+  }
+
   getLocation() {
     return this.apiService.get("/hrmsetup/get/all/locations");
   }
@@ -359,6 +363,10 @@ export class SetupService {
 
   deleteProfMem(payload: Object) {
     return this.apiService.post("/hrmsetup/delete/prof_membership", payload);
+  }
+
+  downloadProfMem() {
+    return this.apiService.getDownload("/hrmsetup/download/prof_memberships");
   }
 
   /*  using xhr method
