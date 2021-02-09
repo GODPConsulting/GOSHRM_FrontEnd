@@ -173,9 +173,13 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Office</label>
-                                <input type="text" class="form-control" [class.invalid]="
+                                <select type="text" class="form-control" [class.invalid]="
                                 careerForm.get('office').invalid &&
                                 careerForm.get('office').touched" formControlName="office">
+                                    <option selected value="">Office</option>
+                                    <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
                                 careerForm.get('office').invalid &&
                                 careerForm.get('office').touched
@@ -191,9 +195,13 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Line Manager <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <select class="form-control" type="text" [class.invalid]="
                                 careerForm.get('line_Manager').invalid &&
                                 careerForm.get('line_Manager').touched" formControlName="line_Manager">
+                                    <option selected value="">line Manager</option>
+                                    <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
                                 careerForm.get('line_Manager').invalid &&
                                 careerForm.get('line_Manager').touched
@@ -209,9 +217,13 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>First Level Reviewer <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <select class="form-control" type="text" [class.invalid]="
                                 careerForm.get('first_Level_Reviewer').invalid &&
                                 careerForm.get('first_Level_Reviewer').touched" formControlName="first_Level_Reviewer">
+                                    <option selected value="">First Level Reviewer</option>
+                                    <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
                                 careerForm.get('first_Level_Reviewer').invalid &&
                                 careerForm.get('first_Level_Reviewer').touched
@@ -226,11 +238,15 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Second Level Reviewer</label>
-                                <input class="form-control" type="text" [class.invalid]="
+                                <label>Second Level Reviewer <span class="text-danger">*</span></label>
+                                <select class="form-control" type="text" [class.invalid]="
                                 careerForm.get('second_Level_Reviewer').invalid &&
                                 careerForm.get('second_Level_Reviewer').touched"
                                     formControlName="second_Level_Reviewer">
+                                    <option selected value="">Second Level Reviewer</option>
+                                    <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
                                 careerForm.get('second_Level_Reviewer').invalid &&
                                 careerForm.get('second_Level_Reviewer').touched
@@ -238,6 +254,28 @@
                                     <small *ngIf="
                                     careerForm.get('second_Level_Reviewer').invalid &&
                                     careerForm.get('second_Level_Reviewer').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Third Level Reviewer <span class="text-danger">*</span></label>
+                                <select class="form-control" type="text" [class.invalid]="
+                                careerForm.get('third_Level_Reviewer').invalid &&
+                                careerForm.get('third_Level_Reviewer').touched" formControlName="third_Level_Reviewer">
+                                    <option selected value="">Third Level Reviewer</option>
+                                    <option *ngFor="let row of levels " value="{{row.companyStructureId}}">{{row.name}}
+                                    </option>
+                                </select>
+                                <div *ngIf="
+                                careerForm.get('third_Level_Reviewer').invalid &&
+                                careerForm.get('third_Level_Reviewer').touched
+                    ">
+                                    <small *ngIf="
+                                    careerForm.get('third_Level_Reviewer').invalid &&
+                                    careerForm.get('third_Level_Reviewer').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>

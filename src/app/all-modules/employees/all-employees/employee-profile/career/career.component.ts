@@ -13,6 +13,8 @@ declare const $: any;
 })
 export class CareerComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
+  
+ 
   employeeDetails: any = {};
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
@@ -25,7 +27,7 @@ export class CareerComponent implements OnInit {
   public locations: any[] = [];
   public countries: any[] = [];
   public jobGrades: any[] = [];
-  public jobTitles: any[] = [];
+  public offices: any[] = [];
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
@@ -45,6 +47,8 @@ export class CareerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
+    // Determines the structure of the table (Angular Datatables)
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -64,7 +68,14 @@ export class CareerComponent implements OnInit {
     this.getJobGrade();
     this.getJobTitle();
     this.getLocation();
+    this.getStaffDepartments();
+    
+
+    this.getJobTitle();
   }
+  //this.setupService.getData
+  // Get All Employees
+  
 
   initCareerForm() {
     this.cardFormTitle = "Add Career";
@@ -79,6 +90,7 @@ export class CareerComponent implements OnInit {
       line_Manager: ["", Validators.required],
       first_Level_Reviewer: ["", Validators.required],
       second_Level_Reviewer: ["", Validators.required],
+      third_Level_Reviewer: ["", Validators.required],
       start_month: ["", Validators.required],
       start_year: ["", Validators.required],
       end_month: ["", Validators.required],
@@ -175,6 +187,22 @@ export class CareerComponent implements OnInit {
     );
   }
 
+  getStaffDepartments() {
+    this.pageLoading = true;
+    return this.setupService
+      .getData("/company/get/all/companystructures")
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          this.offices = data.companyStructures;
+        },
+        (err) => {
+          this.pageLoading = false;
+        }
+      );
+  }
+
+ 
   // Set Values To Edit Modal Form
   edit(row) {
     this.cardFormTitle = "Edit Career";
@@ -190,6 +218,7 @@ export class CareerComponent implements OnInit {
       line_Manager: row.line_Manager,
       first_Level_Reviewer: row.first_Level_Reviewer,
       second_Level_Reviewer: row.second_Level_Reviewer,
+      third_Level_Reviewer: row.third_Level_Reviewer,
       start_month: row.start_month,
       start_year: row.start_year,
       end_month: row.end_month,
