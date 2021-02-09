@@ -23,6 +23,7 @@ export class RefereeComponent implements OnInit {
 
   // To hold data for each card
   employeeReferee: any = [];
+  public dtOptions: DataTables.Settings = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,6 +34,58 @@ export class RefereeComponent implements OnInit {
   ngOnInit(): void {
     this.getEmployeeReferee(this.staffId);
     this.initRefereeForm();
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [
+        { orderable: false },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ],
+      order: [[1, "asc"]],
+    };
+  }
+
+  downloadFile() {
+    if (this.selectedId.length === 0) {
+      return swal.fire(`GOS HRM`, "Please select item to download", "error");
+    } else if (this.selectedId.length === 1) {
+      // Filters out the data of selected file to download
+      const idFileToDownload = this.employeeReferee.filter(
+        (empId) => empId.id === this.selectedId[0]
+      );
+
+      // Gets the file name and extension of the file
+      const fileName = idFileToDownload[0].fullName;
+      const extension = idFileToDownload[0].refereeFilePath.split(".")[1];
+
+      this.employeeService.downloadReferee(this.selectedId[0]).subscribe(
+        (resp) => {
+          const data = resp;
+          // Converts response to file and downloads it
+          this.utilitiesService.byteToFile(data, `${fileName}.${extension}`);
+        },
+        (err) => {}
+      );
+    } else {
+      return swal.fire(`GOS HRM`, "Unable to download multiple files", "error");
+    }
   }
 
   initRefereeForm() {
@@ -74,9 +127,10 @@ export class RefereeComponent implements OnInit {
       confirmationDate: row.confirmationDate,
       approvalStatus: row.approvalStatus,
       staffId: this.staffId,
-      refereeFile: row.refereeFile,
     });
-    this.fileInput.nativeElement.value = "";
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = "";
+    }
     $("#referee_modal").modal("show");
   }
 
@@ -85,11 +139,12 @@ export class RefereeComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = form.value;
-    console.log(payload);
 
-    payload.approvalStatus = +payload.approvalStatus;
-    payload.numberOfYears = +payload.numberOfYears;
+    form
+      .get("confirmationDate")
+      .setValue(
+        new Date(form.get("confirmationDate").value).toLocaleDateString("en-CA")
+      );
     const formData = new FormData();
     for (const key in form.value) {
       formData.append(key, this.refereeForm.get(key).value);
@@ -97,7 +152,6 @@ export class RefereeComponent implements OnInit {
     this.spinner = true;
     return this.employeeService.postReferee(formData).subscribe(
       (res) => {
-        console.log(res);
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
@@ -109,7 +163,7 @@ export class RefereeComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -126,13 +180,13 @@ export class RefereeComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -167,13 +221,13 @@ export class RefereeComponent implements OnInit {
                   this.getEmployeeReferee(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
               this.spinner = false;
               const message = err.status.message.friendlyMessage;
-              swal.fire("Error", message, "error");
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }

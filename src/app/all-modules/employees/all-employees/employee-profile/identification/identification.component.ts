@@ -23,6 +23,7 @@ export class IdentificationComponent implements OnInit {
 
   // To hold data for each card
   employeeIdentification: any[] = [];
+  public dtOptions: DataTables.Settings = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,6 +34,47 @@ export class IdentificationComponent implements OnInit {
   ngOnInit(): void {
     this.initIdentificationForm();
     this.getEmployeeIdentification(this.staffId);
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
+  }
+
+  downloadFile() {
+    if (this.selectedId.length === 0) {
+      return swal.fire(`GOS HRM`, "Please select item to download", "error");
+    } else if (this.selectedId.length === 1) {
+      // Filters out the data of selected file to download
+      const idFileToDownload = this.employeeIdentification.filter(
+        (empId) => empId.id === this.selectedId[0]
+      );
+
+      // Gets the file name and extension of the file
+      const fileName = idFileToDownload[0].identification;
+      const extension = idFileToDownload[0].identificationFilePath.split(
+        "."
+      )[1];
+
+      this.employeeService.downloadIdentification(this.selectedId[0]).subscribe(
+        (resp) => {
+          const data = resp;
+          // Converts response to file and downloads it
+          this.utilitiesService.byteToFile(data, `${fileName}.${extension}`);
+        },
+        (err) => {}
+      );
+    } else {
+      return swal.fire(`GOS HRM`, "Unable to download multiple files", "error");
+    }
   }
 
   initIdentificationForm() {
@@ -75,11 +117,13 @@ export class IdentificationComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = form.value;
-    payload.approval_status = +payload.approval_status;
     const formData = new FormData();
+    form
+      .get("idExpiry_date")
+      .setValue(
+        new Date(form.get("idExpiry_date").value).toLocaleDateString("en-CA")
+      );
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.identificationForm.get(key).value);
     }
 
@@ -97,7 +141,7 @@ export class IdentificationComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -112,13 +156,13 @@ export class IdentificationComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -127,7 +171,6 @@ export class IdentificationComponent implements OnInit {
   }
 
   delete() {
-    console.log(this.selectedId);
     let payload: object;
     if (this.selectedId.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
@@ -154,13 +197,13 @@ export class IdentificationComponent implements OnInit {
                   this.getEmployeeIdentification(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
               this.spinner = false;
               const message = err.status.message.friendlyMessage;
-              swal.fire("Error", message, "error");
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }

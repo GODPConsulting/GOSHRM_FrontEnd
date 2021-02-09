@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
@@ -6,9 +6,9 @@ import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: 'app-assets',
-  templateUrl: './assets.component.html',
-  styleUrls: ['./assets.component.css']
+  selector: "app-assets",
+  templateUrl: "./assets.component.html",
+  styleUrls: ["./assets.component.css"],
 })
 export class AssetsComponent implements OnInit {
   employeeDetails: any = {};
@@ -37,8 +37,6 @@ export class AssetsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.staffId);
-
     this.getEmployeeAsset(this.staffId);
     this.initAssetForm();
   }
@@ -65,8 +63,6 @@ export class AssetsComponent implements OnInit {
   }
 
   submitAssetForm(form: FormGroup) {
-    console.log(form.value);
-
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -76,13 +72,14 @@ export class AssetsComponent implements OnInit {
     payload.locationId = +payload.locationId;
     payload.returnApprovalStatus = +payload.returnApprovalStatus;
     payload.requestApprovalStatus = +payload.requestApprovalStatus;
-  
+
     /* const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
+      
       formData.append(key, this.assetForm.get(key).value);
     }
- */console.log(payload)
+ */
+
     this.spinner = true;
     return this.employeeService.postAsset(payload).subscribe(
       (res) => {
@@ -97,7 +94,7 @@ export class AssetsComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -106,7 +103,6 @@ export class AssetsComponent implements OnInit {
     this.employeeService.getAssetByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
         this.employeeAsset = data.employeeList;
-        console.log(data.employeeList);
       }
     });
   }
@@ -141,7 +137,7 @@ export class AssetsComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -157,7 +153,6 @@ export class AssetsComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -177,12 +172,10 @@ export class AssetsComponent implements OnInit {
                   this.getEmployeeAsset(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -211,4 +204,3 @@ export class AssetsComponent implements OnInit {
     }
   }
 }
-

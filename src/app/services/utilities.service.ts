@@ -1,6 +1,9 @@
-import { Injectable } from "@angular/core";
+import { ElementRef, Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { ApiService } from "./api.service";
+import swal from "sweetalert2";
+import { saveAs } from "file-saver";
+import { isInteger } from "lodash";
 
 @Injectable({
   providedIn: "root",
@@ -8,15 +11,56 @@ import { ApiService } from "./api.service";
 export class UtilitiesService {
   getCountryUrl: string = "/common/countries";
 
-  getLocationUrl: string = "/hrmsetup/get/all/location";
   constructor(private apiService: ApiService) {}
 
-  // Appends a selected file to the form property
-  patchFile(event: Event, form: FormGroup) {
+  // Validates the file to be uploaded
+  uploadFileValidator(
+    event: Event,
+    form: FormGroup,
+    staffId?: number | string
+  ) {
     const file = (<HTMLInputElement>event.target).files[0];
-    form.patchValue({
-      [(<HTMLInputElement>event.target).name]: file,
-    });
+    console.log(file);
+
+    // Acceptable excel formats
+    const excelTypes = [
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-excel",
+    ];
+
+    // Checks if the file type is same as any of the accpetable excel formats
+    const isExcelFile = excelTypes.some((str) => file.type.includes(str));
+
+    // If upload is from employee page and is not an image or pdf
+    if (
+      isInteger(staffId) &&
+      !file.type.includes("image") &&
+      file.type !== "application/pdf"
+    ) {
+      swal.fire(
+        "GOSHRM",
+        "Please select a valid file of formats jpg, png or pdf",
+        "error"
+      );
+      (<HTMLInputElement>event.target).value = "";
+    } else if (!staffId && !file.type.includes("image")) {
+      swal.fire("GOSHRM", "Please select a valid image file format", "error");
+      (<HTMLInputElement>event.target).value = "";
+    } else if (staffId === "hr" && !isExcelFile) {
+      // If upload is not from employee page and not excel file
+      swal.fire(
+        "GOSHRM",
+        "Please select a valid file of excel(.xls or .xlsx) format",
+        "error"
+      );
+      (<HTMLInputElement>event.target).value = "";
+    } else {
+      // Appends a selected file to the form property
+      form.patchValue({
+        [(<HTMLInputElement>event.target).name]: file,
+      });
+      return file;
+    }
   }
 
   deleteArray(event: Event, id: number, idsArray: number[]) {
@@ -25,9 +69,10 @@ export class UtilitiesService {
         idsArray.push(id);
       }
     } else {
-      idsArray = idsArray.filter((_id) => {
-        return _id !== id;
-      });
+      idsArray.splice(idsArray.indexOf(id), 1);
+      /*  idsArray = idsArray.filter((_id) => {
+        return _id !== id; 
+      });*/
     }
   }
 
@@ -50,7 +95,26 @@ export class UtilitiesService {
     return this.apiService.get(this.getCountryUrl);
   }
 
-  getLocation() {
-    return this.apiService.get(this.getLocationUrl);
+  // Converts response to file and downloads it
+  byteToFile(data: string, fileName: string, mimeType?: BlobPropertyBag) {
+    if (data != undefined) {
+      const byteString = atob(data);
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      const bb = new Blob([ab]);
+      try {
+        const file = new File([bb], fileName, mimeType);
+
+        saveAs(file);
+      } catch (err) {
+        const textFileAsBlob = new Blob([bb], mimeType);
+        window.navigator.msSaveBlob(textFileAsBlob, fileName);
+      }
+    } else {
+      return swal.fire(`GOS HRM`, "Unable to download data", "error");
+    }
   }
 }

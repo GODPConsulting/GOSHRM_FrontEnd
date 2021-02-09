@@ -27,6 +27,7 @@ export class SkillsComponent implements OnInit {
   employeeSkills: any = {};
   staffs: any = {};
   jobTitle: any;
+  public dtOptions: DataTables.Settings = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,12 +37,48 @@ export class SkillsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    //console.log(this.staffId);
     this.getEmployeeSkills(this.staffId);
     this.initSkillsForm();
     this.getSingleStaffById(this.staffId);
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
 
-    //console.log(this.jobTitleId);
+      columns: [{ orderable: false }, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
+  }
+
+  downloadFile() {
+    if (this.selectedId.length === 0) {
+      return swal.fire(`GOS HRM`, "Please select item to download", "error");
+    } else if (this.selectedId.length === 1) {
+      // Filters out the data of selected file to download
+      const idFileToDownload = this.employeeSkills.filter(
+        (empId) => empId.id === this.selectedId[0]
+      );
+
+      // Gets the file name and extension of the file
+      const fileName = idFileToDownload[0].skillName;
+      const extension = idFileToDownload[0].proofOfSkillsUrl.split(".")[1];
+
+      this.employeeService.downloadEmployeeSkill(this.selectedId[0]).subscribe(
+        (resp) => {
+          const data = resp;
+          // Converts response to file and downloads it
+          this.utilitiesService.byteToFile(data, `${fileName}.${extension}`);
+        },
+        (err) => {}
+      );
+    } else {
+      return swal.fire(`GOS HRM`, "Unable to download multiple files", "error");
+    }
   }
 
   setWeight(event: Event) {
@@ -83,7 +120,7 @@ export class SkillsComponent implements OnInit {
         this.staffs = data.employeeList;
 
         this.jobTitleId = data.employeeList[0].jobTitle;
-        console.log(this.jobTitleId);
+
         this.getSingleJobTitle(this.jobTitleId);
       }
     });
@@ -96,12 +133,11 @@ export class SkillsComponent implements OnInit {
         this.pageLoading = false;
         this.jobTitle = data.setuplist[0];
         this.jobSkills = this.jobTitle.sub_Skills;
-        console.log(this.jobSkills);
       },
       (err) => {
         this.pageLoading = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -115,7 +151,6 @@ export class SkillsComponent implements OnInit {
     }
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.skillsForm.get(key).value);
       formData.append(key, this.skillsForm.get(key).value);
     }
     this.skillsForm.get("expectedScore").disable();
@@ -135,7 +170,7 @@ export class SkillsComponent implements OnInit {
         form.get("expectedScore").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -188,12 +223,10 @@ export class SkillsComponent implements OnInit {
                   this.getEmployeeSkills(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -217,6 +250,6 @@ export class SkillsComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 }

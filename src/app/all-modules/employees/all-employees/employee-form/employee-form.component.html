@@ -126,6 +126,24 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
+                        <label class="col-form-label">Job Grade<span class="text-danger">*</span></label>
+                        <select class="form-control" [class.invalid]="EmployeeForm.get('jobGrade').invalid &&
+                        EmployeeForm.get('jobGrade').touched" formControlName="jobGrade">
+                            <option selected value="">Select Job Grade</option>
+                            <option *ngFor="let row of (allJobGrades$ | async)?.setuplist" value="{{row.id}}">
+                                {{row.job_grade}} </option>
+                        </select>
+                        <div *ngIf="
+                        EmployeeForm.get('jobGrade').invalid &&
+                        EmployeeForm.get('jobGrade').touched">
+                            <small *ngIf="
+                            EmployeeForm.get('jobGrade').invalid &&
+                            EmployeeForm.get('jobGrade').touched" class="text-danger"> *Field is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
                         <label class="col-form-label">Email <span class="text-danger">*</span></label>
                         <input class="form-control" type="email"
                             [class.invalid]="EmployeeForm.get('email').invalid && EmployeeForm.get('email').touched"
@@ -329,7 +347,7 @@
                 </div>
             </div>
             <div class="submit-section">
-                <button class="btn btn-primary submit-btn" type="submit" (click)="addEmployee(EmployeeForm)">
+                <button class="btn btn-primary submit-btn" type="submit" (click)="addEmployeeToHrm(EmployeeForm)">
                     <span *ngIf="!loading">Submit</span>
                     <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></span>
                 </button>

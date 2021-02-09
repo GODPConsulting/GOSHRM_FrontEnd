@@ -52,32 +52,9 @@ export class EmploymentLevelComponent implements OnInit {
       .subscribe(
         (resp) => {
           const data = resp;
-          if (data != undefined) {
-            const byteString = atob(data);
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-              ia[i] = byteString.charCodeAt(i);
-            }
-            const bb = new Blob([ab]);
-            try {
-              const file = new File([bb], "Employment Level.xlsx", {
-                type: "application/vnd.ms-excel",
-              });
-              console.log(file, bb);
-              saveAs(file);
-            } catch (err) {
-              const textFileAsBlob = new Blob([bb], {
-                type: "application/vnd.ms-excel",
-              });
-              window.navigator.msSaveBlob(
-                textFileAsBlob,
-                "Employment Level.xlsx"
-              );
-            }
-          } else {
-            return swal.fire(`GOS HRM`, "Unable to download data", "error");
-          }
+          this.utilitiesService.byteToFile(data, "Employment Level.xlsx", {
+            type: "application/vnd.ms-excel",
+          });
         },
         (err) => {}
       );
@@ -103,14 +80,14 @@ export class EmploymentLevelComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#upload_employment_level").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getEmploymentLevels();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -120,6 +97,8 @@ export class EmploymentLevelComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Employment Level";
+
     this.employmentLevelForm = this.formBuilder.group({
       id: [0],
       employment_level: ["", Validators.required],
@@ -139,7 +118,6 @@ export class EmploymentLevelComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -161,29 +139,27 @@ export class EmploymentLevelComponent implements OnInit {
           this.initializeForm();
           $("#add_employment_level").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getEmploymentLevels();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
 
   openModal() {
-    this.formTitle = "Add Employment Level";
     $("#add_employment_level").modal("show");
-
+    this.initializeForm();
     // resets the input for upload form
     this.fileInput.nativeElement.value = "";
   }
 
   closeModal() {
     $("#add_employment_level").modal("hide");
-    this.initializeForm();
   }
 
   delete() {
@@ -194,7 +170,6 @@ export class EmploymentLevelComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -205,7 +180,6 @@ export class EmploymentLevelComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteEmploymentLevel(payload).subscribe(
             (res) => {
@@ -215,12 +189,10 @@ export class EmploymentLevelComponent implements OnInit {
                   this.getEmploymentLevels();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -254,6 +226,6 @@ export class EmploymentLevelComponent implements OnInit {
   // Appends a selected file to "uploadInput"
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
 }

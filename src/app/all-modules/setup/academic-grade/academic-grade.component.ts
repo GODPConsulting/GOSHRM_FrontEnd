@@ -42,6 +42,18 @@ export class AcademicGradeComponent implements OnInit {
     this.getAcademicGrade();
     this.initializeForm();
   }
+  getAcademicGrade() {
+    this.pageLoading = true;
+    return this.setupService.getAcademicGrade().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.grades = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+      }
+    );
+  }
 
   downloadFile() {
     this.setupService
@@ -61,7 +73,7 @@ export class AcademicGradeComponent implements OnInit {
               const file = new File([bb], "Academic Grade.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -82,7 +94,7 @@ export class AcademicGradeComponent implements OnInit {
 
   uploadAcademicGrade() {
     // Checks if a file has been selected
-    if (!this.file) {
+    if (!this.academicGradeUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
     }
     const formData = new FormData();
@@ -100,19 +112,21 @@ export class AcademicGradeComponent implements OnInit {
           this.initializeForm();
           $("#upload_academic_grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
 
   initializeForm() {
+    this.formTitle = "Add Academic Grade";
+
     // Initialize the add modal form
     this.academicGradeForm = this.formBuilder.group({
       id: [0],
@@ -127,31 +141,18 @@ export class AcademicGradeComponent implements OnInit {
     });
   }
 
-  getAcademicGrade() {
-    this.pageLoading = true;
-    return this.setupService.getAcademicGrade().subscribe(
-      (data) => {
-        this.pageLoading = false;
-        this.grades = data.setuplist;
-      },
-      (err) => {
-        this.pageLoading = false;
-        console.log(err);
-      }
-    );
-  }
-
   openUploadModal() {
     $("#upload_academic_grade").modal("show");
   }
 
   openModal() {
+    this.initializeForm();
+
     $("#add-academic-grade").modal("show");
   }
 
   closeModal() {
     $("#add-academic-grade").modal("hide");
-    this.initializeForm();
   }
 
   // Add academic grade  Modal
@@ -163,24 +164,24 @@ export class AcademicGradeComponent implements OnInit {
     const payload = form.value;
     payload.rank = +payload.rank;
     this.spinner = true;
-    return this.setupService.addAcademicDiscipline(payload).subscribe(
+    return this.setupService.addAcademicGrade(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
-        //console.log(message);
+
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
           this.initializeForm();
           $("#add-academic-grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -206,7 +207,6 @@ export class AcademicGradeComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -217,7 +217,6 @@ export class AcademicGradeComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteAcademicGrade(payload).subscribe(
             (res) => {
@@ -227,12 +226,10 @@ export class AcademicGradeComponent implements OnInit {
                   this.getAcademicGrade();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -256,6 +253,6 @@ export class AcademicGradeComponent implements OnInit {
 
   // Appends a selected file to "uploadInput"
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
 }

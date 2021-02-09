@@ -8,10 +8,11 @@
                         class="fa fa-download"></i></a><a *ngIf="currentUserId === employeeId"
                     (click)="initProfCertForm()" class="hint edit-icon mr-1" data-toggle="modal"
                     data-target="#prof_cert_modal"><span class="hint-text">Add Professional Certification</span><i
-                        class="fa fa-pencil"></i></a></h3>
+                        class="fa fa-plus"></i></a></h3>
             <div class="table-responsive">
                 <app-loading *ngIf="pageLoading"></app-loading>
-                <table *ngIf="!pageLoading" class="table table-nowrap table-hover">
+                <table *ngIf="!pageLoading" class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"
+                    [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
                             <th>
@@ -38,7 +39,7 @@
                             <td>{{row.institution}}</td>
                             <td>{{row.dateGranted | date :"mediumDate"}}</td>
                             <td>{{row.expiryDate==="Present"? row.expiryDate: row.expiryDate | date :"mediumDate"}}</td>
-                            <td>{{row.approvalStatus}}</td>
+                            <td>{{row.approvalStatusName}}</td>
                         </tr>
                     </tbody>
                 </table>

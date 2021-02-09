@@ -49,32 +49,9 @@ export class HighSchoolSubjectsComponent implements OnInit {
       .subscribe(
         (resp) => {
           const data = resp;
-          if (data != undefined) {
-            const byteString = atob(data);
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-              ia[i] = byteString.charCodeAt(i);
-            }
-            const bb = new Blob([ab]);
-            try {
-              const file = new File([bb], "High School Subject.xlsx", {
-                type: "application/vnd.ms-excel",
-              });
-              console.log(file, bb);
-              saveAs(file);
-            } catch (err) {
-              const textFileAsBlob = new Blob([bb], {
-                type: "application/vnd.ms-excel",
-              });
-              window.navigator.msSaveBlob(
-                textFileAsBlob,
-                "High School Subject.xlsx"
-              );
-            }
-          } else {
-            return swal.fire(`GOS HRM`, "Unable to download data", "error");
-          }
+          this.utilitiesService.byteToFile(data, "High School Subject.xlsx", {
+            type: "application/vnd.ms-excel",
+          });
         },
         (err) => {}
       );
@@ -100,14 +77,14 @@ export class HighSchoolSubjectsComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#upload_high_school_subject").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHighSchoolSub();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -117,6 +94,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add High School Subject";
     this.highSchoolForm = this.formBuilder.group({
       id: [0],
       subject: ["", Validators.required],
@@ -136,7 +114,6 @@ export class HighSchoolSubjectsComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -159,14 +136,14 @@ export class HighSchoolSubjectsComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#add_high_school_subject").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHighSchoolSub();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -183,6 +160,7 @@ export class HighSchoolSubjectsComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
     this.fileInput.nativeElement.value = "";
     this.formTitle = "Add High School Subject";
     $("#add_high_school_subject").modal("show");
@@ -190,7 +168,6 @@ export class HighSchoolSubjectsComponent implements OnInit {
 
   closeModal() {
     $("#add_high_school_subject").modal("hide");
-    this.initializeForm();
   }
 
   delete() {
@@ -201,7 +178,6 @@ export class HighSchoolSubjectsComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -212,7 +188,6 @@ export class HighSchoolSubjectsComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteHighSchoolSub(payload).subscribe(
             (res) => {
@@ -222,12 +197,10 @@ export class HighSchoolSubjectsComponent implements OnInit {
                   this.getHighSchoolSub();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -249,6 +222,6 @@ export class HighSchoolSubjectsComponent implements OnInit {
 
   // Appends a selected file to "uploadInput"
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
 }

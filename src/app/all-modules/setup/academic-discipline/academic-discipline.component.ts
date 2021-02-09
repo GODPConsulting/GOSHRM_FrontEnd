@@ -49,7 +49,7 @@ export class AcademicDisciplineComponent implements OnInit {
   }
 
   uploadAcademicDiscipline() {
-    if (!this.file) {
+    if (!this.academicDisciplineUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
     }
     const formData = new FormData();
@@ -66,14 +66,14 @@ export class AcademicDisciplineComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#upload_academic_discipline").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicDisplines();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -84,32 +84,9 @@ export class AcademicDisciplineComponent implements OnInit {
       .subscribe(
         (resp) => {
           const data = resp;
-          if (data != undefined) {
-            const byteString = atob(data);
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-              ia[i] = byteString.charCodeAt(i);
-            }
-            const bb = new Blob([ab]);
-            try {
-              const file = new File([bb], "Academic Discipline.xlsx", {
-                type: "application/vnd.ms-excel",
-              });
-              console.log(file, bb);
-              saveAs(file);
-            } catch (err) {
-              const textFileAsBlob = new Blob([bb], {
-                type: "application/vnd.ms-excel",
-              });
-              window.navigator.msSaveBlob(
-                textFileAsBlob,
-                "Deposit Category.xlsx"
-              );
-            }
-          } else {
-            return swal.fire(`GOS HRM`, "Unable to download data", "error");
-          }
+          this.utilitiesService.byteToFile(data, "Academic Discipline.xlsx", {
+            type: "application/vnd.ms-excel",
+          });
         },
         () => {}
       );
@@ -121,6 +98,8 @@ export class AcademicDisciplineComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Academic Discipline";
+
     this.academicDisciplineForm = this.formBuilder.group({
       id: [0],
       discipline: ["", Validators.required],
@@ -141,7 +120,6 @@ export class AcademicDisciplineComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -163,14 +141,14 @@ export class AcademicDisciplineComponent implements OnInit {
           this.initializeForm();
           $("#add_academic_discipline").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getAcademicDisplines();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -188,9 +166,10 @@ export class AcademicDisciplineComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
+
     this.formTitle = "Add Academic Discipline";
     $("#add_academic_discipline").modal("show");
-    this.initializeForm();
   }
 
   closeModal() {
@@ -205,7 +184,6 @@ export class AcademicDisciplineComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -225,12 +203,10 @@ export class AcademicDisciplineComponent implements OnInit {
                   this.getAcademicDisplines();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -255,6 +231,6 @@ export class AcademicDisciplineComponent implements OnInit {
 
   // Appends a selected file to "uploadInput"
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
 }

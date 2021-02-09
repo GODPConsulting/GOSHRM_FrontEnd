@@ -61,7 +61,7 @@ export class LanguageComponent implements OnInit {
             const file = new File([bb], "Language.xlsx", {
               type: "application/vnd.ms-excel",
             });
-            console.log(file, bb);
+
             saveAs(file);
           } catch (err) {
             const textFileAsBlob = new Blob([bb], {
@@ -97,14 +97,14 @@ export class LanguageComponent implements OnInit {
           this.initializeForm();
           $("#upload_language").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getLanguages();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -115,6 +115,7 @@ export class LanguageComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Language";
     this.languageForm = this.formBuilder.group({
       id: [0],
       language: ["", Validators.required],
@@ -130,12 +131,11 @@ export class LanguageComponent implements OnInit {
     return this.setupService.getLanguage().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.languages = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -160,21 +160,20 @@ export class LanguageComponent implements OnInit {
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
-        //console.log(message);
 
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
           //this.initializeForm();
           $("#add_language").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getLanguages();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -187,7 +186,6 @@ export class LanguageComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -198,8 +196,6 @@ export class LanguageComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
-
         if (result.value) {
           return this.setupService.deleteLanguage(payload).subscribe(
             (res) => {
@@ -209,12 +205,10 @@ export class LanguageComponent implements OnInit {
                   this.getLanguages();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -249,6 +243,6 @@ export class LanguageComponent implements OnInit {
 
   // Appends a selected file to "uploadInput"
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
 }

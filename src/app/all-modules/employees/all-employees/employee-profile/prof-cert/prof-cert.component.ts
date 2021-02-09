@@ -27,6 +27,7 @@ export class ProfCertComponent implements OnInit {
   employeeProfCert: any[] = [];
   allCertificates$: Observable<any> = this.setupService.getProfCerts();
   allJobGrades$: Observable<any> = this.setupService.getJobGrades();
+  public dtOptions: DataTables.Settings = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,6 +39,45 @@ export class ProfCertComponent implements OnInit {
   ngOnInit(): void {
     this.initProfCertForm();
     this.getEmployeeProfCert(this.staffId);
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
+  }
+
+  downloadFile() {
+    if (this.selectedId.length === 0) {
+      return swal.fire(`GOS HRM`, "Please select item to download", "error");
+    } else if (this.selectedId.length === 1) {
+      // Filters out the data of selected file to download
+      const idFileToDownload = this.employeeProfCert.filter(
+        (empId) => empId.id === this.selectedId[0]
+      );
+
+      // Gets the file name and extension of the file
+      const fileName = idFileToDownload[0].CertificateName;
+      const extension = idFileToDownload[0].Attachment.split(".")[1];
+
+      this.employeeService.downloadProfCert(this.selectedId[0]).subscribe(
+        (resp) => {
+          const data = resp;
+          // Converts response to file and downloads it
+          this.utilitiesService.byteToFile(data, `${fileName}.${extension}`);
+        },
+        (err) => {}
+      );
+    } else {
+      return swal.fire(`GOS HRM`, "Unable to download multiple files", "error");
+    }
   }
 
   initProfCertForm() {
@@ -82,9 +122,19 @@ export class ProfCertComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const payload = form.value;
-    payload.approvalStatus = +payload.approvalStatus;
+
     const formData = new FormData();
+    form
+      .get("dateGranted")
+      .setValue(
+        new Date(form.get("dateGranted").value).toLocaleDateString("en-CA")
+      );
+
+    form
+      .get("expiryDate")
+      .setValue(
+        new Date(form.get("expiryDate").value).toLocaleDateString("en-CA")
+      );
     for (const key in form.value) {
       formData.append(key, this.profCertForm.get(key).value);
     }
@@ -103,7 +153,7 @@ export class ProfCertComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -118,13 +168,13 @@ export class ProfCertComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -159,13 +209,13 @@ export class ProfCertComponent implements OnInit {
                   this.getEmployeeProfCert(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
               this.spinner = false;
               const message = err.status.message.friendlyMessage;
-              swal.fire("Error", message, "error");
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }

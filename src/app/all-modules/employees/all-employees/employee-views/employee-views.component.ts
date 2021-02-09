@@ -1,18 +1,5 @@
-import {
-  AfterViewChecked,
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from "@angular/core";
-import { AllModulesService } from "src/app/all-modules/all-modules.service";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { ToastrService } from "ngx-toastr";
-import { DatePipe } from "@angular/common";
-import { Subject } from "rxjs";
-import { DataTableDirective } from "angular-datatables";
+import { AfterViewChecked, Component, OnInit } from "@angular/core";
 import { EmployeeService } from "src/app/services/employee.service";
-import { ApiService } from "src/app/services/api.service";
 
 declare const $: any;
 @Component({
@@ -66,12 +53,11 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
     this.employeeService.getEmployees().subscribe(
       (data) => {
         this.pageLoading = false;
-        console.log(data.employeeList);
+
         this.employeesList = data.employeeList;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }

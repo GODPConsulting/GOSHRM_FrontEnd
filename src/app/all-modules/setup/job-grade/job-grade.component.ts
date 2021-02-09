@@ -48,29 +48,9 @@ export class JobGradeComponent implements OnInit {
     this.setupService.exportExcelFile("/hrmsetup/download/jobgrade").subscribe(
       (resp) => {
         const data = resp;
-        if (data != undefined) {
-          const byteString = atob(data);
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
-          for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-          }
-          const bb = new Blob([ab]);
-          try {
-            const file = new File([bb], "Job Grade.xlsx", {
-              type: "application/vnd.ms-excel",
-            });
-            console.log(file, bb);
-            saveAs(file);
-          } catch (err) {
-            const textFileAsBlob = new Blob([bb], {
-              type: "application/vnd.ms-excel",
-            });
-            window.navigator.msSaveBlob(textFileAsBlob, "Job Grade.xlsx");
-          }
-        } else {
-          return swal.fire(`GOS HRM`, "Unable to download data", "error");
-        }
+        this.utilitiesService.byteToFile(data, "Job Grade.xlsx", {
+          type: "application/vnd.ms-excel",
+        });
       },
       (err) => {}
     );
@@ -97,19 +77,21 @@ export class JobGradeComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#upload_job_grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getJobGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
 
   initializeForm() {
+    this.formTitle = "Add Job Grade";
+
     this.jobGradeForm = this.formBuilder.group({
       id: [0],
       job_grade: ["", Validators.required],
@@ -149,12 +131,11 @@ export class JobGradeComponent implements OnInit {
     return this.setupService.getJobGrades().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.jobGrades = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -166,7 +147,7 @@ export class JobGradeComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    console.log(payload);
+
     this.spinner = true;
     return this.setupService.addJobGrade(payload).subscribe(
       (res) => {
@@ -177,14 +158,14 @@ export class JobGradeComponent implements OnInit {
           this.initializeForm();
           $("#add_job_grade").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getJobGrade();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -197,7 +178,6 @@ export class JobGradeComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -217,12 +197,10 @@ export class JobGradeComponent implements OnInit {
                   this.getJobGrade();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -256,7 +234,7 @@ export class JobGradeComponent implements OnInit {
 
   // Appends a selected file to "uploadInput"
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked

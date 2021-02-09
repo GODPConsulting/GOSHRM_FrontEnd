@@ -1,15 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EmployeeService } from "src/app/services/employee.service";
-import { SetupService } from 'src/app/services/setup.service';
+import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: 'app-career',
-  templateUrl: './career.component.html',
-  styleUrls: ['./career.component.css']
+  selector: "app-career",
+  templateUrl: "./career.component.html",
+  styleUrls: ["./career.component.css"],
 })
 export class CareerComponent implements OnInit {
   employeeDetails: any = {};
@@ -44,8 +44,6 @@ export class CareerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.staffId);
-
     this.getEmployeeCareer(this.staffId);
     this.initCareerForm();
     this.getCountry();
@@ -83,33 +81,29 @@ export class CareerComponent implements OnInit {
     return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
       (data) => {
         this.pageLoading = false;
-        console.log(data);
+
         this.jobGrades = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
   getJobTitle() {
     this.pageLoading = true;
-    return this.setupService.getData("/hrmsetup/get/all/jobtitle").subscribe(
+    return this.setupService.getJobTitle().subscribe(
       (data) => {
         this.pageLoading = false;
-        console.log(data);
+
         this.jobTitles = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
 
   submitCareerForm(form: FormGroup) {
-    console.log(form.value);
-
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -118,7 +112,6 @@ export class CareerComponent implements OnInit {
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
     payload.locationId = +payload.locationId;
-    
 
     this.spinner = true;
     return this.employeeService.postCareer(payload).subscribe(
@@ -134,7 +127,7 @@ export class CareerComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -143,7 +136,6 @@ export class CareerComponent implements OnInit {
     this.employeeService.getCareerByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
         this.employeeCareer = data.employeeList;
-        console.log(data.employeeList);
       }
     });
   }
@@ -153,27 +145,23 @@ export class CareerComponent implements OnInit {
       (data) => {
         this.countries = data.commonLookups;
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
 
   getLocation() {
-    return this.utilitiesService.getLocation().subscribe(
+    return this.setupService.getLocation().subscribe(
       (data) => {
         this.locations = data.setuplist;
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
 
   // Set Values To Edit Modal Form
   edit(row) {
     this.cardFormTitle = "Edit Career";
-   
+
     this.careerForm.patchValue({
       id: row.id,
       jobGrade: row.job_Grade,
@@ -202,7 +190,7 @@ export class CareerComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -218,7 +206,6 @@ export class CareerComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -238,12 +225,10 @@ export class CareerComponent implements OnInit {
                   this.getEmployeeCareer(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
@@ -6,9 +6,9 @@ import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: 'app-dependent-contact',
-  templateUrl: './dependent-contact.component.html',
-  styleUrls: ['./dependent-contact.component.css']
+  selector: "app-dependent-contact",
+  templateUrl: "./dependent-contact.component.html",
+  styleUrls: ["./dependent-contact.component.css"],
 })
 export class DependentContactComponent implements OnInit {
   employeeDetails: any = {};
@@ -19,7 +19,7 @@ export class DependentContactComponent implements OnInit {
   currentUserId: number;
   public selectedId: number[] = [];
   public countryId: number;
-  public countries: any[] = []
+  public countries: any[] = [];
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -32,7 +32,6 @@ export class DependentContactComponent implements OnInit {
   // To hold data for each card
   employeeDependentContact: any = {};
   setupService: any;
-  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -41,13 +40,10 @@ export class DependentContactComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.staffId);
-
     this.getEmployeeDependentContact(this.staffId);
     this.initDependentContactForm();
     this.getCountry();
   }
-
 
   initDependentContactForm() {
     this.cardFormTitle = "Add Dependent Contact";
@@ -69,8 +65,6 @@ export class DependentContactComponent implements OnInit {
   }
 
   submitDependentContactForm(form: FormGroup) {
-    console.log(form.value);
-
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -78,13 +72,6 @@ export class DependentContactComponent implements OnInit {
     const payload = form.value;
     payload.Approval_status = +payload.Approval_status;
     payload.countryId = +payload.countryId;
-    console.log(payload.countryId);
-    // const formData = new FormData();
-    // for (const key in form.value) {
-    //   //console.log(key, this.identificationForm.get(key).value);
-    //   formData.append(key, this.hobbyForm.get(key).value);
-    // }
-
 
     this.spinner = true;
     return this.employeeService.postDependentContact(payload).subscribe(
@@ -100,7 +87,7 @@ export class DependentContactComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -109,20 +96,16 @@ export class DependentContactComponent implements OnInit {
     this.employeeService.getDependentContactByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
         this.employeeDependentContact = data.employeeList;
-        console.log(data.employeeList);
       }
     });
   }
-
 
   getCountry() {
     return this.utilitiesService.getCountry().subscribe(
       (data) => {
         this.countries = data.commonLookups;
       },
-      (err) => {
-        console.log(err);
-      }
+      (err) => {}
     );
   }
   // Set Values To Edit Modal Form
@@ -153,7 +136,7 @@ export class DependentContactComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -169,7 +152,6 @@ export class DependentContactComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -189,12 +171,10 @@ export class DependentContactComponent implements OnInit {
                   this.getEmployeeDependentContact(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });

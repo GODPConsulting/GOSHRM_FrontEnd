@@ -52,32 +52,9 @@ export class HospitalManagementComponent implements OnInit {
       .subscribe(
         (resp) => {
           const data = resp;
-          if (data != undefined) {
-            const byteString = atob(data);
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-              ia[i] = byteString.charCodeAt(i);
-            }
-            const bb = new Blob([ab]);
-            try {
-              const file = new File([bb], "Hospital Management.xlsx", {
-                type: "application/vnd.ms-excel",
-              });
-              console.log(file, bb);
-              saveAs(file);
-            } catch (err) {
-              const textFileAsBlob = new Blob([bb], {
-                type: "application/vnd.ms-excel",
-              });
-              window.navigator.msSaveBlob(
-                textFileAsBlob,
-                "Hospital Management.xlsx"
-              );
-            }
-          } else {
-            return swal.fire(`GOS HRM`, "Unable to download data", "error");
-          }
+          this.utilitiesService.byteToFile(data, "Hospital Management.xlsx", {
+            type: "application/vnd.ms-excel",
+          });
         },
         (err) => {}
       );
@@ -104,19 +81,20 @@ export class HospitalManagementComponent implements OnInit {
           this.fileInput.nativeElement.value = "";
           $("#uploadHospitalManagement").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHospitalManagement();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
 
   initializeForm() {
+    this.formTitle = "Add Hospital";
     this.hospitalManagementForm = this.formBuilder.group({
       id: [0],
       hospital: ["", Validators.required],
@@ -156,7 +134,6 @@ export class HospitalManagementComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -170,21 +147,19 @@ export class HospitalManagementComponent implements OnInit {
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
 
   // Add Hospital Management Api Call
   addHospitalManagement(form: FormGroup) {
-    console.log(form.value);
     if (!form.valid) {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
     payload.hmoId = +payload.hmoId;
-    console.log(payload);
+
     this.spinner = true;
     return this.setupService.addHospitalMgt(payload).subscribe(
       (res) => {
@@ -195,14 +170,14 @@ export class HospitalManagementComponent implements OnInit {
           this.initializeForm();
           $("#addHospitalManagement").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHospitalManagement();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -234,12 +209,10 @@ export class HospitalManagementComponent implements OnInit {
                   this.getHospitalManagement();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -256,7 +229,6 @@ export class HospitalManagementComponent implements OnInit {
       contactPhoneNo: row.contactPhoneNo,
       email: row.email,
       address: row.address,
-      rating: row.rating,
       otherComments: row.otherComments,
     });
     $("#addHospitalManagement").modal("show");
@@ -279,6 +251,6 @@ export class HospitalManagementComponent implements OnInit {
 
   // Appends a selected file to "uploadInput"
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
 }

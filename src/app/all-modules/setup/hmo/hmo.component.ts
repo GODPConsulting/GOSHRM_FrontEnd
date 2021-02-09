@@ -46,32 +46,10 @@ export class HmoComponent implements OnInit {
   }
 
   downloadFile() {
-    this.setupService.exportExcelFile("/hrmsetup/download/hmo").subscribe(
+    this.setupService.downloadHmo().subscribe(
       (resp) => {
         const data = resp;
-        if (data != undefined) {
-          const byteString = atob(data);
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
-          for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
-          }
-          const bb = new Blob([ab]);
-          try {
-            const file = new File([bb], "HMO.xlsx", {
-              type: "application/vnd.ms-excel",
-            });
-            console.log(file, bb);
-            saveAs(file);
-          } catch (err) {
-            const textFileAsBlob = new Blob([bb], {
-              type: "application/vnd.ms-excel",
-            });
-            window.navigator.msSaveBlob(textFileAsBlob, "HMO.xlsx");
-          }
-        } else {
-          return swal.fire(`GOS HRM`, "Unable to download data", "error");
-        }
+        this.utilitiesService.byteToFile(data, "HMO.xlsx");
       },
       (err) => {}
     );
@@ -93,14 +71,14 @@ export class HmoComponent implements OnInit {
           this.initializeForm();
           $("#upload_hmo").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHmo();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -112,6 +90,7 @@ export class HmoComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add HMO";
     this.hmoForm = this.formBuilder.group({
       id: [0],
       hmo_name: ["", Validators.required],
@@ -132,12 +111,11 @@ export class HmoComponent implements OnInit {
     return this.setupService.getHmo().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.hmos = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
@@ -158,26 +136,26 @@ export class HmoComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    console.log(payload);
+
     this.spinner = true;
     return this.setupService.addHmo(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
-        //console.log(message);
+
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
           this.initializeForm();
           $("#add_hmo").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getHmo();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -193,7 +171,6 @@ export class HmoComponent implements OnInit {
       contact_email: row.contact_email,
       address: row.address,
       reg_date: row.reg_date,
-      rating: row.rating,
       other_comments: row.other_comments,
     });
     $("#add_hmo").modal("show");
@@ -207,7 +184,6 @@ export class HmoComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -227,12 +203,10 @@ export class HmoComponent implements OnInit {
                   this.getHmo();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -254,6 +228,6 @@ export class HmoComponent implements OnInit {
 
   // Appends a selected file to "uploadInput"
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
 }

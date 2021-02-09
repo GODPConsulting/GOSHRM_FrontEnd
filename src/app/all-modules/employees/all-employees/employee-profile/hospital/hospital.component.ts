@@ -28,6 +28,7 @@ export class HospitalComponent implements OnInit {
   // To hold data for each card
   employeeHospital: any[] = [];
   allHospitals$: Observable<any>;
+  public dtOptions: DataTables.Settings = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,6 +44,19 @@ export class HospitalComponent implements OnInit {
     this.getEmployeeHospital(this.staffId);
     // Observable to subscribe to in the template
     this.allHospitals$ = this.setupService.getHospitalMgt();
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
   }
 
   initHospitalForm() {
@@ -73,6 +87,7 @@ export class HospitalComponent implements OnInit {
       expectedDateOfChange: ["", Validators.required],
       hospitalFile: ["", Validators.required],
       staffId: this.staffId,
+      approvalStatus: ["", Validators.required],
     });
   }
 
@@ -98,7 +113,6 @@ export class HospitalComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    payload.approvalStatus = +payload.approvalStatus;
     payload.hospitalId = +payload.hospitalId;
     /*  const formData = new FormData();
     for (const key in form.value) {
@@ -119,7 +133,7 @@ export class HospitalComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -137,7 +151,6 @@ export class HospitalComponent implements OnInit {
     payload.hospitalId = +payload.hospitalId;
     const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.hospitalChangeReqForm.get(key).value);
     }
     form.get("dateOfRequest").disable();
@@ -156,7 +169,7 @@ export class HospitalComponent implements OnInit {
         form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -171,8 +184,15 @@ export class HospitalComponent implements OnInit {
     }
 
     const formData = new FormData();
+
+    form
+      .get("proposedMeetingDate")
+      .setValue(
+        new Date(form.get("proposedMeetingDate").value).toLocaleDateString(
+          "en-CA"
+        )
+      );
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.bookHospitalForm.get(key).value);
     }
     form.get("dateOfRequest").disable();
@@ -190,7 +210,7 @@ export class HospitalComponent implements OnInit {
         form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -205,7 +225,7 @@ export class HospitalComponent implements OnInit {
       (err) => {
         this.pageLoading = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -242,13 +262,13 @@ export class HospitalComponent implements OnInit {
                   this.getEmployeeHospital(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
               this.spinner = false;
               const message = err.status.message.friendlyMessage;
-              swal.fire("Error", message, "error");
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }
@@ -272,7 +292,7 @@ export class HospitalComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"

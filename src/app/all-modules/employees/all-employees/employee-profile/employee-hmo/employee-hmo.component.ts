@@ -26,6 +26,8 @@ export class EmployeeHmoComponent implements OnInit {
 
   // To hold data for each card
   employeeHmo: any[] = [];
+  public dtOptions: DataTables.Settings = {};
+
   // Observable to subscribe to in the template
   allHmos$: Observable<any> = this.setupService.getHmo();
 
@@ -40,6 +42,19 @@ export class EmployeeHmoComponent implements OnInit {
     this.initHmoForm();
     this.initHmoChangeForm();
     this.getEmployeeHmo(this.staffId);
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
   }
 
   initHmoForm() {
@@ -70,7 +85,12 @@ export class EmployeeHmoComponent implements OnInit {
       expectedDateOfChange: ["", Validators.required],
       hmoFile: ["", Validators.required],
       staffId: this.staffId,
+      approvalStatus: ["", Validators.required],
     });
+    // Resets the upload input of the add form
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = "";
+    }
   }
 
   submitHmoForm(form: FormGroup) {
@@ -83,7 +103,7 @@ export class EmployeeHmoComponent implements OnInit {
     payload.hmoId = +payload.hmoId;
     /* const formData = new FormData();
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
+      
       formData.append(key, this.employeeHmoForm.get(key).value);
     } */
 
@@ -101,7 +121,7 @@ export class EmployeeHmoComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -117,10 +137,16 @@ export class EmployeeHmoComponent implements OnInit {
     payload.suggestedHmo = +payload.suggestedHmo;
     payload.hmoId = +payload.hmoId; */
     const formData = new FormData();
-    formData.append("approvalStatus", "2");
-    formData.append("contactPhoneNo", "09088777886");
+    //let newDate=
+
+    form
+      .get("expectedDateOfChange")
+      .setValue(
+        new Date(form.get("expectedDateOfChange").value).toLocaleDateString(
+          "en-CA"
+        )
+      );
     for (const key in form.value) {
-      //console.log(key, this.identificationForm.get(key).value);
       formData.append(key, this.hmoChangeReqForm.get(key)?.value);
     }
     form.get("dateOfRequest").disable();
@@ -138,7 +164,7 @@ export class EmployeeHmoComponent implements OnInit {
         form.get("dateOfRequest").disable();
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -153,7 +179,7 @@ export class EmployeeHmoComponent implements OnInit {
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -190,13 +216,13 @@ export class EmployeeHmoComponent implements OnInit {
                   this.getEmployeeHmo(this.staffId);
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
               this.spinner = false;
               const message = err.status.message.friendlyMessage;
-              swal.fire("Error", message, "error");
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }
@@ -220,11 +246,15 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
   hack(val: any[]) {
     return Array.from(val);
+  }
+
+  resetCheckbox(form: FormGroup, formControlName: string) {
+    form.get(formControlName).setValue("");
   }
 }

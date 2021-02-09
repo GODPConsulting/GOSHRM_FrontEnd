@@ -11,7 +11,7 @@ export class EmployeeService {
   constructor(private apiService: ApiService) {}
 
   getEmployees() {
-    return this.apiService.get("/hrm/get/all/staff");
+    return this.apiService.get("/hrm/get/all/staffs");
   }
 
   getEmployeeById(id: number) {
@@ -34,6 +34,12 @@ export class EmployeeService {
 
   deleteIdentification(payload) {
     return this.apiService.post("/hrm/delete/employee/identification", payload);
+  }
+
+  downloadIdentification(id: number) {
+    return this.apiService.getDownload(
+      `/hrm/download/identification/Id?EmpId=${id}`
+    );
   }
 
   addEmergencyContact(payload) {
@@ -102,6 +108,12 @@ export class EmployeeService {
     return this.apiService.post("/hrm/delete/employee/referee", payload);
   }
 
+  downloadReferee(id: number) {
+    return this.apiService.getDownload(
+      `/hrm/download/employee/referee/Id?EmpId=${id}`
+    );
+  }
+
   getHmoByStaffId(id: number) {
     return this.apiService.get(
       `/hrm/get/single/employee/hmo/staffId?StaffId=${id}`
@@ -123,6 +135,12 @@ export class EmployeeService {
     return this.apiService.post("/hrm/delete/employee/hmo", payload);
   }
 
+  downloadHmoRequest(id: number) {
+    return this.apiService.getDownload(
+      `/hrm/download/employee/hmo-request/Id?EmpId=${id}`
+    );
+  }
+
   getHospitalByStaffId(id: number) {
     return this.apiService.get(
       `/hrm/get/single/employee/hospital/staffId?StaffId=${id}`
@@ -140,14 +158,26 @@ export class EmployeeService {
     );
   }
 
+  downloadHospitalRequest(id: number) {
+    return this.apiService.getDownload(
+      `/hrm/download/employee/hospital-request/Id?EmpId=${id}`
+    );
+  }
+
   deleteHospital(payload: object) {
     return this.apiService.post("/hrm/delete/employee/hospital", payload);
   }
 
   postBookHospitalMeeting(payload: FormData) {
     return this.apiService.post(
-      "/api/v1/hrm/add/update/employee/hospital-meeting",
+      "/hrm/add/update/employee/hospital-meeting",
       payload
+    );
+  }
+
+  downloadHospitalMeeting(id: number) {
+    return this.apiService.getDownload(
+      `/hrm/download/employee/hospital-meeting/Id?EmpId=${id}`
     );
   }
 
@@ -171,8 +201,44 @@ export class EmployeeService {
     );
   }
 
+  downloadProfCert(id: number) {
+    return this.apiService.getDownload(
+      `/hrm/download/employee/prof-certification/Id?EmpId=${id}`
+    );
+  }
+
+  addEmployeeQualification(payload: FormData, file: File): Promise<any> {
+    return this.apiService
+      .addCertificate("/hrm/add/update/employee/qualification", payload, file)
+      .then((data) => {
+        return data;
+      });
+  }
+
+  getEmployeeQualificationByStaffId(id: number) {
+    return this.apiService.get(
+      `/hrm/get/single/employee/qualification/staffId?staffId=${id}`
+    );
+  }
+
+  getGrades() {
+    return this.apiService.get("/hrmsetup/get/all/academic/grades");
+  }
+
+  deleteEmployeeQualification(payload) {
+    return this.apiService
+      .post("/hrm/delete/employee/qualification", payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+
   getHobbyByStaffId(id: number) {
-    return this.apiService.get(`/hrm/get/single/employee/hobby/staffId?StaffId=${id}`);
+    return this.apiService.get(
+      `/hrm/get/single/employee/hobby/staffId?StaffId=${id}`
+    );
   }
 
   postHobby(payload: Object) {
@@ -184,7 +250,9 @@ export class EmployeeService {
   }
 
   getAssetByStaffId(id: number) {
-    return this.apiService.get(`/hrm/get/single/employee/asset/staffId?StaffId=${id}`);
+    return this.apiService.get(
+      `/hrm/get/single/employee/asset/staffId?StaffId=${id}`
+    );
   }
 
   postAsset(payload: Object) {
@@ -196,19 +264,29 @@ export class EmployeeService {
   }
 
   getDependentContactByStaffId(id: number) {
-    return this.apiService.get(`/hrm/get/single/employee/dependent_contact/staffId?StaffId=${id}`);
+    return this.apiService.get(
+      `/hrm/get/single/employee/dependent_contact/staffId?StaffId=${id}`
+    );
   }
 
   postDependentContact(payload: Object) {
-    return this.apiService.post("/hrm/add/update/employee/dependent_contact", payload);
+    return this.apiService.post(
+      "/hrm/add/update/employee/dependent_contact",
+      payload
+    );
   }
 
   deleteDependentContact(payload) {
-    return this.apiService.post("/hrm/delete/employee/dependent_contact", payload);
+    return this.apiService.post(
+      "/hrm/delete/employee/dependent_contact",
+      payload
+    );
   }
 
   getCareerByStaffId(id: number) {
-    return this.apiService.get(`/hrm/get/single/employee/career/staffId?StaffId=${id}`);
+    return this.apiService.get(
+      `/hrm/get/single/employee/career/staffId?StaffId=${id}`
+    );
   }
 
   postCareer(payload: Object) {
@@ -233,6 +311,12 @@ export class EmployeeService {
     return this.apiService.post(`/hrm/delete/employee/skill`, payload);
   }
 
+  downloadEmployeeSkill(id: number) {
+    return this.apiService.getDownload(
+      `/hrm/download/employee/skill/Id?EmpId=${id}`
+    );
+  }
+
   getGymByStaffId(id: number) {
     return this.apiService.get(
       `/hrm/get/single/employee/gym/staffId?StaffId=${id}`
@@ -250,14 +334,26 @@ export class EmployeeService {
     );
   }
 
+  downloadGymRequest(id: number) {
+    return this.apiService.getDownload(
+      `/hrm/download/employee/gym-request/Id?EmpId=${id}`
+    );
+  }
+
   deleteGym(payload: object) {
     return this.apiService.post("/hrm/delete/employee/gym", payload);
   }
 
   postBookGymMeeting(payload: FormData) {
     return this.apiService.post(
-      "/api/v1/hrm/add/update/employee/gym-meeting",
+      "/hrm/add/update/employee/gym-meeting",
       payload
+    );
+  }
+
+  downloadGymMeeting(id: number) {
+    return this.apiService.getDownload(
+      `/hrm/download/employee/gym-meeting/Id?EmpId=${id}`
     );
   }
 }

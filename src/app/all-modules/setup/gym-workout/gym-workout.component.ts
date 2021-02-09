@@ -51,39 +51,16 @@ export class GymWorkoutComponent implements OnInit {
       .subscribe(
         (resp) => {
           const data = resp;
-          if (data != undefined) {
-            const byteString = atob(data);
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-              ia[i] = byteString.charCodeAt(i);
-            }
-            const bb = new Blob([ab]);
-            try {
-              const file = new File([bb], "gym/workout.xlsx", {
-                type: "application/vnd.ms-excel",
-              });
-              console.log(file, bb);
-              saveAs(file);
-            } catch (err) {
-              const textFileAsBlob = new Blob([bb], {
-                type: "application/vnd.ms-excel",
-              });
-              window.navigator.msSaveBlob(
-                textFileAsBlob,
-                "Deposit Category.xlsx"
-              );
-            }
-          } else {
-            return swal.fire(`GOS HRM`, "Unable to download data", "error");
-          }
+          this.utilitiesService.byteToFile(data, "Gym/Workout.xlsx", {
+            type: "application/vnd.ms-excel",
+          });
         },
         (err) => {}
       );
   }
 
   uploadGymWorkout() {
-    if (!this.file) {
+    if (!this.gymWorkoutUploadForm.get("uploadInput").value) {
       return swal.fire("Error", "Select a file", "error");
     }
     const formData = new FormData();
@@ -101,14 +78,14 @@ export class GymWorkoutComponent implements OnInit {
           this.initializeForm();
           $("#upload_gym_workout").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getGymWorkout();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -119,6 +96,7 @@ export class GymWorkoutComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Gym/Workout";
     this.gymWorkoutForm = this.formBuilder.group({
       id: [0],
       gym: ["", Validators.required],
@@ -137,23 +115,22 @@ export class GymWorkoutComponent implements OnInit {
     return this.setupService.getGymWorkout().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.gymWorkouts = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
 
   openModal() {
+    this.initializeForm();
     $("#add_gym_workout").modal("show");
   }
 
   closeModal() {
     $("#add_gym_workout").modal("hide");
-    this.initializeForm();
   }
 
   // Add Gym/workout  Modal Api Call
@@ -163,26 +140,26 @@ export class GymWorkoutComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    console.log(payload);
+
     this.spinner = true;
     return this.setupService.addGymWorkout(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
-        //console.log(message);
+
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
           this.initializeForm();
           $("#add_gym_workout").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getGymWorkout();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -193,9 +170,9 @@ export class GymWorkoutComponent implements OnInit {
     this.gymWorkoutForm.patchValue({
       id: row.id,
       gym: row.gym,
+      email: row.email,
       contact_phone_number: row.contact_phone_number,
       address: row.address,
-      ratings: row.ratings,
       other_comments: row.other_comments,
     });
     $("#add_gym_workout").modal("show");
@@ -209,7 +186,6 @@ export class GymWorkoutComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -220,7 +196,6 @@ export class GymWorkoutComponent implements OnInit {
         confirmButtonText: "Yes!",
       })
       .then((result) => {
-        //console.log(result);
         if (result.value) {
           return this.setupService.deleteGymWorkout(payload).subscribe(
             (res) => {
@@ -230,12 +205,10 @@ export class GymWorkoutComponent implements OnInit {
                   this.getGymWorkout();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -260,6 +233,6 @@ export class GymWorkoutComponent implements OnInit {
 
   // Appends a selected file to "uploadInput"
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
 }

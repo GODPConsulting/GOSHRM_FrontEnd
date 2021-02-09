@@ -64,7 +64,7 @@ export class ProfMembershipComponent implements OnInit {
               const file = new File([bb], "Professional Membership.xlsx", {
                 type: "application/vnd.ms-excel",
               });
-              console.log(file, bb);
+
               saveAs(file);
             } catch (err) {
               const textFileAsBlob = new Blob([bb], {
@@ -95,6 +95,7 @@ export class ProfMembershipComponent implements OnInit {
     this.spinner = true;
     return this.setupService.uploadProfMem(formData).subscribe(
       (res) => {
+        this.spinner = false;
         const message = res.status.message.friendlyMessage;
 
         if (res.status.isSuccessful) {
@@ -102,13 +103,14 @@ export class ProfMembershipComponent implements OnInit {
           this.initializeForm();
           $("#upload_prof_membership").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
+        this.getProfMembershipForm();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -120,6 +122,7 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   initializeForm() {
+    this.formTitle = "Add Professional Membership";
     this.professionalMembershipForm = this.formBuilder.group({
       id: [0],
       professional_membership: ["", Validators.required],
@@ -135,19 +138,18 @@ export class ProfMembershipComponent implements OnInit {
     return this.setupService.getProfMems().subscribe(
       (data) => {
         this.pageLoading = false;
-        //console.log(data);
+
         this.profMemberships = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
-        console.log(err);
       }
     );
   }
 
   // Set Values To Edit Modal Form
   edit(row) {
-    this.formTitle = "Edit profMembership";
+    this.formTitle = "Edit Professional Membership";
     this.professionalMembershipForm.patchValue({
       id: row.id,
       professional_membership: row.professional_membership,
@@ -157,12 +159,12 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   openModal() {
+    this.initializeForm();
     $("#add_prof_membership").modal("show");
   }
 
   closeModal() {
     $("#add_prof_membership").modal("hide");
-    this.initializeForm();
   }
 
   addProfMembership(form: FormGroup) {
@@ -181,14 +183,14 @@ export class ProfMembershipComponent implements OnInit {
           this.initializeForm();
           $("#add_prof_membership").modal("hide");
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOSHRM", message, "error");
         }
         this.getProfMembershipForm();
       },
       (err) => {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -201,7 +203,6 @@ export class ProfMembershipComponent implements OnInit {
       payload = {
         itemIds: this.selectedId,
       };
-      //console.log(this.selectedId);
     }
     swal
       .fire({
@@ -221,12 +222,10 @@ export class ProfMembershipComponent implements OnInit {
                   this.getProfMembershipForm();
                 });
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              console.log(err);
-            }
+            (err) => {}
           );
         }
       });
@@ -251,6 +250,6 @@ export class ProfMembershipComponent implements OnInit {
 
   // Appends a selected file to "uploadInput"
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
 }

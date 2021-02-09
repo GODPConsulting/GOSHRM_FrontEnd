@@ -8,7 +8,7 @@
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
                 <a *ngIf="currentUserId === employeeId" (click)="initHospitalForm()" class="hint edit-icon mr-1"
                     data-toggle="modal" data-target="#hospital_modal">
-                    <span class="hint-text">Add Hospital</span><i class="fa fa-pencil"></i></a>
+                    <span class="hint-text">Add Hospital</span><i class="fa fa-plus"></i></a>
                 <a (click)="initHospitalChangeForm()" class="hint edit-icon mr-1" data-toggle="modal"
                     data-target="#hospital_req_change_modal"><span class="hint-text">Request Change</span><i
                         class="fa fa-ticket"></i></a>
@@ -18,7 +18,8 @@
             </h3>
             <div class="table-responsive">
                 <app-loading *ngIf="pageLoading"></app-loading>
-                <table *ngIf="!pageLoading" class="table table-nowrap table-hover">
+                <table *ngIf="!pageLoading" class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"
+                    [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
                             <th>
@@ -35,7 +36,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#hospital_modal"
+                        <tr data-toggle="modal" class="pointer" data-target=""
                             *ngFor="let row of hack(employeeHospital); let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
@@ -311,6 +312,28 @@
                                     (change)="onSelectedFile($event,hospitalChangeReqForm)" [class.invalid]="
                                     hospitalChangeReqForm.get('hospitalFile').invalid &&
                                     hospitalChangeReqForm.get('hospitalFile').touched">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Approval Status</label>
+                                <select class="form-control" [class.invalid]="
+                                hospitalChangeReqForm.get('approvalStatus').invalid &&
+                                hospitalChangeReqForm.get('approvalStatus').touched" formControlName="approvalStatus">
+                                    <option selected value="">Select Status</option>
+                                    <option value="1">Approve</option>
+                                    <option value="2">Pending</option>
+                                    <option value="3">Decline</option>
+                                </select>
+                                <div *ngIf="
+                                hospitalChangeReqForm.get('approvalStatus').invalid &&
+                                hospitalChangeReqForm.get('approvalStatus').touched
+                    ">
+                                    <small *ngIf="
+                                    hospitalChangeReqForm.get('approvalStatus').invalid &&
+                                    hospitalChangeReqForm.get('approvalStatus').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
                             </div>
                         </div>
                     </div>
