@@ -379,7 +379,7 @@ export class EmployeeProfileComponent implements OnInit {
     this.speakingRating = 0;
   }
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   getUserData() {

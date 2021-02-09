@@ -21,7 +21,7 @@
           <div class="profile-view">
             <div class="profile-img-wrap">
               <div class="profile-img">
-                <a><img alt="" src="assets/img/profiles/avatar-02.jpg" /></a>
+                <a><img alt="" src="{{employeeDetails.photo}}" /></a>
               </div>
             </div>
             <div class="profile-basic">
@@ -115,12 +115,11 @@
           <div class="card-body">
             <h3 class="card-title">Emergency Contact <div class="col-auto float-right ml-auto">
                 <a class="edit-icon hint mr-1" (click)="deleteEmergencyContact()"><span
-                  class="hint-text">Delete</span><i class="fa fa-trash"></i>
+                    class="hint-text">Delete</span><i class="fa fa-trash"></i>
                 </a>
                 <a class="edit-icon hint mr-1" data-toggle="modal" data-target="#emergency_contact_modal"><span
                     class="hint-text">Add</span><i class="fa fa-plus"></i>
                 </a>
-
               </div>
             </h3>
             <div class="table-responsive">
@@ -169,13 +168,11 @@
             <div class="card-body">
               <h3 class="card-title">Language Rating <div class="col-auto float-right ml-auto">
                   <a class="edit-icon hint mr-1" (click)="deleteLanguageRating()"><span
-                  class="hint-text">Delete</span><i class="fa fa-trash"></i>
-                 </a>
-                
+                      class="hint-text">Delete</span><i class="fa fa-trash"></i>
+                  </a>
                   <a class="edit-icon hint mr-1" data-toggle="modal" data-target="#language_rating_modal"><span
                       class="hint-text">Add</span><i class="fa fa-plus"></i>
                   </a>
-                  
                 </div>
               </h3>
               <div class="table-responsive">
@@ -215,7 +212,6 @@
           </div>
         </div>
         <!-- Language -->
-        
       </div>
       <!-- Referee Card -->
       <app-referee [staffId]="employeeId"></app-referee>
@@ -262,9 +258,8 @@
                 <thead>
                   <tr>
                     <th>
-                      <input type="checkbox"
-                        [checked]="selectedQualificationId.length === employeeQualification.length"
-                        (change)=" checkAllQualification($event)"/>
+                      <input type="checkbox" [checked]="selectedQualificationId.length === employeeQualification.length"
+                        (change)=" checkAllQualification($event)" />
                     </th>
                     <th>S/N</th>
                     <th>Certificate</th>
@@ -298,93 +293,93 @@
         </div>
       </div>
       <!-- Qualification -->
-
       <!-- Qualification modal -->
-<div id="employee_qualification_modal" class="modal custom-modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"> Add qualifications(s) </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-          (click)="closeEmployeeQualificationModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form (ngSubmit)="addEmployeeQualification(employeeQualificationForm)" [formGroup]="employeeQualificationForm">
-          <div class="card">
-            <div class="card-body">
-              <h3 class="card-title">Employee Qualification </h3>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Certificate <span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" formControlName="certificate">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Institution <span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" formControlName="institution">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Start Date<span class="text-danger">*</span></label>
-                    <input class="form-control" type="date" formControlName="startDate">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>End Date <span class="text-danger">*</span></label>
-                    <input class="form-control" type="date" formControlName="endDate">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Grade<span class="text-danger">*</span></label>
-                    <select class="form-control" [class.invalid]="employeeQualificationForm.get('gradeId').invalid &&
+      <div id="employee_qualification_modal" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"> Add qualifications(s) </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                (click)="closeEmployeeQualificationModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form (ngSubmit)="addEmployeeQualification(employeeQualificationForm)"
+                [formGroup]="employeeQualificationForm">
+                <div class="card">
+                  <div class="card-body">
+                    <h3 class="card-title">Employee Qualification </h3>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Certificate <span class="text-danger">*</span></label>
+                          <input class="form-control" type="text" formControlName="certificate">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Institution <span class="text-danger">*</span></label>
+                          <input class="form-control" type="text" formControlName="institution">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Start Date<span class="text-danger">*</span></label>
+                          <input class="form-control" type="date" formControlName="startDate">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>End Date <span class="text-danger">*</span></label>
+                          <input class="form-control" type="date" formControlName="endDate">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Grade<span class="text-danger">*</span></label>
+                          <select class="form-control" [class.invalid]="employeeQualificationForm.get('gradeId').invalid &&
                                         employeeQualificationForm.get('gradeId').touched" formControlName="gradeId">
-                      <option selected value="">Grades</option>
-                      <option *ngFor="let row of grades" value="{{row.id}}"> {{row.grade}} </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Attachment (file format)</label>
-                    <input class="form-control" formControlName="qualificationFile" #fileInput type="file"
-                      (change)="handleFile($event)" [class.invalid]="
+                            <option selected value="">Grades</option>
+                            <option *ngFor="let row of grades" value="{{row.id}}"> {{row.grade}} </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Attachment (file format)</label>
+                          <input class="form-control" formControlName="qualificationFile" #fileInput type="file"
+                            (change)="handleFile($event)" [class.invalid]="
                                             employeeQualificationForm.get('qualificationFile').invalid &&
                                             employeeQualificationForm.get('qualificationFile').touched">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Approval Status<span class="text-danger">*</span></label>
+                          <select class="select form-control" formControlName="approvalStatus">
+                            <option disabled>Select Status</option>
+                            <option value="1">Confirmed</option>
+                            <option value="2">Pending</option>
+                            <option value="3">Unconfirmed</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Approval Status<span class="text-danger">*</span></label>
-                    <select class="select form-control" formControlName="approvalStatus">
-                      <option disabled>Select Status</option>
-                      <option value="1">Confirmed</option>
-                      <option value="2">Pending</option>
-                      <option value="3">Unconfirmed</option>
-                    </select>
-                  </div>
+                <div class="submit-section">
+                  <button class="btn btn-primary submit-btn" type="submit">
+                    <span *ngIf="!spinner">Submit</span>
+                    <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                  </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
-          <div class="submit-section">
-            <button class="btn btn-primary submit-btn" type="submit">
-              <span *ngIf="!spinner">Submit</span>
-              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
-<!-- qualification modal ends here -->
+      <!-- qualification modal ends here -->
       <!-- Professional Certification card -->
       <app-prof-cert [staffId]="employeeId"></app-prof-cert>
       <!-- /Professional Certification card -->
@@ -433,14 +428,12 @@
             <div class="card-body">
               <h3 class="card-title">Emergency Contact</h3>
               <div class="row">
-
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Full Name <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" formControlName="fullName">
                   </div>
                 </div>
-
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Relationship <span class="text-danger">*</span></label>
@@ -465,8 +458,7 @@
                     <select class="form-control" [class.invalid]="emergencyContactForm.get('countryId').invalid &&
                                         emergencyContactForm.get('countryId').touched" formControlName="countryId">
                       <option selected value="">Country</option>
-                      <option *ngFor="let row of countries" value="{{row.lookupId}}">
-                        {{row.lookupName}} </option>
+                      <option *ngFor="let row of countries" value="{{row.lookupId}}"> {{row.lookupName}} </option>
                     </select>
                   </div>
                 </div>
@@ -501,7 +493,6 @@
     </div>
   </div>
 </div>
-
 <!-- Emergency Contact Modal ends here -->
 <!-- language Modal -->
 <div id="language_rating_modal" class="modal custom-modal fade" role="dialog">

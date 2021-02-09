@@ -136,7 +136,7 @@ export class DependentContactComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked

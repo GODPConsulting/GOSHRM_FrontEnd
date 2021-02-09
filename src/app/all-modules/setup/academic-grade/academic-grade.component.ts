@@ -253,6 +253,6 @@ export class AcademicGradeComponent implements OnInit {
 
   // Appends a selected file to "uploadInput"
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
 }
