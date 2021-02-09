@@ -246,7 +246,7 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.patchFile(event, form);
+    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
