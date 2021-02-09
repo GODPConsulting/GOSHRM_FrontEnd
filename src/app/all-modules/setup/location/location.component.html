@@ -170,21 +170,8 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label class="col-form-label">Additional Information <span
-                                        class="text-danger">*</span></label>
-                                <textarea rows="4" class="form-control" [class.invalid]="
-                    locationForm.get('additionalInformation').invalid &&
-                    locationForm.get('additionalInformation').touched
-                    " formControlName="additionalInformation"></textarea>
-                                <div *ngIf="
-                                locationForm.get('additionalInformation').invalid &&
-                                locationForm.get('additionalInformation').touched
-                    ">
-                                    <small *ngIf="
-                                    locationForm.get('additionalInformation').invalid &&
-                                    locationForm.get('additionalInformation').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
+                                <label class="col-form-label">Additional Information </label>
+                                <textarea rows="4" class="form-control" formControlName="additionalInformation"></textarea>  
                             </div>
                         </div>
                     </div>

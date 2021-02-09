@@ -80,6 +80,10 @@ export class SetupService {
     return this.apiService.post("/hrmsetup/delete/academic/grade", payload);
   }
 
+  downloadAcademicGrade() {
+    return this.apiService.getDownload("/hrmsetup/download/academic/grades");
+  }
+
   getAcademicQualification() {
     return this.apiService.get("/hrmsetup/get/all/academic/qualifications");
   }
@@ -90,7 +94,7 @@ export class SetupService {
       payload
     );
   }
-
+  
   uploadAcademicQualification(payload: FormData) {
     return this.apiService.post(
       "/hrmsetup/upload/academic/qualification",
@@ -103,6 +107,10 @@ export class SetupService {
       "/hrmsetup/delete/academic/qualification",
       payload
     );
+  }
+  
+  downloadAcademicQualification() {
+    return this.apiService.getDownload("/hrmsetup/download/academic/qualifications");
   }
 
   getEmploymentLevel() {
@@ -340,6 +348,9 @@ export class SetupService {
 
   deleteProfCert(payload: Object) {
     return this.apiService.post("/hrmsetup/delete/prof_certification", payload);
+  }
+  downloadProfCert() {
+    return this.apiService.getDownload("/hrmsetup/download/prof_certifications");
   }
 
   getProfMems() {
