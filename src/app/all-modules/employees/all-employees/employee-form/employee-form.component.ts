@@ -4,6 +4,7 @@ import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 import { ImageCroppedEvent, base64ToFile } from "ngx-image-cropper";
 import { EmployeeService } from "src/app/services/employee.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 declare const $: any;
 @Component({
   selector: "app-employee-form",
@@ -34,7 +35,7 @@ export class EmployeeFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private employeeService: EmployeeService
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -184,6 +185,7 @@ export class EmployeeFormComponent implements OnInit {
 
   addEmployeeToHrm(EmployeeForm: FormGroup) {
     let payload = EmployeeForm.value;
+    console.log(payload);
 
     // validations to check if the form fields have value
     if (!payload.firstName) {
@@ -212,12 +214,12 @@ export class EmployeeFormComponent implements OnInit {
     if (!payload.email) {
       return swal.fire("Error", "Email is required", "error");
     }
-    if (!payload.countryId) {
+    /* if (!payload.countryId) {
       return swal.fire("Error", "Country is required", "error");
     }
     if (!payload.stateId) {
       return swal.fire("Error", "State is required", "error");
-    }
+    } */
     if (!payload.staffOfficeId) {
       return swal.fire("Error", "Office/Department is required", "error");
     }
@@ -259,6 +261,8 @@ export class EmployeeFormComponent implements OnInit {
       formData.append(key, EmployeeForm.get(key).value);
     }
     formData.append("dateOfJoin", new Date().toLocaleDateString("en-CA"));
+    formData.append("countryId", "403");
+    formData.append("stateId", "26");
 
     this.loading = true;
     return this.setupService
@@ -385,6 +389,7 @@ export class EmployeeFormComponent implements OnInit {
 
   fileChangeEvent(event: any): void {
     this.imageChangedEvent = event;
+    this.utilitiesService.uploadFileValidator(event, this.EmployeeForm);
   }
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;
@@ -392,6 +397,11 @@ export class EmployeeFormComponent implements OnInit {
       event.base64,
       this.imageChangedEvent.target.files[0].name
     );
+
+    // Appends profile photo to form
+    this.EmployeeForm.patchValue({
+      photoFile: this.image,
+    });
     return this.image;
   }
   imageLoaded() {
