@@ -83,21 +83,10 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="col-form-label">Description<span class="text-danger">*</span></label>
-            <textarea class="form-control" type="text" rows="5" [class.invalid]="
-                      highSchoolForm.get('description').invalid &&
-                      highSchoolForm.get('description').touched
-                    " formControlName="description"></textarea>
-            <div *ngIf="
-                      highSchoolForm.get('description').invalid &&
-                      highSchoolForm.get('description').touched
-                    ">
-              <small *ngIf="
-                        highSchoolForm.get('description').invalid &&
-                        highSchoolForm.get('description').touched
-                      " class="text-danger"> *Description is required</small>
-            </div>
+            <label class="col-form-label">Description</label>
+            <textarea class="form-control" type="text" rows="5" formControlName="description"></textarea>
           </div>
+
           <div class="submit-section">
             <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
               <span *ngIf="!spinner">Submit</span>

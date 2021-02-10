@@ -50,37 +50,10 @@ export class AcademicQualificationComponent implements OnInit {
   }
 
   downloadFile() {
-    this.setupService
-      .exportExcelFile("/hrmsetup/download/academic/qualifications")
-      .subscribe(
+    this.setupService.downloadAcademicQualification().subscribe(
         (resp) => {
           const data = resp;
-          if (data != undefined) {
-            const byteString = atob(data);
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-              ia[i] = byteString.charCodeAt(i);
-            }
-            const bb = new Blob([ab]);
-            try {
-              const file = new File([bb], "Academic Qualification.xlsx", {
-                type: "application/vnd.ms-excel",
-              });
-
-              saveAs(file);
-            } catch (err) {
-              const textFileAsBlob = new Blob([bb], {
-                type: "application/vnd.ms-excel",
-              });
-              window.navigator.msSaveBlob(
-                textFileAsBlob,
-                "Deposit Category.xlsx"
-              );
-            }
-          } else {
-            return swal.fire(`GOS HRM`, "Unable to download data", "error");
-          }
+          this.utilitiesService.byteToFile(data,"AcademicQualification.xlsx");
         },
         (err) => {}
       );
@@ -96,7 +69,7 @@ export class AcademicQualificationComponent implements OnInit {
       this.academicQualificationUploadForm.get("uploadInput").value
     );
     this.spinner = true;
-    return this.setupService.uploadAcademicDiscipline(formData).subscribe(
+    return this.setupService.uploadAcademicQualification(formData).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;

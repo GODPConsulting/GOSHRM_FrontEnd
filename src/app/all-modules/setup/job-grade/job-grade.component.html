@@ -158,20 +158,8 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label class="col-form-label">Description <span class="text-danger">*</span></label>
-                                <textarea rows="5" class="form-control" [class.invalid]="
-                    jobGradeForm.get('description').invalid &&
-                    jobGradeForm.get('description').touched
-                    " formControlName="description"></textarea>
-                                <div *ngIf="
-                                jobGradeForm.get('description').invalid &&
-                                jobGradeForm.get('description').touched
-                    ">
-                                    <small *ngIf="
-                                    jobGradeForm.get('description').invalid &&
-                                    jobGradeForm.get('description').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
+                                <label class="col-form-label">Description </label>
+                                <textarea rows="5" class="form-control"  formControlName="description"></textarea>
                             </div>
                         </div>
                     </div>

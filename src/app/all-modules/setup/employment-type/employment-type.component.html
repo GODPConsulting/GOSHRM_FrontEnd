@@ -84,20 +84,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label">Description<span class="text-danger">*</span></label>
-                        <textarea class="form-control" type="text" rows="5" [class.invalid]="
-                                employmentTypeForm.get('description').invalid &&
-                                employmentTypeForm.get('description').touched
-                    " formControlName="description"></textarea>
-                        <div *ngIf="
-                                employmentTypeForm.get('description').invalid &&
-                                employmentTypeForm.get('description').touched
-                    ">
-                            <small *ngIf="
-                                    employmentTypeForm.get('description').invalid &&
-                                    employmentTypeForm.get('description').touched
-                      " class="text-danger"> *Description is required</small>
-                        </div>
+                        <label class="col-form-label">Description</label>
+                        <textarea class="form-control" type="text" rows="5" formControlName="description"></textarea>
                     </div>
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadEmploymentType()"
