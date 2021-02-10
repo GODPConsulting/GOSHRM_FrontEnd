@@ -1,4 +1,5 @@
 import { AfterViewChecked, Component, OnInit } from "@angular/core";
+import { DataService } from "src/app/data.service";
 import { EmployeeService } from "src/app/services/employee.service";
 
 declare const $: any;
@@ -13,7 +14,10 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   public pageLoading: boolean;
   public list: boolean = true;
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(
+    private employeeService: EmployeeService,
+    private dataService: DataService
+  ) {}
 
   ngOnInit() {
     this.loadEmployees();
@@ -55,6 +59,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
         this.pageLoading = false;
 
         this.employeesList = data.employeeList;
+        this.dataService.shareAllUsers(this.employeesList);
       },
       (err) => {
         this.pageLoading = false;

@@ -1,10 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 import { ImageCroppedEvent, base64ToFile } from "ngx-image-cropper";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { Router } from "@angular/router";
 declare const $: any;
 @Component({
   selector: "app-employee-form",
@@ -12,6 +13,8 @@ declare const $: any;
   styleUrls: ["./employee-form.component.css"],
 })
 export class EmployeeFormComponent implements OnInit {
+  @ViewChild("fileInput")
+  fileInput: ElementRef;
   imageChangedEvent: any = "";
   croppedImage: any = "";
   EmployeeForm: FormGroup;
@@ -31,11 +34,13 @@ export class EmployeeFormComponent implements OnInit {
   loading: boolean;
   image: any;
   allJobGrades$ = this.setupService.getJobGrades();
+  isVisible: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +79,10 @@ export class EmployeeFormComponent implements OnInit {
       photoFile: [""],
       jobGrade: [""],
     });
+    // Resets the photo input field of the form
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = "";
+    }
   }
 
   /*   // Submits form to HRM and ERP endpoints
@@ -188,7 +197,7 @@ export class EmployeeFormComponent implements OnInit {
     console.log(payload);
 
     // validations to check if the form fields have value
-    if (!payload.firstName) {
+    /*  if (!payload.firstName) {
       // if first name is empty string, undefined or null
 
       return swal.fire("Error", "First Name is required", "error");
@@ -214,12 +223,12 @@ export class EmployeeFormComponent implements OnInit {
     if (!payload.email) {
       return swal.fire("Error", "Email is required", "error");
     }
-    /* if (!payload.countryId) {
+    if (!payload.countryId) {
       return swal.fire("Error", "Country is required", "error");
     }
     if (!payload.stateId) {
       return swal.fire("Error", "State is required", "error");
-    } */
+    }
     if (!payload.staffOfficeId) {
       return swal.fire("Error", "Office/Department is required", "error");
     }
@@ -250,7 +259,7 @@ export class EmployeeFormComponent implements OnInit {
     if (!payload.userAccessLevels) {
       return swal.fire("Error", "Access Level is required", "error");
     }
-
+ */
     EmployeeForm.get("dateOfBirth").setValue(
       new Date(EmployeeForm.get("dateOfBirth").value).toLocaleDateString(
         "en-CA"
@@ -261,8 +270,9 @@ export class EmployeeFormComponent implements OnInit {
       formData.append(key, EmployeeForm.get(key).value);
     }
     formData.append("dateOfJoin", new Date().toLocaleDateString("en-CA"));
-    formData.append("countryId", "403");
-    formData.append("stateId", "26");
+    formData.set("countryId", "403");
+    formData.set("stateId", "26");
+    formData.set("accessLevel", "1");
 
     this.loading = true;
     return this.setupService
@@ -275,7 +285,7 @@ export class EmployeeFormComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("Success", message, "success");
             this.initializeForm();
-            // $("#add_employee_form").modal("hide");
+            this.router.navigateByUrl("employees/employeeviews");
           } else {
             swal.fire("GOSHRM", message, "error");
           }
@@ -387,9 +397,28 @@ export class EmployeeFormComponent implements OnInit {
       );
   }
 
+  clearPhoto() {
+    this.isVisible = false;
+    this.EmployeeForm.get("photoFile").setValue("");
+    // Resets the photo input field of the form
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = "";
+    }
+  }
+
   fileChangeEvent(event: any): void {
+    this.isVisible = true;
     this.imageChangedEvent = event;
     this.utilitiesService.uploadFileValidator(event, this.EmployeeForm);
+
+    if (
+      this.utilitiesService.uploadFileValidator(event, this.EmployeeForm) ===
+      "file valid"
+    ) {
+      $("#crop_photo_modal").modal("show");
+    } else {
+      $("#crop_photo_modal").modal("hide");
+    }
   }
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.base64;

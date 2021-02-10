@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { JwtService } from "../../services/jwt.service";
 import { AuthService } from "../../services/auth.service";
 import swal from "sweetalert2";
+import { DataService } from "src/app/data.service";
 
 @Component({
   selector: "app-login",
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private jwtService: JwtService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dataService: DataService
   ) {}
 
   ngOnInit() {

@@ -122,6 +122,7 @@ export class EmployeeProfileComponent implements OnInit {
     this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
         this.employeeDetails = data.employeeList[0];
+
         console.log(this.employeeDetails);
         this.pageLoading = false;
       },
@@ -383,6 +384,7 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   getUserData() {
+    //refactor this and use data service
     this.authService.getProfile().subscribe((data) => {
       this.currentUser = data.roles;
       this.currentUserId = data.staffId;

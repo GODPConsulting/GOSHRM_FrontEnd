@@ -45,9 +45,10 @@
                       urlComplete.subUrl === 'employeeviews'
                   }">All Employees</a>
               </li>
-              <li routerLink="/employees/employeeprofile/2">
+              <li>
                 <!-- Pass data here -->
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employeeprofile' }">Profile</a>
+                <a [routerLink]='["/employees/employeeprofile/", user.staffId]'
+                  [ngClass]="{ active: urlComplete.subUrl === 'employeeprofile' }">Profile</a>
               </li>
               <li routerLink="/employees/employee-form">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employee-form' }">employee-form</a>
