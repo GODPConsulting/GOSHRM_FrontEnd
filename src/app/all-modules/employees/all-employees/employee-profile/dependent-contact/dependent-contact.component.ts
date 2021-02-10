@@ -11,6 +11,7 @@ declare const $: any;
   styleUrls: ["./dependent-contact.component.css"],
 })
 export class DependentContactComponent implements OnInit {
+  public dtOptions: DataTables.Settings = {};
   employeeDetails: any = {};
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
@@ -40,6 +41,19 @@ export class DependentContactComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
     this.getEmployeeDependentContact(this.staffId);
     this.initDependentContactForm();
     this.getCountry();
@@ -57,7 +71,7 @@ export class DependentContactComponent implements OnInit {
       address: ["", Validators.required],
       countryId: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      Approval_status: ["", Validators.required],
+      approval_status_name: ["", Validators.required],
       staffId: this.staffId,
       // identicationFile: ["", Validators.required],
     });
@@ -123,7 +137,7 @@ export class DependentContactComponent implements OnInit {
       countryId: row.countryId,
       // idIssues: row.idIssues,
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
-      Approval_status: row.Approval_status,
+      approval_status_name: row.approval_status_name,
       staffId: this.staffId,
       dependentContactFile: row.dependentContactFile,
     });

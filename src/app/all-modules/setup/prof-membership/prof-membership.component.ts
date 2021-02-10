@@ -47,40 +47,15 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   downloadFile() {
-    this.setupService
-      .exportExcelFile("/hrmsetup/download/prof_memberships")
-      .subscribe(
-        (resp) => {
-          const data = resp;
-          if (data != undefined) {
-            const byteString = atob(data);
-            const ab = new ArrayBuffer(byteString.length);
-            const ia = new Uint8Array(ab);
-            for (let i = 0; i < byteString.length; i++) {
-              ia[i] = byteString.charCodeAt(i);
-            }
-            const bb = new Blob([ab]);
-            try {
-              const file = new File([bb], "Professional Membership.xlsx", {
-                type: "application/vnd.ms-excel",
-              });
-
-              saveAs(file);
-            } catch (err) {
-              const textFileAsBlob = new Blob([bb], {
-                type: "application/vnd.ms-excel",
-              });
-              window.navigator.msSaveBlob(
-                textFileAsBlob,
-                "Professional Membership.xlsx"
-              );
-            }
-          } else {
-            return swal.fire(`GOS HRM`, "Unable to download data", "error");
-          }
-        },
-        (err) => {}
-      );
+    this.setupService.downloadProfMem().subscribe(
+      (resp) => {
+        const data = resp;
+        this.utilitiesService.byteToFile(data, "Professional Membership.xlsx", {
+          type: "application/vnd.ms-excel",
+        });
+      },
+      (err) => {}
+    );
   }
 
   uploadProfMembership() {

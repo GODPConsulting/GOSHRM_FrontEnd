@@ -6,6 +6,7 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { AuthService } from "src/app/services/auth.service";
+import { SetupService } from "src/app/services/setup.service";
 declare const $: any;
 
 @Component({
@@ -37,6 +38,7 @@ export class EmployeeProfileComponent implements OnInit {
   countries: any[] = [];
   languages: any[] = [];
   grades: any[] = [];
+  qualification: any[] = [];
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -53,7 +55,8 @@ export class EmployeeProfileComponent implements OnInit {
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
     private utilitiesService: UtilitiesService,
-    private authService: AuthService
+    private authService: AuthService,
+    private setupService: SetupService
   ) {}
   initializeForm() {
     this.emergencyContactForm = this.formBuilder.group({
@@ -87,7 +90,7 @@ export class EmployeeProfileComponent implements OnInit {
   initEmployeeQualificationForm() {
     this.employeeQualificationForm = this.formBuilder.group({
       id: [0],
-      certificate: [""],
+      qualificationId: [""],
       institution: [""],
       startDate: [""],
       endDate: [""],
@@ -113,6 +116,7 @@ export class EmployeeProfileComponent implements OnInit {
     this.getSavedEmergencyContact(this.employeeId);
     this.getSavedLanguageRating(this.employeeId);
     this.getSavedEmployeeQualification(this.employeeId);
+    this.getAcademicQualification();
   }
 
   /* Employee profile */
@@ -122,8 +126,6 @@ export class EmployeeProfileComponent implements OnInit {
     this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
         this.employeeDetails = data.employeeList[0];
-
-        console.log(this.employeeDetails);
         this.pageLoading = false;
       },
       (err) => {
@@ -141,12 +143,10 @@ export class EmployeeProfileComponent implements OnInit {
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
 
-    //this.pageLoading = true;
-    this.loading = true;
+    this.pageLoading = true;
     this.employeeService.addEmergencyContact(payload).subscribe(
       (data) => {
-        //this.pageLoading = false;
-        this.loading = false;
+        this.pageLoading = false;
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
           swal.fire("Success", message, "success");
@@ -157,7 +157,7 @@ export class EmployeeProfileComponent implements OnInit {
         }
       },
       (err) => {
-        this.loading = false;
+        this.pageLoading = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -407,8 +407,8 @@ export class EmployeeProfileComponent implements OnInit {
   // EmployeeQualification
   addEmployeeQualification(employeeQualificationForm) {
     const payload = employeeQualificationForm.value;
-    if (!payload.certificate) {
-      return swal.fire("Error!", " Certificate is empty", "error");
+    if (!payload.qualificationId) {
+      return swal.fire("Error!", "Select Qualification", "error");
     }
     if (!payload.institution) {
       return swal.fire("Error!", "Institution is empty", "error");
@@ -469,15 +469,24 @@ export class EmployeeProfileComponent implements OnInit {
     );
   }
 
+  getAcademicQualification() {
+    return this.setupService.getAcademicQualification().subscribe(
+      (data) => {
+        this.qualification = data.setuplist;
+      },
+      (err) => {}
+    );
+  }
+
   editEmployeeQualification(qualification) {
     this.employeeQualificationForm.patchValue({
       id: qualification.id,
-      certificate: qualification.certificate,
+      QualificationId: qualification.qualificationId,
       institution: qualification.institution,
       startDate: qualification.startDate,
       enddate: qualification.enddate,
       gradeId: qualification.gradeId,
-      approvalStatus: qualification.countryId,
+      approvalStatus: qualification.approvalStatus,
       staffId: qualification.staffId,
       qualificationFile: qualification.qualificationFile,
     });

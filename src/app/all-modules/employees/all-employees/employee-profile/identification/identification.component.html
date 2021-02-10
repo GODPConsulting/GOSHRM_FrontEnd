@@ -64,9 +64,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Identification</label>
-                                <input type="text" class="form-control" [class.invalid]="
+                                <select type="text" class="form-control" [class.invalid]="
                                 identificationForm.get('identification').invalid &&
                                 identificationForm.get('identification').touched" formControlName="identification">
+                                    <option selected value="">Identification</option>
+                                    <option *ngFor="let row of identifications" value="{{row.lookupId}}">
+                                        {{row.lookupName}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
                                 identificationForm.get('identification').invalid &&
                                 identificationForm.get('identification').touched

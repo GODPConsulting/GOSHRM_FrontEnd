@@ -11,6 +11,7 @@ declare const $: any;
   styleUrls: ["./hobbies.component.css"],
 })
 export class HobbiesComponent implements OnInit {
+  public dtOptions: DataTables.Settings = {};
   employeeDetails: any = {};
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
@@ -37,6 +38,19 @@ export class HobbiesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+
+      columns: [{ orderable: false }, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
     this.getEmployeeHobby(this.staffId);
     this.initHobbyForm();
   }
@@ -46,14 +60,11 @@ export class HobbiesComponent implements OnInit {
     this.hobbyForm = this.formBuilder.group({
       id: [0],
       hobbyName: ["", Validators.required],
-      description: ["", Validators.required],
       rating: ["", Validators.required],
-      // idExpiry_date: ["", Validators.required],
+      description: ["", Validators.required],
       approvalStatus: ["", Validators.required],
       staffId: this.staffId,
-      // identicationFile: ["", Validators.required],
     });
-    //this.fileInput.nativeElement.value = "";
   }
 
   submitHobbyForm(form: FormGroup) {
@@ -94,14 +105,11 @@ export class HobbiesComponent implements OnInit {
   // Set Values To Edit Modal Form
   edit(row) {
     this.cardFormTitle = "Edit Hobby";
-    //row.idExpiry_date = new Date(row.idExpiry_date).toLocaleDateString("en-CA");
     this.hobbyForm.patchValue({
       id: row.id,
       hobbyName: row.hobbyName,
-      description: row.description,
       rating: row.rating,
-      // idIssues: row.idIssues,
-      // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
+      description: row.description,
       approval_status_name: row.approval_status_name,
       staffId: this.staffId,
       hobbyFile: row.hobbyFile,

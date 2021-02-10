@@ -197,7 +197,7 @@ export class EmployeeFormComponent implements OnInit {
     console.log(payload);
 
     // validations to check if the form fields have value
-    /*  if (!payload.firstName) {
+    if (!payload.firstName) {
       // if first name is empty string, undefined or null
 
       return swal.fire("Error", "First Name is required", "error");
@@ -259,7 +259,7 @@ export class EmployeeFormComponent implements OnInit {
     if (!payload.userAccessLevels) {
       return swal.fire("Error", "Access Level is required", "error");
     }
- */
+
     EmployeeForm.get("dateOfBirth").setValue(
       new Date(EmployeeForm.get("dateOfBirth").value).toLocaleDateString(
         "en-CA"
