@@ -25,7 +25,7 @@ export class EmployeeService {
     );
   }
 
-  postIdentification(payload: Object) {
+  postIdentificationId(payload: Object) {
     return this.apiService.post(
       "/hrm/add/update/employee/identification",
       payload
