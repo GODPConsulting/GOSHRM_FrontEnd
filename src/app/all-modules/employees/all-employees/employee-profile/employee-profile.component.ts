@@ -38,7 +38,7 @@ export class EmployeeProfileComponent implements OnInit {
   countries: any[] = [];
   languages: any[] = [];
   grades: any[] = [];
-  qualification: any[]=[];
+  qualification: any[] = [];
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -384,6 +384,7 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   getUserData() {
+    //refactor this and use data service
     this.authService.getProfile().subscribe((data) => {
       this.currentUser = data.roles;
       this.currentUserId = data.staffId;
@@ -472,8 +473,9 @@ export class EmployeeProfileComponent implements OnInit {
     return this.setupService.getAcademicQualification().subscribe(
       (data) => {
         this.qualification = data.setuplist;
-      },(err) =>{}
-      );  
+      },
+      (err) => {}
+    );
   }
 
   editEmployeeQualification(qualification) {

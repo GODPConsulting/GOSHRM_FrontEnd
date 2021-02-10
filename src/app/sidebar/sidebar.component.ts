@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, Event, NavigationEnd } from "@angular/router";
+import { Router, Event, NavigationEnd, ActivatedRoute } from "@angular/router";
 import { AllModulesService } from "../all-modules/all-modules.service";
+import { DataService } from "../data.service";
 import { JwtService } from "../services/jwt.service";
 
 @Component({
@@ -24,10 +25,14 @@ export class SidebarComponent implements OnInit {
   members = {};
   groups = {};
   userRights: any[] = [];
+  staffId: number;
+  user: any;
+
   constructor(
     private router: Router,
     private allModulesService: AllModulesService,
-    public jwtService: JwtService
+    public jwtService: JwtService,
+    private dataService: DataService
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -58,6 +63,9 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.userRights = this.jwtService.getUserActivities();
+    this.user = this.jwtService.getUserDetails();
+    // share user data through service
+    this.dataService.saveCurrentUser(this.user);
 
     // Slide up and down of menus
     $(document).on("click", "#sidebar-menu a", function (e) {

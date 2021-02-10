@@ -20,7 +20,9 @@ export class UtilitiesService {
     staffId?: number | string
   ) {
     const file = (<HTMLInputElement>event.target).files[0];
-    console.log(file);
+    if (!file) {
+      return swal.fire("GOSHRM", "Please select a valid file format", "error");
+    }
 
     // Acceptable excel formats
     const excelTypes = [
@@ -59,7 +61,7 @@ export class UtilitiesService {
       form.patchValue({
         [(<HTMLInputElement>event.target).name]: file,
       });
-      return file;
+      return "file valid";
     }
   }
 
