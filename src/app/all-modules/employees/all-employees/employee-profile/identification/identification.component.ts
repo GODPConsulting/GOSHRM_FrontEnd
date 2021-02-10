@@ -132,7 +132,7 @@ export class IdentificationComponent implements OnInit {
     }
 
     this.spinner = true;
-    return this.employeeService.postIdentification(formData).subscribe(
+    return this.employeeService.postIdentificationId(formData).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
