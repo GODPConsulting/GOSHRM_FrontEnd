@@ -30,20 +30,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label">Description<span class="text-danger">*</span></label>
-                            <textarea class="form-control" type="text" rows="5" [class.invalid]="
-                                jobTitleForm.get('job_description').invalid &&
-                                jobTitleForm.get('job_description').touched
-                    " formControlName="job_description"> </textarea>
-                            <div *ngIf="
-                                jobTitleForm.get('job_description').invalid &&
-                                jobTitleForm.get('job_description').touched
-                    ">
-                                <small *ngIf="
-                                    jobTitleForm.get('job_description').invalid &&
-                                    jobTitleForm.get('job_description').touched
-                      " class="text-danger"> *Field is required</small>
-                            </div>
+                            <label class="col-form-label">Description</label>
+                            <textarea class="form-control" type="text" rows="5" formControlName="job_description"></textarea>
                         </div>
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">

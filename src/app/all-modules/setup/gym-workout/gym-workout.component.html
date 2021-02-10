@@ -149,20 +149,9 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Comments <span class="text-danger">*</span></label>
-                                <textarea class="form-control" type="text" rows="5" [class.invalid]="
-                                gymWorkoutForm.get('other_comments').invalid &&
-                                gymWorkoutForm.get('other_comments').touched
-                    " formControlName="other_comments"></textarea>
-                                <div *ngIf="
-                                gymWorkoutForm.get('other_comments').invalid &&
-                                gymWorkoutForm.get('other_comments').touched
-                    ">
-                                    <small *ngIf="
-                                    gymWorkoutForm.get('other_comments').invalid &&
-                                    gymWorkoutForm.get('other_comments').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
+                                <label class="col-form-label">Comments</label>
+                                <textarea class="form-control" type="text" rows="5"
+                                    formControlName="other_comments"></textarea>
                             </div>
                         </div>
                     </div>

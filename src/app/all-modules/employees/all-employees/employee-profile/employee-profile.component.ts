@@ -122,7 +122,6 @@ export class EmployeeProfileComponent implements OnInit {
     this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
         this.employeeDetails = data.employeeList[0];
-        console.log(this.employeeDetails);
         this.pageLoading = false;
       },
       (err) => {
@@ -140,12 +139,10 @@ export class EmployeeProfileComponent implements OnInit {
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
 
-    //this.pageLoading = true;
-    this.loading = true;
+    this.pageLoading = true;
     this.employeeService.addEmergencyContact(payload).subscribe(
       (data) => {
-        //this.pageLoading = false;
-        this.loading = false;
+        this.pageLoading = false;
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
           swal.fire("Success", message, "success");
@@ -156,7 +153,7 @@ export class EmployeeProfileComponent implements OnInit {
         }
       },
       (err) => {
-        this.loading = false;
+        this.pageLoading = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
