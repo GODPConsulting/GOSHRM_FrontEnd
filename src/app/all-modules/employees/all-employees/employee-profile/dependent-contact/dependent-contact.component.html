@@ -8,10 +8,10 @@
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
                 <a *ngIf="currentUserId === employeeId" (click)="initDependentContactForm()" class="hint edit-icon mr-1"
                     data-toggle="modal" data-target="#dependent_contact_modal"><span class="hint-text">Add </span><i
-                        class="fa fa-pencil"></i></a>
+                        class="fa fa-plus"></i></a>
             </h3>
             <div class="table-responsive">
-                <table class="table table-nowrap table-hover">
+                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
                     <thead>
                         <tr>
                             <th>
@@ -44,7 +44,7 @@
                             <td>{{row.dateOfBirth}}</td>
                             <td>{{row.address}}</td>
                             <td>{{row.countryId}}</td>
-                            <td>{{row.Approval_status}}</td>
+                            <td>{{row.approval_status_name}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -194,20 +194,21 @@
                             <div class="form-group">
                                 <label>Approval Status</label>
                                 <select class="form-control" [class.invalid]="
-                                dependentContactForm.get('Approval_status').invalid &&
-                                dependentContactForm.get('Approval_status').touched" formControlName="Approval_status">
+                                dependentContactForm.get('approval_status_name').invalid &&
+                                dependentContactForm.get('approval_status_name').touched"
+                                    formControlName="approval_status_name">
                                     <option selected value="">Select Status</option>
                                     <option value="1">Approve</option>
                                     <option value="2">Pending</option>
                                     <option value="3">Decline</option>
                                 </select>
                                 <div *ngIf="
-                                dependentContactForm.get('Approval_status').invalid &&
-                                dependentContactForm.get('Approval_status').touched
+                                dependentContactForm.get('approval_status_name').invalid &&
+                                dependentContactForm.get('approval_status_name').touched
                     ">
                                     <small *ngIf="
-                                    dependentContactForm.get('Approval_status').invalid &&
-                                    dependentContactForm.get('Approval_status').touched
+                                    dependentContactForm.get('approval_status_name').invalid &&
+                                    dependentContactForm.get('approval_status_name').touched
                       " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>
