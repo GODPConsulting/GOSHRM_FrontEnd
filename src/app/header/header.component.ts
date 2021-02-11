@@ -51,6 +51,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Get access to the storeduser data
     this.dataService.currentUser.subscribe((result) => {
       this.user = result;
+      console.log(this.user);
+
       this.getProfilePhoto();
     });
 

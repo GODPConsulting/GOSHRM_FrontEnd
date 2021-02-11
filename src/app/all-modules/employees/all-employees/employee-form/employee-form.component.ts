@@ -345,6 +345,8 @@ export class EmployeeFormComponent implements OnInit {
       .getData("/company/get/all/companystructures")
       .subscribe(
         (data) => {
+          console.log(data);
+
           this.pageLoading = false;
           this.departments = data.companyStructures;
         },
