@@ -14,15 +14,20 @@
     <!-- Page Content -->
     <div class="modal-body">
         <form [formGroup]="EmployeeForm">
+            <label class="col-form-label">Profile photo</label>
             <div class="cropper-flex">
-                <input type="file" (change)="fileChangeEvent($event)" class="crop-img-input" />
-                <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" format="png"
-                    (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                    (loadImageFailed)="loadImageFailed()"></image-cropper>
-                <div class="cropped-img-container">
-                    <img [src]="croppedImage" class="cropped-img" />
+                <div>
+                    <input type="file" (change)="fileChangeEvent($event)" #fileInput class="crop-img-input"
+                        name="photoFile" />
+                    <button *ngIf='isVisible' type="button" class="edit-icon ml-5 hint" (click)="clearPhoto()">
+                        <span aria-hidden="true" class="h4 font-weight-bold text-dark">&times;</span>
+                        <span class="hint-text">Remove photo</span>
+                    </button>
                 </div>
                 <!--            <button class="crop-img-btn" (click)="uploadImage()">Upload</button>-->
+                <div class="cropped-img-container" data-toggle="modal" data-target="#crop_photo_modal">
+                    <img *ngIf='isVisible' [src]="croppedImage" class="cropped-img" />
+                </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">
@@ -355,3 +360,28 @@
         </form>
     </div>
 </div>
+<!-- Crop photo Modal -->
+<div id="crop_photo_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Crop Photo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body modal-dialog-centered">
+                <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" format="png"
+                    (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+                    (loadImageFailed)="loadImageFailed()"></image-cropper>
+                <div class="cropped-img-container">
+                    <img [src]="croppedImage" class="cropped-img" />
+                </div>
+            </div>
+            <div class="submit-section  mt-0 mb-3">
+                <button class="btn btn-primary submit-btn" type="button" data-dismiss="modal">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Crop photo Modal -->

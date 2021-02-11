@@ -1,6 +1,5 @@
 <!-- Header -->
 <div class="header">
-
     <!-- Logo -->
     <div class="header-left">
         <a [routerLink]="['/dashboard']" class="logo">
@@ -8,7 +7,6 @@
         </a>
     </div>
     <!-- /Logo -->
-
     <a id="toggle_btn">
         <span class="bar-icon">
             <span></span>
@@ -16,15 +14,12 @@
             <span></span>
         </span>
     </a>
-
     <!-- Header Title -->
     <div class="page-title-box">
         <h3>GOS HRM</h3>
     </div>
     <!-- /Header Title -->
-
     <a id="mobile_btn" class="mobile_btn" href="javascript:"><i class="fa fa-bars"></i></a>
-
     <!-- Header Menu -->
     <ul class="nav user-menu">
         <!-- Search -->
@@ -40,7 +35,6 @@
             </div>
         </li>
         <!-- /Search -->
-
         <!-- Flag -->
         <li class="nav-item dropdown has-arrow flag-nav">
             <a href="javascript:" class="nav-link dropdown-toggle" data-toggle="dropdown">
@@ -48,21 +42,16 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item">
-                    <img src="assets/img/flags/us.png" alt="" height="16"> English
-                </a>
+                    <img src="assets/img/flags/us.png" alt="" height="16"> English </a>
                 <a class="dropdown-item">
-                    <img src="assets/img/flags/fr.png" alt="" height="16"> French
-                </a>
+                    <img src="assets/img/flags/fr.png" alt="" height="16"> French </a>
                 <a class="dropdown-item">
-                    <img src="assets/img/flags/es.png" alt="" height="16"> Spanish
-                </a>
+                    <img src="assets/img/flags/es.png" alt="" height="16"> Spanish </a>
                 <a class="dropdown-item">
-                    <img src="assets/img/flags/de.png" alt="" height="16"> German
-                </a>
+                    <img src="assets/img/flags/de.png" alt="" height="16"> German </a>
             </div>
         </li>
         <!-- /Flag -->
-
         <!-- Notifications -->
         <li class="nav-item dropdown">
             <a href="javascript:" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -82,8 +71,8 @@
                                         <img alt="" src="assets/img/profiles/avatar-0{{i+ 1}}.jpg">
                                     </span>
                                     <div class="media-body">
-                                        <p class="noti-details"><span class="noti-title">{{ item.author }}</span>
-                                            {{ item.function }} <span class="noti-title">{{ item.message }}</span></p>
+                                        <p class="noti-details"><span class="noti-title">{{ item.author }}</span> {{
+                                            item.function }} <span class="noti-title">{{ item.message }}</span></p>
                                         <p class="noti-time"><span class="notification-time">{{ item.time }}</span></p>
                                     </div>
                                 </div>
@@ -97,7 +86,6 @@
             </div>
         </li>
         <!-- /Notifications -->
-
         <!-- Message Notifications -->
         <li class="nav-item dropdown">
             <a href="javascript:" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -135,10 +123,9 @@
             </div>
         </li>
         <!-- /Message Notifications -->
-
         <li class="nav-item dropdown has-arrow main-drop">
             <a href="javascript:" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <span class="user-img"><img src="assets/img/profiles/avatar-021.jpg" alt="">
+                <span class="user-img"><img src="{{userPhoto}}" alt="">
                     <span class="status online"></span></span>
                 <span>Admin</span>
             </a>
@@ -150,7 +137,6 @@
         </li>
     </ul>
     <!-- /Header Menu -->
-
     <!-- Mobile Menu -->
     <div class="dropdown mobile-user-menu">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
@@ -162,6 +148,5 @@
         </div>
     </div>
     <!-- /Mobile Menu -->
-
 </div>
 <!-- /Header -->

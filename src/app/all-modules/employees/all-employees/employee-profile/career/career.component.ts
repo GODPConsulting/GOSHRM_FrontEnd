@@ -29,6 +29,9 @@ export class CareerComponent implements OnInit {
   public jobGrades: any[] = [];
   public jobTitles: any[] = [];
   public offices: any[] = [];
+  public jobTitles: any[] = [];
+  public employmentTypes: any[] = [];
+  public employeesList: any = [];
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
@@ -70,6 +73,8 @@ export class CareerComponent implements OnInit {
     this.getJobTitle();
     this.getLocation();
     this.getStaffDepartments();
+    this.loadEmployees();
+    this.getEmploymentType();
     
 
     this.getJobTitle();
@@ -123,6 +128,34 @@ export class CareerComponent implements OnInit {
         this.pageLoading = false;
 
         this.jobTitles = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+      }
+    );
+  }
+
+  getEmploymentType() {
+    this.pageLoading = true;
+    return this.setupService.getEmploymentType().subscribe(
+      (data) => {
+        this.pageLoading = false;
+
+        this.employmentTypes = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+      }
+    );
+  }
+
+  loadEmployees() {
+    this.pageLoading = true;
+    this.employeeService.getEmployees().subscribe(
+      (data) => {
+        this.pageLoading = false;
+
+        this.employeesList = data.employeeList;
       },
       (err) => {
         this.pageLoading = false;
@@ -215,8 +248,8 @@ export class CareerComponent implements OnInit {
       job_type: row.job_type,
       countryId: row.countryId,
       locationId: row.locationId,
-      office: row.office,
-      line_Manager: row.line_Manager,
+      office: row.officeName,
+      line_Manager: row.line_ManagerName,
       first_Level_Reviewer: row.first_Level_Reviewer,
       second_Level_Reviewer: row.second_Level_Reviewer,
       third_Level_Reviewer: row.third_Level_Reviewer,

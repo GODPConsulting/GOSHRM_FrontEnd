@@ -432,6 +432,7 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   getUserData() {
+    //refactor this and use data service
     this.authService.getProfile().subscribe((data) => {
       this.currentUser = data.roles;
       this.currentUserId = data.staffId;
@@ -520,7 +521,12 @@ export class EmployeeProfileComponent implements OnInit {
     return this.setupService.getAcademicQualification().subscribe(
       (data) => {
         this.qualification = data.setuplist;
+<<<<<<< HEAD
       }, (err) => { }
+=======
+      },
+      (err) => {}
+>>>>>>> dev
     );
   }
 

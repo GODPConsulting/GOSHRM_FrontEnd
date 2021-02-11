@@ -33,7 +33,8 @@
                     <!-- <h6 class="text-muted">{{employeeDetails.jobTitleName}}</h6> -->
                     <small class="text-muted">{{ employeeDetails.jobTitleName }}</small>
                     <div class="staff-id"> Staff Code : {{ employeeDetails.staffCode }} </div>
-                    <div class="small doj text-muted"> Date of Join : 1st Jan 2013(unavailable) </div>
+                    <div class="small doj text-muted"> Date of Join : {{ employeeDetails.dateOfJoin | date
+                      :'mediumDate'}} </div>
                     <div class="staff-msg">
                       <a class="btn btn-custom" routerLink="/apps/chat">Send Message</a>
                     </div>

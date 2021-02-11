@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EmployeeService } from "src/app/services/employee.service";
+import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 declare const $: any;
@@ -15,6 +16,7 @@ export class IdentificationComponent implements OnInit {
   pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   public selectedId: number[] = [];
+  public identifications: any[] = [];
   identificationForm: FormGroup;
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -27,11 +29,13 @@ export class IdentificationComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private setupService: SetupService,
     private employeeService: EmployeeService,
     private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
+    this.getIdentification();
     this.initIdentificationForm();
     this.getEmployeeIdentification(this.staffId);
     this.dtOptions = {
@@ -81,7 +85,7 @@ export class IdentificationComponent implements OnInit {
     this.cardFormTitle = "Add Identification";
     this.identificationForm = this.formBuilder.group({
       id: [0],
-      identification: ["", Validators.required],
+      IdentificationId: ["", Validators.required],
       identification_number: ["", Validators.required],
       idIssues: ["", Validators.required],
       idExpiry_date: ["", Validators.required],
@@ -100,7 +104,7 @@ export class IdentificationComponent implements OnInit {
     this.cardFormTitle = "Edit Identification";
     this.identificationForm.patchValue({
       id: row.id,
-      identification: row.identification,
+      IdentificationId: row.identificationName,
       identification_number: row.identification_number,
       idIssues: row.idIssues,
       idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
@@ -128,7 +132,7 @@ export class IdentificationComponent implements OnInit {
     }
 
     this.spinner = true;
-    return this.employeeService.postIdentification(formData).subscribe(
+    return this.employeeService.postIdentificationId(formData).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
@@ -157,6 +161,19 @@ export class IdentificationComponent implements OnInit {
         this.spinner = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
+      }
+    );
+  }
+
+  getIdentification() {
+    this.pageLoading = true;
+    return this.setupService.getData("/common/identifications").subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.identifications = data.commonLookups;
+      },
+      (err) => {
+        this.pageLoading = false;
       }
     );
   }

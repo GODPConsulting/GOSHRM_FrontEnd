@@ -41,8 +41,8 @@
                             <td>{{row.job_type}}</td>
                             <td>{{row.countryId}}</td>
                             <td>{{row.locationId}}</td>
-                            <td>{{row.office}}</td>
-                            <td>{{row.line_Manager}}</td>
+                            <td>{{row.officeName}}</td>
+                            <td>{{row.line_ManagerName}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -111,9 +111,14 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Job Type</label>
-                                <input type="text" class="form-control" [class.invalid]="
+                                <select type="text" class="form-control" [class.invalid]="
                                 careerForm.get('job_type').invalid &&
                                 careerForm.get('job_type').touched" formControlName="job_type">
+                                    <option selected value="">Job Type</option>
+                                    <option *ngFor="let row of employmentTypes; let i = index" value="{{row.id}}">
+                                        {{row.employment_type}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
                                 careerForm.get('job_type').invalid &&
                                 careerForm.get('job_type').touched
@@ -199,7 +204,8 @@
                                 careerForm.get('line_Manager').invalid &&
                                 careerForm.get('line_Manager').touched" formControlName="line_Manager">
                                     <option selected value="">line Manager</option>
-                                    <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
+                                    <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
+                                        {{row.firstName}} {{row.lastName}}
                                     </option>
                                 </select>
                                 <div *ngIf="
@@ -221,7 +227,8 @@
                                 careerForm.get('first_Level_Reviewer').invalid &&
                                 careerForm.get('first_Level_Reviewer').touched" formControlName="first_Level_Reviewer">
                                     <option selected value="">First Level Reviewer</option>
-                                    <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
+                                    <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
+                                        {{row.firstName}} {{row.lastName}}
                                     </option>
                                 </select>
                                 <div *ngIf="
@@ -244,7 +251,8 @@
                                 careerForm.get('second_Level_Reviewer').touched"
                                     formControlName="second_Level_Reviewer">
                                     <option selected value="">Second Level Reviewer</option>
-                                    <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
+                                    <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
+                                        {{row.firstName}} {{row.lastName}}
                                     </option>
                                 </select>
                                 <div *ngIf="
@@ -266,7 +274,8 @@
                                 careerForm.get('third_Level_Reviewer').invalid &&
                                 careerForm.get('third_Level_Reviewer').touched" formControlName="third_Level_Reviewer">
                                     <option selected value="">Third Level Reviewer</option>
-                                    <option *ngFor="let row of levels " value="{{row.companyStructureId}}">{{row.name}}
+                                    <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
+                                        {{row.firstName}} {{row.lastName}}
                                     </option>
                                 </select>
                                 <div *ngIf="

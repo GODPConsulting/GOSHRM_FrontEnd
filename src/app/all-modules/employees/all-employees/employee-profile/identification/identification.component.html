@@ -35,7 +35,7 @@
                                     (change)="addItemId($event, row.id)" />
                             </td>
                             <td>{{i +1}}</td>
-                            <td>{{row.identification}}</td>
+                            <td>{{row.identificationName}}</td>
                             <td>{{row.identification_number}}</td>
                             <td>{{row.idIssues}}</td>
                             <td>{{row.idExpiry_date | date :"mediumDate"}}</td>
@@ -64,16 +64,21 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Identification</label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                identificationForm.get('identification').invalid &&
-                                identificationForm.get('identification').touched" formControlName="identification">
+                                <select type="text" class="form-control" [class.invalid]="
+                                identificationForm.get('IdentificationId').invalid &&
+                                identificationForm.get('IdentificationId').touched" formControlName="IdentificationId">
+                                    <option selected value="">Identification</option>
+                                    <option *ngFor="let row of identifications" value="{{row.lookupId}}">
+                                        {{row.lookupName}}
+                                    </option>
+                                </select>
                                 <div *ngIf="
-                                identificationForm.get('identification').invalid &&
-                                identificationForm.get('identification').touched
+                                identificationForm.get('IdentificationId').invalid &&
+                                identificationForm.get('IdentificationId').touched
                     ">
                                     <small *ngIf="
-                                    identificationForm.get('identification').invalid &&
-                                    identificationForm.get('identification').touched
+                                    identificationForm.get('IdentificationId').invalid &&
+                                    identificationForm.get('IdentificationId').touched
                       " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>

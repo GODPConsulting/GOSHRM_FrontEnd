@@ -19,12 +19,17 @@ import { ProfCertificationComponent } from "./prof-certification/prof-certificat
 import { JobSkillComponent } from "./job-skill/job-skill.component";
 import { LocationComponent } from "./location/location.component";
 import { HospitalManagementComponent } from "./hospital-management/hospital-management.component";
+import { EmployeeIdFormatComponent } from "./employee-id-format/employee-id-format.component";
 
 const routes: Routes = [
   {
     path: "",
     component: SetupComponent,
     children: [
+      {
+        path: "employee-id-format",
+        component: EmployeeIdFormatComponent,
+      },
       {
         path: "language",
         component: LanguageComponent,

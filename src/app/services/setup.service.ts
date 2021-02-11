@@ -39,6 +39,21 @@ export class SetupService {
     );
   }
 
+  getEmployeeIdFormat() {
+    return this.apiService.get("/hrmsetup/get/all/identity-formats");
+  }
+
+  addEmployeeIdFormat(payload: any) {
+    return this.apiService.post(
+      "/hrmsetup/add/update/identity-format",
+      payload
+    );
+  }
+
+  deleteIdFormat(payload: object) {
+    return this.apiService.post("/hrmsetup/delete/identity-format", payload);
+  }
+
   getAcademicDisplines() {
     return this.apiService.get("/hrmsetup/get/all/academic/disciplines");
   }
@@ -94,7 +109,7 @@ export class SetupService {
       payload
     );
   }
-  
+
   uploadAcademicQualification(payload: FormData) {
     return this.apiService.post(
       "/hrmsetup/upload/academic/qualification",
@@ -108,9 +123,11 @@ export class SetupService {
       payload
     );
   }
-  
+
   downloadAcademicQualification() {
-    return this.apiService.getDownload("/hrmsetup/download/academic/qualifications");
+    return this.apiService.getDownload(
+      "/hrmsetup/download/academic/qualifications"
+    );
   }
 
   getEmploymentLevel() {
@@ -358,7 +375,9 @@ export class SetupService {
     return this.apiService.post("/hrmsetup/delete/prof_certification", payload);
   }
   downloadProfCert() {
-    return this.apiService.getDownload("/hrmsetup/download/prof_certifications");
+    return this.apiService.getDownload(
+      "/hrmsetup/download/prof_certifications"
+    );
   }
 
   getProfMems() {

@@ -3,6 +3,8 @@ import { FormGroup } from "@angular/forms";
 import { NavigationEnd, Router } from "@angular/router";
 import { HeaderService } from "./header.service";
 import { AuthService } from "../services/auth.service";
+import { DataService } from "../data.service";
+import { EmployeeService } from "../services/employee.service";
 
 @Component({
   selector: "app-header",
@@ -18,11 +20,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   messagesData: any;
   user: any = {};
   mySubscription: any;
+  allUsers: any;
+  userPhoto: any;
 
   constructor(
     private headerService: HeaderService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private dataService: DataService,
+    private employeeService: EmployeeService
   ) {
     // This solves the issue of not being able to navigate to user profile when on another profile (Method 2)
     // Working but reloads all components on the view
@@ -41,7 +47,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // this.getDatas("notification");
     // this.getDatas("message");
-    this.getUserData();
+
+    // Get access to the storeduser data
+    this.dataService.currentUser.subscribe((result) => {
+      this.user = result;
+      console.log(this.user);
+
+      this.getProfilePhoto();
+    });
+
     this.notifications = [
       {
         message: "Patient appointment booking",
@@ -138,10 +152,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.clearSession();
   }
 
-  getUserData() {
-    this.authService.getProfile().subscribe((data) => {
-      this.user = data;
-      console.log(this.user);
+  //To get profile photo of the signedin user
+  getProfilePhoto() {
+    this.employeeService.getEmployees().subscribe((data) => {
+      this.allUsers = data.employeeList;
+      // loop and check if the email is the same then get the photo
+      for (const key of this.allUsers) {
+        if (key.email === this.user.email) {
+          this.userPhoto = key.photo;
+        }
+      }
     });
   }
 

@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: 1px 1px 2px #00000033;
 }
 .crop-img-input {
   margin-bottom: 10px;
@@ -13,6 +14,9 @@ image-cropper {
   width: 300px;
   padding: 10px;
   border-radius: 50%;
+}
+.cropper-flex .cropped-img-container {
+  width: 180px;
 }
 .cropped-img {
   width: 100%;
