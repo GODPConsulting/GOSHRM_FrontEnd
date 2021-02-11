@@ -91,15 +91,13 @@ export class CareerComponent implements OnInit {
       job_type: ["", Validators.required],
       countryId: ["", Validators.required],
       locationId: ["", Validators.required],
-      office: ["", Validators.required],
-      line_Manager: ["", Validators.required],
-      first_Level_Reviewer: ["", Validators.required],
-      second_Level_Reviewer: ["", Validators.required],
-      third_Level_Reviewer: ["", Validators.required],
-      start_month: ["", Validators.required],
-      start_year: ["", Validators.required],
-      end_month: ["", Validators.required],
-      end_year: ["", Validators.required],
+      officeId: ["", Validators.required],
+      line_ManagerId: ["", Validators.required],
+      first_Level_ReviewerId: ["", Validators.required],
+      second_Level_ReviewerId: ["", Validators.required],
+      third_Level_ReviewerId: ["", Validators.required],
+      startDate: ["", Validators.required],
+      endDate: ["", Validators.required],
       approval_status: ["", Validators.required],
       staffId: this.staffId,
       // identicationFile: ["", Validators.required],
@@ -173,7 +171,11 @@ export class CareerComponent implements OnInit {
     payload.locationId = +payload.locationId;
     payload.job_GradeId = +payload.job_GradeId;
     payload.job_titleId = +payload.job_titleId;
-    
+    payload.officeId = +payload.officeId;
+    payload.line_ManagerId = +payload.line_ManagerId;
+    payload.first_Level_ReviewerId = +payload.first_Level_ReviewerId;
+    payload.second_Level_ReviewerId = +payload.second_Level_ReviewerId;
+    payload.third_Level_ReviewerId = +payload.third_Level_ReviewerId;
 
     this.spinner = true;
     return this.employeeService.postCareer(payload).subscribe(
@@ -247,15 +249,13 @@ export class CareerComponent implements OnInit {
       job_type: row.job_type,
       countryId: row.countryId,
       locationId: row.locationId,
-      office: row.officeName,
-      line_Manager: row.line_ManagerName,
-      first_Level_Reviewer: row.first_Level_Reviewer,
-      second_Level_Reviewer: row.second_Level_Reviewer,
-      third_Level_Reviewer: row.third_Level_Reviewer,
-      start_month: row.start_month,
-      start_year: row.start_year,
-      end_month: row.end_month,
-      end_year: row.end_year,
+      officeId: row.officeName,
+      line_ManagerId: row.line_ManagerName,
+      first_Level_ReviewerId: row.first_Level_ReviewerId,
+      second_Level_ReviewerId: row.second_Level_ReviewerId,
+      third_Level_ReviewerId: row.third_Level_ReviewerId,
+      startDate: row.startDate,
+      endDate: row.endDate,
       approval_status_name: row.approval_status_name,
       staffId: this.staffId,
       careerFile: row.careerFile,
