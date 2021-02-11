@@ -8614,3 +8614,7 @@ rating span {
     max-width: 900px;
   }
 }
+
+.avatar > img {
+  height: 80px;
+}
