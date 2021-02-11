@@ -60,6 +60,8 @@
           <li *ngIf="userRights.includes('general setup')" class="submenu" [ngClass]="{
               active:
               (urlComplete.mainUrl === 'setup' &&
+              urlComplete.subUrl === 'employee-id-format')||
+              (urlComplete.mainUrl === 'setup' &&
               urlComplete.subUrl === 'job-grade') ||
             (urlComplete.mainUrl === 'setup' &&
               urlComplete.subUrl === 'high-school-subjects') ||
@@ -108,6 +110,8 @@
             <a href="javascript:" [ngClass]="{
                 subdrop:
                 (urlComplete.mainUrl === 'setup' &&
+              urlComplete.subUrl === 'employee-id-format')||
+                (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'job-grade') ||
                   (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'high-school-subjects') ||
@@ -147,6 +151,8 @@
               <span class="menu-arrow"></span></a>
             <ul style="display: none;" [ngStyle]="{
                 display:
+                (urlComplete.mainUrl === 'setup' &&
+              urlComplete.subUrl === 'employee-id-format')||
                 (urlComplete.mainUrl === 'setup' &&
                 urlComplete.subUrl === 'job-grade') ||
               (urlComplete.mainUrl === 'setup' &&
@@ -194,6 +200,11 @@
                     ? 'block'
                     : 'none'
               }">
+              <li routerLink="/setup/employee-id-format">
+                <a href="javascript:" [ngClass]="{
+                  active:
+                    urlComplete.subUrl === 'employee-id-format'}">Employee ID Format</a>
+              </li>
               <li routerLink="/setup/job-grade">
                 <a href="javascript:" [ngClass]="{
                   active:
