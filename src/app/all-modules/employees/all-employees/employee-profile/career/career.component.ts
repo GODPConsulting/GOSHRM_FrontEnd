@@ -294,10 +294,13 @@ export class CareerComponent implements OnInit {
         showCancelButton: true,
         confirmButtonText: "Yes!",
       })
+      
       .then((result) => {
         if (result.value) {
+          this.spinner = true;
           return this.employeeService.deleteCareer(payload).subscribe(
             (res) => {
+              
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
