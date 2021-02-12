@@ -403,6 +403,11 @@ export class SetupService {
     return this.apiService.getDownload("/hrmsetup/download/prof_memberships");
   }
 
+  getStaffDepartments() {
+    return this.apiService.get(`/company/get/all/companystructures`).pipe(tap(data => {
+      return data;
+    }))
+  }
   /*  using xhr method
   upload(path: string, file: File): Promise<any> {
     return this.apiService.uploadExcel(path, file).then((data) => {

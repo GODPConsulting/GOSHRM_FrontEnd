@@ -8618,3 +8618,12 @@ rating span {
 .avatar > img {
   height: 80px;
 }
+
+
+.select-div {
+  margin-top: 20px;
+}
+
+.select-input {
+  width: 300px !important;
+}

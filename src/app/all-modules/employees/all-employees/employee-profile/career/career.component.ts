@@ -29,7 +29,6 @@ export class CareerComponent implements OnInit {
   public jobGrades: any[] = [];
   public jobTitles: any[] = [];
   public offices: any[] = [];
-  public jobTitles: any[] = [];
   public employmentTypes: any[] = [];
   public employeesList: any = [];
   @ViewChild("fileInput")

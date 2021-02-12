@@ -521,12 +521,7 @@ export class EmployeeProfileComponent implements OnInit {
     return this.setupService.getAcademicQualification().subscribe(
       (data) => {
         this.qualification = data.setuplist;
-<<<<<<< HEAD
       }, (err) => { }
-=======
-      },
-      (err) => {}
->>>>>>> dev
     );
   }
 

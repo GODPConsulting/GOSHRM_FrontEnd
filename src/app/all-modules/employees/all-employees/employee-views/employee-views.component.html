@@ -26,11 +26,19 @@
                 </div>
             </div>
         </div>
+        <div class="select-div">
+            <label for="" style="text-transform: capitalize;">Filter by staff office</label>
+            <select name="name" id="companyStructureId" class="form-control select-input" (change)="filterEmployee($event.target.value)">
+                <option value="" selected disabled>--Select Office--</option>
+                <option value="0">All</option>
+                <option *ngFor="let row of companies" [value]="row.companyStructureId"> {{ row.name }} </option>
+            </select>
+        </div>
     </div>
     <!-- /Page Header -->
     <!-- Grid View -->
     <div *ngIf="list" class="row staff-grid-row">
-        <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3" *ngFor="let emp of employeesList;let i = index">
+        <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3" *ngFor="let emp of filteredArray;let i = index">
             <div class="profile-widget">
                 <div class="profile-img">
                     <a [routerLink]="['/employees/employeeprofile/',emp.staffId]" class="avatar"><img
