@@ -1,6 +1,7 @@
 import { AfterViewChecked, Component, OnInit } from "@angular/core";
 import { DataService } from "src/app/data.service";
 import { EmployeeService } from "src/app/services/employee.service";
+import { SetupService } from "src/app/services/setup.service";
 
 declare const $: any;
 @Component({
@@ -12,15 +13,19 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   public dtOptions: DataTables.Settings = {};
   public employeesList: any = [];
   public pageLoading: boolean;
-  public list: boolean = true;
+  public list: boolean = true
+  companies: any[] = [];
+  filteredArray: any[] = [];
 
   constructor(
     private employeeService: EmployeeService,
-    private dataService: DataService
-  ) {}
+    private dataService: DataService,
+    private setupService: SetupService
+  ) { }
 
   ngOnInit() {
     this.loadEmployees();
+    this.getStaffDepartments();
 
     // Determines the structure of the table (Angular Datatables)
     this.dtOptions = {
@@ -59,6 +64,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
         this.pageLoading = false;
 
         this.employeesList = data.employeeList;
+        this.filteredArray = data.employeeList
         this.dataService.shareAllUsers(this.employeesList);
       },
       (err) => {
@@ -72,6 +78,20 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
     this.list = !this.list;
   }
 
+  getStaffDepartments() {
+    return this.setupService.getStaffDepartments().subscribe(data => {
+      this.companies = data.companyStructures;
+    })
+  }
+
+  filterEmployee(id) {
+    if(id == 0) {
+      this.filteredArray = this.employeesList
+    } else {
+      this.filteredArray = this.employeesList.filter(item => item.staffOfficeId == id);
+    }
+    
+  }
   // Disposes the tooltip after the view is changed
   ngAfterViewChecked() {
     $('[data-toggle="tooltip"]').on("click", function () {

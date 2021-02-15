@@ -157,7 +157,11 @@ export class HospitalManagementComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
+    
     const payload = form.value;
+    if (!this.utilitiesService.validateEmail(payload.email)) {
+      return swal.fire('Error', 'Email not valid', 'error')
+    }
     payload.hmoId = +payload.hmoId;
 
     this.spinner = true;

@@ -136,7 +136,9 @@ export class HmoComponent implements OnInit {
       return;
     }
     const payload = form.value;
-
+    if (!this.utilitiesService.validateEmail(payload.contact_email)) {
+      return swal.fire('Error', 'Email not valid', 'error')
+    }
     this.spinner = true;
     return this.setupService.addHmo(payload).subscribe(
       (res) => {

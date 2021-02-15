@@ -114,6 +114,7 @@ export class HospitalComponent implements OnInit {
     }
     const payload = form.value;
     payload.hospitalId = +payload.hospitalId;
+    payload.approvalStatus =+payload.approvalStatus; 
     /*  const formData = new FormData();
     for (const key in form.value) {
       formData.append(key, this.hospitalForm.get(key).value);
@@ -254,8 +255,10 @@ export class HospitalComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading= true;
           return this.employeeService.deleteHospital(payload).subscribe(
             (res) => {
+              this.pageLoading= false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -266,7 +269,7 @@ export class HospitalComponent implements OnInit {
               }
             },
             (err) => {
-              this.spinner = false;
+              this.pageLoading= false;
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

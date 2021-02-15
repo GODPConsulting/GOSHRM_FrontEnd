@@ -140,7 +140,9 @@ export class GymWorkoutComponent implements OnInit {
       return;
     }
     const payload = form.value;
-
+    if (!this.utilitiesService.validateEmail(payload.email)) {
+      return swal.fire('Error', 'Email not valid', 'error')
+    }
     this.spinner = true;
     return this.setupService.addGymWorkout(payload).subscribe(
       (res) => {
