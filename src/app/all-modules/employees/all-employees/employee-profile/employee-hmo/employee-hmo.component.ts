@@ -208,8 +208,10 @@ export class EmployeeHmoComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading = true;
           return this.employeeService.deleteHmo(payload).subscribe(
             (res) => {
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -220,7 +222,7 @@ export class EmployeeHmoComponent implements OnInit {
               }
             },
             (err) => {
-              this.spinner = false;
+              this.pageLoading = false;
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

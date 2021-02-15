@@ -27,8 +27,8 @@ export class CareerComponent implements OnInit {
   public locations: any[] = [];
   public countries: any[] = [];
   public jobGrades: any[] = [];
-  public offices: any[] = [];
   public jobTitles: any[] = [];
+  public offices: any[] = [];
   public employmentTypes: any[] = [];
   public employeesList: any = [];
   @ViewChild("fileInput")
@@ -296,8 +296,10 @@ export class CareerComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading = true;
           return this.employeeService.deleteCareer(payload).subscribe(
             (res) => {
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -307,7 +309,9 @@ export class CareerComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.pageLoading = false;
+            }
           );
         }
       });

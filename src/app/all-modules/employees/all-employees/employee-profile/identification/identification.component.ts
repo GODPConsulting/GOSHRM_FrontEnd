@@ -166,7 +166,7 @@ export class IdentificationComponent implements OnInit {
   }
 
   getIdentification() {
-    this.pageLoading = true;
+   this.pageLoading= true;
     return this.setupService.getData("/common/identifications").subscribe(
       (data) => {
         this.pageLoading = false;
@@ -206,8 +206,10 @@ export class IdentificationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading= true;
           return this.employeeService.deleteIdentification(payload).subscribe(
             (res) => {
+              this.pageLoading= false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -218,7 +220,7 @@ export class IdentificationComponent implements OnInit {
               }
             },
             (err) => {
-              this.spinner = false;
+              this.pageLoading= false;
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }
