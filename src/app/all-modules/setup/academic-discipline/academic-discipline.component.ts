@@ -192,13 +192,11 @@ export class AcademicDisciplineComponent implements OnInit {
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes!",
-        showLoaderOnConfirm: true,
-        preConfirm: (login) => {
-          this.pageLoading = true;
+      })
+      .then((result) => {
+        if (result.value) {
           return this.setupService.deleteAcademicDiscipline(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
-              swal.hideLoading()
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -208,18 +206,8 @@ export class AcademicDisciplineComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {
-              this.pageLoading = false;
-              swal.hideLoading()
-              const message = err.status.message.friendlyMessage;
-              swal.fire("GOSHRM", message, "error")
-            }
+            (err) => {}
           );
-        },
-        
-      }).then((result) => {
-        if (result.isConfirmed) {
-          console.log('hi')
         }
       });
     this.selectedId = [];

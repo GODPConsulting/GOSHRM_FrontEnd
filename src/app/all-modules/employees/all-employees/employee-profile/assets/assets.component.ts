@@ -19,7 +19,6 @@ export class AssetsComponent implements OnInit {
   currentUser: string[] = []; // contains the data of the current user
   currentUserId: number;
   public selectedId: number[] = [];
-  public offices: any[] = [];
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -62,7 +61,7 @@ export class AssetsComponent implements OnInit {
       id: [0],
       employeeName: ["", Validators.required],
       locationId: ["", Validators.required],
-      officeId: ["", Validators.required],
+      office: ["", Validators.required],
       assetName: ["", Validators.required],
       assetNumber: ["", Validators.required],
       description: ["", Validators.required],
@@ -85,7 +84,6 @@ export class AssetsComponent implements OnInit {
     const payload = form.value;
     payload.physicalCondition = +payload.physicalCondition;
     payload.locationId = +payload.locationId;
-    payload.officeId = +payload.officeId;
     payload.returnApprovalStatus = +payload.returnApprovalStatus;
     payload.requestApprovalStatus = +payload.requestApprovalStatus;
 
@@ -131,7 +129,7 @@ export class AssetsComponent implements OnInit {
       id: row.id,
       employeeName: row.employeeName,
       locationId: row.locationId,
-      officeId: row.officeId,
+      office: row.office,
       assetName: row.assetName,
       assetNumber: row.assetNumber,
       description: row.description,

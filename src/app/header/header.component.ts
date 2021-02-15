@@ -52,6 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.dataService.currentUser.subscribe((result) => {
       this.user = result;
       console.log(this.user);
+
       this.getProfilePhoto();
     });
 

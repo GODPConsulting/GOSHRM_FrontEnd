@@ -107,20 +107,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Office <span class="text-danger">*</span></label>
-                                <select type="text" class="form-control" [class.invalid]="
-                                assetForm.get('officeId').invalid &&
-                                assetForm.get('officeId').touched" formControlName="officeId">
-                                    <option selected value="">Office</option>
-                                    <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
-                                    </option>
-                                </select>
+                                <input type="text" class="form-control" [class.invalid]="
+                                assetForm.get('office').invalid &&
+                                assetForm.get('office').touched" formControlName="office">
                                 <div *ngIf="
-                                assetForm.get('officeId').invalid &&
-                                assetForm.get('officeId').touched
+                                assetForm.get('office').invalid &&
+                                assetForm.get('office').touched
                     ">
                                     <small *ngIf="
-                                    assetForm.get('officeId').invalid &&
-                                    assetForm.get('officeId').touched
+                                    assetForm.get('office').invalid &&
+                                    assetForm.get('office').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
