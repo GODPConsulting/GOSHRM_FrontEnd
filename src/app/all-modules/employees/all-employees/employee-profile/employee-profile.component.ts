@@ -58,6 +58,7 @@ export class EmployeeProfileComponent implements OnInit {
     private authService: AuthService,
     private setupService: SetupService
   ) { }
+  
   initializeForm() {
     this.emergencyContactForm = this.formBuilder.group({
       id: [0],
@@ -528,6 +529,15 @@ export class EmployeeProfileComponent implements OnInit {
       (data) => {
         this.qualification = data.setuplist;
       }, (err) => { }
+    );
+  }
+
+  getAcademicQualification() {
+    return this.setupService.getAcademicQualification().subscribe(
+      (data) => {
+        this.qualification = data.setuplist;
+      },
+      (err) => {}
     );
   }
 
