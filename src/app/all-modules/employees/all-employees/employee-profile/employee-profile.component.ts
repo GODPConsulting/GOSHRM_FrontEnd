@@ -226,8 +226,10 @@ export class EmployeeProfileComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading = true;
           return this.employeeService.deleteEmergencyContact(payload).subscribe(
             (res) => {
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -237,7 +239,7 @@ export class EmployeeProfileComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => { }
+            (err) => {}
           );
         }
       });
@@ -344,8 +346,10 @@ export class EmployeeProfileComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading = true;
           return this.employeeService.deleteLanguageRating(payload).subscribe(
             (res) => {
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -355,7 +359,9 @@ export class EmployeeProfileComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => { }
+            (err) => {
+              this.pageLoading = false;
+            }
           );
         }
       });
@@ -571,10 +577,12 @@ export class EmployeeProfileComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading = true;
           return this.employeeService
             .deleteEmployeeQualification(payload)
             .subscribe(
               (res) => {
+                this.pageLoading = false;
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -584,7 +592,9 @@ export class EmployeeProfileComponent implements OnInit {
                   swal.fire("GOSHRM", message, "error");
                 }
               },
-              (err) => { }
+              (err) => {
+                this.pageLoading = false;
+              }
             );
         }
       });
