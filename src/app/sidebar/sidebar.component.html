@@ -257,6 +257,42 @@
             </ul>
           </li>
           <!-- /Setup sidebar -->
+
+          <!--Performance Management-->
+          <li class="menu-title">
+            <span>Performance</span>
+          </li>
+          <li class="submenu" [ngClass]="{
+              active:
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'kpi-category')
+                
+            }">
+            <a href="javascript:" [ngClass]="{
+                subdrop:
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'kpi-category')
+              }" class="noti-dot"><i class="la la-user"></i> <span> Performance</span>
+              <span class="menu-arrow"></span></a>
+            <ul style="display: none;" [ngStyle]="{
+                display:
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'kpi-category')
+                    ? 'block'
+                    : 'none'
+              }">
+              <li routerLink="/performance/kpi-category">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'kpi-category'
+                  }">KPI Category</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <!--/Performance Management-->
+
         </ul>
       </div>
     </perfect-scrollbar>
