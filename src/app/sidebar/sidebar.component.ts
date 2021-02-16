@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, Event, NavigationEnd, ActivatedRoute } from "@angular/router";
 import { AllModulesService } from "../all-modules/all-modules.service";
-import { DataService } from "../data.service";
+import { DataService } from "../services/data.service";
 import { JwtService } from "../services/jwt.service";
 
 @Component({

@@ -97,6 +97,10 @@ export class UtilitiesService {
     return this.apiService.get(this.getCountryUrl);
   }
 
+  getCompanyStructures() {
+    return this.apiService.get("/company/get/all/companystructures");
+  }
+
   // Converts response to file and downloads it
   byteToFile(data: string, fileName: string, mimeType?: BlobPropertyBag) {
     if (data != undefined) {
@@ -119,4 +123,9 @@ export class UtilitiesService {
       return swal.fire(`GOS HRM`, "Unable to download data", "error");
     }
   }
+
+  validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 }

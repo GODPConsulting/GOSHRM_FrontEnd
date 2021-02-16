@@ -149,6 +149,19 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
+                        <label class="col-form-label">Phone Number<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched"
+                            formControlName="phoneNumber">
+                        <div *ngIf="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched">
+                            <small
+                                *ngIf="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched"
+                                class="text-danger"> *Phone Number is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
                         <label class="col-form-label">Email <span class="text-danger">*</span></label>
                         <input class="form-control" type="email"
                             [class.invalid]="EmployeeForm.get('email').invalid && EmployeeForm.get('email').touched"
@@ -223,6 +236,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-form-label">Address<span class="text-danger">*</span></label>
@@ -235,21 +249,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-form-label">Phone Number<span class="text-danger">*</span></label>
-                        <input class="form-control" type="text"
-                            [class.invalid]="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched"
-                            formControlName="phoneNumber">
-                        <div *ngIf="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched">
-                            <small
-                                *ngIf="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched"
-                                class="text-danger"> *Phone Number is required</small>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <h5>User Credentials</h5>
+                <h4 class="mt-4">User Credentials</h4>
             <hr>
             <div class="row">
                 <div class="col-sm-6">

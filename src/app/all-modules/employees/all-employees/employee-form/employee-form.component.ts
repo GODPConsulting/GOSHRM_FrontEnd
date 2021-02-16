@@ -220,6 +220,9 @@ export class EmployeeFormComponent implements OnInit {
     if (!payload.jobTitle) {
       return swal.fire("Error", "Job Title is required", "error");
     }
+    if (!payload.phoneNumber) {
+      return swal.fire("Error", "Phone Number is required", "error");
+    }
     if (!payload.email) {
       return swal.fire("Error", "Email is required", "error");
     }
@@ -237,9 +240,6 @@ export class EmployeeFormComponent implements OnInit {
     }
     if (!payload.address) {
       return swal.fire("Error", "Address is required", "error");
-    }
-    if (!payload.phoneNumber) {
-      return swal.fire("Error", "Phone Number is required", "error");
     }
     if (!payload.userName) {
       return swal.fire("Error", "User Name is required", "error");
@@ -326,17 +326,13 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   getStatesByCountryId(id) {
-    this.pageLoading = true;
     return this.setupService
       .getData(`/common/get/states/countryId?CountryId=${id}`)
       .subscribe(
         (data) => {
-          this.pageLoading = false;
           this.states = data.commonLookups;
         },
-        (err) => {
-          this.pageLoading = false;
-        }
+        (err) => { }
       );
   }
   getStaffDepartments() {
@@ -345,6 +341,8 @@ export class EmployeeFormComponent implements OnInit {
       .getData("/company/get/all/companystructures")
       .subscribe(
         (data) => {
+          console.log(data);
+
           this.pageLoading = false;
           this.departments = data.companyStructures;
         },
