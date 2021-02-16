@@ -1,9 +1,11 @@
-import { Component, OnInit, NgZone } from "@angular/core";
+import { Component, OnInit, NgZone, HostListener } from "@angular/core";
 
 @Component({
   selector: "app-performance-management",
   templateUrl: "./performance-management.component.html",
+  styleUrls: ["./performance-management.component.css"],
 })
+@HostListener("window: resize", ["$event"])
 export class PerformanceManagementComponent implements OnInit {
   public innerHeight: any;
   getScreenHeight() {

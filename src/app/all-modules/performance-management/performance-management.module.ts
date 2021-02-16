@@ -1,20 +1,18 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
-import { PerformanceManagementRoutingModule } from './performance-management-routing.module';
-import { KpiCategoryComponent } from './kpi-category/kpi-category.component';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { SharedModule } from 'primeng/api';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DataTablesModule } from 'angular-datatables';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpTokenInterceptor } from 'src/app/services/http.interceptor.service';
-
+import { PerformanceManagementRoutingModule } from "./performance-management-routing.module";
+import { KpiCategoryComponent } from "./kpi-category/kpi-category.component";
+import { Ng2SearchPipeModule } from "ng2-search-filter";
+import { SharedModule } from "primeng/api";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { DataTablesModule } from "angular-datatables";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpTokenInterceptor } from "src/app/services/http.interceptor.service";
+import { PerformanceManagementComponent } from "./performance-management.component";
 
 @NgModule({
-  declarations: [
-    KpiCategoryComponent
-  ],
+  declarations: [PerformanceManagementComponent, KpiCategoryComponent],
   imports: [
     CommonModule,
     DataTablesModule,
@@ -22,7 +20,7 @@ import { HttpTokenInterceptor } from 'src/app/services/http.interceptor.service'
     SharedModule,
     FormsModule,
     Ng2SearchPipeModule,
-    PerformanceManagementRoutingModule
+    PerformanceManagementRoutingModule,
   ],
   providers: [
     {
@@ -32,4 +30,4 @@ import { HttpTokenInterceptor } from 'src/app/services/http.interceptor.service'
     },
   ],
 })
-export class PerformanceManagementModule { }
+export class PerformanceManagementModule {}
