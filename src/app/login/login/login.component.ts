@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { JwtService } from "../../services/jwt.service";
 import { AuthService } from "../../services/auth.service";
 import swal from "sweetalert2";
-import { DataService } from "src/app/data.service";
+import { DataService } from "src/app/services/data.service";
 
 @Component({
   selector: "app-login",

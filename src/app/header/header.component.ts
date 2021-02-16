@@ -3,7 +3,7 @@ import { FormGroup } from "@angular/forms";
 import { NavigationEnd, Router } from "@angular/router";
 import { HeaderService } from "./header.service";
 import { AuthService } from "../services/auth.service";
-import { DataService } from "../data.service";
+import { DataService } from "../services/data.service";
 import { EmployeeService } from "../services/employee.service";
 
 @Component({
