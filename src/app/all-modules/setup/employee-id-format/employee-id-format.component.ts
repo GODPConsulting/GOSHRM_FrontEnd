@@ -31,6 +31,7 @@ export class EmployeeIdFormatComponent implements OnInit {
 
   ngOnInit(): void {
     this.initIdFormatForm();
+
     this.getEmployeeIdFormat();
 
     this.dtOptions = {
@@ -47,10 +48,6 @@ export class EmployeeIdFormatComponent implements OnInit {
     };
   }
 
-  setPrefix() {
-    return this.idFormatForm.get("employeeIdPrefix").value;
-  }
-
   setSuffix(digit: number) {
     if (!digit) {
       return "";
@@ -61,16 +58,6 @@ export class EmployeeIdFormatComponent implements OnInit {
     });
   }
 
-  resetFormat() {
-    const prefix = this.setPrefix();
-    const suffix = this.setSuffix(
-      +this.idFormatForm.get("numberOfDigits").value
-    );
-    //console.log(prefix, suffix);
-
-    this.idFormatForm.get("format").setValue(prefix + suffix);
-  }
-
   initIdFormatForm() {
     this.formTitle = "Add ID Format";
     this.idFormatForm = this.formBuilder.group({
@@ -79,6 +66,15 @@ export class EmployeeIdFormatComponent implements OnInit {
       employeeIdPrefix: ["", Validators.required],
       numberOfDigits: ["", Validators.required],
       format: [{ value: "", disabled: true }],
+    });
+
+    // Binds the input fields..syncs them
+    this.idFormatForm.valueChanges.subscribe((val) => {
+      const prefix = val.employeeIdPrefix;
+      const suffix = this.setSuffix(+val.numberOfDigits);
+      this.idFormatForm
+        .get("format")
+        .setValue(prefix + suffix, { emitEvent: false });
     });
   }
 
