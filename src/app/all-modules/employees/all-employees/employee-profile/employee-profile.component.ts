@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { data } from "jquery";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { AuthService } from "src/app/services/auth.service";
 import { SetupService } from "src/app/services/setup.service";
+import { Subscription } from "rxjs";
 declare const $: any;
 
 @Component({
@@ -49,15 +50,33 @@ export class EmployeeProfileComponent implements OnInit {
   selectedEmergencyId: number[] = [];
   selectedLanguageId: number[] = [];
   selectedQualificationId: number[] = [];
-
+  navigationSubscription: Subscription;
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
-    private setupService: SetupService
-  ) {}
+    private setupService: SetupService,
+    private router: Router
+  ) {
+    // Handles route reloading...solves view not changing when user navigates to his/her own profile from another user's profile route
+    this.navigationSubscription = this.router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        this.initInvites();
+      }
+    });
+  }
+  initInvites() {
+    this.ngOnInit();
+  }
+
+  ngOnDestroy() {
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
+  }
+
   initializeForm() {
     this.emergencyContactForm = this.formBuilder.group({
       id: [0],

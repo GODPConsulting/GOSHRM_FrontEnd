@@ -90,7 +90,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Employee ID Prefix</label>
-                                <input type="text" class="form-control" (keyup)='resetFormat()' [class.invalid]="
+                                <input type="text" class="form-control" [class.invalid]="
                                 idFormatForm.get('employeeIdPrefix').invalid &&
                                 idFormatForm.get('employeeIdPrefix').touched" formControlName="employeeIdPrefix">
                                 <div *ngIf="
@@ -107,7 +107,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Employee ID Suffix (Number of Digits) <span class="text-danger">*</span></label>
-                                <select class="form-control" type="text" (change)='resetFormat()' [class.invalid]="
+                                <select class="form-control" type="text" [class.invalid]="
                                 idFormatForm.get('numberOfDigits').invalid &&
                                 idFormatForm.get('numberOfDigits').touched" formControlName="numberOfDigits">
                                     <option selected value="">Select number of digits</option>
