@@ -27,6 +27,7 @@ const routes: Routes = [
         component: EmployeeFormComponent,
       },
     ],
+    runGuardsAndResolvers: "always",
   },
 ];
 

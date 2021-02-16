@@ -47,10 +47,6 @@ export class EmployeeIdFormatComponent implements OnInit {
     };
   }
 
-  setPrefix() {
-    return this.idFormatForm.get("employeeIdPrefix").value;
-  }
-
   setSuffix(digit: number) {
     if (!digit) {
       return "";
@@ -59,6 +55,10 @@ export class EmployeeIdFormatComponent implements OnInit {
       minimumIntegerDigits: digit,
       useGrouping: false,
     });
+  }
+
+  setPrefix() {
+    return this.idFormatForm.get("employeeIdPrefix").value;
   }
 
   resetFormat() {

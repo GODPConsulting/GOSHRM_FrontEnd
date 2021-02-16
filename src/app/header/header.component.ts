@@ -29,20 +29,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private dataService: DataService,
     private employeeService: EmployeeService
-  ) {
-    // This solves the issue of not being able to navigate to user profile when on another profile (Method 2)
-    // Working but reloads all components on the view
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
-      return false;
-    };
-
-    this.mySubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        // Trick the Router into believing it's last link wasn't previously loaded
-        this.router.navigated = false;
-      }
-    });
-  }
+  ) {}
 
   ngOnInit() {
     // this.getDatas("notification");
@@ -164,13 +151,4 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  // This solves the issue of not being able to navigate to user profile when on another profile (Method 1)
-  //However, navigating backwards has same issue
-  /* viewUserProfile() {
-    const currentRoute: string = `/employees/employeeprofile/${this.user.staffId}`;
-    this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => {
-      this.router.navigate([currentRoute]);
-    });
-  } */
 }
