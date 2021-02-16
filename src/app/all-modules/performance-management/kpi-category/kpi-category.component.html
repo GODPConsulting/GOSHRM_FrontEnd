@@ -1,1 +1,145 @@
-<p>kpi-category works!</p>
+<div>
+    <div class="card profile-box flex-fill">
+        <div class="card-body">
+            <h3 class="card-title">KPI Category<a class="edit-icon hint" (click)="delete()"><span
+                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
+                <a class="edit-icon hint mr-1" (click)="downloadFile()" download><span
+                        class="hint-text">Download</span><i class="fa fa-download"></i></a>
+                <a *ngIf="currentUserId === employeeId" (click)="initCareerForm()" class="hint edit-icon mr-1"
+                    data-toggle="modal" data-target="#kpi_category_modal"><span class="hint-text">Add
+                    </span><i class="fa fa-plus"></i></a>
+            </h3>
+            <div class="table-responsive">
+                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === employeeCareer.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>S/N</th>
+                            <th>Name</th>
+                            <th>Employee Set Objectives</th>
+                            <th>HR Select Reviewer</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="modal" class="pointer" data-target="#career_modal" (click)="edit(row)"
+                            *ngFor="let row of hack(employeeCareer); let i = index">
+                            <td (click)="stopParentEvent($event)">
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+                            <td>{{i +1}}</td>
+                            <td>{{row.name}}</td>
+                            <td>{{row.employeeSetObjectives}}</td>
+                            <td>{{row.hrSelectReviewer}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- KPI Category Modal -->
+<div id="kpi_category_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-width" role="document" style="width: 1200px !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{cardFormTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="submitkpiCategoryForm(kpiCategoryForm)" [formGroup]="kpiCategoryForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control" [class.invalid]="
+                                kpiCategoryForm.get('name').invalid &&
+                                kpiCategoryForm.get('name').touched" formControlName="name">
+                                <div *ngIf="
+                                kpiCategoryForm.get('name').invalid &&
+                                kpiCategoryForm.get('name').touched
+                    ">
+                                    <small *ngIf="
+                                    kpiCategoryForm.get('name').invalid &&
+                                    kpiCategoryForm.get('name').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Employee Set Objectives<span class="text-danger">*</span></label>
+                                <div>
+                                    <input class="mx-2" type="radio" [value]="1" id="yes"
+                                        formControlName="employeeSetObjectives">
+                                    <label for="yes">Yes</label><br>
+                                    <input class="mx-2" type="radio" [value]="0" id="no"
+                                        formControlName="employeeSetObjectives">
+                                    <label for="no">No</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>HR Select Reviewer</label>
+                                <select type="text" class="form-control" [class.invalid]="
+                                kpiCategoryForm.get('hrSelectReviewer').invalid &&
+                                kpiCategoryForm.get('hrSelectReviewer').touched" formControlName="hrSelectReviewer">
+                                    <option selected value="">HR Select Reviewer</option>
+                                    <option *ngFor="let row of hrSelectReviewerName" value="{{row.id}}">
+                                    </option>
+                                </select>
+                                <div *ngIf="
+                                kpiCategoryForm.get('hrSelectReviewer').invalid &&
+                                kpiCategoryForm.get('hrSelectReviewer').touched
+                    ">
+                                    <small *ngIf="
+                                    kpiCategoryForm.get('hrSelectReviewer').invalid &&
+                                    kpiCategoryForm.get('hrSelectReviewer').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Weight Model</label>
+                                <select type="text" class="form-control" [class.invalid]="
+                                kpiCategoryForm.get('weightModel').invalid &&
+                                kpiCategoryForm.get('weightModel').touched" formControlName="weightModel">
+                                    <option selected value="">Weight Model</option>
+                                    <option *ngFor="let row of weightModelName" value="{{row.id}}">
+                                    </option>
+                                </select>
+                                <div *ngIf="
+                                kpiCategoryForm.get('weightModel').invalid &&
+                                kpiCategoryForm.get('weightModel').touched
+                    ">
+                                    <small *ngIf="
+                                    kpiCategoryForm.get('weightModel').invalid &&
+                                    kpiCategoryForm.get('weightModel').touched
+                      " class="text-danger">
+                                        *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                                <span *ngIf="!spinner">Submit</span>
+                                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                            </button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Career Modal -->

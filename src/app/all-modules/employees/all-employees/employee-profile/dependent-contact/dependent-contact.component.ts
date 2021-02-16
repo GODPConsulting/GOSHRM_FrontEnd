@@ -51,7 +51,18 @@ export class DependentContactComponent implements OnInit {
         searchPlaceholder: "Start typing to search by any field",
       },
 
-      columns: [{ orderable: false }, null, null, null, null, null, null, null, null, null],
+      columns: [
+        { orderable: false },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ],
       order: [[1, "asc"]],
     };
     this.getEmployeeDependentContact(this.staffId);
