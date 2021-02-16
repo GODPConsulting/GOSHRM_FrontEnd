@@ -161,11 +161,35 @@ export class EmployeeProfileComponent implements OnInit {
     payload.staffId = this.employeeId;
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
+    if (!payload.fullName) {
+      return swal.fire("Error", "Full Name is empty", "error");
+    }
+    if (!payload.relationship) {
+      return swal.fire("Error", "Relationship is empty", "error");
+    }
+    if (!payload.contact_phone_number) {
+      return swal.fire("Error", "Contact's Phone Number is empty", "error");
+    }
+    if (!payload.email) {
+      return swal.fire("Error", "email is empty", "error");
+    }
+    if (!this.utilitiesService.validateEmail(payload.email)) {
+      return swal.fire("Error", "Email not valid", "error");
+    }
+    if (!payload.country) {
+      return swal.fire("Error", "Country is empty", "error");
+    }
+    if (!payload.address) {
+      return swal.fire("Error", "Address is empty", "error");
+    }
+    if (!payload.approvalStatus) {
+      return swal.fire("Error", "Approval Status is empty", "error");
+    }
 
-    this.pageLoading = true;
+    this.loading = true;
     this.employeeService.addEmergencyContact(payload).subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loading = false;
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
           swal.fire("Success", message, "success");
@@ -176,7 +200,7 @@ export class EmployeeProfileComponent implements OnInit {
         }
       },
       (err) => {
-        this.pageLoading = false;
+        this.loading = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -220,8 +244,10 @@ export class EmployeeProfileComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading = true;
           return this.employeeService.deleteEmergencyContact(payload).subscribe(
             (res) => {
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -277,6 +303,23 @@ export class EmployeeProfileComponent implements OnInit {
     payload.writing_Rating = this.writingRating;
     payload.speaking_Rating = this.speakingRating;
     payload.languageId = +payload.languageId;
+
+    if (!payload.languageId) {
+      return swal.fire("Error", "Language is empty", "error");
+    }
+    if (!payload.reading_Rating) {
+      return swal.fire("Error", "Reading Rating is empty", "error");
+    }
+    if (!payload.writing_Rating) {
+      return swal.fire("Error", "Writing Rating is empty", "error");
+    }
+    if (!payload.speaking_Rating) {
+      return swal.fire("Error", "speaking Rating is empty", "error");
+    }
+    if (!payload.approval_status) {
+      return swal.fire("Error", "Approval Status is empty", "error");
+    }
+
     this.loading = true;
     this.employeeService.addLanguageRating(payload).subscribe(
       (data) => {
@@ -321,8 +364,10 @@ export class EmployeeProfileComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading = true;
           return this.employeeService.deleteLanguageRating(payload).subscribe(
             (res) => {
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -332,7 +377,9 @@ export class EmployeeProfileComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.pageLoading = false;
+            }
           );
         }
       });
@@ -365,11 +412,17 @@ export class EmployeeProfileComponent implements OnInit {
 
   // get saved language(s)
   getSavedLanguageRating(id: number) {
+    this.pageLoading = true;
     return this.employeeService.getLanguageRatingByStaffId(id).subscribe(
       (data) => {
+        this.pageLoading = false;
         this.languageRating = data.employeeList;
       },
-      (err) => {}
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("GOSHRM", message, "error");
+      }
     );
   }
 
@@ -543,10 +596,12 @@ export class EmployeeProfileComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading = true;
           return this.employeeService
             .deleteEmployeeQualification(payload)
             .subscribe(
               (res) => {
+                this.pageLoading = false;
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -556,7 +611,9 @@ export class EmployeeProfileComponent implements OnInit {
                   swal.fire("GOSHRM", message, "error");
                 }
               },
-              (err) => {}
+              (err) => {
+                this.pageLoading = false;
+              }
             );
         }
       });

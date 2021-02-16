@@ -215,8 +215,10 @@ export class SkillsComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading = true;
           return this.employeeService.deleteSkills(payload).subscribe(
             (res) => {
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -226,7 +228,9 @@ export class SkillsComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.pageLoading = false;
+            }
           );
         }
       });
