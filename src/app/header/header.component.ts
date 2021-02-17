@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Get access to the user data shared from sidebar
     this.dataService.currentUser.subscribe((result) => {
       this.user = result;
+      console.log(this.user);
     });
 
     this.notifications = [

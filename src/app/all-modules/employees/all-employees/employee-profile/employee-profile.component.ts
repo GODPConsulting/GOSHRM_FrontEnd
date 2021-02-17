@@ -77,7 +77,6 @@ export class EmployeeProfileComponent implements OnInit {
     });
     this.dataService.currentUser.subscribe((result) => {
       this.user = result;
-      console.log(this.user);
     });
     this.getUserData();
     this.initializeForm();

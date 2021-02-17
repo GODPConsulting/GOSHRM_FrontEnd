@@ -179,19 +179,19 @@
                             <div class="form-group">
                                 <label>Office</label>
                                 <select type="text" class="form-control" [class.invalid]="
-                                careerForm.get('office').invalid &&
-                                careerForm.get('office').touched" formControlName="office">
+                                careerForm.get('officeId').invalid &&
+                                careerForm.get('officeId').touched" formControlName="officeId">
                                     <option selected value="">Office</option>
                                     <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
                                     </option>
                                 </select>
                                 <div *ngIf="
-                                careerForm.get('office').invalid &&
-                                careerForm.get('office').touched
+                                careerForm.get('officeId').invalid &&
+                                careerForm.get('officeId').touched
                     ">
                                     <small *ngIf="
-                                    careerForm.get('office').invalid &&
-                                    careerForm.get('office').touched
+                                    careerForm.get('officeId').invalid &&
+                                    careerForm.get('officeId').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -201,20 +201,20 @@
                             <div class="form-group">
                                 <label>Line Manager <span class="text-danger">*</span></label>
                                 <select class="form-control" type="text" [class.invalid]="
-                                careerForm.get('line_Manager').invalid &&
-                                careerForm.get('line_Manager').touched" formControlName="line_Manager">
+                                careerForm.get('line_ManagerId').invalid &&
+                                careerForm.get('line_ManagerId').touched" formControlName="line_ManagerId">
                                     <option selected value="">line Manager</option>
                                     <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
                                         {{row.firstName}} {{row.lastName}}
                                     </option>
                                 </select>
                                 <div *ngIf="
-                                careerForm.get('line_Manager').invalid &&
-                                careerForm.get('line_Manager').touched
+                                careerForm.get('line_ManagerId').invalid &&
+                                careerForm.get('line_ManagerId').touched
                     ">
                                     <small *ngIf="
-                                    careerForm.get('line_Manager').invalid &&
-                                    careerForm.get('line_Manager').touched
+                                    careerForm.get('line_ManagerId').invalid &&
+                                    careerForm.get('line_ManagerId').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -224,20 +224,21 @@
                             <div class="form-group">
                                 <label>First Level Reviewer <span class="text-danger">*</span></label>
                                 <select class="form-control" type="text" [class.invalid]="
-                                careerForm.get('first_Level_Reviewer').invalid &&
-                                careerForm.get('first_Level_Reviewer').touched" formControlName="first_Level_Reviewer">
+                                careerForm.get('first_Level_ReviewerId').invalid &&
+                                careerForm.get('first_Level_ReviewerId').touched"
+                                    formControlName="first_Level_ReviewerId">
                                     <option selected value="">First Level Reviewer</option>
                                     <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
                                         {{row.firstName}} {{row.lastName}}
                                     </option>
                                 </select>
                                 <div *ngIf="
-                                careerForm.get('first_Level_Reviewer').invalid &&
-                                careerForm.get('first_Level_Reviewer').touched
+                                careerForm.get('first_Level_ReviewerId').invalid &&
+                                careerForm.get('first_Level_ReviewerId').touched
                     ">
                                     <small *ngIf="
-                                    careerForm.get('first_Level_Reviewer').invalid &&
-                                    careerForm.get('first_Level_Reviewer').touched
+                                    careerForm.get('first_Level_ReviewerId').invalid &&
+                                    careerForm.get('first_Level_ReviewerId').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -247,21 +248,21 @@
                             <div class="form-group">
                                 <label>Second Level Reviewer <span class="text-danger">*</span></label>
                                 <select class="form-control" type="text" [class.invalid]="
-                                careerForm.get('second_Level_Reviewer').invalid &&
-                                careerForm.get('second_Level_Reviewer').touched"
-                                    formControlName="second_Level_Reviewer">
+                                careerForm.get('second_Level_ReviewerId').invalid &&
+                                careerForm.get('second_Level_ReviewerId').touched"
+                                    formControlName="second_Level_ReviewerId">
                                     <option selected value="">Second Level Reviewer</option>
                                     <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
                                         {{row.firstName}} {{row.lastName}}
                                     </option>
                                 </select>
                                 <div *ngIf="
-                                careerForm.get('second_Level_Reviewer').invalid &&
-                                careerForm.get('second_Level_Reviewer').touched
+                                careerForm.get('second_Level_ReviewerId').invalid &&
+                                careerForm.get('second_Level_ReviewerId').touched
                     ">
                                     <small *ngIf="
-                                    careerForm.get('second_Level_Reviewer').invalid &&
-                                    careerForm.get('second_Level_Reviewer').touched
+                                    careerForm.get('second_Level_ReviewerId').invalid &&
+                                    careerForm.get('second_Level_ReviewerId').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -271,20 +272,21 @@
                             <div class="form-group">
                                 <label>Third Level Reviewer <span class="text-danger">*</span></label>
                                 <select class="form-control" type="text" [class.invalid]="
-                                careerForm.get('third_Level_Reviewer').invalid &&
-                                careerForm.get('third_Level_Reviewer').touched" formControlName="third_Level_Reviewer">
+                                careerForm.get('third_Level_ReviewerId').invalid &&
+                                careerForm.get('third_Level_ReviewerId').touched"
+                                    formControlName="third_Level_ReviewerId">
                                     <option selected value="">Third Level Reviewer</option>
                                     <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
                                         {{row.firstName}} {{row.lastName}}
                                     </option>
                                 </select>
                                 <div *ngIf="
-                                careerForm.get('third_Level_Reviewer').invalid &&
-                                careerForm.get('third_Level_Reviewer').touched
+                                careerForm.get('third_Level_ReviewerId').invalid &&
+                                careerForm.get('third_Level_ReviewerId').touched
                     ">
                                     <small *ngIf="
-                                    careerForm.get('third_Level_Reviewer').invalid &&
-                                    careerForm.get('third_Level_Reviewer').touched
+                                    careerForm.get('third_Level_ReviewerId').invalid &&
+                                    careerForm.get('third_Level_ReviewerId').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -292,31 +294,19 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Start Month <span class="text-danger">*</span></label>
-                                <select class="form-control" [class.invalid]="
-                                careerForm.get('start_month').invalid &&
-                                careerForm.get('start_month').touched" formControlName="start_month">
-                                    <option selected value="">Select Month</option>
-                                    <option value="1">January</option>
-                                    <option value="2">Febuary</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                </select>
+                                <label>Start Date <span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
+                                careerForm.get('startDate').invalid &&
+                                careerForm.get('startDate').touched" formControlName="startDate">
                                 <div *ngIf="
-                                careerForm.get('start_month').invalid &&
-                                careerForm.get('start_month').touched
+                                careerForm.get('startDate').invalid &&
+                                careerForm.get('startDate').touched
                     ">
                                     <small *ngIf="
-                                    careerForm.get('start_month').invalid &&
-                                    careerForm.get('start_month').touched
+                                    careerForm.get('startDate').invalid &&
+                                    careerForm.get('startDate').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
@@ -324,123 +314,19 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Start Year <span class="text-danger">*</span></label>
-                                <select class="form-control" [class.invalid]="
-                                careerForm.get('start_year').invalid &&
-                                careerForm.get('start_year').touched" formControlName="start_year">
-                                    <option selected value="">Select Year</option>
-                                    <option value="1">2015</option>
-                                    <option value="2">2016</option>
-                                    <option value="3">2017</option>
-                                    <option value="4">2018</option>
-                                    <option value="5">2019</option>
-                                    <option value="6">2020</option>
-                                    <option value="7">2021</option>
-                                    <option value="8">2022</option>
-                                    <option value="9">2023</option>
-                                    <option value="10">2024</option>
-                                    <option value="11">2025</option>
-                                    <option value="12">2026</option>
-                                    <option value="13">2027</option>
-                                    <option value="14">2028</option>
-                                    <option value="15">2029</option>
-                                    <option value="16">2030</option>
-                                    <option value="17">2031</option>
-                                    <option value="18">2032</option>
-                                    <option value="19">2033</option>
-                                    <option value="20">2034</option>
-                                    <option value="21">2035</option>
-                                    <option value="22">2036</option>
-                                    <option value="23">2037</option>
-                                    <option value="24">2038</option>
-                                    <option value="25">2039</option>
-                                    <option value="26">2040</option>
-                                </select>
+                                <label>End Date <span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
+                                careerForm.get('endDate').invalid &&
+                                careerForm.get('endDate').touched" formControlName="endDate">
                                 <div *ngIf="
-                                careerForm.get('start_year').invalid &&
-                                careerForm.get('start_year').touched
+                                careerForm.get('endDate').invalid &&
+                                careerForm.get('endDate').touched
                     ">
                                     <small *ngIf="
-                                    careerForm.get('start_year').invalid &&
-                                    careerForm.get('start_year').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>End Month <span class="text-danger">*</span></label>
-                                <select class="form-control" [class.invalid]="
-                                careerForm.get('end_month').invalid &&
-                                careerForm.get('end_month').touched" formControlName="end_month">
-                                    <option selected value="">Select Month</option>
-                                    <option value="1">January</option>
-                                    <option value="2">Febuary</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('end_month').invalid &&
-                                careerForm.get('end_month').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('end_month').invalid &&
-                                    careerForm.get('end_month').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>End Year <span class="text-danger">*</span></label>
-                                <select class="form-control" [class.invalid]="
-                                careerForm.get('end_year').invalid &&
-                                careerForm.get('end_year').touched" formControlName="end_year">
-                                    <option selected value="">Select Year</option>
-                                    <option value="1">2015</option>
-                                    <option value="2">2016</option>
-                                    <option value="3">2017</option>
-                                    <option value="4">2018</option>
-                                    <option value="5">2019</option>
-                                    <option value="6">2020</option>
-                                    <option value="7">2021</option>
-                                    <option value="8">2022</option>
-                                    <option value="9">2023</option>
-                                    <option value="10">2024</option>
-                                    <option value="11">2025</option>
-                                    <option value="12">2026</option>
-                                    <option value="13">2027</option>
-                                    <option value="14">2028</option>
-                                    <option value="15">2029</option>
-                                    <option value="16">2030</option>
-                                    <option value="17">2031</option>
-                                    <option value="18">2032</option>
-                                    <option value="19">2033</option>
-                                    <option value="20">2034</option>
-                                    <option value="21">2035</option>
-                                    <option value="22">2036</option>
-                                    <option value="23">2037</option>
-                                    <option value="24">2038</option>
-                                    <option value="25">2039</option>
-                                    <option value="26">2040</option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('end_year').invalid &&
-                                careerForm.get('end_year').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('end_year').invalid &&
-                                    careerForm.get('end_year').touched
+                                    careerForm.get('endDate').invalid &&
+                                    careerForm.get('endDate').touched
                       " class="text-danger">
                                         *Field is required</small>
                                 </div>
