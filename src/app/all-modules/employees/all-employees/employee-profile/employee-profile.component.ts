@@ -8,6 +8,7 @@ import swal from "sweetalert2";
 import { AuthService } from "src/app/services/auth.service";
 import { SetupService } from "src/app/services/setup.service";
 import { Subscription } from "rxjs";
+import { DataService } from "src/app/services/data.service";
 declare const $: any;
 
 @Component({
@@ -51,6 +52,7 @@ export class EmployeeProfileComponent implements OnInit {
   selectedLanguageId: number[] = [];
   selectedQualificationId: number[] = [];
   navigationSubscription: Subscription;
+  user: any;
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -58,7 +60,8 @@ export class EmployeeProfileComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private authService: AuthService,
     private setupService: SetupService,
-    private router: Router
+    private router: Router,
+    private dataService: DataService
   ) {
     // Handles route reloading...solves view not changing when user navigates to his/her own profile from another user's profile route
     this.navigationSubscription = this.router.events.subscribe((e) => {
@@ -67,14 +70,27 @@ export class EmployeeProfileComponent implements OnInit {
       }
     });
   }
-  initInvites() {
-    this.ngOnInit();
-  }
 
-  ngOnDestroy() {
-    if (this.navigationSubscription) {
-      this.navigationSubscription.unsubscribe();
-    }
+  ngOnInit() {
+    this.route.paramMap.subscribe((params) => {
+      this.employeeId = +params.get("id");
+    });
+    this.dataService.currentUser.subscribe((result) => {
+      this.user = result;
+      console.log(this.user);
+    });
+    this.getUserData();
+    this.initializeForm();
+    this.getCountry();
+    this.initLaguageRatingForm();
+    this.getLanguages();
+    this.initEmployeeQualificationForm();
+    this.getGrades();
+    this.getSingleEmployee(this.employeeId);
+    this.getSavedEmergencyContact(this.employeeId);
+    this.getSavedLanguageRating(this.employeeId);
+    this.getSavedEmployeeQualification(this.employeeId);
+    this.getAcademicQualification();
   }
 
   initializeForm() {
@@ -120,31 +136,14 @@ export class EmployeeProfileComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      this.employeeId = +params.get("id");
-    });
-    this.getUserData();
-    this.initializeForm();
-    this.getCountry();
-    this.initLaguageRatingForm();
-    this.getLanguages();
-    this.initEmployeeQualificationForm();
-    this.getGrades();
-    this.getSingleEmployee(this.employeeId);
-    this.getSavedEmergencyContact(this.employeeId);
-    this.getSavedLanguageRating(this.employeeId);
-    this.getSavedEmployeeQualification(this.employeeId);
-    this.getAcademicQualification();
-  }
-
   /* Employee profile */
-
   getSingleEmployee(id: number) {
     this.pageLoading = true;
     this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
         this.employeeDetails = data.employeeList[0];
+        console.log(this.employeeDetails);
+
         this.pageLoading = false;
       },
       (err) => {
@@ -619,4 +618,16 @@ export class EmployeeProfileComponent implements OnInit {
       });
     this.selectedQualificationId = [];
   }
+
+  /* Handles Route reloading */
+  initInvites() {
+    this.ngOnInit();
+  }
+
+  ngOnDestroy() {
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
+  }
+  /* Handles Route reloading */
 }

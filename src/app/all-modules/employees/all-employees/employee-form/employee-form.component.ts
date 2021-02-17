@@ -78,6 +78,7 @@ export class EmployeeFormComponent implements OnInit {
       password: [""],
       photoFile: [""],
       jobGrade: [""],
+      isHRAdmin: [""],
     });
     // Resets the photo input field of the form
     if (this.fileInput) {
@@ -191,11 +192,13 @@ export class EmployeeFormComponent implements OnInit {
       );
   }
  */
-
+  log(event) {
+    console.log(event.target.value);
+  }
   addEmployeeToHrm(EmployeeForm: FormGroup) {
     let payload = EmployeeForm.value;
     console.log(payload);
-
+    /* 
     // validations to check if the form fields have value
     if (!payload.firstName) {
       // if first name is empty string, undefined or null
@@ -231,7 +234,7 @@ export class EmployeeFormComponent implements OnInit {
     }
     if (!payload.stateId) {
       return swal.fire("Error", "State is required", "error");
-    }
+    } 
     if (!payload.staffOfficeId) {
       return swal.fire("Error", "Office/Department is required", "error");
     }
@@ -259,7 +262,7 @@ export class EmployeeFormComponent implements OnInit {
     if (!payload.userAccessLevels) {
       return swal.fire("Error", "Access Level is required", "error");
     }
-
+ */
     EmployeeForm.get("dateOfBirth").setValue(
       new Date(EmployeeForm.get("dateOfBirth").value).toLocaleDateString(
         "en-CA"
@@ -270,9 +273,8 @@ export class EmployeeFormComponent implements OnInit {
       formData.append(key, EmployeeForm.get(key).value);
     }
     formData.append("dateOfJoin", new Date().toLocaleDateString("en-CA"));
-    formData.set("countryId", "403");
-    formData.set("stateId", "26");
     formData.set("accessLevel", "1");
+    formData.set("stateId", "26");
 
     this.loading = true;
     return this.setupService
@@ -332,7 +334,7 @@ export class EmployeeFormComponent implements OnInit {
         (data) => {
           this.states = data.commonLookups;
         },
-        (err) => { }
+        (err) => {}
       );
   }
   getStaffDepartments() {
@@ -341,8 +343,6 @@ export class EmployeeFormComponent implements OnInit {
       .getData("/company/get/all/companystructures")
       .subscribe(
         (data) => {
-          console.log(data);
-
           this.pageLoading = false;
           this.departments = data.companyStructures;
         },
