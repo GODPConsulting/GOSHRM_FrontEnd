@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, Event, NavigationEnd, ActivatedRoute } from "@angular/router";
+import { Router, Event, NavigationEnd } from "@angular/router";
 import { AllModulesService } from "../all-modules/all-modules.service";
-import { DataService } from "../data.service";
+import { DataService } from "../services/data.service";
+import { EmployeeService } from "../services/employee.service";
 import { JwtService } from "../services/jwt.service";
 
 @Component({
@@ -27,12 +28,14 @@ export class SidebarComponent implements OnInit {
   userRights: any[] = [];
   staffId: number;
   user: any;
+  hrmUser: any;
 
   constructor(
     private router: Router,
     private allModulesService: AllModulesService,
     public jwtService: JwtService,
-    private dataService: DataService
+    private dataService: DataService,
+    private employeeService: EmployeeService
   ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
@@ -62,10 +65,9 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userRights = this.jwtService.getUserActivities();
+    //this.userRights = this.jwtService.getUserActivities();
     this.user = this.jwtService.getUserDetails();
-    // share user data through service
-    this.dataService.saveCurrentUser(this.user);
+    this.getEmployeeByEmail(this.user.email);
 
     // Slide up and down of menus
     $(document).on("click", "#sidebar-menu a", function (e) {
@@ -82,6 +84,17 @@ export class SidebarComponent implements OnInit {
         $(this).removeClass("subdrop");
         $(this).next("ul").slideUp(350);
       }
+    });
+  }
+
+  getEmployeeByEmail(email: string) {
+    this.employeeService.getEmployeeByEmail(email).subscribe((data) => {
+      this.hrmUser = data.employeeList[0];
+      this.hrmUser.userRoleNames = [...this.user.roles];
+      this.hrmUser.activities = [...this.user.activities];
+      this.userRights = this.hrmUser.activities;
+      // share user data through data service
+      this.dataService.saveCurrentUser(this.hrmUser);
     });
   }
 

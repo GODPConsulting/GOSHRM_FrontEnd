@@ -38,7 +38,7 @@
                     ? 'block'
                     : 'none'
               }">
-              <li routerLink="/employees/employeeviews">
+              <li *ngIf="userRights.includes('allemployees')" routerLink="/employees/employeeviews">
                 <a href="javascript:" [ngClass]="{
                     active:
                       urlComplete.subUrl === 'employeepage' ||
@@ -47,11 +47,8 @@
               </li>
               <li>
                 <!-- Pass data here -->
-                
-                <a [routerLink]='["/employees/employeeprofile/", user.staffId]'
-
-                <a [routerLink]='["/employees/employeeprofile/", user?.staffId]'
-
+                <a *ngIf="userRights.includes('profile')"
+                  [routerLink]='["/employees/employeeprofile/", hrmUser?.staffId]'
                   [ngClass]="{ active: urlComplete.subUrl === 'employeeprofile' }">Profile</a>
               </li>
               <li routerLink="/employees/employee-form">
@@ -60,7 +57,49 @@
             </ul>
           </li>
           <!-- /Employee sidebar -->
+          <!-- Managers -->
+          <li class="menu-title">
+            <span>Managers</span>
+          </li>
+          <li class="submenu" [ngClass]="{
+              active:
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === '')
+            }">
+            <a href="javascript:" [ngClass]="{
+                subdrop:
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === '') 
+              }" class="noti-dot"><i class="la la-user-tie"></i> <span> Managers</span>
+              <span class=" menu-arrow"></span></a>
+            <ul style="display: none;" [ngStyle]="{
+                display:
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === '')
+                    ? 'block'
+                    : 'none'
+              }">
+              <li routerLink="">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'performance' ||
+                      urlComplete.subUrl === ''
+                  }">Line Manager</a>
+              </li>
+              <li>
+                <!-- Pass data here -->
+                <a routerLink='' [ngClass]="{ active: urlComplete.subUrl === '' }">1st Level Manager</a>
+              </li>
+              <li routerLink="">
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === '' }">2nd Level Manager</a>
+              </li>
+            </ul>
+          </li>
+          <!-- Managers -->
           <!-- Setup sidebar -->
+          <li *ngIf="userRights.includes('general setup')" class="menu-title">
+            <span>Setup</span>
+          </li>
           <li *ngIf="userRights.includes('general setup')" class="submenu" [ngClass]="{
               active:
               (urlComplete.mainUrl === 'setup' &&

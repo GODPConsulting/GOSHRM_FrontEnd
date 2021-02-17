@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { JwtService } from "../../services/jwt.service";
 import { AuthService } from "../../services/auth.service";
 import swal from "sweetalert2";
-import { DataService } from "src/app/data.service";
+import { DataService } from "src/app/services/data.service";
 
 @Component({
   selector: "app-login",
@@ -49,6 +49,8 @@ export class LoginComponent implements OnInit {
   getUserDetails() {
     return this.authService.getProfile().subscribe(
       (data) => {
+        console.log(data);
+
         if (data != null) {
           this.jwtService.saveUserDetails(data);
           let activities;

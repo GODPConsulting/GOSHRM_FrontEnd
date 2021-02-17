@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { DataService } from "src/app/services/data.service";
 import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
@@ -22,6 +23,7 @@ export class IdentificationComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() staffId: number;
+  @Input() loggedInUser: any;
 
   // To hold data for each card
   employeeIdentification: any[] = [];
@@ -166,7 +168,7 @@ export class IdentificationComponent implements OnInit {
   }
 
   getIdentification() {
-   this.pageLoading= true;
+    this.pageLoading = true;
     return this.setupService.getData("/common/identifications").subscribe(
       (data) => {
         this.pageLoading = false;
@@ -206,10 +208,10 @@ export class IdentificationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading= true;
+          this.pageLoading = true;
           return this.employeeService.deleteIdentification(payload).subscribe(
             (res) => {
-              this.pageLoading= false;
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -220,7 +222,7 @@ export class IdentificationComponent implements OnInit {
               }
             },
             (err) => {
-              this.pageLoading= false;
+              this.pageLoading = false;
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

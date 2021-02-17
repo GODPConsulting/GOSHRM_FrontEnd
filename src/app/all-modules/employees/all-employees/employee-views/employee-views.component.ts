@@ -1,5 +1,5 @@
 import { AfterViewChecked, Component, OnInit } from "@angular/core";
-import { DataService } from "src/app/data.service";
+import { DataService } from "src/app/services/data.service";
 import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
 
@@ -13,7 +13,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   public dtOptions: DataTables.Settings = {};
   public employeesList: any = [];
   public pageLoading: boolean;
-  public list: boolean = true
+  public list: boolean = true;
   companies: any[] = [];
   filteredArray: any[] = [];
 
@@ -21,7 +21,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
     private employeeService: EmployeeService,
     private dataService: DataService,
     private setupService: SetupService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.loadEmployees();
@@ -64,8 +64,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
         this.pageLoading = false;
 
         this.employeesList = data.employeeList;
-        this.filteredArray = data.employeeList
-        this.dataService.shareAllUsers(this.employeesList);
+        this.filteredArray = data.employeeList;
       },
       (err) => {
         this.pageLoading = false;
@@ -79,18 +78,19 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   }
 
   getStaffDepartments() {
-    return this.setupService.getStaffDepartments().subscribe(data => {
+    return this.setupService.getStaffDepartments().subscribe((data) => {
       this.companies = data.companyStructures;
-    })
+    });
   }
 
   filterEmployee(id) {
-    if(id == 0) {
-      this.filteredArray = this.employeesList
+    if (id == 0) {
+      this.filteredArray = this.employeesList;
     } else {
-      this.filteredArray = this.employeesList.filter(item => item.staffOfficeId == id);
+      this.filteredArray = this.employeesList.filter(
+        (item) => item.staffOfficeId == id
+      );
     }
-    
   }
   // Disposes the tooltip after the view is changed
   ngAfterViewChecked() {

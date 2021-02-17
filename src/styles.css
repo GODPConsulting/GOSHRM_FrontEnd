@@ -8615,8 +8615,16 @@ rating span {
   }
 }
 
-.avatar > img {
+.grid-avi > img {
   height: 80px;
+}
+
+.list-avi > img {
+  height: 38px;
+}
+
+.main-drop .user-img img {
+  height: 30px;
 }
 
 .select-div {

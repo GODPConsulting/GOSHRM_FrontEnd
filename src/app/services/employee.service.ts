@@ -19,6 +19,10 @@ export class EmployeeService {
     return this.apiService.get(`/hrm/get/single/staff/Id?StaffId=${id}`);
   }
 
+  getEmployeeByEmail(email: string) {
+    return this.apiService.get(`/hrm/get/single/staff/email?email=${email}`);
+  }
+
   getIdentificationByStaffId(id: number) {
     return this.apiService.get(
       `/hrm/get/single/employee/identification/staffId?staffId=${id}`

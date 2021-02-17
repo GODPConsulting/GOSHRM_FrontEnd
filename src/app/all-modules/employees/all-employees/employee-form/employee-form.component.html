@@ -175,7 +175,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-form-label">Country<span class="text-danger">*</span></label>
-                        <select class="form-control" [class.invalid]="EmployeeForm.get('countryId').invalid &&
+                        <select class="form-control" (change)='log($event)' [class.invalid]="EmployeeForm.get('countryId').invalid &&
                         EmployeeForm.get('countryId').touched" formControlName="countryId"
                             (change)=getStatesByCountryId($event.target.value)>
                             <option selected value="">Country</option>
@@ -236,7 +236,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-form-label">Address<span class="text-danger">*</span></label>
@@ -250,7 +249,7 @@
                     </div>
                 </div>
             </div>
-                <h4 class="mt-4">User Credentials</h4>
+            <h4 class="mt-4">User Credentials</h4>
             <hr>
             <div class="row">
                 <div class="col-sm-6">
@@ -349,6 +348,18 @@
                                 *ngIf="EmployeeForm.get('userAccessLevels').invalid && EmployeeForm.get('userAccessLevels').touched"
                                 class="text-danger"> *Access Level is required</small>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <h4 class="mt-4">User Roles</h4>
+            <hr>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>HR Admin<span class="text-danger">*</span></label>
+                    <input class="ml-3" type="checkbox" formControlName="isHRAdmin" />
+                    <div *ngIf="EmployeeForm.get('isHRAdmin').invalid && EmployeeForm.get('isHRAdmin').touched">
+                        <small *ngIf="EmployeeForm.get('isHRAdmin').invalid && EmployeeForm.get('isHRAdmin').touched"
+                            class="text-danger"> *Status is required</small>
                     </div>
                 </div>
             </div>
