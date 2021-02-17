@@ -49,6 +49,8 @@ export class LoginComponent implements OnInit {
   getUserDetails() {
     return this.authService.getProfile().subscribe(
       (data) => {
+        console.log(data);
+
         if (data != null) {
           this.jwtService.saveUserDetails(data);
           let activities;
