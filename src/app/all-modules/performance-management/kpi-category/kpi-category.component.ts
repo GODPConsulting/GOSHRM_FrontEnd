@@ -24,8 +24,10 @@ export class KpiCategoryComponent implements OnInit {
   pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   onclick: boolean = false;
-
+  modelDisabled: boolean = true;
+  hrDisabled: boolean = true;
   allLocation;
+  selectReview;
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -39,7 +41,11 @@ export class KpiCategoryComponent implements OnInit {
 
   kpiCategory: any[] = [];
   selectedId: number[] = [];
-  employeeSetObjectives: any;
+  employeeSetObjectives: string = "";
+  name: string = "";
+  description: string = "";
+  weightModel: string = "";
+  hrSelectReviewer: string = "";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,17 +78,19 @@ export class KpiCategoryComponent implements OnInit {
       description: ["", Validators.required],
       employeeSetObjectives: ["", Validators.required],
       weightModel: [{ value: "", disabled: true }, Validators.required],
-      hrSelectReviewer: ["", Validators.required],
+      hrSelectReviewer: [{ value: "", disabled: true }, Validators.required],
     });
   }
-  submitKpiCategoryForm(form: FormGroup) {
-    if (!form.valid) {
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    }
-    const payload = form.value;
-    payload.weightModel = +payload.weightModel;
-    payload.hrSelectReviewer = +payload.hrSelectReviewer;
+  submitKpiCategoryForm() {
+    const payload = {
+      name: this.name,
+      description: this.description,
+      weightModel: +this.weightModel,
+      hrSelectReviewer: +this.hrSelectReviewer,
+      employeeSetObjectives: this.employeeSetObjectives,
+    };
+    // payload.weightModel = +payload.weightModel;
+    // payload.hrSelectReviewer = +payload.hrSelectReviewer;
 
     this.spinner = true;
     return this.performanceManagementService.postkpiCategory(payload).subscribe(
@@ -92,7 +100,16 @@ export class KpiCategoryComponent implements OnInit {
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success");
           $("#kpi_category_modal").modal("hide");
+
+          this.modelDisabled = true;
+          this.hrDisabled = true;
+          this.weightModel = "";
+          this.hrSelectReviewer = "";
+          this.name = "";
+          this.description = "";
+          this.employeeSetObjectives = "";
         }
+
         this.getkpiCategory();
       },
       (err) => {
@@ -202,13 +219,24 @@ export class KpiCategoryComponent implements OnInit {
     this.allLocation = +event.target.value;
     this.kpiCategoryForm.get("weightModel");
     if (this.allLocation === 1 || this.allLocation === 0) {
-      this.kpiCategoryForm.get("weightModel").enable();
+      // this.kpiCategoryForm.get("weightModel").enable();
+      this.modelDisabled = false;
     }
     /* this.onclick = true;
     (data) => {
       this.onclick = false;
       this.employeeSetObjectives = data.onclick;
     } */
+  }
+
+  setHrReview(event) {
+    console.log(+event.target.value);
+    this.selectReview = +event.target.value;
+    this.kpiCategoryForm.get("hrSelectReviewer");
+    if (this.selectReview === 1 || this.selectReview === 3) {
+      // this.kpiCategoryForm.get("hrSelectReviewer").enable();
+      this.hrDisabled = false;
+    }
   }
 
   checkAll(event) {
