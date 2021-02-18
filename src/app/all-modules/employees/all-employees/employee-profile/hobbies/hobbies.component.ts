@@ -16,14 +16,12 @@ export class HobbiesComponent implements OnInit {
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
-  currentUser: string[] = []; // contains the data of the current user
-  currentUserId: number;
   public selectedId: number[] = [];
 
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
+  @Input() dataFromParent: any;
 
   // Forms
   hobbyForm: FormGroup;
@@ -51,7 +49,7 @@ export class HobbiesComponent implements OnInit {
       columns: [{ orderable: false }, null, null, null, null, null],
       order: [[1, "asc"]],
     };
-    this.getEmployeeHobby(this.staffId);
+    this.getEmployeeHobby(this.dataFromParent.user.staffId);
     this.initHobbyForm();
   }
 
@@ -62,19 +60,25 @@ export class HobbiesComponent implements OnInit {
       hobbyName: ["", Validators.required],
       rating: ["", Validators.required],
       description: ["", Validators.required],
-      approvalStatus: ["", Validators.required],
-      staffId: this.staffId,
+      approvalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
+      staffId: this.dataFromParent.user.staffId,
     });
   }
 
   submitHobbyForm(form: FormGroup) {
+    form.get("approvalStatus").enable();
+
     if (!form.valid) {
+      form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
     payload.approvalStatus = +payload.approvalStatus;
-
+    form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHobby(payload).subscribe(
       (res) => {
@@ -84,7 +88,7 @@ export class HobbiesComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#hobby_modal").modal("hide");
         }
-        this.getEmployeeHobby(this.staffId);
+        this.getEmployeeHobby(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -111,7 +115,7 @@ export class HobbiesComponent implements OnInit {
       rating: row.rating,
       description: row.description,
       approval_status_name: row.approval_status_name,
-      staffId: this.staffId,
+      staffId: this.dataFromParent.user.staffId,
       hobbyFile: row.hobbyFile,
     });
     $("#hobby_modal").modal("show");
@@ -123,7 +127,11 @@ export class HobbiesComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(
+      event,
+      form,
+      this.dataFromParent.user.staffId
+    );
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -150,14 +158,14 @@ export class HobbiesComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading= true;
+          this.pageLoading = true;
           return this.employeeService.deleteHobby(payload).subscribe(
             (res) => {
-              this.pageLoading= false;
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeHobby(this.staffId);
+                  this.getEmployeeHobby(this.dataFromParent.user.staffId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

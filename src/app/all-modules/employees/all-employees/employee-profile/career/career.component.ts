@@ -13,8 +13,7 @@ declare const $: any;
 })
 export class CareerComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
-  
- 
+
   employeeDetails: any = {};
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
@@ -34,7 +33,7 @@ export class CareerComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
+  @Input() dataFromParent: any;
 
   // Forms
   careerForm: FormGroup;
@@ -50,7 +49,6 @@ export class CareerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    
     // Determines the structure of the table (Angular Datatables)
     this.dtOptions = {
       dom:
@@ -62,10 +60,20 @@ export class CareerComponent implements OnInit {
         searchPlaceholder: "Start typing to search by any field",
       },
 
-      columns: [{ orderable: false }, null, null, null, null, null, null, null, null],
+      columns: [
+        { orderable: false },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ],
       order: [[1, "asc"]],
     };
-    this.getEmployeeCareer(this.staffId);
+    this.getEmployeeCareer(this.dataFromParent.user.staffId);
     this.initCareerForm();
     this.getCountry();
     this.getJobGrade();
@@ -74,13 +82,11 @@ export class CareerComponent implements OnInit {
     this.getStaffDepartments();
     this.loadEmployees();
     this.getEmploymentType();
-    
 
     this.getJobTitle();
   }
   //this.setupService.getData
   // Get All Employees
-  
 
   initCareerForm() {
     this.cardFormTitle = "Add Career";
@@ -98,9 +104,11 @@ export class CareerComponent implements OnInit {
       third_Level_ReviewerId: ["", Validators.required],
       startDate: ["", Validators.required],
       endDate: ["", Validators.required],
-      approval_status: ["", Validators.required],
-      staffId: this.staffId,
-      // identicationFile: ["", Validators.required],
+      approval_status: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
+      staffId: this.dataFromParent.user.staffId,
     });
     //this.fileInput.nativeElement.value = "";
   }
@@ -161,7 +169,10 @@ export class CareerComponent implements OnInit {
   }
 
   submitCareerForm(form: FormGroup) {
+    form.get("approval_status").enable();
+
     if (!form.valid) {
+      form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -176,6 +187,7 @@ export class CareerComponent implements OnInit {
     payload.first_Level_ReviewerId = +payload.first_Level_ReviewerId;
     payload.second_Level_ReviewerId = +payload.second_Level_ReviewerId;
     payload.third_Level_ReviewerId = +payload.third_Level_ReviewerId;
+    form.get("approval_status").disable();
 
     this.spinner = true;
     return this.employeeService.postCareer(payload).subscribe(
@@ -186,7 +198,7 @@ export class CareerComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#career_modal").modal("hide");
         }
-        this.getEmployeeCareer(this.staffId);
+        this.getEmployeeCareer(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -237,7 +249,6 @@ export class CareerComponent implements OnInit {
       );
   }
 
- 
   // Set Values To Edit Modal Form
   edit(row) {
     this.cardFormTitle = "Edit Career";
@@ -257,7 +268,7 @@ export class CareerComponent implements OnInit {
       startDate: row.startDate,
       endDate: row.endDate,
       approval_status_name: row.approval_status_name,
-      staffId: this.staffId,
+      staffId: this.dataFromParent.user.staffId,
       careerFile: row.careerFile,
     });
     $("#career_modal").modal("show");
@@ -269,7 +280,11 @@ export class CareerComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(
+      event,
+      form,
+      this.dataFromParent.user.staffId
+    );
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -294,7 +309,7 @@ export class CareerComponent implements OnInit {
         showCancelButton: true,
         confirmButtonText: "Yes!",
       })
-      
+
       .then((result) => {
         if (result.value) {
           this.pageLoading = true;
@@ -304,7 +319,7 @@ export class CareerComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeCareer(this.staffId);
+                  this.getEmployeeCareer(this.dataFromParent.user.staffId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

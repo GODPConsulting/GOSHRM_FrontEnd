@@ -16,6 +16,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   public list: boolean = true;
   companies: any[] = [];
   filteredArray: any[] = [];
+  canAddEmployee: boolean;
 
   constructor(
     private employeeService: EmployeeService,
@@ -24,6 +25,11 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit() {
+    this.dataService.currentUser.subscribe((result) => {
+      const user = result;
+      this.canAddEmployee = user && user.activities.includes("employeeform");
+      console.log(this.canAddEmployee);
+    });
     this.loadEmployees();
     this.getStaffDepartments();
 

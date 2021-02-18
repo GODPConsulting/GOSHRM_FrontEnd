@@ -24,7 +24,7 @@ export class AssetsComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
+  @Input() dataFromParent: any;
 
   // Forms
   assetForm: FormGroup;
@@ -49,10 +49,20 @@ export class AssetsComponent implements OnInit {
         searchPlaceholder: "Start typing to search by any field",
       },
 
-      columns: [{ orderable: false }, null, null, null, null, null, null, null, null],
+      columns: [
+        { orderable: false },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ],
       order: [[1, "asc"]],
     };
-    this.getEmployeeAsset(this.staffId);
+    this.getEmployeeAsset(this.dataFromParent.user.staffId);
     this.initAssetForm();
   }
 
@@ -69,16 +79,28 @@ export class AssetsComponent implements OnInit {
       classification: ["", Validators.required],
       physicalCondition: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      requestApprovalStatus: ["", Validators.required],
-      returnApprovalStatus: ["", Validators.required],
-      staffId: this.staffId,
+      requestApprovalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
+      returnApprovalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
+      staffId: this.dataFromParent.user.staffId,
       // identicationFile: ["", Validators.required],
     });
     //this.fileInput.nativeElement.value = "";
   }
 
   submitAssetForm(form: FormGroup) {
+    form.get("requestApprovalStatus").enable();
+    form.get("returnApprovalStatus").enable();
+
     if (!form.valid) {
+      form.get("requestApprovalStatus").disable();
+      form.get("returnApprovalStatus").disable();
+
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -96,6 +118,8 @@ export class AssetsComponent implements OnInit {
     }
  */
 
+    form.get("requestApprovalStatus").disable();
+    form.get("returnApprovalStatus").disable();
     this.spinner = true;
     return this.employeeService.postAsset(payload).subscribe(
       (res) => {
@@ -105,7 +129,7 @@ export class AssetsComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#asset_modal").modal("hide");
         }
-        this.getEmployeeAsset(this.staffId);
+        this.getEmployeeAsset(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -141,7 +165,7 @@ export class AssetsComponent implements OnInit {
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
       requestApprovalStatus: row.requestApprovalStatus,
       returnApprovalStatus: row.returnApprovalStatus,
-      // staffId: this.staffId,
+      // staffId: this.dataFromParent.user.staffId,
       assetFile: row.assetFile,
     });
     $("#asset_modal").modal("show");
@@ -153,7 +177,11 @@ export class AssetsComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(
+      event,
+      form,
+      this.dataFromParent.user.staffId
+    );
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -180,14 +208,14 @@ export class AssetsComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading= true;
+          this.pageLoading = true;
           return this.employeeService.deleteAsset(payload).subscribe(
             (res) => {
               this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeAsset(this.staffId);
+                  this.getEmployeeAsset(this.dataFromParent.user.staffId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

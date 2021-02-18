@@ -21,7 +21,7 @@ export class ProfCertComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
+  @Input() dataFromParent: any;
 
   // To hold data for card
   employeeProfCert: any[] = [];
@@ -38,7 +38,7 @@ export class ProfCertComponent implements OnInit {
 
   ngOnInit(): void {
     this.initProfCertForm();
-    this.getEmployeeProfCert(this.staffId);
+    this.getEmployeeProfCert(this.dataFromParent.user.staffId);
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -88,8 +88,11 @@ export class ProfCertComponent implements OnInit {
       institution: ["", Validators.required],
       dateGranted: ["", Validators.required],
       expiryDate: ["", Validators.required],
-      approvalStatus: ["", Validators.required],
-      staffId: this.staffId,
+      approvalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
+      staffId: this.dataFromParent.user.staffId,
       gradeId: ["", Validators.required],
       profCertificationFile: ["", Validators.required],
     });
@@ -109,7 +112,7 @@ export class ProfCertComponent implements OnInit {
       dateGranted: row.dateGranted,
       expiryDate: new Date(row.expiryDate).toLocaleDateString("en-CA"),
       approvalStatus: row.approvalStatus,
-      staffId: this.staffId,
+      staffId: this.dataFromParent.user.staffId,
       gradeId: row.gradeId,
       profCertificationFile: row.profCertificationFile,
     });
@@ -118,7 +121,10 @@ export class ProfCertComponent implements OnInit {
   }
 
   submitProfCertForm(form: FormGroup) {
+    form.get("approvalStatus").enable();
+
     if (!form.valid) {
+      form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -138,6 +144,7 @@ export class ProfCertComponent implements OnInit {
     for (const key in form.value) {
       formData.append(key, this.profCertForm.get(key).value);
     }
+    form.get("approvalStatus").disable();
 
     this.spinner = true;
     return this.employeeService.postProfCert(formData).subscribe(
@@ -148,7 +155,7 @@ export class ProfCertComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#prof_cert_modal").modal("hide");
         }
-        this.getEmployeeProfCert(this.staffId);
+        this.getEmployeeProfCert(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -174,7 +181,11 @@ export class ProfCertComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(
+      event,
+      form,
+      this.dataFromParent.user.staffId
+    );
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -201,21 +212,21 @@ export class ProfCertComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading= true;
+          this.pageLoading = true;
           return this.employeeService.deleteProfCert(payload).subscribe(
             (res) => {
-              this.pageLoading= false;
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeProfCert(this.staffId);
+                  this.getEmployeeProfCert(this.dataFromParent.user.staffId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
-              this.pageLoading= false;
+              this.pageLoading = false;
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

@@ -52,7 +52,8 @@ export class EmployeeProfileComponent implements OnInit {
   selectedLanguageId: number[] = [];
   selectedQualificationId: number[] = [];
   navigationSubscription: Subscription;
-  user: any;
+  dataToChild: any = {};
+
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -75,8 +76,15 @@ export class EmployeeProfileComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.employeeId = +params.get("id");
     });
+    // Get access to the user data shared from sidebar
     this.dataService.currentUser.subscribe((result) => {
-      this.user = result;
+      this.dataToChild.user = result;
+      this.dataToChild.isHr = this.dataToChild.user?.userRoleNames.includes(
+        "HR Admin"
+      );
+      this.dataToChild.canSeeProfileElement =
+        this.dataToChild.user?.userRoleNames.includes("HR Admin") ||
+        this.dataToChild.user?.staffId === this.employeeId;
     });
     this.getUserData();
     this.initializeForm();
@@ -95,43 +103,49 @@ export class EmployeeProfileComponent implements OnInit {
   initializeForm() {
     this.emergencyContactForm = this.formBuilder.group({
       id: [0],
-      fullName: [""],
-      contact_phone_number: [""],
-      email: [""],
-      relationship: [""],
-      address: [""],
-      countryId: [0],
-      countryName: [""],
-      approval_status: [],
-      approval_status_name: [""],
-      staffId: [""],
+      fullName: ["", Validators.required],
+      contact_phone_number: ["", Validators.required],
+      email: ["", Validators.required],
+      relationship: ["", Validators.required],
+      address: ["", Validators.required],
+      countryId: [""],
+      countryName: ["", Validators.required],
+      approval_status: [
+        { value: "2", disabled: !this.dataToChild.isHr },
+        Validators.required,
+      ],
+      staffId: this.employeeId,
     });
   }
   initLaguageRatingForm() {
     this.languageRatingForm = this.formBuilder.group({
       id: [0],
-      languageId: [0],
-      language: [""],
-      reading_Rating: [0],
-      writing_Rating: [0],
-      speaking_Rating: [0],
-      approval_status: [],
-      approval_status_name: [""],
-      staffId: [""],
+      languageId: ["", Validators.required],
+      reading_Rating: ["", Validators.required],
+      writing_Rating: ["", Validators.required],
+      speaking_Rating: ["", Validators.required],
+      approval_status: [
+        { value: "2", disabled: !this.dataToChild.isHr },
+        Validators.required,
+      ],
+      staffId: this.employeeId,
     });
   }
 
   initEmployeeQualificationForm() {
     this.employeeQualificationForm = this.formBuilder.group({
       id: [0],
-      qualificationId: [""],
-      institution: [""],
-      startDate: [""],
-      endDate: [""],
-      gradeId: [""],
-      approvalStatus: 2,
+      qualificationId: ["", Validators.required],
+      institution: ["", Validators.required],
+      startDate: ["", Validators.required],
+      endDate: ["", Validators.required],
+      gradeId: ["", Validators.required],
+      approvalStatus: [
+        { value: "2", disabled: !this.dataToChild.isHr },
+        Validators.required,
+      ],
       staffId: this.employeeId,
-      qualificationFile: [""],
+      qualificationFile: ["", Validators.required],
     });
   }
 
@@ -154,8 +168,16 @@ export class EmployeeProfileComponent implements OnInit {
   /* Employee profile */
 
   /* Emergency Contact */
-  addEmergencyContact(emergencyContactForm) {
-    const payload = emergencyContactForm.value;
+  addEmergencyContact(form: FormGroup) {
+    form.get("approval_status").enable();
+
+    if (!form.valid) {
+      form.get("approval_status").disable();
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+
+    const payload = form.value;
     payload.staffId = this.employeeId;
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
@@ -183,6 +205,7 @@ export class EmployeeProfileComponent implements OnInit {
     if (!payload.approvalStatus) {
       return swal.fire("Error", "Approval Status is empty", "error");
     }
+    form.get("approval_status").disable();
 
     this.loading = true;
     this.employeeService.addEmergencyContact(payload).subscribe(
@@ -293,8 +316,15 @@ export class EmployeeProfileComponent implements OnInit {
   /* Emergency Contact */
 
   /* Language */
-  addLanguageRating(languageRatingForm) {
-    const payload = languageRatingForm.value;
+  addLanguageRating(form: FormGroup) {
+    form.get("approval_status").enable();
+
+    if (!form.valid) {
+      form.get("approval_status").disable();
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    }
+    const payload = form.value;
     payload.staffId = this.employeeId;
     payload.approval_status = +payload.approval_status;
     payload.reading_Rating = this.readingRating;
@@ -317,6 +347,7 @@ export class EmployeeProfileComponent implements OnInit {
     if (!payload.approval_status) {
       return swal.fire("Error", "Approval Status is empty", "error");
     }
+    form.get("approval_status").disable();
 
     this.loading = true;
     this.employeeService.addLanguageRating(payload).subscribe(
@@ -475,29 +506,38 @@ export class EmployeeProfileComponent implements OnInit {
     this.fileToUpload = event.target.files[0];
   }
   // EmployeeQualification
-  addEmployeeQualification(employeeQualificationForm) {
-    const payload = employeeQualificationForm.value;
-    if (!payload.qualificationId) {
-      return swal.fire("Error!", "Select Qualification", "error");
+  addEmployeeQualification(form: FormGroup) {
+    form.get("approvalStatus").enable();
+
+    const payload = form.value;
+    if (!form.valid) {
+      form.get("approvalStatus").disable();
+      swal.fire("Error", "please fill all mandatory fields", "error");
+      return;
+    } else {
+      if (!payload.qualificationId) {
+        return swal.fire("Error!", "Select Qualification", "error");
+      }
+      if (!payload.institution) {
+        return swal.fire("Error!", "Institution is empty", "error");
+      }
+      if (!payload.startDate) {
+        return swal.fire("Error!", "Start Date is empty", "error");
+      }
+      if (!payload.endDate) {
+        return swal.fire("Error!", "End Date is empty", "error");
+      }
+      if (!payload.gradeId) {
+        return swal.fire("Error!", "Grade is empty", "error");
+      }
+      if (!this.fileToUpload) {
+        return swal.fire("Error!", "Select a file", "error");
+      }
+      if (!payload.approvalStatus) {
+        return swal.fire("Error!", "Select a status", "error");
+      }
     }
-    if (!payload.institution) {
-      return swal.fire("Error!", "Institution is empty", "error");
-    }
-    if (!payload.startDate) {
-      return swal.fire("Error!", "Start Date is empty", "error");
-    }
-    if (!payload.endDate) {
-      return swal.fire("Error!", "End Date is empty", "error");
-    }
-    if (!payload.gradeId) {
-      return swal.fire("Error!", "Grade is empty", "error");
-    }
-    if (!this.fileToUpload) {
-      return swal.fire("Error!", "Select a file", "error");
-    }
-    if (!payload.approvalStatus) {
-      return swal.fire("Error!", "Select a status", "error");
-    }
+    form.get("approvalStatus").disable();
     this.spinner = true;
     this.employeeService
       .addEmployeeQualification(payload, this.fileToUpload)

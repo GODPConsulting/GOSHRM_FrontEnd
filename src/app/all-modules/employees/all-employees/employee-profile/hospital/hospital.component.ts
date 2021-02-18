@@ -23,7 +23,7 @@ export class HospitalComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
+  @Input() dataFromParent: any;
 
   // To hold data for each card
   employeeHospital: any[] = [];
@@ -41,7 +41,7 @@ export class HospitalComponent implements OnInit {
     this.initHospitalForm();
     this.initHospitalChangeForm();
     this.initBookHospitalForm();
-    this.getEmployeeHospital(this.staffId);
+    this.getEmployeeHospital(this.dataFromParent.user.staffId);
     // Observable to subscribe to in the template
     this.allHospitals$ = this.setupService.getHospitalMgt();
     this.dtOptions = {
@@ -68,8 +68,11 @@ export class HospitalComponent implements OnInit {
       contactPhoneNo: ["", Validators.required],
       startDate: ["", Validators.required],
       endDate: ["", Validators.required],
-      approvalStatus: ["", Validators.required],
-      staffId: this.staffId,
+      approvalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
+      staffId: this.dataFromParent.user.staffId,
       setCurrentDate: [""],
     });
   }
@@ -86,8 +89,11 @@ export class HospitalComponent implements OnInit {
       ],
       expectedDateOfChange: ["", Validators.required],
       hospitalFile: ["", Validators.required],
-      staffId: this.staffId,
-      approvalStatus: ["", Validators.required],
+      staffId: this.dataFromParent.user.staffId,
+      approvalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
     });
   }
 
@@ -103,23 +109,26 @@ export class HospitalComponent implements OnInit {
       proposedMeetingDate: ["", Validators.required],
       reasonsForMeeting: ["", Validators.required],
       hospitalMeetingFile: ["", Validators.required],
-      staffId: this.staffId,
+      staffId: this.dataFromParent.user.staffId,
     });
   }
 
   submitHospitalForm(form: FormGroup) {
+    form.get("approvalStatus").enable();
     if (!form.valid) {
+      form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
     payload.hospitalId = +payload.hospitalId;
-    payload.approvalStatus =+payload.approvalStatus; 
+    payload.approvalStatus = +payload.approvalStatus;
     /*  const formData = new FormData();
     for (const key in form.value) {
       formData.append(key, this.hospitalForm.get(key).value);
     }
  */
+    form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHospital(payload).subscribe(
       (res) => {
@@ -129,7 +138,7 @@ export class HospitalComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#hospital_modal").modal("hide");
         }
-        this.getEmployeeHospital(this.staffId);
+        this.getEmployeeHospital(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -140,9 +149,11 @@ export class HospitalComponent implements OnInit {
   }
 
   submitHospitalChangeReqForm(form: FormGroup) {
+    form.get("approvalStatus").enable();
     form.get("dateOfRequest").enable();
 
     if (!form.valid) {
+      form.get("approvalStatus").disable();
       form.get("dateOfRequest").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -154,6 +165,7 @@ export class HospitalComponent implements OnInit {
     for (const key in form.value) {
       formData.append(key, this.hospitalChangeReqForm.get(key).value);
     }
+    form.get("approvalStatus").disable();
     form.get("dateOfRequest").disable();
     this.spinner = true;
     return this.employeeService.postHospitalChangeRequest(formData).subscribe(
@@ -164,7 +176,7 @@ export class HospitalComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#hmo_req_change_modal").modal("hide");
         }
-        this.getEmployeeHospital(this.staffId);
+        this.getEmployeeHospital(this.dataFromParent.user.staffId);
       },
       (err) => {
         form.get("dateOfRequest").disable();
@@ -255,21 +267,21 @@ export class HospitalComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading= true;
+          this.pageLoading = true;
           return this.employeeService.deleteHospital(payload).subscribe(
             (res) => {
-              this.pageLoading= false;
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeHospital(this.staffId);
+                  this.getEmployeeHospital(this.dataFromParent.user.staffId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
-              this.pageLoading= false;
+              this.pageLoading = false;
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }
@@ -295,7 +307,11 @@ export class HospitalComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(
+      event,
+      form,
+      this.dataFromParent.user.staffId
+    );
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"

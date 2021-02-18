@@ -68,9 +68,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <!--  <div class="col-sm-6">
                     <div class="form-group">
-                        <label class="col-form-label">StaffCode <span class="text-danger">*</span></label>
+                        <label class="col-form-label">StaffCode </label>
                         <input class="form-control" type="text"
                             [class.invalid]="EmployeeForm.get('staffCode').invalid && EmployeeForm.get('staffCode').touched"
                             formControlName="staffCode">
@@ -80,7 +80,7 @@
                                 class="text-danger"> *StaffCode is required</small>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-form-label">Date Of Birth <span class="text-danger">*</span></label>
@@ -109,6 +109,31 @@
                         <div *ngIf="EmployeeForm.get('gender').invalid && EmployeeForm.get('gender').touched">
                             <small *ngIf="EmployeeForm.get('gender').invalid && EmployeeForm.get('gender').touched"
                                 class="text-danger"> *Gender is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">Phone Number<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text"
+                            [class.invalid]="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched"
+                            formControlName="phoneNumber">
+                        <div *ngIf="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched">
+                            <small
+                                *ngIf="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched"
+                                class="text-danger"> *Phone Number is required</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                        <input class="form-control" type="email"
+                            [class.invalid]="EmployeeForm.get('email').invalid && EmployeeForm.get('email').touched"
+                            formControlName="email">
+                        <div *ngIf="EmployeeForm.get('email').invalid && EmployeeForm.get('email').touched">
+                            <small *ngIf="EmployeeForm.get('email').invalid && EmployeeForm.get('email').touched"
+                                class="text-danger"> *Email is required</small>
                         </div>
                     </div>
                 </div>
@@ -149,33 +174,22 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label class="col-form-label">Phone Number<span class="text-danger">*</span></label>
-                        <input class="form-control" type="text"
-                            [class.invalid]="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched"
-                            formControlName="phoneNumber">
-                        <div *ngIf="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched">
+                        <label class="col-form-label">Date Of Join <span class="text-danger">*</span></label>
+                        <input class="form-control datetimepicker" type="date" bsDatepicker
+                            [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                            [class.invalid]="EmployeeForm.get('dateOfJoin').invalid && EmployeeForm.get('dateOfJoin').touched"
+                            formControlName="dateOfJoin">
+                        <div *ngIf="EmployeeForm.get('dateOfJoin').invalid && EmployeeForm.get('dateOfJoin').touched">
                             <small
-                                *ngIf="EmployeeForm.get('phoneNumber').invalid && EmployeeForm.get('phoneNumber').touched"
-                                class="text-danger"> *Phone Number is required</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                        <input class="form-control" type="email"
-                            [class.invalid]="EmployeeForm.get('email').invalid && EmployeeForm.get('email').touched"
-                            formControlName="email">
-                        <div *ngIf="EmployeeForm.get('email').invalid && EmployeeForm.get('email').touched">
-                            <small *ngIf="EmployeeForm.get('email').invalid && EmployeeForm.get('email').touched"
-                                class="text-danger"> *Email is required</small>
+                                *ngIf="EmployeeForm.get('dateOfJoin').invalid && EmployeeForm.get('dateOfJoin').touched"
+                                class="text-danger"> *Date is required</small>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-form-label">Country<span class="text-danger">*</span></label>
-                        <select class="form-control" (change)='log($event)' [class.invalid]="EmployeeForm.get('countryId').invalid &&
+                        <select class="form-control" [class.invalid]="EmployeeForm.get('countryId').invalid &&
                         EmployeeForm.get('countryId').touched" formControlName="countryId"
                             (change)=getStatesByCountryId($event.target.value)>
                             <option selected value="">Country</option>
@@ -223,7 +237,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <!--  <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-form-label">Staff Limit <span class="text-danger">*</span></label>
                         <input class="form-control" type="number"
@@ -235,7 +249,7 @@
                                 class="text-danger"> *Staff Limit is required</small>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-form-label">Address<span class="text-danger">*</span></label>
@@ -355,7 +369,7 @@
             <hr>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>HR Admin<span class="text-danger">*</span></label>
+                    <label>HR Admin</label>
                     <input class="ml-3" type="checkbox" formControlName="isHRAdmin" />
                     <div *ngIf="EmployeeForm.get('isHRAdmin').invalid && EmployeeForm.get('isHRAdmin').touched">
                         <small *ngIf="EmployeeForm.get('isHRAdmin').invalid && EmployeeForm.get('isHRAdmin').touched"
