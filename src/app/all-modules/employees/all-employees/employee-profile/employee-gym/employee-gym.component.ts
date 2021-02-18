@@ -23,7 +23,7 @@ export class EmployeeGymComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
+  @Input() dataFromParent: any;
 
   // To hold data for each card
   employeeGym: any[] = [];
@@ -41,7 +41,7 @@ export class EmployeeGymComponent implements OnInit {
     this.initGymForm();
     this.initGymChangeForm();
     this.initBookGymForm();
-    this.getEmployeeGym(this.staffId);
+    this.getEmployeeGym(this.dataFromParent.user.staffId);
     // Observable to subscribe to in the template
     this.allGyms$ = this.setupService.getGymWorkout();
     this.dtOptions = {
@@ -68,8 +68,11 @@ export class EmployeeGymComponent implements OnInit {
       gymContactPhoneNo: ["", Validators.required],
       startDate: ["", Validators.required],
       end_Date: ["", Validators.required],
-      approvalStatus: ["", Validators.required],
-      staffId: this.staffId,
+      approvalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
+      staffId: this.dataFromParent.user.staffId,
       setCurrentDate: [""],
     });
   }
@@ -86,8 +89,11 @@ export class EmployeeGymComponent implements OnInit {
       ],
       expectedDateOfChange: ["", Validators.required],
       gymFile: ["", Validators.required],
-      staffId: this.staffId,
-      approvalStatus: ["", Validators.required],
+      staffId: this.dataFromParent.user.staffId,
+      approvalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
     });
   }
 
@@ -103,20 +109,22 @@ export class EmployeeGymComponent implements OnInit {
       proposedMeetingDate: ["", Validators.required],
       reasonsForMeeting: ["", Validators.required],
       gymMeetingFile: ["", Validators.required],
-      staffId: this.staffId,
+      staffId: this.dataFromParent.user.staffId,
     });
   }
 
   submitGymForm(form: FormGroup) {
-    console.log(form.value);
+    form.get("approvalStatus").enable();
 
     if (!form.valid) {
+      form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
     payload.approvalStatus = +payload.approvalStatus;
     payload.gymId = +payload.gymId;
+    form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postGym(payload).subscribe(
       (res) => {
@@ -126,7 +134,7 @@ export class EmployeeGymComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#gym_modal").modal("hide");
         }
-        this.getEmployeeGym(this.staffId);
+        this.getEmployeeGym(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -138,18 +146,27 @@ export class EmployeeGymComponent implements OnInit {
 
   submitGymChangeReqForm(form: FormGroup) {
     form.get("dateOfRequest").enable();
+    form.get("approvalStatus").enable();
 
     if (!form.valid) {
+      form.get("approvalStatus").disable();
       form.get("dateOfRequest").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-
+    form
+      .get("expectedDateOfChange")
+      .setValue(
+        new Date(form.get("expectedDateOfChange").value).toLocaleDateString(
+          "en-CA"
+        )
+      );
     const formData = new FormData();
     for (const key in form.value) {
       formData.append(key, this.gymChangeReqForm.get(key).value);
     }
     form.get("dateOfRequest").disable();
+    form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postGymChangeRequest(formData).subscribe(
       (res) => {
@@ -159,7 +176,7 @@ export class EmployeeGymComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#hmo_req_change_modal").modal("hide");
         }
-        this.getEmployeeGym(this.staffId);
+        this.getEmployeeGym(this.dataFromParent.user.staffId);
       },
       (err) => {
         form.get("dateOfRequest").disable();
@@ -258,7 +275,7 @@ export class EmployeeGymComponent implements OnInit {
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
                   this.pageLoading = false;
-                  this.getEmployeeGym(this.staffId);
+                  this.getEmployeeGym(this.dataFromParent.user.staffId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");
@@ -295,7 +312,11 @@ export class EmployeeGymComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(
+      event,
+      form,
+      this.dataFromParent.user.staffId
+    );
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"

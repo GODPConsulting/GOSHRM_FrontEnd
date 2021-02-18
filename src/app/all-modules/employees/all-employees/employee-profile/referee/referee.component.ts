@@ -19,7 +19,7 @@ export class RefereeComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
+  @Input() dataFromParent: any;
 
   // To hold data for each card
   employeeReferee: any = [];
@@ -32,7 +32,7 @@ export class RefereeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getEmployeeReferee(this.staffId);
+    this.getEmployeeReferee(this.dataFromParent.user.staffId);
     this.initRefereeForm();
     this.dtOptions = {
       dom:
@@ -101,8 +101,11 @@ export class RefereeComponent implements OnInit {
       address: ["", Validators.required],
       confirmationReceived: ["", Validators.required],
       confirmationDate: ["", Validators.required],
-      approvalStatus: ["", Validators.required],
-      staffId: this.staffId,
+      approvalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
+      staffId: this.dataFromParent.user.staffId,
       refereeFile: ["", Validators.required],
     });
     // Resets the upload input of the add form
@@ -126,7 +129,7 @@ export class RefereeComponent implements OnInit {
       confirmationReceived: row.confirmationReceived,
       confirmationDate: row.confirmationDate,
       approvalStatus: row.approvalStatus,
-      staffId: this.staffId,
+      staffId: this.dataFromParent.user.staffId,
     });
     if (this.fileInput) {
       this.fileInput.nativeElement.value = "";
@@ -135,7 +138,10 @@ export class RefereeComponent implements OnInit {
   }
 
   submitRefereeForm(form: FormGroup) {
+    form.get("approvalStatus").enable();
+
     if (!form.valid) {
+      form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -149,6 +155,7 @@ export class RefereeComponent implements OnInit {
     for (const key in form.value) {
       formData.append(key, this.refereeForm.get(key).value);
     }
+    form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postReferee(formData).subscribe(
       (res) => {
@@ -158,7 +165,7 @@ export class RefereeComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#referee_modal").modal("hide");
         }
-        this.getEmployeeReferee(this.staffId);
+        this.getEmployeeReferee(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -186,7 +193,11 @@ export class RefereeComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(
+      event,
+      form,
+      this.dataFromParent.user.staffId
+    );
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -213,14 +224,14 @@ export class RefereeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading=true;
+          this.pageLoading = true;
           return this.employeeService.deleteReferee(payload).subscribe(
             (res) => {
               this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeReferee(this.staffId);
+                  this.getEmployeeReferee(this.dataFromParent.user.staffId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

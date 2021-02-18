@@ -21,7 +21,8 @@
           <div class="profile-view">
             <div class="profile-img-wrap">
               <div class="profile-img">
-                <a><img alt="" src="{{employeeDetails.photo}}" /></a>
+                <a><i *ngIf="!employeeDetails.photo" class="fa fa-user"></i><img *ngIf="employeeDetails.photo" alt=""
+                    src="{{employeeDetails.photo}}" /></a>
               </div>
             </div>
             <div class="profile-basic">
@@ -107,7 +108,7 @@
     <div id="emp_profile" class="pro-overview tab-pane fade show active ">
       <!-- Identification Card -->
       <div>
-        <app-identification *ngIf='user && employeeId' [staffId]="employeeId" [loggedInUser]='user'>
+        <app-identification *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild">
         </app-identification>
       </div>
       <!-- /Identification Card -->
@@ -119,8 +120,8 @@
                 <a class="edit-icon hint mr-1" (click)="deleteEmergencyContact()"><span
                     class="hint-text">Delete</span><i class="fa fa-trash"></i>
                 </a>
-                <a class="edit-icon hint mr-1" data-toggle="modal" data-target="#emergency_contact_modal"><span
-                    class="hint-text">Add</span><i class="fa fa-plus"></i>
+                <a *ngIf="dataToChild.canSeeProfileElement" class="edit-icon hint mr-1" data-toggle="modal"
+                  data-target="#emergency_contact_modal"><span class="hint-text">Add</span><i class="fa fa-plus"></i>
                 </a>
               </div>
             </h3>
@@ -172,7 +173,8 @@
                   <a class="edit-icon hint mr-1" (click)="deleteLanguageRating()"><span
                       class="hint-text">Delete</span><i class="fa fa-trash"></i>
                   </a>
-                  <a class="edit-icon hint mr-1" data-toggle="modal" data-target="#language_rating_modal"><span
+                  <a *ngIf="dataToChild.canSeeProfileElement" (click)="initLaguageRatingForm()"
+                    class="edit-icon hint mr-1" data-toggle="modal" data-target="#language_rating_modal"><span
                       class="hint-text">Add</span><i class="fa fa-plus"></i>
                   </a>
                 </div>
@@ -216,11 +218,12 @@
         <!-- Language -->
       </div>
       <!-- Referee Card -->
-      <app-referee [staffId]="employeeId"></app-referee>
+      <app-referee *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-referee>
       <!-- /Referee Card -->
       <!-- Dependent Contact Tab -->
       <div>
-        <app-dependent-contact [staffId]="employeeId"></app-dependent-contact>
+        <app-dependent-contact *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild">
+        </app-dependent-contact>
       </div>
       <!-- /dependent Contact Tab-->
     </div>
@@ -229,7 +232,7 @@
     <div id="emp_assets" class="tab-pane fade">
       <!-- Assets card -->
       <div>
-        <app-assets [staffId]="employeeId"></app-assets>
+        <app-assets *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-assets>
       </div>
       <!-- Assets card -->
     </div>
@@ -237,7 +240,7 @@
     <!-- Careers Tab -->
     <div id="emp_careers" class="tab-pane fade ">
       <!-- Career card -->
-      <app-career [staffId]="employeeId"></app-career>
+      <app-career *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-career>
       <!-- /Career card -->
       <!-- Qualification -->
       <div>
@@ -247,10 +250,11 @@
                 <a class="edit-icon hint mr-1" (click)="deleteEmployeeQualification()"><span
                     class="hint-text">Delete</span><i class="fa fa-trash"></i>
                 </a>
-                <a class="edit-icon hint mr-1" (click)="downloadFile()" download><span
+                <a *ngIf="dataToChild.isHr" class="edit-icon hint mr-1" (click)="downloadFile()" download><span
                     class="hint-text">Download</span><i class="fa fa-download"></i>
                 </a>
-                <a class="edit-icon hint mr-1" data-toggle="modal" data-target="#employee_qualification_modal"><span
+                <a *ngIf="dataToChild.canSeeProfileElement" (click)="initEmployeeQualificationForm()"
+                  class="edit-icon hint mr-1" data-toggle="modal" data-target="#employee_qualification_modal"><span
                     class="hint-text">Add</span><i class="fa fa-plus"></i>
                 </a>
               </div>
@@ -390,10 +394,10 @@
       </div>
       <!-- Qualification modal ends here  -->
       <!-- Professional Certification card -->
-      <app-prof-cert [staffId]="employeeId"></app-prof-cert>
+      <app-prof-cert *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-prof-cert>
       <!-- /Professional Certification card -->
       <!-- Skills card -->
-      <app-skills [staffId]="employeeId"></app-skills>
+      <app-skills *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-skills>
       <!-- /Skills card -->
     </div>
     <!-- /Careers Tab -->
@@ -401,20 +405,20 @@
     <div id="emp_hobbies" class=" tab-pane fade">
       <!-- Hobbies Card -->
       <div>
-        <app-hobbies [staffId]="employeeId"></app-hobbies>
+        <app-hobbies *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-hobbies>
       </div>
     </div>
     <!-- /Hobbies Tab -->
     <!-- Health and Wellness Tab -->
     <div id="emp_health_well" class="tab-pane fade ">
       <!-- Employee Hmo card -->
-      <app-employee-hmo [staffId]="employeeId"></app-employee-hmo>
+      <app-employee-hmo *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-employee-hmo>
       <!-- Employee /Hmo card -->
       <!-- Hospital card -->
-      <app-hospital [staffId]="employeeId"></app-hospital>
+      <app-hospital *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-hospital>
       <!-- /Hospital card -->
       <!-- Employee Gym card -->
-      <app-employee-gym [staffId]="employeeId"></app-employee-gym>
+      <app-employee-gym *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-employee-gym>
       <!-- /Employee Gym card -->
     </div>
     <!-- /Health and Wellness Tab -->

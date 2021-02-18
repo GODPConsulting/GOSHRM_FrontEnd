@@ -4,11 +4,11 @@
         <div class="card-body">
             <h3 class="card-title">Dependent Contacts<a class="edit-icon hint" (click)="delete()"><span
                         class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
-                <a class="edit-icon hint mr-1" (click)="downloadFile()" download><span
+                <a *ngIf="dataFromParent.isHr" class="edit-icon hint mr-1" (click)="downloadFile()" download><span
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
-                <a *ngIf="currentUserId === employeeId" (click)="initDependentContactForm()" class="hint edit-icon mr-1"
-                    data-toggle="modal" data-target="#dependent_contact_modal"><span class="hint-text">Add </span><i
-                        class="fa fa-plus"></i></a>
+                <a *ngIf="dataFromParent.canSeeProfileElement" (click)="initDependentContactForm()"
+                    class="hint edit-icon mr-1" data-toggle="modal" data-target="#dependent_contact_modal"><span
+                        class="hint-text">Add </span><i class="fa fa-plus"></i></a>
             </h3>
             <div class="table-responsive">
                 <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
@@ -138,7 +138,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Date of Birth</label>
-                                <input type="date" class="form-control" [class.invalid]="
+                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [class.invalid]="
                                 dependentContactForm.get('dateOfBirth').invalid &&
                                 dependentContactForm.get('dateOfBirth').touched" formControlName="dateOfBirth">
                                 <div *ngIf="
@@ -194,21 +196,20 @@
                             <div class="form-group">
                                 <label>Approval Status</label>
                                 <select class="form-control" [class.invalid]="
-                                dependentContactForm.get('approval_status_name').invalid &&
-                                dependentContactForm.get('approval_status_name').touched"
-                                    formControlName="approval_status_name">
+                                dependentContactForm.get('approval_status').invalid &&
+                                dependentContactForm.get('approval_status').touched" formControlName="approval_status">
                                     <option selected value="">Select Status</option>
                                     <option value="1">Approve</option>
                                     <option value="2">Pending</option>
                                     <option value="3">Decline</option>
                                 </select>
                                 <div *ngIf="
-                                dependentContactForm.get('approval_status_name').invalid &&
-                                dependentContactForm.get('approval_status_name').touched
+                                dependentContactForm.get('approval_status').invalid &&
+                                dependentContactForm.get('approval_status').touched
                     ">
                                     <small *ngIf="
-                                    dependentContactForm.get('approval_status_name').invalid &&
-                                    dependentContactForm.get('approval_status_name').touched
+                                    dependentContactForm.get('approval_status').invalid &&
+                                    dependentContactForm.get('approval_status').touched
                       " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>

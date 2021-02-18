@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { DataService } from "src/app/services/data.service";
 import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
@@ -22,12 +21,12 @@ export class IdentificationComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
-  @Input() loggedInUser: any;
+  @Input() dataFromParent: any;
 
   // To hold data for each card
   employeeIdentification: any[] = [];
   public dtOptions: DataTables.Settings = {};
+  statusArray: string[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,7 +38,7 @@ export class IdentificationComponent implements OnInit {
   ngOnInit(): void {
     this.getIdentification();
     this.initIdentificationForm();
-    this.getEmployeeIdentification(this.staffId);
+    this.getEmployeeIdentification(this.dataFromParent.user.staffId);
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -91,8 +90,11 @@ export class IdentificationComponent implements OnInit {
       identification_number: ["", Validators.required],
       idIssues: ["", Validators.required],
       idExpiry_date: ["", Validators.required],
-      approval_status: ["", Validators.required],
-      staffId: this.staffId,
+      approval_status: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
+      staffId: this.dataFromParent.user.staffId,
       identicationFile: ["", Validators.required],
     });
     // Resets the upload input of the add form
@@ -111,7 +113,7 @@ export class IdentificationComponent implements OnInit {
       idIssues: row.idIssues,
       idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
       approval_status: row.approval_status,
-      staffId: this.staffId,
+      staffId: this.dataFromParent.user.staffId,
       identicationFile: row.identicationFile,
     });
     this.fileInput.nativeElement.value = "";
@@ -119,7 +121,9 @@ export class IdentificationComponent implements OnInit {
   }
 
   submitIdentificationForm(form: FormGroup) {
+    form.get("approval_status").enable();
     if (!form.valid) {
+      form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -132,7 +136,7 @@ export class IdentificationComponent implements OnInit {
     for (const key in form.value) {
       formData.append(key, this.identificationForm.get(key).value);
     }
-
+    form.get("approval_status").disable();
     this.spinner = true;
     return this.employeeService.postIdentificationId(formData).subscribe(
       (res) => {
@@ -142,7 +146,7 @@ export class IdentificationComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#identification_modal").modal("hide");
         }
-        this.getEmployeeIdentification(this.staffId);
+        this.getEmployeeIdentification(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -181,7 +185,11 @@ export class IdentificationComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(
+      event,
+      form,
+      this.dataFromParent.user.staffId
+    );
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -192,11 +200,19 @@ export class IdentificationComponent implements OnInit {
   delete() {
     let payload: object;
     if (this.selectedId.length === 0) {
-      return swal.fire("Error", "Select items to delete", "error");
+      return swal.fire("GOSHRM", "Select items to delete", "error");
     } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
+      if (this.statusArray.every((status) => status === "pending")) {
+        payload = {
+          itemIds: this.selectedId,
+        };
+      } else {
+        return swal.fire(
+          "GOSHRM",
+          "Select only items with pending status to delete",
+          "error"
+        );
+      }
     }
     swal
       .fire({
@@ -215,7 +231,9 @@ export class IdentificationComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeIdentification(this.staffId);
+                  this.getEmployeeIdentification(
+                    this.dataFromParent.user.staffId
+                  );
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");
@@ -232,7 +250,8 @@ export class IdentificationComponent implements OnInit {
     this.selectedId = [];
   }
 
-  addItemId(event: Event, id: number) {
+  addItemId(event: Event, id: number, status: string) {
+    this.statusArray.push(status);
     this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
