@@ -331,19 +331,34 @@
           <li class="submenu" [ngClass]="{
               active:
                 (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'kpi-category')
+                  urlComplete.subUrl === 'kpi-category')||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'kpi-indicators')||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'grade-setting')
+                  
+                
                 
             }">
             <a href="javascript:" [ngClass]="{
                 subdrop:
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'kpi-category')
+                    urlComplete.subUrl === 'kpi-category')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'kpi-indicators')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'grade-setting')
+
               }" class="noti-dot"><i class="la la-chart-bar"></i> <span> Performance</span>
               <span class="menu-arrow"></span></a>
             <ul style="display: none;" [ngStyle]="{
                 display:
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'kpi-category')
+                    urlComplete.subUrl === 'kpi-category')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'kpi-indicators')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'grade-setting')
                     ? 'block'
                     : 'none'
               }">
@@ -352,6 +367,18 @@
                     active:
                       urlComplete.subUrl === 'kpi-category'
                   }">KPI Category</a>
+              </li>
+              <li routerLink="/performance/kpi-indicators">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'kpi-indicators'
+                  }">Key Performance Indicator</a>
+              </li>
+              <li routerLink="/performance/grade-setting">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'grade-setting'
+                  }">Grade Setting</a>
               </li>
             </ul>
           </li>
