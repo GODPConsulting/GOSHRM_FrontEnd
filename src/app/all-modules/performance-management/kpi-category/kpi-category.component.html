@@ -80,7 +80,7 @@
                                     class="form-control" [(ngModel)]="employeeSetObjectives">
                                     <option selected value="">Employee Permitted</option>
                                     <option value="1">Yes</option>
-                                    <option value="0">No</option>
+                                    <option value="2">No</option>
                                 </select>
 
                             </div>
@@ -91,10 +91,10 @@
                                 <select (change)="setHrReview($event)" class="form-control" name="weightModel"
                                     type="text" [disabled]="modelDisabled" [(ngModel)]="weightModel">
                                     <option selected value="">Weight Model</option>
-                                    <option *ngIf="allLocation" value="2">Independent Allocation</option>
-                                    <option *ngIf="!allLocation" value="3">360 Feedback</option>
-                                    <option *ngIf="allLocation" value="2">Even Distribution</option>
-                                    <option *ngIf="!allLocation" value="1">Even Distribution</option>
+                                    <option *ngIf="allLocation===1" value="2">Independent Allocation</option>
+                                    <option *ngIf="allLocation===2" value="3">360 Feedback</option>
+                                    <option *ngIf="!allLocation" value="2">Even Distribution</option>
+                                    <option *ngIf="allLocation" value="1">Even Distribution</option>
 
                                 </select>
 
@@ -107,7 +107,7 @@
                                     [disabled]="hrDisabled" [(ngModel)]="hrSelectReviewer">
                                     <option selected value="">HR Select Reviewer</option>
                                     <option value="1">Yes</option>
-                                    <option value="0">No</option>
+                                    <option value="2">No</option>
                                 </select>
 
                             </div>

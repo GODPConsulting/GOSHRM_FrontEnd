@@ -86,13 +86,16 @@ export class KpiCategoryComponent implements OnInit {
       name: this.name,
       description: this.description,
       weightModel: +this.weightModel,
+
       hrSelectReviewer: +this.hrSelectReviewer,
-      employeeSetObjectives: this.employeeSetObjectives,
+      employeeSetObjectives: +this.employeeSetObjectives,
     };
     // payload.weightModel = +payload.weightModel;
     // payload.hrSelectReviewer = +payload.hrSelectReviewer;
 
     this.spinner = true;
+    console.log(payload);
+
     return this.performanceManagementService.postkpiCategory(payload).subscribe(
       (res) => {
         this.spinner = false;
@@ -218,15 +221,10 @@ export class KpiCategoryComponent implements OnInit {
     console.log(+event.target.value);
     this.allLocation = +event.target.value;
     this.kpiCategoryForm.get("weightModel");
-    if (this.allLocation === 1 || this.allLocation === 0) {
+    if (this.allLocation === 1 || this.allLocation === 2) {
       // this.kpiCategoryForm.get("weightModel").enable();
       this.modelDisabled = false;
     }
-    /* this.onclick = true;
-    (data) => {
-      this.onclick = false;
-      this.employeeSetObjectives = data.onclick;
-    } */
   }
 
   setHrReview(event) {
