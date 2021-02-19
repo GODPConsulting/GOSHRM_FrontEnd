@@ -210,7 +210,7 @@
                         <select class="select form-control"
                             [class.invalid]="EmployeeForm.get('stateId').invalid && EmployeeForm.get('stateId').touched"
                             formControlName="stateId">
-                            <option>Select State</option>
+                            <option selected value="">Select State</option>
                             <option *ngFor="let row of states" value="{{row.lookupId}}">{{row.lookupName}} </option>
                         </select>
                         <div *ngIf="EmployeeForm.get('stateId').invalid && EmployeeForm.get('stateId').touched">

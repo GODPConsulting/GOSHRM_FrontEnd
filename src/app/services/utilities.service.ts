@@ -9,8 +9,6 @@ import { isInteger } from "lodash";
   providedIn: "root",
 })
 export class UtilitiesService {
-  getCountryUrl: string = "/common/countries";
-
   constructor(private apiService: ApiService) {}
 
   // Validates the file to be uploaded
@@ -94,7 +92,17 @@ export class UtilitiesService {
   }
 
   getCountry() {
-    return this.apiService.get(this.getCountryUrl);
+    return this.apiService.get("/common/countries");
+  }
+
+  getCountryById(id: number) {
+    return this.apiService.get(
+      `/common/get/single/countryById?CountryId=${id}`
+    );
+  }
+
+  getStateById(id: number) {
+    return this.apiService.get(`common/get/single/stateById?StateId=${id}`);
   }
 
   getCompanyStructures() {
@@ -127,5 +135,5 @@ export class UtilitiesService {
   validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
-}
+  }
 }
