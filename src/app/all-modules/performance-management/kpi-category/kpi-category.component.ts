@@ -103,7 +103,7 @@ export class KpiCategoryComponent implements OnInit {
 
           this.modelDisabled = true;
           this.hrDisabled = true;
-          this.weightModel = "";
+          this.weightModel = "n/a";
           this.hrSelectReviewer = "";
           this.name = "";
           this.description = "";

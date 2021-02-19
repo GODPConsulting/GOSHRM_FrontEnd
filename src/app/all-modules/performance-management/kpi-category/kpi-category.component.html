@@ -117,7 +117,8 @@
                                     <option selected value="">Weight Model</option>
                                     <option *ngIf="allLocation" value="2">Independent Allocation</option>
                                     <option *ngIf="!allLocation" value="3">360 Feedback</option>
-                                    <option value="1">Even distribution</option>
+                                    <option *ngIf="allLocation" value="2">Even Distribution</option>
+                                    <option *ngIf="!allLocation" value="1">Even Distribution</option>
 
                                 </select>
                                 <!-- <div *ngIf="
@@ -138,7 +139,7 @@
                                     [disabled]="hrDisabled" [(ngModel)]="hrSelectReviewer">
                                     <option selected value="">HR Select Reviewer</option>
                                     <option value="1">Yes</option>
-                                    <option value="2">No</option>
+                                    <option value="0">No</option>
                                 </select>
 
                                 <!-- <div *ngIf="
