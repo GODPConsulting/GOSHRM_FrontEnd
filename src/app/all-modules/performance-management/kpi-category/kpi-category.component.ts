@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { PerfomanceManagementService } from "src/app/services/perfomance-management.service";
+import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 declare const $: any;
@@ -49,7 +49,7 @@ export class KpiCategoryComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private performanceManagementService: PerfomanceManagementService,
+    private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService
   ) {}
 
