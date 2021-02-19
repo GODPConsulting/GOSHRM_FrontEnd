@@ -37,6 +37,7 @@
                             <th>KPI Category</th>
                             <th>KPI</th>
                             <th>Description</th>
+                            <th>Upload of Actual Result</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,6 +50,7 @@
                             <td (click)="editKPIndicator(row)">{{ row.kpiCategoryName}}</td>
                             <td (click)="editKPIndicator(row)">{{ row.kpi}}</td>
                             <td (click)="editKPIndicator(row)">{{ row.description }}</td>
+                            <td (click)="editKPIndicator(row)" >{{row.resultFromExternalName}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -89,21 +91,32 @@
                                         </select>
                                 </div>
                             </div>
+                            
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>KPI<span class="text-danger">*</span></label>
                                     <input class="form-control" type="text" formControlName="kpi">
                                 </div>
                             </div>
-                            <div class="col-md-12">
+
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Description </label>
                                     <textarea class="form-control" type="text" rows="5"
                                         formControlName="description"></textarea>
                                 </div>
                             </div>
-
-
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                  <label>Upload of Actual Result</label>
+                                  <select class="select form-control" formControlName="resultFromExternal">
+                                    <option disabled>Select Status</option>
+                                    <option value="1">Yes</option>
+                                    <option value="2">No</option>
+                                  </select>
+                                </div>
+                              </div>
+                         
                         </div>
                     </div>
                     <div class="submit-section">
@@ -119,7 +132,7 @@
 </div>
 </div>
 <!-- /Add Key Performance Indicator Modal -->
-<!-- Upload Job Grade Modal -->
+
 <div id="upload_kp_indicator" class="modal custom-modal fade " role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -130,7 +143,7 @@
                 </button>
             </div>
             <div class="modal-body px-5">
-                <form (ngSubmit)="uploadKPIndicators()" [formGroup]="kpiUploadForm">
+                <form [formGroup]="kpiUploadForm">
                     <div class="row">
                         <div class="form-group row">
                             <label class="col-form-label col-md-5">Choose File (excel format)</label>
@@ -144,15 +157,15 @@
                         <p>Please use the guide below for your sheet</p>
                         <table class="table table-bordered">
                             <tr>
-                                <th>Min score</th>
-                                <th>Max score</th>
-                                <th>Grading</th>
+                                <th>Kpi Category</th>
+                                <th>KPI</th>
                                 <th>Description</th>
+                                <th>Result </th>
                             </tr>
                         </table>
                     </div>
                     <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadKPIndicators()"
+                        <button class="btn btn-primary submit-btn" (click)="uploadKPIndicators()" type="submit"
                             [disabled]="spinner">
                             <span *ngIf="!spinner">Submit</span>
                             <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>

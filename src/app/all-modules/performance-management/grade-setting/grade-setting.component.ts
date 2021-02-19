@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Console } from 'console';
 import { Subscription } from 'rxjs';
-import {PerformanceManagementService} from '../../../services/perfomance-management.service'
+import { PerfomanceManagementService } from "src/app/services/perfomance-management.service";
 import { UtilitiesService } from 'src/app/services/utilities.service';
 import swal from 'sweetalert2'
 
@@ -25,7 +25,7 @@ export class GradeSettingComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private performanceManagementService: PerformanceManagementService,
+    private performanceManagementService: PerfomanceManagementService,
     private router: Router,
     private utilitiesService: UtilitiesService
   ) { }

@@ -2,8 +2,8 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { PerformanceManagementService } from 'src/app/services/performance-management.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
+import { PerfomanceManagementService } from "src/app/services/perfomance-management.service";
 import swal from 'sweetalert2'
 
 declare const $: any
@@ -30,12 +30,16 @@ export class KeyPerformanceIndicatorsComponent implements OnInit, AfterViewInit 
 
   constructor(
     private formBuilder: FormBuilder,
-    private performanceManagementService: PerformanceManagementService,
+    private performanceManagementService: PerfomanceManagementService,
     private utilitiesService: UtilitiesService,
     private router: Router
 
 
-  ) { }
+  ) { 
+    this.kpiUploadForm = this.formBuilder.group({
+      uploadInput: ['']
+    })
+  }
 
   ngOnInit(): void {
     
@@ -49,6 +53,7 @@ export class KeyPerformanceIndicatorsComponent implements OnInit, AfterViewInit 
   addKPIndicator(keyPerformanceIndicatorForm) {
     const payload = keyPerformanceIndicatorForm.value;
     payload.kpiCategoryId = +payload.kpiCategoryId;
+    payload.resultFromExternal= +payload.resultFromExternal;
     this.loading = true;
     this.performanceManagementService.addKPIndicator(payload).subscribe(
       (data) => {
@@ -97,13 +102,12 @@ uploadKPIndicators() {
 
       if (res.status.isSuccessful) {
         swal.fire("GOSHRM", message, "success");
-        this.initializeForm();
         this.fileInput.nativeElement.value = "";
         $("#upload_kp_indicator").modal("hide");
       } else {
         swal.fire("GOSHRM", message, "error");
       }
-      this.uploadKPIndicators();
+    
     },
     (err) => {
       this.spinner = false;
@@ -117,7 +121,8 @@ initializeForm() {
     id: [0],
     kpiCategoryId: [0],
     kpi: [""],
-    description: [""]
+    description: [""],
+    resultFromExternal:[0]
   });
 
 }
