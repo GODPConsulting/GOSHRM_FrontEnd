@@ -335,9 +335,9 @@
                 (urlComplete.mainUrl === 'performance' &&
                   urlComplete.subUrl === 'kpi-indicators')||
                 (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'grade-setting')
-                  
-                
+                  urlComplete.subUrl === 'grade-setting')||
+                  (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'point-settings')
                 
             }">
             <a href="javascript:" [ngClass]="{
@@ -347,7 +347,9 @@
                   (urlComplete.mainUrl === 'performance' &&
                     urlComplete.subUrl === 'kpi-indicators')||
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'grade-setting')
+                    urlComplete.subUrl === 'grade-setting')||
+                  (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'point-settings')
 
               }" class="noti-dot"><i class="la la-chart-bar"></i> <span> Performance</span>
               <span class="menu-arrow"></span></a>
@@ -358,7 +360,9 @@
                   (urlComplete.mainUrl === 'performance' &&
                     urlComplete.subUrl === 'kpi-indicators')||
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'grade-setting')
+                    urlComplete.subUrl === 'grade-setting')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'point-settings')
                     ? 'block'
                     : 'none'
               }">
@@ -379,6 +383,12 @@
                     active:
                       urlComplete.subUrl === 'grade-setting'
                   }">Grade Setting</a>
+
+              <li routerLink="/performance/point-settings">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'point-settings'
+                  }">Point Settings</a>
               </li>
             </ul>
           </li>

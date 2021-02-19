@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { PerfomanceManagementService } from "src/app/services/perfomance-management.service";
+import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 declare const $: any;
@@ -49,7 +49,7 @@ export class KpiCategoryComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private performanceManagementService: PerfomanceManagementService,
+    private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService
   ) {}
 
@@ -103,7 +103,7 @@ export class KpiCategoryComponent implements OnInit {
 
           this.modelDisabled = true;
           this.hrDisabled = true;
-          this.weightModel = "";
+          this.weightModel = "n/a";
           this.hrSelectReviewer = "";
           this.name = "";
           this.description = "";
@@ -233,7 +233,7 @@ export class KpiCategoryComponent implements OnInit {
     console.log(+event.target.value);
     this.selectReview = +event.target.value;
     this.kpiCategoryForm.get("hrSelectReviewer");
-    if (this.selectReview === 1 || this.selectReview === 3) {
+    if (this.selectReview === 3) {
       // this.kpiCategoryForm.get("hrSelectReviewer").enable();
       this.hrDisabled = false;
     }
