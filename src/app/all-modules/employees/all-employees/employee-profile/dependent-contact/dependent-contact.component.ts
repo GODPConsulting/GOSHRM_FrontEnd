@@ -16,8 +16,7 @@ export class DependentContactComponent implements OnInit {
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
-  currentUser: string[] = []; // contains the data of the current user
-  currentUserId: number;
+
   public selectedId: number[] = [];
   public countryId: number;
   public countries: any[] = [];
@@ -25,7 +24,7 @@ export class DependentContactComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
+  @Input() dataFromParent: any;
 
   // Forms
   dependentContactForm: FormGroup;
@@ -65,7 +64,7 @@ export class DependentContactComponent implements OnInit {
       ],
       order: [[1, "asc"]],
     };
-    this.getEmployeeDependentContact(this.staffId);
+    this.getEmployeeDependentContact(this.dataFromParent.user.staffId);
     this.initDependentContactForm();
     this.getCountry();
   }
@@ -82,22 +81,28 @@ export class DependentContactComponent implements OnInit {
       address: ["", Validators.required],
       countryId: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      approval_status_name: ["", Validators.required],
-      staffId: this.staffId,
+      approval_status: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
+      staffId: this.dataFromParent.user.staffId,
       // identicationFile: ["", Validators.required],
     });
     //this.fileInput.nativeElement.value = "";
   }
 
   submitDependentContactForm(form: FormGroup) {
+    form.get("approval_status").enable();
+
     if (!form.valid) {
+      form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
-    payload.Approval_status = +payload.Approval_status;
+    payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
-
+    form.get("approval_status").disable();
     this.spinner = true;
     return this.employeeService.postDependentContact(payload).subscribe(
       (res) => {
@@ -107,7 +112,7 @@ export class DependentContactComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#dependent_contact_modal").modal("hide");
         }
-        this.getEmployeeDependentContact(this.staffId);
+        this.getEmployeeDependentContact(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -148,8 +153,8 @@ export class DependentContactComponent implements OnInit {
       countryId: row.countryId,
       // idIssues: row.idIssues,
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
-      approval_status_name: row.approval_status_name,
-      staffId: this.staffId,
+      approval_status: row.approval_status,
+      staffId: this.dataFromParent.user.staffId,
       dependentContactFile: row.dependentContactFile,
     });
     $("#dependent_contact_modal").modal("show");
@@ -161,7 +166,11 @@ export class DependentContactComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(
+      event,
+      form,
+      this.dataFromParent.user.staffId
+    );
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -196,7 +205,9 @@ export class DependentContactComponent implements OnInit {
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
                   this.pageLoading = false;
-                  this.getEmployeeDependentContact(this.staffId);
+                  this.getEmployeeDependentContact(
+                    this.dataFromParent.user.staffId
+                  );
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

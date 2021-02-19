@@ -5,10 +5,10 @@
       <div id="sidebar-menu" class="sidebar-menu">
         <ul *ngIf="sidebarMenus.default">
           <!-- Employee sidebar -->
-          <li class="menu-title">
+          <li *ngIf="userRights.includes('allemployees')" class="menu-title">
             <span>Employees</span>
           </li>
-          <li class="submenu" [ngClass]="{
+          <li *ngIf="userRights.includes('allemployees')" class="submenu" [ngClass]="{
               active:
                 (urlComplete.mainUrl === 'employees' &&
                   urlComplete.subUrl === 'employee-form')||
@@ -38,26 +38,82 @@
                     ? 'block'
                     : 'none'
               }">
-              <li routerLink="/employees/employeeviews">
+              <li *ngIf="userRights.includes('allemployees')" routerLink="/employees/employeeviews">
                 <a href="javascript:" [ngClass]="{
                     active:
                       urlComplete.subUrl === 'employeepage' ||
                       urlComplete.subUrl === 'employeeviews'
                   }">All Employees</a>
               </li>
-              <li>
-                <!-- Pass data here -->
-                <a [routerLink]='["/employees/employeeprofile/", user?.staffId]'
-                  [ngClass]="{ active: urlComplete.subUrl === 'employeeprofile' }">Profile</a>
-              </li>
-              <li routerLink="/employees/employee-form">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employee-form' }">employee-form</a>
-              </li>
             </ul>
           </li>
           <!-- /Employee sidebar -->
+          <!-- ESS -->
+          <li *ngIf="userRights.includes('profile')" class="menu-title">
+            <span>Employee Self Service</span>
+          </li>
+          <li *ngIf="userRights.includes('profile')" class="submenu" [ngClass]="{
+              active:
+                (urlComplete.mainUrl === 'employees' &&
+                  urlComplete.subUrl === '')
+            }">
+            <a href="javascript:" [ngClass]="{
+                subdrop:
+                  (urlComplete.mainUrl === 'employees' &&
+                    urlComplete.subUrl === '') 
+              }" class="noti-dot"><i class="la la-user-cog"></i> <span> ESS</span>
+              <span class=" menu-arrow"></span></a>
+            <ul style="display: none;" [ngStyle]="{
+                display:
+                  (urlComplete.mainUrl === 'employees' &&
+                    urlComplete.subUrl === '')
+                    ? 'block'
+                    : 'none'
+              }">
+              <li *ngIf="userRights.includes('profile')"
+                [routerLink]='["/employees/employeeprofile/", hrmUser?.staffId]'>
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employeeprofile' }">Profile</a>
+              </li>
+            </ul>
+          </li>
+          <!-- /ESS -->
+          <!-- Managers -->
+          <li *ngIf="userRights.includes('line manager')" class="menu-title">
+            <span>Managers</span>
+          </li>
+          <li *ngIf="userRights.includes('line manager')" class="submenu" [ngClass]="{
+              active:
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === '')
+            }">
+            <a href="javascript:" [ngClass]="{
+                subdrop:
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === '') 
+              }" class="noti-dot"><i class="la la-user-tie"></i> <span> Managers</span>
+              <span class=" menu-arrow"></span></a>
+            <ul style="display: none;" [ngStyle]="{
+                display:
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === '')
+                    ? 'block'
+                    : 'none'
+              }">
+              <li *ngIf="userRights.includes('line manager')" routerLink="">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'performance' ||
+                      urlComplete.subUrl === ''
+                  }">Line Manager</a>
+              </li>
+            </ul>
+          </li>
+          <!-- Managers -->
           <!-- Setup sidebar -->
-          <li *ngIf="userRights.includes('general setup')" class="submenu" [ngClass]="{
+          <li *ngIf="userRights.includes('job title')" class="menu-title">
+            <span>Setup</span>
+          </li>
+          <li *ngIf="userRights.includes('job title')" class="submenu" [ngClass]="{
               active:
               (urlComplete.mainUrl === 'setup' &&
               urlComplete.subUrl === 'employee-id-format')||
@@ -200,67 +256,67 @@
                     ? 'block'
                     : 'none'
               }">
-              <li routerLink="/setup/employee-id-format">
+              <li *ngIf="userRights.includes('employeeidformat')" routerLink="/setup/employee-id-format">
                 <a href="javascript:" [ngClass]="{
                   active:
                     urlComplete.subUrl === 'employee-id-format'}">Employee ID Format</a>
               </li>
-              <li routerLink="/setup/job-grade">
+              <li *ngIf="userRights.includes('job grade')" routerLink="/setup/job-grade">
                 <a href="javascript:" [ngClass]="{
                   active:
                     urlComplete.subUrl === 'job-grade'}">Job Grades</a>
               </li>
-              <li routerLink="/setup/high-school-subjects">
+              <li *ngIf="userRights.includes('high school subject')" routerLink="/setup/high-school-subjects">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'high-school-subjects' }">High School
                   Subject</a>
               </li>
-              <li routerLink="/setup/employment-type">
+              <li *ngIf="userRights.includes('employment type')" routerLink="/setup/employment-type">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employment-type' }">Employment
                   Type</a>
               </li>
-              <li routerLink="/setup/employment-level">
+              <li *ngIf="userRights.includes('employment level')" routerLink="/setup/employment-level">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employment-level' }">Employment
                   Level</a>
               </li>
-              <li routerLink="/setup/hmo">
+              <li *ngIf="userRights.includes('hmo')" routerLink="/setup/hmo">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'hmo' }">HMO</a>
               </li>
-              <li routerLink="/setup/language">
+              <li *ngIf="userRights.includes('languages')" routerLink="/setup/language">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'language' }">Language</a>
               </li>
-              <li routerLink="/setup/prof-membership">
+              <li *ngIf="userRights.includes('professional membership')" routerLink="/setup/prof-membership">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'prof-membership' }">Professional
                   Membership</a>
-              <li routerLink="/setup/academic-grade">
+              <li *ngIf="userRights.includes('academic grade')" routerLink="/setup/academic-grade">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-grade'}">Academic Grade</a>
               </li>
-              <li routerLink="/setup/prof-certification">
+              <li *ngIf="userRights.includes('professional certification')" routerLink="/setup/prof-certification">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'prof-certification'}">Professional
                   Certification</a>
               </li>
-              <li routerLink="/setup/academic-discipline">
+              <li *ngIf="userRights.includes('academic discipline')" routerLink="/setup/academic-discipline">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-discipline' }">Academic
                   Discipline</a>
               </li>
-              <li routerLink="/setup/gym-workout">
+              <li *ngIf="userRights.includes('gym/workout')" routerLink="/setup/gym-workout">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'gym-workout' }">Gym/Workout </a>
               </li>
-              <li routerLink="/setup/academic-qualification">
+              <li *ngIf="userRights.includes('academic qualification')" routerLink="/setup/academic-qualification">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-qualification' }">Academic
                   Qualification</a>
               </li>
-              <li routerLink="/setup/high-school-grade">
+              <li *ngIf="userRights.includes('high school grades')" routerLink="/setup/high-school-grade">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'high-school-grade' }">High School
                   Grade</a>
               </li>
-              <li routerLink="/setup/location">
+              <li *ngIf="userRights.includes('location')" routerLink="/setup/location">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'location' }">Location </a>
               </li>
-              <li routerLink="/setup/hospital-management">
+              <li *ngIf="userRights.includes('hospital management')" routerLink="/setup/hospital-management">
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'hospital-management' }">Hospital
                   Management </a>
               </li>
-              <li routerLink="/setup/job-title">
+              <li *ngIf="userRights.includes('job title')" routerLink="/setup/job-title">
                 <a href="javascript:" [ngClass]="{
                     active:
                       urlComplete.subUrl === 'job-title'}">Job Title</a>

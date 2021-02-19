@@ -149,6 +149,7 @@ export class AcademicGradeComponent implements OnInit {
         } else {
           swal.fire("GOSHRM", message, "error");
         }
+        
         this.getAcademicGrade();
       },
       (err) => {
@@ -191,8 +192,10 @@ export class AcademicGradeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.pageLoading = true;
           return this.setupService.deleteAcademicGrade(payload).subscribe(
             (res) => {
+              this.pageLoading = false;
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {

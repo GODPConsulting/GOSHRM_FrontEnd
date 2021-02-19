@@ -5,7 +5,8 @@ import swal from "sweetalert2";
 import { ImageCroppedEvent, base64ToFile } from "ngx-image-cropper";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+import { DataService } from "src/app/services/data.service";
 declare const $: any;
 @Component({
   selector: "app-employee-form",
@@ -23,8 +24,6 @@ export class EmployeeFormComponent implements OnInit {
   public countryId: number;
   public countries: any[] = [];
   public jobDetailForm;
-  public rows = [];
-  public srch = [];
   public states: any[] = [];
   public pageLoading: boolean;
   public departments: any[] = [];
@@ -40,10 +39,19 @@ export class EmployeeFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private setupService: SetupService,
     private utilitiesService: UtilitiesService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private dataService: DataService
   ) {}
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe((param) => {
+      if (param.get("editUser") === "edit") {
+        this.dataService.currentUser.subscribe((result) => {
+          this.initializeEditForm(result);
+        });
+      }
+    });
     this.initializeForm();
     this.getJobTitle();
     this.getCountry();
@@ -52,14 +60,50 @@ export class EmployeeFormComponent implements OnInit {
     this.getAccess();
   }
 
+  initializeEditForm(result) {
+    this.getStatesByCountryId(result?.countryId);
+    this.EmployeeForm = this.formBuilder.group({
+      staffId: result?.staffId,
+      firstName: [result?.firstName],
+      lastName: [result?.lastName],
+      middleName: [result?.middleName],
+      jobTitle: [result?.jobTitle],
+      dateOfJoin: [result?.dateOfJoin],
+      phoneNumber: [result?.phoneNumber],
+      email: [result?.email],
+      address: [result?.address],
+      dateOfBirth: [result?.dateOfBirth],
+      gender: [result?.gender],
+      stateId: [result?.sateId],
+      countryId: [result?.countryId],
+      //staffLimit: [""],
+      accessLevel: [result?.accessLevel],
+      staffOfficeId: [result?.staffOfficeId],
+      userName: [result?.userName],
+      userStatus: [result?.userStatus],
+      accessLevelId: [result?.accessLevelId],
+      userAccessLevels: [result?.userAccessLevels],
+      userRoleNames: [result?.userRoleNames],
+      password: [""],
+      photoFile: [""],
+      jobGrade: [result?.jobGrade],
+      isHRAdmin: [result?.isHRAdmin],
+    });
+    // Resets the photo input field of the form
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = "";
+    }
+  }
+
   initializeForm() {
     this.EmployeeForm = this.formBuilder.group({
       staffId: [0],
-      staffCode: [""],
+      //staffCode: [""],
       firstName: [""],
       lastName: [""],
       middleName: [""],
       jobTitle: [""],
+      dateOfJoin: [""],
       phoneNumber: [""],
       email: [""],
       address: [""],
@@ -67,7 +111,7 @@ export class EmployeeFormComponent implements OnInit {
       gender: [""],
       stateId: [""],
       countryId: [""],
-      staffLimit: [""],
+      //staffLimit: [""],
       accessLevel: [""],
       staffOfficeId: [""],
       userName: [""],
@@ -78,119 +122,13 @@ export class EmployeeFormComponent implements OnInit {
       password: [""],
       photoFile: [""],
       jobGrade: [""],
+      isHRAdmin: [false],
     });
     // Resets the photo input field of the form
     if (this.fileInput) {
       this.fileInput.nativeElement.value = "";
     }
   }
-
-  /*   // Submits form to HRM and ERP endpoints
-  addEmployeeToBoth(form: FormGroup) {
-    this.addEmployeeToHrm(form);
-    this.addEmployeeToErp(form);
-  }
-
-  addEmployeeToErp(EmployeeForm: FormGroup) {
-    const payload = EmployeeForm.value;
-    payload.jobTitle = +payload.jobTitle;
-    payload.stateId = +payload.stateId;
-    payload.staffLimit = +payload.staffLimit;
-    payload.accessLevel = +payload.accessLevel;
-    payload.staffOfficeId = +payload.staffOfficeId;
-    payload.accessLevelId = +payload.accessLevelId;
-    payload.countryId = +payload.countryId;
-    delete payload.jobGrade;
-    delete payload.photoFile;
-
-    // validations to check if the form fields have value
-    if (!payload.firstName) {
-      // if first name is empty string, undefined or null
-
-      return swal.fire("Error", "First Name is required", "error");
-    }
-    if (!payload.lastName) {
-      return swal.fire("Error", "Last Name is required", "error");
-    }
-    if (!payload.middleName) {
-      return swal.fire("Error", "Middle Name is required", "error");
-    }
-    if (!payload.staffCode) {
-      return swal.fire("Error", "Staff Code is required", "error");
-    }
-    if (!payload.dateOfBirth) {
-      return swal.fire("Error", "Date Of Birth is required", "error");
-    }
-    if (!payload.gender) {
-      return swal.fire("Error", "Gender is required", "error");
-    }
-    if (!payload.jobTitle) {
-      return swal.fire("Error", "Job Title is required", "error");
-    }
-    if (!payload.email) {
-      return swal.fire("Error", "Email is required", "error");
-    }
-    if (!payload.countryId) {
-      return swal.fire("Error", "Country is required", "error");
-    }
-    if (!payload.stateId) {
-      return swal.fire("Error", "State is required", "error");
-    }
-    if (!payload.staffOfficeId) {
-      return swal.fire("Error", "Office/Department is required", "error");
-    }
-    if (!payload.staffLimit) {
-      return swal.fire("Error", "Staff Limit is required", "error");
-    }
-    if (!payload.address) {
-      return swal.fire("Error", "Address is required", "error");
-    }
-    if (!payload.phoneNumber) {
-      return swal.fire("Error", "Phone Number is required", "error");
-    }
-    if (!payload.userName) {
-      return swal.fire("Error", "User Name is required", "error");
-    }
-    if (!payload.password) {
-      return swal.fire("Error", "Password is required", "error");
-    }
-    if (!payload.userRoleNames) {
-      return swal.fire("Error", "User Role is required", "error");
-    }
-    if (!payload.userStatus) {
-      return swal.fire("Error", "Status is required", "error");
-    }
-    if (!payload.accessLevelId) {
-      return swal.fire("Error", "Access is required", "error");
-    }
-    if (!payload.userAccessLevels) {
-      return swal.fire("Error", "Access Level is required", "error");
-    }
-
-    this.loading = true;
-    return this.setupService
-      .updateData("/admin/add/update/staff", payload)
-      .subscribe(
-        (res) => {
-          this.loading = false;
-          const message = res.status.message.friendlyMessage;
-
-          if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
-            this.initializeForm();
-            // $("#add_employee_form").modal("hide");
-          } else {
-            swal.fire("GOSHRM", message, "error");
-          }
-        },
-        (err) => {
-          this.loading = false;
-          const message = err.status.message.friendlyMessage;
-          swal.fire("GOSHRM", message, "error");
-        }
-      );
-  }
- */
 
   addEmployeeToHrm(EmployeeForm: FormGroup) {
     let payload = EmployeeForm.value;
@@ -207,9 +145,6 @@ export class EmployeeFormComponent implements OnInit {
     }
     if (!payload.middleName) {
       return swal.fire("Error", "Middle Name is required", "error");
-    }
-    if (!payload.staffCode) {
-      return swal.fire("Error", "Staff Code is required", "error");
     }
     if (!payload.dateOfBirth) {
       return swal.fire("Error", "Date Of Birth is required", "error");
@@ -265,14 +200,15 @@ export class EmployeeFormComponent implements OnInit {
         "en-CA"
       )
     );
+    EmployeeForm.get("dateOfJoin").setValue(
+      new Date(EmployeeForm.get("dateOfJoin").value).toLocaleDateString("en-CA")
+    );
     let formData = new FormData();
     for (const key in EmployeeForm.value) {
       formData.append(key, EmployeeForm.get(key).value);
     }
-    formData.append("dateOfJoin", new Date().toLocaleDateString("en-CA"));
-    formData.set("countryId", "403");
-    formData.set("stateId", "26");
     formData.set("accessLevel", "1");
+    formData.set("staffLimit", "1000");
 
     this.loading = true;
     return this.setupService
@@ -332,7 +268,7 @@ export class EmployeeFormComponent implements OnInit {
         (data) => {
           this.states = data.commonLookups;
         },
-        (err) => { }
+        (err) => {}
       );
   }
   getStaffDepartments() {
@@ -341,8 +277,6 @@ export class EmployeeFormComponent implements OnInit {
       .getData("/company/get/all/companystructures")
       .subscribe(
         (data) => {
-          console.log(data);
-
           this.pageLoading = false;
           this.departments = data.companyStructures;
         },

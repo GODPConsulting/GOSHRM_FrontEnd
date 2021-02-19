@@ -125,12 +125,12 @@
         <!-- /Message Notifications -->
         <li class="nav-item dropdown has-arrow main-drop">
             <a href="javascript:" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <span class="user-img"><img src="{{userPhoto}}" alt="">
+                <span class="user-img"><img *ngIf='user' src="{{user.photo}}" alt="">
                     <span class="status online"></span></span>
-                <span>Admin</span>
+                <span>{{user?.firstName}}</span>
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" [routerLink]="['/employees/employeeprofile/',user.staffId]">My Profile</a>
+                <a class="dropdown-item" [routerLink]="['/employees/employeeprofile/',user?.staffId]">My Profile</a>
                 <a class="dropdown-item" routerLink="/settings/company-settings">Settings</a>
                 <a class="dropdown-item" style="cursor: pointer" (click)="logOut()">Logout</a>
             </div>
@@ -142,7 +142,7 @@
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
                 class="fa fa-ellipsis-v"></i></a>
         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" routerLink="/employees/employeeprofile">My Profile</a>
+            <a class="dropdown-item" [routerLink]="['/employees/employeeprofile/',user?.staffId]">My Profile</a>
             <a class="dropdown-item" href="javascript:">Settings</a>
             <a class="dropdown-item" routerLink="/login">Logout</a>
         </div>

@@ -13,17 +13,23 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   public dtOptions: DataTables.Settings = {};
   public employeesList: any = [];
   public pageLoading: boolean;
-  public list: boolean = true
+  public list: boolean = true;
   companies: any[] = [];
   filteredArray: any[] = [];
+  canAddEmployee: boolean;
 
   constructor(
     private employeeService: EmployeeService,
     private dataService: DataService,
     private setupService: SetupService
-  ) { }
+  ) {}
 
   ngOnInit() {
+    this.dataService.currentUser.subscribe((result) => {
+      const user = result;
+      this.canAddEmployee = user && user.activities.includes("employeeform");
+      console.log(this.canAddEmployee);
+    });
     this.loadEmployees();
     this.getStaffDepartments();
 
@@ -64,8 +70,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
         this.pageLoading = false;
 
         this.employeesList = data.employeeList;
-        this.filteredArray = data.employeeList
-        this.dataService.shareAllUsers(this.employeesList);
+        this.filteredArray = data.employeeList;
       },
       (err) => {
         this.pageLoading = false;
@@ -79,18 +84,19 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   }
 
   getStaffDepartments() {
-    return this.setupService.getStaffDepartments().subscribe(data => {
+    return this.setupService.getStaffDepartments().subscribe((data) => {
       this.companies = data.companyStructures;
-    })
+    });
   }
 
   filterEmployee(id) {
-    if(id == 0) {
-      this.filteredArray = this.employeesList
+    if (id == 0) {
+      this.filteredArray = this.employeesList;
     } else {
-      this.filteredArray = this.employeesList.filter(item => item.staffOfficeId == id);
+      this.filteredArray = this.employeesList.filter(
+        (item) => item.staffOfficeId == id
+      );
     }
-    
   }
   // Disposes the tooltip after the view is changed
   ngAfterViewChecked() {

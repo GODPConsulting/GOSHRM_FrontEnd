@@ -3,12 +3,12 @@
     <div class="card profile-box flex-fill">
         <div class="card-body">
             <h3 class="card-title">Identification<a class="edit-icon hint" (click)="delete()"><span
-                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a> <a class="edit-icon hint mr-1"
-                    (click)="downloadFile()" download><span class="hint-text">Download</span><i
-                        class="fa fa-download"></i></a><a *ngIf="currentUserId === employeeId"
-                    (click)="initIdentificationForm()" class="hint edit-icon mr-1" data-toggle="modal"
-                    data-target="#identification_modal"><span class="hint-text">Add Identification</span><i
-                        class="fa fa-plus"></i></a></h3>
+                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a> <a *ngIf="dataFromParent.isHr"
+                    class="edit-icon hint mr-1" (click)="downloadFile()" download><span
+                        class="hint-text">Download</span><i class="fa fa-download"></i></a><a
+                    *ngIf="dataFromParent.canSeeProfileElement" (click)="initIdentificationForm()"
+                    class="hint edit-icon mr-1" data-toggle="modal" data-target="#identification_modal"><span
+                        class="hint-text">Add Identification</span><i class="fa fa-plus"></i></a></h3>
             <div class="table-responsive">
                 <app-loading *ngIf="pageLoading"></app-loading>
                 <table *ngIf="!pageLoading" class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"
@@ -32,7 +32,7 @@
                             (click)="editForm(row)" *ngFor="let row of hack(employeeIdentification); let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id)" />
+                                    (change)="addItemId($event, row.id,row.approval_status_name)" />
                             </td>
                             <td>{{i +1}}</td>
                             <td>{{row.identificationName}}</td>
@@ -69,8 +69,7 @@
                                 identificationForm.get('IdentificationId').touched" formControlName="IdentificationId">
                                     <option selected value="">Identification</option>
                                     <option *ngFor="let row of identifications" value="{{row.lookupId}}">
-                                        {{row.lookupName}}
-                                    </option>
+                                        {{row.lookupName}} </option>
                                 </select>
                                 <div *ngIf="
                                 identificationForm.get('IdentificationId').invalid &&

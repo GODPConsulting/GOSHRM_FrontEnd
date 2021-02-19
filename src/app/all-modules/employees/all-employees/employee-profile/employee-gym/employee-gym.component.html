@@ -4,9 +4,9 @@
         <div class="card-body">
             <h3 class="card-title">Gym<a class="edit-icon hint" (click)="delete()">
                     <span class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
-                <a class="edit-icon hint mr-1" (click)="downloadFile()" download><span
+                <a *ngIf="dataFromParent.isHr" class="edit-icon hint mr-1" (click)="downloadFile()" download><span
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
-                <a *ngIf="currentUserId === employeeId" (click)="initGymForm()" class="hint edit-icon mr-1"
+                <a *ngIf="dataFromParent.canSeeProfileElement" (click)="initGymForm()" class="hint edit-icon mr-1"
                     data-toggle="modal" data-target="#gym_modal">
                     <span class="hint-text">Add Gym</span><i class="fa fa-plus"></i></a>
                 <a (click)="initGymChangeForm()" class="hint edit-icon mr-1" data-toggle="modal"

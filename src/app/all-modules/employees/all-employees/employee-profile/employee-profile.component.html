@@ -21,7 +21,8 @@
           <div class="profile-view">
             <div class="profile-img-wrap">
               <div class="profile-img">
-                <a><img alt="" src="{{employeeDetails.photo}}" /></a>
+                <a><i *ngIf="!employeeDetails.photo" class="fa fa-user"></i><img *ngIf="employeeDetails.photo" alt=""
+                    src="{{employeeDetails.photo}}" /></a>
               </div>
             </div>
             <div class="profile-basic">
@@ -71,7 +72,7 @@
               </div>
             </div>
             <div class="pro-edit">
-              <a routerLink="/employees/employee-form" data-target="#profile_info" data-toggle="modal"
+              <a routerLink="/employees/employee-form/edit" data-target="#profile_info" data-toggle="modal"
                 class="edit-icon"><i class="fa fa-pencil"></i></a>
             </div>
           </div>
@@ -107,7 +108,8 @@
     <div id="emp_profile" class="pro-overview tab-pane fade show active ">
       <!-- Identification Card -->
       <div>
-        <app-identification [staffId]="employeeId"></app-identification>
+        <app-identification *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild">
+        </app-identification>
       </div>
       <!-- /Identification Card -->
       <!-- Emergency Contact -->
@@ -118,8 +120,8 @@
                 <a class="edit-icon hint mr-1" (click)="deleteEmergencyContact()"><span
                     class="hint-text">Delete</span><i class="fa fa-trash"></i>
                 </a>
-                <a class="edit-icon hint mr-1" data-toggle="modal" data-target="#emergency_contact_modal"><span
-                    class="hint-text">Add</span><i class="fa fa-plus"></i>
+                <a *ngIf="dataToChild.canSeeProfileElement" class="edit-icon hint mr-1" data-toggle="modal"
+                  data-target="#emergency_contact_modal"><span class="hint-text">Add</span><i class="fa fa-plus"></i>
                 </a>
               </div>
             </h3>
@@ -171,7 +173,8 @@
                   <a class="edit-icon hint mr-1" (click)="deleteLanguageRating()"><span
                       class="hint-text">Delete</span><i class="fa fa-trash"></i>
                   </a>
-                  <a class="edit-icon hint mr-1" data-toggle="modal" data-target="#language_rating_modal"><span
+                  <a *ngIf="dataToChild.canSeeProfileElement" (click)="initLaguageRatingForm()"
+                    class="edit-icon hint mr-1" data-toggle="modal" data-target="#language_rating_modal"><span
                       class="hint-text">Add</span><i class="fa fa-plus"></i>
                   </a>
                 </div>
@@ -213,14 +216,14 @@
           </div>
         </div>
         <!-- Language -->
-
       </div>
       <!-- Referee Card -->
-      <app-referee [staffId]="employeeId"></app-referee>
+      <app-referee *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-referee>
       <!-- /Referee Card -->
       <!-- Dependent Contact Tab -->
       <div>
-        <app-dependent-contact [staffId]="employeeId"></app-dependent-contact>
+        <app-dependent-contact *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild">
+        </app-dependent-contact>
       </div>
       <!-- /dependent Contact Tab-->
     </div>
@@ -229,7 +232,7 @@
     <div id="emp_assets" class="tab-pane fade">
       <!-- Assets card -->
       <div>
-        <app-assets [staffId]="employeeId"></app-assets>
+        <app-assets *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-assets>
       </div>
       <!-- Assets card -->
     </div>
@@ -237,7 +240,7 @@
     <!-- Careers Tab -->
     <div id="emp_careers" class="tab-pane fade ">
       <!-- Career card -->
-      <app-career [staffId]="employeeId"></app-career>
+      <app-career *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-career>
       <!-- /Career card -->
       <!-- Qualification -->
       <div>
@@ -247,10 +250,11 @@
                 <a class="edit-icon hint mr-1" (click)="deleteEmployeeQualification()"><span
                     class="hint-text">Delete</span><i class="fa fa-trash"></i>
                 </a>
-                <a class="edit-icon hint mr-1" (click)="downloadFile()" download><span
+                <a *ngIf="dataToChild.isHr" class="edit-icon hint mr-1" (click)="downloadFile()" download><span
                     class="hint-text">Download</span><i class="fa fa-download"></i>
                 </a>
-                <a class="edit-icon hint mr-1" data-toggle="modal" data-target="#employee_qualification_modal"><span
+                <a *ngIf="dataToChild.canSeeProfileElement" (click)="initEmployeeQualificationForm()"
+                  class="edit-icon hint mr-1" data-toggle="modal" data-target="#employee_qualification_modal"><span
                     class="hint-text">Add</span><i class="fa fa-plus"></i>
                 </a>
               </div>
@@ -296,102 +300,104 @@
       </div>
       <!-- Qualification -->
       <!-- Qualification modal -->
-<div id="employee_qualification_modal" class="modal custom-modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title"> Add qualifications(s) </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-          (click)="closeEmployeeQualificationModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form (ngSubmit)="addEmployeeQualification(employeeQualificationForm)" [formGroup]="employeeQualificationForm">
-          <div class="card">
-            <div class="card-body">
-              <h3 class="card-title">Employee Qualification </h3>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Qualification<span class="text-danger">*</span></label>
-                    <select class="form-control" [class.invalid]="
+      <div id="employee_qualification_modal" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"> Add qualifications(s) </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                (click)="closeEmployeeQualificationModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form (ngSubmit)="addEmployeeQualification(employeeQualificationForm)"
+                [formGroup]="employeeQualificationForm">
+                <div class="card">
+                  <div class="card-body">
+                    <h3 class="card-title">Employee Qualification </h3>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Qualification<span class="text-danger">*</span></label>
+                          <select class="form-control" [class.invalid]="
                         employeeQualificationForm.get('qualificationId').invalid &&
                         employeeQualificationForm.get('qualificationId').touched
                       " formControlName="qualificationId">
-                      <option selected value="">Qualification</option>
-                      <option *ngFor="let row of qualification" value="{{ row.id }}"> {{ row.qualification }} </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Institution <span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" formControlName="institution">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Start Date<span class="text-danger">*</span></label>
-                    <input class="form-control" type="date" formControlName="startDate">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>End Date <span class="text-danger">*</span></label>
-                    <input class="form-control" type="date" formControlName="endDate">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Grade<span class="text-danger">*</span></label>
-                    <select class="form-control" [class.invalid]="employeeQualificationForm.get('gradeId').invalid &&
+                            <option selected value="">Qualification</option>
+                            <option *ngFor="let row of qualification" value="{{ row.id }}"> {{ row.qualification }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Institution <span class="text-danger">*</span></label>
+                          <input class="form-control" type="text" formControlName="institution">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Start Date<span class="text-danger">*</span></label>
+                          <input class="form-control" type="date" formControlName="startDate">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>End Date <span class="text-danger">*</span></label>
+                          <input class="form-control" type="date" formControlName="endDate">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Grade<span class="text-danger">*</span></label>
+                          <select class="form-control" [class.invalid]="employeeQualificationForm.get('gradeId').invalid &&
                                         employeeQualificationForm.get('gradeId').touched" formControlName="gradeId">
-                      <option selected value="">Grades</option>
-                      <option *ngFor="let row of grades" value="{{row.id}}"> {{row.grade}} </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Attachment (file format)</label>
-                    <input class="form-control" formControlName="qualificationFile" #fileInput type="file"
-                      (change)="handleFile($event)" [class.invalid]="
+                            <option selected value="">Grades</option>
+                            <option *ngFor="let row of grades" value="{{row.id}}"> {{row.grade}} </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Attachment (file format)</label>
+                          <input class="form-control" formControlName="qualificationFile" #fileInput type="file"
+                            (change)="handleFile($event)" [class.invalid]="
                                             employeeQualificationForm.get('qualificationFile').invalid &&
                                             employeeQualificationForm.get('qualificationFile').touched">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Approval Status<span class="text-danger">*</span></label>
+                          <select class="select form-control" formControlName="approvalStatus">
+                            <option disabled>Select Status</option>
+                            <option value="1">Confirmed</option>
+                            <option value="2">Pending</option>
+                            <option value="3">Unconfirmed</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Approval Status<span class="text-danger">*</span></label>
-                    <select class="select form-control" formControlName="approvalStatus">
-                      <option disabled>Select Status</option>
-                      <option value="1">Confirmed</option>
-                      <option value="2">Pending</option>
-                      <option value="3">Unconfirmed</option>
-                    </select>
-                  </div>
+                <div class="submit-section">
+                  <button class="btn btn-primary submit-btn" type="submit">
+                    <span *ngIf="!spinner">Submit</span>
+                    <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                  </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
-          <div class="submit-section">
-            <button class="btn btn-primary submit-btn" type="submit">
-              <span *ngIf="!spinner">Submit</span>
-              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
-<!-- Qualification modal ends here  -->
+      <!-- Qualification modal ends here  -->
       <!-- Professional Certification card -->
-      <app-prof-cert [staffId]="employeeId"></app-prof-cert>
+      <app-prof-cert *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-prof-cert>
       <!-- /Professional Certification card -->
       <!-- Skills card -->
-      <app-skills [staffId]="employeeId"></app-skills>
+      <app-skills *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-skills>
       <!-- /Skills card -->
     </div>
     <!-- /Careers Tab -->
@@ -399,30 +405,26 @@
     <div id="emp_hobbies" class=" tab-pane fade">
       <!-- Hobbies Card -->
       <div>
-        <app-hobbies [staffId]="employeeId"></app-hobbies>
+        <app-hobbies *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-hobbies>
       </div>
     </div>
     <!-- /Hobbies Tab -->
     <!-- Health and Wellness Tab -->
     <div id="emp_health_well" class="tab-pane fade ">
       <!-- Employee Hmo card -->
-      <app-employee-hmo [staffId]="employeeId"></app-employee-hmo>
+      <app-employee-hmo *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-employee-hmo>
       <!-- Employee /Hmo card -->
       <!-- Hospital card -->
-      <app-hospital [staffId]="employeeId"></app-hospital>
+      <app-hospital *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-hospital>
       <!-- /Hospital card -->
       <!-- Employee Gym card -->
-      <app-employee-gym [staffId]="employeeId"></app-employee-gym>
+      <app-employee-gym *ngIf='dataToChild.user && employeeId' [dataFromParent]="dataToChild"></app-employee-gym>
       <!-- /Employee Gym card -->
     </div>
     <!-- /Health and Wellness Tab -->
   </div>
 </div>
 <!-- Pop up Modals below -->
-
-
-
-
 <!-- Emergency Contact Modal -->
 <div id="emergency_contact_modal" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

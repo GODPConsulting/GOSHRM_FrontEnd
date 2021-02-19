@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormGroup } from "@angular/forms";
-import { NavigationEnd, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { HeaderService } from "./header.service";
 import { AuthService } from "../services/auth.service";
 import { DataService } from "../services/data.service";
@@ -21,7 +20,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: any = {};
   mySubscription: any;
   allUsers: any;
-  userPhoto: any;
 
   constructor(
     private headerService: HeaderService,
@@ -35,12 +33,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // this.getDatas("notification");
     // this.getDatas("message");
 
-    // Get access to the storeduser data
+    // Get access to the user data shared from sidebar
     this.dataService.currentUser.subscribe((result) => {
       this.user = result;
       console.log(this.user);
-
-      this.getProfilePhoto();
     });
 
     this.notifications = [
@@ -137,18 +133,5 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logOut() {
     this.authService.clearSession();
-  }
-
-  //To get profile photo of the signedin user
-  getProfilePhoto() {
-    this.employeeService.getEmployees().subscribe((data) => {
-      this.allUsers = data.employeeList;
-      // loop and check if the email is the same then get the photo
-      for (const key of this.allUsers) {
-        if (key.email === this.user.email) {
-          this.userPhoto = key.photo;
-        }
-      }
-    });
   }
 }

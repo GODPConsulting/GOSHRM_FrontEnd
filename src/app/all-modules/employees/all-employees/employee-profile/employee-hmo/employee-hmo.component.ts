@@ -22,7 +22,7 @@ export class EmployeeHmoComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
+  @Input() dataFromParent: any;
 
   // To hold data for each card
   employeeHmo: any[] = [];
@@ -41,7 +41,7 @@ export class EmployeeHmoComponent implements OnInit {
   ngOnInit(): void {
     this.initHmoForm();
     this.initHmoChangeForm();
-    this.getEmployeeHmo(this.staffId);
+    this.getEmployeeHmo(this.dataFromParent.user.staffId);
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -66,8 +66,11 @@ export class EmployeeHmoComponent implements OnInit {
       contactPhoneNo: ["", Validators.required],
       startDate: ["", Validators.required],
       end_Date: ["", Validators.required],
-      approvalStatus: ["", Validators.required],
-      staffId: this.staffId,
+      approvalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
+      staffId: this.dataFromParent.user.staffId,
       setCurrentDate: [""],
     });
   }
@@ -84,8 +87,11 @@ export class EmployeeHmoComponent implements OnInit {
       ],
       expectedDateOfChange: ["", Validators.required],
       hmoFile: ["", Validators.required],
-      staffId: this.staffId,
-      approvalStatus: ["", Validators.required],
+      staffId: this.dataFromParent.user.staffId,
+      approvalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+        Validators.required,
+      ],
     });
     // Resets the upload input of the add form
     if (this.fileInput) {
@@ -94,7 +100,9 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   submitHmoForm(form: FormGroup) {
+    form.get("approvalStatus").enable();
     if (!form.valid) {
+      form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -106,7 +114,7 @@ export class EmployeeHmoComponent implements OnInit {
       
       formData.append(key, this.employeeHmoForm.get(key).value);
     } */
-
+    form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHmo(payload).subscribe(
       (res) => {
@@ -116,7 +124,7 @@ export class EmployeeHmoComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#hmo_modal").modal("hide");
         }
-        this.getEmployeeHmo(this.staffId);
+        this.getEmployeeHmo(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -127,9 +135,11 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   submitHmoChangeReqForm(form: FormGroup) {
+    form.get("approvalStatus").enable();
     form.get("dateOfRequest").enable();
     if (!form.valid) {
       form.get("dateOfRequest").disable();
+      form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -150,6 +160,7 @@ export class EmployeeHmoComponent implements OnInit {
       formData.append(key, this.hmoChangeReqForm.get(key)?.value);
     }
     form.get("dateOfRequest").disable();
+    form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHmoChangeRequest(formData).subscribe(
       (res) => {
@@ -215,7 +226,7 @@ export class EmployeeHmoComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeHmo(this.staffId);
+                  this.getEmployeeHmo(this.dataFromParent.user.staffId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");
@@ -248,7 +259,11 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(
+      event,
+      form,
+      this.dataFromParent.user.staffId
+    );
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
