@@ -26,6 +26,10 @@ const routes: Routes = [
         path: "employee-form",
         component: EmployeeFormComponent,
       },
+      {
+        path: "employee-form/:editUser",
+        component: EmployeeFormComponent,
+      },
     ],
     runGuardsAndResolvers: "always",
   },
