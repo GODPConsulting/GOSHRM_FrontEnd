@@ -44,14 +44,7 @@ export class EmployeeFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private dataService: DataService
-  ) {
-    // Handles route reloading...solves view not changing when user navigates to his/her own profile from another user's profile route
-    this.navigationSubscription = this.router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        this.initInvites();
-      }
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((param) => {
@@ -399,16 +392,4 @@ export class EmployeeFormComponent implements OnInit {
     return new File([u8arr], filename, { type: mime });
   }
   uploadImage() {}
-
-  /* Handles Route reloading */
-  initInvites() {
-    this.ngOnInit();
-  }
-
-  ngOnDestroy() {
-    if (this.navigationSubscription) {
-      this.navigationSubscription.unsubscribe();
-    }
-  }
-  /* Handles Route reloading */
 }
