@@ -233,7 +233,7 @@ export class KpiCategoryComponent implements OnInit {
     console.log(+event.target.value);
     this.selectReview = +event.target.value;
     this.kpiCategoryForm.get("hrSelectReviewer");
-    if (this.selectReview === 1 || this.selectReview === 3) {
+    if (this.selectReview === 3) {
       // this.kpiCategoryForm.get("hrSelectReviewer").enable();
       this.hrDisabled = false;
     }

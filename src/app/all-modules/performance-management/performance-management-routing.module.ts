@@ -1,4 +1,4 @@
-import { AcademicDisciplineComponent } from "./../setup/academic-discipline/academic-discipline.component";
+import { PointSettingsComponent } from "./point-settings/point-settings.component";
 import { KpiCategoryComponent } from "./kpi-category/kpi-category.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
@@ -12,6 +12,10 @@ const routes: Routes = [
       {
         path: "kpi-category",
         component: KpiCategoryComponent,
+      },
+      {
+        path: "point-settings",
+        component: PointSettingsComponent,
       },
     ],
   },

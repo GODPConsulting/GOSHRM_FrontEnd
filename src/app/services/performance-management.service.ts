@@ -24,4 +24,21 @@ export class PerformanceManagementService {
       payload
     );
   }
+  getPointSettings() {
+    return this.apiService.get("/performancesetup/get/all/point-settings");
+  }
+
+  postPointSettings(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup/add/update/point-setting",
+      payload
+    );
+  }
+
+  deletePointSettings(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup/delete/point-setting",
+      payload
+    );
+  }
 }
