@@ -127,7 +127,7 @@
             <a href="javascript:" class="dropdown-toggle nav-link" data-toggle="dropdown">
                 <span class="user-img"><img *ngIf='user' src="{{user.photo}}" alt="">
                     <span class="status online"></span></span>
-                <span>Admin</span>
+                <span>{{user?.firstName}}</span>
             </a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" [routerLink]="['/employees/employeeprofile/',user?.staffId]">My Profile</a>
