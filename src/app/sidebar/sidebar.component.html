@@ -331,19 +331,25 @@
           <li class="submenu" [ngClass]="{
               active:
                 (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'kpi-category')
+                  urlComplete.subUrl === 'kpi-category') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'point-settings')
                 
             }">
             <a href="javascript:" [ngClass]="{
                 subdrop:
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'kpi-category')
+                    urlComplete.subUrl === 'kpi-category') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'point-settings')
               }" class="noti-dot"><i class="la la-chart-bar"></i> <span> Performance</span>
               <span class="menu-arrow"></span></a>
             <ul style="display: none;" [ngStyle]="{
                 display:
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'kpi-category')
+                    urlComplete.subUrl === 'kpi-category') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'point-settings')
                     ? 'block'
                     : 'none'
               }">
@@ -352,6 +358,13 @@
                     active:
                       urlComplete.subUrl === 'kpi-category'
                   }">KPI Category</a>
+              </li>
+
+              <li routerLink="/performance/point-settings">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'point-settings'
+                  }">Point Settings</a>
               </li>
             </ul>
           </li>

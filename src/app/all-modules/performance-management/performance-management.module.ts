@@ -10,9 +10,10 @@ import { DataTablesModule } from "angular-datatables";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { HttpTokenInterceptor } from "src/app/services/http.interceptor.service";
 import { PerformanceManagementComponent } from "./performance-management.component";
+import { PointSettingsComponent } from './point-settings/point-settings.component';
 
 @NgModule({
-  declarations: [PerformanceManagementComponent, KpiCategoryComponent],
+  declarations: [PerformanceManagementComponent, KpiCategoryComponent, PointSettingsComponent],
   imports: [
     CommonModule,
     DataTablesModule,
