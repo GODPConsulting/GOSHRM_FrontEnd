@@ -24,6 +24,13 @@ const routes: Routes = [
         loadChildren: () =>
           import("./setup/setup.module").then((m) => m.SetupModule),
       },
+      {
+        path: "performance",
+        loadChildren: () =>
+          import("./performance-management/performance-management.module").then(
+            (m) => m.PerformanceManagementModule
+          ),
+      },
     ],
   },
 ];
