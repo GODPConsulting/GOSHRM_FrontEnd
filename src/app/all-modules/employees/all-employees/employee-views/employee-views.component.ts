@@ -28,7 +28,6 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
     this.dataService.currentUser.subscribe((result) => {
       const user = result;
       this.canAddEmployee = user && user.activities.includes("employeeform");
-      console.log(this.canAddEmployee);
     });
     this.loadEmployees();
     this.getStaffDepartments();

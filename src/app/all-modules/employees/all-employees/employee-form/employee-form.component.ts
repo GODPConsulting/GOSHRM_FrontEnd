@@ -5,8 +5,9 @@ import swal from "sweetalert2";
 import { ImageCroppedEvent, base64ToFile } from "ngx-image-cropper";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { DataService } from "src/app/services/data.service";
+import { Subscription } from "rxjs";
 declare const $: any;
 @Component({
   selector: "app-employee-form",
@@ -34,6 +35,7 @@ export class EmployeeFormComponent implements OnInit {
   image: any;
   allJobGrades$ = this.setupService.getJobGrades();
   isVisible: boolean = false;
+  navigationSubscription: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,13 +48,14 @@ export class EmployeeFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((param) => {
-      if (param.get("editUser") === "edit") {
+      if (param.has("editUser")) {
         this.dataService.currentUser.subscribe((result) => {
           this.initializeEditForm(result);
         });
+      } else {
+        this.initializeForm();
       }
     });
-    this.initializeForm();
     this.getJobTitle();
     this.getCountry();
     this.getStaffDepartments();
