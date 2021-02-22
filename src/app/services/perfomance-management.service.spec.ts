@@ -1,13 +1,13 @@
 import { TestBed } from "@angular/core/testing";
 
-import { PerfomanceManagementService } from "./perfomance-management.service";
+import { PerformanceManagementService } from "./performance-management.service";
 
 describe("PerfomanceManagementService", () => {
-  let service: PerfomanceManagementService;
+  let service: PerformanceManagementService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PerfomanceManagementService);
+    service = TestBed.inject(PerformanceManagementService);
   });
 
   it("should be created", () => {

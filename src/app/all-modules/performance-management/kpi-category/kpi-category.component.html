@@ -48,7 +48,7 @@
 
 <!-- KPI Category Modal -->
 <div id="kpi_category_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-width" role="document" style="width: 1200px !important">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{cardFormTitle}}</h5>
@@ -63,30 +63,14 @@
                             <div class="form-group">
                                 <label>Name</label>
                                 <input type="text" name="name" class="form-control" [(ngModel)]="name">
-                                <!-- <div *ngIf="
-                                kpiCategoryForm.get('name').invalid &&
-                                kpiCategoryForm.get('name').touched">
-                                    <small *ngIf="
-                                    kpiCategoryForm.get('name').invalid &&
-                                    kpiCategoryForm.get('name').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div> -->
+
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Description</label>
                                 <input type="text" name="description" class="form-control" [(ngModel)]="description">
-                                <!-- <div *ngIf="
-                                kpiCategoryForm.get('description').invalid &&
-                                kpiCategoryForm.get('description').touched">
-                                    <small *ngIf="
-                                    kpiCategoryForm.get('description').invalid &&
-                                    kpiCategoryForm.get('description').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div> -->
+
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -98,15 +82,7 @@
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>
-                                <!-- <div *ngIf="
-                                kpiCategoryForm.get('employeeSetObjectives').invalid &&
-                                kpiCategoryForm.get('employeeSetObjectives').touched">
-                                    <small *ngIf="
-                                    kpiCategoryForm.get('employeeSetObjectives').invalid &&
-                                    kpiCategoryForm.get('employeeSetObjectives').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div> -->
+
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -117,39 +93,23 @@
                                     <option selected value="">Weight Model</option>
                                     <option *ngIf="allLocation" value="2">Independent Allocation</option>
                                     <option *ngIf="!allLocation" value="3">360 Feedback</option>
-                                    <option value="1">Even distribution</option>
+                                    <option *ngIf="allLocation" value="2">Even Distribution</option>
+                                    <option *ngIf="!allLocation" value="1">Even Distribution</option>
 
                                 </select>
-                                <!-- <div *ngIf="
-                                kpiCategoryForm.get('weightModel').invalid &&
-                                kpiCategoryForm.get('weightModel').touched">
-                                    <small *ngIf="
-                                    kpiCategoryForm.get('weightModel').invalid &&
-                                    kpiCategoryForm.get('weightModel').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div> -->
+
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div *ngIf="!hrDisabled" class="col-md-6">
                             <div class="form-group">
                                 <label>HR Select Reviewer</label>
                                 <select type="text" class="form-control" name="hrSelectReviewer" type="text"
                                     [disabled]="hrDisabled" [(ngModel)]="hrSelectReviewer">
                                     <option selected value="">HR Select Reviewer</option>
                                     <option value="1">Yes</option>
-                                    <option value="2">No</option>
+                                    <option value="0">No</option>
                                 </select>
 
-                                <!-- <div *ngIf="
-                                kpiCategoryForm.get('hrSelectReviewer').invalid &&
-                                kpiCategoryForm.get('hrSelectReviewer').touched">
-                                    <small *ngIf="
-                                    kpiCategoryForm.get('hrSelectReviewer').invalid &&
-                                    kpiCategoryForm.get('hrSelectReviewer').touched
-                      " class="text-danger">
-                                        *Field is required</small>
-                                </div> -->
                             </div>
                         </div>
                     </div>
