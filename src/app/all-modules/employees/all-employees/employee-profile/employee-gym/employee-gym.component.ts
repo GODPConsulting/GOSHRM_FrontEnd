@@ -29,6 +29,8 @@ export class EmployeeGymComponent implements OnInit {
   employeeGym: any[] = [];
   allGyms$: Observable<any>;
   public dtOptions: DataTables.Settings = {};
+  minDate: Date;
+  maxDate: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,6 +59,16 @@ export class EmployeeGymComponent implements OnInit {
       columns: [{ orderable: false }, null, null, null, null, null, null, null],
       order: [[1, "asc"]],
     };
+  }
+
+  setMinMaxDate(form: FormGroup, startDate: string, endDate: string) {
+    const dateSetter = this.utilitiesService.setMinMaxDate(
+      form,
+      startDate,
+      endDate
+    );
+    this.minDate = dateSetter.minDate;
+    this.maxDate = dateSetter.maxDate;
   }
 
   initGymForm() {
@@ -95,6 +107,8 @@ export class EmployeeGymComponent implements OnInit {
         Validators.required,
       ],
     });
+    // Set dateOfRequest to be min date for expectedDateOfChange to
+    this.minDate = new Date(this.gymChangeReqForm.get("dateOfRequest").value);
   }
 
   initBookGymForm() {
@@ -111,6 +125,8 @@ export class EmployeeGymComponent implements OnInit {
       gymMeetingFile: ["", Validators.required],
       staffId: this.dataFromParent.user.staffId,
     });
+    // Set dateOfRequest to be min date for expectedDateOfChange to
+    this.minDate = new Date(this.bookGymForm.get("dateOfRequest").value);
   }
 
   submitGymForm(form: FormGroup) {

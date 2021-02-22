@@ -54,6 +54,22 @@ export class ProfCertComponent implements OnInit {
     };
   }
 
+  validateDate(
+    form: FormGroup,
+    startDate: string,
+    endDate: string,
+    startDateName: string,
+    endDateName: string
+  ) {
+    this.utilitiesService.validateDate(
+      form,
+      startDate,
+      endDate,
+      startDateName,
+      endDateName
+    );
+  }
+
   downloadFile() {
     if (this.selectedId.length === 0) {
       return swal.fire(`GOS HRM`, "Please select item to download", "error");
@@ -95,6 +111,7 @@ export class ProfCertComponent implements OnInit {
       staffId: this.dataFromParent.user.staffId,
       gradeId: ["", Validators.required],
       profCertificationFile: ["", Validators.required],
+      setCurrentDate: [""],
     });
     // Resets the upload input of the add form
     if (this.fileInput) {
@@ -254,5 +271,9 @@ export class ProfCertComponent implements OnInit {
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
   hack(val: any[]) {
     return Array.from(val);
+  }
+
+  resetCheckbox(form: FormGroup, formControlName: string) {
+    form.get(formControlName).setValue("");
   }
 }

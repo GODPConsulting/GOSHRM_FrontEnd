@@ -11,6 +11,54 @@ import { isInteger } from "lodash";
 export class UtilitiesService {
   constructor(private apiService: ApiService) {}
 
+  // Date validation with the datepicker package
+  setMinMaxDate(form: FormGroup, startDate: string, endDate: string) {
+    let dateSetter: any = {};
+    if (form.get(startDate).value) {
+      dateSetter.minDate = new Date(form.get(startDate).value);
+    }
+    if (form.get(endDate).value) {
+      dateSetter.maxDate = new Date(form.get(endDate).value);
+    }
+    return dateSetter;
+  }
+
+  // Date validation with the TypeScript
+  validateDate(
+    form: FormGroup,
+    startDate: string,
+    endDate: string,
+    startDateName: string,
+    endDateName: string
+  ) {
+    let date1: number, date2: number;
+    if (form.get(startDate).value) {
+      date1 = new Date(form.get(startDate).value).getTime();
+    }
+    if (form.get(endDate).value) {
+      date2 = new Date(form.get(endDate).value).getTime();
+      // endDate becomes NaN when 'present'..new Date('present').getTime() == NaN
+      if (isNaN(date2)) {
+        date2 = new Date().getTime();
+      }
+    }
+    if (date1 > date2) {
+      swal.fire(
+        "GOSHRM",
+        `${startDateName} cannot be later than ${endDateName}`,
+        "error"
+      );
+      //form.get(startDate).setErrors({ invalid: true });
+      //form.get(endDate).setErrors({ invalid: true });
+      form.get(startDate).setValue("");
+      form.get(endDate).setValue("");
+    } else {
+      /* form.get(startDate).setErrors(null);
+      form.get(endDate).setErrors(null); */
+    }
+  }
+  // Date validation with the TypeScript
+
   // Validates the file to be uploaded
   uploadFileValidator(
     event: Event,
