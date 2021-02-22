@@ -2,6 +2,7 @@ import { AfterViewChecked, Component, OnInit } from "@angular/core";
 import { DataService } from "src/app/services/data.service";
 import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
+import swal from "sweetalert2";
 
 declare const $: any;
 @Component({
@@ -60,7 +61,40 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
       selector: '[data-toggle="tooltip"]',
     });
   }
-  //this.setupService.getData
+
+  multiUploadPhoto() {
+    swal
+      .fire({
+        title: "Upload Multiple photos for employees?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        if (result.value) {
+          this.pageLoading = true;
+          this.employeeService.multiUploadEmployeePhotos().subscribe(
+            (res) => {
+              this.pageLoading = false;
+              const message = res.status.message.friendlyMessage;
+              if (res.status.isSuccessful) {
+                swal.fire("GOSHRM", message, "success").then(() => {
+                  this.loadEmployees();
+                });
+              } else {
+                swal.fire("GOSHRM", message, "error");
+              }
+            },
+            (err) => {
+              this.pageLoading = false;
+              const message = err.status.message.friendlyMessage;
+              swal.fire("GOSHRM", message, "error");
+            }
+          );
+        }
+      });
+  }
+
   // Get All Employees
   loadEmployees() {
     this.pageLoading = true;
@@ -73,6 +107,8 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
       },
       (err) => {
         this.pageLoading = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("GOSHRM", message, "error");
       }
     );
   }
