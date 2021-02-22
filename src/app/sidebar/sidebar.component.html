@@ -5,9 +5,6 @@
       <div id="sidebar-menu" class="sidebar-menu">
         <ul *ngIf="sidebarMenus.default">
           <!-- Employee sidebar -->
-          <li *ngIf="userRights.includes('allemployees')" class="menu-title">
-            <span>Employees</span>
-          </li>
           <li *ngIf="userRights.includes('allemployees')" class="submenu" [ngClass]="{
               active:
                 (urlComplete.mainUrl === 'employees' &&
@@ -49,9 +46,6 @@
           </li>
           <!-- /Employee sidebar -->
           <!-- ESS -->
-          <li *ngIf="userRights.includes('profile')" class="menu-title">
-            <span>Employee Self Service</span>
-          </li>
           <li *ngIf="userRights.includes('profile')" class="submenu" [ngClass]="{
               active:
                 (urlComplete.mainUrl === 'employees' &&
@@ -78,9 +72,6 @@
           </li>
           <!-- /ESS -->
           <!-- Managers -->
-          <li *ngIf="userRights.includes('line manager')" class="menu-title">
-            <span>Managers</span>
-          </li>
           <li *ngIf="userRights.includes('line manager')" class="submenu" [ngClass]="{
               active:
                 (urlComplete.mainUrl === 'performance' &&
@@ -110,9 +101,6 @@
           </li>
           <!-- Managers -->
           <!-- Setup sidebar -->
-          <li *ngIf="userRights.includes('job title')" class="menu-title">
-            <span>Setup</span>
-          </li>
           <li *ngIf="userRights.includes('job title')" class="submenu" [ngClass]="{
               active:
               (urlComplete.mainUrl === 'setup' &&
@@ -325,9 +313,6 @@
           </li>
           <!-- /Setup sidebar -->
           <!--Performance Management-->
-          <li class="menu-title">
-            <span>Performance</span>
-          </li>
           <li class="submenu" [ngClass]="{
               active:
                 (urlComplete.mainUrl === 'performance' &&

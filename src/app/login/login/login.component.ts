@@ -93,6 +93,8 @@ export class LoginComponent implements OnInit {
         });
       },
       (err) => {
+        const message = err.error.status.message.friendlyMessage;
+        swal.fire("GOSHRM", message, "error");
         this.loading = false;
       }
     );

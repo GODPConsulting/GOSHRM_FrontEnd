@@ -29,6 +29,8 @@ export class HospitalComponent implements OnInit {
   employeeHospital: any[] = [];
   allHospitals$: Observable<any>;
   public dtOptions: DataTables.Settings = {};
+  minDate: Date;
+  maxDate: Date;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,6 +59,27 @@ export class HospitalComponent implements OnInit {
       columns: [{ orderable: false }, null, null, null, null, null, null, null],
       order: [[1, "asc"]],
     };
+  }
+  /* 
+  filterHospital(item) {
+    this.reload = false;
+    console.log(this.suggestedHospital);
+    this.suggestedHospital = this.employeeHospital.filter(
+      (element) => element.id !== +item.target.value
+    );
+    console.log(this.suggestedHospital);
+    this.reload = true;
+  }
+ */
+
+  setMinMaxDate(form: FormGroup, startDate: string, endDate: string) {
+    const dateSetter = this.utilitiesService.setMinMaxDate(
+      form,
+      startDate,
+      endDate
+    );
+    this.minDate = dateSetter.minDate;
+    this.maxDate = dateSetter.maxDate;
   }
 
   initHospitalForm() {
@@ -95,6 +118,10 @@ export class HospitalComponent implements OnInit {
         Validators.required,
       ],
     });
+    // Set dateOfRequest to be min date for expectedDateOfChange to
+    this.minDate = new Date(
+      this.hospitalChangeReqForm.get("dateOfRequest").value
+    );
   }
 
   initBookHospitalForm() {
@@ -111,6 +138,7 @@ export class HospitalComponent implements OnInit {
       hospitalMeetingFile: ["", Validators.required],
       staffId: this.dataFromParent.user.staffId,
     });
+    this.minDate = new Date(this.bookHospitalForm.get("dateOfRequest").value);
   }
 
   submitHospitalForm(form: FormGroup) {

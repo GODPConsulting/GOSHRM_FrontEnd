@@ -65,6 +65,7 @@ export class EmployeeFormComponent implements OnInit {
 
   initializeEditForm(result) {
     this.getStatesByCountryId(result?.countryId);
+    this.getAccessLevelsByAccessLevelId(result?.accessLevelId);
     this.EmployeeForm = this.formBuilder.group({
       staffId: result?.staffId,
       firstName: [result?.firstName],
@@ -83,7 +84,7 @@ export class EmployeeFormComponent implements OnInit {
       accessLevel: [result?.accessLevel],
       staffOfficeId: [result?.staffOfficeId],
       userName: [result?.userName],
-      userStatus: [result?.userStatus],
+      userStatus: [result?.userStatus.isSuccessful],
       accessLevelId: [result?.accessLevelId],
       userAccessLevels: [result?.userAccessLevels],
       userRoleNames: [result?.userRoleNames],
@@ -253,7 +254,7 @@ export class EmployeeFormComponent implements OnInit {
 
   getCountry() {
     this.pageLoading = true;
-    return this.setupService.getData("/common/countries").subscribe(
+    return this.utilitiesService.getCountry().subscribe(
       (data) => {
         this.pageLoading = false;
         this.countries = data.commonLookups;
@@ -265,14 +266,12 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   getStatesByCountryId(id) {
-    return this.setupService
-      .getData(`/common/get/states/countryId?CountryId=${id}`)
-      .subscribe(
-        (data) => {
-          this.states = data.commonLookups;
-        },
-        (err) => {}
-      );
+    return this.utilitiesService.getCountryById(id).subscribe(
+      (data) => {
+        this.states = data.commonLookups;
+      },
+      (err) => {}
+    );
   }
   getStaffDepartments() {
     this.pageLoading = true;

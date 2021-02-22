@@ -315,9 +315,9 @@
                         <select class="select form-control"
                             [class.invalid]="EmployeeForm.get('userStatus').invalid && EmployeeForm.get('userStatus').touched"
                             formControlName="userStatus">
-                            <option>Select Status</option>
-                            <option>Enabled</option>
-                            <option>Disabled</option>
+                            <option selected value="">Select Status</option>
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
                         </select>
                         <div *ngIf="EmployeeForm.get('userStatus').invalid && EmployeeForm.get('userStatus').touched">
                             <small
