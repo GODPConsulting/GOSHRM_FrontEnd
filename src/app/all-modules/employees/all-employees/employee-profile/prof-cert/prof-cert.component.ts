@@ -28,6 +28,8 @@ export class ProfCertComponent implements OnInit {
   allCertificates$: Observable<any> = this.setupService.getProfCerts();
   allJobGrades$: Observable<any> = this.setupService.getJobGrades();
   public dtOptions: DataTables.Settings = {};
+  minDate: any;
+  maxDate: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,20 +56,14 @@ export class ProfCertComponent implements OnInit {
     };
   }
 
-  validateDate(
-    form: FormGroup,
-    startDate: string,
-    endDate: string,
-    startDateName: string,
-    endDateName: string
-  ) {
-    this.utilitiesService.validateDate(
+  setMinMaxDate(form: FormGroup, startDate: string, endDate: string) {
+    const dateSetter = this.utilitiesService.setMinMaxDate(
       form,
       startDate,
-      endDate,
-      startDateName,
-      endDateName
+      endDate
     );
+    this.minDate = dateSetter.minDate;
+    this.maxDate = dateSetter.maxDate;
   }
 
   downloadFile() {
@@ -276,4 +272,20 @@ export class ProfCertComponent implements OnInit {
   resetCheckbox(form: FormGroup, formControlName: string) {
     form.get(formControlName).setValue("");
   }
+
+  /* validateDate(
+    form: FormGroup,
+    startDate: string,
+    endDate: string,
+    startDateName: string,
+    endDateName: string
+  ) {
+    this.utilitiesService.validateDate(
+      form,
+      startDate,
+      endDate,
+      startDateName,
+      endDateName
+    );
+  } */
 }
