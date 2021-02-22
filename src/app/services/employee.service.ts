@@ -23,6 +23,10 @@ export class EmployeeService {
     return this.apiService.get(`/hrm/get/single/staff/email?email=${email}`);
   }
 
+  multiUploadEmployeePhotos() {
+    return this.apiService.post("/hrm/upload/multi-image");
+  }
+
   getIdentificationByStaffId(id: number) {
     return this.apiService.get(
       `/hrm/get/single/employee/identification/staffId?staffId=${id}`
