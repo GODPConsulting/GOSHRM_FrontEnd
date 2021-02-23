@@ -27,11 +27,14 @@ export class PerfomanceManagementService {
     );
   }
   handleError(err) {
-    console.log(err)
-    return throwError(err)
+    console.log(err);
+    return throwError(err);
   }
   addKPIndicator(payload: any) {
-    return this.apiService.post("/performancesetup/add/update/kpi-indicator", payload);
+    return this.apiService.post(
+      "/performancesetup/add/update/kpi-indicator",
+      payload
+    );
   }
   getKpiCategory() {
     return this.apiService.get("/performancesetup/get/all/kpi-categories");
@@ -39,34 +42,71 @@ export class PerfomanceManagementService {
   getKPIndicators() {
     return this.apiService.get("/performancesetup/get/all/kpi-indicators");
   }
-  deleteKPIndicator(payload) {
-    return this.apiService.post("/performancesetup/delete/kpi-indicator", payload).pipe(
-      tap((data) => {
-        return data;
-      })
+
+  getKpiByKpiCategoryId(id: number) {
+    return this.apiService.get(
+      `/performancesetup/get/kpi-indicator/categoryId?categoryId=${id}`
     );
   }
-  uploadKPIndicators(payload: FormData){
-    return this.apiService.post("/performancesetup/upload/kpi-indicator", payload)
+
+  deleteKPIndicator(payload) {
+    return this.apiService
+      .post("/performancesetup/delete/kpi-indicator", payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+  uploadKPIndicators(payload: FormData) {
+    return this.apiService.post(
+      "/performancesetup/upload/kpi-indicator",
+      payload
+    );
   }
   downloadKPIndicators() {
-    return this.apiService.getDownload("/performancesetup/download/kpi-indicators");
+    return this.apiService.getDownload(
+      "/performancesetup/download/kpi-indicators"
+    );
   }
 
   addGradeSetting(payload: any): Observable<any> {
-    return this.apiService.post(`/performancesetup/add/update/grade-setting`, payload).pipe(tap(data => {
-      return data
-    }));
+    return this.apiService
+      .post(`/performancesetup/add/update/grade-setting`, payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
   }
   deleteGradeSetting(payload) {
-    return this.apiService.post("/performancesetup/delete/grade-setting", payload).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
+    return this.apiService
+      .post("/performancesetup/delete/grade-setting", payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
   }
   getGradeSettings() {
     return this.apiService.get("/performancesetup/get/all/grade-settings");
   }
-  
+
+  getKpiToJobGrades() {
+    return this.apiService.get("/performancesetup/get/all/kpi-to-jobgrades");
+  }
+
+  postKpiToJobGrade(payload) {
+    return this.apiService.post(
+      "/performancesetup/add/update/kpi-to-jobgrade",
+      payload
+    );
+  }
+
+  deleteKpiToJobGrade(payload) {
+    return this.apiService.post(
+      "/performancesetup/delete/kpi-to-jobgrade",
+      payload
+    );
+  }
 }
