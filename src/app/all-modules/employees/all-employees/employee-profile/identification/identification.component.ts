@@ -86,7 +86,7 @@ export class IdentificationComponent implements OnInit {
     this.cardFormTitle = "Add Identification";
     this.identificationForm = this.formBuilder.group({
       id: [0],
-      IdentificationId: ["", Validators.required],
+      identificationId: ["", Validators.required],
       identification_number: ["", Validators.required],
       idIssues: ["", Validators.required],
       idExpiry_date: ["", Validators.required],
@@ -108,7 +108,7 @@ export class IdentificationComponent implements OnInit {
     this.cardFormTitle = "Edit Identification";
     this.identificationForm.patchValue({
       id: row.id,
-      IdentificationId: row.identificationName,
+      identificationId: row.identificationId,
       identification_number: row.identification_number,
       idIssues: row.idIssues,
       idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),

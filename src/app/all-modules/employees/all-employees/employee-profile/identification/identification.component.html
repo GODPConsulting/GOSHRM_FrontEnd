@@ -65,19 +65,19 @@
                             <div class="form-group">
                                 <label>Identification</label>
                                 <select type="text" class="form-control" [class.invalid]="
-                                identificationForm.get('IdentificationId').invalid &&
-                                identificationForm.get('IdentificationId').touched" formControlName="IdentificationId">
+                                identificationForm.get('identificationId').invalid &&
+                                identificationForm.get('identificationId').touched" formControlName="identificationId">
                                     <option selected value="">Identification</option>
                                     <option *ngFor="let row of identifications" value="{{row.lookupId}}">
                                         {{row.lookupName}} </option>
                                 </select>
                                 <div *ngIf="
-                                identificationForm.get('IdentificationId').invalid &&
-                                identificationForm.get('IdentificationId').touched
+                                identificationForm.get('identificationId').invalid &&
+                                identificationForm.get('identificationId').touched
                     ">
                                     <small *ngIf="
-                                    identificationForm.get('IdentificationId').invalid &&
-                                    identificationForm.get('IdentificationId').touched
+                                    identificationForm.get('identificationId').invalid &&
+                                    identificationForm.get('identificationId').touched
                       " class="text-danger"> *Field is required</small>
                                 </div>
                             </div>

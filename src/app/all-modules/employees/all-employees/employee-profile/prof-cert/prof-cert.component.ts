@@ -28,6 +28,8 @@ export class ProfCertComponent implements OnInit {
   allCertificates$: Observable<any> = this.setupService.getProfCerts();
   allJobGrades$: Observable<any> = this.setupService.getJobGrades();
   public dtOptions: DataTables.Settings = {};
+  minDate: any;
+  maxDate: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,6 +54,16 @@ export class ProfCertComponent implements OnInit {
       columns: [{ orderable: false }, null, null, null, null, null, null],
       order: [[1, "asc"]],
     };
+  }
+
+  setMinMaxDate(form: FormGroup, startDate: string, endDate: string) {
+    const dateSetter = this.utilitiesService.setMinMaxDate(
+      form,
+      startDate,
+      endDate
+    );
+    this.minDate = dateSetter.minDate;
+    this.maxDate = dateSetter.maxDate;
   }
 
   downloadFile() {
@@ -95,6 +107,7 @@ export class ProfCertComponent implements OnInit {
       staffId: this.dataFromParent.user.staffId,
       gradeId: ["", Validators.required],
       profCertificationFile: ["", Validators.required],
+      setCurrentDate: [""],
     });
     // Resets the upload input of the add form
     if (this.fileInput) {
@@ -255,4 +268,24 @@ export class ProfCertComponent implements OnInit {
   hack(val: any[]) {
     return Array.from(val);
   }
+
+  resetCheckbox(form: FormGroup, formControlName: string) {
+    form.get(formControlName).setValue("");
+  }
+
+  /* validateDate(
+    form: FormGroup,
+    startDate: string,
+    endDate: string,
+    startDateName: string,
+    endDateName: string
+  ) {
+    this.utilitiesService.validateDate(
+      form,
+      startDate,
+      endDate,
+      startDateName,
+      endDateName
+    );
+  } */
 }
