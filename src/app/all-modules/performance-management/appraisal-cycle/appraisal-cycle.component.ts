@@ -46,6 +46,7 @@ export class AppraisalCycleComponent implements OnInit {
   status: string;
   appraisalCycleForm: any;
   public offices: number[] = [];
+  appraisalCycleUploadForm: any;
 
   constructor(
     private performanceManagementService: PerformanceManagementService,
@@ -244,6 +245,40 @@ export class AppraisalCycleComponent implements OnInit {
           this.pageLoading = false;
         }
       );
+  }
+
+  uploadAppraisalCycle() {
+    if (!this.appraisalCycleUploadForm.get("uploadInput").value) {
+      return swal.fire("Error", "Select a file", "error");
+    }
+    const formData = new FormData();
+    formData.append(
+      "uploadInput",
+      this.appraisalCycleUploadForm.get("uploadInput").value
+    );
+    this.spinner = true;
+    return this.setupService.uploadGymWorkout(formData).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("GOSHRM", message, "success");
+          this.initializeForm();
+          $("#upload_gym_workout").modal("hide");
+        } else {
+          swal.fire("GOSHRM", message, "error");
+        }
+        this.getAppraisalCycles();
+      },
+      (err) => {
+        this.spinner = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("GOSHRM", message, "error");
+      }
+    );
+  }
+  initializeForm() {
+    throw new Error("Method not implemented.");
   }
 
   addItemId(event, id: number) {

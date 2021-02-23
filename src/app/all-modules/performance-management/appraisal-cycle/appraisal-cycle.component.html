@@ -7,6 +7,15 @@
                 <h3 class="page-title">Appraisal Cycle</h3>
             </div>
             <div _ngcontent-wii-c69="" class="col-md-4">
+                <div _ngcontent-wii-c69="" class="form-group">
+                    <label _ngcontent-wii-c69="">Choose File (excel format)</label>
+                    <div class="col-md-10">
+                        <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
+                            (change)="onSelectedFile($event,appraisalCycleUploadForm)">
+                    </div>
+                </div>
+            </div>
+            <div _ngcontent-wii-c69="" class="col-md-4">
                 <div _ngcontent-wii-c69="" class="form-group"><label _ngcontent-wii-c69="">company</label>
                     <select type="text" class="form-control" name="officeId" [(ngModel)]="officeId">
                         <option selected value="">Company</option>
@@ -234,13 +243,13 @@
                                 </button>
                                 <button type="button" class="btn btn-danger">Back</button>
 
-                                <button type="button" class="btn btn-primary">Copy previous
+                                <button type="button" class="btn btn-warning">Copy previous
                                     objectives</button>
 
-                                <button class="btn btn-primary hBack" type="Send Objective Alert ">Send Objective
+                                <button class="btn btn-success" type="button">Send Objective
                                     Alert</button>
 
-                                <button class="btn btn-primary hBack" type="Send Feedback Alert ">Send Feedback
+                                <button class="btn btn-info" type="button">Send Feedback
                                     Alert</button>
 
 
