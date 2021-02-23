@@ -6,7 +6,7 @@ import { tap } from "rxjs/operators";
 @Injectable({
   providedIn: "root",
 })
-export class PerformanceManagementService {
+export class PerfomanceManagementService {
   constructor(private apiService: ApiService) {}
 
   getkpiCategory() {
@@ -26,24 +26,6 @@ export class PerformanceManagementService {
       payload
     );
   }
-  getPointSettings() {
-    return this.apiService.get("/performancesetup/get/all/point-settings");
-  }
-
-  postPointSettings(payload: Object) {
-    return this.apiService.post(
-      "/performancesetup/add/update/point-setting",
-      payload
-    );
-  }
-
-  deletePointSettings(payload: Object) {
-    return this.apiService.post(
-      "/performancesetup/delete/point-setting",
-      payload
-    );
-  }
-
   handleError(err) {
     console.log(err);
     return throwError(err);
@@ -59,12 +41,6 @@ export class PerformanceManagementService {
   }
   getKPIndicators() {
     return this.apiService.get("/performancesetup/get/all/kpi-indicators");
-  }
-
-  getKpiByKpiCategoryId(id: number) {
-    return this.apiService.get(
-      `/performancesetup/get/kpi-indicator/categoryId?categoryId=${id}`
-    );
   }
 
   deleteKPIndicator(payload) {
@@ -108,42 +84,5 @@ export class PerformanceManagementService {
   }
   getGradeSettings() {
     return this.apiService.get("/performancesetup/get/all/grade-settings");
-  }
-
-  getKpiToJobGrades() {
-    return this.apiService.get("/performancesetup/get/all/kpi-to-jobgrades");
-  }
-
-  postKpiToJobGrade(payload) {
-    return this.apiService.post(
-      "/performancesetup/add/update/kpi-to-jobgrade",
-      payload
-    );
-  }
-
-  deleteKpiToJobGrade(payload) {
-    return this.apiService.post(
-      "/performancesetup/delete/kpi-to-jobgrade",
-      payload
-    );
-  }
-
-  addAppraisalPreference(payload: any): Observable<any> {
-    return this.apiService
-      .post(`/performancesetup/add/update/appraisal-preference`, payload)
-      .pipe(
-        tap((data) => {
-          return data;
-        })
-      );
-  }
-  getCompanies() {
-    return this.apiService.get("/company/get/all/companystructures");
-  }
-
-  getAppraisalCycleByCompanyId(id) {
-    return this.apiService.get(
-      `/performancesetup/get/single/appraisal-circle/companyId?setupId=${id}`
-    );
   }
 }
