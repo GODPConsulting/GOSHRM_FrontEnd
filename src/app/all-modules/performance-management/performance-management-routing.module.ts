@@ -5,6 +5,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { PerformanceManagementComponent } from "./performance-management.component";
 import { KeyPerformanceIndicatorsComponent } from "./key-performance-indicators/key-performance-indicators.component";
 import { GradeSettingComponent } from "./grade-setting/grade-setting.component";
+import { AppraisalCycleComponent } from "./appraisal-cycle/appraisal-cycle.component";
 
 const routes: Routes = [
   {
@@ -16,16 +17,20 @@ const routes: Routes = [
         component: KpiCategoryComponent,
       },
       {
-        path: 'kpi-indicators',
-        component: KeyPerformanceIndicatorsComponent
+        path: "kpi-indicators",
+        component: KeyPerformanceIndicatorsComponent,
       },
       {
-        path: 'grade-setting',
-        component: GradeSettingComponent
+        path: "grade-setting",
+        component: GradeSettingComponent,
       },
       {
         path: "point-settings",
         component: PointSettingsComponent,
+      },
+      {
+        path: "appraisal-cycle",
+        component: AppraisalCycleComponent,
       },
     ],
   },

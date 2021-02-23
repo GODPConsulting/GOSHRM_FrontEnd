@@ -1,4 +1,5 @@
-<div>
+<app-loading *ngIf="pageLoading"></app-loading>
+<div *ngIf="!pageLoading" class="content container-fluid">
     <div class="card profile-box flex-fill">
         <div class="card-body">
             <h3 class="card-title">KPI Category<a class="edit-icon hint" (click)="delete()"><span

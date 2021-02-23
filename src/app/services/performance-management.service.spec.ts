@@ -2,7 +2,7 @@ import { TestBed } from "@angular/core/testing";
 
 import { PerformanceManagementService } from "./performance-management.service";
 
-describe("PerfomanceManagementService", () => {
+describe("PerformanceManagementService", () => {
   let service: PerformanceManagementService;
 
   beforeEach(() => {

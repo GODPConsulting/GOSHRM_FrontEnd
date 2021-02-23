@@ -12,9 +12,11 @@ import { PointSettingsComponent } from './point-settings/point-settings.componen
 import { SharedModule } from "src/app/shared/shared.module";
 import { KeyPerformanceIndicatorsComponent } from "./key-performance-indicators/key-performance-indicators.component";
 import { GradeSettingComponent } from "./grade-setting/grade-setting.component";
+import { AppraisalCycleComponent } from './appraisal-cycle/appraisal-cycle.component';
+import { AppraisalCyclePageComponent } from './appraisal-cycle-page/appraisal-cycle-page.component';
 
 @NgModule({
-  declarations: [PerformanceManagementComponent, KpiCategoryComponent,KeyPerformanceIndicatorsComponent,GradeSettingComponent, PointSettingsComponent],
+  declarations: [PerformanceManagementComponent, KpiCategoryComponent,KeyPerformanceIndicatorsComponent,GradeSettingComponent, PointSettingsComponent, AppraisalCycleComponent, AppraisalCyclePageComponent],
   imports: [
     CommonModule,
     DataTablesModule,
