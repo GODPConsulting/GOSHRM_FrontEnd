@@ -5,6 +5,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { PerformanceManagementComponent } from "./performance-management.component";
 import { KeyPerformanceIndicatorsComponent } from "./key-performance-indicators/key-performance-indicators.component";
 import { GradeSettingComponent } from "./grade-setting/grade-setting.component";
+import { AppraisalPreferenceComponent } from "./appraisal-preference/appraisal-preference.component";
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
         path: "point-settings",
         component: PointSettingsComponent,
       },
+      {
+        path: "appraisal-preference",
+        component: AppraisalPreferenceComponent,
+      }
     ],
   },
 ];

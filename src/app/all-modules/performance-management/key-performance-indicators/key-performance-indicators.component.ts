@@ -2,8 +2,9 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { PerformanceManagementService } from 'src/app/services/performance-management.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
-import { PerfomanceManagementService } from "src/app/services/perfomance-management.service";
+
 import swal from 'sweetalert2'
 
 declare const $: any
@@ -30,7 +31,7 @@ export class KeyPerformanceIndicatorsComponent implements OnInit, AfterViewInit 
 
   constructor(
     private formBuilder: FormBuilder,
-    private performanceManagementService: PerfomanceManagementService,
+    private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
     private router: Router
 

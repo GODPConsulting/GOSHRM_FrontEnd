@@ -336,8 +336,10 @@
                   urlComplete.subUrl === 'kpi-indicators')||
                 (urlComplete.mainUrl === 'performance' &&
                   urlComplete.subUrl === 'grade-setting')||
-                  (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'point-settings')
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'point-settings')||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-preference')
                 
             }">
             <a href="javascript:" [ngClass]="{
@@ -349,7 +351,9 @@
                   (urlComplete.mainUrl === 'performance' &&
                     urlComplete.subUrl === 'grade-setting')||
                   (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'point-settings')
+                  urlComplete.subUrl === 'point-settings')||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-preference')
 
               }" class="noti-dot"><i class="la la-chart-bar"></i> <span> Performance</span>
               <span class="menu-arrow"></span></a>
@@ -362,7 +366,9 @@
                   (urlComplete.mainUrl === 'performance' &&
                     urlComplete.subUrl === 'grade-setting')||
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'point-settings')
+                    urlComplete.subUrl === 'point-settings')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'appraisal-preference')
                     ? 'block'
                     : 'none'
               }">
@@ -389,6 +395,12 @@
                     active:
                       urlComplete.subUrl === 'point-settings'
                   }">Point Settings</a>
+                  
+              <li routerLink="/performance/appraisal-preference">
+                    <a href="javascript:" [ngClass]="{
+                        active:
+                          urlComplete.subUrl === 'appraisal-preference'
+                      }">Appraisal Preference</a>
               </li>
             </ul>
           </li>

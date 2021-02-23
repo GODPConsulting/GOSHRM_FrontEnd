@@ -1,0 +1,155 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+<div *ngIf="!pageLoading" class="content container-fluid">
+  <!-- Page Header -->
+  <div class="Page-header">
+    <div class="col">
+      <h3 class="page-title"> Appraisal Preference</h3>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item">Performance Management</li>
+        <li class="breadcrumb-item active">Appraisal Preference</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <div class="page-body">
+    <form [formGroup]="appraisalPreferenceForm">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="col-form-label">Company<span class="text-danger">*</span></label>
+            <select class="form-control"
+              [class.invalid]="appraisalPreferenceForm.get('company').invalid && appraisalPreferenceForm.get('company').touched"
+              formControlName="company" (change)=getAppraisalCycleByCompanyId($event.target.value)>
+              <option selected value="">Company</option>
+              <option *ngFor="let row of companies" value="{{row.companyStructureId}}">{{row.name}}</option>
+            </select>
+            <div *ngIf="
+          appraisalPreferenceForm.get('company').invalid &&
+          appraisalPreferenceForm.get('company').touched">
+              <small *ngIf="
+              appraisalPreferenceForm.get('company').invalid &&
+              appraisalPreferenceForm.get('company').touched" class="text-danger"> *Field is required</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="col-form-label">Current Appraisal Cycle<span class="text-danger">*</span></label>
+            <select class="form-control"
+              [class.invalid]="appraisalPreferenceForm.get('appraisalCircle').invalid && appraisalPreferenceForm.get('appraisalCircle').touched"
+              formControlName="appraisalCircle">
+              <option selected value="">Appraisal Cycle</option>
+              <option *ngFor="let row of cycles" value="{{row.id}}">{{row.period}}</option>
+            </select>
+            <div *ngIf="
+          appraisalPreferenceForm.get('appraisalCircle').invalid &&
+          appraisalPreferenceForm.get('appraisalCircle').touched">
+              <small *ngIf="
+              appraisalPreferenceForm.get('appraisalCircle').invalid &&
+              appraisalPreferenceForm.get('appraisalCircle').touched" class="text-danger"> *Field is required</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label>Reviewer 1 comment Visible to reviewee<span class="text-danger">*</span></label>
+            <select class="form-control"
+              [class.invalid]="appraisalPreferenceForm.get('reviewerOneCommentVisibility').invalid && appraisalPreferenceForm.get('reviewerOneCommentVisibility').touched"
+              formControlName="reviewerOneCommentVisibility">
+              <option value="2">No</option>
+              <option value="1">Yes</option>
+            </select>
+            <div
+              *ngIf="appraisalPreferenceForm.get('reviewerOneCommentVisibility').invalid && appraisalPreferenceForm.get('reviewerOneCommentVisibility').touched">
+              <small
+                *ngIf="appraisalPreferenceForm.get('reviewerOneCommentVisibility').invalid && appraisalPreferenceForm.get('reviewerOneCommentVisibility').touched"
+                class="text-danger"> *Field is required</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label>Reviewer 2 comment Visible to reviewee<span class="text-danger">*</span></label>
+            <select class="form-control"
+              [class.invalid]="appraisalPreferenceForm.get('reviewerTwoCommentVisibility').invalid && appraisalPreferenceForm.get('reviewerTwoCommentVisibility').touched"
+              formControlName="reviewerTwoCommentVisibility">
+              <option value="2">No</option>
+              <option value="1">Yes</option>
+            </select>
+            <div
+              *ngIf="appraisalPreferenceForm.get('reviewerTwoCommentVisibility').invalid && appraisalPreferenceForm.get('reviewerTwoCommentVisibility').touched">
+              <small
+                *ngIf="appraisalPreferenceForm.get('reviewerTwoCommentVisibility').invalid && appraisalPreferenceForm.get('reviewerTwoCommentVisibility').touched"
+                class="text-danger"> *Field is required</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label>Reviewer 3 comment Visible to reviewee<span class="text-danger">*</span></label>
+            <select class="form-control"
+              [class.invalid]="appraisalPreferenceForm.get('reviewerThreeCommentVisibility').invalid && appraisalPreferenceForm.get('reviewerThreeCommentVisibility').touched"
+              formControlName="reviewerThreeCommentVisibility">
+              <option value="2">No</option>
+              <option value="1">Yes</option>
+            </select>
+            <div
+              *ngIf="appraisalPreferenceForm.get('reviewerThreeCommentVisibility').invalid && appraisalPreferenceForm.get('reviewerThreeCommentVisibility').touched">
+              <small
+                *ngIf="appraisalPreferenceForm.get('reviewerThreeCommentVisibility').invalid && appraisalPreferenceForm.get('reviewerThreeCommentVisibility').touched"
+                class="text-danger"> *Field is required</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label>Status of Current Appraisal<span class="text-danger">*</span></label>
+            <select class="form-control"
+              [class.invalid]="appraisalPreferenceForm.get('status').invalid && appraisalPreferenceForm.get('status').touched"
+              formControlName="status">
+              <option value="1">Open</option>
+              <option value="2">Locked</option>
+            </select>
+            <div *ngIf="appraisalPreferenceForm.get('status').invalid && appraisalPreferenceForm.get('status').touched">
+              <small
+                *ngIf="appraisalPreferenceForm.get('status').invalid && appraisalPreferenceForm.get('status').touched"
+                class="text-danger"> *Field is required</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label>Employee can view Coach's Performance Objectives Email<span class="text-danger">*</span></label>
+            <select class="form-control"
+              [class.invalid]="appraisalPreferenceForm.get('coachPerformanceVisibility').invalid && appraisalPreferenceForm.get('coachPerformanceVisibility').touched"
+              formControlName="coachPerformanceVisibility">
+              <option value="1">Yes</option>
+              <option value="2">No</option>
+            </select>
+            <div
+              *ngIf="appraisalPreferenceForm.get('coachPerformanceVisibility').invalid && appraisalPreferenceForm.get('coachPerformanceVisibility').touched">
+              <small
+                *ngIf="appraisalPreferenceForm.get('coachPerformanceVisibility').invalid && appraisalPreferenceForm.get('coachPerformanceVisibility').touched"
+                class="text-danger"> *Field is required</small>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="submit-section">
+        <button class="btn btn-primary submit-btn" type="submit"
+          (click)="addAppraisalPreference(appraisalPreferenceForm)">
+          <span *ngIf="!spinner">Save & Update</span>
+          <span *ngIf="spinner"><i class=" fa fa-spinner fa-spin"></i></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
