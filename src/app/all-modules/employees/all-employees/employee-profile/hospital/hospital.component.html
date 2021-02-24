@@ -133,8 +133,10 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Start Date <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                <input [maxDate]='maxDate'
+                                    (bsValueChange)="setMinMaxDate(hospitalForm, 'startDate','endDate')"
+                                    class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{selectFromOtherMonth: true,containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
                                     [class.invalid]="
                                     hospitalForm.get('startDate').invalid &&
                                     hospitalForm.get('startDate').touched" formControlName="startDate">
@@ -158,9 +160,11 @@
                                         formControlName="setCurrentDate">
                                     <label for="currentDate" class="mx-1">Does not expire</label>
                                 </span>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
+                                <input [minDate]='minDate'
+                                    (bsValueChange)="setMinMaxDate(hospitalForm, 'startDate','endDate')"
+                                    class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{selectFromOtherMonth: true,containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    placement="top" [class.invalid]="
                                     hospitalForm.get('endDate').invalid &&
                                     hospitalForm.get('endDate').touched" formControlName="endDate">
                                 <div *ngIf="
@@ -270,7 +274,7 @@
                             <div class="form-group">
                                 <label>Date of Request <span class="text-danger">*</span></label>
                                 <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [bsConfig]="{selectFromOtherMonth: true,containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
                                     [class.invalid]="
                                 hospitalChangeReqForm.get('dateOfRequest').invalid &&
                                 hospitalChangeReqForm.get('dateOfRequest').touched" formControlName="dateOfRequest">
@@ -288,8 +292,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Expected Change Date <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                <input [minDate]="minDate" class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{selectFromOtherMonth: true,containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
                                     [class.invalid]="
                                 hospitalChangeReqForm.get('expectedDateOfChange').invalid &&
                                 hospitalChangeReqForm.get('expectedDateOfChange').touched"
@@ -387,7 +391,7 @@
                             <div class="form-group">
                                 <label>Date of Request <span class="text-danger">*</span></label>
                                 <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                    [bsConfig]="{selectFromOtherMonth: true,containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
                                     [class.invalid]="
                                 bookHospitalForm.get('dateOfRequest').invalid &&
                                 bookHospitalForm.get('dateOfRequest').touched" formControlName="dateOfRequest">
@@ -405,8 +409,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Proposed Meeting Date <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
+                                <input [minDate]="minDate" class="form-control datetimepicker" type="date" bsDatepicker
+                                    [bsConfig]="{selectFromOtherMonth: true,containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
                                     [class.invalid]="
                                 bookHospitalForm.get('proposedMeetingDate').invalid &&
                                 bookHospitalForm.get('proposedMeetingDate').touched"

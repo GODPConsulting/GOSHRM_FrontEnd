@@ -131,7 +131,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Start Date <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                <input [maxDate]='maxDate'
+                                    (bsValueChange)="setMinMaxDate(employeeHmoForm, 'startDate','end_Date')"
+                                    class="form-control datetimepicker" type="date" bsDatepicker
                                     [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
                                     [class.invalid]="
                                     employeeHmoForm.get('startDate').invalid &&
@@ -156,7 +158,9 @@
                                         formControlName="setCurrentDate">
                                     <label for="currentDate" class="mx-1">Does not expire</label>
                                 </span>
-                                <input (click)="resetCheckbox(employeeHmoForm,'setCurrentDate')"
+                                <input placement='top' [minDate]='minDate'
+                                    (bsValueChange)="setMinMaxDate(employeeHmoForm, 'startDate','end_Date')"
+                                    (click)="resetCheckbox(employeeHmoForm,'setCurrentDate')"
                                     class="form-control datetimepicker" type="date" bsDatepicker
                                     [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
                                     [class.invalid]="
@@ -285,7 +289,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Expected Change Date <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
+                                <input [minDate]="minDate" class="form-control datetimepicker" type="date" bsDatepicker
                                     [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD' }"
                                     [class.invalid]="
                                 hmoChangeReqForm.get('expectedDateOfChange').invalid &&

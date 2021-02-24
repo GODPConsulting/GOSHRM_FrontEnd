@@ -21,7 +21,7 @@ export class EmployeeHmoComponent implements OnInit {
   hmoChangeReqForm: FormGroup;
   @ViewChild("fileInput")
   fileInput: ElementRef;
-
+  minDate: Date;
   @Input() dataFromParent: any;
 
   // To hold data for each card
@@ -30,6 +30,7 @@ export class EmployeeHmoComponent implements OnInit {
 
   // Observable to subscribe to in the template
   allHmos$: Observable<any> = this.setupService.getHmo();
+  maxDate: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,6 +56,16 @@ export class EmployeeHmoComponent implements OnInit {
       columns: [{ orderable: false }, null, null, null, null, null, null, null],
       order: [[1, "asc"]],
     };
+  }
+
+  setMinMaxDate(form: FormGroup, startDate: string, endDate: string) {
+    const dateSetter = this.utilitiesService.setMinMaxDate(
+      form,
+      startDate,
+      endDate
+    );
+    this.minDate = dateSetter.minDate;
+    this.maxDate = dateSetter.maxDate;
   }
 
   initHmoForm() {
@@ -93,6 +104,9 @@ export class EmployeeHmoComponent implements OnInit {
         Validators.required,
       ],
     });
+    // Set dateOfRequest to be min date for expectedDateOfChange to
+    this.minDate = new Date(this.hmoChangeReqForm.get("dateOfRequest").value);
+
     // Resets the upload input of the add form
     if (this.fileInput) {
       this.fileInput.nativeElement.value = "";
@@ -274,4 +288,20 @@ export class EmployeeHmoComponent implements OnInit {
   resetCheckbox(form: FormGroup, formControlName: string) {
     form.get(formControlName).setValue("");
   }
+
+  /*  validateDate(
+    form: FormGroup,
+    startDate: string,
+    endDate: string,
+    startDateName: string,
+    endDateName: string
+  ) {
+    this.utilitiesService.validateDate(
+      form,
+      startDate,
+      endDate,
+      startDateName,
+      endDateName
+    );
+  } */
 }
