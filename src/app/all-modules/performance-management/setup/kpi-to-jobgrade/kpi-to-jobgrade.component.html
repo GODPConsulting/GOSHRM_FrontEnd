@@ -1,0 +1,152 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+<!-- Page Content -->
+<div *ngIf="!pageLoading" class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">KPI To Job Grade</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Performance Management Setup</a></li>
+                    <li class="breadcrumb-item active">KPI To Job Grade</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn add-btn hint" (click)="initializeForm()" data-toggle="modal"
+                    data-target="#add_kpi_to_job_grade"><span class="hint-text">Add</span><i class="fa fa-plus"></i></a>
+                <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
+                        class="fa fa-trash"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === kpiToJobGrades.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>S/N</th>
+                            <th>Job Grade</th>
+                            <th>KPI Category</th>
+                            <th>Weight</th>
+                            <th>KPIs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="modal" class="pointer" data-target="#add_kpi_to_job_grade" (click)="edit(row)"
+                            *ngFor="let row of things; let i = index">
+                            <td (click)="stopParentEvent($event)">
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ row.jobGradeName }}</td>
+                            <td>{{ row.kpiCategoryName }}</td>
+                            <td>{{ row.weight }}</td>
+                            <td>{{ row.allKpis }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+<!-- Add HMO Modal -->
+<div id="add_kpi_to_job_grade" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{formTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="submitKpiToJobGrades(kpiToJobGradeForm)" [formGroup]="kpiToJobGradeForm">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Job Grade<span class="text-danger">*</span></label>
+                                <select class="form-control" type="text" [class.invalid]="
+                                kpiToJobGradeForm.get('jobGradeId').invalid &&
+                                kpiToJobGradeForm.get('jobGradeId').touched
+                    " formControlName="jobGradeId">
+                                    <option value="">Select Job Grade</option>
+                                    <option *ngFor="let jobGrade of (jobGrades$ | async)?.setuplist"
+                                        value="{{jobGrade.id}}">{{jobGrade.job_grade}}</option>
+                                </select>
+                                <div *ngIf="
+                                kpiToJobGradeForm.get('jobGradeId').invalid &&
+                                kpiToJobGradeForm.get('jobGradeId').touched
+                    ">
+                                    <small *ngIf="
+                                    kpiToJobGradeForm.get('jobGradeId').invalid &&
+                                    kpiToJobGradeForm.get('jobGradeId').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">KPI Category<span class="text-danger">*</span></label>
+                                <select (change)="getKpiByKpiCategoryId($event.target.value)" class="form-control"
+                                    type="text" [class.invalid]="
+                                kpiToJobGradeForm.get('kpiCategoryId').invalid &&
+                                kpiToJobGradeForm.get('kpiCategoryId').touched
+                    " formControlName="kpiCategoryId">
+                                    <option value="">Select KPI</option>
+                                    <option *ngFor="let kpi of (kpiCategories$ | async)?.setupList" value="{{kpi.id}}">
+                                        {{kpi.name}}</option>
+                                </select>
+                                <div *ngIf="
+                                kpiToJobGradeForm.get('kpiCategoryId').invalid &&
+                                kpiToJobGradeForm.get('kpiCategoryId').touched
+                    ">
+                                    <small *ngIf="
+                                    kpiToJobGradeForm.get('kpiCategoryId').invalid &&
+                                    kpiToJobGradeForm.get('kpiCategoryId').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Weight(%)<span class="text-danger">*</span></label>
+                                <input class="form-control" type="number" [class.invalid]="
+                                kpiToJobGradeForm.get('weight').invalid &&
+                                kpiToJobGradeForm.get('weight').touched
+                    " formControlName="weight" />
+                                <div *ngIf="
+                                kpiToJobGradeForm.get('kpiCategoryId').invalid &&
+                                kpiToJobGradeForm.get('kpiCategoryId').touched
+                    ">
+                                    <small *ngIf="
+                                    kpiToJobGradeForm.get('kpiCategoryId').invalid &&
+                                    kpiToJobGradeForm.get('kpiCategoryId').touched
+                      " class="text-danger"> *Field is required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <dual-list [source]="source" [(destination)]="confirmed" key="id" display="kpi"
+                                height="200px"></dual-list>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Add HMO Modal -->

@@ -1,22 +1,34 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { AngularDualListBoxModule } from "angular-dual-listbox";
 import { PerformanceManagementRoutingModule } from "./performance-management-routing.module";
-import { KpiCategoryComponent } from "./kpi-category/kpi-category.component";
+import { KpiCategoryComponent } from "./setup/kpi-category/kpi-category.component";
 import { Ng2SearchPipeModule } from "ng2-search-filter";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DataTablesModule } from "angular-datatables";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { HttpTokenInterceptor } from "src/app/services/http.interceptor.service";
 import { PerformanceManagementComponent } from "./performance-management.component";
-import { PointSettingsComponent } from './point-settings/point-settings.component';
+import { PointSettingsComponent } from "./setup/point-settings/point-settings.component";
 import { SharedModule } from "src/app/shared/shared.module";
-import { KeyPerformanceIndicatorsComponent } from "./key-performance-indicators/key-performance-indicators.component";
-import { GradeSettingComponent } from "./grade-setting/grade-setting.component";
-import { AppraisalCycleComponent } from './appraisal-cycle/appraisal-cycle.component';
-import { AppraisalCyclePageComponent } from './appraisal-cycle-page/appraisal-cycle-page.component';
-
+import { KeyPerformanceIndicatorsComponent } from "./setup/key-performance-indicators/key-performance-indicators.component";
+import { GradeSettingComponent } from "./setup/grade-setting/grade-setting.component";
+import { KpiToJobgradeComponent } from "./setup/kpi-to-jobgrade/kpi-to-jobgrade.component";
+import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appraisal-preference.component";
+import { AppraisalCycleComponent } from "./setup/appraisal-cycle/appraisal-cycle.component";
+import { AppraisalCyclePageComponent } from "./setup/appraisal-cycle/appraisal-cycle-page/appraisal-cycle-page.component";
 @NgModule({
-  declarations: [PerformanceManagementComponent, KpiCategoryComponent,KeyPerformanceIndicatorsComponent,GradeSettingComponent, PointSettingsComponent, AppraisalCycleComponent, AppraisalCyclePageComponent],
+  declarations: [
+    PerformanceManagementComponent,
+    KpiCategoryComponent,
+    KeyPerformanceIndicatorsComponent,
+    GradeSettingComponent,
+    PointSettingsComponent,
+    KpiToJobgradeComponent,
+    AppraisalPreferenceComponent,
+    AppraisalCycleComponent,
+    AppraisalCyclePageComponent,
+  ],
   imports: [
     CommonModule,
     DataTablesModule,
@@ -25,6 +37,7 @@ import { AppraisalCyclePageComponent } from './appraisal-cycle-page/appraisal-cy
     FormsModule,
     Ng2SearchPipeModule,
     PerformanceManagementRoutingModule,
+    AngularDualListBoxModule,
   ],
   providers: [
     {
@@ -32,7 +45,6 @@ import { AppraisalCyclePageComponent } from './appraisal-cycle-page/appraisal-cy
       useClass: HttpTokenInterceptor,
       multi: true,
     },
-    
   ],
 })
-export class PerformanceManagementModule { }
+export class PerformanceManagementModule {}

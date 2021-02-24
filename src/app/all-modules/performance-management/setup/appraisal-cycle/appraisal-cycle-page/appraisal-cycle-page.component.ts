@@ -1,19 +1,17 @@
-import { SetupService } from "src/app/services/setup.service";
-import { Validators } from "@angular/forms";
 import { Component, OnInit, ElementRef, Input, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { SetupService } from "src/app/services/setup.service";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
 declare const $: any;
-
 @Component({
-  selector: "app-appraisal-cycle",
-  templateUrl: "./appraisal-cycle.component.html",
-  styleUrls: ["./appraisal-cycle.component.css"],
+  selector: "app-appraisal-cycle-page",
+  templateUrl: "./appraisal-cycle-page.component.html",
+  styleUrls: ["./appraisal-cycle-page.component.css"],
 })
-export class AppraisalCycleComponent implements OnInit {
+export class AppraisalCyclePageComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
@@ -52,8 +50,7 @@ export class AppraisalCycleComponent implements OnInit {
     private FormBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
-    private setupService: SetupService,
-    private _location: Location
+    private setupService: SetupService
   ) {
     this.appraisalCycleUploadForm = this.FormBuilder.group({
       uploadInput: [""],
@@ -61,31 +58,6 @@ export class AppraisalCycleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
-      order: [[1, "asc"]],
-    };
     this.getAppraisalCycles();
     this.cardFormTitle = "Add Appraisal Cycle";
     this.createYears(2000, 2050);
@@ -97,7 +69,6 @@ export class AppraisalCycleComponent implements OnInit {
     for (let i = from; i <= to; i++) {
       this.years.push({ year: i });
     }
-    console.log(this.years);
   }
 
   submitAppraisalCycleForm() {
@@ -194,49 +165,6 @@ export class AppraisalCycleComponent implements OnInit {
     event.stopPropagation();
   }
 
-  delete() {
-    let payload: object;
-    if (this.selectedId.length === 0) {
-      return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
-    }
-    swal
-      .fire({
-        title: "Are you sure you want to delete this record?",
-        text: "You won't be able to revert this",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes!",
-      })
-      .then((result) => {
-        if (result.value) {
-          this.pageLoading = true;
-          return this.performanceManagementService
-            .deleteAppraisalCycle(payload)
-            .subscribe(
-              (res) => {
-                this.pageLoading = false;
-                const message = res.status.message.friendlyMessage;
-                if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getAppraisalCycles();
-                  });
-                } else {
-                  swal.fire("GOSHRM", message, "error");
-                }
-              },
-              (err) => {
-                this.pageLoading = false;
-              }
-            );
-        }
-      });
-    this.selectedId = [];
-  }
-
   getStaffDepartments() {
     this.pageLoading = true;
     return this.setupService
@@ -250,40 +178,6 @@ export class AppraisalCycleComponent implements OnInit {
           this.pageLoading = false;
         }
       );
-  }
-
-  uploadAppraisalCycle() {
-    if (!this.appraisalCycleUploadForm.get("uploadInput").value) {
-      return swal.fire("Error", "Select a file", "error");
-    }
-    const formData = new FormData();
-    formData.append(
-      "uploadInput",
-      this.appraisalCycleUploadForm.get("uploadInput").value
-    );
-    this.spinner = true;
-    return this.setupService.uploadGymWorkout(formData).subscribe(
-      (res) => {
-        this.spinner = false;
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          this.initializeForm();
-          $("#upload_gym_workout").modal("hide");
-        } else {
-          swal.fire("GOSHRM", message, "error");
-        }
-        this.getAppraisalCycles();
-      },
-      (err) => {
-        this.spinner = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("GOSHRM", message, "error");
-      }
-    );
-  }
-  initializeForm() {
-    throw new Error("Method not implemented.");
   }
 
   addItemId(event, id: number) {

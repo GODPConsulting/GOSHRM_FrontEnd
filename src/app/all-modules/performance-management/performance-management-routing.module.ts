@@ -1,11 +1,14 @@
-import { PointSettingsComponent } from "./point-settings/point-settings.component";
-import { KpiCategoryComponent } from "./kpi-category/kpi-category.component";
+import { AppraisalCyclePageComponent } from "./setup/appraisal-cycle/appraisal-cycle-page/appraisal-cycle-page.component";
+import { PointSettingsComponent } from "./setup/point-settings/point-settings.component";
+import { KpiCategoryComponent } from "./setup/kpi-category/kpi-category.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { PerformanceManagementComponent } from "./performance-management.component";
-import { KeyPerformanceIndicatorsComponent } from "./key-performance-indicators/key-performance-indicators.component";
-import { GradeSettingComponent } from "./grade-setting/grade-setting.component";
-import { AppraisalCycleComponent } from "./appraisal-cycle/appraisal-cycle.component";
+import { KeyPerformanceIndicatorsComponent } from "./setup/key-performance-indicators/key-performance-indicators.component";
+import { GradeSettingComponent } from "./setup/grade-setting/grade-setting.component";
+import { KpiToJobgradeComponent } from "./setup/kpi-to-jobgrade/kpi-to-jobgrade.component";
+import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appraisal-preference.component";
+import { AppraisalCycleComponent } from "./setup/appraisal-cycle/appraisal-cycle.component";
 
 const routes: Routes = [
   {
@@ -13,24 +16,36 @@ const routes: Routes = [
     component: PerformanceManagementComponent,
     children: [
       {
-        path: "kpi-category",
+        path: "setup/kpi-category",
         component: KpiCategoryComponent,
       },
       {
-        path: "kpi-indicators",
+        path: "setup/kpi-indicators",
         component: KeyPerformanceIndicatorsComponent,
       },
       {
-        path: "grade-setting",
+        path: "setup/grade-setting",
         component: GradeSettingComponent,
       },
       {
-        path: "point-settings",
+        path: "setup/point-settings",
         component: PointSettingsComponent,
       },
       {
-        path: "appraisal-cycle",
+        path: "setup/appraisal-preference",
+        component: AppraisalPreferenceComponent,
+      },
+      {
+        path: "setup/appraisal-cycle",
         component: AppraisalCycleComponent,
+      },
+      {
+        path: "setup/appraisal-cycle/appraisal-cycle-page",
+        component: AppraisalCyclePageComponent,
+      },
+      {
+        path: "setup/kpi-to-jobgrade",
+        component: KpiToJobgradeComponent,
       },
     ],
   },
