@@ -49,11 +49,16 @@ export class AppraisalCycleComponent implements OnInit {
   appraisalCycleUploadForm: any;
 
   constructor(
+    private FormBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
     private _location: Location
-  ) {}
+  ) {
+    this.appraisalCycleUploadForm = this.FormBuilder.group({
+      uploadInput: [""],
+    });
+  }
 
   ngOnInit(): void {
     this.dtOptions = {

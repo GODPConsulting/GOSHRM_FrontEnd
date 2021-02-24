@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="modal-body">
-                <form [formGroup]="submitAppraisalCycleForm">
+                <form (ngSubmit)="submitAppraisalCycleForm()">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -22,19 +22,18 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Company <span class="text-danger">*</span></label>
-                                <select type="text" class="form-control" name="officeId" [(ngModel)]="officeId">
+                                <select type="text" class="form-control" name="company" [(ngModel)]="company">
                                     <option selected value="">Company</option>
                                     <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
                                     </option>
                                 </select>
-
 
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Review Year <span class="text-danger">*</span></label>
+                                <label>Review Year</label>
                                 <select type="date" name="reviewYear" class="form-control" [(ngModel)]="reviewYear">
                                     <option selected value="Review Year">Review Year</option>
                                     <option *ngFor="let row of years" value="{{row.year}}">{{row.year}}</option>
@@ -44,21 +43,28 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Start Period <span class="text-danger">*</span></label>
+                                <label>Start Period</label>
                                 <input type="date" name="startDate" class="form-control" [(ngModel)]="startDate">
 
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>End Period <span class="text-danger">*</span></label>
+                                <label>End Period</label>
                                 <input type="date" name="endDate" class="form-control" [(ngModel)]="endDate">
 
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Reviewer Weight i <span class="text-danger">*</span></label>
+                                <label>Due Date</label>
+                                <input type="date" name="dueDate" class="form-control" [(ngModel)]="dueDate">
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Reviewer Weight i</label>
                                 <input name="reviewerOneWeight" type="number" class="form-control"
                                     [(ngModel)]="reviewerOneWeight">
 
@@ -66,7 +72,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Reviewer Weight ii <span class="text-danger">*</span></label>
+                                <label>Reviewer Weight ii</label>
                                 <input name="reviewerTwoWeight" type="number" class="form-control"
                                     [(ngModel)]="reviewerTwoWeight">
 
@@ -74,7 +80,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Reviewer Weight iii <span class="text-danger">*</span></label>
+                                <label>Reviewer Weight iii</label>
                                 <input name="reviewerThreeWeight" type="number" class="form-control"
                                     [(ngModel)]="reviewerThreeWeight">
 
@@ -82,7 +88,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Reviewee Weight <span class="text-danger">*</span></label>
+                                <label>Reviewee Weight</label>
                                 <input class="form-control" name="revieweeWeight" type="number"
                                     [(ngModel)]="revieweeWeight">
 
@@ -90,7 +96,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Status <span class="text-danger">*</span></label>
+                                <label>Status</label>
                                 <select class="form-control" name="status" type="number" [(ngModel)]="status">
                                     <option selected value="">Status</option>
                                     <option value="1">Locked</option>
@@ -100,7 +106,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Form Generated <span class="text-danger">*</span></label>
+                                <label>Form Generated</label>
                                 <input type="text" name="formGenerated" class="form-control"
                                     [(ngModel)]="formGenerated">
 
@@ -108,7 +114,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Notification Sent <span class="text-danger">*</span></label>
+                                <label>Notification Sent</label>
                                 <input type="text" name="notificationSent" class="form-control"
                                     [(ngModel)]="notificationSent">
 
@@ -116,29 +122,29 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label> Created By <span class="text-danger">*</span></label>
+                                <label> Created By</label>
                                 <input type="text" name="createdBy" class="form-control" [(ngModel)]="createdBy">
 
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Created On <span class="text-danger">*</span></label>
-                                <input type="text" name="createdOn" class="form-control" [(ngModel)]="createdOn">
+                                <label>Created On</label>
+                                <input type="date" name="createdOn" class="form-control" [(ngModel)]="createdOn">
 
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Updated By <span class="text-danger">*</span></label>
+                                <label>Updated By</label>
                                 <input type="text" name="updatedBy" class="form-control" [(ngModel)]="updatedBy">
 
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Updated On <span class="text-danger">*</span></label>
-                                <input type="text" name="updatedOn" class="form-control" [(ngModel)]="updatedOn">
+                                <label>Updated On</label>
+                                <input type="date" name="updatedOn" class="form-control" [(ngModel)]="updatedOn">
 
                             </div>
                         </div>
@@ -146,28 +152,30 @@
                     <div class="modal-body">
                         <form (ngSubmit)="submitAppraisalCycleForm()">
 
-                            <div class="submit-section">
-                                <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                                    <span *ngIf="!spinner">Submit</span>
-                                    <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                                </button>
-                                <button type="button" class="btn btn-danger">Back</button>
+                            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                <div class="submit-section" class="btn-group mr-2" role="group"
+                                    aria-label="First group">
+                                    <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                                        <span *ngIf="!spinner">Submit</span>
+                                        <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger">Back</button>
 
-                                <button type="button" class="btn btn-warning">Copy previous
-                                    objectives</button>
+                                    <button type="button" class="btn btn-warning">Copy previous
+                                        objectives</button>
 
-                                <button class="btn btn-success" type="button">Send Objective
-                                    Alert</button>
+                                    <button class="btn btn-success" type="button">Send Objective
+                                        Alert</button>
 
-                                <button class="btn btn-info" type="button">Send Feedback
-                                    Alert</button>
+                                    <button class="btn btn-info" type="button">Send Feedback
+                                        Alert</button>
 
 
+                                </div>
                             </div>
                         </form>
 
                     </div>
-
                 </form>
             </div>
         </div>
