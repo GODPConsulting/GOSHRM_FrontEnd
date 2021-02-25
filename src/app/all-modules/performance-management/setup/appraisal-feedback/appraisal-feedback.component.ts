@@ -40,6 +40,7 @@ export class AppraisalFeedbackComponent implements OnInit {
   reviewCycleStatus: any;
   dueDate: string = "";
   table: any;
+  finalComment: any;
 
   public offices: number[] = [];
 
@@ -89,6 +90,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       reviewCycleStatus: this.reviewCycleStatus,
       dueDate: this.dueDate,
       table: this.table,
+      finalComment: this.finalComment,
     };
 
     this.spinner = true;
@@ -110,6 +112,7 @@ export class AppraisalFeedbackComponent implements OnInit {
             this.reviewCycleStatus = "";
             this.dueDate = "";
             this.table = "";
+            this.finalComment = "";
           }
 
           this.getAppraisalFeedbacks();
@@ -147,6 +150,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       reviewCycleStatus: row.reviewCycleStatus,
       dateDue: row.dateDue,
       table: row.table,
+      finalComment: row.finalComment,
     });
     $("#appraisal_feedback_modal").modal("show");
   }
