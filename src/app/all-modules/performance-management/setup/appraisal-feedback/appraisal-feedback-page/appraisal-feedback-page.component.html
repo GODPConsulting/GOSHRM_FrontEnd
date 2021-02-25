@@ -14,7 +14,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Review Period</label>
-                            <input type="text" name="reviewPeriod" class="form-control" [(ngModel)]="reviewPeriod">
+                            <input type="date" name="reviewPeriod" class="form-control" [(ngModel)]="reviewPeriod">
 
                         </div>
                     </div>
@@ -40,23 +40,34 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Job Grade</label>
-                            <input type="text" name="jobGrade" class="form-control" [(ngModel)]="jobGrade">
+                            <select type="text" name="jobGrade" class="form-control" [(ngModel)]="jobGrade">
+                                <option value="">Job Grade</option>
+                                <option *ngFor="let row of jobGrades" value="{{row.id}}">{{row.job_grade}} </option>
+                            </select>
 
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Subimited for Review</label>
-                            <input type="text" name="submittedForReview" class="form-control"
+                            <label>Submited for Review</label>
+                            <select type="text" name="submittedForReview" class="form-control"
                                 [(ngModel)]="submittedForReview">
+                                <option value="1">Yes</option>
+                                <option value="2">No</option>
+
+                            </select>
 
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Review Cycle Status</label>
-                            <input type="text" name="reviewCycleStatus" class="form-control"
+                            <select type="text" name="reviewCycleStatus" class="form-control"
                                 [(ngModel)]="reviewCycleStatus">
+                                <option value="">Open</option>
+                                <option value="">Locked</option>
+
+                            </select>
 
                         </div>
                     </div>
@@ -101,7 +112,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form (ngSubmit)="submitAppraisalCycleForm()">
+                    <form (ngSubmit)="submitAppraisalFeedbackForm()">
 
                         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                             <div class="submit-section" class="btn-group mr-2" role="group" aria-label="First group">

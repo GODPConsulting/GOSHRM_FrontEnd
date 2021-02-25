@@ -35,7 +35,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   company: string;
   reviewPeriod: string = "";
   startTitle: any;
-  jobGrade: any;
+  job_grade: any;
   submittedForReview: any;
   reviewCycleStatus: any;
   dueDate: string = "";
@@ -91,7 +91,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       reviewPeriod: this.reviewPeriod,
       company: +this.company,
       startTitle: this.startTitle,
-      endDate: this.jobGrade,
+      job_grade: this.job_grade,
       submittedForReview: this.submittedForReview,
       reviewCycleStatus: this.reviewCycleStatus,
       dueDate: this.dueDate,
@@ -112,7 +112,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
             this.reviewPeriod = "";
             this.company = "";
             this.startTitle = "";
-            this.jobGrade = "";
+            this.job_grade = "";
             this.submittedForReview = "";
             this.reviewCycleStatus = "";
             this.dueDate = "";
@@ -149,7 +149,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       reviewPeriod: row.reviewPeriod,
       company: row.company,
       startTitle: row.startTitle,
-      jobGrade: row.jobGrade,
+      jobGrade: row.job_grade,
       submittedForReview: row.submittedForReview,
       reviewCycleStatus: row.reviewCycleStatus,
       dateDue: row.dateDue,
