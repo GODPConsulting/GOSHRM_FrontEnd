@@ -1,3 +1,4 @@
+import { AppraisalFeedbackComponent } from "./setup/appraisal-feedback/appraisal-feedback.component";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { AngularDualListBoxModule } from "angular-dual-listbox";
@@ -25,6 +26,7 @@ import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appra
     PointSettingsComponent,
     KpiToJobgradeComponent,
     AppraisalPreferenceComponent,
+    AppraisalFeedbackComponent,
   ],
   imports: [
     CommonModule,
