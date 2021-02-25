@@ -1,0 +1,139 @@
+<!-- Appraisal Cycle Page -->
+
+<app-loading *ngIf="pageLoading"></app-loading>
+<div *ngIf="!pageLoading" class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="col">
+            <h5 class="page-title">{{cardFormTitle}}</h5>
+
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="submitAppraisalFeedbackForm()">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Review Period</label>
+                            <input type="text" name="reviewPeriod" class="form-control" [(ngModel)]="reviewPeriod">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Review Period</label>
+                            <input type="text" name="startTitle" class="form-control" [(ngModel)]="startTitle">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Review Year</label>
+                            <select type="date" name="reviewYear" class="form-control" [(ngModel)]="reviewYear">
+                                <option selected value="Review Year">Review Year</option>
+                                <option *ngFor="let row of years" value="{{row.year}}">{{row.year}}</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Start Period</label>
+                            <input type="text" name="jobGrade" class="form-control" [(ngModel)]="jobGrade">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Subbimited for Review</label>
+                            <input type="text" name="submittedForReview" class="form-control"
+                                [(ngModel)]="submittedForReview">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Review Cycle Status</label>
+                            <input type="text" name="reviewCycleStatus" class="form-control"
+                                [(ngModel)]="reviewCycleStatus">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Reviewer Weight i</label>
+                            <input name="dateDue" type="date" class="form-control" [(ngModel)]="dateDue">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Reviewer Weight ii</label>
+                            <input name="reviewerTwoWeight" type="number" class="form-control"
+                                [(ngModel)]="reviewerTwoWeight">
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"
+                        [dtTrigger]="dtTrigger">
+                        <tr>
+                            <th>KPI</th>
+                            <th>Objectives</th>
+                            <th>Success Messages</th>
+                            <th>Reviewee Comments</th>
+                            <th>Reviewee Score</th>
+                            <th>Reviewee i Comment</th>
+                            <th>Reviewee i Score</th>
+                            <th>Reviewee ii Comment</th>
+                            <th>Reviewee ii Score</th>
+                            <th>Reviewee iii Comment</th>
+                            <th>Reviewee iii Score</th>
+                        </tr>
+                        <tr>
+                            <td>Magazzini Alimentari Riuniti</td>
+                            <td>Giovanni Rovelli</td>
+                            <td>Italy</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="modal-body">
+                    <form (ngSubmit)="submitAppraisalCycleForm()">
+
+                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="submit-section" class="btn-group mr-2" role="group" aria-label="First group">
+                                <button type="button" class="btn btn-danger"
+                                    [routerLink]="['/performance/setup/appraisal-feedback']"
+                                    routerLinkActive="router-link-active">Back</button>
+
+                                <button class="btn btn-primary btn-sm submit-btn" type="submit" [disabled]="spinner">
+                                    <span *ngIf="!spinner">Submit</span>
+                                    <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                                </button>
+
+                                <button type="button" class="btn btn-warning">Copy previous
+                                    objectives</button>
+
+                                <button class="btn btn-success" type="button">Send Objective
+                                    Alert</button>
+
+                                <button class="btn btn-info" type="button">Send Feedback
+                                    Alert</button>
+
+
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- /Appraisal Cycle Page -->

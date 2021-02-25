@@ -321,7 +321,9 @@
             (urlComplete.mainUrl === 'performance' &&
               urlComplete.childUrl === 'appraisal-preference')||
               (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'appraisal-cycle')
+              urlComplete.childUrl === 'appraisal-cycle')||
+              (urlComplete.mainUrl === 'performance' &&
+            urlComplete.childUrl === 'appraisal-feedback')
                 
             }">
             <a href="javascript:" [ngClass]="{
@@ -339,7 +341,9 @@
               (urlComplete.mainUrl === 'performance' &&
                 urlComplete.childUrl === 'appraisal-preference')||
                 (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'appraisal-cycle')
+                urlComplete.childUrl === 'appraisal-cycle')||
+                (urlComplete.mainUrl === 'performance' &&
+              urlComplete.childUrl === 'appraisal-feedback')
 
               }" class="noti-dot"><i class="la la-chart-bar"></i> <span> Performance</span>
               <span class="menu-arrow"></span></a>
@@ -358,7 +362,9 @@
             (urlComplete.mainUrl === 'performance' &&
               urlComplete.childUrl === 'appraisal-preference')||
               (urlComplete.mainUrl === 'performance' &&
-            urlComplete.childUrl === 'appraisal-cycle')
+            urlComplete.childUrl === 'appraisal-cycle')||
+            (urlComplete.mainUrl === 'performance' &&
+          urlComplete.childUrl === 'appraisal-feedback')
                 
             }">
               <li class="submenu" [ngClass]="{
@@ -376,7 +382,9 @@
               (urlComplete.mainUrl === 'performance' &&
                 urlComplete.childUrl === 'appraisal-preference')||
                 (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'appraisal-cycle')
+              urlComplete.childUrl === 'appraisal-cycle')||
+              (urlComplete.mainUrl === 'performance' &&
+            urlComplete.childUrl === 'appraisal-feedback')
                   
               }">
                 <a href="javascript:" [ngClass]="{
@@ -394,7 +402,9 @@
                     (urlComplete.mainUrl === 'performance' &&
                       urlComplete.childUrl === 'appraisal-preference')||
                       (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.childUrl === 'appraisal-cycle')
+                    urlComplete.childUrl === 'appraisal-cycle')||
+                    (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.childUrl === 'appraisal-feedback')
   
                 }" class="noti-dot"><i class=""></i> <span class="float-left"> Setup</span>
                   <span class="menu-arrow"></span></a>
@@ -413,7 +423,9 @@
                     (urlComplete.mainUrl === 'performance' &&
                       urlComplete.childUrl === 'appraisal-preference')||
                       (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.childUrl === 'appraisal-cycle')
+                    urlComplete.childUrl === 'appraisal-cycle')||
+                    (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.childUrl === 'appraisal-feedback')
                     ? 'block'
                     : 'none'
               }">
@@ -458,6 +470,12 @@
                         active:
                           urlComplete.childUrl === 'appraisal-cycle'
                       }">Appraisal Cycle</a>
+                  </li>
+                  <li routerLink="/performance/setup/appraisal-feedback">
+                    <a href="javascript:" [ngClass]="{
+                        active:
+                          urlComplete.childUrl === 'appraisal-feedback'
+                      }">Appraisal Feedback</a>
                   </li>
                 </ul>
               </li>

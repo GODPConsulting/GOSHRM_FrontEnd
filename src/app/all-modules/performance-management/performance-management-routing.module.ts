@@ -1,3 +1,4 @@
+import { AppraisalFeedbackComponent } from "./setup/appraisal-feedback/appraisal-feedback.component";
 import { AppraisalCyclePageComponent } from "./setup/appraisal-cycle/appraisal-cycle-page/appraisal-cycle-page.component";
 import { PointSettingsComponent } from "./setup/point-settings/point-settings.component";
 import { KpiCategoryComponent } from "./setup/kpi-category/kpi-category.component";
@@ -41,6 +42,14 @@ const routes: Routes = [
       },
       {
         path: "setup/appraisal-cycle/appraisal-cycle-page",
+        component: AppraisalCyclePageComponent,
+      },
+      {
+        path: "setup/appraisal-feedback",
+        component: AppraisalFeedbackComponent,
+      },
+      {
+        path: "setup/appraisal-cycle/appraisal-feedback-page",
         component: AppraisalCyclePageComponent,
       },
       {

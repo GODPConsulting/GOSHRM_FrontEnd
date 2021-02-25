@@ -9,11 +9,11 @@ import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: "app-appraisal-feedback",
-  templateUrl: "./appraisal-feedback.component.html",
-  styleUrls: ["./appraisal-feedback.component.css"],
+  selector: "app-appraisal-feedback-page",
+  templateUrl: "./appraisal-feedback-page.component.html",
+  styleUrls: ["./appraisal-feedback-page.component.css"],
 })
-export class AppraisalFeedbackComponent implements OnInit {
+export class AppraisalFeedbackPageComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
@@ -75,7 +75,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       reviewPeriod: this.reviewPeriod,
       company: +this.company,
       startTitle: this.startTitle,
-      jobGrade: this.jobGrade,
+      endDate: this.jobGrade,
       submittedForReview: this.submittedForReview,
       reviewCycleStatus: this.reviewCycleStatus,
       table: this.table,
