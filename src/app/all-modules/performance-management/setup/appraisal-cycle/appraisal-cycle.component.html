@@ -17,8 +17,9 @@
             </div>
             <div _ngcontent-wii-c69="" class="col-md-4">
                 <div _ngcontent-wii-c69="" class="form-group"><label _ngcontent-wii-c69="">company</label>
-                    <select type="text" class="form-control" name="officeId" [(ngModel)]="officeId">
-                        <option selected value="">Company</option>
+                    <select type="text" class="form-control" name="officeId" [(ngModel)]="officeId"
+                        (change)="filterEmployee($event.taget.value)">
+                        <option value="" selected disabled>Company</option>
                         <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
                         </option>
                     </select>

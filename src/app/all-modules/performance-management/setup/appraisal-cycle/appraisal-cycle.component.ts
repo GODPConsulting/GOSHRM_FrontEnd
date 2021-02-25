@@ -47,6 +47,8 @@ export class AppraisalCycleComponent implements OnInit {
 
   public offices: number[] = [];
   appraisalCycleUploadForm: any;
+  filteredArray: any[] = [];
+  public employeesList: any = [];
 
   constructor(
     private FormBuilder: FormBuilder,
@@ -88,17 +90,16 @@ export class AppraisalCycleComponent implements OnInit {
     };
     this.getAppraisalCycles();
     this.cardFormTitle = "Add Appraisal Cycle";
-    // this.createYears(2000, 2050);
+    this.createYears(2000, 2050);
     this.officeId;
     this.getStaffDepartments();
   }
 
-  // createYears(from, to) {
-  //   for (let i = from; i <= to; i++) {
-  //     this.years.push({ year: i });
-  //   }
-  //   console.log(this.years);
-  // }
+  createYears(from, to) {
+    for (let i = from; i <= to; i++) {
+      this.years.push({ year: i });
+    }
+  }
 
   submitAppraisalCycleForm() {
     const payload = {
@@ -160,6 +161,15 @@ export class AppraisalCycleComponent implements OnInit {
         this.pageLoading = false;
       }
     );
+  }
+  filterEmployee(id) {
+    if (id == 0) {
+      this.filteredArray = this.employeesList;
+    } else {
+      this.filteredArray = this.employeesList.filter(
+        (item) => item.staffOfficeId == id
+      );
+    }
   }
 
   edit(row) {

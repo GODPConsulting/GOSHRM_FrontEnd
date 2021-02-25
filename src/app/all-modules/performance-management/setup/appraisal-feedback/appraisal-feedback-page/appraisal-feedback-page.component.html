@@ -1,4 +1,4 @@
-<!-- Appraisal Cycle Page -->
+<!-- Appraisal Feedback Page -->
 
 <app-loading *ngIf="pageLoading"></app-loading>
 <div *ngIf="!pageLoading" class="content container-fluid">
@@ -21,7 +21,7 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Review Period</label>
+                            <label>Start Title</label>
                             <input type="text" name="startTitle" class="form-control" [(ngModel)]="startTitle">
 
                         </div>
@@ -39,14 +39,14 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Start Period</label>
+                            <label>Job Grade</label>
                             <input type="text" name="jobGrade" class="form-control" [(ngModel)]="jobGrade">
 
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Subbimited for Review</label>
+                            <label>Subimited for Review</label>
                             <input type="text" name="submittedForReview" class="form-control"
                                 [(ngModel)]="submittedForReview">
 
@@ -62,16 +62,15 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Reviewer Weight i</label>
-                            <input name="dateDue" type="date" class="form-control" [(ngModel)]="dateDue">
+                            <label>Date Due</label>
+                            <input name="dueDate" type="date" class="form-control" [(ngModel)]="dueDate">
 
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Reviewer Weight ii</label>
-                            <input name="reviewerTwoWeight" type="number" class="form-control"
-                                [(ngModel)]="reviewerTwoWeight">
+                            <label>Final Comment</label>
+                            <input name="finalComment" type="text" class="form-control" [(ngModel)]="finalComment">
 
                         </div>
                     </div>
@@ -79,8 +78,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"
-                        [dtTrigger]="dtTrigger">
+                    <table>
                         <tr>
                             <th>KPI</th>
                             <th>Objectives</th>
@@ -111,20 +109,13 @@
                                     [routerLink]="['/performance/setup/appraisal-feedback']"
                                     routerLinkActive="router-link-active">Back</button>
 
-                                <button class="btn btn-primary btn-sm submit-btn" type="submit" [disabled]="spinner">
+                                <button class="btn btn-primary" type="submit" [disabled]="spinner">
                                     <span *ngIf="!spinner">Submit</span>
                                     <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                                 </button>
 
-                                <button type="button" class="btn btn-warning">Copy previous
-                                    objectives</button>
-
-                                <button class="btn btn-success" type="button">Send Objective
-                                    Alert</button>
-
-                                <button class="btn btn-info" type="button">Send Feedback
-                                    Alert</button>
-
+                                <button class="btn btn-info" type="button">Feedback
+                                </button>
 
                             </div>
                         </div>
@@ -136,4 +127,4 @@
     </div>
 </div>
 
-<!-- /Appraisal Cycle Page -->
+<!-- /Appraisal Feedback Page -->

@@ -1,5 +1,7 @@
+import { AppraisalFeedbackPageComponent } from "./setup/appraisal-feedback/appraisal-feedback-page/appraisal-feedback-page.component";
 import { AppraisalFeedbackComponent } from "./setup/appraisal-feedback/appraisal-feedback.component";
 import { AppraisalCyclePageComponent } from "./setup/appraisal-cycle/appraisal-cycle-page/appraisal-cycle-page.component";
+import { AppraisalCycleComponent } from "./setup/appraisal-cycle/appraisal-cycle.component";
 import { PointSettingsComponent } from "./setup/point-settings/point-settings.component";
 import { KpiCategoryComponent } from "./setup/kpi-category/kpi-category.component";
 import { NgModule } from "@angular/core";
@@ -9,7 +11,6 @@ import { KeyPerformanceIndicatorsComponent } from "./setup/key-performance-indic
 import { GradeSettingComponent } from "./setup/grade-setting/grade-setting.component";
 import { KpiToJobgradeComponent } from "./setup/kpi-to-jobgrade/kpi-to-jobgrade.component";
 import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appraisal-preference.component";
-import { AppraisalCycleComponent } from "./setup/appraisal-cycle/appraisal-cycle.component";
 
 const routes: Routes = [
   {
@@ -49,8 +50,8 @@ const routes: Routes = [
         component: AppraisalFeedbackComponent,
       },
       {
-        path: "setup/appraisal-cycle/appraisal-feedback-page",
-        component: AppraisalCyclePageComponent,
+        path: "setup/appraisal-feedback/appraisal-feedback-page",
+        component: AppraisalFeedbackPageComponent,
       },
       {
         path: "setup/kpi-to-jobgrade",

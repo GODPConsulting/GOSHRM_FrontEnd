@@ -38,11 +38,10 @@ export class AppraisalFeedbackComponent implements OnInit {
   jobGrade: any;
   submittedForReview: any;
   reviewCycleStatus: any;
-  dateDue: string = "";
+  dueDate: string = "";
   table: any;
 
   public offices: number[] = [];
-  appraisalCycleUploadForm: any;
 
   constructor(
     private FormBuilder: FormBuilder,
@@ -63,14 +62,24 @@ export class AppraisalFeedbackComponent implements OnInit {
         searchPlaceholder: "Start typing to search by any field",
       },
 
-      columns: [{ orderable: false }, null, null, null, null, null, null, null],
+      columns: [
+        { orderable: false },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ],
       order: [[1, "asc"]],
     };
     this.getAppraisalFeedbacks();
     this.cardFormTitle = "Add Appraisal Feedback";
   }
 
-  submitAppraisalCycleForm() {
+  submitAppraisalFeedbackForm() {
     const payload = {
       reviewPeriod: this.reviewPeriod,
       company: +this.company,
@@ -78,19 +87,20 @@ export class AppraisalFeedbackComponent implements OnInit {
       jobGrade: this.jobGrade,
       submittedForReview: this.submittedForReview,
       reviewCycleStatus: this.reviewCycleStatus,
+      dueDate: this.dueDate,
       table: this.table,
     };
 
     this.spinner = true;
     return this.performanceManagementService
-      .postAppraisalCycle(payload)
+      .postAppraisalFeedback(payload)
       .subscribe(
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", message, "success");
-            $("#appraisal_cycle_modal").modal("hide");
+            $("#appraisal_feedback_modal").modal("hide");
 
             this.reviewPeriod = "";
             this.company = "";
@@ -98,7 +108,7 @@ export class AppraisalFeedbackComponent implements OnInit {
             this.jobGrade = "";
             this.submittedForReview = "";
             this.reviewCycleStatus = "";
-            this.dateDue = "";
+            this.dueDate = "";
             this.table = "";
           }
 
@@ -114,15 +124,15 @@ export class AppraisalFeedbackComponent implements OnInit {
 
   getAppraisalFeedbacks() {
     this.pageLoading = true;
-    // this.performanceManagementService.getAppraisalFeedbacks().subscribe(
-    //   (data) => {
-    //     this.pageLoading = false;
-    //     this.appraisalFeedbacks = data.setupList;
-    //   },
-    //   (err) => {
-    //     this.pageLoading = false;
-    //   }
-    // );
+    this.performanceManagementService.getAppraisalFeedbacks().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.appraisalFeedbacks = data.setupList;
+      },
+      (err) => {
+        this.pageLoading = false;
+      }
+    );
   }
 
   edit(row) {
@@ -176,7 +186,7 @@ export class AppraisalFeedbackComponent implements OnInit {
         if (result.value) {
           this.pageLoading = true;
           return this.performanceManagementService
-            .deleteAppraisalCycle(payload)
+            .deleteAppraisalFeedback(payload)
             .subscribe(
               (res) => {
                 this.pageLoading = false;

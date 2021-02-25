@@ -14,7 +14,7 @@
                         class="hint-text">Download</span><i class="fa fa-download"></i></a>
                 <a routerLink='/performance/setup/appraisal-feedback/appraisal-feedback-page'
                     routerLinkActive="router-link-active" class="btn add-btn hint" data-toggle="modal"
-                    data-target="#appraisal_cycle_modal"><span class="hint-text">Add
+                    data-target="#appraisal_feedback_modal"><span class="hint-text">Add
                     </span><i class="fa fa-plus"></i></a>
             </div>
         </div>
@@ -24,7 +24,7 @@
             <thead>
                 <tr>
                     <th>
-                        <input type="checkbox" [checked]="selectedId.length === appraisalFeedback.length"
+                        <input type="checkbox" [checked]="selectedId.length === appraisalFeedbacks.length"
                             (change)="checkAll($event)" />
                     </th>
                     <th>S/N</th>
@@ -39,8 +39,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-toggle="modal" class="pointer" data-target="#appraisal_cycle_modal" (click)="edit(row)"
-                    *ngFor="let row of hack(appraisalCycles); let i = index">
+                <tr data-toggle="modal" class="pointer" data-target="#appraisal_feedback_modal" (click)="edit(row)"
+                    *ngFor="let row of hack(appraisalFeedbacks); let i = index">
                     <td (click)="stopParentEvent($event)">
                         <input type="checkbox" [checked]="selectedId.includes(row.id)"
                             (change)="addItemId($event, row.id)" />
@@ -51,7 +51,7 @@
                     <td>{{row.jobGrade}}</td>
                     <td>{{row.submittedForReview}}</td>
                     <td>{{row.reviewCycleStatus}}</td>
-                    <td>{{row.dateDue}}</td>
+                    <td>{{row.dueDate}}</td>
                     <td>{{row.table}}</td>
 
                 </tr>
