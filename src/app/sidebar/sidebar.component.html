@@ -319,7 +319,9 @@
             (urlComplete.mainUrl === 'performance' &&
             urlComplete.childUrl === 'kpi-to-jobgrade')||
             (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'appraisal-preference')
+              urlComplete.childUrl === 'appraisal-preference')||
+              (urlComplete.mainUrl === 'performance' &&
+              urlComplete.childUrl === 'appraisal-cycle')
                 
             }">
             <a href="javascript:" [ngClass]="{
@@ -335,7 +337,9 @@
               (urlComplete.mainUrl === 'performance' &&
               urlComplete.childUrl === 'kpi-to-jobgrade')||
               (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'appraisal-preference')
+                urlComplete.childUrl === 'appraisal-preference')||
+                (urlComplete.mainUrl === 'performance' &&
+                urlComplete.childUrl === 'appraisal-cycle')
 
               }" class="noti-dot"><i class="la la-chart-bar"></i> <span> Performance</span>
               <span class="menu-arrow"></span></a>
@@ -352,7 +356,9 @@
             (urlComplete.mainUrl === 'performance' &&
             urlComplete.childUrl === 'kpi-to-jobgrade')||
             (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'appraisal-preference')
+              urlComplete.childUrl === 'appraisal-preference')||
+              (urlComplete.mainUrl === 'performance' &&
+            urlComplete.childUrl === 'appraisal-cycle')
                 
             }">
               <li class="submenu" [ngClass]="{
@@ -368,7 +374,9 @@
               (urlComplete.mainUrl === 'performance' &&
               urlComplete.childUrl === 'kpi-to-jobgrade')||
               (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'appraisal-preference')
+                urlComplete.childUrl === 'appraisal-preference')||
+                (urlComplete.mainUrl === 'performance' &&
+              urlComplete.childUrl === 'appraisal-cycle')
                   
               }">
                 <a href="javascript:" [ngClass]="{
@@ -384,7 +392,9 @@
                     (urlComplete.mainUrl === 'performance' &&
                     urlComplete.childUrl === 'kpi-to-jobgrade')||
                     (urlComplete.mainUrl === 'performance' &&
-                      urlComplete.childUrl === 'appraisal-preference')
+                      urlComplete.childUrl === 'appraisal-preference')||
+                      (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'appraisal-cycle')
   
                 }" class="noti-dot"><i class=""></i> <span class="float-left"> Setup</span>
                   <span class="menu-arrow"></span></a>
@@ -401,7 +411,9 @@
                     (urlComplete.mainUrl === 'performance' &&
                     urlComplete.childUrl === 'kpi-to-jobgrade')||
                     (urlComplete.mainUrl === 'performance' &&
-                      urlComplete.childUrl === 'appraisal-preference')
+                      urlComplete.childUrl === 'appraisal-preference')||
+                      (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'appraisal-cycle')
                     ? 'block'
                     : 'none'
               }">
@@ -429,7 +441,7 @@
                       urlComplete.childUrl === 'point-settings'
                   }">Point Settings</a>
                   </li>
-                  <li routerLink="/performance/appraisal-preference">
+                  <li routerLink="/performance/setup/appraisal-preference">
                     <a href="javascript:" [ngClass]="{
                         active:
                           urlComplete.subUrl === 'appraisal-preference'
@@ -441,8 +453,15 @@
                       urlComplete.childUrl === 'kpi-to-jobgrade'
                   }">KPI To Job Grade</a>
                   </li>
+                  <li routerLink="/performance/setup/appraisal-cycle">
+                    <a href="javascript:" [ngClass]="{
+                        active:
+                          urlComplete.childUrl === 'appraisal-cycle'
+                      }">Appraisal Cycle</a>
+                  </li>
                 </ul>
               </li>
+
             </ul>
           </li>
           <!--/Performance Management-->

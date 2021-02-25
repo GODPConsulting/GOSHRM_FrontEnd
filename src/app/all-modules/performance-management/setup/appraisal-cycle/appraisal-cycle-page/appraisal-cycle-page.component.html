@@ -1,0 +1,184 @@
+<!-- Appraisal Cycle Page -->
+
+<app-loading *ngIf="pageLoading"></app-loading>
+<div *ngIf="!pageLoading" class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="col">
+            <h5 class="page-title">{{cardFormTitle}}</h5>
+
+        </div>
+        <div class="modal-body">
+            <form (ngSubmit)="submitAppraisalCycleForm()">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Calender Range</label>
+                            <input type="text" name="calenderRange" class="form-control" [(ngModel)]="calenderRange">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Company <span class="text-danger">*</span></label>
+                            <select type="text" class="form-control" name="company" [(ngModel)]="company">
+                                <option selected value="">Company</option>
+                                <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
+                                </option>
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Review Year</label>
+                            <select type="date" name="reviewYear" class="form-control" [(ngModel)]="reviewYear">
+                                <option selected value="Review Year">Review Year</option>
+                                <option *ngFor="let row of years" value="{{row.year}}">{{row.year}}</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Start Period</label>
+                            <input type="date" name="startDate" class="form-control" [(ngModel)]="startDate">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>End Period</label>
+                            <input type="date" name="endDate" class="form-control" [(ngModel)]="endDate">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Due Date</label>
+                            <input type="date" name="dueDate" class="form-control" [(ngModel)]="dueDate">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Reviewer Weight i</label>
+                            <input name="reviewerOneWeight" type="number" class="form-control"
+                                [(ngModel)]="reviewerOneWeight">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Reviewer Weight ii</label>
+                            <input name="reviewerTwoWeight" type="number" class="form-control"
+                                [(ngModel)]="reviewerTwoWeight">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Reviewer Weight iii</label>
+                            <input name="reviewerThreeWeight" type="number" class="form-control"
+                                [(ngModel)]="reviewerThreeWeight">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Reviewee Weight</label>
+                            <input class="form-control" name="revieweeWeight" type="number"
+                                [(ngModel)]="revieweeWeight">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select class="form-control" name="status" type="number" [(ngModel)]="status">
+                                <option selected value="">Status</option>
+                                <option value="1">Locked</option>
+                                <option value="2">Open</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Form Generated</label>
+                            <input type="text" name="formGenerated" class="form-control" [(ngModel)]="formGenerated">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Notification Sent</label>
+                            <input type="text" name="notificationSent" class="form-control"
+                                [(ngModel)]="notificationSent">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label> Created By</label>
+                            <input type="text" name="createdBy" class="form-control" [(ngModel)]="createdBy">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Created On</label>
+                            <input type="date" name="createdOn" class="form-control" [(ngModel)]="createdOn">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Updated By</label>
+                            <input type="text" name="updatedBy" class="form-control" [(ngModel)]="updatedBy">
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Updated On</label>
+                            <input type="date" name="updatedOn" class="form-control" [(ngModel)]="updatedOn">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <form (ngSubmit)="submitAppraisalCycleForm()">
+
+                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="submit-section" class="btn-group mr-2" role="group" aria-label="First group">
+                                <button type="button" class="btn btn-danger"
+                                    [routerLink]="['/performance/setup/appraisal-cycle']"
+                                    routerLinkActive="router-link-active">Back</button>
+
+                                <button class="btn btn-primary btn-sm submit-btn" type="submit" [disabled]="spinner">
+                                    <span *ngIf="!spinner">Submit</span>
+                                    <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                                </button>
+
+                                <button type="button" class="btn btn-warning">Copy previous
+                                    objectives</button>
+
+                                <button class="btn btn-success" type="button">Send Objective
+                                    Alert</button>
+
+                                <button class="btn btn-info" type="button">Send Feedback
+                                    Alert</button>
+
+
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- /Appraisal Cycle Page -->
