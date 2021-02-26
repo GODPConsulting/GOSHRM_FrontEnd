@@ -1,0 +1,83 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+<div *ngIf="!pageLoading" class="content container-fluid">
+    <!--Page Header starts  -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Appraisal Cycle</h3>
+            </div>
+            <div _ngcontent-wii-c69="" class="col-md-4">
+                <div _ngcontent-wii-c69="" class="form-group">
+                    <label _ngcontent-wii-c69="">Choose File (excel format)</label>
+                    <div class="col-md-10">
+                        <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
+                            (change)="onSelectedFile($event,appraisalCycleUploadForm)">
+                    </div>
+                </div>
+            </div>
+            <div _ngcontent-wii-c69="" class="col-md-4">
+                <div _ngcontent-wii-c69="" class="form-group"><label _ngcontent-wii-c69="">company</label>
+                    <select type="text" class="form-control" name="officeId" [(ngModel)]="officeId">
+                        <option selected value="">Company</option>
+                        <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-auto float-right ml-auto">
+                <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
+                        class="fa fa-trash"></i></a>
+                <a class="btn download-btn hint" (click)="downloadFile()" download><span
+                        class="hint-text">Download</span><i class="fa fa-download"></i></a>
+                <a routerLink='/performance/setup/appraisal-cycle/appraisal-cycle-page'
+                    routerLinkActive="router-link-active" class="btn add-btn hint" data-toggle="modal"
+                    data-target="#appraisal_cycle_modal"><span class="hint-text">Add
+                    </span><i class="fa fa-plus"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" [checked]="selectedId.length === appraisalCycles.length"
+                            (change)="checkAll($event)" />
+                    </th>
+                    <th>S/N</th>
+                    <th>Review Year</th>
+                    <th>Start Period</th>
+                    <th>End Period</th>
+                    <th>Due Date</th>
+                    <th>Reviewer I</th>
+                    <th>Reviewer II</th>
+                    <th>Reviewer III</th>
+                    <th>Reviewee Weight</th>
+                    <th>Status</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-toggle="modal" class="pointer" data-target="#appraisal_cycle_modal" (click)="edit(row)"
+                    *ngFor="let row of hack(appraisalCycles); let i = index">
+                    <td (click)="stopParentEvent($event)">
+                        <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                            (change)="addItemId($event, row.id)" />
+                    </td>
+                    <td>{{i +1}}</td>
+                    <td>{{row.reviewYear}}</td>
+                    <td>{{row.startDate}}</td>
+                    <td>{{row.endDate}}</td>
+                    <td>{{row.dueDate}}</td>
+                    <td>{{row.reviewerOneWeight}}</td>
+                    <td>{{row.reviewerTwoWeight}}</td>
+                    <td>{{row.reviewerThreeWeight}}</td>
+                    <td>{{row.revieweeWeight}}</td>
+                    <td>{{row.status}}</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

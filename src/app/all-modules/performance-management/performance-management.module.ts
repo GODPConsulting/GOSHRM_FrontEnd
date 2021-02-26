@@ -15,7 +15,8 @@ import { KeyPerformanceIndicatorsComponent } from "./setup/key-performance-indic
 import { GradeSettingComponent } from "./setup/grade-setting/grade-setting.component";
 import { KpiToJobgradeComponent } from "./setup/kpi-to-jobgrade/kpi-to-jobgrade.component";
 import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appraisal-preference.component";
-
+import { AppraisalCycleComponent } from "./setup/appraisal-cycle/appraisal-cycle.component";
+import { AppraisalCyclePageComponent } from "./setup/appraisal-cycle/appraisal-cycle-page/appraisal-cycle-page.component";
 @NgModule({
   declarations: [
     PerformanceManagementComponent,
@@ -25,6 +26,8 @@ import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appra
     PointSettingsComponent,
     KpiToJobgradeComponent,
     AppraisalPreferenceComponent,
+    AppraisalCycleComponent,
+    AppraisalCyclePageComponent,
   ],
   imports: [
     CommonModule,
