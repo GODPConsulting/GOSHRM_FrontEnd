@@ -8589,7 +8589,7 @@ rating span {
 .tab-box {
   position: sticky;
   top: 62px;
-  z-index: 1;
+  z-index: 4;
 }
 
 .datetimepicker::-webkit-calendar-picker-indicator {

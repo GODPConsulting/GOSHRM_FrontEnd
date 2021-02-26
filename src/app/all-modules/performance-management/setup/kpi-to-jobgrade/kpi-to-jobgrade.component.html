@@ -38,8 +38,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#add_kpi_to_job_grade" (click)="edit(row)"
-                            *ngFor="let row of things; let i = index">
+                        <tr data-toggle="modal" class="pointer" data-target="#add_kpi_to_job_grade_"
+                            *ngFor="let row of kpiToJobGrades; let i = index">
                             <td (click)="stopParentEvent($event)">
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
@@ -48,16 +48,56 @@
                             <td>{{ row.jobGradeName }}</td>
                             <td>{{ row.kpiCategoryName }}</td>
                             <td>{{ row.weight }}</td>
-                            <td>{{ row.allKpis }}</td>
+                            <td>{{ row.kpIsNameList }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <hr class="my-5">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Weight Summary</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Performance Management Setup</a></li>
+                    <li class="breadcrumb-item active">Weight Summary</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+    <!-- Weight Summary -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table datatable table-hover" datatable
+                    [dtOptions]="dtWeightOptions">
+                    <thead>
+                        <tr>
+                            <th>S/N</th>
+                            <th>Job Grade</th>
+                            <th>Total Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="modal" class="pointer" data-target="#add_kpi_to_job_grade_"
+                            *ngFor="let row of weightSummary; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ row.jobGradeName }}</td>
+                            <td>{{ row.weight }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /Weight Summary -->
 </div>
 <!-- /Page Content -->
-<!-- Add HMO Modal -->
+<!-- Add KpiToJobGrade Modal -->
 <div id="add_kpi_to_job_grade" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -149,4 +189,4 @@
         </div>
     </div>
 </div>
-<!-- /Add HMO Modal -->
+<!-- /Add KpiToJobGrade Modal -->

@@ -93,7 +93,21 @@ export class DependentContactComponent implements OnInit {
 
   submitDependentContactForm(form: FormGroup) {
     form.get("approval_status").enable();
-
+    // Send mail to HR
+    if (!this.dataFromParent.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Dependent Contact",
+          this.dataFromParent.user.firstName,
+          this.dataFromParent.user.lastName,
+          this.dataFromParent.user.email,
+          this.dataFromParent.user.userId
+        )
+        .subscribe();
+      if (form.get("approval_status").value !== 2) {
+        form.get("approval_status").setValue(2);
+      }
+    }
     if (!form.valid) {
       form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
