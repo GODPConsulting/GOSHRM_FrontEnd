@@ -35,13 +35,15 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   company: string;
   reviewPeriod: string = "";
   startTitle: any;
-  job_grade: any;
+  job_GradeId: any;
   submittedForReview: any;
   reviewCycleStatus: any;
   dueDate: string = "";
   table: any;
+  tableDisabled: boolean = false;
 
   public offices: number[] = [];
+  public jobGrades: any[] = [];
 
   constructor(
     private FormBuilder: FormBuilder,
@@ -78,6 +80,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     this.getAppraisalFeedbacks();
     this.cardFormTitle = "Add Appraisal Feedback";
     this.createYears(2000, 2050);
+    this.getJobGrade();
   }
 
   createYears(from, to) {
@@ -91,7 +94,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       reviewPeriod: this.reviewPeriod,
       company: +this.company,
       startTitle: this.startTitle,
-      job_grade: this.job_grade,
+      job_GradeId: this.job_GradeId,
       submittedForReview: this.submittedForReview,
       reviewCycleStatus: this.reviewCycleStatus,
       dueDate: this.dueDate,
@@ -112,7 +115,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
             this.reviewPeriod = "";
             this.company = "";
             this.startTitle = "";
-            this.job_grade = "";
+            this.job_GradeId = "";
             this.submittedForReview = "";
             this.reviewCycleStatus = "";
             this.dueDate = "";
@@ -140,6 +143,24 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         this.pageLoading = false;
       }
     );
+  }
+
+  getJobGrade() {
+    this.pageLoading = true;
+    return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
+      (data) => {
+        this.pageLoading = false;
+
+        this.jobGrades = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+      }
+    );
+  }
+
+  setFeedbackBtn(event) {
+    this.tableDisabled = true;
   }
 
   edit(row) {

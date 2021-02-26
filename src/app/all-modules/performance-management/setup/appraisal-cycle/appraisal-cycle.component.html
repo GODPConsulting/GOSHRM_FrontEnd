@@ -6,19 +6,11 @@
             <div class="col">
                 <h3 class="page-title">Appraisal Cycle</h3>
             </div>
-            <div _ngcontent-wii-c69="" class="col-md-4">
-                <div _ngcontent-wii-c69="" class="form-group">
-                    <label _ngcontent-wii-c69="">Choose File (excel format)</label>
-                    <div class="col-md-10">
-                        <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                            (change)="onSelectedFile($event,appraisalCycleUploadForm)">
-                    </div>
-                </div>
-            </div>
+
             <div _ngcontent-wii-c69="" class="col-md-4">
                 <div _ngcontent-wii-c69="" class="form-group"><label _ngcontent-wii-c69="">company</label>
-                    <select type="text" class="form-control" name="officeId" [(ngModel)]="officeId"
-                        (change)="filterEmployee($event.taget.value)">
+                    <select type="text" class="form-control" name="company"
+                        (change)="filterByCompany($event.target.value)">
                         <option value="" selected disabled>Company</option>
                         <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
                         </option>
@@ -60,13 +52,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-toggle="modal" class="pointer" data-target="#appraisal_cycle_modal" (click)="edit(row)"
-                    *ngFor="let row of hack(appraisalCycles); let i = index">
+                <tr data-toggle="modal" class="pointer" [routerLink]="['/performance/setup/appraisal-cycle', row.id]"
+                    (click)="edit(row)" *ngFor="let row of hack(appraisalCycles); let i = index">
                     <td (click)="stopParentEvent($event)">
                         <input type="checkbox" [checked]="selectedId.includes(row.id)"
                             (change)="addItemId($event, row.id)" />
                     </td>
-                    <td>{{i +1}}</td>
+                    <td><a [routerLink]="['/performance/setup/appraisal-cycle', row.id]">{{i +1}}</a></td>
                     <td>{{row.reviewYear}}</td>
                     <td>{{row.startDate}}</td>
                     <td>{{row.endDate}}</td>

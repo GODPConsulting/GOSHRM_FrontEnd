@@ -40,7 +40,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Job Grade</label>
-                            <select type="text" name="jobGrade" class="form-control" [(ngModel)]="jobGrade">
+                            <select type="text" name="job_GradeId" class="form-control" [(ngModel)]="job_GradeId">
                                 <option value="">Job Grade</option>
                                 <option *ngFor="let row of jobGrades" value="{{row.id}}">{{row.job_grade}} </option>
                             </select>
@@ -88,7 +88,7 @@
 
                 </div>
 
-                <div class="table-responsive">
+                <div *ngIf="tableDisabled" class="table-responsive">
                     <table>
                         <tr>
                             <th>KPI</th>
@@ -107,6 +107,58 @@
                             <td>Magazzini Alimentari Riuniti</td>
                             <td>Giovanni Rovelli</td>
                             <td>Italy</td>
+                            <td><a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_page_modal"><span class="hint-text">Add
+                                    </span><i class="fa fa-plus"></i></a>
+                                <a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_page_modal"><span class="hint-text">Add
+                                    </span><i class="fa fa-eye"></i></a>
+                            </td>
+                            <td>
+                                <a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_reviewee_modal"><span class="hint-text">Edit
+                                    </span><i class="fa fa-edit"></i></a>
+                                <div></div>
+                            </td>
+                            <td><a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_page_modal"><span class="hint-text">Add
+                                    </span><i class="fa fa-plus"></i></a>
+                                <a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_page_modal"><span class="hint-text">Add
+                                    </span><i class="fa fa-eye"></i></a>
+                            </td>
+                            <td>
+                                <a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_reviewee_modal"><span class="hint-text">Edit
+                                    </span><i class="fa fa-edit"></i></a>
+                                <div></div>
+                            </td>
+                            <td><a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_page_modal"><span class="hint-text">Add
+                                    </span><i class="fa fa-plus"></i></a>
+                                <a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_page_modal"><span class="hint-text">Add
+                                    </span><i class="fa fa-eye"></i></a>
+                            </td>
+                            <td>
+                                <a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_reviewee_modal"><span class="hint-text">Edit
+                                    </span><i class="fa fa-edit"></i></a>
+                                <div></div>
+                            </td>
+                            <td><a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_page_modal"><span class="hint-text">Add
+                                    </span><i class="fa fa-plus"></i></a>
+                                <a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_page_modal"><span class="hint-text">Add
+                                    </span><i class="fa fa-plus"></i></a>
+                            </td>
+                            <td>
+                                <a class="btn add-btn hint" data-toggle="modal"
+                                    data-target="#appraisal_feedback_reviewee_modal"><span class="hint-text">Edit
+                                    </span><i class="fa fa-edit"></i></a>
+                                <div></div>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -125,7 +177,7 @@
                                     <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                                 </button>
 
-                                <button class="btn btn-info" type="button">Feedback
+                                <button class="btn btn-info" (click)="setFeedbackBtn($event)" type="button">Feedback
                                 </button>
 
                             </div>
@@ -139,3 +191,84 @@
 </div>
 
 <!-- /Appraisal Feedback Page -->
+
+<!-- Appraisal Feedback Page modal -->
+
+<div id="appraisal_feedback_page_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{cardFormTitle}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="submitAppraisalFeedbackPageForm()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Comment</label>
+                                <input type="text" name="comment" class="form-control" [(ngModel)]="comment">
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="date" name="date" class="form-control" [(ngModel)]="date">
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /Appraisal Feedback Page modal -->
+
+<!-- Appraisal Feedback Reviewee modal -->
+
+<div id="appraisal_feedback_reviewee_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reviewee Score</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="submitAppraisalFeedbackPageForm()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Reviewee Score</label>
+                                <input type="number" name="number" class="form-control" [(ngModel)]="number">
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="submit-section">
+                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+                            <span *ngIf="!spinner">Submit</span>
+                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /Appraisal Feedback Reviewee modal -->

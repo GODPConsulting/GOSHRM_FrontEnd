@@ -35,7 +35,7 @@ export class AppraisalFeedbackComponent implements OnInit {
   company: string;
   reviewPeriod: string = "";
   startTitle: any;
-  jobGrade: any;
+  job_GradeId: any;
   submittedForReview: any;
   reviewCycleStatus: any;
   dueDate: string = "";
@@ -43,6 +43,7 @@ export class AppraisalFeedbackComponent implements OnInit {
   finalComment: any;
 
   public offices: number[] = [];
+  public jobGrades: any[] = [];
 
   constructor(
     private FormBuilder: FormBuilder,
@@ -77,6 +78,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       order: [[1, "asc"]],
     };
     this.getAppraisalFeedbacks();
+    this.getJobGrade();
     this.cardFormTitle = "Add Appraisal Feedback";
   }
 
@@ -85,7 +87,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       reviewPeriod: this.reviewPeriod,
       company: +this.company,
       startTitle: this.startTitle,
-      jobGrade: this.jobGrade,
+      job_GradeId: this.job_GradeId,
       submittedForReview: this.submittedForReview,
       reviewCycleStatus: this.reviewCycleStatus,
       dueDate: this.dueDate,
@@ -107,7 +109,7 @@ export class AppraisalFeedbackComponent implements OnInit {
             this.reviewPeriod = "";
             this.company = "";
             this.startTitle = "";
-            this.jobGrade = "";
+            this.job_GradeId = "";
             this.submittedForReview = "";
             this.reviewCycleStatus = "";
             this.dueDate = "";
@@ -138,6 +140,20 @@ export class AppraisalFeedbackComponent implements OnInit {
     );
   }
 
+  getJobGrade() {
+    this.pageLoading = true;
+    return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
+      (data) => {
+        this.pageLoading = false;
+
+        this.jobGrades = data.setuplist;
+      },
+      (err) => {
+        this.pageLoading = false;
+      }
+    );
+  }
+
   edit(row) {
     this.cardFormTitle = "Edit Point Settings";
     this.appraisalFeedbackForm.patchValue({
@@ -145,7 +161,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       reviewPeriod: row.reviewPeriod,
       company: row.company,
       startTitle: row.startTitle,
-      jobGrade: row.jobGrade,
+      job_GradeId: row.job_GradeId,
       submittedForReview: row.submittedForReview,
       reviewCycleStatus: row.reviewCycleStatus,
       dateDue: row.dateDue,
