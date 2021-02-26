@@ -148,6 +148,21 @@ export class SkillsComponent implements OnInit {
   submitSkillsForm(form: FormGroup) {
     form.get("approvalStatus").enable();
     form.get("expectedScore").enable();
+    // Send mail to HR
+    if (!this.dataFromParent.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Skills",
+          this.dataFromParent.user.firstName,
+          this.dataFromParent.user.lastName,
+          this.dataFromParent.user.email,
+          this.dataFromParent.user.userId
+        )
+        .subscribe();
+      if (form.get("approvalStatus").value !== 2) {
+        form.get("approvalStatus").setValue(2);
+      }
+    }
     if (!form.valid) {
       form.get("expectedScore").disable();
       form.get("approvalStatus").disable();

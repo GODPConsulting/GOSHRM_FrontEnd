@@ -30,7 +30,7 @@ const routes: Routes = [
         component: PointSettingsComponent,
       },
       {
-        path: "appraisal-preference",
+        path: "setup/appraisal-preference",
         component: AppraisalPreferenceComponent,
       },
       {

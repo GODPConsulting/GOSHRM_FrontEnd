@@ -114,6 +114,12 @@ export class PerformanceManagementService {
     return this.apiService.get("/performancesetup/get/all/kpi-to-jobgrades");
   }
 
+  getKpiToJobGradesWeightSumary() {
+    return this.apiService.get(
+      "/performancesetup/get/all/kpi-to-jobgrade-summary"
+    );
+  }
+
   postKpiToJobGrade(payload) {
     return this.apiService.post(
       "/performancesetup/add/update/kpi-to-jobgrade",
