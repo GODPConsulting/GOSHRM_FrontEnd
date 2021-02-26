@@ -14,6 +14,7 @@ declare const $: any;
 })
 export class KpiToJobgradeComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
+  public dtWeightOptions: DataTables.Settings = {};
   public kpiToJobGrades: any[] = [];
   public pageLoading: boolean;
   public spinner: boolean = false;
@@ -24,7 +25,7 @@ export class KpiToJobgradeComponent implements OnInit {
   public kpiCategories$: Observable<any> = this.performanceService.getKpiCategory();
   public source = [];
   public confirmed = [];
-  things: any;
+  weightSummary: any = [];
 
   constructor(
     private setupService: SetupService,
@@ -45,6 +46,18 @@ export class KpiToJobgradeComponent implements OnInit {
       },
       columns: [{ orderable: false }, null, null, null, null, null],
       order: [[1, "asc"]],
+    };
+    this.dtWeightOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+      columns: [null, null, null],
+      //order: [[1, "asc"]],
     };
     this.initializeForm();
     this.getKpiToJobGrades();
@@ -108,7 +121,6 @@ export class KpiToJobgradeComponent implements OnInit {
           swal.fire("GOSHRM", message, "error");
         }
         this.getKpiToJobGrades();
-        console.log(res);
       },
       (err) => {
         this.spinner = false;
@@ -118,54 +130,13 @@ export class KpiToJobgradeComponent implements OnInit {
     );
   }
 
-  /* DO NOT TAMPER WITH THIS UNNECESARILY!! */
-  /* IF YOU MUST, BETTER MAKE A COPY */
   getKpiToJobGrades() {
     this.pageLoading = true;
     this.performanceService.getKpiToJobGrades().subscribe(
       (data) => {
         this.pageLoading = false;
+        this.getWeightSummary();
         this.kpiToJobGrades = data.setupList;
-        console.log(this.kpiToJobGrades);
-        const jgId = this.kpiToJobGrades.map((j) => ({
-          jobGrade: j.jobGradeId,
-          kpiCat: j.kpiCategoryId,
-        }));
-        //const jgIdSet = new Set(jgId)
-
-        console.log(jgId /* jgIdSet */);
-        /* const this.things = jgId.filter(
-          (thing, index, self) =>
-            index ===
-            self.findIndex(
-              (t) => t.jobGrade === thing.jobGrade && t.kpiCat === thing.kpiCat
-            )
-        );
-        console.log(this.things); */
-        this.things = this.kpiToJobGrades.filter(
-          (thing, index, self) =>
-            index ===
-            self.findIndex(
-              (t) =>
-                t.jobGradeId === thing.jobGradeId &&
-                t.kpiCategoryId === thing.kpiCategoryId
-            )
-        );
-        console.log(this.things);
-
-        for (const e of this.things) {
-          let k = [];
-          for (const kpiJg of this.kpiToJobGrades) {
-            if (
-              kpiJg.jobGradeId === e.jobGradeId &&
-              kpiJg.kpiCategoryId === e.kpiCategoryId
-            ) {
-              k.push(kpiJg.kpIsName);
-            }
-          }
-          e.allKpis = k;
-        }
-        console.log(this.things);
       },
       (err) => {
         this.pageLoading = false;
@@ -174,15 +145,30 @@ export class KpiToJobgradeComponent implements OnInit {
       }
     );
   }
-  /* BEWARE!!! */
 
   getKpiByKpiCategoryId(id: number) {
+    this.confirmed = [];
     this.performanceService.getKpiByKpiCategoryId(id).subscribe(
       (data) => {
         this.source = data.setupList;
         console.log(this.source);
       },
       (err) => {}
+    );
+  }
+
+  getWeightSummary() {
+    this.pageLoading = true;
+    this.performanceService.getKpiToJobGradesWeightSumary().subscribe(
+      (data) => {
+        this.pageLoading = false;
+        this.weightSummary = data.setupList;
+      },
+      (err) => {
+        this.pageLoading = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("GOSHRM", message, "error");
+      }
     );
   }
 

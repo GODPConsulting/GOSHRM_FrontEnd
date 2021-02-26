@@ -135,7 +135,21 @@ export class ProfCertComponent implements OnInit {
 
   submitProfCertForm(form: FormGroup) {
     form.get("approvalStatus").enable();
-
+    // Send mail to HR
+    if (!this.dataFromParent.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Professional Certification",
+          this.dataFromParent.user.firstName,
+          this.dataFromParent.user.lastName,
+          this.dataFromParent.user.email,
+          this.dataFromParent.user.userId
+        )
+        .subscribe();
+      if (form.get("approvalStatus").value !== 2) {
+        form.get("approvalStatus").setValue(2);
+      }
+    }
     if (!form.valid) {
       form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
@@ -149,11 +163,6 @@ export class ProfCertComponent implements OnInit {
         new Date(form.get("dateGranted").value).toLocaleDateString("en-CA")
       );
 
-    form
-      .get("expiryDate")
-      .setValue(
-        new Date(form.get("expiryDate").value).toLocaleDateString("en-CA")
-      );
     for (const key in form.value) {
       formData.append(key, this.profCertForm.get(key).value);
     }

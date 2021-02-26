@@ -131,7 +131,21 @@ export class EmployeeGymComponent implements OnInit {
 
   submitGymForm(form: FormGroup) {
     form.get("approvalStatus").enable();
-
+    // Send mail to HR
+    if (!this.dataFromParent.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Gym",
+          this.dataFromParent.user.firstName,
+          this.dataFromParent.user.lastName,
+          this.dataFromParent.user.email,
+          this.dataFromParent.user.userId
+        )
+        .subscribe();
+      if (form.get("approvalStatus").value !== 2) {
+        form.get("approvalStatus").setValue(2);
+      }
+    }
     if (!form.valid) {
       form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
@@ -163,6 +177,21 @@ export class EmployeeGymComponent implements OnInit {
   submitGymChangeReqForm(form: FormGroup) {
     form.get("dateOfRequest").enable();
     form.get("approvalStatus").enable();
+    // Send mail to HR
+    if (!this.dataFromParent.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Identification",
+          this.dataFromParent.user.firstName,
+          this.dataFromParent.user.lastName,
+          this.dataFromParent.user.email,
+          this.dataFromParent.user.userId
+        )
+        .subscribe();
+      if (form.get("approvalStatus").value !== 2) {
+        form.get("approvalStatus").setValue(2);
+      }
+    }
 
     if (!form.valid) {
       form.get("approvalStatus").disable();

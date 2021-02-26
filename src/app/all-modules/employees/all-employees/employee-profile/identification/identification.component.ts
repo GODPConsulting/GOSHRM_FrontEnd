@@ -122,6 +122,22 @@ export class IdentificationComponent implements OnInit {
 
   submitIdentificationForm(form: FormGroup) {
     form.get("approval_status").enable();
+    // Send mail to HR
+    if (!this.dataFromParent.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Identification",
+          this.dataFromParent.user.firstName,
+          this.dataFromParent.user.lastName,
+          this.dataFromParent.user.email,
+          this.dataFromParent.user.userId
+        )
+        .subscribe();
+      if (form.get("approval_status").value !== 2) {
+        form.get("approval_status").setValue(2);
+      }
+    }
+
     if (!form.valid) {
       form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
@@ -137,6 +153,7 @@ export class IdentificationComponent implements OnInit {
       formData.append(key, this.identificationForm.get(key).value);
     }
     form.get("approval_status").disable();
+
     this.spinner = true;
     return this.employeeService.postIdentificationId(formData).subscribe(
       (res) => {
@@ -164,7 +181,7 @@ export class IdentificationComponent implements OnInit {
         this.employeeIdentification = data.employeeList;
       },
       (err) => {
-        this.spinner = false;
+        this.pageLoading = false;
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }

@@ -4,12 +4,50 @@ import { ApiService } from "./api.service";
 import swal from "sweetalert2";
 import { saveAs } from "file-saver";
 import { isInteger } from "lodash";
+import { EmployeeService } from "./employee.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class UtilitiesService {
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private employeeService: EmployeeService
+  ) {}
+
+  sendToHr(
+    card,
+    firstName: string,
+    lastName: string,
+    email: string,
+    userId: string
+  ) {
+    const payload = {
+      subject: card,
+      content: "Dear HR, your review is needed",
+      toAddresses: [
+        {
+          name: "HR",
+          address: "Emeka.Elo-Chukwuma@godp.com.ng",
+        },
+      ],
+      fromAddresses: [
+        {
+          name: `${firstName} ${lastName}`,
+          address: email,
+        },
+      ],
+      sendIt: true,
+      userIds: userId,
+      identificationId: [""],
+      module: 2,
+      saveIt: true,
+      template: 0,
+      callBackUri: "",
+    };
+    console.log(payload);
+    return this.employeeService.postMailToHr(payload);
+  }
 
   // Date validation with the datepicker package
   setMinMaxDate(form: FormGroup, startDate: string, endDate: string) {

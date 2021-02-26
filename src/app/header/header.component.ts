@@ -10,7 +10,7 @@ import { EmployeeService } from "../services/employee.service";
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.css"],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
   jsonData: any = {
     notification: [],
     message: [],
@@ -18,8 +18,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   notifications: any;
   messagesData: any;
   user: any = {};
-  mySubscription: any;
   allUsers: any;
+  mails: any;
+  emailCount: number;
 
   constructor(
     private headerService: HeaderService,
@@ -30,6 +31,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.getAllEmails();
+
     // this.getDatas("notification");
     // this.getDatas("message");
 
@@ -112,10 +115,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ];
   }
 
-  ngOnDestroy() {
-    if (this.mySubscription) {
-      this.mySubscription.unsubscribe();
-    }
+  getAllEmails() {
+    this.employeeService.getAllEmails().subscribe(
+      (data) => {
+        console.log(data);
+        this.emailCount = data.emailCount;
+        this.mails = data.emails;
+      },
+      (err) => {}
+    );
   }
 
   getDatas(section) {

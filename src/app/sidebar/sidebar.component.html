@@ -4,6 +4,32 @@
     <perfect-scrollbar [scrollIndicators]="false">
       <div id="sidebar-menu" class="sidebar-menu">
         <ul *ngIf="sidebarMenus.default">
+          <!-- ESS -->
+          <li *ngIf="userRights.includes('profile')" class="submenu" [ngClass]="{
+              active:
+                (urlComplete.mainUrl === 'employees' &&
+                  urlComplete.subUrl === 'employeeprofile')
+            }">
+            <a href="javascript:" [ngClass]="{
+                subdrop:
+                  (urlComplete.mainUrl === 'employees' &&
+                    urlComplete.subUrl === 'employeeprofile') 
+              }" class="noti-dot"><i class="la la-user-cog"></i> <span> ESS</span>
+              <span class=" menu-arrow"></span></a>
+            <ul style="display: none;" [ngStyle]="{
+                display:
+                  (urlComplete.mainUrl === 'employees' &&
+                    urlComplete.subUrl === 'employeeprofile')
+                    ? 'block'
+                    : 'none'
+              }">
+              <li *ngIf="userRights.includes('profile')"
+                [routerLink]='["/employees/employeeprofile/", hrmUser?.staffId]'>
+                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employeeprofile' }">Profile</a>
+              </li>
+            </ul>
+          </li>
+          <!-- /ESS -->
           <!-- Employee sidebar -->
           <li *ngIf="userRights.includes('allemployees')" class="submenu" [ngClass]="{
               active:
@@ -34,32 +60,6 @@
             </ul>
           </li>
           <!-- /Employee sidebar -->
-          <!-- ESS -->
-          <li *ngIf="userRights.includes('profile')" class="submenu" [ngClass]="{
-              active:
-                (urlComplete.mainUrl === 'employees' &&
-                  urlComplete.subUrl === 'employeeprofile')
-            }">
-            <a href="javascript:" [ngClass]="{
-                subdrop:
-                  (urlComplete.mainUrl === 'employees' &&
-                    urlComplete.subUrl === 'employeeprofile') 
-              }" class="noti-dot"><i class="la la-user-cog"></i> <span> ESS</span>
-              <span class=" menu-arrow"></span></a>
-            <ul style="display: none;" [ngStyle]="{
-                display:
-                  (urlComplete.mainUrl === 'employees' &&
-                    urlComplete.subUrl === 'employeeprofile')
-                    ? 'block'
-                    : 'none'
-              }">
-              <li *ngIf="userRights.includes('profile')"
-                [routerLink]='["/employees/employeeprofile/", hrmUser?.staffId]'>
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employeeprofile' }">Profile</a>
-              </li>
-            </ul>
-          </li>
-          <!-- /ESS -->
           <!-- Managers -->
           <li *ngIf="userRights.includes('line manager')" class="submenu" [ngClass]="{
               active:
@@ -456,7 +456,7 @@
                   <li routerLink="/performance/setup/appraisal-preference">
                     <a href="javascript:" [ngClass]="{
                         active:
-                          urlComplete.subUrl === 'appraisal-preference'
+                          urlComplete.childUrl === 'appraisal-preference'
                       }">Appraisal Preference</a>
                   </li>
                   <li routerLink="/performance/setup/kpi-to-jobgrade">
