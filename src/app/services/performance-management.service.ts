@@ -8,7 +8,6 @@ import { tap } from "rxjs/operators";
 })
 export class PerformanceManagementService {
   constructor(private apiService: ApiService) {}
-
   getkpiCategory() {
     return this.apiService.get("/performancesetup/get/all/kpi-categories");
   }
@@ -26,24 +25,6 @@ export class PerformanceManagementService {
       payload
     );
   }
-  getPointSettings() {
-    return this.apiService.get("/performancesetup/get/all/point-settings");
-  }
-
-  postPointSettings(payload: Object) {
-    return this.apiService.post(
-      "/performancesetup/add/update/point-setting",
-      payload
-    );
-  }
-
-  deletePointSettings(payload: Object) {
-    return this.apiService.post(
-      "/performancesetup/delete/point-setting",
-      payload
-    );
-  }
-
   handleError(err) {
     console.log(err);
     return throwError(err);
@@ -60,13 +41,6 @@ export class PerformanceManagementService {
   getKPIndicators() {
     return this.apiService.get("/performancesetup/get/all/kpi-indicators");
   }
-
-  getKpiByKpiCategoryId(id: number) {
-    return this.apiService.get(
-      `/performancesetup/get/kpi-indicator/categoryId?categoryId=${id}`
-    );
-  }
-
   deleteKPIndicator(payload) {
     return this.apiService
       .post("/performancesetup/delete/kpi-indicator", payload)
@@ -108,6 +82,48 @@ export class PerformanceManagementService {
   }
   getGradeSettings() {
     return this.apiService.get("/performancesetup/get/all/grade-settings");
+  }
+
+  getPointSettings() {
+    return this.apiService.get("/performancesetup/get/all/point-settings");
+  }
+
+  postPointSettings(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup/add/update/point-setting",
+      payload
+    );
+  }
+
+  deletePointSettings(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup/delete/point-setting",
+      payload
+    );
+  }
+
+  getAppraisalCycles() {
+    return this.apiService.get("/performancesetup/get/all/appraisal-circles");
+  }
+
+  postAppraisalCycle(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup/add/update/appraisal-circle",
+      payload
+    );
+  }
+
+  deleteAppraisalCycle(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup​/delete​/appraisal-circle",
+      payload
+    );
+  }
+
+  getKpiByKpiCategoryId(id: number) {
+    return this.apiService.get(
+      `/performancesetup/get/kpi-indicator/categoryId?categoryId=${id}`
+    );
   }
 
   getKpiToJobGrades() {

@@ -5,6 +5,7 @@ import { JwtService } from "../../services/jwt.service";
 import { AuthService } from "../../services/auth.service";
 import swal from "sweetalert2";
 import { DataService } from "src/app/services/data.service";
+import { exists } from "fs";
 
 @Component({
   selector: "app-login",
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading: boolean;
   redirectURL: any;
+  spinner: boolean = false;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
