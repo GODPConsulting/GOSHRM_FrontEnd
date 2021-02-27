@@ -121,6 +121,7 @@ export class HeaderComponent implements OnInit {
         console.log(data);
         this.emailCount = data.emailCount;
         this.mails = data.emails;
+        this.dataService.saveCurrentMail(this.mails);
       },
       (err) => {}
     );
