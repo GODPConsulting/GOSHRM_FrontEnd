@@ -1,3 +1,4 @@
+import { AppraisalFeedbackComponent } from "./setup/appraisal-feedback/appraisal-feedback.component";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { AngularDualListBoxModule } from "angular-dual-listbox";
@@ -17,6 +18,7 @@ import { KpiToJobgradeComponent } from "./setup/kpi-to-jobgrade/kpi-to-jobgrade.
 import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appraisal-preference.component";
 import { AppraisalCycleComponent } from "./setup/appraisal-cycle/appraisal-cycle.component";
 import { AppraisalCyclePageComponent } from "./setup/appraisal-cycle/appraisal-cycle-page/appraisal-cycle-page.component";
+import { AppraisalFeedbackPageComponent } from './setup/appraisal-feedback/appraisal-feedback-page/appraisal-feedback-page.component';
 @NgModule({
   declarations: [
     PerformanceManagementComponent,
@@ -26,8 +28,10 @@ import { AppraisalCyclePageComponent } from "./setup/appraisal-cycle/appraisal-c
     PointSettingsComponent,
     KpiToJobgradeComponent,
     AppraisalPreferenceComponent,
+    AppraisalFeedbackComponent,
     AppraisalCycleComponent,
     AppraisalCyclePageComponent,
+    AppraisalFeedbackPageComponent,
   ],
   imports: [
     CommonModule,
