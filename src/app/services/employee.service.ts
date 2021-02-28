@@ -10,6 +10,10 @@ import { ApiService } from "./api.service";
 export class EmployeeService {
   constructor(private apiService: ApiService) {}
 
+  postMailToHr(payload) {
+    return this.apiService.post("/email/send/emails", payload);
+  }
+
   getEmployees() {
     return this.apiService.get("/hrm/get/all/staffs");
   }
@@ -363,5 +367,9 @@ export class EmployeeService {
     return this.apiService.getDownload(
       `/hrm/download/employee/gym-meeting/Id?EmpId=${id}`
     );
+  }
+
+  getAllEmails() {
+    return this.apiService.get("/email/get/all/useremails?Module=2");
   }
 }

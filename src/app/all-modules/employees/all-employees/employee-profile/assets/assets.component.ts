@@ -96,7 +96,27 @@ export class AssetsComponent implements OnInit {
   submitAssetForm(form: FormGroup) {
     form.get("requestApprovalStatus").enable();
     form.get("returnApprovalStatus").enable();
-
+    // Send mail to HR
+    if (!this.dataFromParent.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Assets",
+          this.dataFromParent.user.firstName,
+          this.dataFromParent.user.lastName,
+          this.dataFromParent.user.email,
+          this.dataFromParent.user.userId
+        )
+        .subscribe();
+      // Handles if user edits
+      if (form.get("requestApprovalStatus").value !== 2) {
+        form.get("requestApprovalStatus").setValue(2);
+      } else if (
+        form.get("requestApprovalStatus").value === 1 &&
+        form.get("returnApprovalStatus").value !== 2
+      ) {
+        form.get("returnApprovalStatus").setValue(2);
+      }
+    }
     if (!form.valid) {
       form.get("requestApprovalStatus").disable();
       form.get("returnApprovalStatus").disable();

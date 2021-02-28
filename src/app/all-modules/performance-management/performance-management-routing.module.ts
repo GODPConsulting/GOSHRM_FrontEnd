@@ -1,11 +1,16 @@
-import { PointSettingsComponent } from "./point-settings/point-settings.component";
-import { KpiCategoryComponent } from "./kpi-category/kpi-category.component";
+import { AppraisalFeedbackPageComponent } from "./setup/appraisal-feedback/appraisal-feedback-page/appraisal-feedback-page.component";
+import { AppraisalFeedbackComponent } from "./setup/appraisal-feedback/appraisal-feedback.component";
+import { AppraisalCyclePageComponent } from "./setup/appraisal-cycle/appraisal-cycle-page/appraisal-cycle-page.component";
+import { AppraisalCycleComponent } from "./setup/appraisal-cycle/appraisal-cycle.component";
+import { PointSettingsComponent } from "./setup/point-settings/point-settings.component";
+import { KpiCategoryComponent } from "./setup/kpi-category/kpi-category.component";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { PerformanceManagementComponent } from "./performance-management.component";
-import { KeyPerformanceIndicatorsComponent } from "./key-performance-indicators/key-performance-indicators.component";
-import { GradeSettingComponent } from "./grade-setting/grade-setting.component";
-import { AppraisalPreferenceComponent } from "./appraisal-preference/appraisal-preference.component";
+import { KeyPerformanceIndicatorsComponent } from "./setup/key-performance-indicators/key-performance-indicators.component";
+import { GradeSettingComponent } from "./setup/grade-setting/grade-setting.component";
+import { KpiToJobgradeComponent } from "./setup/kpi-to-jobgrade/kpi-to-jobgrade.component";
+import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appraisal-preference.component";
 import { AppraisalObjectiveViewComponent } from "./appraisal-objective-view/appraisal-objective-view.component";
 import { AppraisalObjectiveFormComponent } from "./appraisal-objective-form/appraisal-objective-form.component";
 import { AppraisalObjectivesComponent } from "./appraisal-objectives/appraisal-objectives.component";
@@ -16,24 +21,44 @@ const routes: Routes = [
     component: PerformanceManagementComponent,
     children: [
       {
-        path: "kpi-category",
+        path: "setup/kpi-category",
         component: KpiCategoryComponent,
       },
       {
-        path: 'kpi-indicators',
-        component: KeyPerformanceIndicatorsComponent
+        path: "setup/kpi-indicators",
+        component: KeyPerformanceIndicatorsComponent,
       },
       {
-        path: 'grade-setting',
-        component: GradeSettingComponent
+        path: "setup/grade-setting",
+        component: GradeSettingComponent,
       },
       {
-        path: "point-settings",
+        path: "setup/point-settings",
         component: PointSettingsComponent,
       },
       {
-        path: "appraisal-preference",
+        path: "setup/appraisal-preference",
         component: AppraisalPreferenceComponent,
+      },
+      {
+        path: "setup/appraisal-cycle",
+        component: AppraisalCycleComponent,
+      },
+      {
+        path: "setup/appraisal-cycle/appraisal-cycle-page",
+        component: AppraisalCyclePageComponent,
+      },
+      {
+        path: "setup/appraisal-feedback",
+        component: AppraisalFeedbackComponent,
+      },
+      {
+        path: "setup/appraisal-feedback/appraisal-feedback-page",
+        component: AppraisalFeedbackPageComponent,
+      },
+      {
+        path: "setup/kpi-to-jobgrade",
+        component: KpiToJobgradeComponent,
       },
       {
         path: "appraisal-objective-view",
@@ -47,7 +72,6 @@ const routes: Routes = [
         path: "appraisal-objectives",
         component: AppraisalObjectivesComponent,
       }
-      
     ],
   },
 ];

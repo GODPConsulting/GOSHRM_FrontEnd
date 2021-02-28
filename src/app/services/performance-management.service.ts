@@ -9,11 +9,6 @@ import { HttpErrorResponse } from "@angular/common/http";
 })
 export class PerformanceManagementService {
   constructor(private apiService: ApiService) {}
-
-  handleError(err: HttpErrorResponse) {
-    return throwError(err)
-  }
-
   getkpiCategory() {
     return this.apiService.get("/performancesetup/get/all/kpi-categories");
   }
@@ -31,6 +26,65 @@ export class PerformanceManagementService {
       payload
     );
   }
+  handleError(err) {
+    console.log(err);
+    return throwError(err);
+  }
+  addKPIndicator(payload: any) {
+    return this.apiService.post(
+      "/performancesetup/add/update/kpi-indicator",
+      payload
+    );
+  }
+  getKpiCategory() {
+    return this.apiService.get("/performancesetup/get/all/kpi-categories");
+  }
+  getKPIndicators() {
+    return this.apiService.get("/performancesetup/get/all/kpi-indicators");
+  }
+  deleteKPIndicator(payload) {
+    return this.apiService
+      .post("/performancesetup/delete/kpi-indicator", payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+  uploadKPIndicators(payload: FormData) {
+    return this.apiService.post(
+      "/performancesetup/upload/kpi-indicator",
+      payload
+    );
+  }
+  downloadKPIndicators() {
+    return this.apiService.getDownload(
+      "/performancesetup/download/kpi-indicators"
+    );
+  }
+
+  addGradeSetting(payload: any): Observable<any> {
+    return this.apiService
+      .post(`/performancesetup/add/update/grade-setting`, payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+  deleteGradeSetting(payload) {
+    return this.apiService
+      .post("/performancesetup/delete/grade-setting", payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+  getGradeSettings() {
+    return this.apiService.get("/performancesetup/get/all/grade-settings");
+  }
+
   getPointSettings() {
     return this.apiService.get("/performancesetup/get/all/point-settings");
   }
@@ -48,58 +102,83 @@ export class PerformanceManagementService {
       payload
     );
   }
-  
- 
-  addKPIndicator(payload: any) {
-    return this.apiService.post("/performancesetup/add/update/kpi-indicator", payload);
-  }
-  getKpiCategory() {
-    return this.apiService.get("/performancesetup/get/all/kpi-categories");
-  }
-  getKPIndicators() {
-    return this.apiService.get("/performancesetup/get/all/kpi-indicators");
-  }
-  deleteKPIndicator(payload) {
-    return this.apiService.post("/performancesetup/delete/kpi-indicator", payload).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
-  }
-  uploadKPIndicators(payload: FormData){
-    return this.apiService.post("/performancesetup/upload/kpi-indicator", payload)
-  }
-  downloadKPIndicators() {
-    return this.apiService.getDownload("/performancesetup/download/kpi-indicators");
+
+  getAppraisalCycles() {
+    return this.apiService.get("/performancesetup/get/all/appraisal-circles");
   }
 
-  addGradeSetting(payload: any): Observable<any> {
-    return this.apiService.post(`/performancesetup/add/update/grade-setting`, payload).pipe(tap(data => {
-      return data
-    }));
-  }
-  deleteGradeSetting(payload) {
-    return this.apiService.post("/performancesetup/delete/grade-setting", payload).pipe(
-      tap((data) => {
-        return data;
-      })
+  postAppraisalCycle(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup/add/update/appraisal-circle",
+      payload
     );
   }
-  getGradeSettings() {
-    return this.apiService.get("/performancesetup/get/all/grade-settings");
-  }
-  
-  addAppraisalPreference(payload:any):Observable<any>{
-    return this.apiService.post(`/performancesetup/add/update/appraisal-preference`,payload).pipe(tap(data => {
-      return data;
-    }));
-  }
-  getCompanies(){
-  return this.apiService.get("/company/get/all/companystructures");
+
+  deleteAppraisalCycle(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup​/delete​/appraisal-circle",
+      payload
+    );
   }
 
-  getAppraisalCycleByCompanyId(id){
-    return this.apiService.get(`/performancesetup/get/single/appraisal-circle/companyId?setupId=${id}`);
+  getKpiByKpiCategoryId(id: number) {
+    return this.apiService.get(
+      `/performancesetup/get/kpi-indicator/categoryId?categoryId=${id}`
+    );
+  }
+
+  getKpiToJobGrades() {
+    return this.apiService.get("/performancesetup/get/all/kpi-to-jobgrades");
+  }
+
+  getKpiToJobGradesWeightSumary() {
+    return this.apiService.get(
+      "/performancesetup/get/all/kpi-to-jobgrade-summary"
+    );
+  }
+
+  postKpiToJobGrade(payload) {
+    return this.apiService.post(
+      "/performancesetup/add/update/kpi-to-jobgrade",
+      payload
+    );
+  }
+
+  deleteKpiToJobGrade(payload) {
+    return this.apiService.post(
+      "/performancesetup/delete/kpi-to-jobgrade",
+      payload
+    );
+  }
+
+  addAppraisalPreference(payload: any): Observable<any> {
+    return this.apiService
+      .post(`/performancesetup/add/update/appraisal-preference`, payload)
+      .pipe(
+        tap((data) => {
+          return data;
+        })
+      );
+  }
+  getCompanies() {
+    return this.apiService.get("/company/get/all/companystructures");
+  }
+
+  getAppraisalCycleByCompanyId(id) {
+    return this.apiService.get(
+      `/performancesetup/get/single/appraisal-circle/companyId?setupId=${id}`
+    );
+  }
+
+  getAppraisalFeedbacks() {
+    return this.apiService.get("/performancesetup/get/all/appraisal-feedbacks");
+  }
+
+  postAppraisalFeedback(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup/add/update/appraisal-feedback",
+      payload
+    );
   }
   getAppraisalCycleByStatus(){
     return this.apiService.get("/performancesetup/get/single/appraisal-circle/status");
@@ -110,4 +189,10 @@ export class PerformanceManagementService {
     }), catchError(this.handleError));
   }
 
+  deleteAppraisalFeedback(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup​/delete​/appraisal-feedback",
+      payload
+    );
+  }
 }

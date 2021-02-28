@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Console } from 'console';
-import { Subscription } from 'rxjs';
-import { PerformanceManagementService } from 'src/app/services/performance-management.service';
-import { UtilitiesService } from 'src/app/services/utilities.service';
-import swal from 'sweetalert2'
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { Router } from "@angular/router";
+import { Console } from "console";
+import { Subscription } from "rxjs";
+import { PerformanceManagementService } from "src/app/services/performance-management.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
+import swal from "sweetalert2";
 
-declare const $: any
+declare const $: any;
 
 @Component({
-  selector: 'app-grade-setting',
-  templateUrl: './grade-setting.component.html',
-  styleUrls: ['./grade-setting.component.css']
+  selector: "app-grade-setting",
+  templateUrl: "./grade-setting.component.html",
+  styleUrls: ["./grade-setting.component.css"],
 })
 export class GradeSettingComponent implements OnInit {
   gradeSettingForm: FormGroup;
@@ -22,13 +22,12 @@ export class GradeSettingComponent implements OnInit {
   pageLoading: boolean;
   spinner: boolean;
 
-
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private router: Router,
     private utilitiesService: UtilitiesService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -41,32 +40,33 @@ export class GradeSettingComponent implements OnInit {
       minimum: [0],
       maximum: [0],
       grade: [""],
-      description: [""]
+      description: [""],
     });
   }
 
   addGradeSetting(gradeSettingForm): Subscription {
     const payload = gradeSettingForm.value;
     this.spinner = true;
-    return this.performanceManagementService.addGradeSetting(payload).subscribe(res => {
-      this.spinner = false;
-      const message = res["status"].message.friendlyMessage;
-      if (res["status"].isSuccessful) {
-        swal.fire('GOS HRM', message, 'success').then(() => {
-          $("#add_grade_setting").modal("hide");
-          this.initializeForm();
-          this.getSavedGradeSetting();
-        })
+    return this.performanceManagementService.addGradeSetting(payload).subscribe(
+      (res) => {
+        this.spinner = false;
+        const message = res["status"].message.friendlyMessage;
+        if (res["status"].isSuccessful) {
+          swal.fire("GOS HRM", message, "success").then(() => {
+            $("#add_grade_setting").modal("hide");
+            this.initializeForm();
+            this.getSavedGradeSetting();
+          });
+        }
+      },
+      (err) => {
+        this.spinner = false;
+        // const message = err.status.message.friendlyMessage;
+        // swal.fire('GOS HRM', message, 'success')
       }
-    }, err => {
-      this.spinner = false;
-      // const message = err.status.message.friendlyMessage;
-      // swal.fire('GOS HRM', message, 'success')
-    })
-    
-
+    );
   }
-  
+
   closeGradeSettingModal() {
     $("#add_grade_setting").modal("hide");
   }
@@ -78,16 +78,15 @@ export class GradeSettingComponent implements OnInit {
         this.gradeSettings = data.setupList;
       },
       (err) => {
-        this.pageLoading = false
-       }
+        this.pageLoading = false;
+      }
     );
   }
   checkAllBoxes(event: Event) {
     this.selectedId = this.utilitiesService.checkAllBoxes(
       event,
       this.gradeSettings
-    )
-
+    );
   }
   editGradeSetting(gradeSetting) {
     this.gradeSettingForm.patchValue({
@@ -96,15 +95,12 @@ export class GradeSettingComponent implements OnInit {
       maximum: gradeSetting.maximum,
       grade: gradeSetting.grade,
       description: gradeSetting.description,
-
     });
     $("#add_grade_setting").modal("show");
   }
   addItemId(event: Event, id: number) {
     this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
-
-
 
   delete() {
     let payload: object;
@@ -126,22 +122,24 @@ export class GradeSettingComponent implements OnInit {
       .then((result) => {
         if (result.value) {
           this.pageLoading = true;
-          return this.performanceManagementService.deleteGradeSetting(payload).subscribe(
-            (res) => {
-              this.pageLoading = false;
-              const message = res.status.message.friendlyMessage;
-              if (res.status.isSuccessful) {
-                swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getSavedGradeSetting();
-                });
-              } else {
-                swal.fire("GOSHRM", message, "error");
+          return this.performanceManagementService
+            .deleteGradeSetting(payload)
+            .subscribe(
+              (res) => {
+                this.pageLoading = false;
+                const message = res.status.message.friendlyMessage;
+                if (res.status.isSuccessful) {
+                  swal.fire("GOSHRM", message, "success").then(() => {
+                    this.getSavedGradeSetting();
+                  });
+                } else {
+                  swal.fire("GOSHRM", message, "error");
+                }
+              },
+              (err) => {
+                this.pageLoading = false;
               }
-            },
-            (err) => {
-              this.pageLoading = false;
-            }
-          );
+            );
         }
       });
     this.selectedId = [];

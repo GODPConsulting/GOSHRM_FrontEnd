@@ -170,7 +170,21 @@ export class EmployeeProfileComponent implements OnInit {
   /* Emergency Contact */
   addEmergencyContact(form: FormGroup) {
     form.get("approval_status").enable();
-
+    // Send mail to HR
+    if (!this.dataToChild.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Emergency Contact",
+          this.dataToChild.user.firstName,
+          this.dataToChild.user.lastName,
+          this.dataToChild.user.email,
+          this.dataToChild.user.userId
+        )
+        .subscribe();
+      if (form.get("approval_status").value !== 2) {
+        form.get("approval_status").setValue(2);
+      }
+    }
     if (!form.valid) {
       form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
@@ -318,7 +332,21 @@ export class EmployeeProfileComponent implements OnInit {
   /* Language */
   addLanguageRating(form: FormGroup) {
     form.get("approval_status").enable();
-
+    // Send mail to HR
+    if (!this.dataToChild.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Language",
+          this.dataToChild.user.firstName,
+          this.dataToChild.user.lastName,
+          this.dataToChild.user.email,
+          this.dataToChild.user.userId
+        )
+        .subscribe();
+      if (form.get("approval_status").value !== 2) {
+        form.get("approval_status").setValue(2);
+      }
+    }
     if (!form.valid) {
       form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
@@ -508,7 +536,21 @@ export class EmployeeProfileComponent implements OnInit {
   // EmployeeQualification
   addEmployeeQualification(form: FormGroup) {
     form.get("approvalStatus").enable();
-
+    // Send mail to HR
+    if (!this.dataToChild.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Qualification",
+          this.dataToChild.user.firstName,
+          this.dataToChild.user.lastName,
+          this.dataToChild.user.email,
+          this.dataToChild.user.userId
+        )
+        .subscribe();
+      if (form.get("approval_status").value !== 2) {
+        form.get("approval_status").setValue(2);
+      }
+    }
     const payload = form.value;
     if (!form.valid) {
       form.get("approvalStatus").disable();

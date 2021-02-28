@@ -6,15 +6,19 @@
       <div class="card-header header-bg-color">
         <h3><b> Appraisal Objective Form </b></h3>
       </div>
-      <div class="card-body">
+      
+      <br>
         <div class="col-auto float-right ml-auto">
           <a class="btn delete-btn hint" routerLink="/performance/appraisal-objective-view"><span class="hint-text">Back</span><i class=" fa fa-backward"></i></a>
-
+  
           <a class="btn add-btn hint"
             data-target="#add_appraisal_objectives" routerLink="/performance/appraisal-objectives"><span class="hint-text">Continue Objective</span><i class="fa fa-play"></i>
           </a>
-
         </div>
+  
+      
+      
+      <div class="card-body">
         <form [formGroup]="appraisalObjectiveForm">
           <div class="row">
 
