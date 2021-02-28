@@ -13,9 +13,14 @@ import { SharedModule } from "src/app/shared/shared.module";
 import { KeyPerformanceIndicatorsComponent } from "./key-performance-indicators/key-performance-indicators.component";
 import { GradeSettingComponent } from "./grade-setting/grade-setting.component";
 import { AppraisalPreferenceComponent } from "./appraisal-preference/appraisal-preference.component";
+import { AppraisalObjectiveViewComponent } from './appraisal-objective-view/appraisal-objective-view.component';
+import { AppraisalObjectiveFormComponent } from "./appraisal-objective-form/appraisal-objective-form.component";
+import { AppraisalObjectivesComponent } from './appraisal-objectives/appraisal-objectives.component';
+
+
 
 @NgModule({
-  declarations: [PerformanceManagementComponent, KpiCategoryComponent,KeyPerformanceIndicatorsComponent,GradeSettingComponent, PointSettingsComponent,AppraisalPreferenceComponent],
+  declarations: [PerformanceManagementComponent, KpiCategoryComponent,KeyPerformanceIndicatorsComponent,GradeSettingComponent, PointSettingsComponent,AppraisalPreferenceComponent, AppraisalObjectiveViewComponent,AppraisalObjectiveFormComponent, AppraisalObjectivesComponent],
   imports: [
     CommonModule,
     DataTablesModule,

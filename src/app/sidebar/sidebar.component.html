@@ -324,7 +324,14 @@
                 (urlComplete.mainUrl === 'performance' &&
                   urlComplete.subUrl === 'point-settings')||
                 (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'appraisal-preference')
+                  urlComplete.subUrl === 'appraisal-preference')||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-objective-view')||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-objective-form')||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-objectives')
+                
                 
             }">
             <a href="javascript:" [ngClass]="{
@@ -336,9 +343,16 @@
                   (urlComplete.mainUrl === 'performance' &&
                     urlComplete.subUrl === 'grade-setting')||
                   (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'point-settings')||
-                (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'appraisal-preference')
+                    urlComplete.subUrl === 'point-settings')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'appraisal-preference')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'appraisal-objective-view')||
+                    (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-objective-form')||
+                  (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-objectives')
+                  
 
               }" class="noti-dot"><i class="la la-chart-bar"></i> <span> Performance</span>
               <span class="menu-arrow"></span></a>
@@ -353,7 +367,13 @@
                   (urlComplete.mainUrl === 'performance' &&
                     urlComplete.subUrl === 'point-settings')||
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'appraisal-preference')
+                    urlComplete.subUrl === 'appraisal-preference')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'appraisal-objective-view')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'appraisal-objective-form')||
+                 (urlComplete.mainUrl === 'performance' &&
+                   urlComplete.subUrl === 'appraisal-objectives')
                     ? 'block'
                     : 'none'
               }">
@@ -374,19 +394,39 @@
                     active:
                       urlComplete.subUrl === 'grade-setting'
                   }">Grade Setting</a>
+              </li>
 
               <li routerLink="/performance/point-settings">
                 <a href="javascript:" [ngClass]="{
                     active:
                       urlComplete.subUrl === 'point-settings'
                   }">Point Settings</a>
-                  
+              </li> 
               <li routerLink="/performance/appraisal-preference">
                     <a href="javascript:" [ngClass]="{
                         active:
                           urlComplete.subUrl === 'appraisal-preference'
                       }">Appraisal Preference</a>
               </li>
+              <li routerLink="/performance/appraisal-objective-view">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'appraisal-objective-view'
+                  }">Appraisal Objective View</a>
+              </li>
+              <li routerLink="/performance/appraisal-objective-form">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'appraisal-objective-form'
+                  }">Appraisal Objective Form</a>
+              </li>
+              <li routerLink="/performance/appraisal-objectives">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'appraisal-objectives'
+                  }">Appraisal Objectives</a>
+              </li>
+              
             </ul>
           </li>
           <!--/Performance Management-->

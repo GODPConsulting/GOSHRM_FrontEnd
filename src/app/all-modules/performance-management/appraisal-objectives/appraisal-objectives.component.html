@@ -1,0 +1,42 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+<div *ngIf="!pageLoading" class="content container-fluid">
+  <!-- page Header Start -->
+  <div class="card">
+    <div class="card-header header-bg-color">
+      <h5><b>Appraisal Objectives</b></h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-auto float-right ml-auto">
+          <a class="btn delete-btn hint"><span class="hint-text">Delete</span><i class=" fa fa-trash"></i></a>
+
+          <a class="btn add-btn hint" routerLink="/performance/appraisal-objective-form"
+            data-target="#add_appraisal_objectives"><span class="hint-text">Add</span><i class="fa fa-plus"></i>
+          </a>
+
+
+        </div>
+        <table class="table table-striped custom-table datatable table-hover">
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" />
+              </th>
+              <th>KPI Type</th>
+              <th>objectives</th>
+              <th>Success targets</th>
+              <th>Key Action</th>
+              <th>Targets date</th>
+              <th>weights(%)</th>
+            </tr>
+          </thead>
+          <tbody>
+
+
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

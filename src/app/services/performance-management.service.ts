@@ -1,13 +1,18 @@
 import { ApiService } from "./api.service";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
-import { tap } from "rxjs/operators";
+import { catchError, map, tap } from "rxjs/operators";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
 })
 export class PerformanceManagementService {
   constructor(private apiService: ApiService) {}
+
+  handleError(err: HttpErrorResponse) {
+    return throwError(err)
+  }
 
   getkpiCategory() {
     return this.apiService.get("/performancesetup/get/all/kpi-categories");
@@ -44,10 +49,7 @@ export class PerformanceManagementService {
     );
   }
   
-  handleError(err) {
-    console.log(err)
-    return throwError(err)
-  }
+ 
   addKPIndicator(payload: any) {
     return this.apiService.post("/performancesetup/add/update/kpi-indicator", payload);
   }
@@ -98,6 +100,14 @@ export class PerformanceManagementService {
 
   getAppraisalCycleByCompanyId(id){
     return this.apiService.get(`/performancesetup/get/single/appraisal-circle/companyId?setupId=${id}`);
+  }
+  getAppraisalCycleByStatus(){
+    return this.apiService.get("/performancesetup/get/single/appraisal-circle/status");
+  }
+  getCareerByStaffId(id){
+    return this.apiService.get(`/hrm/get/single/employee/career/staffId?staffId=${id}`).pipe(tap(), map(response => {
+      return response
+    }), catchError(this.handleError));
   }
 
 }

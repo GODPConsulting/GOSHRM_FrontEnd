@@ -19,7 +19,7 @@ export class GradeSettingComponent implements OnInit {
   loading: boolean;
   gradeSettings: any[] = [];
   selectedId: number[] = [];
-  pageLoading: boolean = false;
+  pageLoading: boolean;
   spinner: boolean;
 
 

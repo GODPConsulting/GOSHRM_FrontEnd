@@ -1,0 +1,110 @@
+<app-Loading *ngIf="pageLoading"></app-Loading>
+<div *ngIf="!pageLoading" class="content container-fluid">
+  <!-- Page Header Starts -->
+  <div id="add_appraisal_objectives">
+    <div class="card">
+      <div class="card-header header-bg-color">
+        <h3><b> Appraisal Objective Form </b></h3>
+      </div>
+      <div class="card-body">
+        <div class="col-auto float-right ml-auto">
+          <a class="btn delete-btn hint" routerLink="/performance/appraisal-objective-view"><span class="hint-text">Back</span><i class=" fa fa-backward"></i></a>
+
+          <a class="btn add-btn hint"
+            data-target="#add_appraisal_objectives" routerLink="/performance/appraisal-objectives"><span class="hint-text">Continue Objective</span><i class="fa fa-play"></i>
+          </a>
+
+        </div>
+        <form [formGroup]="appraisalObjectiveForm">
+          <div class="row">
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Review year <span class="text-danger">*</span></label>
+                <select class="form-control" [class.invalid]="
+                appraisalObjectiveForm.get('reviewYear').invalid &&
+                appraisalObjectiveForm.get('reviewYear').touched
+                  " formControlName="reviewYear"> 
+                  <option selected value="">Review Year</option>
+                  <option *ngFor="let row of reviewStatus" value="{{ row.id }}"> {{ row.reviewYear }}
+                  </option>
+              </select>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Review Period <span class="text-danger">*</span></label><select class="form-control" [class.invalid]="
+                appraisalObjectiveForm.get('period').invalid &&
+                appraisalObjectiveForm.get('period').touched
+                  " formControlName="period"> 
+                  <option selected value="">Review Period</option>
+                  <option *ngFor="let row of reviewStatus" value="{{ row.id }}"> {{ row.period }}
+                  </option>
+              </select>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Employee Name<span class="text-danger">*</span></label>
+                <input class="form-control" [attr.disabled]="true" type="text" formControlName="staffName">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Job Grade <span class="text-danger">*</span></label>
+                <input class="form-control" [attr.disabled]="true" type="text" formControlName="job_Grade">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Job Title <span class="text-danger">*</span></label>
+                <input class="form-control" [attr.disabled]="true" type="text" formControlName="job_title" >
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header header-bg-color">
+                  <h5><b> Line Manager Detail</b></h5>
+                </div>
+                <div class="card-body">
+                  <div>
+                    <label>Name <span class="text-danger">*</span></label>
+                    <input class="form-control" [attr.disabled]="true" type="text" formControlName="line_ManagerName">
+                  </div>
+                  <div>
+                    <label>comments <span class="text-danger">*</span></label>
+                    <textarea class="form-control" [attr.disabled]="true" type="text"   rows="5"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card">
+                <div class=" card-header header-bg-color">
+                  <h5><b>Performance Reviewer</b></h5>
+                </div>
+                <div class="card-body">
+                  <div>
+                    <label> First Reviewer <span class="text-danger">*</span></label>
+                    <input class="form-control" [attr.disabled]="true" type="text" formControlName="first_Level_ReviewerName">
+                  </div>
+                  <div>
+                    <label> Second Reviewer </label><input class="form-control" [attr.disabled]="true" type="text" formControlName="second_Level_ReviewerName">
+                  </div>
+                  <div>
+                    <label>Third Reviewer</label><input class="form-control" [attr.disabled]="true" type="text" formControlName="third_Level_ReviewerName">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

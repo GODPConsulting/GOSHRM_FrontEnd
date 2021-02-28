@@ -6,6 +6,9 @@ import { PerformanceManagementComponent } from "./performance-management.compone
 import { KeyPerformanceIndicatorsComponent } from "./key-performance-indicators/key-performance-indicators.component";
 import { GradeSettingComponent } from "./grade-setting/grade-setting.component";
 import { AppraisalPreferenceComponent } from "./appraisal-preference/appraisal-preference.component";
+import { AppraisalObjectiveViewComponent } from "./appraisal-objective-view/appraisal-objective-view.component";
+import { AppraisalObjectiveFormComponent } from "./appraisal-objective-form/appraisal-objective-form.component";
+import { AppraisalObjectivesComponent } from "./appraisal-objectives/appraisal-objectives.component";
 
 const routes: Routes = [
   {
@@ -31,7 +34,20 @@ const routes: Routes = [
       {
         path: "appraisal-preference",
         component: AppraisalPreferenceComponent,
+      },
+      {
+        path: "appraisal-objective-view",
+        component: AppraisalObjectiveViewComponent,
+      },
+      {
+        path: "appraisal-objective-form",
+        component: AppraisalObjectiveFormComponent,
+      },
+      {
+        path: "appraisal-objectives",
+        component: AppraisalObjectivesComponent,
       }
+      
     ],
   },
 ];

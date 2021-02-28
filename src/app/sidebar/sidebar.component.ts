@@ -90,6 +90,7 @@ export class SidebarComponent implements OnInit {
   getEmployeeByEmail(email: string) {
     this.employeeService.getEmployeeByEmail(email).subscribe((data) => {
       this.hrmUser = data.employeeList[0];
+      localStorage.setItem('user', JSON.stringify(this.hrmUser))
       this.hrmUser.branchId = this.user.branchId;
       this.hrmUser.branchName = this.user.branchName;
       this.hrmUser.companyId = this.user.companyId;
