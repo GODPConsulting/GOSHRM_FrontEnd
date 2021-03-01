@@ -23,7 +23,7 @@ export class AppraisalCyclePageComponent implements OnInit {
   @Input() staffId: number;
 
   //Form
-  kpiCategoryForm: FormGroup;
+  appraisalCyclePageForm: FormGroup;
 
   performanceAppraisalCycle: any = {};
   years: any[] = [];
@@ -134,7 +134,7 @@ export class AppraisalCyclePageComponent implements OnInit {
   }
 
   edit(row) {
-    this.cardFormTitle = "Edit Point Settings";
+    this.cardFormTitle = "Edit Appraisal Cycle";
     this.appraisalCycleForm.patchValue({
       id: row.id,
       reviewYear: row.reviewYear,

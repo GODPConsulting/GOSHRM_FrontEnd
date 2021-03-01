@@ -168,4 +168,22 @@ export class PerformanceManagementService {
       `/performancesetup/get/single/appraisal-circle/companyId?setupId=${id}`
     );
   }
+
+  getAppraisalFeedbacks() {
+    return this.apiService.get("/performancesetup/get/all/appraisal-feedbacks");
+  }
+
+  postAppraisalFeedback(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup/add/update/appraisal-feedback",
+      payload
+    );
+  }
+
+  deleteAppraisalFeedback(payload: Object) {
+    return this.apiService.post(
+      "/performancesetup​/delete​/appraisal-feedback",
+      payload
+    );
+  }
 }

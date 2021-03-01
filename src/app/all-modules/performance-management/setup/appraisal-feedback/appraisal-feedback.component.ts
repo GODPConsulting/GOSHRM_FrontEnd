@@ -9,11 +9,11 @@ import swal from "sweetalert2";
 declare const $: any;
 
 @Component({
-  selector: "app-appraisal-cycle",
-  templateUrl: "./appraisal-cycle.component.html",
-  styleUrls: ["./appraisal-cycle.component.css"],
+  selector: "app-appraisal-feedback",
+  templateUrl: "./appraisal-feedback.component.html",
+  styleUrls: ["./appraisal-feedback.component.css"],
 })
-export class AppraisalCycleComponent implements OnInit {
+export class AppraisalFeedbackComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   cardFormTitle: string;
   pageLoading: boolean = false; // controls the visibility of the page loader
@@ -25,29 +25,25 @@ export class AppraisalCycleComponent implements OnInit {
   @Input() staffId: number;
 
   //Form
-  appraisalCycleForm: FormGroup;
+  appraisalFeedbackForm: FormGroup;
 
-  performanceAppraisalCycle: any = {};
+  performanceAppraisalFeedback: any = {};
   years: any[] = [];
 
-  appraisalCycles: any[] = [];
+  appraisalFeedbacks: any[] = [];
   selectedId: number[] = [];
   company: string;
-  reviewYear: string = "";
-  startDate: any;
-  endDate: any;
-  dueDate: any;
-  calenderRange: any;
-  officeId: string = "";
-  reviewerOneWeight: any;
-  reviewerTwoWeight: any;
-  reviewerThreeWeight: any;
-  revieweeWeight: any;
-  status: string;
-  filteredArray: any[] = [];
+  reviewPeriod: string = "";
+  startTitle: any;
+  job_GradeId: any;
+  submittedForReview: any;
+  reviewCycleStatus: any;
+  dueDate: string = "";
+  table: any;
+  finalComment: any;
+
   public offices: number[] = [];
-  appraisalCycleUploadForm: any;
-  public employeesList: any = [];
+  public jobGrades: any[] = [];
 
   constructor(
     private FormBuilder: FormBuilder,
@@ -55,11 +51,7 @@ export class AppraisalCycleComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
     private _location: Location
-  ) {
-    this.appraisalCycleUploadForm = this.FormBuilder.group({
-      uploadInput: [""],
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.dtOptions = {
@@ -82,64 +74,50 @@ export class AppraisalCycleComponent implements OnInit {
         null,
         null,
         null,
-        null,
-        null,
       ],
       order: [[1, "asc"]],
     };
-    this.getAppraisalCycles();
-    this.cardFormTitle = "Add Appraisal Cycle";
-    this.createYears(2000, 2050);
-    this.officeId;
-    this.getStaffDepartments();
+    this.getAppraisalFeedbacks();
+    this.getJobGrade();
+    this.cardFormTitle = "Add Appraisal Feedback";
   }
 
-  createYears(from, to) {
-    for (let i = from; i <= to; i++) {
-      this.years.push({ year: i });
-    }
-  }
-
-  submitAppraisalCycleForm() {
+  submitAppraisalFeedbackForm() {
     const payload = {
-      reviewYear: this.reviewYear,
+      reviewPeriod: this.reviewPeriod,
       company: +this.company,
-      startDate: this.startDate,
-      endDate: this.endDate,
+      startTitle: this.startTitle,
+      job_GradeId: this.job_GradeId,
+      submittedForReview: this.submittedForReview,
+      reviewCycleStatus: this.reviewCycleStatus,
       dueDate: this.dueDate,
-      reviewerOneWeight: this.reviewerOneWeight,
-      reviewerTwoWeight: this.reviewerTwoWeight,
-      reviewerThreeWeight: this.reviewerThreeWeight,
-      revieweeWeight: this.revieweeWeight,
-      status: +this.status,
-      calenderRange: this.calenderRange,
+      table: this.table,
+      finalComment: this.finalComment,
     };
 
     this.spinner = true;
     return this.performanceManagementService
-      .postAppraisalCycle(payload)
+      .postAppraisalFeedback(payload)
       .subscribe(
         (res) => {
           this.spinner = false;
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", message, "success");
-            $("#appraisal_cycle_modal").modal("hide");
+            $("#appraisal_feedback_modal").modal("hide");
 
-            this.reviewYear = "";
+            this.reviewPeriod = "";
             this.company = "";
-            this.startDate = "";
-            this.endDate = "";
+            this.startTitle = "";
+            this.job_GradeId = "";
+            this.submittedForReview = "";
+            this.reviewCycleStatus = "";
             this.dueDate = "";
-            this.reviewerOneWeight = "";
-            this.reviewerTwoWeight = "";
-            this.reviewerThreeWeight = "";
-            this.revieweeWeight = "";
-            this.status = "";
-            this.calenderRange = "";
+            this.table = "";
+            this.finalComment = "";
           }
 
-          this.getAppraisalCycles();
+          this.getAppraisalFeedbacks();
         },
         (err) => {
           this.spinner = false;
@@ -149,12 +127,26 @@ export class AppraisalCycleComponent implements OnInit {
       );
   }
 
-  getAppraisalCycles() {
+  getAppraisalFeedbacks() {
     this.pageLoading = true;
-    this.performanceManagementService.getAppraisalCycles().subscribe(
+    this.performanceManagementService.getAppraisalFeedbacks().subscribe(
       (data) => {
         this.pageLoading = false;
-        this.appraisalCycles = data.setupList;
+        this.appraisalFeedbacks = data.setupList;
+      },
+      (err) => {
+        this.pageLoading = false;
+      }
+    );
+  }
+
+  getJobGrade() {
+    this.pageLoading = true;
+    return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
+      (data) => {
+        this.pageLoading = false;
+
+        this.jobGrades = data.setuplist;
       },
       (err) => {
         this.pageLoading = false;
@@ -163,21 +155,20 @@ export class AppraisalCycleComponent implements OnInit {
   }
 
   edit(row) {
-    this.cardFormTitle = "Edit Appraisal Cycle";
-    this.appraisalCycleForm.patchValue({
+    this.cardFormTitle = "Edit Point Settings";
+    this.appraisalFeedbackForm.patchValue({
       id: row.id,
-      reviewYear: row.reviewYear,
+      reviewPeriod: row.reviewPeriod,
       company: row.company,
-      startDate: row.startDate,
-      endDate: row.endDate,
-      dueDate: row.dueDate,
-      reviewerOneWeight: row.reviewerOneWeight,
-      reviewerTwoWeight: row.reviewerTwoWeight,
-      reviewerThreeWeight: row.reviewerThreeWeight,
-      revieweeWeight: row.revieweeWeight,
-      status: row.status,
+      startTitle: row.startTitle,
+      job_GradeId: row.job_GradeId,
+      submittedForReview: row.submittedForReview,
+      reviewCycleStatus: row.reviewCycleStatus,
+      dateDue: row.dateDue,
+      table: row.table,
+      finalComment: row.finalComment,
     });
-    $("#appraisal_cycle_modal").modal("show");
+    $("#appraisal_feedback_modal").modal("show");
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
@@ -215,14 +206,14 @@ export class AppraisalCycleComponent implements OnInit {
         if (result.value) {
           this.pageLoading = true;
           return this.performanceManagementService
-            .deleteAppraisalCycle(payload)
+            .deleteAppraisalFeedback(payload)
             .subscribe(
               (res) => {
                 this.pageLoading = false;
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getAppraisalCycles();
+                    this.getAppraisalFeedbacks();
                   });
                 } else {
                   swal.fire("GOSHRM", message, "error");
@@ -235,56 +226,5 @@ export class AppraisalCycleComponent implements OnInit {
         }
       });
     this.selectedId = [];
-  }
-
-  getStaffDepartments() {
-    this.pageLoading = true;
-    return this.setupService
-      .getData("/company/get/all/companystructures")
-      .subscribe(
-        (data) => {
-          this.pageLoading = false;
-          this.offices = data.companyStructures;
-        },
-        (err) => {
-          this.pageLoading = false;
-        }
-      );
-  }
-
-  filterByCompany(id) {
-    if (id == 0) {
-      this.filteredArray = this.employeesList;
-    } else {
-      this.filteredArray = this.employeesList.filter(
-        (item) => item.staffOfficeId == id
-      );
-    }
-  }
-
-  initializeForm() {
-    throw new Error("Method not implemented.");
-  }
-
-  addItemId(event, id: number) {
-    if (event.target.checked) {
-      if (!this.selectedId.includes(id)) {
-        this.selectedId.push(id);
-      }
-    } else {
-      this.selectedId = this.selectedId.filter((_id) => {
-        return _id !== id;
-      });
-    }
-  }
-
-  checkAll(event) {
-    if (event.target.checked) {
-      this.selectedId = this.performanceAppraisalCycle.map((item) => {
-        return item.id;
-      });
-    } else {
-      this.selectedId = [];
-    }
   }
 }

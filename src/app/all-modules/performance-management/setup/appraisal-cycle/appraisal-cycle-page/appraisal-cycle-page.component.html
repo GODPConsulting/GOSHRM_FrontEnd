@@ -42,21 +42,21 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Start Period</label>
+                            <label>Start Period</label>{{ dateObj | date }}
                             <input type="date" name="startDate" class="form-control" [(ngModel)]="startDate">
 
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>End Period</label>
+                            <label>End Period</label>{{ dateObj | date }}
                             <input type="date" name="endDate" class="form-control" [(ngModel)]="endDate">
 
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Due Date</label>
+                            <label>Due Date</label>{{ dateObj | date }}
                             <input type="date" name="dueDate" class="form-control" [(ngModel)]="dueDate">
 
                         </div>
@@ -127,7 +127,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Created On</label>
+                            <label>Created On</label>{{ dateObj | date }}
                             <input type="date" name="createdOn" class="form-control" [(ngModel)]="createdOn">
 
                         </div>
@@ -141,7 +141,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Updated On</label>
+                            <label>Updated On</label>{{ dateObj | date }}
                             <input type="date" name="updatedOn" class="form-control" [(ngModel)]="updatedOn">
 
                         </div>
@@ -156,7 +156,7 @@
                                     [routerLink]="['/performance/setup/appraisal-cycle']"
                                     routerLinkActive="router-link-active">Back</button>
 
-                                <button class="btn btn-primary btn-sm submit-btn" type="submit" [disabled]="spinner">
+                                <button class="btn btn-primary" type="submit" [disabled]="spinner">
                                     <span *ngIf="!spinner">Submit</span>
                                     <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
                                 </button>
