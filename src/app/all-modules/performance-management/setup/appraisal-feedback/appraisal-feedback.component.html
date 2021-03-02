@@ -36,15 +36,32 @@
                             (change)="addItemId($event, row.id)" />
                     </td>
                     <td>{{i +1}}</td>
-                    <td><a
-                            [routerLink]="['/performance/setup/appraisal-feedback-page', row.reviewPeriod]"></a>{{row.reviewPeriod}}
+                    <td><a *ngIf='reviewPeriod'
+                            routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
+                            data-target="#appraisal_feedback_modal"></a>{{row.reviewPeriod}}
                     </td>
-                    <td>{{row.jobTitleName}}</td>
-                    <td>{{row.jobGradeName}}</td>
-                    <td>{{row.submittedForReview}}</td>
-                    <td>{{row.reviewStatusName}}</td>
-                    <td>{{row.dueDate}}</td>
-                    <td>{{row.comment}}</td>
+                    <td><a *ngIf='jobTitleName'
+                            routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
+                            data-target="#appraisal_feedback_modal"></a>{{row.jobTitleName}}
+                    </td>
+                    <td><a *ngIf='jobGradeName'
+                            routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
+                            data-target="#appraisal_feedback_modal"></a>{{row.jobGradeName}}
+                    </td>
+                    <td><a *ngIf='submittedForReview'
+                            routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
+                            data-target="#appraisal_feedback_modal"></a>{{row.submittedForReview}}
+                    </td>
+                    <td><a *ngIf='reviewStatusName'
+                            routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
+                            data-target="#appraisal_feedback_modal"></a>{{row.reviewStatusName}}
+                    </td>
+                    <td><a *ngIf='dueDate' routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
+                            data-target="#appraisal_feedback_modal"></a>{{row.dueDate}}
+                    </td>
+                    <td><a *ngIf='comment' routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
+                            data-target="#appraisal_feedback_modal"></a>{{row.comment}}
+                    </td>
 
                 </tr>
             </tbody>
