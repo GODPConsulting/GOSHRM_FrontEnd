@@ -19,6 +19,7 @@ import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appra
 import { AppraisalCycleComponent } from "./setup/appraisal-cycle/appraisal-cycle.component";
 import { AppraisalCyclePageComponent } from "./setup/appraisal-cycle/appraisal-cycle-page/appraisal-cycle-page.component";
 import { AppraisalFeedbackPageComponent } from './setup/appraisal-feedback/appraisal-feedback-page/appraisal-feedback-page.component';
+import { AppraisalsComponent } from './setup/appraisal-cycle/appraisals/appraisals.component';
 @NgModule({
   declarations: [
     PerformanceManagementComponent,
@@ -32,6 +33,7 @@ import { AppraisalFeedbackPageComponent } from './setup/appraisal-feedback/appra
     AppraisalCycleComponent,
     AppraisalCyclePageComponent,
     AppraisalFeedbackPageComponent,
+    AppraisalsComponent,
   ],
   imports: [
     CommonModule,
