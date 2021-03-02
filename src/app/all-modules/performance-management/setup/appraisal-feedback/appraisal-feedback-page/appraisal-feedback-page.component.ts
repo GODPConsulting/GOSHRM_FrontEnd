@@ -36,13 +36,15 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   company: string;
   reviewPeriod: string = "";
   startTitle: any;
-  job_GradeId: any;
+  jobGradeId: any;
+  jobTitleId: any;
   submittedForReview: any;
-  reviewCycleStatus: any;
+  reviewCircleStatus: any;
   dueDate: string = "";
+  comment: any;
   table: any;
-  firstLevelReviewer: any;
-  secondLevelReviewer: any;
+  firstLevelReviewerId: any;
+  secondLevelReviewerId: any;
   tableDisabled: boolean = false;
 
   public offices: number[] = [];
@@ -96,12 +98,15 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     const payload = {
       reviewPeriod: this.reviewPeriod,
       company: +this.company,
-      startTitle: this.startTitle,
-      job_GradeId: this.job_GradeId,
+      jobGradeId: this.jobGradeId,
+      jobTitleId: this.jobTitleId,
       submittedForReview: this.submittedForReview,
-      reviewCycleStatus: this.reviewCycleStatus,
+      reviewCircleStatus: this.reviewCircleStatus,
       dueDate: this.dueDate,
       table: this.table,
+      comment: this.comment,
+      firstLevelReviewerId: this.firstLevelReviewerId,
+      secondLevelReviewerId: this.secondLevelReviewerId,
     };
 
     this.spinner = true;
@@ -117,14 +122,15 @@ export class AppraisalFeedbackPageComponent implements OnInit {
 
             this.reviewPeriod = "";
             this.company = "";
-            this.startTitle = "";
-            this.job_GradeId = "";
+            this.jobGradeId = "";
+            this.jobTitleId + "";
             this.submittedForReview = "";
-            this.reviewCycleStatus = "";
+            this.reviewCircleStatus = "";
             this.dueDate = "";
             this.table = "";
-            this.firstLevelReviewer = "";
-            this.secondLevelReviewer = "";
+            this.comment = "";
+            this.firstLevelReviewerId = "";
+            this.secondLevelReviewerId = "";
           }
 
           this.getAppraisalFeedbacks();
@@ -171,19 +177,20 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
 
   edit(row) {
-    this.cardFormTitle = "Edit Point Settings";
+    this.cardFormTitle = "Edit Appraisal Feedback";
     this.appraisalFeedbackForm.patchValue({
       id: row.id,
       reviewPeriod: row.reviewPeriod,
       company: row.company,
       startTitle: row.startTitle,
-      jobGrade: row.job_grade,
+      jobGradeId: row.jobGradeId,
+      jobTitleId: row.jobTitleId,
       submittedForReview: row.submittedForReview,
       reviewCycleStatus: row.reviewCycleStatus,
+      firstLevelReviewerId: row.firstLevelReviewerId,
       dateDue: row.dateDue,
-      firstLevelReviewer: row.firstLevelReviewer,
-      secondLevelReviewer: row.secondLevelReviewer,
       table: row.table,
+      comment: row.comment,
     });
     $("#appraisal_feedback_modal").modal("show");
   }

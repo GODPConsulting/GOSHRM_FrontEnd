@@ -1,4 +1,3 @@
-import { JwtService } from './../../../../services/jwt.service';
 import { id } from "./../../../../../assets/all-modules-data/id";
 import { SetupService } from "src/app/services/setup.service";
 import { Validators } from "@angular/forms";
@@ -34,22 +33,22 @@ export class AppraisalFeedbackComponent implements OnInit {
   years: any[] = [];
 
   appraisalFeedbacks: any[] = [];
-  selectedId: number[] = [];
+  selectedId: any[] = [];
   company: string;
   reviewPeriod: string = "";
-  startTitle: any;
   jobGradeId: any;
+  jobTitleName: any;
   submittedForReview: any;
-  reviewCycleStatus: any;
+  reviewCircleStatus: any;
   dueDate: string = "";
   table: any;
-  finalComment: any;
+  comment: any;
   firstLevelReviewerId: any;
   secondLevelReviewerId: any;
 
   public offices: number[] = [];
   public jobGrades: any[] = [];
-  public staffId = this.jwtService.;
+  public user;
 
   constructor(
     private FormBuilder: FormBuilder,
@@ -61,6 +60,9 @@ export class AppraisalFeedbackComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.user = this.jwtService.getHrmUserDetails();
+    console.log(this.user.staffId);
+
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -84,7 +86,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       ],
       order: [[1, "asc"]],
     };
-    this.getAppraisalFeedbacks(2);
+    this.getAppraisalFeedbacks(this.user.staffId);
     this.getJobGrade();
     this.cardFormTitle = "Add Appraisal Feedback";
   }
@@ -93,13 +95,15 @@ export class AppraisalFeedbackComponent implements OnInit {
     const payload = {
       reviewPeriod: this.reviewPeriod,
       company: +this.company,
-      startTitle: this.startTitle,
       jobGradeId: this.jobGradeId,
+      jobTitleName: this.jobTitleName,
       submittedForReview: this.submittedForReview,
-      reviewCycleStatus: this.reviewCycleStatus,
+      reviewCircleStatus: this.reviewCircleStatus,
       dueDate: this.dueDate,
       table: this.table,
-      finalComment: this.finalComment,
+      comment: this.comment,
+      firstLevelReviewerId: this.firstLevelReviewerId,
+      secondLevelReviewerId: this.secondLevelReviewerId,
     };
 
     this.spinner = true;
@@ -115,18 +119,18 @@ export class AppraisalFeedbackComponent implements OnInit {
 
             this.reviewPeriod = "";
             this.company = "";
-            this.startTitle = "";
             this.jobGradeId = "";
+            this.jobTitleName + "";
             this.submittedForReview = "";
-            this.reviewCycleStatus = "";
+            this.reviewCircleStatus = "";
             this.dueDate = "";
             this.table = "";
-            this.finalComment = "";
+            this.comment = "";
             this.firstLevelReviewerId = "";
             this.secondLevelReviewerId = "";
           }
 
-          this.getAppraisalFeedbacks(2);
+          this.getAppraisalFeedbacks(this.user.staffId);
         },
         (err) => {
           this.spinner = false;
@@ -138,21 +142,18 @@ export class AppraisalFeedbackComponent implements OnInit {
 
   getAppraisalFeedbacks(id) {
     this.pageLoading = true;
-    this.performanceManagementService.getAppraisalFeedbacks(id).subscribe(
-      (data) => {
-        this.pageLoading = false;
-        this.appraisalFeedbacks = data.setupList;
-        console.log(
-          data,
-          this.appraisalFeedbacks,
-          this.jobGradeId,
-          this.reviewPeriod
-        );
-      },
-      (err) => {
-        this.pageLoading = false;
-      }
-    );
+    this.performanceManagementService
+      .getAppraisalFeedbacks(this.user.staffId)
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          this.appraisalFeedbacks = data.objectiveList;
+          console.log(this.appraisalFeedbacks);
+        },
+        (err) => {
+          this.pageLoading = false;
+        }
+      );
   }
 
   getJobGrade() {
@@ -170,18 +171,19 @@ export class AppraisalFeedbackComponent implements OnInit {
   }
 
   edit(row) {
-    this.cardFormTitle = "Edit Point Settings";
+    this.cardFormTitle = "Edit Appraisal Feedback";
     this.appraisalFeedbackForm.patchValue({
       id: row.id,
       reviewPeriod: row.reviewPeriod,
       company: row.company,
       startTitle: row.startTitle,
-      job_GradeId: row.job_GradeId,
+      jobGradeId: row.jobGradeId,
+      jobTitleId: row.jobTitleId,
       submittedForReview: row.submittedForReview,
       reviewCycleStatus: row.reviewCycleStatus,
       dateDue: row.dateDue,
       table: row.table,
-      finalComment: row.finalComment,
+      comment: row.comment,
     });
     $("#appraisal_feedback_modal").modal("show");
   }
@@ -192,7 +194,7 @@ export class AppraisalFeedbackComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(event, form, this.user.staffId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -228,7 +230,7 @@ export class AppraisalFeedbackComponent implements OnInit {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getAppraisalFeedbacks(2);
+                    this.getAppraisalFeedbacks(this.user.staffId);
                   });
                 } else {
                   swal.fire("GOSHRM", message, "error");
