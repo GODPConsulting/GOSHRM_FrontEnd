@@ -186,4 +186,10 @@ export class PerformanceManagementService {
       payload
     );
   }
+
+  getAppraisalObjectives() {
+    return this.apiService.get(
+      "/performance-appraisal/get/all/appraisal-objectives"
+    );
+  }
 }

@@ -14,6 +14,10 @@ export class EmployeeService {
     return this.apiService.post("/email/send/emails", payload);
   }
 
+  getEmailById(id: number) {
+    return this.apiService.get(`/email/get/single/email?EmailId=${id}`);
+  }
+
   getEmployees() {
     return this.apiService.get("/hrm/get/all/staffs");
   }

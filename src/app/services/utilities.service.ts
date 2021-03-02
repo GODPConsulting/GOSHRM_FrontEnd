@@ -128,7 +128,7 @@ export class UtilitiesService {
 
   checkAllBoxes(event: Event, dataArray: any[]) {
     if ((<HTMLInputElement>event.target).checked) {
-      return dataArray.map((item) => item.id);
+      return dataArray.map((item) => item.id | item.emailMessageId);
     }
     return [];
   }
