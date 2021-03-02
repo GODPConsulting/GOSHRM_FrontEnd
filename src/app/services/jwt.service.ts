@@ -1,25 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class JwtService {
-
-  constructor() { }
+  constructor() {}
   async saveToken(token) {
-    await localStorage.setItem('token', token)
+    await localStorage.setItem("token", token);
   }
   getToken() {
-    return window.localStorage.getItem('token')
+    return window.localStorage.getItem("token");
   }
   async destroyToken() {
-   await window.localStorage.removeItem("token");
+    await window.localStorage.removeItem("token");
   }
   getUserActivities() {
     return JSON.parse(window.localStorage.getItem("userActivities"));
   }
   saveUserDetails(user) {
     window.localStorage.setItem("userDetails", JSON.stringify(user));
+  }
+  saveHrmUserDetails(hrmUser) {
+    window.localStorage.setItem("hrmUserDetails", JSON.stringify(hrmUser));
+  }
+  getHrmUserDetails() {
+    return JSON.parse(window.localStorage.getItem("hrmUserDetails"));
   }
   getUserDetails() {
     return JSON.parse(window.localStorage.getItem("userDetails"));
@@ -30,5 +35,4 @@ export class JwtService {
       JSON.stringify(activities)
     );
   }
-
 }

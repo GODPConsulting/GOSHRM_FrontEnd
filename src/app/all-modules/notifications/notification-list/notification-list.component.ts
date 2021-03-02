@@ -35,7 +35,6 @@ export class NotificationListComponent implements OnInit {
     this.dataService.currentMail.subscribe((result) => {
       this.pageLoading = false;
       this.mails = result;
-      console.log(this.mails);
     });
   }
 

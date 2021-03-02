@@ -22,7 +22,6 @@ export class NotificationDetailsComponent implements OnInit {
       this.employeeService.getEmailById(this.emailId).subscribe((data) => {
         this.pageLoading = false;
         this.mail = data.emails[0];
-        console.log(this.mail);
       });
     });
   }

@@ -28,7 +28,6 @@ export class SidebarComponent implements OnInit {
   userRights: any[] = [];
   staffId: number;
   user: any;
-  hrmUser: any;
 
   constructor(
     private router: Router,
@@ -65,9 +64,8 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.userRights = this.jwtService.getUserActivities();
-    this.user = this.jwtService.getUserDetails();
-    this.getEmployeeByEmail(this.user.email);
+    this.userRights = this.jwtService.getUserActivities();
+    //this.user = this.jwtService.getHrmUserDetails();
 
     // Slide up and down of menus
     $(document).on("click", "#sidebar-menu a", function (e) {
@@ -84,28 +82,6 @@ export class SidebarComponent implements OnInit {
         $(this).removeClass("subdrop");
         $(this).next("ul").slideUp(350);
       }
-    });
-  }
-
-  getEmployeeByEmail(email: string) {
-    this.employeeService.getEmployeeByEmail(email).subscribe((data) => {
-      this.hrmUser = data.employeeList[0];
-      this.hrmUser.branchId = this.user.branchId;
-      this.hrmUser.branchName = this.user.branchName;
-      this.hrmUser.companyId = this.user.companyId;
-      this.hrmUser.companyName = this.user.companyName;
-      this.hrmUser.customerName = this.user.customerName;
-      this.hrmUser.departmentId = this.user.departmentId;
-      this.hrmUser.lastLoginDate = this.user.lastLoginDate;
-      this.hrmUser.staffName = this.user.staffName;
-      this.hrmUser.userStatus = this.user.status;
-      this.hrmUser.userId = this.user.userId;
-      this.hrmUser.userName = this.user.userName;
-      this.hrmUser.userRoleNames = [...this.user.roles];
-      this.hrmUser.activities = [...this.user.activities];
-      this.userRights = this.hrmUser.activities;
-      // share user data through data service
-      this.dataService.saveCurrentUser(this.hrmUser);
     });
   }
 
