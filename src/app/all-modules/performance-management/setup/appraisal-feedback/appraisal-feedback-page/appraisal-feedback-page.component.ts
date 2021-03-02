@@ -1,3 +1,4 @@
+import { id } from "./../../../../../../assets/all-modules-data/id";
 import { SetupService } from "src/app/services/setup.service";
 import { Validators } from "@angular/forms";
 import { Component, OnInit, ElementRef, Input, ViewChild } from "@angular/core";
@@ -40,6 +41,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   reviewCycleStatus: any;
   dueDate: string = "";
   table: any;
+  firstLevelReviewer: any;
+  secondLevelReviewer: any;
   tableDisabled: boolean = false;
 
   public offices: number[] = [];
@@ -120,6 +123,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
             this.reviewCycleStatus = "";
             this.dueDate = "";
             this.table = "";
+            this.firstLevelReviewer = "";
+            this.secondLevelReviewer = "";
           }
 
           this.getAppraisalFeedbacks();
@@ -134,15 +139,17 @@ export class AppraisalFeedbackPageComponent implements OnInit {
 
   getAppraisalFeedbacks() {
     this.pageLoading = true;
-    this.performanceManagementService.getAppraisalFeedbacks().subscribe(
-      (data) => {
-        this.pageLoading = false;
-        this.appraisalFeedbacks = data.setupList;
-      },
-      (err) => {
-        this.pageLoading = false;
-      }
-    );
+    this.performanceManagementService
+      .getAppraisalFeedbacksByStaffId(2)
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          this.appraisalFeedbacks = data.objectiveList;
+        },
+        (err) => {
+          this.pageLoading = false;
+        }
+      );
   }
 
   getJobGrade() {
@@ -174,6 +181,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       submittedForReview: row.submittedForReview,
       reviewCycleStatus: row.reviewCycleStatus,
       dateDue: row.dateDue,
+      firstLevelReviewer: row.firstLevelReviewer,
+      secondLevelReviewer: row.secondLevelReviewer,
       table: row.table,
     });
     $("#appraisal_feedback_modal").modal("show");

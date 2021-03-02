@@ -1,3 +1,5 @@
+import { JwtService } from './../../../../services/jwt.service';
+import { id } from "./../../../../../assets/all-modules-data/id";
 import { SetupService } from "src/app/services/setup.service";
 import { Validators } from "@angular/forms";
 import { Component, OnInit, ElementRef, Input, ViewChild } from "@angular/core";
@@ -6,6 +8,7 @@ import { PerformanceManagementService } from "src/app/services/performance-manag
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
+import { JwtService } from "src/app/services/jwt.service";
 declare const $: any;
 
 @Component({
@@ -22,7 +25,7 @@ export class AppraisalFeedbackComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
+  @Input()
 
   //Form
   appraisalFeedbackForm: FormGroup;
@@ -35,22 +38,26 @@ export class AppraisalFeedbackComponent implements OnInit {
   company: string;
   reviewPeriod: string = "";
   startTitle: any;
-  job_GradeId: any;
+  jobGradeId: any;
   submittedForReview: any;
   reviewCycleStatus: any;
   dueDate: string = "";
   table: any;
   finalComment: any;
+  firstLevelReviewerId: any;
+  secondLevelReviewerId: any;
 
   public offices: number[] = [];
   public jobGrades: any[] = [];
+  public staffId = this.jwtService.;
 
   constructor(
     private FormBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
-    private _location: Location
+    private _location: Location,
+    private jwtService: JwtService
   ) {}
 
   ngOnInit(): void {
@@ -77,7 +84,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       ],
       order: [[1, "asc"]],
     };
-    this.getAppraisalFeedbacks();
+    this.getAppraisalFeedbacks(2);
     this.getJobGrade();
     this.cardFormTitle = "Add Appraisal Feedback";
   }
@@ -87,7 +94,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       reviewPeriod: this.reviewPeriod,
       company: +this.company,
       startTitle: this.startTitle,
-      job_GradeId: this.job_GradeId,
+      jobGradeId: this.jobGradeId,
       submittedForReview: this.submittedForReview,
       reviewCycleStatus: this.reviewCycleStatus,
       dueDate: this.dueDate,
@@ -109,15 +116,17 @@ export class AppraisalFeedbackComponent implements OnInit {
             this.reviewPeriod = "";
             this.company = "";
             this.startTitle = "";
-            this.job_GradeId = "";
+            this.jobGradeId = "";
             this.submittedForReview = "";
             this.reviewCycleStatus = "";
             this.dueDate = "";
             this.table = "";
             this.finalComment = "";
+            this.firstLevelReviewerId = "";
+            this.secondLevelReviewerId = "";
           }
 
-          this.getAppraisalFeedbacks();
+          this.getAppraisalFeedbacks(2);
         },
         (err) => {
           this.spinner = false;
@@ -127,12 +136,18 @@ export class AppraisalFeedbackComponent implements OnInit {
       );
   }
 
-  getAppraisalFeedbacks() {
+  getAppraisalFeedbacks(id) {
     this.pageLoading = true;
-    this.performanceManagementService.getAppraisalFeedbacks().subscribe(
+    this.performanceManagementService.getAppraisalFeedbacks(id).subscribe(
       (data) => {
         this.pageLoading = false;
         this.appraisalFeedbacks = data.setupList;
+        console.log(
+          data,
+          this.appraisalFeedbacks,
+          this.jobGradeId,
+          this.reviewPeriod
+        );
       },
       (err) => {
         this.pageLoading = false;
@@ -213,7 +228,7 @@ export class AppraisalFeedbackComponent implements OnInit {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getAppraisalFeedbacks();
+                    this.getAppraisalFeedbacks(2);
                   });
                 } else {
                   swal.fire("GOSHRM", message, "error");
