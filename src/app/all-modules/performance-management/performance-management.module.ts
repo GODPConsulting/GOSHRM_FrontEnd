@@ -19,9 +19,9 @@ import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appra
 import { AppraisalCycleComponent } from "./setup/appraisal-cycle/appraisal-cycle.component";
 import { AppraisalCyclePageComponent } from "./setup/appraisal-cycle/appraisal-cycle-page/appraisal-cycle-page.component";
 import { AppraisalFeedbackPageComponent } from './setup/appraisal-feedback/appraisal-feedback-page/appraisal-feedback-page.component';
-import { AppraisalObjectiveViewComponent } from './appraisal-objective-view/appraisal-objective-view.component';
-import { AppraisalObjectiveFormComponent } from "./appraisal-objective-form/appraisal-objective-form.component";
-import { AppraisalObjectivesComponent } from './appraisal-objectives/appraisal-objectives.component';
+import { AppraisalObjectiveViewComponent } from './setup/appraisal-objective-view/appraisal-objective-view.component';
+import { AppraisalObjectiveFormComponent } from "./setup/appraisal-objective-form/appraisal-objective-form.component";
+import { AppraisalObjectivesComponent } from './setup/appraisal-objectives/appraisal-objectives.component';
 @NgModule({
   declarations: [
     PerformanceManagementComponent,

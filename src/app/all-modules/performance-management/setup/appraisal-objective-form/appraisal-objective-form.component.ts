@@ -31,7 +31,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user'));
     this.staffId = user.staffId;
-    console.log(this.staffId)
+    console.log(this.staffId);
     this.initializeForm();
     this.getAppraisalCycle();
     this.getCareer(this.staffId);

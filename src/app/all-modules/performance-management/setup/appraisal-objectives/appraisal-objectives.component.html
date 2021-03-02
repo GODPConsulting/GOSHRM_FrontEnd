@@ -1,0 +1,64 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+<div *ngIf="!pageLoading" class="content container-fluid">
+  <!-- page Header Start -->
+  <div class="card">
+    <div class="card-header header-bg-color">
+      <h5><b>Appraisal Objectives</b></h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-auto float-right ml-auto">
+          <a class="btn delete-btn hint" routerLink="/performance/appraisal-objective-form"><span
+              class="hint-text">Back</span><i class=" fa fa-backward"></i></a>
+
+          <a class="btn delete-btn hint"><span class="hint-text">Delete</span><i class=" fa fa-trash"></i></a>
+
+          <a class="btn add-btn hint" data-toggle="modal" data-target="#appraisal_Objectives_modal"><span class="hint-text">Add</span><i
+              class="fa fa-plus"></i>
+          </a>
+        </div>
+        <table class="table table-striped custom-table datatable table-hover">
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" />
+              </th>
+              <th>KPI Type</th>
+              <th>objectives</th>
+              <th>Success targets</th>
+              <th>Key Action</th>
+              <th>Targets date</th>
+              <th>weights(%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of objectives; let i = index">
+              <td>
+                <input type="checkbox" [checked]="selectedId.includes(row.id)" (change)="addItemId ($event, row.id)" />
+              </td>
+              <td>{{row}} </td>
+              <td>{{row}} </td>
+              <td>{{row}} </td>
+              <td>{{row}} </td>
+              <td>{{targetDate}} </td>
+              <td>{{kpiWeight}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Appraisal Objectives Modal -->
+<div id="appraisal_Objectives_modal" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="card-header header-bg-color">
+        <h5 class="modal-title"> Appraisal Objectives Modal </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeAppraisalObjectivesModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -195,4 +195,9 @@ export class PerformanceManagementService {
       payload
     );
   }
+  getAppraisalObjectives(id){
+    return this.apiService.get(`/performance-appraisal/get/single/appraisal-objective-kpis/staffId?staffId=${id}`).pipe(tap(), map(response => {
+      return response
+    }), catchError(this.handleError));
+  }
 }

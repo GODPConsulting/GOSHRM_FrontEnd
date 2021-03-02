@@ -11,9 +11,9 @@ import { KeyPerformanceIndicatorsComponent } from "./setup/key-performance-indic
 import { GradeSettingComponent } from "./setup/grade-setting/grade-setting.component";
 import { KpiToJobgradeComponent } from "./setup/kpi-to-jobgrade/kpi-to-jobgrade.component";
 import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appraisal-preference.component";
-import { AppraisalObjectiveViewComponent } from "./appraisal-objective-view/appraisal-objective-view.component";
-import { AppraisalObjectiveFormComponent } from "./appraisal-objective-form/appraisal-objective-form.component";
-import { AppraisalObjectivesComponent } from "./appraisal-objectives/appraisal-objectives.component";
+import { AppraisalObjectiveViewComponent } from "./setup/appraisal-objective-view/appraisal-objective-view.component";
+import { AppraisalObjectiveFormComponent } from "./setup/appraisal-objective-form/appraisal-objective-form.component";
+import { AppraisalObjectivesComponent } from "./setup/appraisal-objectives/appraisal-objectives.component";
 
 const routes: Routes = [
   {

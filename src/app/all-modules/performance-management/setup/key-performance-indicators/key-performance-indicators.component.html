@@ -41,7 +41,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-toggle="modal" class="pointer" *ngFor="let row of kpIndicators; let i = index">
+                        <tr  class="pointer" *ngFor="let row of kpIndicators; let i = index">
                             <td>
                                 <input type="checkbox" [checked]="selectedId.includes(row.id)"
                                     (change)="addItemId($event, row.id)" />
