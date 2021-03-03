@@ -1,3 +1,4 @@
+import { id } from "./../../assets/all-modules-data/id";
 import { ApiService } from "./api.service";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
@@ -168,8 +169,16 @@ export class PerformanceManagementService {
     );
   }
 
-  getAppraisalFeedbacks() {
-    return this.apiService.get("/performancesetup/get/all/appraisal-feedbacks");
+  getAppraisalFeedbacks(id) {
+    return this.apiService.get(
+      `/performance-appraisal/get/single/appraisal-objective/staffId?staffId=${id}`
+    );
+  }
+
+  getAppraisalFeedbacksByStaffId(id) {
+    return this.apiService.get(
+      `/performance-appraisal/get/single/appraisal-objective/staffId?staffId=${id}`
+    );
   }
 
   postAppraisalFeedback(payload: Object) {

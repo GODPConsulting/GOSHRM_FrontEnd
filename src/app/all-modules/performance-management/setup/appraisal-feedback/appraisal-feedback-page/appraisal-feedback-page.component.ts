@@ -1,3 +1,4 @@
+import { id } from "./../../../../../../assets/all-modules-data/id";
 import { SetupService } from "src/app/services/setup.service";
 import { Validators } from "@angular/forms";
 import { Component, OnInit, ElementRef, Input, ViewChild } from "@angular/core";
@@ -35,11 +36,15 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   company: string;
   reviewPeriod: string = "";
   startTitle: any;
-  job_GradeId: any;
+  jobGradeId: any;
+  jobTitleId: any;
   submittedForReview: any;
-  reviewCycleStatus: any;
+  reviewCircleStatus: any;
   dueDate: string = "";
+  comment: any;
   table: any;
+  firstLevelReviewerId: any;
+  secondLevelReviewerId: any;
   tableDisabled: boolean = false;
 
   public offices: number[] = [];
@@ -93,12 +98,15 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     const payload = {
       reviewPeriod: this.reviewPeriod,
       company: +this.company,
-      startTitle: this.startTitle,
-      job_GradeId: this.job_GradeId,
+      jobGradeId: this.jobGradeId,
+      jobTitleId: this.jobTitleId,
       submittedForReview: this.submittedForReview,
-      reviewCycleStatus: this.reviewCycleStatus,
+      reviewCircleStatus: this.reviewCircleStatus,
       dueDate: this.dueDate,
       table: this.table,
+      comment: this.comment,
+      firstLevelReviewerId: this.firstLevelReviewerId,
+      secondLevelReviewerId: this.secondLevelReviewerId,
     };
 
     this.spinner = true;
@@ -114,12 +122,15 @@ export class AppraisalFeedbackPageComponent implements OnInit {
 
             this.reviewPeriod = "";
             this.company = "";
-            this.startTitle = "";
-            this.job_GradeId = "";
+            this.jobGradeId = "";
+            this.jobTitleId + "";
             this.submittedForReview = "";
-            this.reviewCycleStatus = "";
+            this.reviewCircleStatus = "";
             this.dueDate = "";
             this.table = "";
+            this.comment = "";
+            this.firstLevelReviewerId = "";
+            this.secondLevelReviewerId = "";
           }
 
           this.getAppraisalFeedbacks();
@@ -134,15 +145,17 @@ export class AppraisalFeedbackPageComponent implements OnInit {
 
   getAppraisalFeedbacks() {
     this.pageLoading = true;
-    this.performanceManagementService.getAppraisalFeedbacks().subscribe(
-      (data) => {
-        this.pageLoading = false;
-        this.appraisalFeedbacks = data.setupList;
-      },
-      (err) => {
-        this.pageLoading = false;
-      }
-    );
+    this.performanceManagementService
+      .getAppraisalFeedbacksByStaffId(2)
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          this.appraisalFeedbacks = data.objectiveList;
+        },
+        (err) => {
+          this.pageLoading = false;
+        }
+      );
   }
 
   getJobGrade() {
@@ -164,17 +177,20 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
 
   edit(row) {
-    this.cardFormTitle = "Edit Point Settings";
+    this.cardFormTitle = "Edit Appraisal Feedback";
     this.appraisalFeedbackForm.patchValue({
       id: row.id,
       reviewPeriod: row.reviewPeriod,
       company: row.company,
       startTitle: row.startTitle,
-      jobGrade: row.job_grade,
+      jobGradeId: row.jobGradeId,
+      jobTitleId: row.jobTitleId,
       submittedForReview: row.submittedForReview,
       reviewCycleStatus: row.reviewCycleStatus,
+      firstLevelReviewerId: row.firstLevelReviewerId,
       dateDue: row.dateDue,
       table: row.table,
+      comment: row.comment,
     });
     $("#appraisal_feedback_modal").modal("show");
   }
