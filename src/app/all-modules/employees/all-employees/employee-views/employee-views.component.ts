@@ -1,6 +1,7 @@
 import { AfterViewChecked, Component, OnInit } from "@angular/core";
 import { DataService } from "src/app/services/data.service";
 import { EmployeeService } from "src/app/services/employee.service";
+import { JwtService } from "src/app/services/jwt.service";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 
@@ -18,18 +19,20 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   companies: any[] = [];
   filteredArray: any[] = [];
   canAddEmployee: boolean;
+  userActivities: any;
 
   constructor(
     private employeeService: EmployeeService,
     private dataService: DataService,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private jwtService: JwtService
   ) {}
 
   ngOnInit() {
-    this.dataService.currentUser.subscribe((result) => {
-      const user = result;
-      this.canAddEmployee = user && user.activities.includes("employeeform");
-    });
+    this.userActivities = this.jwtService.getUserActivities();
+
+    this.canAddEmployee = this.userActivities.includes("employeeform");
+
     this.loadEmployees();
     this.getStaffDepartments();
 

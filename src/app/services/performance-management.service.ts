@@ -26,7 +26,6 @@ export class PerformanceManagementService {
     );
   }
   handleError(err) {
-    console.log(err);
     return throwError(err);
   }
   addKPIndicator(payload: any) {
@@ -103,19 +102,19 @@ export class PerformanceManagementService {
   }
 
   getAppraisalCycles() {
-    return this.apiService.get("/performancesetup/get/all/appraisal-circles");
+    return this.apiService.get("/performancesetup/get/all/appraisal-cycles");
   }
 
   postAppraisalCycle(payload: Object) {
     return this.apiService.post(
-      "/performancesetup/add/update/appraisal-circle",
+      "/performancesetup/add/update/appraisal-cycle",
       payload
     );
   }
 
   deleteAppraisalCycle(payload: Object) {
     return this.apiService.post(
-      "/performancesetup​/delete​/appraisal-circle",
+      "/performancesetup​/delete​/appraisal-cycle",
       payload
     );
   }
@@ -165,7 +164,7 @@ export class PerformanceManagementService {
 
   getAppraisalCycleByCompanyId(id) {
     return this.apiService.get(
-      `/performancesetup/get/single/appraisal-circle/companyId?setupId=${id}`
+      `/performancesetup/get/single/appraisal-cycle/companyId?setupId=${id}`
     );
   }
 
@@ -190,6 +189,12 @@ export class PerformanceManagementService {
   getAppraisalObjectives() {
     return this.apiService.get(
       "/performance-appraisal/get/all/appraisal-objectives"
+    );
+  }
+
+  getAppraisalsByCycleId(id: number) {
+    return this.apiService.get(
+      `/performance-appraisal/get/appraisal-objective/appraisalCycleId?appraisalCycleId=${id}`
     );
   }
 }
