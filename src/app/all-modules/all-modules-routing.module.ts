@@ -31,6 +31,18 @@ const routes: Routes = [
             (m) => m.PerformanceManagementModule
           ),
       },
+      {
+        path: "notifications",
+        loadChildren: () =>
+          import("./notifications/notifications.module").then(
+            (m) => m.NotificationsModule
+          ),
+      },
+      {
+        path: "manager",
+        loadChildren: () =>
+          import("./manager/manager.module").then((m) => m.ManagerModule),
+      },
     ],
   },
 ];

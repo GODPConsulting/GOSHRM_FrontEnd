@@ -1,3 +1,4 @@
+import { id } from "./../../../../../assets/all-modules-data/id";
 import { SetupService } from "src/app/services/setup.service";
 import { Validators } from "@angular/forms";
 import { Component, OnInit, ElementRef, Input, ViewChild } from "@angular/core";
@@ -6,6 +7,7 @@ import { PerformanceManagementService } from "src/app/services/performance-manag
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
+import { JwtService } from "src/app/services/jwt.service";
 declare const $: any;
 
 @Component({
@@ -22,7 +24,7 @@ export class AppraisalFeedbackComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
-  @Input() staffId: number;
+  @Input()
 
   //Form
   appraisalFeedbackForm: FormGroup;
@@ -31,29 +33,36 @@ export class AppraisalFeedbackComponent implements OnInit {
   years: any[] = [];
 
   appraisalFeedbacks: any[] = [];
-  selectedId: number[] = [];
+  selectedId: any[] = [];
   company: string;
   reviewPeriod: string = "";
-  startTitle: any;
-  job_GradeId: any;
+  jobGradeId: any;
+  jobTitleName: any;
   submittedForReview: any;
-  reviewCycleStatus: any;
+  reviewCircleStatus: any;
   dueDate: string = "";
   table: any;
-  finalComment: any;
+  comment: any;
+  firstLevelReviewerId: any;
+  secondLevelReviewerId: any;
 
   public offices: number[] = [];
   public jobGrades: any[] = [];
+  public user;
 
   constructor(
     private FormBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
-    private _location: Location
+    private _location: Location,
+    private jwtService: JwtService
   ) {}
 
   ngOnInit(): void {
+    this.user = this.jwtService.getHrmUserDetails();
+    console.log(this.user.staffId);
+
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -77,7 +86,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       ],
       order: [[1, "asc"]],
     };
-    this.getAppraisalFeedbacks();
+    this.getAppraisalFeedbacks(this.user.staffId);
     this.getJobGrade();
     this.cardFormTitle = "Add Appraisal Feedback";
   }
@@ -86,13 +95,15 @@ export class AppraisalFeedbackComponent implements OnInit {
     const payload = {
       reviewPeriod: this.reviewPeriod,
       company: +this.company,
-      startTitle: this.startTitle,
-      job_GradeId: this.job_GradeId,
+      jobGradeId: this.jobGradeId,
+      jobTitleName: this.jobTitleName,
       submittedForReview: this.submittedForReview,
-      reviewCycleStatus: this.reviewCycleStatus,
+      reviewCircleStatus: this.reviewCircleStatus,
       dueDate: this.dueDate,
       table: this.table,
-      finalComment: this.finalComment,
+      comment: this.comment,
+      firstLevelReviewerId: this.firstLevelReviewerId,
+      secondLevelReviewerId: this.secondLevelReviewerId,
     };
 
     this.spinner = true;
@@ -108,16 +119,18 @@ export class AppraisalFeedbackComponent implements OnInit {
 
             this.reviewPeriod = "";
             this.company = "";
-            this.startTitle = "";
-            this.job_GradeId = "";
+            this.jobGradeId = "";
+            this.jobTitleName + "";
             this.submittedForReview = "";
-            this.reviewCycleStatus = "";
+            this.reviewCircleStatus = "";
             this.dueDate = "";
             this.table = "";
-            this.finalComment = "";
+            this.comment = "";
+            this.firstLevelReviewerId = "";
+            this.secondLevelReviewerId = "";
           }
 
-          this.getAppraisalFeedbacks();
+          this.getAppraisalFeedbacks(this.user.staffId);
         },
         (err) => {
           this.spinner = false;
@@ -127,17 +140,20 @@ export class AppraisalFeedbackComponent implements OnInit {
       );
   }
 
-  getAppraisalFeedbacks() {
+  getAppraisalFeedbacks(id) {
     this.pageLoading = true;
-    this.performanceManagementService.getAppraisalFeedbacks().subscribe(
-      (data) => {
-        this.pageLoading = false;
-        this.appraisalFeedbacks = data.setupList;
-      },
-      (err) => {
-        this.pageLoading = false;
-      }
-    );
+    this.performanceManagementService
+      .getAppraisalFeedbacks(this.user.staffId)
+      .subscribe(
+        (data) => {
+          this.pageLoading = false;
+          this.appraisalFeedbacks = data.objectiveList;
+          console.log(this.appraisalFeedbacks);
+        },
+        (err) => {
+          this.pageLoading = false;
+        }
+      );
   }
 
   getJobGrade() {
@@ -155,18 +171,19 @@ export class AppraisalFeedbackComponent implements OnInit {
   }
 
   edit(row) {
-    this.cardFormTitle = "Edit Point Settings";
+    this.cardFormTitle = "Edit Appraisal Feedback";
     this.appraisalFeedbackForm.patchValue({
       id: row.id,
       reviewPeriod: row.reviewPeriod,
       company: row.company,
       startTitle: row.startTitle,
-      job_GradeId: row.job_GradeId,
+      jobGradeId: row.jobGradeId,
+      jobTitleId: row.jobTitleId,
       submittedForReview: row.submittedForReview,
       reviewCycleStatus: row.reviewCycleStatus,
       dateDue: row.dateDue,
       table: row.table,
-      finalComment: row.finalComment,
+      comment: row.comment,
     });
     $("#appraisal_feedback_modal").modal("show");
   }
@@ -177,7 +194,7 @@ export class AppraisalFeedbackComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, this.staffId);
+    this.utilitiesService.uploadFileValidator(event, form, this.user.staffId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -213,7 +230,7 @@ export class AppraisalFeedbackComponent implements OnInit {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getAppraisalFeedbacks();
+                    this.getAppraisalFeedbacks(this.user.staffId);
                   });
                 } else {
                   swal.fire("GOSHRM", message, "error");

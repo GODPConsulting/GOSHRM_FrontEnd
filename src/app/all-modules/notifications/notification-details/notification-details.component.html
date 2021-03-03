@@ -1,0 +1,83 @@
+<!-- Page Wrapper -->
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">View Mail</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink='/notifications/notification-list'>All Notifications</a>
+                    </li>
+                    <li class="breadcrumb-item active">View Mail</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+    <app-loading *ngIf="pageLoading"></app-loading>
+    <div *ngIf="!pageLoading" class="row">
+        <div class="col-sm-12">
+            <div class="card mb-0">
+                <div class="card-body">
+                    <div class="mailview-content">
+                        <div class="mailview-header">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <div class="text-ellipsis m-b-10">
+                                        <span class="mail-view-title">{{mail.subject}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="mail-view-action">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-white btn-sm" data-toggle="tooltip"
+                                                title="Delete"> <i class="fa fa-trash-o"></i></button>
+                                            <button type="button" class="btn btn-white btn-sm" data-toggle="tooltip"
+                                                title="Reply"> <i class="fa fa-reply"></i></button>
+                                            <button type="button" class="btn btn-white btn-sm" data-toggle="tooltip"
+                                                title="Forward"> <i class="fa fa-share"></i></button>
+                                        </div>
+                                        <button type="button" class="btn btn-white btn-sm" data-toggle="tooltip"
+                                            title="Print"> <i class="fa fa-print"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sender-info">
+                                <div class="sender-img">
+                                    <img width="40" alt="" src="assets/img/profiles/avatar-02.jpg"
+                                        class="rounded-circle">
+                                </div>
+                                <div class="receiver-details float-left">
+                                    <span class="sender-name">{{mail.sentBy}}</span>
+                                    <span class="receiver-name"> to <span>me</span>
+                                    </span>
+                                </div>
+                                <div class="mail-sent-time">
+                                    <span class="mail-time">{{mail.dateSent | date: "medium"}}</span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="mailview-inner"> {{mail.content}} </div>
+                    </div>
+                    <div class="mailview-footer">
+                        <div class="row">
+                            <div class="col-sm-6 left-action">
+                                <button type="button" class="btn btn-white"><i class="fa fa-reply"></i> Reply</button>
+                                <button type="button" class="btn btn-white"><i class="fa fa-share"></i> Forward</button>
+                            </div>
+                            <div class="col-sm-6 right-action">
+                                <button type="button" class="btn btn-white"><i class="fa fa-print"></i> Print</button>
+                                <button type="button" class="btn btn-white"><i class="fa fa-trash-o"></i>
+                                    Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+<!-- /Page Wrapper -->

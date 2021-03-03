@@ -14,6 +14,7 @@ import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appra
 import { AppraisalObjectiveViewComponent } from "./setup/appraisal-objective-view/appraisal-objective-view.component";
 import { AppraisalObjectiveFormComponent } from "./setup/appraisal-objective-form/appraisal-objective-form.component";
 import { AppraisalObjectivesComponent } from "./setup/appraisal-objectives/appraisal-objectives.component";
+import { AppraisalsComponent } from "./setup/appraisal-cycle/appraisals/appraisals.component";
 
 const routes: Routes = [
   {
@@ -53,6 +54,10 @@ const routes: Routes = [
         component: AppraisalFeedbackComponent,
       },
       {
+        path: "setup/appraisal-cycle/appraisals/:id",
+        component: AppraisalsComponent,
+      },
+      {
         path: "setup/appraisal-feedback/appraisal-feedback-page",
         component: AppraisalFeedbackPageComponent,
       },
@@ -71,7 +76,7 @@ const routes: Routes = [
       {
         path: "appraisal-objectives",
         component: AppraisalObjectivesComponent,
-      }
+      },
     ],
   },
 ];

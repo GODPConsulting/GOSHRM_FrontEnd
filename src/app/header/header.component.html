@@ -64,17 +64,20 @@
                 </div>
                 <div class="noti-content">
                     <ul class="notification-list">
-                        <li class="notification-message" *ngFor="let item of mails;let i = index">
-                            <a routerLink="/activities/activities-main">
+                        <li [ngClass]="item.emailStatus?'':'unread'" class="notification-message"
+                            *ngFor="let item of mails;let i = index">
+                            <a [routerLink]="['/notifications/notification-details',item.emailMessageId]">
                                 <div class="media">
                                     <span class="avatar">
                                         <img alt="" src="assets/img/profiles/avatar-0{{i+ 1}}.jpg">
                                     </span>
                                     <div class="media-body">
-                                        <p class="noti-details"><span class="noti-title">{{ item.sentBy }}</span> wants
-                                            to {{ item.subject }} </p>
-                                        <p lass="noti-details"><span class="noti-title">{{ item.content }}</span></p>
-                                        <p class="noti-time"><span class="notification-time">{{ item.time }}</span></p>
+                                        <p class="noti-details name"><span class="noti-title">{{ item.sentBy }}</span>
+                                            wants to {{ item.subject }} </p>
+                                        <p lass="noti-details subject"><span class="noti-title">{{ item.content
+                                                }}</span></p>
+                                        <p class="noti-time mail-date"><span class="notification-time">{{ item.time
+                                                }}</span></p>
                                     </div>
                                 </div>
                             </a>
@@ -82,7 +85,7 @@
                     </ul>
                 </div>
                 <div class="topnav-dropdown-footer">
-                    <a routerLink="/activities/activities-main">View all Notifications</a>
+                    <a routerLink="notifications/notification-list">View all Notifications</a>
                 </div>
             </div>
         </li>

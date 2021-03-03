@@ -4,6 +4,7 @@ import { HeaderService } from "./header.service";
 import { AuthService } from "../services/auth.service";
 import { DataService } from "../services/data.service";
 import { EmployeeService } from "../services/employee.service";
+import { JwtService } from "../services/jwt.service";
 
 @Component({
   selector: "app-header",
@@ -27,7 +28,8 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private dataService: DataService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private jwtService: JwtService
   ) {}
 
   ngOnInit() {
@@ -35,15 +37,11 @@ export class HeaderComponent implements OnInit {
 
     // this.getDatas("notification");
     // this.getDatas("message");
-
+    this.user = this.jwtService.getHrmUserDetails();
     // Get access to the user data shared from sidebar
-    this.dataService.currentUser.subscribe((result) => {
+    /* this.dataService.currentUser.subscribe((result) => {
       this.user = result;
-    //  if (this.user !== null) {
-    //   localStorage.setItem('user', JSON.stringify(this.user))
-    //  }
-      console.log(this.user);
-    });
+    }); */
 
     this.notifications = [
       {
@@ -121,9 +119,9 @@ export class HeaderComponent implements OnInit {
   getAllEmails() {
     this.employeeService.getAllEmails().subscribe(
       (data) => {
-        console.log(data);
         this.emailCount = data.emailCount;
         this.mails = data.emails;
+        this.dataService.saveCurrentMail(this.mails);
       },
       (err) => {}
     );

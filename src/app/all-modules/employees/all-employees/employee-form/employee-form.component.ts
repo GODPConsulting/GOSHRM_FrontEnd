@@ -136,7 +136,6 @@ export class EmployeeFormComponent implements OnInit {
 
   addEmployeeToHrm(EmployeeForm: FormGroup) {
     let payload = EmployeeForm.value;
-    console.log(payload);
 
     // validations to check if the form fields have value
     if (!payload.firstName) {

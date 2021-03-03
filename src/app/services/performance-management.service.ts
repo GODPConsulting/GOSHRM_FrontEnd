@@ -1,3 +1,4 @@
+import { id } from "./../../assets/all-modules-data/id";
 import { ApiService } from "./api.service";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
@@ -27,7 +28,6 @@ export class PerformanceManagementService {
     );
   }
   handleError(err) {
-    console.log(err);
     return throwError(err);
   }
   addKPIndicator(payload: any) {
@@ -104,19 +104,19 @@ export class PerformanceManagementService {
   }
 
   getAppraisalCycles() {
-    return this.apiService.get("/performancesetup/get/all/appraisal-circles");
+    return this.apiService.get("/performancesetup/get/all/appraisal-cycles");
   }
 
   postAppraisalCycle(payload: Object) {
     return this.apiService.post(
-      "/performancesetup/add/update/appraisal-circle",
+      "/performancesetup/add/update/appraisal-cycle",
       payload
     );
   }
 
   deleteAppraisalCycle(payload: Object) {
     return this.apiService.post(
-      "/performancesetup​/delete​/appraisal-circle",
+      "/performancesetup​/delete​/appraisal-cycle",
       payload
     );
   }
@@ -166,12 +166,20 @@ export class PerformanceManagementService {
 
   getAppraisalCycleByCompanyId(id) {
     return this.apiService.get(
-      `/performancesetup/get/single/appraisal-circle/companyId?setupId=${id}`
+      `/performancesetup/get/single/appraisal-cycle/companyId?setupId=${id}`
     );
   }
 
-  getAppraisalFeedbacks() {
-    return this.apiService.get("/performancesetup/get/all/appraisal-feedbacks");
+  getAppraisalFeedbacks(id) {
+    return this.apiService.get(
+      `/performance-appraisal/get/single/appraisal-objective/staffId?staffId=${id}`
+    );
+  }
+
+  getAppraisalFeedbacksByStaffId(id) {
+    return this.apiService.get(
+      `/performance-appraisal/get/single/appraisal-objective/staffId?staffId=${id}`
+    );
   }
 
   postAppraisalFeedback(payload: Object) {
@@ -180,13 +188,21 @@ export class PerformanceManagementService {
       payload
     );
   }
-  getAppraisalCycleByStatus(){
-    return this.apiService.get("/performancesetup/get/single/appraisal-circle/status");
+  getAppraisalCycleByStatus() {
+    return this.apiService.get(
+      "/performancesetup/get/single/appraisal-cycle/status"
+    );
   }
-  getCareerByStaffId(id){
-    return this.apiService.get(`/hrm/get/single/employee/career/staffId?staffId=${id}`).pipe(tap(), map(response => {
-      return response
-    }), catchError(this.handleError));
+  getCareerByStaffId(id) {
+    return this.apiService
+      .get(`/hrm/get/single/employee/career/staffId?staffId=${id}`)
+      .pipe(
+        tap(),
+        map((response) => {
+          return response;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   deleteAppraisalFeedback(payload: Object) {
@@ -195,9 +211,29 @@ export class PerformanceManagementService {
       payload
     );
   }
-  getAppraisalObjectives(id){
-    return this.apiService.get(`/performance-appraisal/get/single/appraisal-objective-kpis/staffId?staffId=${id}`).pipe(tap(), map(response => {
-      return response
-    }), catchError(this.handleError));
+  getAppraisalObjectives(id) {
+    return this.apiService
+      .get(
+        `/performance-appraisal/get/single/appraisal-objective-kpis/staffId?staffId=${id}`
+      )
+      .pipe(
+        tap(),
+        map((response) => {
+          return response;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getAllAppraisalObjectives() {
+    return this.apiService.get(
+      "/performance-appraisal/get/all/appraisal-objectives"
+    );
+  }
+
+  getAppraisalsByCycleId(id: number) {
+    return this.apiService.get(
+      `/performance-appraisal/get/appraisal-objective/appraisalCycleId?appraisalCycleId=${id}`
+    );
   }
 }
