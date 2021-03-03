@@ -1,0 +1,80 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+<!-- Page Content -->
+<div *ngIf="!pageLoading" class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Appraisals</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a>Performance Management Setup</a></li>
+                    <li class="breadcrumb-item"><a routerLink="/performance/setup/appraisal-cycle">Appraisals Cycle</a>
+                    </li>
+                    <li class="breadcrumb-item active">Appraisals</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn upload-btn hint" data-toggle="modal"><span class="hint-text">Upload</span><i
+                        class="fa fa-upload"></i></a>
+                <a class="btn download-btn hint" data-toggle="modal"><span class="hint-text">Download</span><i
+                        class="fa fa-download"></i></a>
+                <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
+                        class="fa fa-trash"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === appraisalList.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>S/N</th>
+                            <th>Employee</th>
+                            <th>Dept</th>
+                            <th>Reviewer I score</th>
+                            <th>Reviewer II score</th>
+                            <th>Reviewer score</th>
+                            <th>360 (Managers)</th>
+                            <th>360 (Peers)</th>
+                            <th>360 (Reports)</th>
+                            <th>360 (Self)</th>
+                            <th>Overall</th>
+                            <th>Overall remark</th>
+                            <th>Score</th>
+                            <th>Adjustment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="modal" class="pointer" *ngFor="let row of appraisalList; let i = index">
+                            <td (click)="stopParentEvent($event)">
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                            <td>{{row.prop}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->

@@ -64,27 +64,75 @@
           <li *ngIf="userRights.includes('line manager')" class="submenu" [ngClass]="{
               active:
                 (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === '')
+                  urlComplete.subUrl === 'direct-report-appraisals')
             }">
             <a href="javascript:" [ngClass]="{
                 subdrop:
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === '') 
+                    urlComplete.subUrl === 'direct-report-appraisals') 
               }" class="noti-dot"><i class="la la-user-tie"></i> <span> Managers</span>
               <span class=" menu-arrow"></span></a>
-            <ul style="display: none;" [ngStyle]="{
+            <ul>
+              <li *ngIf="userRights.includes('line manager')" class="submenu" [ngClass]="{
+              active:
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'direct-report-appraisals')
+            }">
+                <a href="javascript:" [ngClass]="{
+                subdrop:
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'direct-report-appraisals') 
+              }" class="noti-dot"><span> My Team</span>
+                  <span class=" menu-arrow"></span></a>
+                <ul>
+                  <li *ngIf="userRights.includes('line manager')" class="submenu" [ngClass]="{
+                      active:
+                        (urlComplete.mainUrl === 'performance' &&
+                          urlComplete.subUrl === 'direct-report-appraisals')
+                    }">
+                    <a href="javascript:" [ngClass]="{
+                        subdrop:
+                          (urlComplete.mainUrl === 'performance' &&
+                            urlComplete.subUrl === 'direct-report-appraisals') 
+                      }" class="noti-dot"> <span> Performance</span>
+                      <span class=" menu-arrow"></span></a>
+                    <ul style="display: none;" [ngStyle]="{
                 display:
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === '')
+                    urlComplete.subUrl === 'direct-report-appraisals')
                     ? 'block'
                     : 'none'
               }">
-              <li *ngIf="userRights.includes('line manager')" routerLink="">
-                <a href="javascript:" [ngClass]="{
+                      <li *ngIf="userRights.includes('line manager')" routerLink="/manager/direct-report-appraisals">
+                        <a href="javascript:" [ngClass]="{
                     active:
                       urlComplete.subUrl === 'performance' ||
-                      urlComplete.subUrl === ''
-                  }">Line Manager</a>
+                      urlComplete.subUrl === 'direct-report-appraisals'
+                  }">Appraisals</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+                <a href="javascript:" [ngClass]="{
+                  subdrop:
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.subUrl === 'direct-report-appraisals') 
+                }" class="noti-dot"><span> External Team</span>
+                  <span class=" menu-arrow"></span></a>
+                <ul>
+                  <li *ngIf="userRights.includes('line manager')" class="submenu" [ngClass]="{
+                        active:
+                          (urlComplete.mainUrl === 'performance' &&
+                            urlComplete.subUrl === 'direct-report-appraisals')
+                      }">
+                    <a href="javascript:" [ngClass]="{
+                          subdrop:
+                            (urlComplete.mainUrl === 'performance' &&
+                              urlComplete.subUrl === 'direct-report-appraisals') 
+                        }" class="noti-dot"> <span> Something</span>
+                      <span class=" menu-arrow"></span></a>
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>

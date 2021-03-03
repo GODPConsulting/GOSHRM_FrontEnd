@@ -11,6 +11,7 @@ import { KeyPerformanceIndicatorsComponent } from "./setup/key-performance-indic
 import { GradeSettingComponent } from "./setup/grade-setting/grade-setting.component";
 import { KpiToJobgradeComponent } from "./setup/kpi-to-jobgrade/kpi-to-jobgrade.component";
 import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appraisal-preference.component";
+import { AppraisalsComponent } from "./setup/appraisal-cycle/appraisals/appraisals.component";
 
 const routes: Routes = [
   {
@@ -48,6 +49,10 @@ const routes: Routes = [
       {
         path: "setup/appraisal-feedback",
         component: AppraisalFeedbackComponent,
+      },
+      {
+        path: "setup/appraisal-cycle/appraisals/:id",
+        component: AppraisalsComponent,
       },
       {
         path: "setup/appraisal-feedback/appraisal-feedback-page",

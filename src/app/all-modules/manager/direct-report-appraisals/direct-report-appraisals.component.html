@@ -1,0 +1,63 @@
+<app-loading *ngIf="pageLoading"></app-loading>
+<!-- Page Content -->
+<div *ngIf="!pageLoading" class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Direct Report Appraisals</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a> Manager</a></li>
+                    <li class="breadcrumb-item active"><a routerLink="">Direct Report Appraisals</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" [checked]="selectedId.length === reportAppraisals.length"
+                                    (change)="checkAll($event)" />
+                            </th>
+                            <th>S/N</th>
+                            <th>Review Year</th>
+                            <th>Review Period</th>
+                            <th>Employee</th>
+                            <th>Job Grade</th>
+                            <th>Office</th>
+                            <th>Review Status</th>
+                            <th>Points</th>
+                            <th>Appraisal Forms</th>
+                            <th>Final Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="modal" class="pointer" *ngFor="let row of reportAppraisals; let i = index">
+                            <td (click)="stopParentEvent($event)">
+                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
+                                    (change)="addItemId($event, row.id)" />
+                            </td>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{row.reviewYear}}</td>
+                            <td>{{row.reviewPeriod}}</td>
+                            <td>{{row.employeeName}}</td>
+                            <td>{{row.jobGradeName}}</td>
+                            <td>{{row.companyName}}</td>
+                            <td>{{row.reviewStatusName}}</td>
+                            <td>{{row.points}}</td>
+                            <td>{{row.reviewYear}}</td>
+                            <td>{{row.comment}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->

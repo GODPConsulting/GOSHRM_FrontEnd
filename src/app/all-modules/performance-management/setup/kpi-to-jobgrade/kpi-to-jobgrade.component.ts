@@ -87,7 +87,6 @@ export class KpiToJobgradeComponent implements OnInit {
       weight: row.weight,
       //kpIs: row.kpIs
     });
-    console.log(this.source, row);
 
     /* this.confirmed = row.kpIs.filter(id=>{
       id === source.id
@@ -103,7 +102,6 @@ export class KpiToJobgradeComponent implements OnInit {
     const payload = form.value;
     payload.jobGradeId = +payload.jobGradeId;
     payload.kpiCategoryId = +payload.kpiCategoryId;
-    console.log(payload);
     if (!form.valid) {
       swal.fire("GOSHRM", "Please fill all mandatory fields", "error");
       return;
@@ -151,7 +149,6 @@ export class KpiToJobgradeComponent implements OnInit {
     this.performanceService.getKpiByKpiCategoryId(id).subscribe(
       (data) => {
         this.source = data.setupList;
-        console.log(this.source);
       },
       (err) => {}
     );
