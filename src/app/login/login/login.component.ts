@@ -56,7 +56,6 @@ export class LoginComponent implements OnInit {
   getUserDetails() {
     return this.authService.getProfile().subscribe(
       (data) => {
-        console.log(data);
         this.user = data;
         this.getEmployeeByEmail(this.user.email);
         if (data != null) {

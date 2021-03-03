@@ -1,31 +1,26 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { PerformanceManagementService } from "src/app/services/performance-management.service";
+import { JwtService } from "src/app/services/jwt.service";
+import { ManagerService } from "src/app/services/manager.service";
 import swal from "sweetalert2";
 
 @Component({
-  selector: "app-appraisals",
-  templateUrl: "./appraisals.component.html",
-  styleUrls: ["./appraisals.component.css"],
+  selector: "app-direct-report-appraisals",
+  templateUrl: "./direct-report-appraisals.component.html",
+  styleUrls: ["./direct-report-appraisals.component.css"],
 })
-export class AppraisalsComponent implements OnInit {
+export class DirectReportAppraisalsComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   public selectedId: number[] = [];
-  public appraisalList: any[] = [];
-  appraisalCycleId: number;
+  public reportAppraisals: any[] = [];
   pageLoading: boolean;
+  user: any;
 
   constructor(
-    private route: ActivatedRoute,
-    private performanceService: PerformanceManagementService
+    private managerService: ManagerService,
+    private jwtService: JwtService
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      this.appraisalCycleId = +params.get("id");
-      this.getAppraisalsByCycleId(this.appraisalCycleId);
-    });
-
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -47,22 +42,21 @@ export class AppraisalsComponent implements OnInit {
         null,
         null,
         null,
-        null,
-        null,
-        null,
-        null,
       ],
       order: [[1, "asc"]],
     };
+    this.user = this.jwtService.getHrmUserDetails();
+    if (this.user.userRoleNames.includes("Line Managers")) {
+      this.getAppraisalObjByManagerId(this.user.staffId);
+    }
   }
 
-  getAppraisalsByCycleId(id: number) {
+  getAppraisalObjByManagerId(id: number) {
     this.pageLoading = true;
-
-    this.performanceService.getAppraisalsByCycleId(id).subscribe(
+    this.managerService.getAppraisalObjByManagerId(id).subscribe(
       (data) => {
         this.pageLoading = false;
-        this.appraisalList = data.objectiveList;
+        this.reportAppraisals = data.objectiveList;
       },
       (err) => {
         this.pageLoading = false;

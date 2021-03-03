@@ -45,7 +45,6 @@ export class UtilitiesService {
       template: 0,
       callBackUri: "",
     };
-    console.log(payload);
     return this.employeeService.postMailToHr(payload);
   }
 

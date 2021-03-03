@@ -51,7 +51,7 @@ const routes: Routes = [
         component: AppraisalFeedbackComponent,
       },
       {
-        path: "setup/appraisal-cycle/appraisals",
+        path: "setup/appraisal-cycle/appraisals/:id",
         component: AppraisalsComponent,
       },
       {

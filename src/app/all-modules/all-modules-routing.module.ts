@@ -38,6 +38,11 @@ const routes: Routes = [
             (m) => m.NotificationsModule
           ),
       },
+      {
+        path: "manager",
+        loadChildren: () =>
+          import("./manager/manager.module").then((m) => m.ManagerModule),
+      },
     ],
   },
 ];

@@ -94,7 +94,6 @@ export class KpiCategoryComponent implements OnInit {
     // payload.hrSelectReviewer = +payload.hrSelectReviewer;
 
     this.spinner = true;
-    console.log(payload);
 
     return this.performanceManagementService.postkpiCategory(payload).subscribe(
       (res) => {
@@ -218,7 +217,6 @@ export class KpiCategoryComponent implements OnInit {
   }
 
   setWeightModel(event) {
-    console.log(+event.target.value);
     this.allLocation = +event.target.value;
     this.kpiCategoryForm.get("weightModel");
     if (this.allLocation === 1 || this.allLocation === 2) {
@@ -228,7 +226,6 @@ export class KpiCategoryComponent implements OnInit {
   }
 
   setHrReview(event) {
-    console.log(+event.target.value);
     this.selectReview = +event.target.value;
     this.kpiCategoryForm.get("hrSelectReviewer");
     if (this.selectReview === 3) {

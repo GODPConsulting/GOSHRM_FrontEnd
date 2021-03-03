@@ -48,23 +48,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-toggle="modal" class="pointer" (click)="edit(row)"
-                    *ngFor="let row of hack(appraisalCycles); let i = index">
+                <tr data-toggle="modal" class="pointer" *ngFor="let row of hack(appraisalCycles); let i = index">
                     <td (click)="stopParentEvent($event)">
                         <input type="checkbox" [checked]="selectedId.includes(row.id)"
                             (change)="addItemId($event, row.id)" />
                     </td>
-                    <td><a class="text-dark d-block" routerLink="appraisals">{{i +1}}</a></td>
-                    <td><a class="text-dark d-block" routerLink="appraisals">{{row.reviewYear}}</a></td>
-                    <td><a class="text-dark d-block" routerLink="appraisals">{{row.startDate}}</a></td>
-                    <td><a class="text-dark d-block" routerLink="appraisals">{{row.endDate}}</a>
+                    <td><a class="text-dark d-block" [routerLink]="['appraisals',row.id]">{{i +1}}</a></td>
+                    <td><a class="text-dark d-block" [routerLink]="['appraisals',row.id]">{{row.reviewYear}}</a></td>
+                    <td><a class="text-dark d-block" [routerLink]="['appraisals',row.id]">{{row.startDate}}</a></td>
+                    <td><a class="text-dark d-block" [routerLink]="['appraisals',row.id]">{{row.endDate}}</a>
                     </td>
-                    <td><a class="text-dark d-block" [routerLink]="[row.id]">{{row.dueDate}}</a></td>
-                    <td><a class="text-dark d-block" [routerLink]="[row.id]">{{row.reviewerOneWeight}}</a></td>
-                    <td><a class="text-dark d-block" [routerLink]="[row.id]">{{row.reviewerTwoWeight}}</a></td>
-                    <td><a class="text-dark d-block" [routerLink]="[row.id]">{{row.reviewerThreeWeight}}</a></td>
-                    <td><a class="text-dark d-block" [routerLink]="[row.id]">{{row.revieweeWeight}}</a></td>
-                    <td><a class="text-dark d-block" [routerLink]="[row.id]">{{row.status}}</a></td>
+                    <td><a class="text-dark d-block" [routerLink]="['appraisals',row.id]">{{row.dueDate}}</a></td>
+                    <td><a class="text-dark d-block" [routerLink]="['appraisals',row.id]">{{row.reviewerOneWeight}}</a>
+                    </td>
+                    <td><a class="text-dark d-block" [routerLink]="['appraisals',row.id]">{{row.reviewerTwoWeight}}</a>
+                    </td>
+                    <td><a class="text-dark d-block"
+                            [routerLink]="['appraisals',row.id]">{{row.reviewerThreeWeight}}</a></td>
+                    <td><a class="text-dark d-block" [routerLink]="['appraisals',row.id]">{{row.revieweeWeight}}</a>
+                    </td>
+                    <td><a class="text-dark d-block" [routerLink]="['appraisals',row.id]">{{row.status}}</a></td>
                 </tr>
             </tbody>
         </table>
