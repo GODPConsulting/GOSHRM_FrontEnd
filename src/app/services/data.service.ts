@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { EventEmitter } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
 @Injectable({
@@ -9,6 +10,7 @@ export class DataService {
   private mailSource = new BehaviorSubject<any>(null);
 
   currentUser = this.userSource.asObservable();
+  sendUser: EventEmitter<any> = new EventEmitter<any>();
   currentMail = this.mailSource.asObservable();
 
   constructor() {}

@@ -2,7 +2,8 @@ import { id } from "./../../assets/all-modules-data/id";
 import { ApiService } from "./api.service";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
-import { tap } from "rxjs/operators";
+import { catchError, map, tap } from "rxjs/operators";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
@@ -187,6 +188,22 @@ export class PerformanceManagementService {
       payload
     );
   }
+  getAppraisalCycleByStatus() {
+    return this.apiService.get(
+      "/performancesetup/get/single/appraisal-cycle/status"
+    );
+  }
+  getCareerByStaffId(id) {
+    return this.apiService
+      .get(`/hrm/get/single/employee/career/staffId?staffId=${id}`)
+      .pipe(
+        tap(),
+        map((response) => {
+          return response;
+        }),
+        catchError(this.handleError)
+      );
+  }
 
   deleteAppraisalFeedback(payload: Object) {
     return this.apiService.post(
@@ -194,8 +211,21 @@ export class PerformanceManagementService {
       payload
     );
   }
+  getAppraisalObjectives(id) {
+    return this.apiService
+      .get(
+        `/performance-appraisal/get/single/appraisal-objective-kpis/staffId?staffId=${id}`
+      )
+      .pipe(
+        tap(),
+        map((response) => {
+          return response;
+        }),
+        catchError(this.handleError)
+      );
+  }
 
-  getAppraisalObjectives() {
+  getAllAppraisalObjectives() {
     return this.apiService.get(
       "/performance-appraisal/get/all/appraisal-objectives"
     );

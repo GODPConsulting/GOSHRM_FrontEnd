@@ -371,7 +371,13 @@
               (urlComplete.mainUrl === 'performance' &&
               urlComplete.childUrl === 'appraisal-cycle')||
               (urlComplete.mainUrl === 'performance' &&
-            urlComplete.childUrl === 'appraisal-feedback')
+            urlComplete.childUrl === 'appraisal-feedback')||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-objective-view')||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-objective-form')||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-objectives')
                 
             }">
             <a href="javascript:" [ngClass]="{
@@ -391,7 +397,13 @@
                 (urlComplete.mainUrl === 'performance' &&
                 urlComplete.childUrl === 'appraisal-cycle')||
                 (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'appraisal-feedback')
+              urlComplete.childUrl === 'appraisal-feedback')||
+              (urlComplete.mainUrl === 'performance' &&
+                urlComplete.subUrl === 'appraisal-objective-view')||
+              (urlComplete.mainUrl === 'performance' &&
+                urlComplete.subUrl === 'appraisal-objective-form')||
+              (urlComplete.mainUrl === 'performance' &&
+                urlComplete.subUrl === 'appraisal-objectives')
 
               }" class="noti-dot"><i class="la la-chart-bar"></i> <span> Performance</span>
               <span class="menu-arrow"></span></a>
@@ -473,7 +485,13 @@
                       (urlComplete.mainUrl === 'performance' &&
                     urlComplete.childUrl === 'appraisal-cycle')||
                     (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.childUrl === 'appraisal-feedback')
+                  urlComplete.childUrl === 'appraisal-feedback')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'appraisal-objective-view')||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'appraisal-objective-form')||
+                 (urlComplete.mainUrl === 'performance' &&
+                   urlComplete.subUrl === 'appraisal-objectives')
                     ? 'block'
                     : 'none'
               }">
@@ -524,6 +542,24 @@
                         active:
                           urlComplete.childUrl === 'appraisal-feedback'
                       }">Appraisal Feedback</a>
+                  </li>
+                  <li routerLink="/performance/appraisal-objective-view">
+                    <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'appraisal-objective-view'
+                  }">Appraisal Objective View</a>
+                  </li>
+                  <li routerLink="/performance/appraisal-objective-form">
+                    <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'appraisal-objective-form'
+                  }">Appraisal Objective Form</a>
+                  </li>
+                  <li routerLink="/performance/appraisal-objectives">
+                    <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'appraisal-objectives'
+                  }">Appraisal Objectives</a>
                   </li>
                 </ul>
               </li>

@@ -18,8 +18,11 @@ import { KpiToJobgradeComponent } from "./setup/kpi-to-jobgrade/kpi-to-jobgrade.
 import { AppraisalPreferenceComponent } from "./setup/appraisal-preference/appraisal-preference.component";
 import { AppraisalCycleComponent } from "./setup/appraisal-cycle/appraisal-cycle.component";
 import { AppraisalCyclePageComponent } from "./setup/appraisal-cycle/appraisal-cycle-page/appraisal-cycle-page.component";
-import { AppraisalFeedbackPageComponent } from './setup/appraisal-feedback/appraisal-feedback-page/appraisal-feedback-page.component';
-import { AppraisalsComponent } from './setup/appraisal-cycle/appraisals/appraisals.component';
+import { AppraisalFeedbackPageComponent } from "./setup/appraisal-feedback/appraisal-feedback-page/appraisal-feedback-page.component";
+import { AppraisalObjectiveViewComponent } from "./setup/appraisal-objective-view/appraisal-objective-view.component";
+import { AppraisalObjectiveFormComponent } from "./setup/appraisal-objective-form/appraisal-objective-form.component";
+import { AppraisalObjectivesComponent } from "./setup/appraisal-objectives/appraisal-objectives.component";
+import { AppraisalsComponent } from "./setup/appraisal-cycle/appraisals/appraisals.component";
 @NgModule({
   declarations: [
     PerformanceManagementComponent,
@@ -33,6 +36,9 @@ import { AppraisalsComponent } from './setup/appraisal-cycle/appraisals/appraisa
     AppraisalCycleComponent,
     AppraisalCyclePageComponent,
     AppraisalFeedbackPageComponent,
+    AppraisalObjectiveViewComponent,
+    AppraisalObjectiveFormComponent,
+    AppraisalObjectivesComponent,
     AppraisalsComponent,
   ],
   imports: [
