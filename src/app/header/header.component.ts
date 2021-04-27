@@ -120,7 +120,12 @@ export class HeaderComponent implements OnInit {
     this.employeeService.getAllEmails().subscribe(
       (data) => {
         this.emailCount = data.emailCount;
-        this.mails = data.emails;
+        this.mails = data.emails.filter(email =>  {
+          return email.emailStatus === 0
+        })
+        if (this.mails.length > 10) {
+          this.mails = this.mails.slice(0, 10);
+        }
         this.dataService.saveCurrentMail(this.mails);
       },
       (err) => {}

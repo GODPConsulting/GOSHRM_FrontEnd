@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="receiver-details float-left">
                                     <span class="sender-name">{{mail.sentBy}}</span>
-                                    <span class="receiver-name"> to <span>me</span>
+                                    <span class="receiver-name"> to <span>{{mail.receivedBy}}</span>
                                     </span>
                                 </div>
                                 <div class="mail-sent-time">
@@ -59,7 +59,7 @@
                                 <div class="clearfix"></div>
                             </div>
                         </div>
-                        <div class="mailview-inner"> {{mail.content}} </div>
+                        <div class="mailview-inner" [innerHTML]="mail.content"></div>
                     </div>
                     <div class="mailview-footer">
                         <div class="row">

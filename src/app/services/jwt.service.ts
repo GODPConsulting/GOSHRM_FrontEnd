@@ -12,7 +12,7 @@ export class JwtService {
     return window.localStorage.getItem("token");
   }
   async destroyToken() {
-    await window.localStorage.removeItem("token");
+    await window.localStorage.clear();
   }
   getUserActivities() {
     return JSON.parse(window.localStorage.getItem("userActivities"));

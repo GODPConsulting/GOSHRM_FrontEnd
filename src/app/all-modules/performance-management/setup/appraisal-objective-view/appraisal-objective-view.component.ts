@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./appraisal-objective-view.component.css']
 })
 export class AppraisalObjectiveViewComponent implements OnInit {
+  pageLoading: boolean;
 
   constructor() { }
 

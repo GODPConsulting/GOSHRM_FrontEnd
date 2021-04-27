@@ -53,8 +53,8 @@
                                         <td class="subject"><a class="text-dark d-block"
                                                 [routerLink]="['/notifications/notification-details',mail.emailMessageId]">{{mail.subject}}</a>
                                         </td>
-                                        <td colspan="5" class="subject"><a class="text-dark d-block"
-                                                [routerLink]="['/notifications/notification-details',mail.emailMessageId]">{{mail.content}}</a>
+                                        <td colspan="5" class="subject"><a class="text-dark d-block" [innerHTML]="mail.content"
+                                                [routerLink]="['/notifications/notification-details',mail.emailMessageId]"></a>
                                         </td>
                                         <td class="mail-date"><a class="text-dark d-block"
                                                 [routerLink]="['/notifications/notification-details',mail.emailMessageId]">{{mail.dateSent

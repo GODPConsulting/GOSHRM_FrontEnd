@@ -72,11 +72,10 @@
                                         <img alt="" src="assets/img/profiles/avatar-0{{i+ 1}}.jpg">
                                     </span>
                                     <div class="media-body">
-                                        <p class="noti-details name"><span class="noti-title">{{ item.sentBy }}</span>
-                                            wants to {{ item.subject }} </p>
-                                        <p lass="noti-details subject"><span class="noti-title">{{ item.content
+                                        <p class="noti-details name"><span class="noti-title">{{ item.subject }}</span></p>
+                                        <p lass="noti-details subject"><span class="noti-title">{{ item.sentBy
                                                 }}</span></p>
-                                        <p class="noti-time mail-date"><span class="notification-time">{{ item.time
+                                        <p class="noti-time mail-date"><span class="notification-time">{{ item.dateSent | date: 'medium'
                                                 }}</span></p>
                                     </div>
                                 </div>

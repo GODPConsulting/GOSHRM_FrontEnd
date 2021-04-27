@@ -28,6 +28,7 @@ export class SidebarComponent implements OnInit {
   userRights: any[] = [];
   staffId: number;
   user: any;
+  hrmUser: string;
 
   constructor(
     private router: Router,

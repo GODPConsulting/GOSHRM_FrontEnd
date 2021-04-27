@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { data } from "jquery";
 import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 import { ApiService } from "./api.service";
 
 @Injectable({
@@ -32,7 +32,7 @@ export class EmployeeService {
   }
 
   multiUploadEmployeePhotos() {
-    return this.apiService.post("/hrm/upload/multi-image");
+    return this.apiService.post('/hrm/upload/multi-image');
   }
 
   getIdentificationByStaffId(id: number) {
@@ -374,6 +374,8 @@ export class EmployeeService {
   }
 
   getAllEmails() {
-    return this.apiService.get("/email/get/all/useremails?Module=2");
+    return this.apiService.get("/email/get/all/useremails?Module=2").pipe(tap(), map(data => {
+      return data
+    }));
   }
 }

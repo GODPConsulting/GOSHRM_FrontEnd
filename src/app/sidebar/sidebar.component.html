@@ -13,7 +13,7 @@
             <a href="javascript:" [ngClass]="{
                 subdrop:
                   (urlComplete.mainUrl === 'employees' &&
-                    urlComplete.subUrl === 'employeeprofile') 
+                    urlComplete.subUrl === 'employeeprofile')
               }" class="noti-dot"><i class="la la-user-cog"></i> <span> ESS</span>
               <span class=" menu-arrow"></span></a>
             <ul style="display: none;" [ngStyle]="{
@@ -26,6 +26,18 @@
               <li *ngIf="userRights.includes('profile')"
                 [routerLink]='["/employees/employeeprofile/", hrmUser?.staffId]'>
                 <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employeeprofile' }">Profile</a>
+              </li>
+              <li routerLink="/performance/setup/appraisal-feedback">
+                <a href="javascript:" [ngClass]="{
+                        active:
+                          urlComplete.childUrl === 'appraisal-feedback'
+                      }">Appraisal Feedback</a>
+              </li>
+              <li routerLink="/performance/appraisal-objective-view">
+                <a href="javascript:" [ngClass]="{
+                    active:
+                      urlComplete.subUrl === 'appraisal-objective-view'
+                  }">Appraisal Objective View</a>
               </li>
             </ul>
           </li>
@@ -44,7 +56,7 @@
               <span class="menu-arrow"></span></a>
             <ul style="display: none;" [ngStyle]="{
                 display:
-                  
+
                   (urlComplete.mainUrl === 'employees' &&
                     urlComplete.subUrl === 'employeeviews')
                     ? 'block'
@@ -69,7 +81,7 @@
             <a href="javascript:" [ngClass]="{
                 subdrop:
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'direct-report-appraisals') 
+                    urlComplete.subUrl === 'direct-report-appraisals')
               }" class="noti-dot"><i class="la la-user-tie"></i> <span> Managers</span>
               <span class=" menu-arrow"></span></a>
             <ul>
@@ -81,7 +93,7 @@
                 <a href="javascript:" [ngClass]="{
                 subdrop:
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'direct-report-appraisals') 
+                    urlComplete.subUrl === 'direct-report-appraisals')
               }" class="noti-dot"><span> My Team</span>
                   <span class=" menu-arrow"></span></a>
                 <ul>
@@ -93,7 +105,7 @@
                     <a href="javascript:" [ngClass]="{
                         subdrop:
                           (urlComplete.mainUrl === 'performance' &&
-                            urlComplete.subUrl === 'direct-report-appraisals') 
+                            urlComplete.subUrl === 'direct-report-appraisals')
                       }" class="noti-dot"> <span> Performance</span>
                       <span class=" menu-arrow"></span></a>
                     <ul style="display: none;" [ngStyle]="{
@@ -116,7 +128,7 @@
                 <a href="javascript:" [ngClass]="{
                   subdrop:
                     (urlComplete.mainUrl === 'performance' &&
-                      urlComplete.subUrl === 'direct-report-appraisals') 
+                      urlComplete.subUrl === 'direct-report-appraisals')
                 }" class="noti-dot"><span> External Team</span>
                   <span class=" menu-arrow"></span></a>
                 <ul>
@@ -128,7 +140,7 @@
                     <a href="javascript:" [ngClass]="{
                           subdrop:
                             (urlComplete.mainUrl === 'performance' &&
-                              urlComplete.subUrl === 'direct-report-appraisals') 
+                              urlComplete.subUrl === 'direct-report-appraisals')
                         }" class="noti-dot"> <span> Something</span>
                       <span class=" menu-arrow"></span></a>
                   </li>
@@ -378,7 +390,7 @@
                   urlComplete.subUrl === 'appraisal-objective-form')||
                 (urlComplete.mainUrl === 'performance' &&
                   urlComplete.subUrl === 'appraisal-objectives')
-                
+
             }">
             <a href="javascript:" [ngClass]="{
                 subdrop:
@@ -425,7 +437,7 @@
             urlComplete.childUrl === 'appraisal-cycle')||
             (urlComplete.mainUrl === 'performance' &&
           urlComplete.childUrl === 'appraisal-feedback')
-                
+
             }">
               <li class="submenu" [ngClass]="{
                 active:
@@ -445,7 +457,7 @@
               urlComplete.childUrl === 'appraisal-cycle')||
               (urlComplete.mainUrl === 'performance' &&
             urlComplete.childUrl === 'appraisal-feedback')
-                  
+
               }">
                 <a href="javascript:" [ngClass]="{
                   subdrop:
@@ -465,7 +477,7 @@
                     urlComplete.childUrl === 'appraisal-cycle')||
                     (urlComplete.mainUrl === 'performance' &&
                   urlComplete.childUrl === 'appraisal-feedback')
-  
+
                 }" class="noti-dot"><i class=""></i> <span class="float-left"> Setup</span>
                   <span class="menu-arrow"></span></a>
                 <ul style="display: none;" [ngStyle]="{
@@ -537,24 +549,13 @@
                           urlComplete.childUrl === 'appraisal-cycle'
                       }">Appraisal Cycle</a>
                   </li>
-                  <li routerLink="/performance/setup/appraisal-feedback">
-                    <a href="javascript:" [ngClass]="{
-                        active:
-                          urlComplete.childUrl === 'appraisal-feedback'
-                      }">Appraisal Feedback</a>
-                  </li>
-                  <li routerLink="/performance/appraisal-objective-view">
-                    <a href="javascript:" [ngClass]="{
-                    active:
-                      urlComplete.subUrl === 'appraisal-objective-view'
-                  }">Appraisal Objective View</a>
-                  </li>
-                  <li routerLink="/performance/appraisal-objective-form">
-                    <a href="javascript:" [ngClass]="{
-                    active:
-                      urlComplete.subUrl === 'appraisal-objective-form'
-                  }">Appraisal Objective Form</a>
-                  </li>
+
+<!--                  <li routerLink="/performance/appraisal-objective-form">-->
+<!--                    <a href="javascript:" [ngClass]="{-->
+<!--                    active:-->
+<!--                      urlComplete.subUrl === 'appraisal-objective-form'-->
+<!--                  }">Appraisal Objective Form</a>-->
+<!--                  </li>-->
                   <li routerLink="/performance/appraisal-objectives">
                     <a href="javascript:" [ngClass]="{
                     active:
