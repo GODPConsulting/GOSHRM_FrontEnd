@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
 import { saveAs } from "file-saver";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -19,7 +20,6 @@ export class AcademicDisciplineComponent implements OnInit {
   public academicDisciplineForm: FormGroup;
   public academicDisciplineUploadForm: FormGroup;
   public formTitle: string = "Add Academic Discipline";
-  public pageLoading: boolean;
   public spinner: boolean = false;
   public selectedId: number[] = [];
   public file: File;
@@ -27,7 +27,8 @@ export class AcademicDisciplineComponent implements OnInit {
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -112,14 +113,14 @@ export class AcademicDisciplineComponent implements OnInit {
   }
 
   getAcademicDisplines() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getAcademicDisplines().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.disciplines = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -194,25 +195,24 @@ export class AcademicDisciplineComponent implements OnInit {
         confirmButtonText: "Yes!",
         showLoaderOnConfirm: true,
         preConfirm: (login) => {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteAcademicDiscipline(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
-              swal.hideLoading();
-              const message = res.status.message.friendlyMessage;
+              this.loadingService.hide();
               if (res.status.isSuccessful) {
-                swal.fire("GOSHRM", message, "success").then(() => {
+                this.utilitiesService.showMessage(res, "success").then(() => {
                   this.getAcademicDisplines();
                 });
+                // swal.fire("GOSHRM", message, "success").then(() => {
+                //
+                // });
               } else {
-                swal.fire("GOSHRM", message, "error");
+                this.utilitiesService.showMessage(res, "error");
               }
             },
             (err) => {
-              this.pageLoading = false;
-              swal.hideLoading();
-              const message = err.status.message.friendlyMessage;
-              swal.fire("GOSHRM", message, "error");
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
             }
           );
         },

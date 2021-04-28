@@ -120,7 +120,7 @@ export class UtilitiesService {
     } else {
       idsArray.splice(idsArray.indexOf(id), 1);
       /*  idsArray = idsArray.filter((_id) => {
-        return _id !== id; 
+        return _id !== id;
       });*/
     }
   }
@@ -221,4 +221,22 @@ export class UtilitiesService {
   //   }
   // }
   // Date validation with the TypeScript
+
+  showMessage(response: any, type: string) {
+    const message = response.status.message.friendlyMessage;
+    switch (type) {
+      case "success":
+        return swal.fire("GOSHRM", message, "success");
+      case "error":
+        return swal.fire("GOSHRM", message, "error");
+    }
+    // if (type === 'success') {
+    //   swal.fire('GOSHRM', message, 'success')
+    // } else {
+    //
+    // }
+  }
+  showError(msg: string) {
+    return swal.fire("GOSHRM", msg, "error");
+  }
 }

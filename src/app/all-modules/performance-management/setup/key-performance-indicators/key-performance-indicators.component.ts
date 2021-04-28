@@ -12,6 +12,7 @@ import { PerformanceManagementService } from "src/app/services/performance-manag
 import { UtilitiesService } from "src/app/services/utilities.service";
 
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../services/loading.service";
 
 declare const $: any;
 
@@ -27,7 +28,6 @@ export class KeyPerformanceIndicatorsComponent
   categories: any[] = [];
   kpIndicators: Array<[]> = [];
   selectedId: number[] = [];
-  pageLoading: boolean = false;
   spinner: boolean = false;
   kpiUploadForm: FormGroup;
   @ViewChild("fileInput") fileInput: ElementRef;
@@ -39,7 +39,8 @@ export class KeyPerformanceIndicatorsComponent
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService
   ) {
     this.kpiUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -196,12 +197,12 @@ export class KeyPerformanceIndicatorsComponent
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.performanceManagementService
             .deleteKPIndicator(payload)
             .subscribe(
               (res) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -212,7 +213,8 @@ export class KeyPerformanceIndicatorsComponent
                 }
               },
               (err) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
+                this.utilitiesService.showMessage(err, "error");
               }
             );
         }

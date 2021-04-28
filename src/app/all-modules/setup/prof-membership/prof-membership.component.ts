@@ -3,6 +3,7 @@ import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -17,16 +18,15 @@ export class ProfMembershipComponent implements OnInit {
   public profMemberships: any[] = [];
   public professionalMembershipUploadForm: FormGroup;
   public formTitle: string = "Add Professional Membership";
-  public pageLoading: boolean;
   public spinner: boolean = false;
   public selectedId: number[] = [];
   public professionalMembershipForm: FormGroup;
-  public;
-
+  dtTrigger: any;
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -109,15 +109,15 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   getProfMembershipForm() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getProfMems().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.profMemberships = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -189,10 +189,10 @@ export class ProfMembershipComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteProfMem(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -202,7 +202,11 @@ export class ProfMembershipComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              const message = err.status.message.friendlyMessage;
+              swal.fire("GOSHRM", message, "error");
+            }
           );
         }
       });
@@ -226,6 +230,7 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   // Appends a selected file to "uploadInput"
+
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.uploadFileValidator(event, form, "hr");
   }

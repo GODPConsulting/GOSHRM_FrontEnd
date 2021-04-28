@@ -4,6 +4,7 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -16,7 +17,6 @@ export class CareerComponent implements OnInit {
 
   employeeDetails: any = {};
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   currentUser: string[] = []; // contains the data of the current user
   currentUserId: number;
@@ -45,7 +45,8 @@ export class CareerComponent implements OnInit {
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private utilitiesService: UtilitiesService,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -114,56 +115,56 @@ export class CareerComponent implements OnInit {
   }
 
   getJobGrade() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.jobGrades = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
   getJobTitle() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getJobTitle().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.jobTitles = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
 
   getEmploymentType() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getEmploymentType().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.employmentTypes = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
 
   loadEmployees() {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.employeeService.getEmployees().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.employeesList = data.employeeList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -235,16 +236,16 @@ export class CareerComponent implements OnInit {
   }
 
   getStaffDepartments() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService
       .getData("/company/get/all/companystructures")
       .subscribe(
         (data) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
           this.offices = data.companyStructures;
         },
         (err) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
         }
       );
   }
@@ -312,10 +313,10 @@ export class CareerComponent implements OnInit {
 
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.employeeService.deleteCareer(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -326,7 +327,8 @@ export class CareerComponent implements OnInit {
               }
             },
             (err) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
             }
           );
         }
@@ -355,4 +357,6 @@ export class CareerComponent implements OnInit {
       this.selectedId = [];
     }
   }
+
+  downloadFile() {}
 }

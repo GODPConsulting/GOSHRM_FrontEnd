@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 declare const $: any;
 @Component({
   selector: "app-academic-grade",
@@ -12,7 +13,6 @@ declare const $: any;
 export class AcademicGradeComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   public grades: any[] = [];
-  public pageLoading: boolean;
   public spinner: boolean = false;
   public formTitle: string = "Add Academic Grade";
   public academicGradeForm: FormGroup;
@@ -23,7 +23,8 @@ export class AcademicGradeComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -43,26 +44,26 @@ export class AcademicGradeComponent implements OnInit {
     this.initializeForm();
   }
   getAcademicGrade() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getAcademicGrade().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.grades = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
 
   downloadFile() {
     this.setupService.downloadAcademicGrade().subscribe(
-        (resp) => {
-          const data = resp;
-          this.utilitiesService.byteToFile(data,"Academicgrade.xlsx")
-        },
-        (err) => {}
-      );
+      (resp) => {
+        const data = resp;
+        this.utilitiesService.byteToFile(data, "Academicgrade.xlsx");
+      },
+      (err) => {}
+    );
   }
 
   uploadAcademicGrade() {
@@ -149,7 +150,7 @@ export class AcademicGradeComponent implements OnInit {
         } else {
           swal.fire("GOSHRM", message, "error");
         }
-        
+
         this.getAcademicGrade();
       },
       (err) => {
@@ -192,20 +193,23 @@ export class AcademicGradeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteAcademicGrade(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
-                swal.fire("GOSHRM", message, "success").then(() => {
+                this.utilitiesService.showMessage(res, "error").then(() => {
                   this.getAcademicGrade();
                 });
               } else {
-                swal.fire("GOSHRM", message, "error");
+                this.utilitiesService.showMessage(res, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
+            }
           );
         }
       });

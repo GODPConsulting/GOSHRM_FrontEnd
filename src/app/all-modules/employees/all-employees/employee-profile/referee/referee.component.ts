@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -12,7 +13,6 @@ declare const $: any;
 })
 export class RefereeComponent implements OnInit {
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   public selectedId: number[] = [];
   refereeForm: FormGroup;
@@ -24,11 +24,12 @@ export class RefereeComponent implements OnInit {
   // To hold data for each card
   employeeReferee: any = [];
   public dtOptions: DataTables.Settings = {};
-
+  dtTrigger: any;
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -190,10 +191,10 @@ export class RefereeComponent implements OnInit {
   }
 
   getEmployeeReferee(id: number) {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.employeeService.getRefereeByStaffId(id).subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         if (data.employeeList) {
           this.employeeReferee = data.employeeList;
         }
@@ -238,10 +239,10 @@ export class RefereeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.employeeService.deleteReferee(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -252,7 +253,7 @@ export class RefereeComponent implements OnInit {
               }
             },
             (err) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }
@@ -274,6 +275,7 @@ export class RefereeComponent implements OnInit {
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
+
   hack(val: any[]) {
     return Array.from(val);
   }

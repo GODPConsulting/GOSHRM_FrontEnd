@@ -5,6 +5,7 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -14,7 +15,6 @@ declare const $: any;
 })
 export class HospitalComponent implements OnInit {
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   public selectedId: number[] = [];
   hospitalForm: FormGroup;
@@ -31,12 +31,13 @@ export class HospitalComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   minDate: Date;
   maxDate: Date;
-
+  dtTrigger: any;
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private utilitiesService: UtilitiesService,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -60,7 +61,7 @@ export class HospitalComponent implements OnInit {
       order: [[1, "asc"]],
     };
   }
-  /* 
+  /*
   filterHospital(item) {
     this.reload = false;
     console.log(this.suggestedHospital);
@@ -286,14 +287,14 @@ export class HospitalComponent implements OnInit {
   }
 
   getEmployeeHospital(id: number) {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.employeeService.getHospitalByStaffId(id).subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.employeeHospital = data.employeeList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -324,10 +325,10 @@ export class HospitalComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.employeeService.deleteHospital(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -338,7 +339,7 @@ export class HospitalComponent implements OnInit {
               }
             },
             (err) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }
@@ -372,6 +373,7 @@ export class HospitalComponent implements OnInit {
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
+
   hack(val: any[]) {
     return Array.from(val);
   }

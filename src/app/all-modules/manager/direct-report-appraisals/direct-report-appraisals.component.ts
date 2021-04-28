@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { JwtService } from "src/app/services/jwt.service";
 import { ManagerService } from "src/app/services/manager.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 
 @Component({
   selector: "app-direct-report-appraisals",
@@ -12,12 +13,12 @@ export class DirectReportAppraisalsComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   public selectedId: number[] = [];
   public reportAppraisals: any[] = [];
-  pageLoading: boolean;
   user: any;
 
   constructor(
     private managerService: ManagerService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -52,14 +53,14 @@ export class DirectReportAppraisalsComponent implements OnInit {
   }
 
   getAppraisalObjByManagerId(id: number) {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.managerService.getAppraisalObjByManagerId(id).subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.reportAppraisals = data.objectiveList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }

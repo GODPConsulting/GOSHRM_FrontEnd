@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { DataService } from "src/app/services/data.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingService } from "../../../services/loading.service";
 
 @Component({
   selector: "app-notification-list",
@@ -12,11 +13,11 @@ export class NotificationListComponent implements OnInit {
   status: boolean = false;
   public dtOptions: DataTables.Settings = {};
   selectedId: any[] = [];
-  pageLoading: boolean = true;
 
   constructor(
     private dataService: DataService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +34,7 @@ export class NotificationListComponent implements OnInit {
       order: [[1, "asc"]],
     };
     this.dataService.currentMail.subscribe((result) => {
-      this.pageLoading = false;
+      this.loadingService.hide();
       this.mails = result;
     });
   }

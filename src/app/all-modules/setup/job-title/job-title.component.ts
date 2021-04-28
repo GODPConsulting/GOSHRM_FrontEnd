@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -15,7 +16,6 @@ export class JobTitleComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
   public jobTitles: any[] = [];
-  public pageLoading: boolean;
   public spinner: boolean = false;
   public formTitle = "Add Job Title";
   public jobTitleForm: FormGroup;
@@ -25,7 +25,8 @@ export class JobTitleComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -105,15 +106,15 @@ export class JobTitleComponent implements OnInit {
   }
 
   getJobTitle() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getJobTitle().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.jobTitles = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -180,10 +181,10 @@ export class JobTitleComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteJobTitle(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -193,7 +194,11 @@ export class JobTitleComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              const message = err.status.message.friendlyMessage;
+              swal.fire("GOSHRM", message, "error");
+            }
           );
         }
       });

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -14,7 +15,6 @@ export class HighSchoolGradeComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild("fileInput") fileInput: ElementRef;
   public grades: any[] = [];
-  public pageLoading: boolean;
   public spinner: boolean = false;
   public formTitle: string = "Add High School Grade";
   public highSchoolGradeForm: FormGroup;
@@ -24,7 +24,8 @@ export class HighSchoolGradeComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -110,15 +111,15 @@ export class HighSchoolGradeComponent implements OnInit {
   }
 
   getHighSchoolGrade() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getHighSchoolGrade().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.grades = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -192,10 +193,10 @@ export class HighSchoolGradeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteHighSchoolGrade(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -205,7 +206,10 @@ export class HighSchoolGradeComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
+            }
           );
         }
       });

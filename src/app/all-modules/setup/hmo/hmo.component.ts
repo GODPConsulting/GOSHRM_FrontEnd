@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -14,8 +15,6 @@ export class HmoComponent implements OnInit {
   @ViewChild("fileInput") fileInput: ElementRef;
   public dtOptions: DataTables.Settings = {};
   public hmos: any[] = [];
-  public pageLoading: boolean;
-
   public spinner: boolean = false;
   public formTitle = "Add HMO";
   public hmoForm: FormGroup;
@@ -25,7 +24,8 @@ export class HmoComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -107,15 +107,15 @@ export class HmoComponent implements OnInit {
   }
 
   getHmo() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getHmo().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.hmos = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -137,7 +137,7 @@ export class HmoComponent implements OnInit {
     }
     const payload = form.value;
     if (!this.utilitiesService.validateEmail(payload.contact_email)) {
-      return swal.fire('Error', 'Email not valid', 'error')
+      return swal.fire("Error", "Email not valid", "error");
     }
     this.spinner = true;
     return this.setupService.addHmo(payload).subscribe(
@@ -197,10 +197,10 @@ export class HmoComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteHmo(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -210,7 +210,10 @@ export class HmoComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
+            }
           );
         }
       });

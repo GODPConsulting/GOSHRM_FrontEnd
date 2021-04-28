@@ -5,6 +5,7 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -14,7 +15,6 @@ declare const $: any;
 })
 export class EmployeeHmoComponent implements OnInit {
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   public selectedId: number[] = [];
   employeeHmoForm: FormGroup;
@@ -31,12 +31,13 @@ export class EmployeeHmoComponent implements OnInit {
   // Observable to subscribe to in the template
   allHmos$: Observable<any> = this.setupService.getHmo();
   maxDate: any;
-
+  dtTrigger: any;
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private utilitiesService: UtilitiesService,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -140,7 +141,7 @@ export class EmployeeHmoComponent implements OnInit {
     payload.hmoId = +payload.hmoId;
     /* const formData = new FormData();
     for (const key in form.value) {
-      
+
       formData.append(key, this.employeeHmoForm.get(key).value);
     } */
     form.get("approvalStatus").disable();
@@ -225,10 +226,10 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   getEmployeeHmo(id: number) {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.employeeService.getHmoByStaffId(id).subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.employeeHmo = data.employeeList;
       },
       (err) => {
@@ -263,10 +264,10 @@ export class EmployeeHmoComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.employeeService.deleteHmo(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -277,7 +278,7 @@ export class EmployeeHmoComponent implements OnInit {
               }
             },
             (err) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

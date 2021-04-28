@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../../services/loading.service";
 
 @Component({
   selector: "app-appraisals",
@@ -13,11 +14,11 @@ export class AppraisalsComponent implements OnInit {
   public selectedId: number[] = [];
   public appraisalList: any[] = [];
   appraisalCycleId: number;
-  pageLoading: boolean;
 
   constructor(
     private route: ActivatedRoute,
-    private performanceService: PerformanceManagementService
+    private performanceService: PerformanceManagementService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -57,15 +58,15 @@ export class AppraisalsComponent implements OnInit {
   }
 
   getAppraisalsByCycleId(id: number) {
-    this.pageLoading = true;
+    this.loadingService.show();
 
     this.performanceService.getAppraisalsByCycleId(id).subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.appraisalList = data.objectiveList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }

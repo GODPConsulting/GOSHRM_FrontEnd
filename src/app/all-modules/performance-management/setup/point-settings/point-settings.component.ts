@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../services/loading.service";
 declare const $: any;
 @Component({
   selector: "app-point-settings",
@@ -12,7 +13,6 @@ declare const $: any;
 export class PointSettingsComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   @ViewChild("fileInput")
   fileInput: ElementRef;
@@ -29,7 +29,8 @@ export class PointSettingsComponent implements OnInit {
 
   constructor(
     private performanceManagementService: PerformanceManagementService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -86,14 +87,14 @@ export class PointSettingsComponent implements OnInit {
   }
 
   getPointSettings() {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.performanceManagementService.getPointSettings().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.pointSettings = data.setupList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -142,12 +143,12 @@ export class PointSettingsComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.performanceManagementService
             .deletePointSettings(payload)
             .subscribe(
               (res) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -158,7 +159,9 @@ export class PointSettingsComponent implements OnInit {
                 }
               },
               (err) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
+                const message = err.status.message.friendlyMessage;
+                swal.fire("GOSHRM", message, "error");
               }
             );
         }

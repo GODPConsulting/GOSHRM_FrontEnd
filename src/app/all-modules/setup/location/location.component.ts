@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 
@@ -17,18 +18,18 @@ export class LocationComponent implements OnInit {
   @ViewChild("fileInput") fileInput: ElementRef;
   public locations: any[] = [];
   public selectedId: number[] = [];
-  public pageLoading: boolean;
   public spinner: boolean = false;
   public locationForm: FormGroup;
   locationUploadForm: FormGroup;
   public countries: any[] = [];
   public countryId: number;
   public states: any[] = [];
-
+  dtTrigger: any;
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +57,7 @@ export class LocationComponent implements OnInit {
         this.utilitiesService.byteToFile(data, "Location.xlsx", {
           type: "application/vnd.ms-excel",
         });
-          },
+      },
       (err) => {}
     );
   }
@@ -128,14 +129,14 @@ export class LocationComponent implements OnInit {
   }
 
   getLocation() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getLocation().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.locations = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -192,10 +193,10 @@ export class LocationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteLocation(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("Success", message, "success").then(() => {
@@ -205,7 +206,10 @@ export class LocationComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
+            }
           );
         }
       });
@@ -230,29 +234,29 @@ export class LocationComponent implements OnInit {
 
   /* Put in utilities service */
   getCountry() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getData("/common/countries").subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.countries = data.commonLookups;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
 
   getStatesByCountryId(id) {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService
       .getData(`/common/get/states/countryId?CountryId=${id}`)
       .subscribe(
         (data) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
           this.states = data.commonLookups;
         },
         (err) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
         }
       );
   }
@@ -274,6 +278,7 @@ export class LocationComponent implements OnInit {
     event.stopPropagation();
   }
   // Appends a selected file to "uploadInput"
+
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.uploadFileValidator(event, form, "hr");
   }

@@ -5,6 +5,7 @@ import { PerformanceManagementService } from "src/app/services/performance-manag
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -16,7 +17,6 @@ export class KpiToJobgradeComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   public dtWeightOptions: DataTables.Settings = {};
   public kpiToJobGrades: any[] = [];
-  public pageLoading: boolean;
   public spinner: boolean = false;
   public formTitle = "Add KPI To Job Grade";
   public kpiToJobGradeForm: FormGroup;
@@ -31,7 +31,8 @@ export class KpiToJobgradeComponent implements OnInit {
     private setupService: SetupService,
     private performanceService: PerformanceManagementService,
     private formBuilder: FormBuilder,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -129,15 +130,15 @@ export class KpiToJobgradeComponent implements OnInit {
   }
 
   getKpiToJobGrades() {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.performanceService.getKpiToJobGrades().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.getWeightSummary();
         this.kpiToJobGrades = data.setupList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -155,14 +156,14 @@ export class KpiToJobgradeComponent implements OnInit {
   }
 
   getWeightSummary() {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.performanceService.getKpiToJobGradesWeightSumary().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.weightSummary = data.setupList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -188,10 +189,10 @@ export class KpiToJobgradeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.performanceService.deleteKpiToJobGrade(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -201,7 +202,10 @@ export class KpiToJobgradeComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
+            }
           );
         }
       });

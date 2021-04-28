@@ -3,6 +3,7 @@ import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -16,7 +17,6 @@ export class ProfCertificationComponent implements OnInit {
   public certifications: any[] = [];
   public profCertificationForm: FormGroup;
   public formTitle: string = "Add Professional Certification";
-  public pageLoading: boolean;
   public spinner: boolean = false;
   public selectedId: number[] = [];
   public profCertUploadForm: FormGroup;
@@ -24,7 +24,8 @@ export class ProfCertificationComponent implements OnInit {
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -46,12 +47,15 @@ export class ProfCertificationComponent implements OnInit {
 
   downloadFile() {
     this.setupService.downloadProfCert().subscribe(
-        (resp) => {
-          const data = resp;
-          this.utilitiesService.byteToFile(data, "Professional Certification.xlsx"); 
-        },
-        (err) => {}
-      );
+      (resp) => {
+        const data = resp;
+        this.utilitiesService.byteToFile(
+          data,
+          "Professional Certification.xlsx"
+        );
+      },
+      (err) => {}
+    );
   }
 
   uploadProfCert() {
@@ -104,14 +108,14 @@ export class ProfCertificationComponent implements OnInit {
   }
 
   getprofCertification() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getProfCerts().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.certifications = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -186,10 +190,10 @@ export class ProfCertificationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteProfCert(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -199,7 +203,11 @@ export class ProfCertificationComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              const message = err.status.message.friendlyMessage;
+              swal.fire("GOSHRM", message, "error");
+            }
           );
         }
       });

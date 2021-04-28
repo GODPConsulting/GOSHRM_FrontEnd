@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -17,14 +18,14 @@ export class JobGradeComponent implements OnInit {
   public jobGradeForm: FormGroup;
   public jobGrades: any[] = [];
   public selectedId: number[] = [];
-  public pageLoading: boolean;
   public spinner: boolean = false;
   public jobGradeUploadForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -118,7 +119,7 @@ export class JobGradeComponent implements OnInit {
     /* if (this.jobGrades.length === 0) {
       this.jobGradeForm.get("job_grade_reporting_to").disable();
     } else {
-      this.jobGradeForm.get("job_grade_reporting_to").enable(); 
+      this.jobGradeForm.get("job_grade_reporting_to").enable();
     }*/
   }
 
@@ -127,15 +128,15 @@ export class JobGradeComponent implements OnInit {
   }
 
   getJobGrade() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getJobGrades().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.jobGrades = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -189,10 +190,10 @@ export class JobGradeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteJobGrade(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -202,7 +203,10 @@ export class JobGradeComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
+            }
           );
         }
       });

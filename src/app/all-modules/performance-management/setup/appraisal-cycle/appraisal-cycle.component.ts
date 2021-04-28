@@ -6,6 +6,7 @@ import { PerformanceManagementService } from "src/app/services/performance-manag
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -16,7 +17,6 @@ declare const $: any;
 export class AppraisalCycleComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
 
   @ViewChild("fileInput")
@@ -50,13 +50,14 @@ export class AppraisalCycleComponent implements OnInit {
   public employeesList: any = [];
 
   constructor(
-    private FormBuilder: FormBuilder,
+    private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
-    private _location: Location
+    private _location: Location,
+    private loadingService: LoadingService
   ) {
-    this.appraisalCycleUploadForm = this.FormBuilder.group({
+    this.appraisalCycleUploadForm = this.formBuilder.group({
       uploadInput: [""],
     });
   }
@@ -150,14 +151,14 @@ export class AppraisalCycleComponent implements OnInit {
   }
 
   getAppraisalCycles() {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.performanceManagementService.getAppraisalCycles().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.appraisalCycles = data.setupList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -213,12 +214,12 @@ export class AppraisalCycleComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.performanceManagementService
             .deleteAppraisalCycle(payload)
             .subscribe(
               (res) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -229,7 +230,9 @@ export class AppraisalCycleComponent implements OnInit {
                 }
               },
               (err) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
+                const message = err.status.message.friendlyMessage;
+                swal.fire("GOSHRM", message, "error");
               }
             );
         }
@@ -238,16 +241,16 @@ export class AppraisalCycleComponent implements OnInit {
   }
 
   getStaffDepartments() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService
       .getData("/company/get/all/companystructures")
       .subscribe(
         (data) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
           this.offices = data.companyStructures;
         },
         (err) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
         }
       );
   }

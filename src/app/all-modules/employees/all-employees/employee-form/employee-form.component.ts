@@ -8,6 +8,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { DataService } from "src/app/services/data.service";
 import { Subscription } from "rxjs";
+import { LoadingService } from "../../../../services/loading.service";
 declare const $: any;
 @Component({
   selector: "app-employee-form",
@@ -26,7 +27,6 @@ export class EmployeeFormComponent implements OnInit {
   public countries: any[] = [];
   public jobDetailForm;
   public states: any[] = [];
-  public pageLoading: boolean;
   public departments: any[] = [];
   public roles: any[] = [];
   public access: any[] = [];
@@ -43,7 +43,8 @@ export class EmployeeFormComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private router: Router,
     private route: ActivatedRoute,
-    private dataService: DataService
+    private dataService: DataService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -238,28 +239,28 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   getJobTitle() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getJobTitle().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.jobTitles = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
 
   getCountry() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.utilitiesService.getCountry().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.countries = data.commonLookups;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -273,59 +274,59 @@ export class EmployeeFormComponent implements OnInit {
     );
   }
   getStaffDepartments() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService
       .getData("/company/get/all/companystructures")
       .subscribe(
         (data) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
           this.departments = data.companyStructures;
         },
         (err) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
         }
       );
   }
 
   getUserRole() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getData("/admin/get/all/role").subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.roles = data.roles;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
 
   getAccess() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService
       .getData("/company/get/all/companystructureDefinition")
       .subscribe(
         (data) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
           this.access = data.companyStructureDefinitions;
         },
         (err) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
         }
       );
   }
 
   getAccessLevelsByAccessLevelId(id) {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService
       .getData(`/company/get/all/companystructure/accessId?AccessId=${id}`)
       .subscribe(
         (data) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
           this.accessLevel = data.companyStructures;
         },
         (err) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
         }
       );
   }

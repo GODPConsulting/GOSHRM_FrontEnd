@@ -9,6 +9,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { SetupService } from "src/app/services/setup.service";
 import { Subscription } from "rxjs";
 import { DataService } from "src/app/services/data.service";
+import { LoadingService } from "../../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -20,7 +21,6 @@ export class EmployeeProfileComponent implements OnInit {
   employeeDetails: any = {};
   employeeId: number;
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   currentUser: string[] = []; // contains the data of the current user
   currentUserId: number;
@@ -62,7 +62,8 @@ export class EmployeeProfileComponent implements OnInit {
     private authService: AuthService,
     private setupService: SetupService,
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private loadingService: LoadingService
   ) {
     // Handles route reloading...solves view not changing when user navigates to his/her own profile from another user's profile route
     this.navigationSubscription = this.router.events.subscribe((e) => {
@@ -151,15 +152,15 @@ export class EmployeeProfileComponent implements OnInit {
 
   /* Employee profile */
   getSingleEmployee(id: number) {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
         this.employeeDetails = data.employeeList[0];
 
-        this.pageLoading = false;
+        this.loadingService.hide();
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -278,10 +279,10 @@ export class EmployeeProfileComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.employeeService.deleteEmergencyContact(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -291,7 +292,11 @@ export class EmployeeProfileComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              const message = err.status.message.friendlyMessage;
+              swal.fire("GOSHRM", message, "error");
+            }
           );
         }
       });
@@ -420,21 +425,23 @@ export class EmployeeProfileComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.employeeService.deleteLanguageRating(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
                   this.getSavedLanguageRating(this.employeeId);
                 });
               } else {
-                swal.fire("GOSHRM", message, "error");
+                return swal.fire("GOSHRM", message, "error");
               }
             },
             (err) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
+              const message = err.status.message.friendlyMessage;
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }
@@ -468,14 +475,14 @@ export class EmployeeProfileComponent implements OnInit {
 
   // get saved language(s)
   getSavedLanguageRating(id: number) {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.employeeService.getLanguageRatingByStaffId(id).subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.languageRating = data.employeeList;
       },
       (err) => {
-        this.spinner = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -675,12 +682,12 @@ export class EmployeeProfileComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.employeeService
             .deleteEmployeeQualification(payload)
             .subscribe(
               (res) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -691,7 +698,9 @@ export class EmployeeProfileComponent implements OnInit {
                 }
               },
               (err) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
+                const message = err.status.message.friendlyMessage;
+                swal.fire("GOSHRM", message, "error");
               }
             );
         }

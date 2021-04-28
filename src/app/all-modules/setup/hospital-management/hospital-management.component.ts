@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -17,7 +18,7 @@ export class HospitalManagementComponent implements OnInit {
   public hospitalManagementForm: FormGroup;
   public hospitalManagements: any[] = [];
   public selectedId: number[] = [];
-  public pageLoading: boolean;
+
   public spinner: boolean = false;
   public hospitalManagementUploadForm: FormGroup;
   public hmos: any[] = [];
@@ -25,7 +26,8 @@ export class HospitalManagementComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -126,27 +128,27 @@ export class HospitalManagementComponent implements OnInit {
   }
 
   getHmos() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getHmo().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.hmos = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
 
   getHospitalManagement() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getHospitalMgt().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.hospitalManagements = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -157,10 +159,10 @@ export class HospitalManagementComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    
+
     const payload = form.value;
     if (!this.utilitiesService.validateEmail(payload.email)) {
-      return swal.fire('Error', 'Email not valid', 'error')
+      return swal.fire("Error", "Email not valid", "error");
     }
     payload.hmoId = +payload.hmoId;
 
@@ -205,10 +207,10 @@ export class HospitalManagementComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteHospitalMgt(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("Success", message, "success").then(() => {
@@ -218,7 +220,10 @@ export class HospitalManagementComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
+            }
           );
         }
       });

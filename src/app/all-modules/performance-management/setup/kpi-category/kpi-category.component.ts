@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../services/loading.service";
 declare const $: any;
 @Component({
   selector: "app-kpi-category",
@@ -21,7 +22,6 @@ declare const $: any;
 export class KpiCategoryComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   onclick: boolean = false;
   modelDisabled: boolean = true;
@@ -46,11 +46,12 @@ export class KpiCategoryComponent implements OnInit {
   description: string = "";
   weightModel: string = "";
   hrSelectReviewer: string = "";
-
+  currentUserId: number;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -123,14 +124,14 @@ export class KpiCategoryComponent implements OnInit {
   }
 
   getkpiCategory() {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.performanceManagementService.getkpiCategory().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.kpiCategory = data.setupList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -155,8 +156,6 @@ export class KpiCategoryComponent implements OnInit {
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
@@ -180,12 +179,12 @@ export class KpiCategoryComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.performanceManagementService
             .deleteKpiCategory(payload)
             .subscribe(
               (res) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -196,7 +195,8 @@ export class KpiCategoryComponent implements OnInit {
                 }
               },
               (err) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
+                this.utilitiesService.showMessage(err, "error");
               }
             );
         }
@@ -243,4 +243,6 @@ export class KpiCategoryComponent implements OnInit {
       this.selectedId = [];
     }
   }
+
+  downloadFile() {}
 }

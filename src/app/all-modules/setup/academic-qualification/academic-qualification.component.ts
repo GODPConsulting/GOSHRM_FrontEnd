@@ -4,6 +4,7 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -18,7 +19,6 @@ export class AcademicQualificationComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild("fileInput") fileInput: ElementRef;
   public qualifications: any[] = [];
-  public pageLoading: boolean;
   public spinner: boolean = false;
   public formTitle: string = "Add Academic Qualification";
   public academicQualificationForm: FormGroup;
@@ -29,7 +29,8 @@ export class AcademicQualificationComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -51,12 +52,12 @@ export class AcademicQualificationComponent implements OnInit {
 
   downloadFile() {
     this.setupService.downloadAcademicQualification().subscribe(
-        (resp) => {
-          const data = resp;
-          this.utilitiesService.byteToFile(data,"AcademicQualification.xlsx");
-        },
-        (err) => {}
-      );
+      (resp) => {
+        const data = resp;
+        this.utilitiesService.byteToFile(data, "AcademicQualification.xlsx");
+      },
+      (err) => {}
+    );
   }
 
   uploadAcademicQualification() {
@@ -107,15 +108,15 @@ export class AcademicQualificationComponent implements OnInit {
   }
 
   getAcademicQualifications() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getAcademicQualification().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.qualifications = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -168,12 +169,12 @@ export class AcademicQualificationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService
             .deleteAcademicQualification(payload)
             .subscribe(
               (res) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -183,7 +184,10 @@ export class AcademicQualificationComponent implements OnInit {
                   swal.fire("GOSHRM", message, "error");
                 }
               },
-              (err) => {}
+              (err) => {
+                this.loadingService.hide();
+                this.utilitiesService.showMessage(err, "error");
+              }
             );
         }
       });

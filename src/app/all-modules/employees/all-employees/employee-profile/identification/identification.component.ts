@@ -4,6 +4,7 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -13,7 +14,6 @@ declare const $: any;
 })
 export class IdentificationComponent implements OnInit {
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   public selectedId: number[] = [];
   public identifications: any[] = [];
@@ -27,12 +27,13 @@ export class IdentificationComponent implements OnInit {
   employeeIdentification: any[] = [];
   public dtOptions: DataTables.Settings = {};
   statusArray: string[] = [];
-
+  dtTrigger: any;
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
     private employeeService: EmployeeService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -174,14 +175,14 @@ export class IdentificationComponent implements OnInit {
   }
 
   getEmployeeIdentification(id: number) {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.employeeService.getIdentificationByStaffId(id).subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.employeeIdentification = data.employeeList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -189,14 +190,14 @@ export class IdentificationComponent implements OnInit {
   }
 
   getIdentification() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getData("/common/identifications").subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.identifications = data.commonLookups;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -241,10 +242,10 @@ export class IdentificationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.employeeService.deleteIdentification(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -257,7 +258,7 @@ export class IdentificationComponent implements OnInit {
               }
             },
             (err) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }
@@ -280,6 +281,7 @@ export class IdentificationComponent implements OnInit {
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
+
   hack(val: any[]) {
     return Array.from(val);
   }

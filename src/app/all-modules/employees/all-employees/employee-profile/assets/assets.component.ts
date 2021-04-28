@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -14,13 +15,12 @@ export class AssetsComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   employeeDetails: any = {};
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   currentUser: string[] = []; // contains the data of the current user
   currentUserId: number;
   public selectedId: number[] = [];
   public offices: any[] = [];
-
+  dtTrigger: any;
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
@@ -35,7 +35,8 @@ export class AssetsComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -133,7 +134,7 @@ export class AssetsComponent implements OnInit {
 
     /* const formData = new FormData();
     for (const key in form.value) {
-      
+
       formData.append(key, this.assetForm.get(key).value);
     }
  */
@@ -205,6 +206,7 @@ export class AssetsComponent implements OnInit {
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
+
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
@@ -228,10 +230,10 @@ export class AssetsComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.employeeService.deleteAsset(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -242,7 +244,9 @@ export class AssetsComponent implements OnInit {
               }
             },
             (err) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
+              const message = err.status.message.friendlyMessage;
+              swal.fire("GOSHRM", message, "error");
             }
           );
         }
@@ -271,4 +275,6 @@ export class AssetsComponent implements OnInit {
       this.selectedId = [];
     }
   }
+
+  downloadFile() {}
 }

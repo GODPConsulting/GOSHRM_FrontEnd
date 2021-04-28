@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -16,7 +17,6 @@ export class EmploymentTypeComponent implements OnInit {
   @ViewChild("fileInput") fileInput: ElementRef;
   public employmentTypeForm: FormGroup;
   public employmentTypes: any[] = [];
-  public pageLoading: boolean;
   public spinner: boolean = false; // Controls the visibilty of the spinner
   public selectedId: number[] = [];
   public employmentTypeUploadForm: FormGroup;
@@ -25,7 +25,8 @@ export class EmploymentTypeComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -119,15 +120,15 @@ export class EmploymentTypeComponent implements OnInit {
   }
 
   getEmploymentType() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getEmploymentType().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.employmentTypes = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -182,10 +183,10 @@ export class EmploymentTypeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteEmploymentType(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -195,7 +196,11 @@ export class EmploymentTypeComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              const message = err.status.message.friendlyMessage;
+              swal.fire("GOSHRM", message, "error");
+            }
           );
         }
       });

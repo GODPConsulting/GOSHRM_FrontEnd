@@ -8,6 +8,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { JwtService } from "src/app/services/jwt.service";
+import { LoadingService } from "../../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -18,7 +19,6 @@ declare const $: any;
 export class AppraisalFeedbackComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
 
   @ViewChild("fileInput")
@@ -51,17 +51,17 @@ export class AppraisalFeedbackComponent implements OnInit {
   public user;
 
   constructor(
-    private FormBuilder: FormBuilder,
+    private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
     private _location: Location,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
     this.user = this.jwtService.getHrmUserDetails();
-    console.log(this.user.staffId);
 
     this.dtOptions = {
       dom:
@@ -141,31 +141,31 @@ export class AppraisalFeedbackComponent implements OnInit {
   }
 
   getAppraisalFeedbacks(id) {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.performanceManagementService
       .getAppraisalFeedbacks(this.user.staffId)
       .subscribe(
         (data) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
           this.appraisalFeedbacks = data.objectiveList;
           console.log(this.appraisalFeedbacks);
         },
         (err) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
         }
       );
   }
 
   getJobGrade() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.jobGrades = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -221,12 +221,12 @@ export class AppraisalFeedbackComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.performanceManagementService
             .deleteAppraisalFeedback(payload)
             .subscribe(
               (res) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -237,7 +237,9 @@ export class AppraisalFeedbackComponent implements OnInit {
                 }
               },
               (err) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
+                const message = err.status.message.friendlyMessage;
+                swal.fire("GOSHRM", message, "error");
               }
             );
         }

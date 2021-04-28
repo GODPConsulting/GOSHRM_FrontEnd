@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import { LoadingService } from "../../../../services/loading.service";
 
 @Component({
-  selector: 'app-appraisal-objective-view',
-  templateUrl: './appraisal-objective-view.component.html',
-  styleUrls: ['./appraisal-objective-view.component.css']
+  selector: "app-appraisal-objective-view",
+  templateUrl: "./appraisal-objective-view.component.html",
+  styleUrls: ["./appraisal-objective-view.component.css"],
 })
 export class AppraisalObjectiveViewComponent implements OnInit {
-  pageLoading: boolean;
+  constructor(private loadingService: LoadingService) {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

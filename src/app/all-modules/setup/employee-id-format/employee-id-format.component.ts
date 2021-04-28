@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -12,9 +13,6 @@ declare const $: any;
 })
 export class EmployeeIdFormatComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
-
-  public pageLoading: boolean;
-
   public spinner: boolean = false;
   public formTitle = "Add Employee ID Format";
   public idFormatForm: FormGroup;
@@ -26,7 +24,8 @@ export class EmployeeIdFormatComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -93,8 +92,11 @@ export class EmployeeIdFormatComponent implements OnInit {
 
   submitIdFormatForm(form: FormGroup) {
     if (!form.valid) {
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
+      return this.utilitiesService.showError(
+        "Please fill all mandatory fields"
+      );
+      // swal.fire("Error", "please fill all mandatory fields", "error");
+      // return;
     }
     const payload = form.value;
     payload.companyStructureId = +payload.companyStructureId;
@@ -103,34 +105,32 @@ export class EmployeeIdFormatComponent implements OnInit {
     return this.setupService.addEmployeeIdFormat(payload).subscribe(
       (res) => {
         this.spinner = false;
-        const message = res.status.message.friendlyMessage;
-
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          this.initIdFormatForm();
-          $("#employee_id_format").modal("hide");
+          this.utilitiesService.showMessage(res, "success").then(() => {
+            this.initIdFormatForm();
+            $("#employee_id_format").modal("hide");
+            this.getEmployeeIdFormat();
+          });
         } else {
-          swal.fire("GOSHRM", message, "error");
+          this.utilitiesService.showMessage(res, "error");
         }
-        this.getEmployeeIdFormat();
       },
       (err) => {
         this.spinner = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("GOSHRM", message, "error");
+        this.utilitiesService.showMessage(err, "error");
       }
     );
   }
 
   getEmployeeIdFormat() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getEmployeeIdFormat().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.employeeIdFormats = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -154,18 +154,20 @@ export class EmployeeIdFormatComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
+          this.loadingService.show();
           return this.setupService.deleteIdFormat(payload).subscribe(
             (res) => {
-              const message = res.status.message.friendlyMessage;
+              this.loadingService.hide();
               if (res.status.isSuccessful) {
-                swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeIdFormat();
-                });
+                this.utilitiesService.showMessage(res, "success");
               } else {
-                swal.fire("GOSHRM", message, "error");
+                this.utilitiesService.showMessage(res, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
+            }
           );
         }
       });

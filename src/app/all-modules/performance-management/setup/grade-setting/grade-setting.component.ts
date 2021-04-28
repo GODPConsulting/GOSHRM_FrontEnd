@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../services/loading.service";
 
 declare const $: any;
 
@@ -19,14 +20,14 @@ export class GradeSettingComponent implements OnInit {
   loading: boolean;
   gradeSettings: any[] = [];
   selectedId: number[] = [];
-  pageLoading: boolean;
   spinner: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private router: Router,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -71,14 +72,14 @@ export class GradeSettingComponent implements OnInit {
     $("#add_grade_setting").modal("hide");
   }
   getSavedGradeSetting() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.performanceManagementService.getGradeSettings().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.gradeSettings = data.setupList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -121,12 +122,12 @@ export class GradeSettingComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.performanceManagementService
             .deleteGradeSetting(payload)
             .subscribe(
               (res) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -137,7 +138,9 @@ export class GradeSettingComponent implements OnInit {
                 }
               },
               (err) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
+                const message = err.status.message.friendlyMessage;
+                swal.fire("GOSHRM", message, "error");
               }
             );
         }

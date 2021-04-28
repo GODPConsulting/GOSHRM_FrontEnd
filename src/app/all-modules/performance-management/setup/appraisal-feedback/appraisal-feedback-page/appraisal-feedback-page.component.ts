@@ -7,6 +7,7 @@ import { PerformanceManagementService } from "src/app/services/performance-manag
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -17,7 +18,6 @@ declare const $: any;
 export class AppraisalFeedbackPageComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
 
   @ViewChild("fileInput")
@@ -51,11 +51,12 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   public jobGrades: any[] = [];
 
   constructor(
-    private FormBuilder: FormBuilder,
+    private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
-    private _location: Location
+    private _location: Location,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -144,30 +145,30 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
 
   getAppraisalFeedbacks() {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.performanceManagementService
       .getAppraisalFeedbacksByStaffId(2)
       .subscribe(
         (data) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
           this.appraisalFeedbacks = data.objectiveList;
         },
         (err) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
         }
       );
   }
 
   getJobGrade() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.jobGrades = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -228,12 +229,12 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.performanceManagementService
             .deleteAppraisalFeedback(payload)
             .subscribe(
               (res) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -244,7 +245,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
                 }
               },
               (err) => {
-                this.pageLoading = false;
+                this.loadingService.hide();
+                this.utilitiesService.showMessage(err, "error");
               }
             );
         }

@@ -4,6 +4,7 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../../services/loading.service";
 declare const $: any;
 
 @Component({
@@ -13,7 +14,6 @@ declare const $: any;
 })
 export class SkillsComponent implements OnInit {
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
   selectedId: number[] = [];
   jobTitleId: number;
@@ -27,13 +27,15 @@ export class SkillsComponent implements OnInit {
   employeeSkills: any = {};
   staffs: any = {};
   jobTitle: any;
+  dtTrigger: any;
   public dtOptions: DataTables.Settings = {};
 
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private utilitiesService: UtilitiesService,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -130,15 +132,15 @@ export class SkillsComponent implements OnInit {
   }
 
   getSingleJobTitle(id: number) {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getSingleJobTitleById(id).subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.jobTitle = data.setuplist[0];
         this.jobSkills = this.jobTitle.sub_Skills;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -237,10 +239,10 @@ export class SkillsComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.employeeService.deleteSkills(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -251,7 +253,8 @@ export class SkillsComponent implements OnInit {
               }
             },
             (err) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
             }
           );
         }

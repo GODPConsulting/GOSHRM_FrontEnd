@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -14,7 +15,6 @@ declare const $: any;
 export class JobSkillComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   @ViewChild("fileInput") fileInput: ElementRef;
-  public pageLoading: boolean;
   public spinner: boolean = false;
   public formTitle: string = "Add Job Sub Skill";
   public jobSkillForm: FormGroup;
@@ -31,7 +31,8 @@ export class JobSkillComponent implements OnInit {
     private setupService: SetupService,
     private route: ActivatedRoute,
     private router: Router,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -57,10 +58,10 @@ export class JobSkillComponent implements OnInit {
   }
 
   getSingleJobTitle(id: number) {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getSingleJobTitleById(id).subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.jobTitle = data.setuplist[0];
         //this.rows = this.jobTitle.sub_Skills;
@@ -82,7 +83,7 @@ export class JobSkillComponent implements OnInit {
         }
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -222,19 +223,19 @@ export class JobSkillComponent implements OnInit {
       job_description: ["", Validators.required],
     });
   }
-  /* 
+  /*
   getSubSkill() {
-    this.pageLoading = true;
+    this.loadingService.show
     return this.setupService.getData("/hrmsetup/get/all/sub_skill").subscribe(
       (data) => {
-        this.pageLoading = false;
-        
+        this.loadingService.hide
+
         this.subSkill = data.setuplist;
         this.rows = this.subSkill;
       },
       (err) => {
-        this.pageLoading = false;
-        
+        this.loadingService.hide
+
       }
     );
   }
@@ -339,10 +340,10 @@ export class JobSkillComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteJobSkill(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -353,7 +354,10 @@ export class JobSkillComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
+            }
           );
         }
       });

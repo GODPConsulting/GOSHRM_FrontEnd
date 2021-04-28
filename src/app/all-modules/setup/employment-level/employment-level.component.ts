@@ -3,6 +3,7 @@ import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingService } from "../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -19,14 +20,14 @@ export class EmploymentLevelComponent implements OnInit {
   public file: File;
   public formTitle: string = "Add Employment Level";
   public selectedId: number[] = [];
-  public pageLoading: boolean;
   public spinner: boolean = false; // Controls the visibilty of the spinner
   public employmentLevelUploadForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -110,14 +111,14 @@ export class EmploymentLevelComponent implements OnInit {
   }
 
   getEmploymentLevels() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService.getEmploymentLevel().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.levels = data.setuplist;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -181,10 +182,10 @@ export class EmploymentLevelComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           return this.setupService.deleteEmploymentLevel(payload).subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -194,7 +195,10 @@ export class EmploymentLevelComponent implements OnInit {
                 swal.fire("GOSHRM", message, "error");
               }
             },
-            (err) => {}
+            (err) => {
+              this.loadingService.hide();
+              this.utilitiesService.showMessage(err, "error");
+            }
           );
         }
       });

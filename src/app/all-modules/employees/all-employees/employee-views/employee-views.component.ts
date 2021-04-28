@@ -4,6 +4,7 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { JwtService } from "src/app/services/jwt.service";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../services/loading.service";
 
 declare const $: any;
 @Component({
@@ -14,7 +15,6 @@ declare const $: any;
 export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   public dtOptions: DataTables.Settings = {};
   public employeesList: any = [];
-  public pageLoading: boolean;
   public list: boolean = true;
   companies: any[] = [];
   filteredArray: any[] = [];
@@ -25,7 +25,8 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
     private employeeService: EmployeeService,
     private dataService: DataService,
     private setupService: SetupService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit() {
@@ -75,10 +76,10 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
       })
       .then((result) => {
         if (result.value) {
-          this.pageLoading = true;
+          this.loadingService.show();
           this.employeeService.multiUploadEmployeePhotos().subscribe(
             (res) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -89,7 +90,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
               }
             },
             (err) => {
-              this.pageLoading = false;
+              this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }
@@ -100,16 +101,16 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
 
   // Get All Employees
   loadEmployees() {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.employeeService.getEmployees().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
 
         this.employeesList = data.employeeList;
         this.filteredArray = data.employeeList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }

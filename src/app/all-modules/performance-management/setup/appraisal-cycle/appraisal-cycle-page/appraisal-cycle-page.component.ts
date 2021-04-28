@@ -5,6 +5,7 @@ import { PerformanceManagementService } from "src/app/services/performance-manag
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
+import { LoadingService } from "../../../../../services/loading.service";
 declare const $: any;
 @Component({
   selector: "app-appraisal-cycle-page",
@@ -14,7 +15,6 @@ declare const $: any;
 export class AppraisalCyclePageComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   cardFormTitle: string;
-  pageLoading: boolean = false; // controls the visibility of the page loader
   spinner: boolean = false;
 
   @ViewChild("fileInput")
@@ -22,7 +22,6 @@ export class AppraisalCyclePageComponent implements OnInit {
 
   @Input() staffId: number;
 
-  //Form
   appraisalCyclePageForm: FormGroup;
 
   performanceAppraisalCycle: any = {};
@@ -47,12 +46,13 @@ export class AppraisalCyclePageComponent implements OnInit {
   appraisalCycleUploadForm: any;
 
   constructor(
-    private FormBuilder: FormBuilder,
+    private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
-    private setupService: SetupService
+    private setupService: SetupService,
+    private loadingService: LoadingService
   ) {
-    this.appraisalCycleUploadForm = this.FormBuilder.group({
+    this.appraisalCycleUploadForm = this.formBuilder.group({
       uploadInput: [""],
     });
   }
@@ -61,7 +61,6 @@ export class AppraisalCyclePageComponent implements OnInit {
     this.getAppraisalCycles();
     this.cardFormTitle = "Add Appraisal Cycle";
     this.createYears(2000, 2050);
-    this.officeId;
     this.getStaffDepartments();
   }
 
@@ -121,14 +120,14 @@ export class AppraisalCyclePageComponent implements OnInit {
   }
 
   getAppraisalCycles() {
-    this.pageLoading = true;
+    this.loadingService.show();
     this.performanceManagementService.getAppraisalCycles().subscribe(
       (data) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
         this.appraisalCycles = data.setupList;
       },
       (err) => {
-        this.pageLoading = false;
+        this.loadingService.hide();
       }
     );
   }
@@ -166,16 +165,16 @@ export class AppraisalCyclePageComponent implements OnInit {
   }
 
   getStaffDepartments() {
-    this.pageLoading = true;
+    this.loadingService.show();
     return this.setupService
       .getData("/company/get/all/companystructures")
       .subscribe(
         (data) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
           this.offices = data.companyStructures;
         },
         (err) => {
-          this.pageLoading = false;
+          this.loadingService.hide();
         }
       );
   }
