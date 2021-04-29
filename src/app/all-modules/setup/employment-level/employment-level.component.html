@@ -1,4 +1,3 @@
-
 <!-- Page Content -->
 <div class="content container-fluid">
   <!-- Page Header -->
@@ -12,14 +11,18 @@
         </ul>
       </div>
       <div class="col-auto float-right ml-auto">
-        <a class="btn download-btn hint" (click)="downloadFile()"><span class="hint-text">Download</span><i
-            class="fa fa-download"></i></a>
-        <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
-            class="fa fa-upload"></i></a>
-        <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span class="hint-text">Add</span><i
-            class="fa fa-plus"></i></a>
-        <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
-            class="fa fa-trash"></i></a>
+        <a class="btn download-btn hint" (click)="downloadFile()"
+          ><span class="hint-text">Download</span><i class="fa fa-download"></i
+        ></a>
+        <a class="btn upload-btn hint" (click)="openUploadModal()"
+          ><span class="hint-text">Upload</span><i class="fa fa-upload"></i
+        ></a>
+        <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"
+          ><span class="hint-text">Add</span><i class="fa fa-plus"></i
+        ></a>
+        <a class="btn delete-btn hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
       </div>
     </div>
   </div>
@@ -27,21 +30,39 @@
   <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
-        <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions">
+        <table
+          class="table table-striped custom-table datatable table-hover"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+        >
           <thead>
             <tr>
               <th>
-                <input type="checkbox" [checked]="selectedId.length === levels.length" (change)="checkAll($event)" />
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.length === levels.length"
+                  (change)="checkAll($event)"
+                />
               </th>
               <th>S/N</th>
               <th>Employment Level</th>
             </tr>
           </thead>
           <tbody>
-            <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)"
-              *ngFor="let row of levels; let i = index">
+            <tr
+              data-toggle="modal"
+              class="pointer"
+              data-target="#edit_employee"
+              (click)="edit(row)"
+              *ngFor="let row of levels; let i = index"
+            >
               <td (click)="stopParentEvent($event)">
-                <input type="checkbox" [checked]="selectedId.includes(row.id)" (change)="addItemId($event, row.id)" />
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.includes(row.id)"
+                  (change)="addItemId($event, row.id)"
+                />
               </td>
               <td>{{ i + 1 }}</td>
               <td>{{ row.employment_level }}</td>
@@ -58,35 +79,67 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content w-75 mx-auto">
       <div class="modal-header">
-        <h5 class="modal-title">{{formTitle}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+        <h5 class="modal-title">{{ formTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeModal()"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form (ngSubmit)="addEmploymentLevel(employmentLevelForm)" [formGroup]="employmentLevelForm">
+        <form
+          (ngSubmit)="addEmploymentLevel(employmentLevelForm)"
+          [formGroup]="employmentLevelForm"
+        >
           <div class="form-group">
-            <label class="col-form-label">Employment Level <span class="text-danger">*</span></label>
-            <input class="form-control" type="text" [class.invalid]="
-                    employmentLevelForm.get('employment_level').invalid &&
-                    employmentLevelForm.get('employment_level').touched
-                    " formControlName="employment_level" />
-            <div *ngIf="
-                    employmentLevelForm.get('employment_level').invalid &&
-                    employmentLevelForm.get('employment_level').touched
-                    ">
-              <small *ngIf="
-                      employmentLevelForm.get('employment_level').invalid &&
-                      employmentLevelForm.get('employment_level').touched
-                      " class="text-danger"> *Employment Level is required</small>
+            <label class="col-form-label"
+              >Employment Level <span class="text-danger">*</span></label
+            >
+            <input
+              class="form-control"
+              type="text"
+              [class.invalid]="
+                employmentLevelForm.get('employment_level').invalid &&
+                employmentLevelForm.get('employment_level').touched
+              "
+              formControlName="employment_level"
+            />
+            <div
+              *ngIf="
+                employmentLevelForm.get('employment_level').invalid &&
+                employmentLevelForm.get('employment_level').touched
+              "
+            >
+              <small
+                *ngIf="
+                  employmentLevelForm.get('employment_level').invalid &&
+                  employmentLevelForm.get('employment_level').touched
+                "
+                class="text-danger"
+              >
+                *Employment Level is required</small
+              >
             </div>
           </div>
           <div class="form-group">
             <label class="col-form-label">Description</label>
-            <textarea class="form-control" type="text" rows="5" formControlName="description"></textarea>
+            <textarea
+              class="form-control"
+              type="text"
+              rows="5"
+              formControlName="description"
+            ></textarea>
           </div>
           <div class="submit-section">
-            <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
               <span *ngIf="!spinner">Submit</span>
               <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
             </button>
@@ -103,18 +156,35 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Upload Employment Level</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeModal()"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body px-5">
-        <form (ngSubmit)="uploadEmploymentLevel()" [formGroup]="employmentLevelUploadForm">
+        <form
+          (ngSubmit)="uploadEmploymentLevel()"
+          [formGroup]="employmentLevelUploadForm"
+        >
           <div class="row">
             <div class="form-group row">
-              <label class="col-form-label col-md-5">Choose File (excel format)</label>
+              <label class="col-form-label col-md-5"
+                >Choose File (excel format)</label
+              >
               <div class="col-md-7">
-                <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                  (change)="onSelectedFile($event,employmentLevelUploadForm)">
+                <input
+                  class="form-control"
+                  name="uploadInput"
+                  id="uploadInput"
+                  #fileInput
+                  type="file"
+                  (change)="onSelectedFile($event, employmentLevelUploadForm)"
+                />
               </div>
             </div>
           </div>
@@ -128,7 +198,11 @@
             </table>
           </div>
           <div class="submit-section">
-            <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
               <span *ngIf="!spinner">Submit</span>
               <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
             </button>

@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -20,7 +21,7 @@ export class JobGradeComponent implements OnInit {
   public selectedId: number[] = [];
   public spinner: boolean = false;
   public jobGradeUploadForm: FormGroup;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -46,14 +47,17 @@ export class JobGradeComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService.exportExcelFile("/hrmsetup/download/jobgrade").subscribe(
       (resp) => {
-        const data = resp;
-        this.utilitiesService.byteToFile(data, "Job Grade.xlsx", {
+        this.loadingService.hide();
+        this.utilitiesService.byteToFile(resp, "Job Grade.xlsx", {
           type: "application/vnd.ms-excel",
         });
       },
-      (err) => {}
+      (err) => {
+        this.loadingService.hide();
+      }
     );
   }
 
@@ -132,8 +136,8 @@ export class JobGradeComponent implements OnInit {
     return this.setupService.getJobGrades().subscribe(
       (data) => {
         this.loadingService.hide();
-
         this.jobGrades = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -20,7 +21,7 @@ export class HighSchoolGradeComponent implements OnInit {
   public highSchoolGradeForm: FormGroup;
   public selectedId: number[] = [];
   public highSchoolGradeUploadForm: FormGroup;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -46,16 +47,19 @@ export class HighSchoolGradeComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService
       .exportExcelFile("/hrmsetup/download/highschoolgrades")
       .subscribe(
         (resp) => {
-          const data = resp;
-          this.utilitiesService.byteToFile(data, "High School Grade.xlsx", {
+          this.loadingService.hide();
+          this.utilitiesService.byteToFile(resp, "High School Grade.xlsx", {
             type: "application/vnd.ms-excel",
           });
         },
-        (err) => {}
+        (err) => {
+          this.loadingService.hide();
+        }
       );
   }
 
@@ -115,8 +119,8 @@ export class HighSchoolGradeComponent implements OnInit {
     return this.setupService.getHighSchoolGrade().subscribe(
       (data) => {
         this.loadingService.hide();
-
         this.grades = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

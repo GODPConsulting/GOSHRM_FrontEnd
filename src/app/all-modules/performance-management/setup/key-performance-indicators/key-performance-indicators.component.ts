@@ -31,9 +31,9 @@ export class KeyPerformanceIndicatorsComponent
   spinner: boolean = false;
   kpiUploadForm: FormGroup;
   @ViewChild("fileInput") fileInput: ElementRef;
-  // dtOptions: DataTables.Settings = {};
+  dtOptions: DataTables.Settings = {};
 
-  // dtTrigger: Subject<any> = new Subject<any>();
+  dtTrigger: Subject<any> = new Subject<any>();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,6 +51,18 @@ export class KeyPerformanceIndicatorsComponent
     this.initializeForm();
     this.getKpiCategory();
     this.getSavedKPIndicators();
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+      columns: [{ orderable: false }, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
   }
 
   addKPIndicator(keyPerformanceIndicatorForm) {
@@ -141,7 +153,7 @@ export class KeyPerformanceIndicatorsComponent
     return this.performanceManagementService.getKPIndicators().subscribe(
       (data) => {
         this.kpIndicators = data.setupList;
-        // this.dtTrigger.next()
+        this.dtTrigger.next();
       },
       (err) => {}
     );

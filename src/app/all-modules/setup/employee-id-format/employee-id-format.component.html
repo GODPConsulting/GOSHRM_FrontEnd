@@ -1,156 +1,254 @@
-
 <!-- Page Content -->
-<div  class="content container-fluid">
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h3 class="page-title">Employee Identity Format</h3>
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
-                    <li class="breadcrumb-item active">Employee Identity Format</li>
-                </ul>
-            </div>
-            <div class="col-auto float-right ml-auto">
-                <a class="btn add-btn hint" (click)=initIdFormatForm() data-toggle="modal"
-                    data-target="#employee_id_format"><span class="hint-text">Add</span><i class="fa fa-plus"></i></a>
-                <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
-                        class="fa fa-trash"></i></a>
-            </div>
-        </div>
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">Employee Identity Format</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
+          <li class="breadcrumb-item active">Employee Identity Format</li>
+        </ul>
+      </div>
+      <div class="col-auto float-right ml-auto">
+        <a
+          class="btn add-btn hint"
+          (click)="initIdFormatForm()"
+          data-toggle="modal"
+          data-target="#employee_id_format"
+          ><span class="hint-text">Add</span><i class="fa fa-plus"></i
+        ></a>
+        <a class="btn delete-btn hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
+      </div>
     </div>
-    <!-- /Page Header -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" [checked]="selectedId.length === employeeIdFormats.length"
-                                    (change)="checkAll($event)" />
-                            </th>
-                            <th>S/N</th>
-                            <th>Company</th>
-                            <th>Format</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="editIdFormat(row)"
-                            *ngFor="let row of employeeIdFormats; let i = index">
-                            <td (click)="stopParentEvent($event)">
-                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id)" />
-                            </td>
-                            <td>{{ i + 1 }}</td>
-                            <td>{{ row.companyStructureName }}</td>
-                            <td>{{ row.format }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  </div>
+  <!-- /Page Header -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table
+          class="table table-striped custom-table datatable table-hover"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+        >
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.length === employeeIdFormats.length"
+                  (change)="checkAll($event)"
+                />
+              </th>
+              <th>S/N</th>
+              <th>Company</th>
+              <th>Format</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              data-toggle="modal"
+              class="pointer"
+              data-target="#edit_employee"
+              (click)="editIdFormat(row)"
+              *ngFor="let row of employeeIdFormats; let i = index"
+            >
+              <td (click)="stopParentEvent($event)">
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.includes(row.id)"
+                  (change)="addItemId($event, row.id)"
+                />
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ row.companyStructureName }}</td>
+              <td>{{ row.format }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Page Content -->
 <!-- Employee Id Format Modal -->
 <div id="employee_id_format" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{formTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ formTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          (ngSubmit)="submitIdFormatForm(idFormatForm)"
+          [formGroup]="idFormatForm"
+        >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Company</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    idFormatForm.get('companyStructureId').invalid &&
+                    idFormatForm.get('companyStructureId').touched
+                  "
+                  formControlName="companyStructureId"
+                >
+                  <option selected value="">Select Company</option>
+                  <option
+                    *ngFor="
+                      let company of (allCompanies$ | async)?.companyStructures
+                    "
+                    value="{{ company.companyStructureId }}"
+                  >
+                    {{ company.name }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    idFormatForm.get('companyStructureId').invalid &&
+                    idFormatForm.get('companyStructureId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      idFormatForm.get('companyStructureId').invalid &&
+                      idFormatForm.get('companyStructureId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitIdFormatForm(idFormatForm)" [formGroup]="idFormatForm">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Company</label>
-                                <select class="form-control" [class.invalid]="
-                                idFormatForm.get('companyStructureId').invalid &&
-                                idFormatForm.get('companyStructureId').touched" formControlName="companyStructureId">
-                                    <option selected value="">Select Company</option>
-                                    <option *ngFor="let company of (allCompanies$ |async)?.companyStructures"
-                                        value="{{company.companyStructureId}}">{{company.name}}</option>
-                                </select>
-                                <div *ngIf="
-                                idFormatForm.get('companyStructureId').invalid &&
-                                idFormatForm.get('companyStructureId').touched
-                    ">
-                                    <small *ngIf="
-                                    idFormatForm.get('companyStructureId').invalid &&
-                                    idFormatForm.get('companyStructureId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Employee ID Prefix</label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                idFormatForm.get('employeeIdPrefix').invalid &&
-                                idFormatForm.get('employeeIdPrefix').touched" formControlName="employeeIdPrefix">
-                                <div *ngIf="
-                                idFormatForm.get('employeeIdPrefix').invalid &&
-                                idFormatForm.get('employeeIdPrefix').touched
-                    ">
-                                    <small *ngIf="
-                                    idFormatForm.get('employeeIdPrefix').invalid &&
-                                    idFormatForm.get('employeeIdPrefix').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Employee ID Suffix (Number of Digits) <span class="text-danger">*</span></label>
-                                <select class="form-control" type="text" [class.invalid]="
-                                idFormatForm.get('numberOfDigits').invalid &&
-                                idFormatForm.get('numberOfDigits').touched" formControlName="numberOfDigits">
-                                    <option selected value="">Select number of digits</option>
-                                    <option *ngFor='let i of [1,2,3,4,5,6,7,8,9,10]' value="{{i}}">{{i}}</option>
-                                </select>
-                                <div *ngIf="
-                                idFormatForm.get('numberOfDigits').invalid &&
-                                idFormatForm.get('numberOfDigits').touched
-                    ">
-                                    <small *ngIf="
-                                    idFormatForm.get('numberOfDigits').invalid &&
-                                    idFormatForm.get('numberOfDigits').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Format<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                    idFormatForm.get('format').invalid &&
-                                    idFormatForm.get('format').touched" formControlName="format">
-                                <div *ngIf="
-                                idFormatForm.get('format').invalid &&
-                                idFormatForm.get('format').touched
-                    ">
-                                    <small *ngIf="
-                                    idFormatForm.get('format').invalid &&
-                                    idFormatForm.get('format').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Employee ID Prefix</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    idFormatForm.get('employeeIdPrefix').invalid &&
+                    idFormatForm.get('employeeIdPrefix').touched
+                  "
+                  formControlName="employeeIdPrefix"
+                />
+                <div
+                  *ngIf="
+                    idFormatForm.get('employeeIdPrefix').invalid &&
+                    idFormatForm.get('employeeIdPrefix').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      idFormatForm.get('employeeIdPrefix').invalid &&
+                      idFormatForm.get('employeeIdPrefix').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Employee ID Suffix (Number of Digits)
+                  <span class="text-danger">*</span></label
+                >
+                <select
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    idFormatForm.get('numberOfDigits').invalid &&
+                    idFormatForm.get('numberOfDigits').touched
+                  "
+                  formControlName="numberOfDigits"
+                >
+                  <option selected value="">Select number of digits</option>
+                  <option
+                    *ngFor="let i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+                    value="{{ i }}"
+                  >
+                    {{ i }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    idFormatForm.get('numberOfDigits').invalid &&
+                    idFormatForm.get('numberOfDigits').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      idFormatForm.get('numberOfDigits').invalid &&
+                      idFormatForm.get('numberOfDigits').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Format<span class="text-danger">*</span></label>
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    idFormatForm.get('format').invalid &&
+                    idFormatForm.get('format').touched
+                  "
+                  formControlName="format"
+                />
+                <div
+                  *ngIf="
+                    idFormatForm.get('format').invalid &&
+                    idFormatForm.get('format').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      idFormatForm.get('format').invalid &&
+                      idFormatForm.get('format').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Employee Id Format Modal -->

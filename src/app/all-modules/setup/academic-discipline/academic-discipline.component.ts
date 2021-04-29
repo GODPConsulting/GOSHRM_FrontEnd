@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
-import { saveAs } from "file-saver";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -23,7 +23,7 @@ export class AcademicDisciplineComponent implements OnInit {
   public spinner: boolean = false;
   public selectedId: number[] = [];
   public file: File;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -80,16 +80,19 @@ export class AcademicDisciplineComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService
       .exportExcelFile("/hrmsetup/download/academic/disciplines")
       .subscribe(
         (resp) => {
-          const data = resp;
-          this.utilitiesService.byteToFile(data, "Academic Discipline.xlsx", {
+          this.loadingService.hide();
+          this.utilitiesService.byteToFile(resp, "Academic Discipline.xlsx", {
             type: "application/vnd.ms-excel",
           });
         },
-        () => {}
+        () => {
+          this.loadingService.hide();
+        }
       );
   }
 
@@ -118,6 +121,7 @@ export class AcademicDisciplineComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.disciplines = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

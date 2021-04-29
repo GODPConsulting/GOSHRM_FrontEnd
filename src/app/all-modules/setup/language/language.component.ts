@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -21,7 +22,7 @@ export class LanguageComponent implements OnInit {
   public spinner: boolean = false;
   public selectedId: number[] = [];
   public languageForm: FormGroup;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -47,14 +48,17 @@ export class LanguageComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService.downloadLanguage().subscribe(
       (resp) => {
-        const data = resp;
-        this.utilitiesService.byteToFile(data, "Language.xlsx", {
+        this.loadingService.hide();
+        this.utilitiesService.byteToFile(resp, "Language.xlsx", {
           type: "application/vnd.ms-excel",
         });
       },
-      (err) => {}
+      (err) => {
+        this.loadingService.hide();
+      }
     );
   }
 
@@ -112,8 +116,8 @@ export class LanguageComponent implements OnInit {
     return this.setupService.getLanguage().subscribe(
       (data) => {
         this.loadingService.hide();
-
         this.languages = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

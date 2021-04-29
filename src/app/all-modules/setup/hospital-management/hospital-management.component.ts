@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -22,7 +23,7 @@ export class HospitalManagementComponent implements OnInit {
   public spinner: boolean = false;
   public hospitalManagementUploadForm: FormGroup;
   public hmos: any[] = [];
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -49,16 +50,19 @@ export class HospitalManagementComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService
       .exportExcelFile("/hrmsetup/download/hospital-management")
       .subscribe(
         (resp) => {
-          const data = resp;
-          this.utilitiesService.byteToFile(data, "Hospital Management.xlsx", {
+          this.loadingService.hide();
+          this.utilitiesService.byteToFile(resp, "Hospital Management.xlsx", {
             type: "application/vnd.ms-excel",
           });
         },
-        (err) => {}
+        (err) => {
+          this.loadingService.hide();
+        }
       );
   }
 
@@ -146,6 +150,7 @@ export class HospitalManagementComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.hospitalManagements = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

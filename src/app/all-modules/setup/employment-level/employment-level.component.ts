@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -22,7 +23,7 @@ export class EmploymentLevelComponent implements OnInit {
   public selectedId: number[] = [];
   public spinner: boolean = false; // Controls the visibilty of the spinner
   public employmentLevelUploadForm: FormGroup;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -48,16 +49,19 @@ export class EmploymentLevelComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService
       .exportExcelFile("/hrmsetup/download/employmentlevels")
       .subscribe(
         (resp) => {
-          const data = resp;
-          this.utilitiesService.byteToFile(data, "Employment Level.xlsx", {
+          this.loadingService.hide();
+          this.utilitiesService.byteToFile(resp, "Employment Level.xlsx", {
             type: "application/vnd.ms-excel",
           });
         },
-        (err) => {}
+        (err) => {
+          this.loadingService.hide();
+        }
       );
   }
 
@@ -116,6 +120,7 @@ export class EmploymentLevelComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.levels = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

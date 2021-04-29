@@ -4,6 +4,7 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -21,7 +22,7 @@ export class EmploymentTypeComponent implements OnInit {
   public selectedId: number[] = [];
   public employmentTypeUploadForm: FormGroup;
   public file: File;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -47,16 +48,24 @@ export class EmploymentTypeComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService
       .exportExcelFile("/hrmsetup/download/employmenttypes")
       .subscribe(
         (resp) => {
-          const data = resp;
-          this.utilitiesService.byteToFile(data, "Employment Type.xlsx", {
-            type: "application/vnd.ms-excel",
-          });
+          this.loadingService.hide();
+          console.log(resp);
+          return this.utilitiesService.byteToFile(
+            resp,
+            "Employment Type.xlsx",
+            {
+              type: "application/vnd.ms-excel",
+            }
+          );
         },
-        (err) => {}
+        (err) => {
+          this.loadingService.hide();
+        }
       );
   }
 
@@ -124,8 +133,8 @@ export class EmploymentTypeComponent implements OnInit {
     return this.setupService.getEmploymentType().subscribe(
       (data) => {
         this.loadingService.hide();
-
         this.employmentTypes = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

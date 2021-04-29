@@ -4,6 +4,7 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 
@@ -24,7 +25,7 @@ export class LocationComponent implements OnInit {
   public countries: any[] = [];
   public countryId: number;
   public states: any[] = [];
-  dtTrigger: any;
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -51,14 +52,17 @@ export class LocationComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService.downloadLocation().subscribe(
       (resp) => {
-        const data = resp;
-        this.utilitiesService.byteToFile(data, "Location.xlsx", {
+        this.loadingService.hide();
+        this.utilitiesService.byteToFile(resp, "Location.xlsx", {
           type: "application/vnd.ms-excel",
         });
       },
-      (err) => {}
+      (err) => {
+        this.loadingService.hide();
+      }
     );
   }
 
@@ -134,6 +138,7 @@ export class LocationComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.locations = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

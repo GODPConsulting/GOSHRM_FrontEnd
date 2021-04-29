@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { JwtService } from "src/app/services/jwt.service";
 import { ManagerService } from "src/app/services/manager.service";
 import swal from "sweetalert2";
+import { Subject } from "rxjs";
 import { LoadingService } from "../../../services/loading.service";
 
 @Component({
@@ -14,7 +15,8 @@ export class DirectReportAppraisalsComponent implements OnInit {
   public selectedId: number[] = [];
   public reportAppraisals: any[] = [];
   user: any;
-
+  dtTrigger: Subject<any> = new Subject<any>();
+  activities: any;
   constructor(
     private managerService: ManagerService,
     private jwtService: JwtService,
@@ -46,8 +48,9 @@ export class DirectReportAppraisalsComponent implements OnInit {
       ],
       order: [[1, "asc"]],
     };
-    this.user = this.jwtService.getHrmUserDetails();
-    if (this.user.userRoleNames.includes("Line Managers")) {
+    this.activities = this.jwtService.getUserActivities();
+    this.user = this.jwtService.getUserDetails();
+    if (this.activities.includes("line manager")) {
       this.getAppraisalObjByManagerId(this.user.staffId);
     }
   }
@@ -58,6 +61,7 @@ export class DirectReportAppraisalsComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.reportAppraisals = data.objectiveList;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

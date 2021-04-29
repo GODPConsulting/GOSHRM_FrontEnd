@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Console } from "console";
-import { Subscription } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
@@ -21,6 +21,8 @@ export class GradeSettingComponent implements OnInit {
   gradeSettings: any[] = [];
   selectedId: number[] = [];
   spinner: boolean;
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,6 +35,18 @@ export class GradeSettingComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.getSavedGradeSetting();
+    this.dtOptions = {
+      dom:
+        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Start typing to search by any field",
+      },
+      columns: [{ orderable: false }, null, null, null, null, null, null],
+      order: [[1, "asc"]],
+    };
   }
 
   initializeForm() {
@@ -77,6 +91,7 @@ export class GradeSettingComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.gradeSettings = data.setupList;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

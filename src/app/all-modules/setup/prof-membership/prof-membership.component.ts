@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { SetupService } from "../../../services/setup.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -21,7 +22,7 @@ export class ProfMembershipComponent implements OnInit {
   public spinner: boolean = false;
   public selectedId: number[] = [];
   public professionalMembershipForm: FormGroup;
-  dtTrigger: any;
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -47,14 +48,17 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService.downloadProfMem().subscribe(
       (resp) => {
-        const data = resp;
-        this.utilitiesService.byteToFile(data, "Professional Membership.xlsx", {
+        this.loadingService.hide();
+        this.utilitiesService.byteToFile(resp, "Professional Membership.xlsx", {
           type: "application/vnd.ms-excel",
         });
       },
-      (err) => {}
+      (err) => {
+        this.loadingService.hide();
+      }
     );
   }
 
@@ -113,8 +117,8 @@ export class ProfMembershipComponent implements OnInit {
     return this.setupService.getProfMems().subscribe(
       (data) => {
         this.loadingService.hide();
-
         this.profMemberships = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

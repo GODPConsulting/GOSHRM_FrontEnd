@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import swal from "sweetalert2";
+
+import { Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
 
 @Component({
@@ -14,7 +16,8 @@ export class AppraisalPreferenceComponent implements OnInit {
   loading: boolean;
   companies: any[] = [];
   cycles: any[] = [];
-
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,

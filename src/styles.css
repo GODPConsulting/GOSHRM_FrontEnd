@@ -8715,3 +8715,8 @@ rating span {
     transform: rotate(360deg);
   }
 } /* End Loading Styles */
+
+ /*UTILITIES STYLES*/
+.mb_10 {
+  margin-bottom: 1rem;
+}

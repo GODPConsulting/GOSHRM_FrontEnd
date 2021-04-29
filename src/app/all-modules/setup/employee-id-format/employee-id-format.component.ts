@@ -4,6 +4,7 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 declare const $: any;
 
 @Component({
@@ -20,7 +21,7 @@ export class EmployeeIdFormatComponent implements OnInit {
   public selectedId: number[] = [];
   public allCompanies$ = this.utilitiesService.getCompanyStructures();
   public format: string = "";
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -128,6 +129,7 @@ export class EmployeeIdFormatComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.employeeIdFormats = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

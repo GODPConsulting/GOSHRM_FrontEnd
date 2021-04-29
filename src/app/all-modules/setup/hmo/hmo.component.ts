@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -20,7 +21,7 @@ export class HmoComponent implements OnInit {
   public hmoForm: FormGroup;
   public selectedId: number[] = [];
   public hmoUploadForm: FormGroup;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -46,12 +47,15 @@ export class HmoComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService.downloadHmo().subscribe(
       (resp) => {
-        const data = resp;
-        this.utilitiesService.byteToFile(data, "HMO.xlsx");
+        this.loadingService.hide();
+        this.utilitiesService.byteToFile(resp, "HMO.xlsx");
       },
-      (err) => {}
+      (err) => {
+        this.loadingService.hide();
+      }
     );
   }
 
@@ -111,8 +115,8 @@ export class HmoComponent implements OnInit {
     return this.setupService.getHmo().subscribe(
       (data) => {
         this.loadingService.hide();
-
         this.hmos = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

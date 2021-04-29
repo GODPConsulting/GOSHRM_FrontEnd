@@ -1,11 +1,12 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
+import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+
 declare const $: any;
 
 @Component({
@@ -30,7 +31,7 @@ export class ProfCertComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   minDate: any;
   maxDate: any;
-  dtTrigger: any;
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -79,14 +80,16 @@ export class ProfCertComponent implements OnInit {
       // Gets the file name and extension of the file
       const fileName = idFileToDownload[0].CertificateName;
       const extension = idFileToDownload[0].Attachment.split(".")[1];
-
+      this.loadingService.show();
       this.employeeService.downloadProfCert(this.selectedId[0]).subscribe(
         (resp) => {
-          const data = resp;
+          this.loadingService.hide();
           // Converts response to file and downloads it
-          this.utilitiesService.byteToFile(data, `${fileName}.${extension}`);
+          this.utilitiesService.byteToFile(resp, `${fileName}.${extension}`);
         },
-        (err) => {}
+        (err) => {
+          this.loadingService.hide();
+        }
       );
     } else {
       return swal.fire(`GOS HRM`, "Unable to download multiple files", "error");
@@ -194,9 +197,10 @@ export class ProfCertComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.employeeProfCert = data.employeeList;
+        this.dtTrigger.next();
       },
       (err) => {
-        this.spinner = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }

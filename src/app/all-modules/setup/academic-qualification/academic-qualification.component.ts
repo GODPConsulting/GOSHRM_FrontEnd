@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -25,7 +26,7 @@ export class AcademicQualificationComponent implements OnInit {
   public selectedId: number[] = [];
   public academicQualificationUploadForm: FormGroup;
   public file: File;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -51,12 +52,15 @@ export class AcademicQualificationComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService.downloadAcademicQualification().subscribe(
       (resp) => {
-        const data = resp;
-        this.utilitiesService.byteToFile(data, "AcademicQualification.xlsx");
+        this.loadingService.hide();
+        this.utilitiesService.byteToFile(resp, "AcademicQualification.xlsx");
       },
-      (err) => {}
+      (err) => {
+        this.loadingService.hide();
+      }
     );
   }
 
@@ -112,8 +116,8 @@ export class AcademicQualificationComponent implements OnInit {
     return this.setupService.getAcademicQualification().subscribe(
       (data) => {
         this.loadingService.hide();
-
         this.qualifications = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

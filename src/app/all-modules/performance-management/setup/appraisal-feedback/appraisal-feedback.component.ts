@@ -8,6 +8,8 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { JwtService } from "src/app/services/jwt.service";
+
+import { Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
 declare const $: any;
 
@@ -49,7 +51,7 @@ export class AppraisalFeedbackComponent implements OnInit {
   public offices: number[] = [];
   public jobGrades: any[] = [];
   public user;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -148,7 +150,7 @@ export class AppraisalFeedbackComponent implements OnInit {
         (data) => {
           this.loadingService.hide();
           this.appraisalFeedbacks = data.objectiveList;
-          console.log(this.appraisalFeedbacks);
+          this.dtTrigger.next();
         },
         (err) => {
           this.loadingService.hide();

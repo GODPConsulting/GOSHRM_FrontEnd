@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+
+import { Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
 declare const $: any;
 @Component({
@@ -26,7 +28,7 @@ export class PointSettingsComponent implements OnInit {
   point: any;
   description: any;
   pointSettingsForm: any;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
@@ -92,6 +94,7 @@ export class PointSettingsComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.pointSettings = data.setupList;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

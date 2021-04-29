@@ -12,6 +12,8 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
+
+import { Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
 declare const $: any;
 @Component({
@@ -47,6 +49,7 @@ export class KpiCategoryComponent implements OnInit {
   weightModel: string = "";
   hrSelectReviewer: string = "";
   currentUserId: number;
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -129,6 +132,7 @@ export class KpiCategoryComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.kpiCategory = data.setupList;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

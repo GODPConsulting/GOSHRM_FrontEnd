@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -12,16 +13,16 @@ declare const $: any;
   styleUrls: ["./job-title.component.css", "../setup.component.css"],
 })
 export class JobTitleComponent implements OnInit {
-  public dtOptions: DataTables.Settings = {};
+  public dtOptions: any = {};
   @ViewChild("fileInput")
   fileInput: ElementRef;
-  public jobTitles: any[] = [];
+  public jobTitles = [];
   public spinner: boolean = false;
   public formTitle = "Add Job Title";
   public jobTitleForm: FormGroup;
   public selectedId: number[] = [];
   public jobTitleUploadForm: FormGroup;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -47,14 +48,17 @@ export class JobTitleComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService.exportExcelFile("/hrmsetup/download/jobtitle").subscribe(
       (resp) => {
-        const data = resp;
-        this.utilitiesService.byteToFile(data, "Job Title.xlsx", {
+        this.loadingService.hide();
+        this.utilitiesService.byteToFile(resp, "Job Title.xlsx", {
           type: "application/vnd.ms-excel",
         });
       },
-      (err) => {}
+      (err) => {
+        this.loadingService.hide();
+      }
     );
   }
 
@@ -110,8 +114,8 @@ export class JobTitleComponent implements OnInit {
     return this.setupService.getJobTitle().subscribe(
       (data) => {
         this.loadingService.hide();
-
         this.jobTitles = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();
@@ -222,6 +226,7 @@ export class JobTitleComponent implements OnInit {
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
+
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }

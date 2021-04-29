@@ -4,6 +4,8 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
+
 declare const $: any;
 @Component({
   selector: "app-academic-grade",
@@ -19,7 +21,7 @@ export class AcademicGradeComponent implements OnInit {
   public selectedId: number[] = [];
   public academicGradeUploadForm: FormGroup;
   public file: File;
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -49,6 +51,7 @@ export class AcademicGradeComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.grades = data.setuplist;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();
@@ -57,12 +60,15 @@ export class AcademicGradeComponent implements OnInit {
   }
 
   downloadFile() {
+    this.loadingService.show();
     this.setupService.downloadAcademicGrade().subscribe(
       (resp) => {
-        const data = resp;
-        this.utilitiesService.byteToFile(data, "Academicgrade.xlsx");
+        this.loadingService.hide();
+        this.utilitiesService.byteToFile(resp, "Academicgrade.xlsx");
       },
-      (err) => {}
+      (err) => {
+        this.loadingService.hide();
+      }
     );
   }
 

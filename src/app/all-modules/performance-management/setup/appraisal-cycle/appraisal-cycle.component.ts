@@ -7,6 +7,8 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
+import { Subject } from "rxjs";
+
 declare const $: any;
 
 @Component({
@@ -48,7 +50,7 @@ export class AppraisalCycleComponent implements OnInit {
   public offices: number[] = [];
   appraisalCycleUploadForm: any;
   public employeesList: any = [];
-
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -91,7 +93,6 @@ export class AppraisalCycleComponent implements OnInit {
     this.getAppraisalCycles();
     this.cardFormTitle = "Add Appraisal Cycle";
     this.createYears(2000, 2050);
-    this.officeId;
     this.getStaffDepartments();
   }
 
@@ -156,6 +157,7 @@ export class AppraisalCycleComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.appraisalCycles = data.setupList;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();
@@ -294,4 +296,6 @@ export class AppraisalCycleComponent implements OnInit {
       this.selectedId = [];
     }
   }
+
+  downloadFile() {}
 }

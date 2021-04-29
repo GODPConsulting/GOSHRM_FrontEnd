@@ -1,11 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
+
 declare const $: any;
 
 @Component({
@@ -26,7 +27,8 @@ export class KpiToJobgradeComponent implements OnInit {
   public source = [];
   public confirmed = [];
   weightSummary: any = [];
-
+  dtTrigger: Subject<any> = new Subject();
+  dtWeightTrigger: Subject<any> = new Subject();
   constructor(
     private setupService: SetupService,
     private performanceService: PerformanceManagementService,
@@ -136,6 +138,7 @@ export class KpiToJobgradeComponent implements OnInit {
         this.loadingService.hide();
         this.getWeightSummary();
         this.kpiToJobGrades = data.setupList;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();
@@ -161,6 +164,7 @@ export class KpiToJobgradeComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.weightSummary = data.setupList;
+        this.dtWeightTrigger.next();
       },
       (err) => {
         this.loadingService.hide();
