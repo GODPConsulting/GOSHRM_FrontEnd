@@ -173,7 +173,6 @@ export class UtilitiesService {
         // window.navigator.msSaveBlob(file, fileName);
         saveAs(file);
       } catch (err) {
-        console.log(err);
         const textFileAsBlob = new Blob([bb], mimeType);
         window.navigator.msSaveBlob(textFileAsBlob, fileName);
       }

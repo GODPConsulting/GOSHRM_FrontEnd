@@ -24,7 +24,11 @@
             ><span class="hint-text">Add</span><i class="fa fa-plus"></i>
           </a>
         </div>
-        <table class="table table-striped custom-table datatable table-hover">
+        <table
+          class="table table-striped custom-table datatable table-hover"
+          datatable
+          [dtOptions]="dtOptions"
+        >
           <thead>
             <tr>
               <th>
@@ -51,7 +55,7 @@
               <td>{{ row }}</td>
               <td>{{ row }}</td>
               <td>{{ row }}</td>
-              <td>{{ targetDate }}</td>
+              <td>{{ targetDate | customDate }}</td>
               <td>{{ kpiWeight }}</td>
             </tr>
           </tbody>

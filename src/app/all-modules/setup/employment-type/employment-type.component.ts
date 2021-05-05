@@ -54,7 +54,6 @@ export class EmploymentTypeComponent implements OnInit {
       .subscribe(
         (resp) => {
           this.loadingService.hide();
-          console.log(resp);
           return this.utilitiesService.byteToFile(
             resp,
             "Employment Type.xlsx",

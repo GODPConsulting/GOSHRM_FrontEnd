@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+
 declare const $: any;
 
 @Component({
@@ -31,7 +32,7 @@ export class HospitalComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   minDate: Date;
   maxDate: Date;
-  dtTrigger: any;
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -61,17 +62,6 @@ export class HospitalComponent implements OnInit {
       order: [[1, "asc"]],
     };
   }
-  /*
-  filterHospital(item) {
-    this.reload = false;
-    console.log(this.suggestedHospital);
-    this.suggestedHospital = this.employeeHospital.filter(
-      (element) => element.id !== +item.target.value
-    );
-    console.log(this.suggestedHospital);
-    this.reload = true;
-  }
- */
 
   setMinMaxDate(form: FormGroup, startDate: string, endDate: string) {
     const dateSetter = this.utilitiesService.setMinMaxDate(
@@ -292,6 +282,7 @@ export class HospitalComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.employeeHospital = data.employeeList;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

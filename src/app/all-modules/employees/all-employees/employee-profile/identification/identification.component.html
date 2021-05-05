@@ -1,181 +1,302 @@
 <!-- Identification Card -->
 <div>
-    <div class="card profile-box flex-fill">
-        <div class="card-body">
-            <h3 class="card-title">Identification<a class="edit-icon hint" (click)="delete()"><span
-                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a> <a *ngIf="dataFromParent.isHr"
-                    class="edit-icon hint mr-1" (click)="downloadFile()" download><span
-                        class="hint-text">Download</span><i class="fa fa-download"></i></a><a
-                    *ngIf="dataFromParent.canSeeProfileElement" (click)="initIdentificationForm()"
-                    class="hint edit-icon mr-1" data-toggle="modal" data-target="#identification_modal"><span
-                        class="hint-text">Add Identification</span><i class="fa fa-plus"></i></a></h3>
-            <div class="table-responsive">
-                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"
-                    [dtTrigger]="dtTrigger">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" [checked]="selectedId.length === employeeIdentification.length"
-                                    (change)="checkAll($event)" />
-                            </th>
-                            <th>S/N</th>
-                            <th>Identification</th>
-                            <th>Identification No.</th>
-                            <th>ID Issued Date.</th>
-                            <th>ID Expiry Date</th>
-                            <th>Approval Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#identification_modal"
-                            (click)="editForm(row)" *ngFor="let row of hack(employeeIdentification); let i = index">
-                            <td (click)="stopParentEvent($event)">
-                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id,row.approval_status_name)" />
-                            </td>
-                            <td>{{i +1}}</td>
-                            <td>{{row.identificationName}}</td>
-                            <td>{{row.identification_number}}</td>
-                            <td>{{row.idIssues}}</td>
-                            <td>{{row.idExpiry_date | date :"mediumDate"}}</td>
-                            <td>{{row.approval_status_name}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="card profile-box flex-fill">
+    <div class="card-body">
+      <h3 class="card-title">
+        Identification<a class="edit-icon hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
+        <a
+          *ngIf="dataFromParent.isHr"
+          class="edit-icon hint mr-1"
+          (click)="downloadFile()"
+          download
+          ><span class="hint-text">Download</span
+          ><i class="fa fa-download"></i></a
+        ><a
+          *ngIf="dataFromParent.canSeeProfileElement"
+          (click)="initIdentificationForm()"
+          class="hint edit-icon mr-1"
+          data-toggle="modal"
+          data-target="#identification_modal"
+          ><span class="hint-text">Add Identification</span
+          ><i class="fa fa-plus"></i
+        ></a>
+      </h3>
+      <div class="table-responsive">
+        <table
+          class="table table-nowrap table-hover"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+        >
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  [checked]="
+                    selectedId.length === employeeIdentification.length
+                  "
+                  (change)="checkAll($event)"
+                />
+              </th>
+              <th>S/N</th>
+              <th>Identification</th>
+              <th>Identification No.</th>
+              <th>ID Issued Date.</th>
+              <th>ID Expiry Date</th>
+              <th>Approval Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              data-toggle="modal"
+              class="pointer"
+              data-target="#identification_modal"
+              (click)="editForm(row)"
+              *ngFor="let row of hack(employeeIdentification); let i = index"
+            >
+              <td (click)="stopParentEvent($event)">
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.includes(row.id)"
+                  (change)="addItemId($event, row.id, row.approval_status_name)"
+                />
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ row.identificationName }}</td>
+              <td>{{ row.identification_number }}</td>
+              <td>{{ row.idIssues }}</td>
+              <td>{{ row.idExpiry_date | date: "mediumDate" }}</td>
+              <td>{{ row.approval_status_name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Identification Card -->
 <!-- Identification Modal -->
 <div id="identification_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          (ngSubmit)="submitIdentificationForm(identificationForm)"
+          [formGroup]="identificationForm"
+        >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Identification</label>
+                <select
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    identificationForm.get('identificationId').invalid &&
+                    identificationForm.get('identificationId').touched
+                  "
+                  formControlName="identificationId"
+                >
+                  <option selected value="">Identification</option>
+                  <option
+                    *ngFor="let row of identifications"
+                    value="{{ row.lookupId }}"
+                  >
+                    {{ row.lookupName }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    identificationForm.get('identificationId').invalid &&
+                    identificationForm.get('identificationId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      identificationForm.get('identificationId').invalid &&
+                      identificationForm.get('identificationId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitIdentificationForm(identificationForm)" [formGroup]="identificationForm">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Identification</label>
-                                <select type="text" class="form-control" [class.invalid]="
-                                identificationForm.get('identificationId').invalid &&
-                                identificationForm.get('identificationId').touched" formControlName="identificationId">
-                                    <option selected value="">Identification</option>
-                                    <option *ngFor="let row of identifications" value="{{row.lookupId}}">
-                                        {{row.lookupName}} </option>
-                                </select>
-                                <div *ngIf="
-                                identificationForm.get('identificationId').invalid &&
-                                identificationForm.get('identificationId').touched
-                    ">
-                                    <small *ngIf="
-                                    identificationForm.get('identificationId').invalid &&
-                                    identificationForm.get('identificationId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Identification Number</label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                identificationForm.get('identification_number').invalid &&
-                                identificationForm.get('identification_number').touched"
-                                    formControlName="identification_number">
-                                <div *ngIf="
-                                identificationForm.get('identification_number').invalid &&
-                                identificationForm.get('identification_number').touched
-                    ">
-                                    <small *ngIf="
-                                    identificationForm.get('identification_number').invalid &&
-                                    identificationForm.get('identification_number').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>ID Issuer <span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                identificationForm.get('idIssues').invalid &&
-                                identificationForm.get('idIssues').touched" formControlName="idIssues">
-                                <div *ngIf="
-                                identificationForm.get('idIssues').invalid &&
-                                identificationForm.get('idIssues').touched
-                    ">
-                                    <small *ngIf="
-                                    identificationForm.get('idIssues').invalid &&
-                                    identificationForm.get('idIssues').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>ID Expiry Date <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                    identificationForm.get('idExpiry_date').invalid &&
-                                    identificationForm.get('idExpiry_date').touched" formControlName="idExpiry_date">
-                                <div *ngIf="
-                                identificationForm.get('idExpiry_date').invalid &&
-                                identificationForm.get('idExpiry_date').touched
-                    ">
-                                    <small *ngIf="
-                                    identificationForm.get('idExpiry_date').invalid &&
-                                    identificationForm.get('idExpiry_date').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>ID upload (file format)</label>
-                                <input class="form-control" name="identicationFile" #fileInput type="file"
-                                    (change)="onSelectedFile($event,identificationForm)" [class.invalid]="
-                                    identificationForm.get('identicationFile').invalid &&
-                                    identificationForm.get('identicationFile').touched">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Approval Status</label>
-                                <select class="form-control" [class.invalid]="
-                                identificationForm.get('approval_status').invalid &&
-                                identificationForm.get('approval_status').touched" formControlName="approval_status">
-                                    <option selected value="">Select Status</option>
-                                    <option value="1">Approve</option>
-                                    <option value="2">Pending</option>
-                                    <option value="3">Decline</option>
-                                </select>
-                                <div *ngIf="
-                                identificationForm.get('approval_status').invalid &&
-                                identificationForm.get('approval_status').touched
-                    ">
-                                    <small *ngIf="
-                                    identificationForm.get('approval_status').invalid &&
-                                    identificationForm.get('approval_status').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Identification Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    identificationForm.get('identification_number').invalid &&
+                    identificationForm.get('identification_number').touched
+                  "
+                  formControlName="identification_number"
+                />
+                <div
+                  *ngIf="
+                    identificationForm.get('identification_number').invalid &&
+                    identificationForm.get('identification_number').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      identificationForm.get('identification_number').invalid &&
+                      identificationForm.get('identification_number').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>ID Issuer <span class="text-danger">*</span></label>
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    identificationForm.get('idIssues').invalid &&
+                    identificationForm.get('idIssues').touched
+                  "
+                  formControlName="idIssues"
+                />
+                <div
+                  *ngIf="
+                    identificationForm.get('idIssues').invalid &&
+                    identificationForm.get('idIssues').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      identificationForm.get('idIssues').invalid &&
+                      identificationForm.get('idIssues').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>ID Expiry Date <span class="text-danger">*</span></label>
+                <input
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    identificationForm.get('idExpiry_date').invalid &&
+                    identificationForm.get('idExpiry_date').touched
+                  "
+                  formControlName="idExpiry_date"
+                />
+                <div
+                  *ngIf="
+                    identificationForm.get('idExpiry_date').invalid &&
+                    identificationForm.get('idExpiry_date').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      identificationForm.get('idExpiry_date').invalid &&
+                      identificationForm.get('idExpiry_date').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>ID upload (file format)</label>
+                <input
+                  class="form-control"
+                  name="identicationFile"
+                  #fileInput
+                  type="file"
+                  (change)="onSelectedFile($event, identificationForm)"
+                  [class.invalid]="
+                    identificationForm.get('identicationFile').invalid &&
+                    identificationForm.get('identicationFile').touched
+                  "
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Approval Status</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    identificationForm.get('approval_status').invalid &&
+                    identificationForm.get('approval_status').touched
+                  "
+                  formControlName="approval_status"
+                >
+                  <option selected value="">Select Status</option>
+                  <option value="1">Approve</option>
+                  <option value="2">Pending</option>
+                  <option value="3">Decline</option>
+                </select>
+                <div
+                  *ngIf="
+                    identificationForm.get('approval_status').invalid &&
+                    identificationForm.get('approval_status').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      identificationForm.get('approval_status').invalid &&
+                      identificationForm.get('approval_status').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Identification Modal -->

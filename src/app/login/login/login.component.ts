@@ -101,8 +101,11 @@ export class LoginComponent implements OnInit {
       },
       (err) => {
         this.loading = false;
-        const message = err.error.status.message.friendlyMessage;
-        swal.fire("GOSHRM", message, "error");
+        console.log(err);
+        if (err.status) {
+          const message = err.status.message.friendlyMessage;
+          swal.fire("GOSHRM", message, "error");
+        }
       }
     );
   }
@@ -110,7 +113,6 @@ export class LoginComponent implements OnInit {
   getEmployeeByEmail(email: string) {
     this.employeeService.getEmployeeByEmail(email).subscribe((data) => {
       this.hrmUser = data.employeeList[0];
-      console.log(this.hrmUser);
       // this.hrmUser.branchId = this.user.branchId;
       // this.hrmUser.branchName = this.user.branchName;
       // this.hrmUser.companyId = this.user.companyId;

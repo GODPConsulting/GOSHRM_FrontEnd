@@ -5,6 +5,7 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+import { Subject } from "rxjs";
 declare const $: any;
 
 @Component({
@@ -27,7 +28,7 @@ export class SkillsComponent implements OnInit {
   employeeSkills: any = {};
   staffs: any = {};
   jobTitle: any;
-  dtTrigger: any;
+  dtTrigger: Subject<any> = new Subject();
   public dtOptions: DataTables.Settings = {};
 
   constructor(
@@ -115,6 +116,7 @@ export class SkillsComponent implements OnInit {
     this.employeeService.getSkillByStaffId(id).subscribe((data) => {
       if (data) {
         this.employeeSkills = data.employeeList;
+        this.dtTrigger.next();
       }
     });
   }

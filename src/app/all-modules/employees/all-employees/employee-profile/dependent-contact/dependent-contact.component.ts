@@ -4,6 +4,7 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+import { Subject } from "rxjs";
 declare const $: any;
 
 @Component({
@@ -32,7 +33,7 @@ export class DependentContactComponent implements OnInit {
   // To hold data for each card
   employeeDependentContact: any = {};
   setupService: any;
-  dtTrigger: any;
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -141,6 +142,7 @@ export class DependentContactComponent implements OnInit {
     this.employeeService.getDependentContactByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
         this.employeeDependentContact = data.employeeList;
+        this.dtTrigger.next();
       }
     });
   }

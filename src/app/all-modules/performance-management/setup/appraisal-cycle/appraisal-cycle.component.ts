@@ -260,15 +260,11 @@ export class AppraisalCycleComponent implements OnInit {
   filterByCompany(id) {
     if (+id === 0) {
       this.filteredArray = this.appraisalCycles;
-      console.log(this.filteredArray);
     } else {
       this.filteredArray = this.appraisalCycles.filter(
         (item) => item.staffOfficeId === +id
       );
-      console.log(this.filteredArray);
     }
-
-    console.log(id);
   }
 
   initializeForm() {

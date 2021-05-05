@@ -1,349 +1,605 @@
 <!-- Hmo Card -->
 <div>
-    <div class="card profile-box flex-fill">
-        <div class="card-body">
-            <h3 class="card-title">HMO<a class="edit-icon hint" (click)="delete()">
-                    <span class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
-                <a *ngIf="dataFromParent.canSeeProfileElement" (click)="initHmoForm()" class="hint edit-icon mr-1"
-                    data-toggle="modal" data-target="#hmo_modal">
-                    <span class="hint-text">Add HMO</span><i class="fa fa-plus"></i></a>
-                <a (click)="initHmoChangeForm()" class="hint edit-icon mr-1" data-toggle="modal"
-                    data-target="#hmo_req_change_modal"><span class="hint-text">Request Change</span><i
-                        class="fa fa-ticket"></i></a>
-            </h3>
-            <div class="table-responsive">
-                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"
-                    [dtTrigger]="dtTrigger">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" [checked]="selectedId.length === employeeHmo.length"
-                                    (change)="checkAll($event)" />
-                            </th>
-                            <th>S/N</th>
-                            <th>HMO</th>
-                            <th>HMO rating</th>
-                            <th>Phone number</th>
-                            <th>Start date</th>
-                            <th>End date</th>
-                            <th>Approval Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target=""
-                            *ngFor="let row of hack(employeeHmo); let i = index">
-                            <td (click)="stopParentEvent($event)">
-                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id)" />
-                            </td>
-                            <td>{{i +1}}</td>
-                            <td>{{row.hmoName}}</td>
-                            <td>
-                                <rating [max]="5" [(ngModel)]="row.hmo_rating"
-                                    [titles]="['Poor','Below Average','Average','Above Average','Excellent']"
-                                    [readonly]="true">
-                                </rating>
-                            </td>
-                            <td>{{row.contactPhoneNo}}</td>
-                            <td>{{row.startDate| date :"mediumDate"}}</td>
-                            <td>{{row.end_Date==="Present"? row.end_Date: row.end_Date | date :"mediumDate"}}</td>
-                            <td>{{row.approvalStatusName}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="card profile-box flex-fill">
+    <div class="card-body">
+      <h3 class="card-title">
+        HMO<a class="edit-icon hint" (click)="delete()">
+          <span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
+        <a
+          *ngIf="dataFromParent.canSeeProfileElement"
+          (click)="initHmoForm()"
+          class="hint edit-icon mr-1"
+          data-toggle="modal"
+          data-target="#hmo_modal"
+        >
+          <span class="hint-text">Add HMO</span><i class="fa fa-plus"></i
+        ></a>
+        <a
+          (click)="initHmoChangeForm()"
+          class="hint edit-icon mr-1"
+          data-toggle="modal"
+          data-target="#hmo_req_change_modal"
+          ><span class="hint-text">Request Change</span
+          ><i class="fa fa-ticket"></i
+        ></a>
+      </h3>
+      <div class="table-responsive">
+        <table
+          class="table table-nowrap table-hover"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+        >
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.length === employeeHmo.length"
+                  (change)="checkAll($event)"
+                />
+              </th>
+              <th>S/N</th>
+              <th>HMO</th>
+              <th>HMO rating</th>
+              <th>Phone number</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Approval Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              data-toggle="modal"
+              class="pointer"
+              data-target=""
+              *ngFor="let row of hack(employeeHmo); let i = index"
+            >
+              <td (click)="stopParentEvent($event)">
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.includes(row.id)"
+                  (change)="addItemId($event, row.id)"
+                />
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ row.hmoName }}</td>
+              <td>
+                <rating
+                  [max]="5"
+                  [(ngModel)]="row.hmo_rating"
+                  [titles]="[
+                    'Poor',
+                    'Below Average',
+                    'Average',
+                    'Above Average',
+                    'Excellent'
+                  ]"
+                  [readonly]="true"
+                >
+                </rating>
+              </td>
+              <td>{{ row.contactPhoneNo }}</td>
+              <td>{{ row.startDate | date: "mediumDate" }}</td>
+              <td>
+                {{
+                  row.end_Date === "Present"
+                    ? row.end_Date
+                    : (row.end_Date | date: "mediumDate")
+                }}
+              </td>
+              <td>{{ row.approvalStatusName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Hmo Card -->
 <!-- Hmo Modal -->
 <div id="hmo_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          (ngSubmit)="submitHmoForm(employeeHmoForm)"
+          [formGroup]="employeeHmoForm"
+        >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>HMO</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    employeeHmoForm.get('hmoId').invalid &&
+                    employeeHmoForm.get('hmoId').touched
+                  "
+                  formControlName="hmoId"
+                >
+                  <option selected value="">Select HMO</option>
+                  <option
+                    *ngFor="let hmo of (allHmos$ | async)?.setuplist"
+                    value="{{ hmo.id }}"
+                  >
+                    {{ hmo.hmo_name }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    employeeHmoForm.get('hmoId').invalid &&
+                    employeeHmoForm.get('hmoId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeHmoForm.get('hmoId').invalid &&
+                      employeeHmoForm.get('hmoId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitHmoForm(employeeHmoForm)" [formGroup]="employeeHmoForm">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>HMO</label>
-                                <select class="form-control"
-                                    [class.invalid]="
-                                employeeHmoForm.get('hmoId').invalid &&                                employeeHmoForm.get('hmoId').touched"
-                                    formControlName="hmoId">
-                                    <option selected value="">Select HMO</option>
-                                    <option *ngFor="let hmo of (allHmos$ | async)?.setuplist" value="{{hmo.id}}">
-                                        {{hmo.hmo_name}} </option>
-                                </select>
-                                <div *ngIf="
-                                employeeHmoForm.get('hmoId').invalid &&
-                                employeeHmoForm.get('hmoId').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeHmoForm.get('hmoId').invalid &&
-                                    employeeHmoForm.get('hmoId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Rating</label>
-                                <rating [max]="5" [readonly]="false" class="form-control" [class.invalid]="
-                                employeeHmoForm.get('hmo_rating').invalid &&
-                                employeeHmoForm.get('hmo_rating').touched" formControlName="hmo_rating"></rating>
-                                <div *ngIf="
-                                employeeHmoForm.get('hmo_rating').invalid &&
-                                employeeHmoForm.get('hmo_rating').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeHmoForm.get('hmo_rating').invalid &&
-                                    employeeHmoForm.get('hmo_rating').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Contact Phone Number<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                employeeHmoForm.get('contactPhoneNo').invalid &&
-                                employeeHmoForm.get('contactPhoneNo').touched" formControlName="contactPhoneNo">
-                                <div *ngIf="
-                                employeeHmoForm.get('contactPhoneNo').invalid &&
-                                employeeHmoForm.get('contactPhoneNo').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeHmoForm.get('contactPhoneNo').invalid &&
-                                    employeeHmoForm.get('contactPhoneNo').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Start Date <span class="text-danger">*</span></label>
-                                <input [maxDate]='maxDate'
-                                    (bsValueChange)="setMinMaxDate(employeeHmoForm, 'startDate','end_Date')"
-                                    class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                    employeeHmoForm.get('startDate').invalid &&
-                                    employeeHmoForm.get('startDate').touched" formControlName="startDate">
-                                <div *ngIf="
-                                employeeHmoForm.get('startDate').invalid &&
-                                employeeHmoForm.get('startDate').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeHmoForm.get('startDate').invalid &&
-                                    employeeHmoForm.get('startDate').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>End Date <span class="text-danger">*</span></label>
-                                <span class="float-right ">
-                                    <input type="checkbox" name="currentDate" value=""
-                                        (change)="setDateToPresent($event,employeeHmoForm,'end_Date')"
-                                        formControlName="setCurrentDate">
-                                    <label for="currentDate" class="mx-1">Does not expire</label>
-                                </span>
-                                <input placement='top' [minDate]='minDate'
-                                    (bsValueChange)="setMinMaxDate(employeeHmoForm, 'startDate','end_Date')"
-                                    (click)="resetCheckbox(employeeHmoForm,'setCurrentDate')"
-                                    class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                    employeeHmoForm.get('end_Date').invalid &&
-                                    employeeHmoForm.get('end_Date').touched" formControlName="end_Date">
-                                <div *ngIf="
-                                employeeHmoForm.get('end_Date').invalid &&
-                                employeeHmoForm.get('end_Date').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeHmoForm.get('end_Date').invalid &&
-                                    employeeHmoForm.get('end_Date').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Approval Status</label>
-                                <select class="form-control" [class.invalid]="
-                                employeeHmoForm.get('approvalStatus').invalid &&
-                                employeeHmoForm.get('approvalStatus').touched" formControlName="approvalStatus">
-                                    <option selected value="">Select Status</option>
-                                    <option value="1">Approve</option>
-                                    <option value="2">Pending</option>
-                                    <option value="3">Decline</option>
-                                </select>
-                                <div *ngIf="
-                                employeeHmoForm.get('approvalStatus').invalid &&
-                                employeeHmoForm.get('approvalStatus').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeHmoForm.get('approvalStatus').invalid &&
-                                    employeeHmoForm.get('approvalStatus').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Rating</label>
+                <rating
+                  [max]="5"
+                  [readonly]="false"
+                  class="form-control"
+                  [class.invalid]="
+                    employeeHmoForm.get('hmo_rating').invalid &&
+                    employeeHmoForm.get('hmo_rating').touched
+                  "
+                  formControlName="hmo_rating"
+                ></rating>
+                <div
+                  *ngIf="
+                    employeeHmoForm.get('hmo_rating').invalid &&
+                    employeeHmoForm.get('hmo_rating').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeHmoForm.get('hmo_rating').invalid &&
+                      employeeHmoForm.get('hmo_rating').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Contact Phone Number<span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    employeeHmoForm.get('contactPhoneNo').invalid &&
+                    employeeHmoForm.get('contactPhoneNo').touched
+                  "
+                  formControlName="contactPhoneNo"
+                />
+                <div
+                  *ngIf="
+                    employeeHmoForm.get('contactPhoneNo').invalid &&
+                    employeeHmoForm.get('contactPhoneNo').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeHmoForm.get('contactPhoneNo').invalid &&
+                      employeeHmoForm.get('contactPhoneNo').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Start Date <span class="text-danger">*</span></label>
+                <input
+                  [maxDate]="maxDate"
+                  (bsValueChange)="
+                    setMinMaxDate(employeeHmoForm, 'startDate', 'end_Date')
+                  "
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    employeeHmoForm.get('startDate').invalid &&
+                    employeeHmoForm.get('startDate').touched
+                  "
+                  formControlName="startDate"
+                />
+                <div
+                  *ngIf="
+                    employeeHmoForm.get('startDate').invalid &&
+                    employeeHmoForm.get('startDate').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeHmoForm.get('startDate').invalid &&
+                      employeeHmoForm.get('startDate').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>End Date <span class="text-danger">*</span></label>
+                <span class="float-right">
+                  <input
+                    type="checkbox"
+                    name="currentDate"
+                    value=""
+                    (change)="
+                      setDateToPresent($event, employeeHmoForm, 'end_Date')
+                    "
+                    formControlName="setCurrentDate"
+                  />
+                  <label for="currentDate" class="mx-1">Does not expire</label>
+                </span>
+                <input
+                  placement="top"
+                  [minDate]="minDate"
+                  (bsValueChange)="
+                    setMinMaxDate(employeeHmoForm, 'startDate', 'end_Date')
+                  "
+                  (click)="resetCheckbox(employeeHmoForm, 'setCurrentDate')"
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    employeeHmoForm.get('end_Date').invalid &&
+                    employeeHmoForm.get('end_Date').touched
+                  "
+                  formControlName="end_Date"
+                />
+                <div
+                  *ngIf="
+                    employeeHmoForm.get('end_Date').invalid &&
+                    employeeHmoForm.get('end_Date').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeHmoForm.get('end_Date').invalid &&
+                      employeeHmoForm.get('end_Date').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Approval Status</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    employeeHmoForm.get('approvalStatus').invalid &&
+                    employeeHmoForm.get('approvalStatus').touched
+                  "
+                  formControlName="approvalStatus"
+                >
+                  <option selected value="">Select Status</option>
+                  <option value="1">Approve</option>
+                  <option value="2">Pending</option>
+                  <option value="3">Decline</option>
+                </select>
+                <div
+                  *ngIf="
+                    employeeHmoForm.get('approvalStatus').invalid &&
+                    employeeHmoForm.get('approvalStatus').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeHmoForm.get('approvalStatus').invalid &&
+                      employeeHmoForm.get('approvalStatus').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Hmo Modal -->
 <!-- Hmo Request Change Modal -->
 <div id="hmo_req_change_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          (ngSubmit)="submitHmoChangeReqForm(hmoChangeReqForm)"
+          [formGroup]="hmoChangeReqForm"
+        >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Existing HMO</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    hmoChangeReqForm.get('hmoId').invalid &&
+                    hmoChangeReqForm.get('hmoId').touched
+                  "
+                  formControlName="hmoId"
+                >
+                  <option selected value="">Select HMO</option>
+                  <option
+                    *ngFor="let emphmo of employeeHmo"
+                    value="{{ emphmo.id }}"
+                  >
+                    {{ emphmo.hmoName }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    hmoChangeReqForm.get('hmoId').invalid &&
+                    hmoChangeReqForm.get('hmoId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      hmoChangeReqForm.get('hmoId').invalid &&
+                      hmoChangeReqForm.get('hmoId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitHmoChangeReqForm(hmoChangeReqForm)" [formGroup]="hmoChangeReqForm">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Existing HMO</label>
-                                <select class="form-control" [class.invalid]="
-                                hmoChangeReqForm.get('hmoId').invalid &&
-                                hmoChangeReqForm.get('hmoId').touched" formControlName="hmoId">
-                                    <option selected value="">Select HMO</option>
-                                    <option *ngFor="let emphmo of employeeHmo" value="{{emphmo.id}}"> {{emphmo.hmoName}}
-                                    </option>
-                                </select>
-                                <div *ngIf="
-                                hmoChangeReqForm.get('hmoId').invalid &&
-                                hmoChangeReqForm.get('hmoId').touched
-                    ">
-                                    <small *ngIf="
-                                    hmoChangeReqForm.get('hmoId').invalid &&
-                                    hmoChangeReqForm.get('hmoId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Suggested HMO</label>
-                                <select class="form-control" [class.invalid]="
-                                hmoChangeReqForm.get('suggestedHmo').invalid &&
-                                hmoChangeReqForm.get('suggestedHmo').touched" formControlName="suggestedHmo">
-                                    <option selected value="">Select HMO</option>
-                                    <option *ngFor="let hmo of (allHmos$ | async)?.setuplist" value="{{hmo.id}}">
-                                        {{hmo.hmo_name}} </option>
-                                </select>
-                                <div *ngIf="
-                                hmoChangeReqForm.get('suggestedHmo').invalid &&
-                                hmoChangeReqForm.get('suggestedHmo').touched
-                    ">
-                                    <small *ngIf="
-                                    hmoChangeReqForm.get('suggestedHmo').invalid &&
-                                    hmoChangeReqForm.get('suggestedHmo').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Date of Request <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                hmoChangeReqForm.get('dateOfRequest').invalid &&
-                                hmoChangeReqForm.get('dateOfRequest').touched" formControlName="dateOfRequest">
-                                <div *ngIf="
-                                hmoChangeReqForm.get('dateOfRequest').invalid &&
-                                hmoChangeReqForm.get('dateOfRequest').touched
-                    ">
-                                    <small *ngIf="
-                                    hmoChangeReqForm.get('dateOfRequest').invalid &&
-                                    hmoChangeReqForm.get('dateOfRequest').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Expected Change Date <span class="text-danger">*</span></label>
-                                <input [minDate]="minDate" class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD' }"
-                                    [class.invalid]="
-                                hmoChangeReqForm.get('expectedDateOfChange').invalid &&
-                                hmoChangeReqForm.get('expectedDateOfChange').touched"
-                                    formControlName="expectedDateOfChange">
-                                <div *ngIf="
-                                hmoChangeReqForm.get('expectedDateOfChange').invalid &&
-                                hmoChangeReqForm.get('expectedDateOfChange').touched
-                    ">
-                                    <small *ngIf="
-                                    hmoChangeReqForm.get('expectedDateOfChange').invalid &&
-                                    hmoChangeReqForm.get('expectedDateOfChange').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Form upload (file format)</label>
-                                <input class="form-control" name="hmoFile" #fileInput type="file"
-                                    (change)="onSelectedFile($event,hmoChangeReqForm)" [class.invalid]="
-                                    hmoChangeReqForm.get('hmoFile').invalid &&
-                                    hmoChangeReqForm.get('hmoFile').touched">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Approval Status</label>
-                                <select class="form-control" [class.invalid]="
-                                hmoChangeReqForm.get('approvalStatus').invalid &&
-                                hmoChangeReqForm.get('approvalStatus').touched" formControlName="approvalStatus">
-                                    <option selected value="">Select Status</option>
-                                    <option value="1">Approve</option>
-                                    <option value="2">Pending</option>
-                                    <option value="3">Decline</option>
-                                </select>
-                                <div *ngIf="
-                                hmoChangeReqForm.get('approvalStatus').invalid &&
-                                hmoChangeReqForm.get('approvalStatus').touched
-                    ">
-                                    <small *ngIf="
-                                    hmoChangeReqForm.get('approvalStatus').invalid &&
-                                    hmoChangeReqForm.get('approvalStatus').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Suggested HMO</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    hmoChangeReqForm.get('suggestedHmo').invalid &&
+                    hmoChangeReqForm.get('suggestedHmo').touched
+                  "
+                  formControlName="suggestedHmo"
+                >
+                  <option selected value="">Select HMO</option>
+                  <option
+                    *ngFor="let hmo of (allHmos$ | async)?.setuplist"
+                    value="{{ hmo.id }}"
+                  >
+                    {{ hmo.hmo_name }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    hmoChangeReqForm.get('suggestedHmo').invalid &&
+                    hmoChangeReqForm.get('suggestedHmo').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      hmoChangeReqForm.get('suggestedHmo').invalid &&
+                      hmoChangeReqForm.get('suggestedHmo').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Date of Request <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    hmoChangeReqForm.get('dateOfRequest').invalid &&
+                    hmoChangeReqForm.get('dateOfRequest').touched
+                  "
+                  formControlName="dateOfRequest"
+                />
+                <div
+                  *ngIf="
+                    hmoChangeReqForm.get('dateOfRequest').invalid &&
+                    hmoChangeReqForm.get('dateOfRequest').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      hmoChangeReqForm.get('dateOfRequest').invalid &&
+                      hmoChangeReqForm.get('dateOfRequest').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Expected Change Date
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  [minDate]="minDate"
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD'
+                  }"
+                  [class.invalid]="
+                    hmoChangeReqForm.get('expectedDateOfChange').invalid &&
+                    hmoChangeReqForm.get('expectedDateOfChange').touched
+                  "
+                  formControlName="expectedDateOfChange"
+                />
+                <div
+                  *ngIf="
+                    hmoChangeReqForm.get('expectedDateOfChange').invalid &&
+                    hmoChangeReqForm.get('expectedDateOfChange').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      hmoChangeReqForm.get('expectedDateOfChange').invalid &&
+                      hmoChangeReqForm.get('expectedDateOfChange').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Form upload (file format)</label>
+                <input
+                  class="form-control"
+                  name="hmoFile"
+                  #fileInput
+                  type="file"
+                  (change)="onSelectedFile($event, hmoChangeReqForm)"
+                  [class.invalid]="
+                    hmoChangeReqForm.get('hmoFile').invalid &&
+                    hmoChangeReqForm.get('hmoFile').touched
+                  "
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Approval Status</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    hmoChangeReqForm.get('approvalStatus').invalid &&
+                    hmoChangeReqForm.get('approvalStatus').touched
+                  "
+                  formControlName="approvalStatus"
+                >
+                  <option selected value="">Select Status</option>
+                  <option value="1">Approve</option>
+                  <option value="2">Pending</option>
+                  <option value="3">Decline</option>
+                </select>
+                <div
+                  *ngIf="
+                    hmoChangeReqForm.get('approvalStatus').invalid &&
+                    hmoChangeReqForm.get('approvalStatus').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      hmoChangeReqForm.get('approvalStatus').invalid &&
+                      hmoChangeReqForm.get('approvalStatus').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Hmo Request Change Modal -->

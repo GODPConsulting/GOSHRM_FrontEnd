@@ -1,347 +1,603 @@
 <div>
-    <div class="card profile-box flex-fill">
-        <div class="card-body">
-            <h3 class="card-title">Career<a class="edit-icon hint" (click)="delete()"><span
-                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
-                <a *ngIf="dataFromParent.isHr" class="edit-icon hint mr-1" (click)="downloadFile()" download><span
-                        class="hint-text">Download</span><i class="fa fa-download"></i></a>
-                <a *ngIf="dataFromParent.canSeeProfileElement" (click)="initCareerForm()" class="hint edit-icon mr-1"
-                    data-toggle="modal" data-target="#career_modal"><span class="hint-text">Add </span><i
-                        class="fa fa-plus"></i></a>
-            </h3>
-            <div class="table-responsive">
-                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" [checked]="selectedId.length === employeeCareer.length"
-                                    (change)="checkAll($event)" />
-                            </th>
-                            <th>S/N</th>
-                            <th>Job Grade</th>
-                            <th>Job Title</th>
-                            <th>Job Type</th>
-                            <th>Country</th>
-                            <th>Location</th>
-                            <th>Office</th>
-                            <th>Line Manager</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#career_modal" (click)="edit(row)"
-                            *ngFor="let row of hack(employeeCareer); let i = index">
-                            <td (click)="stopParentEvent($event)">
-                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id)" />
-                            </td>
-                            <td>{{i +1}}</td>
-                            <td>{{row.job_GradeId}}</td>
-                            <td>{{row.job_titleId}}</td>
-                            <td>{{row.job_type}}</td>
-                            <td>{{row.countryId}}</td>
-                            <td>{{row.locationId}}</td>
-                            <td>{{row.officeName}}</td>
-                            <td>{{row.line_ManagerName}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="card profile-box flex-fill">
+    <div class="card-body">
+      <h3 class="card-title">
+        Career<a class="edit-icon hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
+        <a
+          *ngIf="dataFromParent.isHr"
+          class="edit-icon hint mr-1"
+          (click)="downloadFile()"
+          download
+          ><span class="hint-text">Download</span><i class="fa fa-download"></i
+        ></a>
+        <a
+          *ngIf="dataFromParent.canSeeProfileElement"
+          (click)="initCareerForm()"
+          class="hint edit-icon mr-1"
+          data-toggle="modal"
+          data-target="#career_modal"
+          ><span class="hint-text">Add </span><i class="fa fa-plus"></i
+        ></a>
+      </h3>
+      <div class="table-responsive">
+        <table
+          class="table table-nowrap table-hover"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+        >
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.length === employeeCareer.length"
+                  (change)="checkAll($event)"
+                />
+              </th>
+              <th>S/N</th>
+              <th>Job Grade</th>
+              <th>Job Title</th>
+              <th>Job Type</th>
+              <th>Country</th>
+              <th>Location</th>
+              <th>Office</th>
+              <th>Line Manager</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              data-toggle="modal"
+              class="pointer"
+              data-target="#career_modal"
+              (click)="edit(row)"
+              *ngFor="let row of hack(employeeCareer); let i = index"
+            >
+              <td (click)="stopParentEvent($event)">
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.includes(row.id)"
+                  (change)="addItemId($event, row.id)"
+                />
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ row.job_GradeId }}</td>
+              <td>{{ row.job_titleId }}</td>
+              <td>{{ row.job_type }}</td>
+              <td>{{ row.countryId }}</td>
+              <td>{{ row.locationId }}</td>
+              <td>{{ row.officeName }}</td>
+              <td>{{ row.line_ManagerName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 <!-- Career Modal -->
 <div id="career_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-width" role="document" style="width: 1200px !important">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div
+    class="modal-dialog modal-dialog-centered modal-width"
+    role="document"
+    style="width: 1200px !important"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          (ngSubmit)="submitCareerForm(careerForm)"
+          [formGroup]="careerForm"
+        >
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Job Grade</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    careerForm.get('job_GradeId').invalid &&
+                    careerForm.get('job_GradeId').touched
+                  "
+                  formControlName="job_GradeId"
+                >
+                  <option selected value="">Job Grade</option>
+                  <option *ngFor="let row of jobGrades" value="{{ row.id }}">
+                    {{ row.job_grade }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    careerForm.get('job_GradeId').invalid &&
+                    careerForm.get('job_GradeId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('job_GradeId').invalid &&
+                      careerForm.get('job_GradeId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitCareerForm(careerForm)" [formGroup]="careerForm">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Job Grade</label>
-                                <select class="form-control" [class.invalid]="
-                                careerForm.get('job_GradeId').invalid &&
-                                careerForm.get('job_GradeId').touched" formControlName="job_GradeId">
-                                    <option selected value="">Job Grade</option>
-                                    <option *ngFor="let row of jobGrades" value="{{row.id}}">{{row.job_grade}} </option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('job_GradeId').invalid &&
-                                careerForm.get('job_GradeId').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('job_GradeId').invalid &&
-                                    careerForm.get('job_GradeId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Job Title</label>
-                                <select class="form-control" [class.invalid]="
-                                careerForm.get('job_titleId').invalid &&
-                                careerForm.get('job_titleId').touched" formControlName="job_titleId">
-                                    <option selected value="">Job Title</option>
-                                    <option *ngFor="let row of jobTitles" value="{{row.id}}">{{row.job_title}} </option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('job_titleId').invalid &&
-                                careerForm.get('job_titleId').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('job_titleId').invalid &&
-                                    careerForm.get('job_titleId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Job Type</label>
-                                <select type="text" class="form-control" [class.invalid]="
-                                careerForm.get('job_type').invalid &&
-                                careerForm.get('job_type').touched" formControlName="job_type">
-                                    <option selected value="">Job Type</option>
-                                    <option *ngFor="let row of employmentTypes; let i = index" value="{{row.id}}">
-                                        {{row.employment_type}} </option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('job_type').invalid &&
-                                careerForm.get('job_type').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('job_type').invalid &&
-                                    careerForm.get('job_type').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Country<span class="text-danger">*</span></label>
-                                <select class="form-control" [class.invalid]="
-                                careerForm.get('countryId').invalid &&
-                                careerForm.get('countryId').touched" formControlName="countryId">
-                                    <option selected value="">Country</option>
-                                    <option *ngFor="let row of countries" value="{{row.lookupId}}">{{row.lookupName}}
-                                    </option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('countryId').invalid &&
-                                careerForm.get('countryId').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('countryId').invalid &&
-                                    careerForm.get('countryId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Location<span class="text-danger">*</span></label>
-                                <select class="form-control" [class.invalid]="
-                                careerForm.get('locationId').invalid &&
-                                careerForm.get('locationId').touched" formControlName="locationId">
-                                    <option selected value="">Location</option>
-                                    <option *ngFor="let row of locations" value="{{row.id}}">{{row.location}} </option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('locationId').invalid &&
-                                careerForm.get('locationId').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('locationId').invalid &&
-                                    careerForm.get('locationId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Office</label>
-                                <select type="text" class="form-control" [class.invalid]="
-                                careerForm.get('officeId').invalid &&
-                                careerForm.get('officeId').touched" formControlName="officeId">
-                                    <option selected value="">Office</option>
-                                    <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
-                                    </option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('officeId').invalid &&
-                                careerForm.get('officeId').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('officeId').invalid &&
-                                    careerForm.get('officeId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Line Manager <span class="text-danger">*</span></label>
-                                <select class="form-control" type="text" [class.invalid]="
-                                careerForm.get('line_ManagerId').invalid &&
-                                careerForm.get('line_ManagerId').touched" formControlName="line_ManagerId">
-                                    <option selected value="">line Manager</option>
-                                    <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
-                                        {{row.firstName}} {{row.lastName}} </option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('line_ManagerId').invalid &&
-                                careerForm.get('line_ManagerId').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('line_ManagerId').invalid &&
-                                    careerForm.get('line_ManagerId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>First Level Reviewer <span class="text-danger">*</span></label>
-                                <select class="form-control" type="text" [class.invalid]="
-                                careerForm.get('first_Level_ReviewerId').invalid &&
-                                careerForm.get('first_Level_ReviewerId').touched"
-                                    formControlName="first_Level_ReviewerId">
-                                    <option selected value="">First Level Reviewer</option>
-                                    <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
-                                        {{row.firstName}} {{row.lastName}} </option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('first_Level_ReviewerId').invalid &&
-                                careerForm.get('first_Level_ReviewerId').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('first_Level_ReviewerId').invalid &&
-                                    careerForm.get('first_Level_ReviewerId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Second Level Reviewer <span class="text-danger">*</span></label>
-                                <select class="form-control" type="text" [class.invalid]="
-                                careerForm.get('second_Level_ReviewerId').invalid &&
-                                careerForm.get('second_Level_ReviewerId').touched"
-                                    formControlName="second_Level_ReviewerId">
-                                    <option selected value="">Second Level Reviewer</option>
-                                    <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
-                                        {{row.firstName}} {{row.lastName}} </option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('second_Level_ReviewerId').invalid &&
-                                careerForm.get('second_Level_ReviewerId').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('second_Level_ReviewerId').invalid &&
-                                    careerForm.get('second_Level_ReviewerId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Third Level Reviewer <span class="text-danger">*</span></label>
-                                <select class="form-control" type="text" [class.invalid]="
-                                careerForm.get('third_Level_ReviewerId').invalid &&
-                                careerForm.get('third_Level_ReviewerId').touched"
-                                    formControlName="third_Level_ReviewerId">
-                                    <option selected value="">Third Level Reviewer</option>
-                                    <option *ngFor="let row of employeesList;let i = index " value="{{row.staffId}}">
-                                        {{row.firstName}} {{row.lastName}} </option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('third_Level_ReviewerId').invalid &&
-                                careerForm.get('third_Level_ReviewerId').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('third_Level_ReviewerId').invalid &&
-                                    careerForm.get('third_Level_ReviewerId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Start Date <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                careerForm.get('startDate').invalid &&
-                                careerForm.get('startDate').touched" formControlName="startDate">
-                                <div *ngIf="
-                                careerForm.get('startDate').invalid &&
-                                careerForm.get('startDate').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('startDate').invalid &&
-                                    careerForm.get('startDate').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>End Date <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                careerForm.get('endDate').invalid &&
-                                careerForm.get('endDate').touched" formControlName="endDate">
-                                <div *ngIf="
-                                careerForm.get('endDate').invalid &&
-                                careerForm.get('endDate').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('endDate').invalid &&
-                                    careerForm.get('endDate').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Approval Status</label>
-                                <select class="form-control" [class.invalid]="
-                                careerForm.get('approval_status').invalid &&
-                                careerForm.get('approval_status').touched" formControlName="approval_status">
-                                    <option selected value="">Select Status</option>
-                                    <option value="1">Approve</option>
-                                    <option value="2">Pending</option>
-                                    <option value="3">Decline</option>
-                                </select>
-                                <div *ngIf="
-                                careerForm.get('approval_status').invalid &&
-                                careerForm.get('approval_status').touched
-                    ">
-                                    <small *ngIf="
-                                    careerForm.get('approval_status').invalid &&
-                                    careerForm.get('approval_status').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Job Title</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    careerForm.get('job_titleId').invalid &&
+                    careerForm.get('job_titleId').touched
+                  "
+                  formControlName="job_titleId"
+                >
+                  <option selected value="">Job Title</option>
+                  <option *ngFor="let row of jobTitles" value="{{ row.id }}">
+                    {{ row.job_title }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    careerForm.get('job_titleId').invalid &&
+                    careerForm.get('job_titleId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('job_titleId').invalid &&
+                      careerForm.get('job_titleId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Job Type</label>
+                <select
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    careerForm.get('job_type').invalid &&
+                    careerForm.get('job_type').touched
+                  "
+                  formControlName="job_type"
+                >
+                  <option selected value="">Job Type</option>
+                  <option
+                    *ngFor="let row of employmentTypes; let i = index"
+                    value="{{ row.id }}"
+                  >
+                    {{ row.employment_type }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    careerForm.get('job_type').invalid &&
+                    careerForm.get('job_type').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('job_type').invalid &&
+                      careerForm.get('job_type').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Country<span class="text-danger">*</span></label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    careerForm.get('countryId').invalid &&
+                    careerForm.get('countryId').touched
+                  "
+                  formControlName="countryId"
+                >
+                  <option selected value="">Country</option>
+                  <option
+                    *ngFor="let row of countries"
+                    value="{{ row.lookupId }}"
+                  >
+                    {{ row.lookupName }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    careerForm.get('countryId').invalid &&
+                    careerForm.get('countryId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('countryId').invalid &&
+                      careerForm.get('countryId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Location<span class="text-danger">*</span></label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    careerForm.get('locationId').invalid &&
+                    careerForm.get('locationId').touched
+                  "
+                  formControlName="locationId"
+                >
+                  <option selected value="">Location</option>
+                  <option *ngFor="let row of locations" value="{{ row.id }}">
+                    {{ row.location }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    careerForm.get('locationId').invalid &&
+                    careerForm.get('locationId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('locationId').invalid &&
+                      careerForm.get('locationId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Office</label>
+                <select
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    careerForm.get('officeId').invalid &&
+                    careerForm.get('officeId').touched
+                  "
+                  formControlName="officeId"
+                >
+                  <option selected value="">Office</option>
+                  <option
+                    *ngFor="let row of offices"
+                    value="{{ row.companyStructureId }}"
+                  >
+                    {{ row.name }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    careerForm.get('officeId').invalid &&
+                    careerForm.get('officeId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('officeId').invalid &&
+                      careerForm.get('officeId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Line Manager <span class="text-danger">*</span></label>
+                <select
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    careerForm.get('line_ManagerId').invalid &&
+                    careerForm.get('line_ManagerId').touched
+                  "
+                  formControlName="line_ManagerId"
+                >
+                  <option selected value="">line Manager</option>
+                  <option
+                    *ngFor="let row of employeesList; let i = index"
+                    value="{{ row.staffId }}"
+                  >
+                    {{ row.firstName }} {{ row.lastName }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    careerForm.get('line_ManagerId').invalid &&
+                    careerForm.get('line_ManagerId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('line_ManagerId').invalid &&
+                      careerForm.get('line_ManagerId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label
+                  >First Level Reviewer
+                  <span class="text-danger">*</span></label
+                >
+                <select
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    careerForm.get('first_Level_ReviewerId').invalid &&
+                    careerForm.get('first_Level_ReviewerId').touched
+                  "
+                  formControlName="first_Level_ReviewerId"
+                >
+                  <option selected value="">First Level Reviewer</option>
+                  <option
+                    *ngFor="let row of employeesList; let i = index"
+                    value="{{ row.staffId }}"
+                  >
+                    {{ row.firstName }} {{ row.lastName }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    careerForm.get('first_Level_ReviewerId').invalid &&
+                    careerForm.get('first_Level_ReviewerId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('first_Level_ReviewerId').invalid &&
+                      careerForm.get('first_Level_ReviewerId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label
+                  >Second Level Reviewer
+                  <span class="text-danger">*</span></label
+                >
+                <select
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    careerForm.get('second_Level_ReviewerId').invalid &&
+                    careerForm.get('second_Level_ReviewerId').touched
+                  "
+                  formControlName="second_Level_ReviewerId"
+                >
+                  <option selected value="">Second Level Reviewer</option>
+                  <option
+                    *ngFor="let row of employeesList; let i = index"
+                    value="{{ row.staffId }}"
+                  >
+                    {{ row.firstName }} {{ row.lastName }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    careerForm.get('second_Level_ReviewerId').invalid &&
+                    careerForm.get('second_Level_ReviewerId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('second_Level_ReviewerId').invalid &&
+                      careerForm.get('second_Level_ReviewerId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label
+                  >Third Level Reviewer
+                  <span class="text-danger">*</span></label
+                >
+                <select
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    careerForm.get('third_Level_ReviewerId').invalid &&
+                    careerForm.get('third_Level_ReviewerId').touched
+                  "
+                  formControlName="third_Level_ReviewerId"
+                >
+                  <option selected value="">Third Level Reviewer</option>
+                  <option
+                    *ngFor="let row of employeesList; let i = index"
+                    value="{{ row.staffId }}"
+                  >
+                    {{ row.firstName }} {{ row.lastName }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    careerForm.get('third_Level_ReviewerId').invalid &&
+                    careerForm.get('third_Level_ReviewerId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('third_Level_ReviewerId').invalid &&
+                      careerForm.get('third_Level_ReviewerId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Start Date <span class="text-danger">*</span></label>
+                <input
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    careerForm.get('startDate').invalid &&
+                    careerForm.get('startDate').touched
+                  "
+                  formControlName="startDate"
+                />
+                <div
+                  *ngIf="
+                    careerForm.get('startDate').invalid &&
+                    careerForm.get('startDate').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('startDate').invalid &&
+                      careerForm.get('startDate').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>End Date <span class="text-danger">*</span></label>
+                <input
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    careerForm.get('endDate').invalid &&
+                    careerForm.get('endDate').touched
+                  "
+                  formControlName="endDate"
+                />
+                <div
+                  *ngIf="
+                    careerForm.get('endDate').invalid &&
+                    careerForm.get('endDate').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('endDate').invalid &&
+                      careerForm.get('endDate').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Approval Status</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    careerForm.get('approval_status').invalid &&
+                    careerForm.get('approval_status').touched
+                  "
+                  formControlName="approval_status"
+                >
+                  <option selected value="">Select Status</option>
+                  <option value="1">Approve</option>
+                  <option value="2">Pending</option>
+                  <option value="3">Decline</option>
+                </select>
+                <div
+                  *ngIf="
+                    careerForm.get('approval_status').invalid &&
+                    careerForm.get('approval_status').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      careerForm.get('approval_status').invalid &&
+                      careerForm.get('approval_status').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Career Modal -->

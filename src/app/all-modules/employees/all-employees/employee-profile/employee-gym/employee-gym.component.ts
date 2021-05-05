@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { EmployeeService } from "src/app/services/employee.service";
 import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
@@ -31,7 +31,7 @@ export class EmployeeGymComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   minDate: Date;
   maxDate: any;
-  dtTrigger: any;
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -280,6 +280,7 @@ export class EmployeeGymComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.employeeGym = data.employeeList;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

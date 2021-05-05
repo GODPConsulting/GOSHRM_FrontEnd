@@ -1,462 +1,815 @@
 <!-- Employee Gym card -->
 <div>
-    <div class="card profile-box flex-fill">
-        <div class="card-body">
-            <h3 class="card-title">Gym<a class="edit-icon hint" (click)="delete()">
-                    <span class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
-                <a *ngIf="dataFromParent.canSeeProfileElement" (click)="initGymForm()" class="hint edit-icon mr-1"
-                    data-toggle="modal" data-target="#gym_modal">
-                    <span class="hint-text">Add Gym</span><i class="fa fa-plus"></i></a>
-                <a (click)="initGymChangeForm()" class="hint edit-icon mr-1" data-toggle="modal"
-                    data-target="#gym_req_change_modal"><span class="hint-text">Request Change</span><i
-                        class="fa fa-ticket"></i></a>
-                <a (click)="initBookGymForm()" class="hint edit-icon mr-1" data-toggle="modal"
-                    data-target="#gym_book_meeting_modal"><span class="hint-text">Book Meeting</span><i
-                        class="fa fa-calendar"></i></a>
-            </h3>
-            <div class="table-responsive">
-                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"
-                    [dtTrigger]="dtTrigger">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" [checked]="selectedId.length === employeeGym.length"
-                                    (change)="checkAll($event)" />
-                            </th>
-                            <th>S/N</th>
-                            <th>Gym</th>
-                            <th>Gym rating</th>
-                            <th>Phone number</th>
-                            <th>Start date</th>
-                            <th>End date</th>
-                            <th>Approval Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target=""
-                            *ngFor="let row of hack(employeeGym); let i = index">
-                            <td (click)="stopParentEvent($event)">
-                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id)" />
-                            </td>
-                            <td>{{i +1}}</td>
-                            <td>{{row.gymName}}</td>
-                            <td>
-                                <rating [max]="5" [(ngModel)]="row.gymRating"
-                                    [titles]="['Poor','Below Average','Average','Above Average','Excellent']"
-                                    [readonly]="true">
-                                </rating>
-                            </td>
-                            <td>{{row.gymContactPhoneNo}}</td>
-                            <td>{{row.startDate| date :"mediumDate"}}</td>
-                            <td>{{row.end_Date ==="Present"? row.end_Date: row.end_Date | date :"mediumDate"}}</td>
-                            <td>{{row.approvalStatusName}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="card profile-box flex-fill">
+    <div class="card-body">
+      <h3 class="card-title">
+        Gym<a class="edit-icon hint" (click)="delete()">
+          <span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
+        <a
+          *ngIf="dataFromParent.canSeeProfileElement"
+          (click)="initGymForm()"
+          class="hint edit-icon mr-1"
+          data-toggle="modal"
+          data-target="#gym_modal"
+        >
+          <span class="hint-text">Add Gym</span><i class="fa fa-plus"></i
+        ></a>
+        <a
+          (click)="initGymChangeForm()"
+          class="hint edit-icon mr-1"
+          data-toggle="modal"
+          data-target="#gym_req_change_modal"
+          ><span class="hint-text">Request Change</span
+          ><i class="fa fa-ticket"></i
+        ></a>
+        <a
+          (click)="initBookGymForm()"
+          class="hint edit-icon mr-1"
+          data-toggle="modal"
+          data-target="#gym_book_meeting_modal"
+          ><span class="hint-text">Book Meeting</span
+          ><i class="fa fa-calendar"></i
+        ></a>
+      </h3>
+      <div class="table-responsive">
+        <table
+          class="table table-nowrap table-hover"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+        >
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.length === employeeGym.length"
+                  (change)="checkAll($event)"
+                />
+              </th>
+              <th>S/N</th>
+              <th>Gym</th>
+              <th>Gym rating</th>
+              <th>Phone number</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Approval Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              data-toggle="modal"
+              class="pointer"
+              data-target=""
+              *ngFor="let row of hack(employeeGym); let i = index"
+            >
+              <td (click)="stopParentEvent($event)">
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.includes(row.id)"
+                  (change)="addItemId($event, row.id)"
+                />
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ row.gymName }}</td>
+              <td>
+                <rating
+                  [max]="5"
+                  [(ngModel)]="row.gymRating"
+                  [titles]="[
+                    'Poor',
+                    'Below Average',
+                    'Average',
+                    'Above Average',
+                    'Excellent'
+                  ]"
+                  [readonly]="true"
+                >
+                </rating>
+              </td>
+              <td>{{ row.gymContactPhoneNo }}</td>
+              <td>{{ row.startDate | date: "mediumDate" }}</td>
+              <td>
+                {{
+                  row.end_Date === "Present"
+                    ? row.end_Date
+                    : (row.end_Date | date: "mediumDate")
+                }}
+              </td>
+              <td>{{ row.approvalStatusName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Employee Gym card -->
 <!-- Employee Gym Modal -->
 <div id="gym_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          (ngSubmit)="submitGymForm(employeeGymForm)"
+          [formGroup]="employeeGymForm"
+        >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>gym</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    employeeGymForm.get('gymId').invalid &&
+                    employeeGymForm.get('gymId').touched
+                  "
+                  formControlName="gymId"
+                >
+                  <option selected value="">Select Gym</option>
+                  <option
+                    *ngFor="let gym of (allGyms$ | async)?.setuplist"
+                    value="{{ gym.id }}"
+                  >
+                    {{ gym.gym }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    employeeGymForm.get('gymId').invalid &&
+                    employeeGymForm.get('gymId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeGymForm.get('gymId').invalid &&
+                      employeeGymForm.get('gymId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitGymForm(employeeGymForm)" [formGroup]="employeeGymForm">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>gym</label>
-                                <select class="form-control" [class.invalid]="
-                                employeeGymForm.get('gymId').invalid && employeeGymForm.get('gymId').touched"
-                                    formControlName="gymId">
-                                    <option selected value="">Select Gym</option>
-                                    <option *ngFor="let gym of (allGyms$ | async)?.setuplist" value="{{gym.id}}">
-                                        {{gym.gym}} </option>
-                                </select>
-                                <div *ngIf="
-                                employeeGymForm.get('gymId').invalid &&
-                                employeeGymForm.get('gymId').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeGymForm.get('gymId').invalid &&
-                                    employeeGymForm.get('gymId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Rating</label>
-                                <rating [max]="5" [readonly]="false" class="form-control" [class.invalid]="
-                                employeeGymForm.get('gymRating').invalid &&
-                                employeeGymForm.get('gymRating').touched" formControlName="gymRating"></rating>
-                                <div *ngIf="
-                                employeeGymForm.get('gymRating').invalid &&
-                                employeeGymForm.get('gymRating').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeGymForm.get('gymRating').invalid &&
-                                    employeeGymForm.get('gymRating').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Contact Phone Number<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                employeeGymForm.get('gymContactPhoneNo').invalid &&
-                                employeeGymForm.get('gymContactPhoneNo').touched" formControlName="gymContactPhoneNo">
-                                <div *ngIf="
-                                employeeGymForm.get('gymContactPhoneNo').invalid &&
-                                employeeGymForm.get('gymContactPhoneNo').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeGymForm.get('gymContactPhoneNo').invalid &&
-                                    employeeGymForm.get('gymContactPhoneNo').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Start Date <span class="text-danger">*</span></label>
-                                <input [maxDate]='maxDate'
-                                    (bsValueChange)="setMinMaxDate(employeeGymForm, 'startDate','end_Date')"
-                                    class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                    employeeGymForm.get('startDate').invalid &&
-                                    employeeGymForm.get('startDate').touched" formControlName="startDate">
-                                <div *ngIf="
-                                employeeGymForm.get('startDate').invalid &&
-                                employeeGymForm.get('startDate').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeGymForm.get('startDate').invalid &&
-                                    employeeGymForm.get('startDate').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>End Date <span class="text-danger">*</span></label>
-                                <span class="float-right ">
-                                    <input type="checkbox" name="currentDate" value=""
-                                        (change)="setDateToPresent($event,employeeGymForm,'end_Date')"
-                                        formControlName="setCurrentDate">
-                                    <label for="currentDate" class="mx-1">Does not expire</label>
-                                </span>
-                                <input [minDate]='minDate'
-                                    (bsValueChange)="setMinMaxDate(employeeGymForm, 'startDate','end_Date')"
-                                    class="form-control datetimepicker" type="date" bsDatepicker
-                                    (click)="resetCheckbox(employeeGymForm,'setCurrentDate')"
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    placement="top" [class.invalid]="
-                                    employeeGymForm.get('end_Date').invalid &&
-                                    employeeGymForm.get('end_Date').touched" formControlName="end_Date">
-                                <div *ngIf="
-                                employeeGymForm.get('end_Date').invalid &&
-                                employeeGymForm.get('end_Date').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeGymForm.get('end_Date').invalid &&
-                                    employeeGymForm.get('end_Date').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Approval Status</label>
-                                <select class="form-control" [class.invalid]="
-                                employeeGymForm.get('approvalStatus').invalid &&
-                                employeeGymForm.get('approvalStatus').touched" formControlName="approvalStatus">
-                                    <option selected value="">Select Status</option>
-                                    <option value="1">Approve</option>
-                                    <option value="2">Pending</option>
-                                    <option value="3">Decline</option>
-                                </select>
-                                <div *ngIf="
-                                employeeGymForm.get('approvalStatus').invalid &&
-                                employeeGymForm.get('approvalStatus').touched
-                    ">
-                                    <small *ngIf="
-                                    employeeGymForm.get('approvalStatus').invalid &&
-                                    employeeGymForm.get('approvalStatus').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Rating</label>
+                <rating
+                  [max]="5"
+                  [readonly]="false"
+                  class="form-control"
+                  [class.invalid]="
+                    employeeGymForm.get('gymRating').invalid &&
+                    employeeGymForm.get('gymRating').touched
+                  "
+                  formControlName="gymRating"
+                ></rating>
+                <div
+                  *ngIf="
+                    employeeGymForm.get('gymRating').invalid &&
+                    employeeGymForm.get('gymRating').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeGymForm.get('gymRating').invalid &&
+                      employeeGymForm.get('gymRating').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Contact Phone Number<span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    employeeGymForm.get('gymContactPhoneNo').invalid &&
+                    employeeGymForm.get('gymContactPhoneNo').touched
+                  "
+                  formControlName="gymContactPhoneNo"
+                />
+                <div
+                  *ngIf="
+                    employeeGymForm.get('gymContactPhoneNo').invalid &&
+                    employeeGymForm.get('gymContactPhoneNo').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeGymForm.get('gymContactPhoneNo').invalid &&
+                      employeeGymForm.get('gymContactPhoneNo').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Start Date <span class="text-danger">*</span></label>
+                <input
+                  [maxDate]="maxDate"
+                  (bsValueChange)="
+                    setMinMaxDate(employeeGymForm, 'startDate', 'end_Date')
+                  "
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    employeeGymForm.get('startDate').invalid &&
+                    employeeGymForm.get('startDate').touched
+                  "
+                  formControlName="startDate"
+                />
+                <div
+                  *ngIf="
+                    employeeGymForm.get('startDate').invalid &&
+                    employeeGymForm.get('startDate').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeGymForm.get('startDate').invalid &&
+                      employeeGymForm.get('startDate').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>End Date <span class="text-danger">*</span></label>
+                <span class="float-right">
+                  <input
+                    type="checkbox"
+                    name="currentDate"
+                    value=""
+                    (change)="
+                      setDateToPresent($event, employeeGymForm, 'end_Date')
+                    "
+                    formControlName="setCurrentDate"
+                  />
+                  <label for="currentDate" class="mx-1">Does not expire</label>
+                </span>
+                <input
+                  [minDate]="minDate"
+                  (bsValueChange)="
+                    setMinMaxDate(employeeGymForm, 'startDate', 'end_Date')
+                  "
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  (click)="resetCheckbox(employeeGymForm, 'setCurrentDate')"
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  placement="top"
+                  [class.invalid]="
+                    employeeGymForm.get('end_Date').invalid &&
+                    employeeGymForm.get('end_Date').touched
+                  "
+                  formControlName="end_Date"
+                />
+                <div
+                  *ngIf="
+                    employeeGymForm.get('end_Date').invalid &&
+                    employeeGymForm.get('end_Date').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeGymForm.get('end_Date').invalid &&
+                      employeeGymForm.get('end_Date').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Approval Status</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    employeeGymForm.get('approvalStatus').invalid &&
+                    employeeGymForm.get('approvalStatus').touched
+                  "
+                  formControlName="approvalStatus"
+                >
+                  <option selected value="">Select Status</option>
+                  <option value="1">Approve</option>
+                  <option value="2">Pending</option>
+                  <option value="3">Decline</option>
+                </select>
+                <div
+                  *ngIf="
+                    employeeGymForm.get('approvalStatus').invalid &&
+                    employeeGymForm.get('approvalStatus').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      employeeGymForm.get('approvalStatus').invalid &&
+                      employeeGymForm.get('approvalStatus').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Employee Gym Modal -->
 <!-- Gym Request Change Modal -->
 <div id="gym_req_change_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          (ngSubmit)="submitGymChangeReqForm(gymChangeReqForm)"
+          [formGroup]="gymChangeReqForm"
+        >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Existing Gym</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    gymChangeReqForm.get('gymId').invalid &&
+                    gymChangeReqForm.get('gymId').touched
+                  "
+                  formControlName="gymId"
+                >
+                  <option selected value="">Select Gym</option>
+                  <option
+                    *ngFor="let empgym of employeeGym"
+                    value="{{ empgym.id }}"
+                  >
+                    {{ empgym.gymName }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    gymChangeReqForm.get('gymId').invalid &&
+                    gymChangeReqForm.get('gymId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      gymChangeReqForm.get('gymId').invalid &&
+                      gymChangeReqForm.get('gymId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitGymChangeReqForm(gymChangeReqForm)" [formGroup]="gymChangeReqForm">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Existing Gym</label>
-                                <select class="form-control" [class.invalid]="
-                                gymChangeReqForm.get('gymId').invalid &&
-                                gymChangeReqForm.get('gymId').touched" formControlName="gymId">
-                                    <option selected value="">Select Gym</option>
-                                    <option *ngFor="let empgym of employeeGym" value="{{empgym.id}}"> {{empgym.gymName}}
-                                    </option>
-                                </select>
-                                <div *ngIf="
-                                gymChangeReqForm.get('gymId').invalid &&
-                                gymChangeReqForm.get('gymId').touched
-                    ">
-                                    <small *ngIf="
-                                    gymChangeReqForm.get('gymId').invalid &&
-                                    gymChangeReqForm.get('gymId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Suggested Gym</label>
-                                <select class="form-control" [class.invalid]="
-                                gymChangeReqForm.get('suggestedGym').invalid &&
-                                gymChangeReqForm.get('suggestedGym').touched" formControlName="suggestedGym">
-                                    <option selected value="">Select Gym</option>
-                                    <option *ngFor="let gym of (allGyms$ | async)?.setuplist" value="{{gym.id}}">
-                                        {{gym.gym}} </option>
-                                </select>
-                                <div *ngIf="
-                                gymChangeReqForm.get('suggestedGym').invalid &&
-                                gymChangeReqForm.get('suggestedGym').touched
-                    ">
-                                    <small *ngIf="
-                                    gymChangeReqForm.get('suggestedGym').invalid &&
-                                    gymChangeReqForm.get('suggestedGym').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Date of Request <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                gymChangeReqForm.get('dateOfRequest').invalid &&
-                                gymChangeReqForm.get('dateOfRequest').touched" formControlName="dateOfRequest">
-                                <div *ngIf="
-                                gymChangeReqForm.get('dateOfRequest').invalid &&
-                                gymChangeReqForm.get('dateOfRequest').touched
-                    ">
-                                    <small *ngIf="
-                                    gymChangeReqForm.get('dateOfRequest').invalid &&
-                                    gymChangeReqForm.get('dateOfRequest').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Expected Change Date <span class="text-danger">*</span></label>
-                                <input [minDate]='minDate' class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                gymChangeReqForm.get('expectedDateOfChange').invalid &&
-                                gymChangeReqForm.get('expectedDateOfChange').touched"
-                                    formControlName="expectedDateOfChange">
-                                <div *ngIf="
-                                gymChangeReqForm.get('expectedDateOfChange').invalid &&
-                                gymChangeReqForm.get('expectedDateOfChange').touched
-                    ">
-                                    <small *ngIf="
-                                    gymChangeReqForm.get('expectedDateOfChange').invalid &&
-                                    gymChangeReqForm.get('expectedDateOfChange').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Form upload (file format)</label>
-                                <input class="form-control" name="gymFile" #fileInput type="file"
-                                    (change)="onSelectedFile($event,gymChangeReqForm)" [class.invalid]="
-                                    gymChangeReqForm.get('gymFile').invalid &&
-                                    gymChangeReqForm.get('gymFile').touched">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Approval Status</label>
-                                <select class="form-control" [class.invalid]="
-                                gymChangeReqForm.get('approvalStatus').invalid &&
-                                gymChangeReqForm.get('approvalStatus').touched" formControlName="approvalStatus">
-                                    <option selected value="">Select Status</option>
-                                    <option value="1">Approve</option>
-                                    <option value="2">Pending</option>
-                                    <option value="3">Decline</option>
-                                </select>
-                                <div *ngIf="
-                                gymChangeReqForm.get('approvalStatus').invalid &&
-                                gymChangeReqForm.get('approvalStatus').touched
-                    ">
-                                    <small *ngIf="
-                                    gymChangeReqForm.get('approvalStatus').invalid &&
-                                    gymChangeReqForm.get('approvalStatus').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Suggested Gym</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    gymChangeReqForm.get('suggestedGym').invalid &&
+                    gymChangeReqForm.get('suggestedGym').touched
+                  "
+                  formControlName="suggestedGym"
+                >
+                  <option selected value="">Select Gym</option>
+                  <option
+                    *ngFor="let gym of (allGyms$ | async)?.setuplist"
+                    value="{{ gym.id }}"
+                  >
+                    {{ gym.gym }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    gymChangeReqForm.get('suggestedGym').invalid &&
+                    gymChangeReqForm.get('suggestedGym').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      gymChangeReqForm.get('suggestedGym').invalid &&
+                      gymChangeReqForm.get('suggestedGym').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Date of Request <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    gymChangeReqForm.get('dateOfRequest').invalid &&
+                    gymChangeReqForm.get('dateOfRequest').touched
+                  "
+                  formControlName="dateOfRequest"
+                />
+                <div
+                  *ngIf="
+                    gymChangeReqForm.get('dateOfRequest').invalid &&
+                    gymChangeReqForm.get('dateOfRequest').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      gymChangeReqForm.get('dateOfRequest').invalid &&
+                      gymChangeReqForm.get('dateOfRequest').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Expected Change Date
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  [minDate]="minDate"
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    gymChangeReqForm.get('expectedDateOfChange').invalid &&
+                    gymChangeReqForm.get('expectedDateOfChange').touched
+                  "
+                  formControlName="expectedDateOfChange"
+                />
+                <div
+                  *ngIf="
+                    gymChangeReqForm.get('expectedDateOfChange').invalid &&
+                    gymChangeReqForm.get('expectedDateOfChange').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      gymChangeReqForm.get('expectedDateOfChange').invalid &&
+                      gymChangeReqForm.get('expectedDateOfChange').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Form upload (file format)</label>
+                <input
+                  class="form-control"
+                  name="gymFile"
+                  #fileInput
+                  type="file"
+                  (change)="onSelectedFile($event, gymChangeReqForm)"
+                  [class.invalid]="
+                    gymChangeReqForm.get('gymFile').invalid &&
+                    gymChangeReqForm.get('gymFile').touched
+                  "
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Approval Status</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    gymChangeReqForm.get('approvalStatus').invalid &&
+                    gymChangeReqForm.get('approvalStatus').touched
+                  "
+                  formControlName="approvalStatus"
+                >
+                  <option selected value="">Select Status</option>
+                  <option value="1">Approve</option>
+                  <option value="2">Pending</option>
+                  <option value="3">Decline</option>
+                </select>
+                <div
+                  *ngIf="
+                    gymChangeReqForm.get('approvalStatus').invalid &&
+                    gymChangeReqForm.get('approvalStatus').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      gymChangeReqForm.get('approvalStatus').invalid &&
+                      gymChangeReqForm.get('approvalStatus').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Gym Request Change Modal -->
 <!-- Book Meeting Modal -->
 <div id="gym_book_meeting_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          (ngSubmit)="submitBookGymForm(bookGymForm)"
+          [formGroup]="bookGymForm"
+        >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Gym Name</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    bookGymForm.get('gymId').invalid &&
+                    bookGymForm.get('gymId').touched
+                  "
+                  formControlName="gymId"
+                >
+                  <option selected value="">Select Gym</option>
+                  <option
+                    *ngFor="let empgym of employeeGym"
+                    value="{{ empgym.id }}"
+                  >
+                    {{ empgym.gymName }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    bookGymForm.get('gymId').invalid &&
+                    bookGymForm.get('gymId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      bookGymForm.get('gymId').invalid &&
+                      bookGymForm.get('gymId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitBookGymForm(bookGymForm)" [formGroup]="bookGymForm">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Gym Name</label>
-                                <select class="form-control" [class.invalid]="
-                                bookGymForm.get('gymId').invalid &&
-                                bookGymForm.get('gymId').touched" formControlName="gymId">
-                                    <option selected value="">Select Gym</option>
-                                    <option *ngFor="let empgym of employeeGym" value="{{empgym.id}}"> {{empgym.gymName}}
-                                    </option>
-                                </select>
-                                <div *ngIf="
-                                bookGymForm.get('gymId').invalid &&
-                                bookGymForm.get('gymId').touched
-                    ">
-                                    <small *ngIf="
-                                    bookGymForm.get('gymId').invalid &&
-                                    bookGymForm.get('gymId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Date of Request <span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                bookGymForm.get('dateOfRequest').invalid &&
-                                bookGymForm.get('dateOfRequest').touched" formControlName="dateOfRequest">
-                                <div *ngIf="
-                                bookGymForm.get('dateOfRequest').invalid &&
-                                bookGymForm.get('dateOfRequest').touched
-                    ">
-                                    <small *ngIf="
-                                    bookGymForm.get('dateOfRequest').invalid &&
-                                    bookGymForm.get('dateOfRequest').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Proposed Meeting Date <span class="text-danger">*</span></label>
-                                <input [minDate]='minDate' class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                bookGymForm.get('proposedMeetingDate').invalid &&
-                                bookGymForm.get('proposedMeetingDate').touched" formControlName="proposedMeetingDate">
-                                <div *ngIf="
-                                bookGymForm.get('proposedMeetingDate').invalid &&
-                                bookGymForm.get('proposedMeetingDate').touched
-                    ">
-                                    <small *ngIf="
-                                    bookGymForm.get('proposedMeetingDate').invalid &&
-                                    bookGymForm.get('proposedMeetingDate').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Contact Phone Number<span class="text-danger">*</span></label>
-                                <input class="form-control" type="text" [class.invalid]="
-                                bookGymForm.get('reasonsForMeeting').invalid &&
-                                bookGymForm.get('reasonsForMeeting').touched" formControlName="reasonsForMeeting">
-                                <div *ngIf="
-                                bookGymForm.get('reasonsForMeeting').invalid &&
-                                bookGymForm.get('reasonsForMeeting').touched
-                    ">
-                                    <small *ngIf="
-                                    bookGymForm.get('reasonsForMeeting').invalid &&
-                                    bookGymForm.get('reasonsForMeeting').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Form upload (file format)</label>
-                                <input class="form-control" name="gymMeetingFile" #fileInput type="file"
-                                    (change)="onSelectedFile($event,bookGymForm)" [class.invalid]="
-                                    bookGymForm.get('gymMeetingFile').invalid &&
-                                    bookGymForm.get('gymMeetingFile').touched">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Date of Request <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    bookGymForm.get('dateOfRequest').invalid &&
+                    bookGymForm.get('dateOfRequest').touched
+                  "
+                  formControlName="dateOfRequest"
+                />
+                <div
+                  *ngIf="
+                    bookGymForm.get('dateOfRequest').invalid &&
+                    bookGymForm.get('dateOfRequest').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      bookGymForm.get('dateOfRequest').invalid &&
+                      bookGymForm.get('dateOfRequest').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Proposed Meeting Date
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  [minDate]="minDate"
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    bookGymForm.get('proposedMeetingDate').invalid &&
+                    bookGymForm.get('proposedMeetingDate').touched
+                  "
+                  formControlName="proposedMeetingDate"
+                />
+                <div
+                  *ngIf="
+                    bookGymForm.get('proposedMeetingDate').invalid &&
+                    bookGymForm.get('proposedMeetingDate').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      bookGymForm.get('proposedMeetingDate').invalid &&
+                      bookGymForm.get('proposedMeetingDate').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Contact Phone Number<span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    bookGymForm.get('reasonsForMeeting').invalid &&
+                    bookGymForm.get('reasonsForMeeting').touched
+                  "
+                  formControlName="reasonsForMeeting"
+                />
+                <div
+                  *ngIf="
+                    bookGymForm.get('reasonsForMeeting').invalid &&
+                    bookGymForm.get('reasonsForMeeting').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      bookGymForm.get('reasonsForMeeting').invalid &&
+                      bookGymForm.get('reasonsForMeeting').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Form upload (file format)</label>
+                <input
+                  class="form-control"
+                  name="gymMeetingFile"
+                  #fileInput
+                  type="file"
+                  (change)="onSelectedFile($event, bookGymForm)"
+                  [class.invalid]="
+                    bookGymForm.get('gymMeetingFile').invalid &&
+                    bookGymForm.get('gymMeetingFile').touched
+                  "
+                />
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Book Meeting Modal Modal -->

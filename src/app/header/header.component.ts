@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
   allUsers: any;
   mails: any;
   emailCount: number;
-
+  userDetails: any = {}
   constructor(
     private headerService: HeaderService,
     private router: Router,
@@ -34,7 +34,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.getAllEmails();
-
+    this.userDetails = this.jwtService.getUserDetails()
     // this.getDatas("notification");
     // this.getDatas("message");
     this.user = this.jwtService.getHrmUserDetails();

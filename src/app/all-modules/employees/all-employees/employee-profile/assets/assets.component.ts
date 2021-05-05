@@ -4,6 +4,7 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+import { Subject } from "rxjs";
 declare const $: any;
 
 @Component({
@@ -20,7 +21,7 @@ export class AssetsComponent implements OnInit {
   currentUserId: number;
   public selectedId: number[] = [];
   public offices: any[] = [];
-  dtTrigger: any;
+  dtTrigger: Subject<any> = new Subject();
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
@@ -164,6 +165,7 @@ export class AssetsComponent implements OnInit {
     this.employeeService.getAssetByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
         this.employeeAsset = data.employeeList;
+        this.dtTrigger.next();
       }
     });
   }

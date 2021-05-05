@@ -1,215 +1,371 @@
 <!-- Professional Certification Card -->
 <div>
-    <div class="card profile-box flex-fill">
-        <div class="card-body">
-            <h3 class="card-title">Professional Certification<a class="edit-icon hint" (click)="delete()"><span
-                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a> <a *ngIf="dataFromParent.isHr"
-                    class="edit-icon hint mr-1" (click)="downloadFile()" download><span
-                        class="hint-text">Download</span><i class="fa fa-download"></i></a><a
-                    *ngIf="dataFromParent.canSeeProfileElement" (click)="initProfCertForm()" class="hint edit-icon mr-1"
-                    data-toggle="modal" data-target="#prof_cert_modal"><span class="hint-text">Add Professional
-                        Certification</span><i class="fa fa-plus"></i></a></h3>
-            <div class="table-responsive">
-
-                <table  class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions"
-                    [dtTrigger]="dtTrigger">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" [checked]="selectedId.length === employeeProfCert.length"
-                                    (change)="checkAll($event)" />
-                            </th>
-                            <th>S/N</th>
-                            <th>Certificate</th>
-                            <th>Institution</th>
-                            <th>Date Granted</th>
-                            <th>Expiry Date</th>
-                            <th>Approval Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#prof_cert_modal" (click)="editForm(row)"
-                            *ngFor="let row of hack(employeeProfCert); let i = index">
-                            <td (click)="stopParentEvent($event)">
-                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id)" />
-                            </td>
-                            <td>{{i +1}}</td>
-                            <td>{{row.certificateName}}</td>
-                            <td>{{row.institution}}</td>
-                            <td>{{row.dateGranted | date :"mediumDate"}}</td>
-                            <td>{{row.expiryDate==="Present"? row.expiryDate: row.expiryDate | date :"mediumDate"}}</td>
-                            <td>{{row.approvalStatusName}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="card profile-box flex-fill">
+    <div class="card-body">
+      <h3 class="card-title">
+        Professional Certification<a class="edit-icon hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
+        <a
+          *ngIf="dataFromParent.isHr"
+          class="edit-icon hint mr-1"
+          (click)="downloadFile()"
+          download
+          ><span class="hint-text">Download</span
+          ><i class="fa fa-download"></i></a
+        ><a
+          *ngIf="dataFromParent.canSeeProfileElement"
+          (click)="initProfCertForm()"
+          class="hint edit-icon mr-1"
+          data-toggle="modal"
+          data-target="#prof_cert_modal"
+          ><span class="hint-text">Add Professional Certification</span
+          ><i class="fa fa-plus"></i
+        ></a>
+      </h3>
+      <div class="table-responsive">
+        <table
+          class="table table-nowrap table-hover"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+        >
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.length === employeeProfCert.length"
+                  (change)="checkAll($event)"
+                />
+              </th>
+              <th>S/N</th>
+              <th>Certificate</th>
+              <th>Institution</th>
+              <th>Date Granted</th>
+              <th>Expiry Date</th>
+              <th>Approval Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              data-toggle="modal"
+              class="pointer"
+              data-target="#prof_cert_modal"
+              (click)="editForm(row)"
+              *ngFor="let row of hack(employeeProfCert); let i = index"
+            >
+              <td (click)="stopParentEvent($event)">
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.includes(row.id)"
+                  (change)="addItemId($event, row.id)"
+                />
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ row.certificateName }}</td>
+              <td>{{ row.institution }}</td>
+              <td>{{ row.dateGranted | date: "mediumDate" }}</td>
+              <td>
+                {{
+                  row.expiryDate === "Present"
+                    ? row.expiryDate
+                    : (row.expiryDate | date: "mediumDate")
+                }}
+              </td>
+              <td>{{ row.approvalStatusName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Professional Certification Card -->
 <!-- Professional Certification Modal -->
 <div id="prof_cert_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          (ngSubmit)="submitProfCertForm(profCertForm)"
+          [formGroup]="profCertForm"
+        >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Certification</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    profCertForm.get('certificationId').invalid &&
+                    profCertForm.get('certificationId').touched
+                  "
+                  formControlName="certificationId"
+                >
+                  <option selected value="">Select Certificate</option>
+                  <option
+                    *ngFor="
+                      let certificate of (allCertificates$ | async)?.setuplist
+                    "
+                    value="{{ certificate.id }}"
+                  >
+                    {{ certificate.certification }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    profCertForm.get('certificationId').invalid &&
+                    profCertForm.get('certificationId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      profCertForm.get('certificationId').invalid &&
+                      profCertForm.get('certificationId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitProfCertForm(profCertForm)" [formGroup]="profCertForm">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Certification</label>
-                                <select class="form-control" [class.invalid]="
-                                profCertForm.get('certificationId').invalid &&
-                                profCertForm.get('certificationId').touched" formControlName="certificationId">
-                                    <option selected value="">Select Certificate</option>
-                                    <option *ngFor="let certificate of (allCertificates$ |async)?.setuplist"
-                                        value="{{certificate.id}}">{{certificate.certification}}</option>
-                                </select>
-                                <div *ngIf="
-                                profCertForm.get('certificationId').invalid &&
-                                profCertForm.get('certificationId').touched
-                    ">
-                                    <small *ngIf="
-                                    profCertForm.get('certificationId').invalid &&
-                                    profCertForm.get('certificationId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Institution</label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                profCertForm.get('institution').invalid &&
-                                profCertForm.get('institution').touched" formControlName="institution">
-                                <div *ngIf="
-                                profCertForm.get('institution').invalid &&
-                                profCertForm.get('institution').touched
-                    ">
-                                    <small *ngIf="
-                                    profCertForm.get('institution').invalid &&
-                                    profCertForm.get('institution').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Date Granted <span class="text-danger">*</span></label>
-                                <input [maxDate]='maxDate'
-                                    (bsValueChange)="setMinMaxDate(profCertForm, 'dateGranted','expiryDate')"
-                                    class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                profCertForm.get('dateGranted').invalid &&
-                                profCertForm.get('dateGranted').touched" formControlName="dateGranted">
-                                <div *ngIf="
-                                profCertForm.get('dateGranted').invalid &&
-                                profCertForm.get('dateGranted').touched
-                    ">
-                                    <small *ngIf="
-                                    profCertForm.get('dateGranted').invalid &&
-                                    profCertForm.get('dateGranted').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Expiry Date <span class="text-danger">*</span></label>
-                                <span class="float-right ">
-                                    <input type="checkbox" name="currentDate" value=""
-                                        (change)="setDateToPresent($event,profCertForm,'expiryDate')"
-                                        formControlName="setCurrentDate">
-                                    <label for="currentDate" class="mx-1">Does not expire</label>
-                                </span>
-                                <input [minDate]='minDate'
-                                    (bsValueChange)="setMinMaxDate(profCertForm, 'dateGranted','expiryDate')"
-                                    (click)="resetCheckbox(profCertForm,'setCurrentDate')"
-                                    class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                    profCertForm.get('expiryDate').invalid &&
-                                    profCertForm.get('expiryDate').touched" formControlName="expiryDate">
-                                <div *ngIf="
-                                profCertForm.get('expiryDate').invalid &&
-                                profCertForm.get('expiryDate').touched
-                    ">
-                                    <small *ngIf="
-                                    profCertForm.get('expiryDate').invalid &&
-                                    profCertForm.get('expiryDate').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Grade</label>
-                                <select class="form-control" [class.invalid]="
-                                profCertForm.get('gradeId').invalid &&
-                                profCertForm.get('gradeId').touched" formControlName="gradeId">
-                                    <option selected value="">Select Job Grade</option>
-                                    <option *ngFor="let jobGrade of (allJobGrades$ | async)?.setuplist"
-                                        value="{{jobGrade.id}}">{{jobGrade.job_grade}}</option>
-                                </select>
-                                <div *ngIf="
-                                profCertForm.get('gradeId').invalid &&
-                                profCertForm.get('gradeId').touched
-                    ">
-                                    <small *ngIf="
-                                    profCertForm.get('gradeId').invalid &&
-                                    profCertForm.get('gradeId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Attachment </label>
-                                <input class="form-control" name="profCertificationFile" #fileInput type="file"
-                                    (change)="onSelectedFile($event,profCertForm)" [class.invalid]="
-                                    profCertForm.get('profCertificationFile').invalid &&
-                                    profCertForm.get('profCertificationFile').touched">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Approval Status</label>
-                                <select class="form-control" [class.invalid]="
-                                profCertForm.get('approvalStatus').invalid &&
-                                profCertForm.get('approvalStatus').touched" formControlName="approvalStatus">
-                                    <option selected value="">Select Status</option>
-                                    <option value="1">Confirmed</option>
-                                    <option value="2">Pending</option>
-                                    <option value="3">Unconfirmed</option>
-                                </select>
-                                <div *ngIf="
-                                profCertForm.get('approvalStatus').invalid &&
-                                profCertForm.get('approvalStatus').touched
-                    ">
-                                    <small *ngIf="
-                                    profCertForm.get('approvalStatus').invalid &&
-                                    profCertForm.get('approvalStatus').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Institution</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    profCertForm.get('institution').invalid &&
+                    profCertForm.get('institution').touched
+                  "
+                  formControlName="institution"
+                />
+                <div
+                  *ngIf="
+                    profCertForm.get('institution').invalid &&
+                    profCertForm.get('institution').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      profCertForm.get('institution').invalid &&
+                      profCertForm.get('institution').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Date Granted <span class="text-danger">*</span></label>
+                <input
+                  [maxDate]="maxDate"
+                  (bsValueChange)="
+                    setMinMaxDate(profCertForm, 'dateGranted', 'expiryDate')
+                  "
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimate: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    profCertForm.get('dateGranted').invalid &&
+                    profCertForm.get('dateGranted').touched
+                  "
+                  formControlName="dateGranted"
+                />
+                <div
+                  *ngIf="
+                    profCertForm.get('dateGranted').invalid &&
+                    profCertForm.get('dateGranted').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      profCertForm.get('dateGranted').invalid &&
+                      profCertForm.get('dateGranted').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Expiry Date <span class="text-danger">*</span></label>
+                <span class="float-right">
+                  <input
+                    type="checkbox"
+                    name="currentDate"
+                    value=""
+                    (change)="
+                      setDateToPresent($event, profCertForm, 'expiryDate')
+                    "
+                    formControlName="setCurrentDate"
+                  />
+                  <label for="currentDate" class="mx-1">Does not expire</label>
+                </span>
+                <input
+                  [minDate]="minDate"
+                  (bsValueChange)="
+                    setMinMaxDate(profCertForm, 'dateGranted', 'expiryDate')
+                  "
+                  (click)="resetCheckbox(profCertForm, 'setCurrentDate')"
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    profCertForm.get('expiryDate').invalid &&
+                    profCertForm.get('expiryDate').touched
+                  "
+                  formControlName="expiryDate"
+                />
+                <div
+                  *ngIf="
+                    profCertForm.get('expiryDate').invalid &&
+                    profCertForm.get('expiryDate').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      profCertForm.get('expiryDate').invalid &&
+                      profCertForm.get('expiryDate').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Grade</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    profCertForm.get('gradeId').invalid &&
+                    profCertForm.get('gradeId').touched
+                  "
+                  formControlName="gradeId"
+                >
+                  <option selected value="">Select Job Grade</option>
+                  <option
+                    *ngFor="let jobGrade of (allJobGrades$ | async)?.setuplist"
+                    value="{{ jobGrade.id }}"
+                  >
+                    {{ jobGrade.job_grade }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    profCertForm.get('gradeId').invalid &&
+                    profCertForm.get('gradeId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      profCertForm.get('gradeId').invalid &&
+                      profCertForm.get('gradeId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Attachment </label>
+                <input
+                  class="form-control"
+                  name="profCertificationFile"
+                  #fileInput
+                  type="file"
+                  (change)="onSelectedFile($event, profCertForm)"
+                  [class.invalid]="
+                    profCertForm.get('profCertificationFile').invalid &&
+                    profCertForm.get('profCertificationFile').touched
+                  "
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Approval Status</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    profCertForm.get('approvalStatus').invalid &&
+                    profCertForm.get('approvalStatus').touched
+                  "
+                  formControlName="approvalStatus"
+                >
+                  <option selected value="">Select Status</option>
+                  <option value="1">Confirmed</option>
+                  <option value="2">Pending</option>
+                  <option value="3">Unconfirmed</option>
+                </select>
+                <div
+                  *ngIf="
+                    profCertForm.get('approvalStatus').invalid &&
+                    profCertForm.get('approvalStatus').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      profCertForm.get('approvalStatus').invalid &&
+                      profCertForm.get('approvalStatus').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Professional Certification Modal -->

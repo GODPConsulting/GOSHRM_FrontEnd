@@ -23,6 +23,7 @@ import { AppraisalObjectiveViewComponent } from "./setup/appraisal-objective-vie
 import { AppraisalObjectiveFormComponent } from "./setup/appraisal-objective-form/appraisal-objective-form.component";
 import { AppraisalObjectivesComponent } from "./setup/appraisal-objectives/appraisal-objectives.component";
 import { AppraisalsComponent } from "./setup/appraisal-cycle/appraisals/appraisals.component";
+import { CustomDatePipe } from "../../../assets/pipes/custom-date.pipe";
 @NgModule({
   declarations: [
     PerformanceManagementComponent,
@@ -40,6 +41,7 @@ import { AppraisalsComponent } from "./setup/appraisal-cycle/appraisals/appraisa
     AppraisalObjectiveFormComponent,
     AppraisalObjectivesComponent,
     AppraisalsComponent,
+    CustomDatePipe,
   ],
   imports: [
     CommonModule,

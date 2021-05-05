@@ -5,6 +5,7 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+import { Subject } from "rxjs";
 declare const $: any;
 
 @Component({
@@ -27,7 +28,7 @@ export class IdentificationComponent implements OnInit {
   employeeIdentification: any[] = [];
   public dtOptions: DataTables.Settings = {};
   statusArray: string[] = [];
-  dtTrigger: any;
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -180,6 +181,7 @@ export class IdentificationComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.employeeIdentification = data.employeeList;
+        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();

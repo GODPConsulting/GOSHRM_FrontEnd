@@ -4,6 +4,7 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -24,7 +25,7 @@ export class RefereeComponent implements OnInit {
   // To hold data for each card
   employeeReferee: any = [];
   public dtOptions: DataTables.Settings = {};
-  dtTrigger: any;
+  dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -197,6 +198,7 @@ export class RefereeComponent implements OnInit {
         this.loadingService.hide();
         if (data.employeeList) {
           this.employeeReferee = data.employeeList;
+          this.dtTrigger.next();
         }
       },
       (err) => {

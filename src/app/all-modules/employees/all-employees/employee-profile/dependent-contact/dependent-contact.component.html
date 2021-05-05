@@ -1,229 +1,381 @@
 <!-- Dependent Cotacts Tab -->
 <div>
-    <div class="card profile-box flex-fill">
-        <div class="card-body">
-            <h3 class="card-title">Dependent Contacts<a class="edit-icon hint" (click)="delete()"><span
-                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
-                <a *ngIf="dataFromParent.isHr" class="edit-icon hint mr-1" (click)="downloadFile()" download><span
-                        class="hint-text">Download</span><i class="fa fa-download"></i></a>
-                <a *ngIf="dataFromParent.canSeeProfileElement" (click)="initDependentContactForm()"
-                    class="hint edit-icon mr-1" data-toggle="modal" data-target="#dependent_contact_modal"><span
-                        class="hint-text">Add </span><i class="fa fa-plus"></i></a>
-            </h3>
-            <div class="table-responsive">
-                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" [checked]="selectedId.length === employeeDependentContact.length"
-                                    (change)="checkAll($event)">
-                            </th>
-                            <th>S/N</th>
-                            <th>Full Name</th>
-                            <th>Phone No.</th>
-                            <th>Email</th>
-                            <th>Relationship</th>
-                            <th>Date of Birth</th>
-                            <th>Address</th>
-                            <th>Country</th>
-                            <th>Approval Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#dependent_contact_modal"
-                            (click)="edit(row)" *ngFor="let row of hack(employeeDependentContact); let i = index">
-                            <td (click)="stopParentEvent($event)">
-                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id)" />
-                            </td>
-                            <td>{{i +1}}</td>
-                            <td>{{row.fullName}}</td>
-                            <td>{{row.contact_phone_number}}</td>
-                            <td>{{row.email}}</td>
-                            <td>{{row.relationship}}</td>
-                            <td>{{row.dateOfBirth}}</td>
-                            <td>{{row.address}}</td>
-                            <td>{{row.countryId}}</td>
-                            <td>{{row.approval_status_name}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="card profile-box flex-fill">
+    <div class="card-body">
+      <h3 class="card-title">
+        Dependent Contacts<a class="edit-icon hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
+        <a
+          *ngIf="dataFromParent.isHr"
+          class="edit-icon hint mr-1"
+          (click)="downloadFile()"
+          download
+          ><span class="hint-text">Download</span><i class="fa fa-download"></i
+        ></a>
+        <a
+          *ngIf="dataFromParent.canSeeProfileElement"
+          (click)="initDependentContactForm()"
+          class="hint edit-icon mr-1"
+          data-toggle="modal"
+          data-target="#dependent_contact_modal"
+          ><span class="hint-text">Add </span><i class="fa fa-plus"></i
+        ></a>
+      </h3>
+      <div class="table-responsive">
+        <table
+          class="table table-nowrap table-hover"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+        >
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  [checked]="
+                    selectedId.length === employeeDependentContact.length
+                  "
+                  (change)="checkAll($event)"
+                />
+              </th>
+              <th>S/N</th>
+              <th>Full Name</th>
+              <th>Phone No.</th>
+              <th>Email</th>
+              <th>Relationship</th>
+              <th>Date of Birth</th>
+              <th>Address</th>
+              <th>Country</th>
+              <th>Approval Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              data-toggle="modal"
+              class="pointer"
+              data-target="#dependent_contact_modal"
+              (click)="edit(row)"
+              *ngFor="let row of hack(employeeDependentContact); let i = index"
+            >
+              <td (click)="stopParentEvent($event)">
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.includes(row.id)"
+                  (change)="addItemId($event, row.id)"
+                />
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ row.fullName }}</td>
+              <td>{{ row.contact_phone_number }}</td>
+              <td>{{ row.email }}</td>
+              <td>{{ row.relationship }}</td>
+              <td>{{ row.dateOfBirth }}</td>
+              <td>{{ row.address }}</td>
+              <td>{{ row.countryId }}</td>
+              <td>{{ row.approval_status_name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Dependent Cotacts Tab -->
 <!-- Dependent Contacts Modal -->
 <div id="dependent_contact_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"> {{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          (ngSubmit)="submitDependentContactForm(dependentContactForm)"
+          [formGroup]="dependentContactForm"
+        >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    dependentContactForm.get('fullName').invalid &&
+                    dependentContactForm.get('fullName').touched
+                  "
+                  formControlName="fullName"
+                />
+                <div
+                  *ngIf="
+                    dependentContactForm.get('fullName').invalid &&
+                    dependentContactForm.get('fullName').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      dependentContactForm.get('fullName').invalid &&
+                      dependentContactForm.get('fullName').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitDependentContactForm(dependentContactForm)" [formGroup]="dependentContactForm">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Full Name</label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                dependentContactForm.get('fullName').invalid &&
-                                dependentContactForm.get('fullName').touched" formControlName="fullName">
-                                <div *ngIf="
-                                dependentContactForm.get('fullName').invalid &&
-                                dependentContactForm.get('fullName').touched
-                    ">
-                                    <small *ngIf="
-                                    dependentContactForm.get('fullName').invalid &&
-                                    dependentContactForm.get('fullName').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Contact No.</label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                dependentContactForm.get('contact_phone_number').invalid &&
-                                dependentContactForm.get('contact_phone_number').touched"
-                                    formControlName="contact_phone_number">
-                                <div *ngIf="
-                                dependentContactForm.get('contact_phone_number').invalid &&
-                                dependentContactForm.get('contact_phone_number').touched
-                    ">
-                                    <small *ngIf="
-                                    dependentContactForm.get('contact_phone_number').invalid &&
-                                    dependentContactForm.get('contact_phone_number').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" class="form-control" [class.invalid]="
-                                dependentContactForm.get('email').invalid &&
-                                dependentContactForm.get('email').touched" formControlName="email">
-                                <div *ngIf="
-                                dependentContactForm.get('email').invalid &&
-                                dependentContactForm.get('email').touched
-                    ">
-                                    <small *ngIf="
-                                    dependentContactForm.get('email').invalid &&
-                                    dependentContactForm.get('email').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Relationship</label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                dependentContactForm.get('relationship').invalid &&
-                                dependentContactForm.get('relationship').touched" formControlName="relationship">
-                                <div *ngIf="
-                                dependentContactForm.get('relationship').invalid &&
-                                dependentContactForm.get('relationship').touched
-                    ">
-                                    <small *ngIf="
-                                    dependentContactForm.get('relationship').invalid &&
-                                    dependentContactForm.get('relationship').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Date of Birth</label>
-                                <input class="form-control datetimepicker" type="date" bsDatepicker
-                                    [bsConfig]="{containerClass:'theme-orange', dateInputFormat: 'YYYY-MM-DD',  returnFocusToInput: true }"
-                                    [class.invalid]="
-                                dependentContactForm.get('dateOfBirth').invalid &&
-                                dependentContactForm.get('dateOfBirth').touched" formControlName="dateOfBirth">
-                                <div *ngIf="
-                                dependentContactForm.get('dateOfBirth').invalid &&
-                                dependentContactForm.get('dateOfBirth').touched
-                    ">
-                                    <small *ngIf="
-                                    dependentContactForm.get('dateOfBirth').invalid &&
-                                    dependentContactForm.get('dateOfBirth').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Address</label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                dependentContactForm.get('address').invalid &&
-                                dependentContactForm.get('address').touched" formControlName="address">
-                                <div *ngIf="
-                                dependentContactForm.get('address').invalid &&
-                                dependentContactForm.get('address').touched
-                    ">
-                                    <small *ngIf="
-                                    dependentContactForm.get('address').invalid &&
-                                    dependentContactForm.get('address').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Country<span class="text-danger">*</span></label>
-                                <select class="form-control" [class.invalid]="
-                                dependentContactForm.get('countryId').invalid &&
-                                dependentContactForm.get('countryId').touched" formControlName="countryId">
-                                    <option selected value="">Country</option>
-                                    <option *ngFor="let row of countries" value="{{row.lookupId}}">{{row.lookupName}}
-                                    </option>
-                                </select>
-                                <div *ngIf="
-                                dependentContactForm.get('countryId').invalid &&
-                                dependentContactForm.get('countryId').touched
-                    ">
-                                    <small *ngIf="
-                                    dependentContactForm.get('countryId').invalid &&
-                                    dependentContactForm.get('countryId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Approval Status</label>
-                                <select class="form-control" [class.invalid]="
-                                dependentContactForm.get('approval_status').invalid &&
-                                dependentContactForm.get('approval_status').touched" formControlName="approval_status">
-                                    <option selected value="">Select Status</option>
-                                    <option value="1">Approve</option>
-                                    <option value="2">Pending</option>
-                                    <option value="3">Decline</option>
-                                </select>
-                                <div *ngIf="
-                                dependentContactForm.get('approval_status').invalid &&
-                                dependentContactForm.get('approval_status').touched
-                    ">
-                                    <small *ngIf="
-                                    dependentContactForm.get('approval_status').invalid &&
-                                    dependentContactForm.get('approval_status').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Contact No.</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    dependentContactForm.get('contact_phone_number').invalid &&
+                    dependentContactForm.get('contact_phone_number').touched
+                  "
+                  formControlName="contact_phone_number"
+                />
+                <div
+                  *ngIf="
+                    dependentContactForm.get('contact_phone_number').invalid &&
+                    dependentContactForm.get('contact_phone_number').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      dependentContactForm.get('contact_phone_number')
+                        .invalid &&
+                      dependentContactForm.get('contact_phone_number').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  [class.invalid]="
+                    dependentContactForm.get('email').invalid &&
+                    dependentContactForm.get('email').touched
+                  "
+                  formControlName="email"
+                />
+                <div
+                  *ngIf="
+                    dependentContactForm.get('email').invalid &&
+                    dependentContactForm.get('email').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      dependentContactForm.get('email').invalid &&
+                      dependentContactForm.get('email').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Relationship</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    dependentContactForm.get('relationship').invalid &&
+                    dependentContactForm.get('relationship').touched
+                  "
+                  formControlName="relationship"
+                />
+                <div
+                  *ngIf="
+                    dependentContactForm.get('relationship').invalid &&
+                    dependentContactForm.get('relationship').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      dependentContactForm.get('relationship').invalid &&
+                      dependentContactForm.get('relationship').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Date of Birth</label>
+                <input
+                  class="form-control datetimepicker"
+                  type="date"
+                  bsDatepicker
+                  [bsConfig]="{
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
+                  [class.invalid]="
+                    dependentContactForm.get('dateOfBirth').invalid &&
+                    dependentContactForm.get('dateOfBirth').touched
+                  "
+                  formControlName="dateOfBirth"
+                />
+                <div
+                  *ngIf="
+                    dependentContactForm.get('dateOfBirth').invalid &&
+                    dependentContactForm.get('dateOfBirth').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      dependentContactForm.get('dateOfBirth').invalid &&
+                      dependentContactForm.get('dateOfBirth').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    dependentContactForm.get('address').invalid &&
+                    dependentContactForm.get('address').touched
+                  "
+                  formControlName="address"
+                />
+                <div
+                  *ngIf="
+                    dependentContactForm.get('address').invalid &&
+                    dependentContactForm.get('address').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      dependentContactForm.get('address').invalid &&
+                      dependentContactForm.get('address').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Country<span class="text-danger">*</span></label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    dependentContactForm.get('countryId').invalid &&
+                    dependentContactForm.get('countryId').touched
+                  "
+                  formControlName="countryId"
+                >
+                  <option selected value="">Country</option>
+                  <option
+                    *ngFor="let row of countries"
+                    value="{{ row.lookupId }}"
+                  >
+                    {{ row.lookupName }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    dependentContactForm.get('countryId').invalid &&
+                    dependentContactForm.get('countryId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      dependentContactForm.get('countryId').invalid &&
+                      dependentContactForm.get('countryId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Approval Status</label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    dependentContactForm.get('approval_status').invalid &&
+                    dependentContactForm.get('approval_status').touched
+                  "
+                  formControlName="approval_status"
+                >
+                  <option selected value="">Select Status</option>
+                  <option value="1">Approve</option>
+                  <option value="2">Pending</option>
+                  <option value="3">Decline</option>
+                </select>
+                <div
+                  *ngIf="
+                    dependentContactForm.get('approval_status').invalid &&
+                    dependentContactForm.get('approval_status').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      dependentContactForm.get('approval_status').invalid &&
+                      dependentContactForm.get('approval_status').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Dependent Contacts Modal -->

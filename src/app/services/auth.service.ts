@@ -1,14 +1,18 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
-import { Observable } from "rxjs";
-import { map, tap } from "rxjs/operators";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable, throwError } from "rxjs";
+import { catchError, map, tap } from "rxjs/operators";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { JwtService } from "./jwt.service";
 import { Router } from "@angular/router";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class AuthService {
   constructor(
@@ -18,10 +22,13 @@ export class AuthService {
     private router: Router
   ) {}
 
+  handleError(error: HttpErrorResponse) {
+    return throwError(error.error);
+  }
   userLogin(payload): Observable<any> {
     // let body = { userName: userName, password: password };
-    let reqHeaders = new HttpHeaders({
-      "Content-Type": "application/json"
+    const reqHeaders = new HttpHeaders({
+      "Content-Type": "application/json",
     });
     return (
       this.http
@@ -30,20 +37,22 @@ export class AuthService {
           environment.api_url + "/identity/login",
           JSON.stringify(payload),
           {
-            headers: reqHeaders
+            headers: reqHeaders,
           }
         )
 
         .pipe(
-          map(data => {
+          map((data) => {
             // this.setUser(data["userFromRepo"], data["activities"]);
             return data;
-          })
+          }),
+          catchError(this.handleError)
         )
     );
   }
   getProfile(): Observable<any> {
-    return this.apiService.get(`/identity/profile`).pipe(tap(data => {
+    return this.apiService.get(`/identity/profile`).pipe(
+      tap((data) => {
         return data;
       })
     );
@@ -53,7 +62,7 @@ export class AuthService {
   }
   clearSession() {
     this.jwtService.destroyToken().then(() => {
-      this.router.navigateByUrl('/login')
+      this.router.navigateByUrl("/login");
     });
   }
 }
