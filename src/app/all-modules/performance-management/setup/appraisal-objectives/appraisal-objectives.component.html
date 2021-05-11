@@ -24,16 +24,32 @@
             ><span class="hint-text">Add</span><i class="fa fa-plus"></i>
           </a>
         </div>
-        <table
+        <p-table
           class="table table-striped custom-table datatable table-hover"
-          datatable
-          [dtOptions]="dtOptions"
+          #dt
+          [columns]="cols"
+          [(selection)]="selectedObjectives"
+          [scrollable]="true"
+          scrollHeight="600px"
         >
-          <thead>
+          <ng-template pTemplate="caption">
+            <div style="text-align: right">
+              <input
+                type="text"
+                pInputText
+                size="50"
+                class="form-control"
+                placeholder="Search..."
+                (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width: auto"
+              />
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
             <tr>
-              <th>
-                <input type="checkbox" />
-              </th>
+              <!--              <th>-->
+              <!--                <input type="checkbox" />-->
+              <!--              </th>-->
               <th>KPI Type</th>
               <th>objectives</th>
               <th>Success targets</th>
@@ -41,16 +57,17 @@
               <th>Targets date</th>
               <th>weights(%)</th>
             </tr>
-          </thead>
-          <tbody>
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <div class="table-title">{{ title }}</div>
             <tr *ngFor="let row of objectives; let i = index">
-              <td>
-                <input
-                  type="checkbox"
-                  [checked]="selectedId.includes(row.id)"
-                  (change)="addItemId($event, row.id)"
-                />
-              </td>
+              <!--              <td>-->
+              <!--                <input-->
+              <!--                  type="checkbox"-->
+              <!--                  [checked]="selectedId.includes(row.id)"-->
+              <!--                  (change)="addItemId($event, row.id)"-->
+              <!--                />-->
+              <!--              </td>-->
               <td>{{ row }}</td>
               <td>{{ row }}</td>
               <td>{{ row }}</td>
@@ -58,8 +75,17 @@
               <td>{{ targetDate | customDate }}</td>
               <td>{{ kpiWeight }}</td>
             </tr>
-          </tbody>
-        </table>
+            <tr *ngFor="let item of empPermittedList">
+              <ng-container class="title">
+                <div>
+                  {{ item.kpiCategoryName }}
+                </div>
+              </ng-container>
+              <br />
+              <td *ngFor="let row of item.kpIsNameList">{{ row }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>
@@ -72,7 +98,7 @@
 >
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="card-header header-bg-color">
+      <div class="modal-header">
         <h5 class="modal-title">Appraisal Objectives Modal</h5>
         <button
           type="button"
@@ -83,6 +109,94 @@
         >
           <span aria-hidden="true">&times;</span>
         </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="appraisalObjectivesForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="KPIcategory">KPI Category</label>
+                <select
+                  name=""
+                  id="KPIcategory"
+                  class="form-control"
+                  formControlName="kpiCategoryId"
+                >
+                  <option
+                    *ngFor="let category of kpiCategories"
+                    [value]="category.id"
+                  >
+                    {{ category.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="objective">Objective</label>
+                <input
+                  id="objective"
+                  type="text"
+                  class="form-control"
+                  formControlName="objective"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="successMeasures">Success Measures</label>
+                <input
+                  type="text"
+                  id="successMeasures"
+                  class="form-control"
+                  formControlName="successMeasure"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="keyActions">Key Actions</label>
+                <input
+                  id="keyActions"
+                  type="text"
+                  class="form-control"
+                  formControlName="keyActions"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="targetDate">Target Date</label>
+                <input
+                  id="targetDate"
+                  type="date"
+                  class="form-control"
+                  formControlName="targetDate"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="weight">Weight(%)</label>
+                <input
+                  id="weight"
+                  type="text"
+                  class="form-control"
+                  formControlName="weightmodel"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              (click)="saveKPIObjective(appraisalObjectivesForm)"
+            >
+              <span>Submit</span>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

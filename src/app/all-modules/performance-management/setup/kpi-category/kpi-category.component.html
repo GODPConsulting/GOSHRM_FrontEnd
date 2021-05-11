@@ -1,128 +1,197 @@
-
 <div class="content container-fluid">
-    <div class="card profile-box flex-fill">
-        <div class="card-body">
-            <h3 class="card-title">KPI Category<a class="edit-icon hint" (click)="delete()"><span
-                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
-                <a class="edit-icon hint mr-1" (click)="downloadFile()" download><span
-                        class="hint-text">Download</span><i class="fa fa-download"></i></a>
-                <a  class="hint edit-icon mr-1" data-toggle="modal"
-                    data-target="#kpi_category_modal"><span class="hint-text">Add
-                    </span><i class="fa fa-plus"></i></a>
-            </h3>
-            <div class="table-responsive">
-                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" [checked]="selectedId.length === kpiCategory.length"
-                                    (change)="checkAll($event)" />
-                            </th>
-                            <th>S/N</th>
-                            <th>Name</th>
-                            <th>Employee Set Objectives</th>
-                            <th>Weight Model</th>
-                            <th>HR Select Reviewer</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#kpi_category_modal" (click)="edit(row)"
-                            *ngFor="let row of hack(kpiCategory); let i = index">
-                            <td (click)="stopParentEvent($event)">
-                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id)" />
-                            </td>
-                            <td>{{i +1}}</td>
-                            <td>{{row.name}}</td>
-
-                            <td>{{row.employeePermittedName}}</td>
-                            <td>{{row.weightModelName}}</td>
-                            <td>{{row.hrSelectReviewerName}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+  <div class="card profile-box flex-fill">
+    <div class="card-body">
+      <h3 class="card-title">
+        KPI Category<a class="edit-icon hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
+        <a class="edit-icon hint mr-1" (click)="downloadFile()" download
+          ><span class="hint-text">Download</span><i class="fa fa-download"></i
+        ></a>
+        <a
+          class="hint edit-icon mr-1"
+          data-toggle="modal"
+          data-target="#kpi_category_modal"
+          ><span class="hint-text">Add </span><i class="fa fa-plus"></i
+        ></a>
+      </h3>
+      <div class="table-responsive">
+        <p-table
+          class="table table-nowrap table-hover"
+          #dt
+          [value]="kpiCategory"
+          [columns]="cols"
+          [(selection)]="selectedKpi"
+          [scrollable]="true"
+          scrollHeight="600px"
+        >
+          <ng-template pTemplate="caption">
+            <div style="text-align: right">
+              <input
+                type="text"
+                pInputText
+                size="50"
+                class="form-control"
+                placeholder="Search..."
+                (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width: auto"
+              />
             </div>
-        </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="table-checkbox">
+                <!--                <input-->
+                <!--                  type="checkbox"-->
+                <!--                  [checked]="selectedId.length === kpiCategory.length"-->
+                <!--                  (change)="checkAll($event)"-->
+                <!--                />-->
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th>S/N</th>
+              <th>Name</th>
+              <th>Employee Set Objectives</th>
+              <th>Weight Model</th>
+              <th>HR Select Reviewer</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr class="pointer">
+              <td class="table-checkbox">
+                <!--                <input-->
+                <!--                  type="checkbox"-->
+                <!--                  [checked]="selectedId.includes(row.id)"-->
+                <!--                  (change)="addItemId($event, row.id)"-->
+                <!--                />-->
+                <p-tableCheckbox [value]="row"></p-tableCheckbox>
+              </td>
+              <td>{{ i + 1 }}</td>
+              <td (click)="edit(row)">{{ row.name }}</td>
+
+              <td (click)="edit(row)">{{ row.employeePermittedName }}</td>
+              <td (click)="edit(row)">{{ row.weightModelName }}</td>
+              <td (click)="edit(row)">{{ row.hrSelectReviewerName }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- KPI Category Modal -->
 <div id="kpi_category_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="submitKpiCategoryForm()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  class="form-control"
+                  [(ngModel)]="name"
+                />
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitKpiCategoryForm()">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" name="name" class="form-control" [(ngModel)]="name">
-
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Description</label>
-                                <input type="text" name="description" class="form-control" [(ngModel)]="description">
-
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Employee Permitted</label>
-                                <select (change)="setWeightModel($event)" name="employeeSetObjectives" type="text"
-                                    class="form-control" [(ngModel)]="employeeSetObjectives">
-                                    <option selected value="">Employee Permitted</option>
-                                    <option value="1">Yes</option>
-                                    <option value="2">No</option>
-                                </select>
-
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Weight Model</label>
-                                <select (change)="setHrReview($event)" class="form-control" name="weightModel"
-                                    type="text" [disabled]="modelDisabled" [(ngModel)]="weightModel">
-                                    <option selected value="">Weight Model</option>
-                                    <option *ngIf="allLocation===1" value="2">Independent Allocation</option>
-                                    <option *ngIf="allLocation===2" value="3">360 Feedback</option>
-                                    <option *ngIf="!allLocation" value="2">Even Distribution</option>
-                                    <option *ngIf="allLocation" value="1">Even Distribution</option>
-
-                                </select>
-
-                            </div>
-                        </div>
-                        <div *ngIf="!hrDisabled" class="col-md-6">
-                            <div class="form-group">
-                                <label>HR Select Reviewer</label>
-                                <select type="text" class="form-control" name="hrSelectReviewer" type="text"
-                                    [disabled]="hrDisabled" [(ngModel)]="hrSelectReviewer">
-                                    <option selected value="">HR Select Reviewer</option>
-                                    <option value="1">Yes</option>
-                                    <option value="2">No</option>
-                                </select>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Description</label>
+                <input
+                  type="text"
+                  name="description"
+                  class="form-control"
+                  [(ngModel)]="description"
+                />
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Employee Permitted</label>
+                <select
+                  (change)="setWeightModel($event)"
+                  name="employeeSetObjectives"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="employeeSetObjectives"
+                >
+                  <option selected value="">Employee Permitted</option>
+                  <option value="1">Yes</option>
+                  <option value="2">No</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Weight Model</label>
+                <select
+                  (change)="setHrReview($event)"
+                  class="form-control"
+                  name="weightModel"
+                  [disabled]="modelDisabled"
+                  [(ngModel)]="weightModel"
+                >
+                  <option selected value="">Weight Model</option>
+                  <option *ngIf="allLocation === 1" value="2">
+                    Independent Allocation
+                  </option>
+                  <option *ngIf="allLocation === 2" value="3">
+                    360 Feedback
+                  </option>
+                  <option *ngIf="!allLocation" value="2">
+                    Even Distribution
+                  </option>
+                  <option *ngIf="allLocation" value="1">
+                    Even Distribution
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div *ngIf="!hrDisabled" class="col-md-6">
+              <div class="form-group">
+                <label>HR Select Reviewer</label>
+                <select
+                  type="text"
+                  class="form-control"
+                  name="hrSelectReviewer"
+                  type="text"
+                  [disabled]="hrDisabled"
+                  [(ngModel)]="hrSelectReviewer"
+                >
+                  <option selected value="">HR Select Reviewer</option>
+                  <option value="1">Yes</option>
+                  <option value="2">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /KPI Category Modal -->

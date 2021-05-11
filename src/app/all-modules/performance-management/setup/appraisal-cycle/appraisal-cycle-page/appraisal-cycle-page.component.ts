@@ -44,7 +44,13 @@ export class AppraisalCyclePageComponent implements OnInit {
   appraisalCycleForm: any;
   public offices: number[] = [];
   appraisalCycleUploadForm: any;
-
+  dateObj: any;
+  formGenerated: any;
+  notificationSent: any;
+  createdBy: any;
+  createdOn: any;
+  updatedOn: any;
+  updatedBy: any;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -149,8 +155,6 @@ export class AppraisalCyclePageComponent implements OnInit {
     });
     $("#appraisal_cycle_modal").modal("show");
   }
-
-  // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
   hack(val: any[]) {
     return Array.from(val);
   }
@@ -158,8 +162,6 @@ export class AppraisalCyclePageComponent implements OnInit {
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }

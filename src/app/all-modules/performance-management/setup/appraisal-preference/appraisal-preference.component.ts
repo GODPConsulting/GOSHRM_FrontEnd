@@ -18,6 +18,7 @@ export class AppraisalPreferenceComponent implements OnInit {
   cycles: any[] = [];
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
+  spinner: boolean;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,

@@ -70,4 +70,6 @@ export class DirectReportAppraisalsComponent implements OnInit {
       }
     );
   }
+
+  checkAll(event: Event) {}
 }

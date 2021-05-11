@@ -1,5 +1,4 @@
-
-<div  class="content container-fluid">
+<div class="content container-fluid">
   <!--Page Header starts  -->
   <div class="page-header">
     <div class="row align-items-center">
@@ -7,46 +6,71 @@
         <h3 class="page-title">Grade setting</h3>
       </div>
       <div class="col-auto float-right ml-auto">
-        <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
-            class=" fa fa-trash"></i></a>
+        <a class="btn delete-btn hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
 
-        <a class="btn add-btn hint" data-toggle="modal" data-target="#add_grade_setting"><span
-            class="hint-text">Add</span><i class="fa fa-plus"></i></a>
+        <a
+          class="btn add-btn hint"
+          data-toggle="modal"
+          data-target="#add_grade_setting"
+          ><span class="hint-text">Add</span><i class="fa fa-plus"></i
+        ></a>
       </div>
     </div>
   </div>
   <!-- page Header ends -->
   <div class="row">
-    <div class=" col-md-12">
+    <div class="col-md-12">
       <div class="table-responsive">
-        <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions"
-          [dtTrigger]="dtTrigger">
-          <thead>
+        <p-table
+          class="table table-striped custom-table datatable table-hover"
+          #dt
+          [value]="gradeSettings"
+          [columns]="cols"
+          [(selection)]="selectedGradeSettings"
+          [scrollable]="true"
+          scrollHeight="600px"
+        >
+          <ng-template pTemplate="caption">
+            <div style="text-align: right">
+              <input
+                type="text"
+                pInputText
+                size="50"
+                class="form-control"
+                placeholder="Search..."
+                (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width: auto"
+              />
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="header">
             <tr>
-              <th>
-                <input type="checkbox" [checked]="selectedId.length === gradeSettings.length"
-                  (change)="checkAllBoxes($event)" />
+              <th class="table-checkbox">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
-              <th> S/N</th>
+              <th>S/N</th>
               <th>Min Score</th>
               <th>Max Score</th>
               <th>Grading</th>
               <th>Description</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr data-toggle="modal" class="pointer" *ngFor="let row of gradeSettings; let i = index">
-              <td > <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                  (change)="addItemId($event, row.id)" />
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr class="pointer">
+              <td class="table-checkbox">
+                <p-tableCheckbox [value]="row"></p-tableCheckbox>
               </td>
-              <td>{{i + 1}}</td>
-              <td (click)="editGradeSetting(row)">{{row.minimum}}</td>
-              <td (click)="editGradeSetting(row)">{{row.maximum}}</td>
-              <td (click)="editGradeSetting(row)">{{row.grade}}</td>
-              <td (click)="editGradeSetting(row)">{{row.description}}</td>
+              <td>{{ i + 1 }}</td>
+              <td (click)="editGradeSetting(row)">{{ row.minimum }}</td>
+              <td (click)="editGradeSetting(row)">{{ row.maximum }}</td>
+              <td (click)="editGradeSetting(row)">{{ row.grade }}</td>
+              <td (click)="editGradeSetting(row)">{{ row.description }}</td>
             </tr>
-          </tbody>
-        </table>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>
@@ -58,7 +82,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add Grade Setting</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="close" (click)="closeGradeSettingModal()">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="close"
+          (click)="closeGradeSettingModal()"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -66,40 +96,62 @@
         <form [formGroup]="gradeSettingForm">
           <div class="card">
             <div class="card-body">
-              <h3 class="card-title"> Grade Setting</h3>
+              <h3 class="card-title">Grade Setting</h3>
 
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Min Score<span class="text-danger">*</span></label>
-                    <input class="form-control" type="number" formControlName="minimum">
+                    <input
+                      class="form-control"
+                      type="number"
+                      formControlName="minimum"
+                    />
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Max Score<span class="text-danger">*</span></label>
-                    <input class="form-control" type="number" formControlName="maximum">
+                    <input
+                      class="form-control"
+                      type="number"
+                      formControlName="maximum"
+                    />
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Grading<span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" formControlName="grade">
+                    <input
+                      class="form-control"
+                      type="text"
+                      formControlName="grade"
+                    />
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Description</label>
-                    <textarea class="form-control" type="text" formControlName="description">
+                    <textarea
+                      class="form-control"
+                      type="text"
+                      formControlName="description"
+                    >
                     </textarea>
                   </div>
                 </div>
               </div>
             </div>
             <div class="submit-section">
-              <button class="btn btn-primary submit-btn" type="submit" (click)="addGradeSetting(gradeSettingForm)">
+              <button
+                class="btn btn-primary submit-btn"
+                type="submit"
+                (click)="addGradeSetting(gradeSettingForm)"
+              >
                 <span *ngIf="!spinner">Save</span>
-                <span *ngIf="spinner"><i class=" fa fa-spinner fa-spin"></i></span>
+                <span *ngIf="spinner"
+                  ><i class="fa fa-spinner fa-spin"></i
+                ></span>
               </button>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -25,7 +26,7 @@ export class JobSkillComponent implements OnInit {
   public jobSkills: any[] = [];
   public jobTitle;
   public jobFormTitle = "Add Job Title";
-
+  dtTrigger: Subject<any> = new Subject<any>();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -64,6 +65,7 @@ export class JobSkillComponent implements OnInit {
         this.loadingService.hide();
 
         this.jobTitle = data.setuplist[0];
+        this.dtTrigger.next();
         //this.rows = this.jobTitle.sub_Skills;
         if (id !== 0) {
           this.jobFormTitle = "Edit Job Title";
@@ -379,8 +381,6 @@ export class JobSkillComponent implements OnInit {
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }

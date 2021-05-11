@@ -8,6 +8,7 @@ import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
 import { Subject } from "rxjs";
+import { ISearchColumn } from "../../../../interface/interfaces";
 
 declare const $: any;
 
@@ -51,6 +52,8 @@ export class AppraisalCycleComponent implements OnInit {
   appraisalCycleUploadForm: any;
   public employeesList: any = [];
   dtTrigger: Subject<any> = new Subject();
+  cols: ISearchColumn[] = [];
+  selectedCycles: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -65,31 +68,44 @@ export class AppraisalCycleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "reviewYear",
+        field: "reviewYear",
       },
-
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
-      order: [[1, "asc"]],
-    };
+      {
+        header: "startDate",
+        field: "startDate",
+      },
+      {
+        header: "endDate",
+        field: "endDate",
+      },
+      {
+        header: "dueDate",
+        field: "dueDate",
+      },
+      {
+        header: "reviewerOneWeight",
+        field: "reviewerOneWeight",
+      },
+      {
+        header: "reviewerTwoWeight",
+        field: "reviewerTwoWeight",
+      },
+      {
+        header: "reviewerThreeWeight",
+        field: "reviewerThreeWeight",
+      },
+      {
+        header: "revieweeWeight",
+        field: "revieweeWeight",
+      },
+      {
+        header: "status",
+        field: "status",
+      },
+    ];
     this.getAppraisalCycles();
     this.cardFormTitle = "Add Appraisal Cycle";
     this.createYears(2000, 2050);
@@ -182,8 +198,6 @@ export class AppraisalCycleComponent implements OnInit {
     });
     $("#appraisal_cycle_modal").modal("show");
   }
-
-  // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
   hack(val: any[]) {
     return Array.from(val);
   }
@@ -191,21 +205,22 @@ export class AppraisalCycleComponent implements OnInit {
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectedCycles.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
     } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectedCycles.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -239,7 +254,7 @@ export class AppraisalCycleComponent implements OnInit {
             );
         }
       });
-    this.selectedId = [];
+    this.selectedCycles = [];
   }
 
   getStaffDepartments() {

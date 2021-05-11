@@ -248,4 +248,6 @@ export class AppraisalFeedbackComponent implements OnInit {
       });
     this.selectedId = [];
   }
+
+  checkAll($event: Event) {}
 }

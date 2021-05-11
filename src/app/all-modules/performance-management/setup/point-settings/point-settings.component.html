@@ -1,96 +1,143 @@
-
-<div  class="content container-fluid">
-    <!--Page Header starts  -->
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h3 class="page-title">Point Settings</h3>
-            </div>
-            <div class="col-auto float-right ml-auto">
-                <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
-                        class="fa fa-trash"></i></a>
-                <a class="btn add-btn hint" data-toggle="modal" data-target="#point_settings_modal"><span
-                        class="hint-text">Add
-                    </span><i class="fa fa-plus"></i></a>
-            </div>
+<div class="content container-fluid">
+  <!--Page Header starts  -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">Point Settings</h3>
+      </div>
+      <div class="col-auto float-right ml-auto">
+        <a class="btn delete-btn hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
+        <a
+          class="btn add-btn hint"
+          data-toggle="modal"
+          data-target="#point_settings_modal"
+          ><span class="hint-text">Add </span><i class="fa fa-plus"></i
+        ></a>
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <p-table
+      class="table table-nowrap table-hover"
+      #dt
+      [value]="pointSettings"
+      [columns]="cols"
+      [(selection)]="selectedPoints"
+      [scrollable]="true"
+      scrollHeight="600px"
+    >
+      <ng-template pTemplate="caption">
+        <div style="text-align: right">
+          <input
+            type="text"
+            pInputText
+            size="50"
+            class="form-control"
+            placeholder="Search..."
+            (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width: auto"
+          />
         </div>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-            <thead>
-                <tr>
-                    <th>
-                        <input type="checkbox" [checked]="selectedId.length === pointSettings.length"
-                            (change)="checkAll($event)" />
-                    </th>
-                    <th>S/N</th>
-                    <th>Point Name</th>
-                    <th>Point</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr data-toggle="modal" class="pointer" data-target="#point_settings_modal" (click)="edit(row)"
-                    *ngFor="let row of hack(pointSettings); let i = index">
-                    <td (click)="stopParentEvent($event)">
-                        <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                            (change)="addItemId($event, row.id)" />
-                    </td>
-                    <td>{{i +1}}</td>
-                    <td>{{row.pointName}}</td>
-                    <td>{{row.point}}</td>
-                    <td>{{row.description}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="table-checkbox">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th>S/N</th>
+          <th pSortableColumn="pointName">Point Name</th>
+          <th pSortableColumn="point">Point</th>
+          <th pSortableColumn="description">Description</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row let-i="rowIndex">
+        <tr class="pointer" (click)="edit(row)">
+          <td class="table-checkbox" (click)="stopParentEvent($event)">
+            <p-tableCheckbox [value]="row"></p-tableCheckbox>
+          </td>
+          <td>{{ i + 1 }}</td>
+          <td>{{ row.pointName }}</td>
+          <td>{{ row.point }}</td>
+          <td>{{ row.description }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </div>
-
 
 <!-- Point Settings Modal -->
 <div id="point_settings_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          [formGroup]="pointSettingsForm"
+          (ngSubmit)="submitPointSettingsForm(pointSettingsForm)"
+        >
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Point Name</label>
+                <input
+                  name="pointName"
+                  type="text"
+                  class="form-control"
+                  formControlName="pointName"
+                />
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitPointSettingsForm()">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Point Name</label>
-                                <input name="pointName" type="text" class="form-control" [(ngModel)]="pointName">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Point No.</label>
-                                <input class="form-control" name="point" type="number" [(ngModel)]="point">
-
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea type="text" row="3" name="description" class="form-control"
-                                    [(ngModel)]="description"> </textarea>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Point No.</label>
+                <input
+                  class="form-control"
+                  name="point"
+                  type="number"
+                  formControlName="point"
+                />
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Description</label>
+                <textarea
+                  type="text"
+                  row="3"
+                  name="description"
+                  class="form-control"
+                  formControlName="description"
+                >
+                </textarea>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Point Settings Modal -->

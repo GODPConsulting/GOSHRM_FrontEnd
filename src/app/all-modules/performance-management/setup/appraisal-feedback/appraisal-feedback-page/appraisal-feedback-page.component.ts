@@ -46,9 +46,16 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   firstLevelReviewerId: any;
   secondLevelReviewerId: any;
   tableDisabled: boolean = false;
-
+  reviewYear: any;
+  job_GradeId: any;
   public offices: number[] = [];
   public jobGrades: any[] = [];
+  reviewCycleStatus: any;
+  finalComment: any;
+  firstLevelReviewer: any;
+  secondLevelReviewer: any;
+  score: any;
+  date: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -195,8 +202,6 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     });
     $("#appraisal_feedback_modal").modal("show");
   }
-
-  // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
   hack(val: any[]) {
     return Array.from(val);
   }
@@ -204,8 +209,6 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
@@ -253,4 +256,6 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       });
     this.selectedId = [];
   }
+
+  submitAppraisalFeedbackPageForm() {}
 }

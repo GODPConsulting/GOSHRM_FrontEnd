@@ -6,7 +6,8 @@ import { AppMenuComponent, AppSubMenuComponent } from "./app.menu.component";
 import { RouterModule } from "@angular/router";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { ImageCropperModule } from "ngx-image-cropper";
-import {RatingModule} from 'ngx-bootstrap/rating';
+import { RatingModule } from "ngx-bootstrap/rating";
+import { TableModule } from "primeng/table";
 
 @NgModule({
   declarations: [LoadingComponent, AppMenuComponent, AppSubMenuComponent],
@@ -14,7 +15,8 @@ import {RatingModule} from 'ngx-bootstrap/rating';
     CommonModule,
     RouterModule,
     ImageCropperModule,
-    RatingModule
+    RatingModule,
+    TableModule,
     // NgSelectModule
   ],
   exports: [
@@ -22,7 +24,8 @@ import {RatingModule} from 'ngx-bootstrap/rating';
     AppMenuComponent,
     AppSubMenuComponent,
     ImageCropperModule,
-    RatingModule
+    RatingModule,
+    TableModule,
   ],
 })
 export class SharedModule {}

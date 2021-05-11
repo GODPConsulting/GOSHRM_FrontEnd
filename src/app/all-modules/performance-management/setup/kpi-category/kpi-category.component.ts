@@ -1,10 +1,12 @@
 import { data } from "jquery";
 import { Validators } from "@angular/forms";
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from "@angular/core";
@@ -15,6 +17,8 @@ import swal from "sweetalert2";
 
 import { Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
+import { DataTableDirective } from "angular-datatables";
+import { IKpiCategory, ISearchColumn } from "../../../../interface/interfaces";
 declare const $: any;
 @Component({
   selector: "app-kpi-category",
@@ -49,7 +53,12 @@ export class KpiCategoryComponent implements OnInit {
   weightModel: string = "";
   hrSelectReviewer: string = "";
   currentUserId: number;
+  id: number;
   dtTrigger: Subject<any> = new Subject();
+  @ViewChild(DataTableDirective, { static: true })
+  dtElement: DataTableDirective;
+  cols: ISearchColumn[] = [];
+  selectedKpi: IKpiCategory[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -70,6 +79,7 @@ export class KpiCategoryComponent implements OnInit {
 
       columns: [{ orderable: false }, null, null, null, null, null],
       order: [[1, "asc"]],
+      // destroy: true,
     };
     this.getkpiCategory();
     this.initKpiCategoryForm();
@@ -96,30 +106,28 @@ export class KpiCategoryComponent implements OnInit {
     };
     // payload.weightModel = +payload.weightModel;
     // payload.hrSelectReviewer = +payload.hrSelectReviewer;
-
-    this.spinner = true;
-
+    this.loadingService.show();
     return this.performanceManagementService.postkpiCategory(payload).subscribe(
       (res) => {
-        this.spinner = false;
+        this.loadingService.hide();
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#kpi_category_modal").modal("hide");
-
-          this.modelDisabled = true;
-          this.hrDisabled = true;
-          this.weightModel = "n/a";
-          this.hrSelectReviewer = "";
-          this.name = "";
-          this.description = "";
-          this.employeeSetObjectives = "";
+          swal.fire("GOSHRM", message, "success").then(() => {
+            $("#kpi_category_modal").modal("hide");
+            this.modelDisabled = true;
+            this.hrDisabled = true;
+            this.weightModel = "n/a";
+            this.hrSelectReviewer = "";
+            this.name = "";
+            this.description = "";
+            this.employeeSetObjectives = "";
+            // this.rerender();
+            this.getkpiCategory();
+          });
         }
-
-        this.getkpiCategory();
       },
       (err) => {
-        this.spinner = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -141,14 +149,20 @@ export class KpiCategoryComponent implements OnInit {
   }
 
   edit(row) {
+    console.log(row);
     this.cardFormTitle = "Edit KPI Category";
-    this.kpiCategoryForm.patchValue({
-      id: row.id,
-      name: row.name,
-      employeePermitted: row.employeePermitted,
-      hrSelectReviewer: row.hrSelectReviewer,
-      weightModel: row.weightModel,
-    });
+    // this.kpiCategoryForm.patchValue({
+    //   id: row.id,
+    //   name: row.name,
+    //   employeePermitted: row.employeePermitted,
+    //   hrSelectReviewer: row.hrSelectReviewer,
+    //   weightModel: row.weightModel,
+    // });
+    this.id = row.id;
+    this.name = row.name;
+    this.hrSelectReviewer = row.hrSelectReviewer;
+    this.employeeSetObjectives = row.employeePermitted;
+    this.weightModel = row.weightModel;
     $("#kpi_category_modal").modal("show");
   }
 
@@ -166,13 +180,15 @@ export class KpiCategoryComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectedKpi.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectedKpi.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -249,4 +265,11 @@ export class KpiCategoryComponent implements OnInit {
   }
 
   downloadFile() {}
+
+  // rerender(): void {
+  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //     dtInstance.destroy();
+  //     this.dtTrigger.next();
+  //   });
+  // }
 }

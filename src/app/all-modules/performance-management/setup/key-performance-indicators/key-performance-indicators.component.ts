@@ -13,6 +13,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
+import { IKpis, ISearchColumn } from "../../../../interface/interfaces";
 
 declare const $: any;
 
@@ -34,6 +35,8 @@ export class KeyPerformanceIndicatorsComponent
   dtOptions: DataTables.Settings = {};
 
   dtTrigger: Subject<any> = new Subject<any>();
+  selectedKpis: IKpis[] = [];
+  cols: ISearchColumn[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -144,7 +147,7 @@ export class KeyPerformanceIndicatorsComponent
   getKpiCategory() {
     return this.performanceManagementService.getKpiCategory().subscribe(
       (data) => {
-        this.categories = data.setupList;
+        this.categories = data["setupList"];
       },
       (err) => {}
     );
@@ -152,8 +155,7 @@ export class KeyPerformanceIndicatorsComponent
   getSavedKPIndicators() {
     return this.performanceManagementService.getKPIndicators().subscribe(
       (data) => {
-        this.kpIndicators = data.setupList;
-        this.dtTrigger.next();
+        this.kpIndicators = data["setupList"];
       },
       (err) => {}
     );
@@ -192,13 +194,15 @@ export class KeyPerformanceIndicatorsComponent
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectedKpis.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectedKpis.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -231,7 +235,7 @@ export class KeyPerformanceIndicatorsComponent
             );
         }
       });
-    this.selectedId = [];
+    this.selectedKpis = [];
   }
 
   ngAfterViewInit(): void {
