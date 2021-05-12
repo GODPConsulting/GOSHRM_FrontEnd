@@ -29,20 +29,37 @@
   <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
-        <table
+        <p-table
           class="table table-striped custom-table datatable table-hover"
-          datatable
-          [dtOptions]="dtOptions"
-          [dtTrigger]="dtTrigger"
+          #dt
+          [value]="kpiToJobGrades"
+          [columns]="cols"
+          [(selection)]="selectedValues"
+          [scrollable]="true"
+          scrollHeight="600px"
         >
-          <thead>
+          <ng-template pTemplate="caption">
+            <div style="text-align: right">
+              <input
+                type="text"
+                pInputText
+                size="50"
+                class="form-control"
+                placeholder="Search..."
+                (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width: auto"
+              />
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
             <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  [checked]="selectedId.length === kpiToJobGrades.length"
-                  (change)="checkAll($event)"
-                />
+              <th class="table-checkbox">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                <!--                <input-->
+                <!--                  type="checkbox"-->
+                <!--                  [checked]="selectedId.length === kpiToJobGrades.length"-->
+                <!--                  (change)="checkAll($event)"-->
+                <!--                />-->
               </th>
               <th>S/N</th>
               <th>Job Grade</th>
@@ -50,20 +67,11 @@
               <th>Weight</th>
               <th>KPIs</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr
-              data-toggle="modal"
-              class="pointer"
-              data-target="#add_kpi_to_job_grade_"
-              *ngFor="let row of kpiToJobGrades; let i = index"
-            >
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr class="pointer" (click)="edit(row)">
               <td (click)="stopParentEvent($event)">
-                <input
-                  type="checkbox"
-                  [checked]="selectedId.includes(row.id)"
-                  (change)="addItemId($event, row.id)"
-                />
+                <p-tableCheckbox></p-tableCheckbox>
               </td>
               <td>{{ i + 1 }}</td>
               <td>{{ row.jobGradeName }}</td>
@@ -71,8 +79,8 @@
               <td>{{ row.weight }}</td>
               <td>{{ row.kpIsNameList }}</td>
             </tr>
-          </tbody>
-        </table>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>
@@ -96,32 +104,40 @@
   <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
-        <table
+        <p-table
           class="table table-striped custom-table datatable table-hover"
-          datatable
-          [dtOptions]="dtWeightOptions"
-          [dtTrigger]="dtWeightTrigger"
+          #dt
+          [value]="weightSummary"
+          [columns]="weightSummaryCols"
         >
-          <thead>
+          <ng-template pTemplate="caption">
+            <div style="text-align: right">
+              <input
+                type="text"
+                pInputText
+                size="50"
+                class="form-control"
+                placeholder="Search..."
+                (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width: auto"
+              />
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
             <tr>
               <th>S/N</th>
               <th>Job Grade</th>
               <th>Total Weight</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr
-              data-toggle="modal"
-              class="pointer"
-              data-target="#add_kpi_to_job_grade_"
-              *ngFor="let row of weightSummary; let i = index"
-            >
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr (click)="edit(row)" class="pointer">
               <td>{{ i + 1 }}</td>
               <td>{{ row.jobGradeName }}</td>
               <td>{{ row.weight }}</td>
             </tr>
-          </tbody>
-        </table>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>

@@ -4,6 +4,7 @@ import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
+import { EmployeeKPI, IKpis, KpiCategory } from "../interface/interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -11,21 +12,23 @@ import { HttpErrorResponse } from "@angular/common/http";
 export class PerformanceManagementService {
   constructor(private apiService: ApiService) {}
   handleError(error: HttpErrorResponse) {
-    return throwError(error.error);
+    return throwError(error);
   }
   getkpiCategory() {
-    return this.apiService.get("/performancesetup/get/all/kpi-categories").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/performance/performancesetup/get/all/kpi-categories")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   postkpiCategory(payload: Object) {
     return this.apiService
-      .post("/performancesetup/add/update/kpi-category", payload)
+      .post("/performance/performancesetup/add/update/kpi-category", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -37,7 +40,7 @@ export class PerformanceManagementService {
 
   deleteKpiCategory(payload: Object) {
     return this.apiService
-      .post("/performancesetup/delete/kpi-category", payload)
+      .post("/performance/performancesetup/delete/kpi-category", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -48,7 +51,7 @@ export class PerformanceManagementService {
   }
   addKPIndicator(payload: any) {
     return this.apiService
-      .post("/performancesetup/add/update/kpi-indicator", payload)
+      .post("/performance/performancesetup/add/update/kpi-indicator", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -57,27 +60,31 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
-  getKpiCategory() {
-    return this.apiService.get("/performancesetup/get/all/kpi-categories").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+  getKpiCategory(): Observable<KpiCategory[]> {
+    return this.apiService
+      .get("/performance/performancesetup/get/all/kpi-categories")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
-  getKPIndicators() {
-    return this.apiService.get("/performancesetup/get/all/kpi-indicators").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+  getKPIndicators(): Observable<IKpis> {
+    return this.apiService
+      .get("/performance/performancesetup/get/all/kpi-indicators")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
   deleteKPIndicator(payload) {
     return this.apiService
-      .post("/performancesetup/delete/kpi-indicator", payload)
+      .post("/performance/performancesetup/delete/kpi-indicator", payload)
       .pipe(
         tap((data) => {
           return data;
@@ -86,7 +93,7 @@ export class PerformanceManagementService {
   }
   uploadKPIndicators(payload: FormData) {
     return this.apiService
-      .post("/performancesetup/upload/kpi-indicator", payload)
+      .post("/performance/performancesetup/upload/kpi-indicator", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -97,7 +104,7 @@ export class PerformanceManagementService {
   }
   downloadKPIndicators() {
     return this.apiService
-      .getDownload("/performancesetup/download/kpi-indicators")
+      .getDownload("/performance/performancesetup/download/kpi-indicators")
       .pipe(
         tap(),
         map((res) => {
@@ -109,7 +116,7 @@ export class PerformanceManagementService {
 
   addGradeSetting(payload: any): Observable<any> {
     return this.apiService
-      .post(`/performancesetup/add/update/grade-setting`, payload)
+      .post(`/performance/performancesetup/add/update/grade-setting`, payload)
       .pipe(
         tap(),
         map((res) => {
@@ -120,7 +127,7 @@ export class PerformanceManagementService {
   }
   deleteGradeSetting(payload) {
     return this.apiService
-      .post("/performancesetup/delete/grade-setting", payload)
+      .post("/performance/performancesetup/delete/grade-setting", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -130,28 +137,32 @@ export class PerformanceManagementService {
       );
   }
   getGradeSettings() {
-    return this.apiService.get("/performancesetup/get/all/grade-settings").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/performance/performancesetup/get/all/grade-settings")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getPointSettings() {
-    return this.apiService.get("/performancesetup/get/all/point-settings").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/performance/performancesetup/get/all/point-settings")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   postPointSettings(payload: Object) {
     return this.apiService
-      .post("/performancesetup/add/update/point-setting", payload)
+      .post("/performance/performancesetup/add/update/point-setting", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -163,7 +174,7 @@ export class PerformanceManagementService {
 
   deletePointSettings(payload: Object) {
     return this.apiService
-      .post("/performancesetup/delete/point-setting", payload)
+      .post("/performance/performancesetup/delete/point-setting", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -175,7 +186,7 @@ export class PerformanceManagementService {
 
   getAppraisalCycles() {
     return this.apiService
-      .get("/performancesetup/get/all/appraisal-cycles")
+      .get("/performance/performancesetup/get/all/appraisal-cycles")
       .pipe(
         tap(),
         map((res) => {
@@ -187,7 +198,7 @@ export class PerformanceManagementService {
 
   postAppraisalCycle(payload: Object) {
     return this.apiService
-      .post("/performancesetup/add/update/appraisal-cycle", payload)
+      .post("/performance/performancesetup/add/update/appraisal-cycle", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -199,7 +210,7 @@ export class PerformanceManagementService {
 
   deleteAppraisalCycle(payload: any) {
     return this.apiService
-      .post("/performancesetup​/delete​/appraisal-cycle", payload)
+      .post("/performance/performancesetup​/delete​/appraisal-cycle", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -211,7 +222,9 @@ export class PerformanceManagementService {
 
   getKpiByKpiCategoryId(id: number) {
     return this.apiService
-      .get(`/performancesetup/get/kpi-indicator/categoryId?categoryId=${id}`)
+      .get(
+        `/performance/performancesetup/get/kpi-indicator/categoryId?categoryId=${id}`
+      )
       .pipe(
         tap(),
         map((res) => {
@@ -223,7 +236,7 @@ export class PerformanceManagementService {
 
   getKpiToJobGrades() {
     return this.apiService
-      .get("/performancesetup/get/all/kpi-to-jobgrades")
+      .get("/performance/performancesetup/get/all/kpi-to-jobgrades")
       .pipe(
         tap(),
         map((res) => {
@@ -235,7 +248,7 @@ export class PerformanceManagementService {
 
   getKpiToJobGradesWeightSumary() {
     return this.apiService
-      .get("/performancesetup/get/all/kpi-to-jobgrade-summary")
+      .get("/performance/performancesetup/get/all/kpi-to-jobgrade-summary")
       .pipe(
         tap(),
         map((res) => {
@@ -247,7 +260,7 @@ export class PerformanceManagementService {
 
   postKpiToJobGrade(payload) {
     return this.apiService
-      .post("/performancesetup/add/update/kpi-to-jobgrade", payload)
+      .post("/performance/performancesetup/add/update/kpi-to-jobgrade", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -259,7 +272,7 @@ export class PerformanceManagementService {
 
   deleteKpiToJobGrade(payload) {
     return this.apiService
-      .post("/performancesetup/delete/kpi-to-jobgrade", payload)
+      .post("/performance/performancesetup/delete/kpi-to-jobgrade", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -271,7 +284,10 @@ export class PerformanceManagementService {
 
   addAppraisalPreference(payload: any): Observable<any> {
     return this.apiService
-      .post(`/performancesetup/add/update/appraisal-preference`, payload)
+      .post(
+        `/performance/performancesetup/add/update/appraisal-preference`,
+        payload
+      )
       .pipe(
         tap(),
         map((res) => {
@@ -284,7 +300,7 @@ export class PerformanceManagementService {
   getAppraisalCycleByCompanyId(id) {
     return this.apiService
       .get(
-        `/performancesetup/get/single/appraisal-cycle/companyId?setupId=${id}`
+        `/performance/performancesetup/get/single/appraisal-cycle/companyId?setupId=${id}`
       )
       .pipe(
         tap(),
@@ -298,7 +314,7 @@ export class PerformanceManagementService {
   getAppraisalFeedbacks(id) {
     return this.apiService
       .get(
-        `/performance-appraisal/get/single/appraisal-objective/staffId?staffId=${id}`
+        `/performance/performance-appraisal/get/single/appraisal-objective/staffId?staffId=${id}`
       )
       .pipe(
         tap(),
@@ -311,13 +327,16 @@ export class PerformanceManagementService {
 
   getAppraisalFeedbacksByStaffId(id) {
     return this.apiService.get(
-      `/performance-appraisal/get/single/appraisal-objective/staffId?staffId=${id}`
+      `/performance/performance-appraisal/get/single/appraisal-objective/staffId?staffId=${id}`
     );
   }
 
   postAppraisalFeedback(payload: Object) {
     return this.apiService
-      .post("/performancesetup/add/update/appraisal-feedback", payload)
+      .post(
+        "/performance/performancesetup/add/update/appraisal-feedback",
+        payload
+      )
       .pipe(
         tap(),
         map((res) => {
@@ -328,7 +347,7 @@ export class PerformanceManagementService {
   }
   getAppraisalCycleByStatus() {
     return this.apiService
-      .get("/performancesetup/get/single/appraisal-cycle/status")
+      .get("/performance/performancesetup/get/single/appraisal-cycle/status")
       .pipe(
         tap(),
         map((res) => {
@@ -351,7 +370,10 @@ export class PerformanceManagementService {
 
   deleteAppraisalFeedback(payload: Object) {
     return this.apiService
-      .post("/performancesetup​/delete​/appraisal-feedback", payload)
+      .post(
+        "/performance/performancesetup​/delete​/appraisal-feedback",
+        payload
+      )
       .pipe(
         tap(),
         map((res) => {
@@ -363,7 +385,7 @@ export class PerformanceManagementService {
   getAppraisalObjectives(id) {
     return this.apiService
       .get(
-        `/performance-appraisal/get/single/appraisal-objective-kpis/staffId?staffId=${id}`
+        `/performance/performance-appraisal/get/single/appraisal-objective-kpis/staffId?staffId=${id}`
       )
       .pipe(
         tap(),
@@ -376,7 +398,7 @@ export class PerformanceManagementService {
 
   getAllAppraisalObjectives() {
     return this.apiService
-      .get("/performance-appraisal/get/all/appraisal-objectives")
+      .get("/performance/performance-appraisal/get/all/appraisal-objectives")
       .pipe(
         tap(),
         map((res) => {
@@ -389,7 +411,7 @@ export class PerformanceManagementService {
   getAppraisalsByCycleId(id: number) {
     return this.apiService
       .get(
-        `/performance-appraisal/get/appraisal-objective/appraisalCycleId?appraisalCycleId=${id}`
+        `/performance/performance-appraisal/get/appraisal-objective/appraisalCycleId?appraisalCycleId=${id}`
       )
       .pipe(
         tap(),
@@ -411,6 +433,18 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res.list;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  addEmployeeKPI(payload: EmployeeKPI): Observable<EmployeeKPI> {
+    return this.apiService
+      .post(`/performance/add/new_kpi/by_employee`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
         }),
         catchError(this.handleError)
       );

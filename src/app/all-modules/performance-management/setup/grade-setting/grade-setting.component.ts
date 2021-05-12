@@ -7,6 +7,10 @@ import { PerformanceManagementService } from "src/app/services/performance-manag
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
+import {
+  IGradeSettings,
+  ISearchColumn,
+} from "../../../../interface/interfaces";
 
 declare const $: any;
 
@@ -23,6 +27,8 @@ export class GradeSettingComponent implements OnInit {
   spinner: boolean;
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
+  cols: ISearchColumn[] = [];
+  selectedGradeSettings: IGradeSettings[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,18 +41,6 @@ export class GradeSettingComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.getSavedGradeSetting();
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-      columns: [{ orderable: false }, null, null, null, null, null, null],
-      order: [[1, "asc"]],
-    };
   }
 
   initializeForm() {
@@ -120,13 +114,15 @@ export class GradeSettingComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectedGradeSettings.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectedGradeSettings.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -160,6 +156,6 @@ export class GradeSettingComponent implements OnInit {
             );
         }
       });
-    this.selectedId = [];
+    this.selectedGradeSettings = [];
   }
 }

@@ -43,53 +43,57 @@
     </div>
   </div>
   <div class="table-responsive">
-    <table
+    <p-table
       class="table table-nowrap table-hover"
-      datatable
-      [dtOptions]="dtOptions"
-      [dtTrigger]="dtTrigger"
+      #dt
+      [value]="appraisalCycles"
+      [columns]="cols"
+      [(selection)]="selectedCycles"
+      [scrollable]="true"
+      scrollHeight="600px"
     >
-      <thead>
+      <ng-template pTemplate="caption">
+        <div style="text-align: right">
+          <input
+            type="text"
+            pInputText
+            size="50"
+            class="form-control"
+            placeholder="Search..."
+            (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width: auto"
+          />
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
         <tr>
-          <th>
-            <input
-              type="checkbox"
-              [checked]="selectedId.length === appraisalCycles.length"
-              (change)="checkAll($event)"
-            />
+          <th class="table-checkbox">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
-          <th>S/N</th>
-          <th>Review Year</th>
-          <th>Start Period</th>
-          <th>End Period</th>
-          <th>Due Date</th>
-          <th>Reviewer I</th>
-          <th>Reviewer II</th>
-          <th>Reviewer III</th>
-          <th>Reviewee Weight</th>
-          <th>Status</th>
+          <!--          <th class="sn_width">S/N</th>-->
+          <th pSortableColumn="reviewYear">Review Year</th>
+          <th pSortableColumn="startDate">Start Period</th>
+          <th pSortableColumn="endDate">End Period</th>
+          <th pSortableColumn="dueDate">Due Date</th>
+          <th pSortableColumn="reviewerOneWeight">Reviewer I</th>
+          <th pSortableColumn="reviewerTwoWeight">Reviewer II</th>
+          <th pSortableColumn="reviewerThreeWeight">Reviewer III</th>
+          <th pSortableColumn="revieweeWeight">Reviewee Weight</th>
+          <th pSortableColumn="status">Status</th>
         </tr>
-      </thead>
-      <tbody>
-        <tr
-          data-toggle="modal"
-          class="pointer"
-          *ngFor="let row of hack(appraisalCycles); let i = index"
-        >
-          <td (click)="stopParentEvent($event)">
-            <input
-              type="checkbox"
-              [checked]="selectedId.includes(row.id)"
-              (change)="addItemId($event, row.id)"
-            />
+      </ng-template>
+      <ng-template pTemplate="body" let-row let-i="rowIndex">
+        <tr class="pointer">
+          <td (click)="stopParentEvent($event)" class="table-checkbox">
+            <p-tableCheckbox [value]="row"></p-tableCheckbox>
           </td>
-          <td>
-            <a
-              class="text-dark d-block"
-              [routerLink]="['appraisals', row.id]"
-              >{{ i + 1 }}</a
-            >
-          </td>
+          <!--          <td class="sn_width">-->
+          <!--            <a-->
+          <!--              class="text-dark d-block"-->
+          <!--              [routerLink]="['appraisals', row.id]"-->
+          <!--              >{{ i + 1 }}</a-->
+          <!--            >-->
+          <!--          </td>-->
           <td>
             <a
               class="text-dark d-block"
@@ -154,7 +158,7 @@
             >
           </td>
         </tr>
-      </tbody>
-    </table>
+      </ng-template>
+    </p-table>
   </div>
 </div>

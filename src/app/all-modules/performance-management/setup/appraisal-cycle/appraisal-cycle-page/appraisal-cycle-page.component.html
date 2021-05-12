@@ -148,6 +148,75 @@
               </select>
             </div>
           </div>
+<<<<<<< HEAD
+=======
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Form Generated</label>
+              <input
+                type="text"
+                name="formGenerated"
+                class="form-control"
+                [(ngModel)]="formGenerated"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Notification Sent</label>
+              <input
+                type="text"
+                name="notificationSent"
+                class="form-control"
+                [(ngModel)]="notificationSent"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label> Created By</label>
+              <input
+                type="text"
+                name="createdBy"
+                class="form-control"
+                [(ngModel)]="createdBy"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Created On</label>{{ dateObj | date }}
+              <input
+                type="date"
+                name="createdOn"
+                class="form-control"
+                [(ngModel)]="createdOn"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Updated By</label>
+              <input
+                type="text"
+                name="updatedBy"
+                class="form-control"
+                [(ngModel)]="updatedBy"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Updated On</label>{{ dateObj | date }}
+              <input
+                type="date"
+                name="updatedOn"
+                class="form-control"
+                [(ngModel)]="updatedOn"
+              />
+            </div>
+          </div>
+>>>>>>> work
         </div>
         <div class="modal-body">
           <form (ngSubmit)="submitAppraisalCycleForm()">
@@ -182,7 +251,15 @@
                   ></span>
                 </button>
 
+<<<<<<< HEAD
                 <button type="button" class="btn btn-warning">
+=======
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  style="color: #fff"
+                >
+>>>>>>> work
                   Copy previous objectives
                 </button>
 

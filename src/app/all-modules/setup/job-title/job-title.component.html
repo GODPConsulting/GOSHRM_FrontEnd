@@ -1,107 +1,157 @@
-
 <!-- Page Content -->
 <div class="content container-fluid">
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h3 class="page-title">Job Title</h3>
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
-                    <li class="breadcrumb-item active">Job Title</li>
-                </ul>
-            </div>
-            <div class="col-auto float-right ml-auto">
-                <a class="btn download-btn hint" (click)="downloadFile()"><span class="hint-text">Download</span><i
-                        class="fa fa-download"></i></a>
-                <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
-                        class="fa fa-upload"></i></a>
-                <a class="btn add-btn hint" data-toggle="modal" routerLink="/setup/job-skill"><span
-                        class="hint-text">Add</span><i class="fa fa-plus"></i></a>
-                <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
-                        class="fa fa-trash"></i></a>
-            </div>
-        </div>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">Job Title</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
+          <li class="breadcrumb-item active">Job Title</li>
+        </ul>
+      </div>
+      <div class="col-auto float-right ml-auto">
+        <a class="btn download-btn hint" (click)="downloadFile()"
+          ><span class="hint-text">Download</span><i class="fa fa-download"></i
+        ></a>
+        <a class="btn upload-btn hint" (click)="openUploadModal()"
+          ><span class="hint-text">Upload</span><i class="fa fa-upload"></i
+        ></a>
+        <a
+          class="btn add-btn hint"
+          data-toggle="modal"
+          routerLink="/setup/job-skill"
+          ><span class="hint-text">Add</span><i class="fa fa-plus"></i
+        ></a>
+        <a class="btn delete-btn hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
+      </div>
     </div>
-    <!-- /Page Header -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <table id="datatableexample" class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions"
-                    [dtTrigger]="dtTrigger">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" [checked]="selectedId.length === jobTitles.length"
-                                    (change)="checkAll($event)" />
-                            </th>
-                            <th>S/N</th>
-                            <th>Job Title</th>
-                            <th>Total Skill Weight</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#edit_employee"
-                            *ngFor="let row of jobTitles; let i = index">
-                            <td (click)="stopParentEvent($event)">
-                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id)" />
-                            </td>
-                            <td> <a class="text-dark d-block" [routerLink]="[row.id]">{{ i + 1 }}</a></td>
-                            <td> <a class="text-dark d-block" [routerLink]="[row.id]">{{ row.job_title }}</a></td>
-                            <td> <a class="text-dark d-block" [routerLink]="[row.id]">{{ row.totalSkillWeight }}</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  </div>
+  <!-- /Page Header -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table
+          id="datatableexample"
+          class="table table-striped custom-table datatable table-hover"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+        >
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.length === jobTitles.length"
+                  (change)="checkAll($event)"
+                />
+              </th>
+              <th>S/N</th>
+              <th>Job Title</th>
+              <th>Total Skill Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              data-toggle="modal"
+              class="pointer"
+              data-target="#edit_employee"
+              *ngFor="let row of jobTitles; let i = index"
+            >
+              <td (click)="stopParentEvent($event)">
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.includes(row.id)"
+                  (change)="addItemId($event, row.id)"
+                />
+              </td>
+              <td>
+                <a class="text-dark d-block" [routerLink]="[row.id]">{{
+                  i + 1
+                }}</a>
+              </td>
+              <td>
+                <a class="text-dark d-block" [routerLink]="[row.id]">{{
+                  row.job_title
+                }}</a>
+              </td>
+              <td>
+                <a class="text-dark d-block" [routerLink]="[row.id]">{{
+                  row.totalSkillWeight
+                }}</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Page Content -->
 <!-- Upload Job Title Modal -->
 <div id="upload_job_title" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Upload Job Title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Job Title</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body px-5">
+        <form (ngSubmit)="uploadJobTitle()" [formGroup]="jobTitleUploadForm">
+          <div class="row">
+            <div class="form-group row">
+              <label class="col-form-label col-md-5"
+                >Choose File (excel format)</label
+              >
+              <div class="col-md-7">
+                <input
+                  class="form-control"
+                  name="uploadInput"
+                  id="uploadInput"
+                  #fileInput
+                  type="file"
+                  (change)="onSelectedFile($event, jobTitleUploadForm)"
+                />
+              </div>
             </div>
-            <div class="modal-body px-5">
-                <form (ngSubmit)="uploadJobTitle()" [formGroup]="jobTitleUploadForm">
-                    <div class="row">
-                        <div class="form-group row">
-                            <label class="col-form-label col-md-5">Choose File (excel format)</label>
-                            <div class="col-md-7">
-                                <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                                    (change)="onSelectedFile($event,jobTitleUploadForm)">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <p>Please use the guide below for your sheet</p>
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>Job Title</th>
-                                <th>Job Description</th>
-                                <!-- <th>Skill</th>
+          </div>
+          <div class="row">
+            <p>Please use the guide below for your sheet</p>
+            <table class="table table-bordered">
+              <tr>
+                <th>Job Title</th>
+                <th>Job Description</th>
+                <!-- <th>Skill</th>
                                 <th>Skill Description</th>
                                 <th>Total Skill Weight</th> -->
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadJobTitle()"
-                            [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+              </tr>
+            </table>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              (ngSubmit)="uploadJobTitle()"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Upload Job Grade Modal -->

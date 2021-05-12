@@ -72,4 +72,8 @@ export class AppraisalsComponent implements OnInit {
       }
     );
   }
+
+  delete() {}
+
+  checkAll($event: Event) {}
 }

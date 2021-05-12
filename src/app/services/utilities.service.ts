@@ -112,7 +112,7 @@ export class UtilitiesService {
     }
   }
 
-  deleteArray(event: Event, id: number, idsArray: number[]) {
+  deleteArray(event: Event, id: number, idsArray: any[]) {
     if ((<HTMLInputElement>event.target).checked) {
       if (!idsArray.includes(id)) {
         idsArray.push(id);

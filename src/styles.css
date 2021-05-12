@@ -8720,3 +8720,10 @@ rating span {
 .mb_10 {
   margin-bottom: 1rem;
 }
+
+.table-checkbox {
+  width: 3rem;
+}
+.sn_width {
+  width: 2rem;
+}

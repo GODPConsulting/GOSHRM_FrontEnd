@@ -230,4 +230,8 @@ export class JobTitleComponent implements OnInit {
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
+
+  closeModal() {
+    $("#upload_job_title").modal("hide");
+  }
 }

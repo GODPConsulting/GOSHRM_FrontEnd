@@ -5,7 +5,11 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+<<<<<<< HEAD
 import { CommonService } from "../../../../../services/common.service";
+=======
+import { Subject } from "rxjs";
+>>>>>>> work
 declare const $: any;
 
 @Component({
@@ -41,7 +45,7 @@ export class CareerComponent implements OnInit {
 
   // To hold data for each card
   employeeCareer: any = {};
-
+  dtTrigger: Subject<any> = new Subject<any>();
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -215,6 +219,7 @@ export class CareerComponent implements OnInit {
     this.employeeService.getCareerByStaffId(id).subscribe((data) => {
       if (data.employeeList) {
         this.employeeCareer = data.employeeList;
+        this.dtTrigger.next();
       }
     });
   }
@@ -287,8 +292,6 @@ export class CareerComponent implements OnInit {
       this.dataFromParent.user.staffId
     );
   }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }

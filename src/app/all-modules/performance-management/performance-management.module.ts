@@ -24,6 +24,7 @@ import { AppraisalObjectiveFormComponent } from "./setup/appraisal-objective-for
 import { AppraisalObjectivesComponent } from "./setup/appraisal-objectives/appraisal-objectives.component";
 import { AppraisalsComponent } from "./setup/appraisal-cycle/appraisals/appraisals.component";
 import { CustomDatePipe } from "../../../assets/pipes/custom-date.pipe";
+import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 @NgModule({
   declarations: [
     PerformanceManagementComponent,
@@ -52,6 +53,7 @@ import { CustomDatePipe } from "../../../assets/pipes/custom-date.pipe";
     Ng2SearchPipeModule,
     PerformanceManagementRoutingModule,
     AngularDualListBoxModule,
+    BsDatepickerModule.forRoot(),
   ],
   providers: [
     {

@@ -6,6 +6,7 @@ import swal from "sweetalert2";
 
 import { Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
+import { IPointSetting, ISearchColumn } from "../../../../interface/interfaces";
 declare const $: any;
 @Component({
   selector: "app-point-settings",
@@ -27,41 +28,46 @@ export class PointSettingsComponent implements OnInit {
   pointName: any;
   point: any;
   description: any;
-  pointSettingsForm: any;
+  pointSettingsForm: FormGroup;
   dtTrigger: Subject<any> = new Subject();
+  cols: ISearchColumn[] = [];
+  selectedPoints: IPointSetting[] = [];
   constructor(
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "pointName",
+        field: "pointName",
       },
-
-      columns: [{ orderable: false }, null, null, null, null],
-      order: [[1, "asc"]],
-    };
+      {
+        header: "point",
+        field: "point",
+      },
+      {
+        header: "description",
+        field: "description",
+      },
+    ];
     this.getPointSettings();
     this.cardFormTitle = "Add Point Settings";
+    this.initialiseForm();
   }
-
-  submitPointSettingsForm() {
-    const payload = {
-      pointName: this.pointName,
-      point: this.point,
-      description: this.description,
-    };
-    // payload.point = +payload.point;
-    // payload.hrSelectReviewer = +payload.hrSelectReviewer;
-
+  initialiseForm() {
+    this.pointSettingsForm = this.fb.group({
+      id: [0],
+      pointName: [""],
+      point: [""],
+      description: [""],
+    });
+  }
+  submitPointSettingsForm(form: FormGroup) {
+    const payload = form.value;
     this.spinner = true;
     return this.performanceManagementService
       .postPointSettings(payload)
@@ -72,10 +78,7 @@ export class PointSettingsComponent implements OnInit {
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", message, "success");
             $("#point_settings_modal").modal("hide");
-
-            this.pointName = "";
-            this.point = "";
-            this.description = "";
+            this.initialiseForm();
           }
 
           this.getPointSettings();
@@ -112,8 +115,6 @@ export class PointSettingsComponent implements OnInit {
     });
     $("#point_settings_modal").modal("show");
   }
-
-  // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"
   hack(val: any[]) {
     return Array.from(val);
   }
@@ -121,21 +122,21 @@ export class PointSettingsComponent implements OnInit {
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.uploadFileValidator(event, form, this.staffId);
   }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectedPoints.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectedPoints.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -169,7 +170,7 @@ export class PointSettingsComponent implements OnInit {
             );
         }
       });
-    this.selectedId = [];
+    this.selectedPoints = [];
   }
 
   addItemId(event, id: number) {
@@ -192,5 +193,10 @@ export class PointSettingsComponent implements OnInit {
     } else {
       this.selectedId = [];
     }
+  }
+
+  closeModal() {
+    this.initialiseForm();
+    $("#point_settings_modal").modal("hide");
   }
 }

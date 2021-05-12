@@ -6,6 +6,7 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
+import { ISearchColumn } from "../../../../interface/interfaces";
 
 declare const $: any;
 
@@ -29,6 +30,9 @@ export class KpiToJobgradeComponent implements OnInit {
   weightSummary: any = [];
   dtTrigger: Subject<any> = new Subject();
   dtWeightTrigger: Subject<any> = new Subject();
+  cols: ISearchColumn[] = [];
+  selectedValues: any[] = [];
+  weightSummaryCols: ISearchColumn[] = [];
   constructor(
     private setupService: SetupService,
     private performanceService: PerformanceManagementService,
@@ -38,30 +42,34 @@ export class KpiToJobgradeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "jobGradeName",
+        field: "jobGradeName",
       },
-      columns: [{ orderable: false }, null, null, null, null, null],
-      order: [[1, "asc"]],
-    };
-    this.dtWeightOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+      {
+        header: "kpiCategoryName",
+        field: "kpiCategoryName",
       },
-      columns: [null, null, null],
-      //order: [[1, "asc"]],
-    };
+      {
+        header: "weight",
+        field: "weight",
+      },
+      {
+        header: "kpIsNameList",
+        field: "kpIsNameList",
+      },
+    ];
+    this.weightSummaryCols = [
+      {
+        header: "jobGradeName",
+        field: "jobGradeName",
+      },
+      {
+        header: "weight",
+        field: "weight",
+      },
+    ];
     this.initializeForm();
     this.getKpiToJobGrades();
   }
@@ -78,8 +86,6 @@ export class KpiToJobgradeComponent implements OnInit {
     this.source = [];
     this.confirmed = [];
   }
-
-  // Set Values To Edit Modal Form
   edit(row) {
     this.getKpiByKpiCategoryId(row.kpiCategoryId);
     this.formTitle = "Edit KPI To Job Grade";
@@ -227,7 +233,6 @@ export class KpiToJobgradeComponent implements OnInit {
     this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
 
-  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }

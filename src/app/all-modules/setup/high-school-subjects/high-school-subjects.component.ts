@@ -5,6 +5,7 @@ import swal from "sweetalert2";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
+import { IHighSchool, ISearchColumn } from "../../../interface/interfaces";
 
 declare const $: any;
 @Component({
@@ -22,6 +23,8 @@ export class HighSchoolSubjectsComponent implements OnInit {
   public selectedId: number[] = [];
   public highSchoolSubUploadForm: FormGroup;
   dtTrigger: Subject<any> = new Subject();
+  selectedSubjects: IHighSchool[] = [];
+  cols: ISearchColumn[] = [];
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -30,6 +33,12 @@ export class HighSchoolSubjectsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.cols = [
+      {
+        header: "subject",
+        field: "subject",
+      },
+    ];
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -179,13 +188,17 @@ export class HighSchoolSubjectsComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectedSubjects.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectedSubjects.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
+    // console.log(payload);
+    // return;
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -221,19 +234,16 @@ export class HighSchoolSubjectsComponent implements OnInit {
   }
 
   addItemId(event: Event, id: number) {
-    this.utilitiesService.deleteArray(event, id, this.selectedId);
+    this.utilitiesService.deleteArray(event, id, this.selectedSubjects);
   }
 
   checkAll(event: Event) {
     this.selectedId = this.utilitiesService.checkAllBoxes(event, this.subjects);
   }
-
-  // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
 
-  // Appends a selected file to "uploadInput"
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.uploadFileValidator(event, form, "hr");
   }
