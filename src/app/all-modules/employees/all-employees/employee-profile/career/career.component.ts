@@ -5,6 +5,7 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+import { CommonService } from "../../../../../services/common.service";
 declare const $: any;
 
 @Component({
@@ -46,7 +47,8 @@ export class CareerComponent implements OnInit {
     private employeeService: EmployeeService,
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -116,7 +118,7 @@ export class CareerComponent implements OnInit {
 
   getJobGrade() {
     this.loadingService.show();
-    return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
+    return this.commonService.getJobGrades().subscribe(
       (data) => {
         this.loadingService.hide();
 
@@ -237,17 +239,15 @@ export class CareerComponent implements OnInit {
 
   getStaffDepartments() {
     this.loadingService.show();
-    return this.setupService
-      .getData("/company/get/all/companystructures")
-      .subscribe(
-        (data) => {
-          this.loadingService.hide();
-          this.offices = data.companyStructures;
-        },
-        (err) => {
-          this.loadingService.hide();
-        }
-      );
+    return this.commonService.getCompanyStructures().subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.offices = data.companyStructures;
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
   }
 
   // Set Values To Edit Modal Form

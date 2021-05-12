@@ -108,9 +108,7 @@
                 >
                   <option selected value="">Select Company</option>
                   <option
-                    *ngFor="
-                      let company of (allCompanies$ | async)?.companyStructures
-                    "
+                    *ngFor="let company of allCompanies"
                     value="{{ company.companyStructureId }}"
                   >
                     {{ company.name }}

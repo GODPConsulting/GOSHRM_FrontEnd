@@ -280,15 +280,6 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
-  getCompanies() {
-    return this.apiService.get("/company/get/all/companystructures").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
-  }
 
   getAppraisalCycleByCompanyId(id) {
     return this.apiService
@@ -404,6 +395,22 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  getEmployeeAppraisalCycle(
+    employeeId: number,
+    deptId: number
+  ): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_appraisal/cycle?EmployeeId=${employeeId}&Department=${deptId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
         }),
         catchError(this.handleError)
       );

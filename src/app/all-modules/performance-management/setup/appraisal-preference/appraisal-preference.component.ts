@@ -5,6 +5,7 @@ import swal from "sweetalert2";
 
 import { Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
+import { CommonService } from "../../../../services/common.service";
 
 @Component({
   selector: "app-appraisal-preference",
@@ -21,7 +22,8 @@ export class AppraisalPreferenceComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -74,7 +76,7 @@ export class AppraisalPreferenceComponent implements OnInit {
 
   getCompanies() {
     this.loadingService.show();
-    return this.performanceManagementService.getCompanies().subscribe(
+    return this.commonService.getCompanyStructures().subscribe(
       (data) => {
         this.loadingService.hide();
         this.companies = data.companyStructures;

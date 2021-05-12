@@ -6,6 +6,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+import { CommonService } from "../../../../../services/common.service";
 declare const $: any;
 @Component({
   selector: "app-appraisal-cycle-page",
@@ -50,7 +51,8 @@ export class AppraisalCyclePageComponent implements OnInit {
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {
     this.appraisalCycleUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -166,17 +168,15 @@ export class AppraisalCyclePageComponent implements OnInit {
 
   getStaffDepartments() {
     this.loadingService.show();
-    return this.setupService
-      .getData("/company/get/all/companystructures")
-      .subscribe(
-        (data) => {
-          this.loadingService.hide();
-          this.offices = data.companyStructures;
-        },
-        (err) => {
-          this.loadingService.hide();
-        }
-      );
+    return this.commonService.getCompanyStructures().subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.offices = data.companyStructures;
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
   }
 
   addItemId(event, id: number) {

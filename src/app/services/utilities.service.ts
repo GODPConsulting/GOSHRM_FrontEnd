@@ -154,10 +154,6 @@ export class UtilitiesService {
     return this.apiService.get(`common/get/single/stateById?StateId=${id}`);
   }
 
-  getCompanyStructures() {
-    return this.apiService.get("/company/get/all/companystructures");
-  }
-
   // Converts response to file and downloads it
   byteToFile(data: string, fileName: string, mimeType?: BlobPropertyBag) {
     if (data != undefined) {

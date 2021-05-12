@@ -8,6 +8,7 @@ import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
 import { Subject } from "rxjs";
+import { CommonService } from "../../../../services/common.service";
 
 declare const $: any;
 
@@ -57,7 +58,8 @@ export class AppraisalCycleComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
     private _location: Location,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {
     this.appraisalCycleUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -244,17 +246,15 @@ export class AppraisalCycleComponent implements OnInit {
 
   getStaffDepartments() {
     this.loadingService.show();
-    return this.setupService
-      .getData("/company/get/all/companystructures")
-      .subscribe(
-        (data) => {
-          this.loadingService.hide();
-          this.offices = data.companyStructures;
-        },
-        (err) => {
-          this.loadingService.hide();
-        }
-      );
+    return this.commonService.getCompanyStructures().subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.offices = data.companyStructures;
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
   }
 
   filterByCompany(id) {

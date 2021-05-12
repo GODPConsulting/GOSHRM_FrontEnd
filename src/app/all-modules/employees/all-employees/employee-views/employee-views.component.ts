@@ -5,6 +5,7 @@ import { JwtService } from "src/app/services/jwt.service";
 import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
+import { CommonService } from "../../../../services/common.service";
 
 declare const $: any;
 @Component({
@@ -26,7 +27,8 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
     private dataService: DataService,
     private setupService: SetupService,
     private jwtService: JwtService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit() {
@@ -123,7 +125,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   }
 
   getStaffDepartments() {
-    return this.setupService.getStaffDepartments().subscribe((data) => {
+    return this.commonService.getCompanyStructures().subscribe((data) => {
       this.companies = data.companyStructures;
     });
   }

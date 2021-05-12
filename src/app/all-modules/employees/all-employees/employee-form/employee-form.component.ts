@@ -9,6 +9,7 @@ import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { DataService } from "src/app/services/data.service";
 import { Subscription } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
+import { CommonService } from "../../../../services/common.service";
 declare const $: any;
 @Component({
   selector: "app-employee-form",
@@ -44,7 +45,8 @@ export class EmployeeFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private dataService: DataService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -275,17 +277,15 @@ export class EmployeeFormComponent implements OnInit {
   }
   getStaffDepartments() {
     this.loadingService.show();
-    return this.setupService
-      .getData("/company/get/all/companystructures")
-      .subscribe(
-        (data) => {
-          this.loadingService.hide();
-          this.departments = data.companyStructures;
-        },
-        (err) => {
-          this.loadingService.hide();
-        }
-      );
+    return this.commonService.getCompanyStructures().subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.departments = data.companyStructures;
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
   }
 
   getUserRole() {

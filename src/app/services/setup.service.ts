@@ -909,15 +909,6 @@ export class SetupService {
       );
   }
 
-  getStaffDepartments() {
-    return this.apiService.get(`/company/get/all/companystructures`).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
-  }
   /*  using xhr method
   upload(path: string, file: File): Promise<any> {
     return this.apiService.uploadExcel(path, file).then((data) => {

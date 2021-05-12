@@ -11,6 +11,7 @@ import { JwtService } from "src/app/services/jwt.service";
 
 import { Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
+import { CommonService } from "../../../../services/common.service";
 declare const $: any;
 
 @Component({
@@ -59,7 +60,8 @@ export class AppraisalFeedbackComponent implements OnInit {
     private setupService: SetupService,
     private _location: Location,
     private jwtService: JwtService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -160,7 +162,7 @@ export class AppraisalFeedbackComponent implements OnInit {
 
   getJobGrade() {
     this.loadingService.show();
-    return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
+    return this.commonService.getJobGrades().subscribe(
       (data) => {
         this.loadingService.hide();
 

@@ -5,6 +5,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
+import { CommonService } from "../../../services/common.service";
 declare const $: any;
 
 @Component({
@@ -19,14 +20,15 @@ export class EmployeeIdFormatComponent implements OnInit {
   public idFormatForm: FormGroup;
   public employeeIdFormats: any[] = [];
   public selectedId: number[] = [];
-  public allCompanies$ = this.utilitiesService.getCompanyStructures();
+  allCompanies: any[] = [];
   public format: string = "";
   dtTrigger: Subject<any> = new Subject();
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
     private utilitiesService: UtilitiesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -190,5 +192,17 @@ export class EmployeeIdFormatComponent implements OnInit {
   // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
+  }
+  getStaffDepartments() {
+    this.loadingService.show();
+    return this.commonService.getCompanyStructures().subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.allCompanies = data.companyStructures;
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
   }
 }

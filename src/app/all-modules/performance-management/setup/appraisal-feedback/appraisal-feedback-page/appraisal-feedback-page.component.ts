@@ -8,6 +8,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+import { CommonService } from "../../../../../services/common.service";
 declare const $: any;
 
 @Component({
@@ -56,7 +57,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
     private _location: Location,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -161,7 +163,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
 
   getJobGrade() {
     this.loadingService.show();
-    return this.setupService.getData("/hrmsetup/get/all/jobgrades").subscribe(
+    return this.commonService.getJobGrades().subscribe(
       (data) => {
         this.loadingService.hide();
 
