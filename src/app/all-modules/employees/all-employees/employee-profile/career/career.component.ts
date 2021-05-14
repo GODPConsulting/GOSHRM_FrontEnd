@@ -5,11 +5,10 @@ import { SetupService } from "src/app/services/setup.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
-<<<<<<< HEAD
-import { CommonService } from "../../../../../services/common.service";
-=======
+
 import { Subject } from "rxjs";
->>>>>>> work
+import { CommonService } from "../../../../../services/common.service";
+
 declare const $: any;
 
 @Component({
@@ -56,6 +55,7 @@ export class CareerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.dataFromParent);
     // Determines the structure of the table (Angular Datatables)
     this.dtOptions = {
       dom:
@@ -225,7 +225,7 @@ export class CareerComponent implements OnInit {
   }
 
   getCountry() {
-    return this.utilitiesService.getCountry().subscribe(
+    return this.commonService.getCountries().subscribe(
       (data) => {
         this.countries = data.commonLookups;
       },

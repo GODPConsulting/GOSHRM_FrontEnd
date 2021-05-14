@@ -5,6 +5,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
 import { Subject } from "rxjs";
+import { CommonService } from "../../../../../services/common.service";
 declare const $: any;
 
 @Component({
@@ -38,7 +39,8 @@ export class DependentContactComponent implements OnInit {
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private utilitiesService: UtilitiesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -148,7 +150,7 @@ export class DependentContactComponent implements OnInit {
   }
 
   getCountry() {
-    return this.utilitiesService.getCountry().subscribe(
+    return this.commonService.getCountries().subscribe(
       (data) => {
         this.countries = data.commonLookups;
       },

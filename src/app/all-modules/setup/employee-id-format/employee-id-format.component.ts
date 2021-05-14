@@ -6,6 +6,7 @@ import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
 import { CommonService } from "../../../services/common.service";
+
 declare const $: any;
 
 @Component({
@@ -35,7 +36,7 @@ export class EmployeeIdFormatComponent implements OnInit {
     this.initIdFormatForm();
 
     this.getEmployeeIdFormat();
-
+    this.getStaffDepartments();
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +

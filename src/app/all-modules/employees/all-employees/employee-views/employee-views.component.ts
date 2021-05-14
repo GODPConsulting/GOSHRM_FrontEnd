@@ -6,6 +6,7 @@ import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
 import { CommonService } from "../../../../services/common.service";
+import { Subject } from "rxjs";
 
 declare const $: any;
 @Component({
@@ -21,6 +22,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   filteredArray: any[] = [];
   canAddEmployee: boolean;
   userActivities: any;
+  dtTrigger: Subject<any> = new Subject<any>();
 
   constructor(
     private employeeService: EmployeeService,
@@ -100,8 +102,6 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
         }
       });
   }
-
-  // Get All Employees
   loadEmployees() {
     this.loadingService.show();
     this.employeeService.getEmployees().subscribe(
@@ -118,8 +118,6 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
       }
     );
   }
-
-  // Toggles between the grid view and list view of the employees
   changeView() {
     this.list = !this.list;
   }
@@ -139,7 +137,6 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
       );
     }
   }
-  // Disposes the tooltip after the view is changed
   ngAfterViewChecked() {
     $('[data-toggle="tooltip"]').on("click", function () {
       $(this).tooltip("dispose");

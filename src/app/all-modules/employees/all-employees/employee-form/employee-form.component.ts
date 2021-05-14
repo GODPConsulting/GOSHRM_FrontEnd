@@ -176,9 +176,9 @@ export class EmployeeFormComponent implements OnInit {
     if (!payload.staffOfficeId) {
       return swal.fire("Error", "Office/Department is required", "error");
     }
-    if (!payload.staffLimit) {
-      return swal.fire("Error", "Staff Limit is required", "error");
-    }
+    // if (!payload.staffLimit) {
+    //   return swal.fire("Error", "Staff Limit is required", "error");
+    // }
     if (!payload.address) {
       return swal.fire("Error", "Address is required", "error");
     }
@@ -256,7 +256,7 @@ export class EmployeeFormComponent implements OnInit {
 
   getCountry() {
     this.loadingService.show();
-    return this.utilitiesService.getCountry().subscribe(
+    return this.commonService.getCountries().subscribe(
       (data) => {
         this.loadingService.hide();
         this.countries = data.commonLookups;
@@ -290,7 +290,7 @@ export class EmployeeFormComponent implements OnInit {
 
   getUserRole() {
     this.loadingService.show();
-    return this.setupService.getData("/admin/get/all/role").subscribe(
+    return this.commonService.getRoles().subscribe(
       (data) => {
         this.loadingService.hide();
         this.roles = data.roles;
@@ -303,32 +303,28 @@ export class EmployeeFormComponent implements OnInit {
 
   getAccess() {
     this.loadingService.show();
-    return this.setupService
-      .getData("/company/get/all/companystructureDefinition")
-      .subscribe(
-        (data) => {
-          this.loadingService.hide();
-          this.access = data.companyStructureDefinitions;
-        },
-        (err) => {
-          this.loadingService.hide();
-        }
-      );
+    return this.commonService.getCompanyStructureDefinition().subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.access = data.companyStructureDefinitions;
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
   }
 
   getAccessLevelsByAccessLevelId(id) {
     this.loadingService.show();
-    return this.setupService
-      .getData(`/company/get/all/companystructure/accessId?AccessId=${id}`)
-      .subscribe(
-        (data) => {
-          this.loadingService.hide();
-          this.accessLevel = data.companyStructures;
-        },
-        (err) => {
-          this.loadingService.hide();
-        }
-      );
+    return this.commonService.getAccessLevelsByAccessLevelId(id).subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.accessLevel = data.companyStructures;
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
   }
 
   clearPhoto() {

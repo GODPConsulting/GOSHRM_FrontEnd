@@ -140,10 +140,6 @@ export class UtilitiesService {
     }
   }
 
-  getCountry() {
-    return this.apiService.get("/common/countries");
-  }
-
   getCountryById(id: number) {
     return this.apiService.get(
       `/common/get/single/countryById?CountryId=${id}`

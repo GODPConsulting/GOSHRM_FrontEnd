@@ -72,3 +72,16 @@ export interface IPointSetting {
   point: number;
   description: string;
 }
+
+export interface IAppraisalCycle {
+  appraisalCycleId: number;
+  reviewYear: number;
+  startPeriod: Date;
+  endPeriod: Date;
+  dueDate: Date;
+  reviewerOneWeight: number;
+  reviewerTwoWeight: number;
+  reviewerThreeWeight: number;
+  status: number;
+  department: number;
+}

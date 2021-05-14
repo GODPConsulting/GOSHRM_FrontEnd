@@ -6,6 +6,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
 import { Subject } from "rxjs";
+import { CommonService } from "../../../../../services/common.service";
 declare const $: any;
 
 @Component({
@@ -34,7 +35,8 @@ export class IdentificationComponent implements OnInit {
     private setupService: SetupService,
     private employeeService: EmployeeService,
     private utilitiesService: UtilitiesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -193,7 +195,7 @@ export class IdentificationComponent implements OnInit {
 
   getIdentification() {
     this.loadingService.show();
-    return this.setupService.getData("/common/identifications").subscribe(
+    return this.commonService.getIdentifications().subscribe(
       (data) => {
         this.loadingService.hide();
         this.identifications = data.commonLookups;

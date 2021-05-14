@@ -8,8 +8,9 @@ import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
 import { Subject } from "rxjs";
-import { CommonService } from "../../../../services/common.service";
+
 import { ISearchColumn } from "../../../../interface/interfaces";
+import { CommonService } from "../../../../services/common.service";
 
 declare const $: any;
 
@@ -174,7 +175,7 @@ export class AppraisalCycleComponent implements OnInit {
     this.performanceManagementService.getAppraisalCycles().subscribe(
       (data) => {
         this.loadingService.hide();
-        this.appraisalCycles = data.setupList;
+        this.appraisalCycles = data.list;
         this.dtTrigger.next();
       },
       (err) => {

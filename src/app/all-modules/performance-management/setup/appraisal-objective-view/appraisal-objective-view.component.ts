@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { LoadingService } from "../../../../services/loading.service";
 import { PerformanceManagementService } from "../../../../services/performance-management.service";
 import { JwtService } from "../../../../services/jwt.service";
+import { IAppraisalCycle } from "../../../../interface/interfaces";
 
 @Component({
   selector: "app-appraisal-objective-view",
@@ -11,6 +12,7 @@ import { JwtService } from "../../../../services/jwt.service";
 export class AppraisalObjectiveViewComponent implements OnInit {
   employeeId: number;
   deptId: number;
+  employeeAppraialCycle: IAppraisalCycle[] = [];
   constructor(
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
@@ -30,7 +32,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
       .subscribe(
         (data) => {
           this.loadingService.hide();
-          console.log(data);
+          this.employeeAppraialCycle = data;
         },
         (err) => {
           this.loadingService.hide();

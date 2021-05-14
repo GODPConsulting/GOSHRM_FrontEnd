@@ -7,17 +7,12 @@
       <h5 class="page-title">{{ cardFormTitle }}</h5>
     </div>
     <div class="modal-body">
-      <form (ngSubmit)="submitAppraisalCycleForm()">
+      <form [formGroup]="appraisalCycleForm">
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label>Calender Range</label>
-              <input
-                type="text"
-                name="calenderRange"
-                class="form-control"
-                [(ngModel)]="calenderRange"
-              />
+              <input type="text" name="calenderRange" class="form-control" />
             </div>
           </div>
           <div class="col-md-6">
@@ -27,7 +22,7 @@
                 type="text"
                 class="form-control"
                 name="company"
-                [(ngModel)]="company"
+                formControlName="department"
               >
                 <option selected value="">Company</option>
                 <option
@@ -47,7 +42,7 @@
                 type="date"
                 name="reviewYear"
                 class="form-control"
-                [(ngModel)]="reviewYear"
+                formControlName="reviewYear"
               >
                 <option selected value="Review Year">Review Year</option>
                 <option *ngFor="let row of years" value="{{ row.year }}">
@@ -63,51 +58,51 @@
                 type="date"
                 name="startDate"
                 class="form-control"
-                [(ngModel)]="startDate"
+                formControlName="startPeriod"
               />
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label>End Period</label>{{ dateObj | date }}
+              <label>End Period</label>
               <input
                 type="date"
                 name="endDate"
                 class="form-control"
-                [(ngModel)]="endDate"
+                formControlName="endPeriod"
               />
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label>Due Date</label>{{ dateObj | date }}
+              <label>Due Date</label>
               <input
                 type="date"
                 name="dueDate"
                 class="form-control"
-                [(ngModel)]="dueDate"
+                formControlName="dueDate"
               />
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label>Reviewer Weight i</label>
+              <label>Reviewer Weight I</label>
               <input
                 name="reviewerOneWeight"
                 type="number"
                 class="form-control"
-                [(ngModel)]="reviewerOneWeight"
+                formControlName="reviewerOneWeight"
               />
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label>Reviewer Weight ii</label>
+              <label>Reviewer Weight II</label>
               <input
                 name="reviewerTwoWeight"
                 type="number"
                 class="form-control"
-                [(ngModel)]="reviewerTwoWeight"
+                formControlName="reviewerTwoWeight"
               />
             </div>
           </div>
@@ -118,21 +113,21 @@
                 name="reviewerThreeWeight"
                 type="number"
                 class="form-control"
-                [(ngModel)]="reviewerThreeWeight"
+                formControlName="reviewerThreeWeight"
               />
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Reviewee Weight</label>
-              <input
-                class="form-control"
-                name="revieweeWeight"
-                type="number"
-                [(ngModel)]="revieweeWeight"
-              />
-            </div>
-          </div>
+          <!--          <div class="col-md-6">-->
+          <!--            <div class="form-group">-->
+          <!--              <label>Reviewee Weight</label>-->
+          <!--              <input-->
+          <!--                class="form-control"-->
+          <!--                name="revieweeWeight"-->
+          <!--                type="number"-->
+          <!--                [(ngModel)]="revieweeWeight"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--          </div>-->
           <div class="col-md-6">
             <div class="form-group">
               <label>Status</label>
@@ -140,7 +135,7 @@
                 class="form-control"
                 name="status"
                 type="number"
-                [(ngModel)]="status"
+                formControlName="status"
               >
                 <option selected value="">Status</option>
                 <option value="1">Locked</option>
@@ -148,78 +143,9 @@
               </select>
             </div>
           </div>
-<<<<<<< HEAD
-=======
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Form Generated</label>
-              <input
-                type="text"
-                name="formGenerated"
-                class="form-control"
-                [(ngModel)]="formGenerated"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Notification Sent</label>
-              <input
-                type="text"
-                name="notificationSent"
-                class="form-control"
-                [(ngModel)]="notificationSent"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label> Created By</label>
-              <input
-                type="text"
-                name="createdBy"
-                class="form-control"
-                [(ngModel)]="createdBy"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Created On</label>{{ dateObj | date }}
-              <input
-                type="date"
-                name="createdOn"
-                class="form-control"
-                [(ngModel)]="createdOn"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Updated By</label>
-              <input
-                type="text"
-                name="updatedBy"
-                class="form-control"
-                [(ngModel)]="updatedBy"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Updated On</label>{{ dateObj | date }}
-              <input
-                type="date"
-                name="updatedOn"
-                class="form-control"
-                [(ngModel)]="updatedOn"
-              />
-            </div>
-          </div>
->>>>>>> work
         </div>
         <div class="modal-body">
-          <form (ngSubmit)="submitAppraisalCycleForm()">
+          <div>
             <div
               class="btn-toolbar"
               role="toolbar"
@@ -244,6 +170,7 @@
                   class="btn btn-primary"
                   type="submit"
                   [disabled]="spinner"
+                  (click)="submitAppraisalCycleForm(appraisalCycleForm)"
                 >
                   <span *ngIf="!spinner">Submit</span>
                   <span *ngIf="spinner"
@@ -251,15 +178,13 @@
                   ></span>
                 </button>
 
-<<<<<<< HEAD
-                <button type="button" class="btn btn-warning">
-=======
+                <!--                <button type="button" class="btn btn-warning"></button>-->
+
                 <button
                   type="button"
                   class="btn btn-warning"
                   style="color: #fff"
                 >
->>>>>>> work
                   Copy previous objectives
                 </button>
 
@@ -272,7 +197,7 @@
                 </button>
               </div>
             </div>
-          </form>
+          </div>
         </div>
       </form>
     </div>

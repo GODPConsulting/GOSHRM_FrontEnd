@@ -78,7 +78,9 @@
           <th pSortableColumn="reviewerOneWeight">Reviewer I</th>
           <th pSortableColumn="reviewerTwoWeight">Reviewer II</th>
           <th pSortableColumn="reviewerThreeWeight">Reviewer III</th>
-          <th pSortableColumn="revieweeWeight">Reviewee Weight</th>
+          <!--          <th pSortableColumn="revieweeWeight" style="width: 10rem">-->
+          <!--            Reviewee Weight-->
+          <!--          </th>-->
           <th pSortableColumn="status">Status</th>
         </tr>
       </ng-template>
@@ -96,63 +98,63 @@
           <!--          </td>-->
           <td>
             <a
-              class="text-dark d-block"
+              class="text-dark d-block text-center"
               [routerLink]="['appraisals', row.id]"
               >{{ row.reviewYear }}</a
             >
           </td>
           <td>
             <a
-              class="text-dark d-block"
+              class="text-dark d-block text-center"
               [routerLink]="['appraisals', row.id]"
-              >{{ row.startDate }}</a
+              >{{ row.startPeriod | date }}</a
             >
           </td>
           <td>
             <a
-              class="text-dark d-block"
+              class="text-dark d-block text-center"
               [routerLink]="['appraisals', row.id]"
-              >{{ row.endDate }}</a
+              >{{ row.endPeriod | date }}</a
             >
           </td>
           <td>
             <a
-              class="text-dark d-block"
+              class="text-dark d-block text-center"
               [routerLink]="['appraisals', row.id]"
-              >{{ row.dueDate }}</a
+              >{{ row.dueDate | date }}</a
             >
           </td>
           <td>
             <a
-              class="text-dark d-block"
+              class="text-dark d-block text-center"
               [routerLink]="['appraisals', row.id]"
               >{{ row.reviewerOneWeight }}</a
             >
           </td>
           <td>
             <a
-              class="text-dark d-block"
+              class="text-dark d-block text-center"
               [routerLink]="['appraisals', row.id]"
               >{{ row.reviewerTwoWeight }}</a
             >
           </td>
           <td>
             <a
-              class="text-dark d-block"
+              class="text-dark d-block text-center"
               [routerLink]="['appraisals', row.id]"
               >{{ row.reviewerThreeWeight }}</a
             >
           </td>
+          <!--          <td style="width: 10rem">-->
+          <!--            <a-->
+          <!--              class="text-dark d-block text-center"-->
+          <!--              [routerLink]="['appraisals', row.id]"-->
+          <!--              >{{ row.revieweeWeight }}</a-->
+          <!--            >-->
+          <!--          </td>-->
           <td>
             <a
-              class="text-dark d-block"
-              [routerLink]="['appraisals', row.id]"
-              >{{ row.revieweeWeight }}</a
-            >
-          </td>
-          <td>
-            <a
-              class="text-dark d-block"
+              class="text-dark d-block text-center"
               [routerLink]="['appraisals', row.id]"
               >{{ row.status }}</a
             >

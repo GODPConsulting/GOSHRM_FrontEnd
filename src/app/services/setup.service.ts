@@ -12,13 +12,6 @@ export class SetupService {
   handleError(error: HttpErrorResponse) {
     return throwError(error.error);
   }
-  getData(url: string): Observable<any> {
-    return this.apiService.get(url).pipe(
-      tap((data) => {
-        return data;
-      })
-    );
-  }
 
   updateData(url: string, payload: object): Observable<any> {
     return this.apiService.post(url, payload).pipe((res) => {

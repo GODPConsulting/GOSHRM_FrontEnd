@@ -5,6 +5,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
+import { CommonService } from "../../../services/common.service";
 
 declare const $: any;
 
@@ -30,7 +31,8 @@ export class LocationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private setupService: SetupService,
     private utilitiesService: UtilitiesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -240,7 +242,7 @@ export class LocationComponent implements OnInit {
   /* Put in utilities service */
   getCountry() {
     this.loadingService.show();
-    return this.setupService.getData("/common/countries").subscribe(
+    return this.commonService.getCountries().subscribe(
       (data) => {
         this.loadingService.hide();
         this.countries = data.commonLookups;
@@ -253,17 +255,15 @@ export class LocationComponent implements OnInit {
 
   getStatesByCountryId(id) {
     this.loadingService.show();
-    return this.setupService
-      .getData(`/common/get/states/countryId?CountryId=${id}`)
-      .subscribe(
-        (data) => {
-          this.loadingService.hide();
-          this.states = data.commonLookups;
-        },
-        (err) => {
-          this.loadingService.hide();
-        }
-      );
+    return this.commonService.getStatesByCountryId(id).subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.states = data.commonLookups;
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
   }
 
   /* Put in utilities service */

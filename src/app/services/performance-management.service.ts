@@ -4,7 +4,12 @@ import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
-import { EmployeeKPI, IKpis, KpiCategory } from "../interface/interfaces";
+import {
+  EmployeeKPI,
+  IAppraisalCycle,
+  IKpis,
+  KpiCategory,
+} from "../interface/interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -185,20 +190,18 @@ export class PerformanceManagementService {
   }
 
   getAppraisalCycles() {
-    return this.apiService
-      .get("/performance/performancesetup/get/all/appraisal-cycles")
-      .pipe(
-        tap(),
-        map((res) => {
-          return res;
-        }),
-        catchError(this.handleError)
-      );
+    return this.apiService.get("/performance/get/all/appraisal_cycles").pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
   }
 
   postAppraisalCycle(payload: Object) {
     return this.apiService
-      .post("/performance/performancesetup/add/update/appraisal-cycle", payload)
+      .post("/performance/create/update/appraisal_cycle", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -424,7 +427,7 @@ export class PerformanceManagementService {
   getEmployeeAppraisalCycle(
     employeeId: number,
     deptId: number
-  ): Observable<any> {
+  ): Observable<IAppraisalCycle[]> {
     return this.apiService
       .get(
         `/performance/get/employee_appraisal/cycle?EmployeeId=${employeeId}&Department=${deptId}`

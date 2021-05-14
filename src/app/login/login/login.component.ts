@@ -7,6 +7,7 @@ import swal from "sweetalert2";
 import { DataService } from "src/app/services/data.service";
 import { exists } from "fs";
 import { EmployeeService } from "src/app/services/employee.service";
+import { LoadingService } from "../../services/loading.service";
 
 @Component({
   selector: "app-login",
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
   spinner: boolean = false;
   user: any;
   hrmUser: any;
+  userRights: any;
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +30,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private dataService: DataService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit() {
@@ -57,7 +60,6 @@ export class LoginComponent implements OnInit {
     return this.authService.getProfile().subscribe(
       (data) => {
         this.user = data;
-        this.getEmployeeByEmail(this.user.email);
         if (data != null) {
           this.jwtService.saveUserDetails(data);
           let activities;
@@ -66,7 +68,7 @@ export class LoginComponent implements OnInit {
               return item.toLocaleLowerCase();
             });
             this.jwtService.saveUserActivities(activities).then(() => {
-              this.router.navigateByUrl(this.redirectURL);
+              this.getEmployeeByEmail(this.user.staffId);
             });
           } else {
             swal
@@ -82,6 +84,7 @@ export class LoginComponent implements OnInit {
         }
       },
       (error) => {
+        this.loadingService.hide();
         const message = error.status.message.friendlyMessage;
         swal.fire(`Error`, message, "error");
       }
@@ -90,18 +93,16 @@ export class LoginComponent implements OnInit {
 
   login(loginForm: FormGroup) {
     const payload = loginForm.value;
-    this.loading = true;
+    this.loadingService.show();
     return this.authService.userLogin(payload).subscribe(
       (res) => {
-        this.loading = false;
         this.jwtService.saveToken(res.token).then(() => {
           this.getUserDetails();
           // this.router.navigateByUrl('/')
         });
       },
       (err) => {
-        this.loading = false;
-        console.log(err);
+        this.loadingService.hide();
         if (err.status) {
           const message = err.status.message.friendlyMessage;
           swal.fire("GOSHRM", message, "error");
@@ -110,26 +111,33 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  getEmployeeByEmail(email: string) {
-    this.employeeService.getEmployeeByEmail(email).subscribe((data) => {
-      this.hrmUser = data.employeeList[0];
-      // this.hrmUser.branchId = this.user.branchId;
-      // this.hrmUser.branchName = this.user.branchName;
-      // this.hrmUser.companyId = this.user.companyId;
-      // this.hrmUser.companyName = this.user.companyName;
-      // this.hrmUser.customerName = this.user.customerName;
-      // this.hrmUser.departmentId = this.user.departmentId;
-      // this.hrmUser.lastLoginDate = this.user.lastLoginDate;
-      // this.hrmUser.staffName = this.user.staffName;
-      // this.hrmUser.userStatus = this.user.status;
-      // this.hrmUser.userId = this.user.userId;
-      // this.hrmUser.userName = this.user.userName;
-      // this.hrmUser.userRoleNames = [...this.user.roles];
-      // this.hrmUser.activities = [...this.user.activities];
-      // //this.userRights = this.hrmUser.activities;
-      // // share user data through data service
-      // //this.dataService.saveCurrentUser(this.hrmUser);
-      // this.jwtService.saveHrmUserDetails(this.hrmUser);
-    });
+  getEmployeeByEmail(id: number) {
+    this.employeeService.getEmployee(id).subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.hrmUser = data.employeeList[0];
+        this.router.navigateByUrl(this.redirectURL);
+        this.hrmUser.branchId = this.user.branchId;
+        this.hrmUser.branchName = this.user.branchName;
+        this.hrmUser.companyId = this.user.companyId;
+        this.hrmUser.companyName = this.user.companyName;
+        this.hrmUser.customerName = this.user.customerName;
+        this.hrmUser.departmentId = this.user.departmentId;
+        this.hrmUser.lastLoginDate = this.user.lastLoginDate;
+        this.hrmUser.staffName = this.user.staffName;
+        this.hrmUser.userStatus = this.user.status;
+        this.hrmUser.userId = this.user.userId;
+        this.hrmUser.userName = this.user.userName;
+        this.hrmUser.userRoleNames = [...this.user.roles];
+        this.hrmUser.activities = [...this.user.activities];
+        this.userRights = this.hrmUser.activities;
+        // share user data through data service
+        this.dataService.saveCurrentUser(this.hrmUser);
+        this.jwtService.saveHrmUserDetails(this.hrmUser);
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
   }
 }

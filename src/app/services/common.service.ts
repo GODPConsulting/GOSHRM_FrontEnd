@@ -31,4 +31,67 @@ export class CommonService {
       catchError(this.handleError)
     );
   }
+  getRoles(): Observable<any> {
+    return this.apiService.get(`/admin/get/all/role`).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getCompanyStructureDefinition(): Observable<any> {
+    return this.apiService
+      .get(`/company/get/all/companystructureDefinition`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  getAccessLevelsByAccessLevelId(id): Observable<any> {
+    return this.apiService
+      .get(`/company/get/all/companystructure/accessId?AccessId=${id}`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  getIdentifications(): Observable<any> {
+    return this.apiService.get(`/common/identifications`).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getCountries(): Observable<any> {
+    return this.apiService.get(`/common/countries`).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getStatesByCountryId(id): Observable<any> {
+    return this.apiService
+      .get(`/common/get/states/countryId?CountryId=${id}`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
 }

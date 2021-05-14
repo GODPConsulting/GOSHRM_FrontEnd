@@ -7,13 +7,22 @@ import { By } from "@angular/platform-browser";
 import { Component } from "@angular/core";
 import { Location } from "@angular/common";
 import { SpyLocation } from "@angular/common/testing";
-
+import { DomHelper } from "../../../testing/dom-helper";
+import { AuthService } from "../../services/auth.service";
+import { of } from "rxjs";
+import { Router } from "@angular/router";
 describe("LoginComponent", () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let dh: DomHelper;
+  let dh: DomHelper<LoginComponent>;
+  let authServiceMock: any;
   beforeEach(
     waitForAsync(() => {
+      authServiceMock = jasmine.createSpyObj("AuthService", [
+        "login",
+        "getProfile",
+      ]);
+      authServiceMock.getProfile.and.returnValue(of([]));
       TestBed.configureTestingModule({
         declarations: [LoginComponent],
         imports: [
@@ -26,7 +35,10 @@ describe("LoginComponent", () => {
             },
           ]),
         ],
-        providers: [{ provide: Location, useClass: SpyLocation }],
+        providers: [
+          { provide: Location, useClass: SpyLocation },
+          { provide: AuthService, useValue: authServiceMock },
+        ],
       }).compileComponents();
     })
   );
@@ -72,34 +84,14 @@ describe("LoginComponent", () => {
     expect(dh.multipleElement("label", 0)).toBe("Username");
     expect(dh.multipleElement("label", 1)).toBe("Password");
   });
+
+  it("should navigate to /login on load", () => {
+    const router = TestBed.inject(Router);
+    expect(router.url).toBe("/");
+  });
 });
 
 @Component({
   template: "",
 })
 class DummyComponent {}
-
-class DomHelper {
-  private fixture: ComponentFixture<LoginComponent>;
-  constructor(fixture: ComponentFixture<LoginComponent>) {
-    this.fixture = fixture;
-  }
-
-  singleElement(tagName: string): string {
-    const element = this.fixture.debugElement.query(By.css(tagName));
-    if (element) {
-      return element.nativeElement.textContent;
-    }
-  }
-
-  counter(tagName: string): number {
-    const elements = this.fixture.debugElement.queryAll(By.css(tagName));
-    return elements.length;
-  }
-  multipleElement(tagName: string, index: number): string {
-    const elements = this.fixture.debugElement.queryAll(By.css(tagName));
-    if (elements) {
-      return elements[index].nativeElement.textContent;
-    }
-  }
-}

@@ -12,9 +12,8 @@
           download
           ><span class="hint-text">Download</span><i class="fa fa-download"></i
         ></a>
+        <!--        *ngIf="dataFromParent.canSeeProfileElement"-->
         <a
-          *ngIf="dataFromParent.canSeeProfileElement"
-          (click)="initCareerForm()"
           class="hint edit-icon mr-1"
           data-toggle="modal"
           data-target="#career_modal"
@@ -63,11 +62,11 @@
                 />
               </td>
               <td>{{ i + 1 }}</td>
-              <td>{{ row.job_GradeId }}</td>
-              <td>{{ row.job_titleId }}</td>
+              <td>{{ row.job_Grade }}</td>
+              <td>{{ row.job_title | titlecase }}</td>
               <td>{{ row.job_type }}</td>
-              <td>{{ row.countryId }}</td>
-              <td>{{ row.locationId }}</td>
+              <td>{{ row.countryName }}</td>
+              <td>{{ row.locationName }}</td>
               <td>{{ row.officeName }}</td>
               <td>{{ row.line_ManagerName }}</td>
             </tr>

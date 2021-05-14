@@ -10,6 +10,7 @@ import { SetupService } from "src/app/services/setup.service";
 import { Subscription } from "rxjs";
 import { DataService } from "src/app/services/data.service";
 import { LoadingService } from "../../../../services/loading.service";
+import { CommonService } from "../../../../services/common.service";
 declare const $: any;
 
 @Component({
@@ -63,7 +64,8 @@ export class EmployeeProfileComponent implements OnInit {
     private setupService: SetupService,
     private router: Router,
     private dataService: DataService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService
   ) {
     // Handles route reloading...solves view not changing when user navigates to his/her own profile from another user's profile route
     this.navigationSubscription = this.router.events.subscribe((e) => {
@@ -79,6 +81,7 @@ export class EmployeeProfileComponent implements OnInit {
     });
     // Get access to the user data shared from sidebar
     this.dataService.currentUser.subscribe((result) => {
+      console.log(result);
       this.dataToChild.user = result;
       this.dataToChild.isHr = this.dataToChild.user?.userRoleNames.includes(
         "HR Admin"
@@ -243,7 +246,7 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   getCountry() {
-    return this.utilitiesService.getCountry().subscribe(
+    return this.commonService.getCountries().subscribe(
       (data) => {
         this.countries = data.commonLookups;
       },

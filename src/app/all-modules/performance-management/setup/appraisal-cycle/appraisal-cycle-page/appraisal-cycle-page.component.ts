@@ -7,6 +7,9 @@ import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
 import { CommonService } from "../../../../../services/common.service";
+import { IAppraisalCycle } from "../../../../../interface/interfaces";
+import { Router } from "@angular/router";
+
 declare const $: any;
 @Component({
   selector: "app-appraisal-cycle-page",
@@ -42,23 +45,18 @@ export class AppraisalCyclePageComponent implements OnInit {
   reviewerThreeWeight: any;
   revieweeWeight: any;
   status: string;
-  appraisalCycleForm: any;
-  public offices: number[] = [];
+  appraisalCycleForm: FormGroup;
+  offices: any[] = [];
   appraisalCycleUploadForm: any;
   dateObj: any;
-  formGenerated: any;
-  notificationSent: any;
-  createdBy: any;
-  createdOn: any;
-  updatedOn: any;
-  updatedBy: any;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
     private loadingService: LoadingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private router: Router
   ) {
     this.appraisalCycleUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -70,6 +68,7 @@ export class AppraisalCyclePageComponent implements OnInit {
     this.cardFormTitle = "Add Appraisal Cycle";
     this.createYears(2000, 2050);
     this.getStaffDepartments();
+    this.initialiseForm();
   }
 
   createYears(from, to) {
@@ -77,50 +76,41 @@ export class AppraisalCyclePageComponent implements OnInit {
       this.years.push({ year: i });
     }
   }
-
-  submitAppraisalCycleForm() {
-    const payload = {
-      reviewYear: this.reviewYear,
-      company: +this.company,
-      startDate: this.startDate,
-      endDate: this.endDate,
-      dueDate: this.dueDate,
-      reviewerOneWeight: this.reviewerOneWeight,
-      reviewerTwoWeight: this.reviewerTwoWeight,
-      reviewerThreeWeight: this.reviewerThreeWeight,
-      revieweeWeight: this.revieweeWeight,
-      status: +this.status,
-      calenderRange: this.calenderRange,
-    };
-
-    this.spinner = true;
+  initialiseForm() {
+    this.appraisalCycleForm = this.formBuilder.group({
+      appraisalCycleId: [0],
+      reviewYear: [""],
+      startPeriod: [""],
+      endPeriod: [""],
+      dueDate: [""],
+      reviewerOneWeight: [""],
+      reviewerTwoWeight: [""],
+      reviewerThreeWeight: [""],
+      status: [""],
+      department: [""],
+    });
+  }
+  submitAppraisalCycleForm(form: FormGroup) {
+    const payload: IAppraisalCycle = form.value;
+    payload.department = +payload.department;
+    payload.status = +payload.status;
+    payload.reviewYear = +payload.reviewYear;
+    this.loadingService.show();
     return this.performanceManagementService
       .postAppraisalCycle(payload)
       .subscribe(
         (res) => {
-          this.spinner = false;
+          this.loadingService.hide();
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", message, "success");
             $("#appraisal_cycle_modal").modal("hide");
-
-            this.reviewYear = "";
-            this.company = "";
-            this.startDate = "";
-            this.endDate = "";
-            this.dueDate = "";
-            this.reviewerOneWeight = "";
-            this.reviewerTwoWeight = "";
-            this.reviewerThreeWeight = "";
-            this.revieweeWeight = "";
-            this.status = "";
-            this.calenderRange = "";
+            this.initialiseForm();
+            this.router.navigate(["/performance/setup/appraisal-cycle"]);
           }
-
-          this.getAppraisalCycles();
         },
         (err) => {
-          this.spinner = false;
+          this.loadingService.hide();
           const message = err.status.message.friendlyMessage;
           swal.fire("GOSHRM", message, "error");
         }
