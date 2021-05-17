@@ -359,9 +359,8 @@
                   ><span class="hint-text">Download</span
                   ><i class="fa fa-download"></i>
                 </a>
+                <!--                *ngIf="dataToChild.canSeeProfileElement"-->
                 <a
-                  *ngIf="dataToChild.canSeeProfileElement"
-                  (click)="initEmployeeQualificationForm()"
                   class="edit-icon hint mr-1"
                   data-toggle="modal"
                   data-target="#employee_qualification_modal"

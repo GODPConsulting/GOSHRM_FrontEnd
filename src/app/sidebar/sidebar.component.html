@@ -5,144 +5,237 @@
       <div id="sidebar-menu" class="sidebar-menu">
         <ul *ngIf="sidebarMenus.default">
           <!-- ESS -->
-          <li *ngIf="userRights.includes('profile')" class="submenu" [ngClass]="{
+          <li
+            *ngIf="userRights.includes('profile')"
+            class="submenu"
+            [ngClass]="{
               active:
-                (urlComplete.mainUrl === 'employees' &&
-                  urlComplete.subUrl === 'employeeprofile')
-            }">
-            <a href="javascript:" [ngClass]="{
+                urlComplete.mainUrl === 'employees' &&
+                urlComplete.subUrl === 'employeeprofile'
+            }"
+          >
+            <a
+              href="javascript:"
+              [ngClass]="{
                 subdrop:
-                  (urlComplete.mainUrl === 'employees' &&
-                    urlComplete.subUrl === 'employeeprofile')
-              }" class="noti-dot"><i class="la la-user-cog"></i> <span> ESS</span>
-              <span class=" menu-arrow"></span></a>
-            <ul style="display: none;" [ngStyle]="{
+                  urlComplete.mainUrl === 'employees' &&
+                  urlComplete.subUrl === 'employeeprofile'
+              }"
+              class="noti-dot"
+              ><i class="la la-user-cog"></i> <span> ESS</span>
+              <span class="menu-arrow"></span
+            ></a>
+            <ul
+              style="display: none"
+              [ngStyle]="{
                 display:
-                  (urlComplete.mainUrl === 'employees' &&
-                    urlComplete.subUrl === 'employeeprofile')
+                  urlComplete.mainUrl === 'employees' &&
+                  urlComplete.subUrl === 'employeeprofile'
                     ? 'block'
                     : 'none'
-              }">
-              <li *ngIf="userRights.includes('profile')"
-                [routerLink]='["/employees/employeeprofile/", hrmUser?.staffId]'>
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employeeprofile' }">Profile</a>
+              }"
+            >
+              <li
+                *ngIf="userRights.includes('profile')"
+                [routerLink]="['/employees/employeeprofile/', user?.staffId]"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'employeeprofile'
+                  }"
+                  >Profile</a
+                >
               </li>
               <li routerLink="/performance/setup/appraisal-feedback">
-                <a href="javascript:" [ngClass]="{
-                        active:
-                          urlComplete.childUrl === 'appraisal-feedback'
-                      }">Appraisal Feedback</a>
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.childUrl === 'appraisal-feedback'
+                  }"
+                  >Appraisal Feedback</a
+                >
               </li>
               <li routerLink="/performance/appraisal-objective-view">
-                <a href="javascript:" [ngClass]="{
-                    active:
-                      urlComplete.subUrl === 'appraisal-objective-view'
-                  }">Appraisal Objective</a>
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'appraisal-objective-view'
+                  }"
+                  >Appraisal Objective</a
+                >
               </li>
             </ul>
           </li>
           <!-- /ESS -->
           <!-- Employee sidebar -->
-          <li *ngIf="userRights.includes('allemployees')" class="submenu" [ngClass]="{
+          <li
+            *ngIf="userRights.includes('allemployees')"
+            class="submenu"
+            [ngClass]="{
               active:
-                (urlComplete.mainUrl === 'employees' &&
-                  urlComplete.subUrl === 'employeeviews')
-            }">
-            <a href="javascript:" [ngClass]="{
+                urlComplete.mainUrl === 'employees' &&
+                urlComplete.subUrl === 'employeeviews'
+            }"
+          >
+            <a
+              href="javascript:"
+              [ngClass]="{
                 subdrop:
-                  (urlComplete.mainUrl === 'employees' &&
-                    urlComplete.subUrl === 'employeeviews')
-              }" class="noti-dot"><i class="la la-user"></i> <span> HR Admin</span>
-              <span class="menu-arrow"></span></a>
-            <ul style="display: none;" [ngStyle]="{
+                  urlComplete.mainUrl === 'employees' &&
+                  urlComplete.subUrl === 'employeeviews'
+              }"
+              class="noti-dot"
+              ><i class="la la-user"></i> <span> HR Admin</span>
+              <span class="menu-arrow"></span
+            ></a>
+            <ul
+              style="display: none"
+              [ngStyle]="{
                 display:
-
-                  (urlComplete.mainUrl === 'employees' &&
-                    urlComplete.subUrl === 'employeeviews')
+                  urlComplete.mainUrl === 'employees' &&
+                  urlComplete.subUrl === 'employeeviews'
                     ? 'block'
                     : 'none'
-              }">
-              <li *ngIf="userRights.includes('allemployees')" routerLink="/employees/employeeviews">
-                <a href="javascript:" [ngClass]="{
+              }"
+            >
+              <li
+                *ngIf="userRights.includes('allemployees')"
+                routerLink="/employees/employeeviews"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
                     active:
                       urlComplete.subUrl === 'employeepage' ||
                       urlComplete.subUrl === 'employeeviews'
-                  }">All Employees</a>
+                  }"
+                  >All Employees</a
+                >
               </li>
             </ul>
           </li>
           <!-- /Employee sidebar -->
           <!-- Managers -->
-          <li *ngIf="userRights.includes('line manager')" class="submenu" [ngClass]="{
+          <li
+            *ngIf="userRights.includes('line manager')"
+            class="submenu"
+            [ngClass]="{
               active:
-                (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'direct-report-appraisals')
-            }">
-            <a href="javascript:" [ngClass]="{
+                urlComplete.mainUrl === 'performance' &&
+                urlComplete.subUrl === 'direct-report-appraisals'
+            }"
+          >
+            <a
+              href="javascript:"
+              [ngClass]="{
                 subdrop:
-                  (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'direct-report-appraisals')
-              }" class="noti-dot"><i class="la la-user-tie"></i> <span> Managers</span>
-              <span class=" menu-arrow"></span></a>
+                  urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'direct-report-appraisals'
+              }"
+              class="noti-dot"
+              ><i class="la la-user-tie"></i> <span> Managers</span>
+              <span class="menu-arrow"></span
+            ></a>
             <ul>
-              <li *ngIf="userRights.includes('line manager')" class="submenu" [ngClass]="{
-              active:
-                (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'direct-report-appraisals')
-            }">
-                <a href="javascript:" [ngClass]="{
-                subdrop:
-                  (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'direct-report-appraisals')
-              }" class="noti-dot"><span> My Team</span>
-                  <span class=" menu-arrow"></span></a>
-                <ul>
-                  <li *ngIf="userRights.includes('line manager')" class="submenu" [ngClass]="{
-                      active:
-                        (urlComplete.mainUrl === 'performance' &&
-                          urlComplete.subUrl === 'direct-report-appraisals')
-                    }">
-                    <a href="javascript:" [ngClass]="{
-                        subdrop:
-                          (urlComplete.mainUrl === 'performance' &&
-                            urlComplete.subUrl === 'direct-report-appraisals')
-                      }" class="noti-dot"> <span> Performance</span>
-                      <span class=" menu-arrow"></span></a>
-                    <ul style="display: none;" [ngStyle]="{
-                display:
-                  (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'direct-report-appraisals')
-                    ? 'block'
-                    : 'none'
-              }">
-                      <li *ngIf="userRights.includes('line manager')" routerLink="/manager/direct-report-appraisals">
-                        <a href="javascript:" [ngClass]="{
-                    active:
-                      urlComplete.subUrl === 'performance' ||
+              <li
+                *ngIf="userRights.includes('line manager')"
+                class="submenu"
+                [ngClass]="{
+                  active:
+                    urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'direct-report-appraisals'
+                }"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    subdrop:
+                      urlComplete.mainUrl === 'performance' &&
                       urlComplete.subUrl === 'direct-report-appraisals'
-                  }">Appraisals</a>
+                  }"
+                  class="noti-dot"
+                  ><span> My Team</span> <span class="menu-arrow"></span
+                ></a>
+                <ul>
+                  <li
+                    *ngIf="userRights.includes('line manager')"
+                    class="submenu"
+                    [ngClass]="{
+                      active:
+                        urlComplete.mainUrl === 'performance' &&
+                        urlComplete.subUrl === 'direct-report-appraisals'
+                    }"
+                  >
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        subdrop:
+                          urlComplete.mainUrl === 'performance' &&
+                          urlComplete.subUrl === 'direct-report-appraisals'
+                      }"
+                      class="noti-dot"
+                    >
+                      <span> Performance</span> <span class="menu-arrow"></span
+                    ></a>
+                    <ul
+                      style="display: none"
+                      [ngStyle]="{
+                        display:
+                          urlComplete.mainUrl === 'performance' &&
+                          urlComplete.subUrl === 'direct-report-appraisals'
+                            ? 'block'
+                            : 'none'
+                      }"
+                    >
+                      <li
+                        *ngIf="userRights.includes('line manager')"
+                        routerLink="/manager/direct-report-appraisals"
+                      >
+                        <a
+                          href="javascript:"
+                          [ngClass]="{
+                            active:
+                              urlComplete.subUrl === 'performance' ||
+                              urlComplete.subUrl === 'direct-report-appraisals'
+                          }"
+                          >Appraisals</a
+                        >
                       </li>
                     </ul>
                   </li>
                 </ul>
-                <a href="javascript:" [ngClass]="{
-                  subdrop:
-                    (urlComplete.mainUrl === 'performance' &&
-                      urlComplete.subUrl === 'direct-report-appraisals')
-                }" class="noti-dot"><span> External Team</span>
-                  <span class=" menu-arrow"></span></a>
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    subdrop:
+                      urlComplete.mainUrl === 'performance' &&
+                      urlComplete.subUrl === 'direct-report-appraisals'
+                  }"
+                  class="noti-dot"
+                  ><span> External Team</span> <span class="menu-arrow"></span
+                ></a>
                 <ul>
-                  <li *ngIf="userRights.includes('line manager')" class="submenu" [ngClass]="{
-                        active:
-                          (urlComplete.mainUrl === 'performance' &&
-                            urlComplete.subUrl === 'direct-report-appraisals')
-                      }">
-                    <a href="javascript:" [ngClass]="{
-                          subdrop:
-                            (urlComplete.mainUrl === 'performance' &&
-                              urlComplete.subUrl === 'direct-report-appraisals')
-                        }" class="noti-dot"> <span> Something</span>
-                      <span class=" menu-arrow"></span></a>
+                  <li
+                    *ngIf="userRights.includes('line manager')"
+                    class="submenu"
+                    [ngClass]="{
+                      active:
+                        urlComplete.mainUrl === 'performance' &&
+                        urlComplete.subUrl === 'direct-report-appraisals'
+                    }"
+                  >
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        subdrop:
+                          urlComplete.mainUrl === 'performance' &&
+                          urlComplete.subUrl === 'direct-report-appraisals'
+                      }"
+                      class="noti-dot"
+                    >
+                      <span> Something</span> <span class="menu-arrow"></span
+                    ></a>
                   </li>
                 </ul>
               </li>
@@ -150,417 +243,600 @@
           </li>
           <!-- Managers -->
           <!-- Setup sidebar -->
-          <li *ngIf="userRights.includes('job title')" class="submenu" [ngClass]="{
+          <li
+            *ngIf="userRights.includes('job title')"
+            class="submenu"
+            [ngClass]="{
               active:
-              (urlComplete.mainUrl === 'setup' &&
-              urlComplete.subUrl === 'employee-id-format')||
-              (urlComplete.mainUrl === 'setup' &&
-              urlComplete.subUrl === 'job-grade') ||
-            (urlComplete.mainUrl === 'setup' &&
-              urlComplete.subUrl === 'high-school-subjects') ||
-              (urlComplete.mainUrl === 'setup' &&
-                urlComplete.subUrl === 'employment-level') ||
                 (urlComplete.mainUrl === 'setup' &&
-                urlComplete.subUrl === 'academic-grade') ||
-            (urlComplete.mainUrl === 'setup' &&
-              urlComplete.subUrl === 'employment-type') ||
-              (urlComplete.mainUrl === 'setup' &&
-              urlComplete.subUrl === 'academic-discipline') ||
-              (urlComplete.mainUrl === 'setup' &&
-                urlComplete.subUrl === 'hmo') ||
+                  urlComplete.subUrl === 'employee-id-format') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'job-grade') ||
                 (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'high-school-subjects') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'academic-discipline') ||
-                  (urlComplete.mainUrl === 'setup' &&
+                (urlComplete.mainUrl === 'setup' &&
                   urlComplete.subUrl === 'employment-level') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'academic-grade') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'employment-type') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'academic-discipline') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'hmo') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'high-school-subjects') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'academic-discipline') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'employment-level') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'hmo') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'language') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'prof-membership') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'gym-workout') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'high-school-grade') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'employment-type') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'academic-qualification') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'hmo') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'job-detail') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'location') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'hospital-management') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'prof-certification') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'job-skill') ||
+                (urlComplete.mainUrl === 'setup' &&
+                  urlComplete.subUrl === 'job-title')
+            }"
+          >
+            <a
+              href="javascript:"
+              [ngClass]="{
+                subdrop:
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'employee-id-format') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'job-grade') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'high-school-subjects') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'employment-level') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'academic-grade') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'employment-type') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'academic-discipline') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'hmo') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'gym-workout') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'job-grade') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'language') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'prof-membership') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'academic-qualification') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'high-school-grade') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'location') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'hospital-management') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'job-title') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'prof-certification') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'job-skill')
+              }"
+              class="noti-dot"
+              ><i class="la la-cog"></i> <span> Setup</span>
+              <span class="menu-arrow"></span
+            ></a>
+            <ul
+              style="display: none"
+              [ngStyle]="{
+                display:
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'employee-id-format') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'job-grade') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'high-school-subjects') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'employment-level') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'academic-grade') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'employment-type') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'academic-discipline') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'hmo') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'gym-workout') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'academic-qualification') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'prof-certification') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'employment-type') ||
+                  (urlComplete.mainUrl === 'setup' &&
+                    urlComplete.subUrl === 'academic-discipline') ||
                   (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'hmo') ||
                   (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'language') ||
-                 (urlComplete.mainUrl === 'setup' &&
+                  (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'prof-membership') ||
-                    (urlComplete.mainUrl === 'setup' &&
+                  (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'gym-workout') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'high-school-grade') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'employment-type') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'academic-qualification') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'hmo') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'job-detail') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'location') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'hospital-management') ||
-                (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'prof-certification') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'job-skill') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'job-title')}">
-            <a href="javascript:" [ngClass]="{
-                subdrop:
-                (urlComplete.mainUrl === 'setup' &&
-              urlComplete.subUrl === 'employee-id-format')||
-                (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'job-grade') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'high-school-subjects') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                      urlComplete.subUrl === 'employment-level') ||
-                      (urlComplete.mainUrl === 'setup' &&
-                      urlComplete.subUrl === 'academic-grade') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'employment-type') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'academic-discipline') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                      urlComplete.subUrl === 'hmo') ||
-                      (urlComplete.mainUrl === 'setup' &&
-                      urlComplete.subUrl === 'gym-workout') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'job-grade') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'language') ||
-               (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'prof-membership') ||
                   (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'academic-qualification') ||
-                      (urlComplete.mainUrl === 'setup' &&
+                  (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'high-school-grade') ||
-                    (urlComplete.mainUrl === 'setup' &&
+                  (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'location') ||
-                    (urlComplete.mainUrl === 'setup' &&
+                  (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'hospital-management') ||
                   (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'job-title') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'prof-certification') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'job-skill')}" class="noti-dot"><i class="la la-cog"></i> <span>
-                Setup</span>
-              <span class="menu-arrow"></span></a>
-            <ul style="display: none;" [ngStyle]="{
-                display:
-                (urlComplete.mainUrl === 'setup' &&
-              urlComplete.subUrl === 'employee-id-format')||
-                (urlComplete.mainUrl === 'setup' &&
-                urlComplete.subUrl === 'job-grade') ||
-              (urlComplete.mainUrl === 'setup' &&
-                urlComplete.subUrl === 'high-school-subjects') ||
-                (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'employment-level') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'academic-grade') ||
-              (urlComplete.mainUrl === 'setup' &&
-                urlComplete.subUrl === 'employment-type') ||
-                (urlComplete.mainUrl === 'setup' &&
-                urlComplete.subUrl === 'academic-discipline') ||
-                (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'hmo') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                  urlComplete.subUrl === 'gym-workout') ||
-                (urlComplete.mainUrl === 'setup' &&
-                urlComplete.subUrl === 'academic-qualification') ||
-                (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'prof-certification') ||
-                  (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'employment-type') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'academic-discipline') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                      urlComplete.subUrl === 'hmo') ||
-                 (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'language') ||
-                (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'prof-membership') ||
-                      (urlComplete.mainUrl === 'setup' &&
-                      urlComplete.subUrl === 'gym-workout') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'academic-qualification') ||
-                      (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'high-school-grade') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'location') ||
-                    (urlComplete.mainUrl === 'setup' &&
-                    urlComplete.subUrl === 'hospital-management') ||
-                    (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'job-detail') ||
-                    (urlComplete.mainUrl === 'setup' &&
+                  (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'job-skill') ||
-                    (urlComplete.mainUrl === 'setup' &&
+                  (urlComplete.mainUrl === 'setup' &&
                     urlComplete.subUrl === 'job-title')
                     ? 'block'
                     : 'none'
-              }">
-              <li *ngIf="userRights.includes('employeeidformat')" routerLink="/setup/employee-id-format">
-                <a href="javascript:" [ngClass]="{
-                  active:
-                    urlComplete.subUrl === 'employee-id-format'}">Employee ID Format</a>
+              }"
+            >
+              <li
+                *ngIf="userRights.includes('employeeidformat')"
+                routerLink="/setup/employee-id-format"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'employee-id-format'
+                  }"
+                  >Employee ID Format</a
+                >
               </li>
-              <li *ngIf="userRights.includes('job grade')" routerLink="/setup/job-grade">
-                <a href="javascript:" [ngClass]="{
-                  active:
-                    urlComplete.subUrl === 'job-grade'}">Job Grades</a>
+              <li
+                *ngIf="userRights.includes('job grade')"
+                routerLink="/setup/job-grade"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'job-grade'
+                  }"
+                  >Job Grades</a
+                >
               </li>
-              <li *ngIf="userRights.includes('high school subject')" routerLink="/setup/high-school-subjects">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'high-school-subjects' }">High School
-                  Subject</a>
+              <li
+                *ngIf="userRights.includes('high school subject')"
+                routerLink="/setup/high-school-subjects"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'high-school-subjects'
+                  }"
+                  >High School Subject</a
+                >
               </li>
-              <li *ngIf="userRights.includes('employment type')" routerLink="/setup/employment-type">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employment-type' }">Employment
-                  Type</a>
+              <li
+                *ngIf="userRights.includes('employment type')"
+                routerLink="/setup/employment-type"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'employment-type'
+                  }"
+                  >Employment Type</a
+                >
               </li>
-              <li *ngIf="userRights.includes('employment level')" routerLink="/setup/employment-level">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'employment-level' }">Employment
-                  Level</a>
+              <li
+                *ngIf="userRights.includes('employment level')"
+                routerLink="/setup/employment-level"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'employment-level'
+                  }"
+                  >Employment Level</a
+                >
               </li>
               <li *ngIf="userRights.includes('hmo')" routerLink="/setup/hmo">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'hmo' }">HMO</a>
+                <a
+                  href="javascript:"
+                  [ngClass]="{ active: urlComplete.subUrl === 'hmo' }"
+                  >HMO</a
+                >
               </li>
-              <li *ngIf="userRights.includes('languages')" routerLink="/setup/language">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'language' }">Language</a>
+              <li
+                *ngIf="userRights.includes('languages')"
+                routerLink="/setup/language"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{ active: urlComplete.subUrl === 'language' }"
+                  >Language</a
+                >
               </li>
-              <li *ngIf="userRights.includes('professional membership')" routerLink="/setup/prof-membership">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'prof-membership' }">Professional
-                  Membership</a>
-              <li *ngIf="userRights.includes('academic grade')" routerLink="/setup/academic-grade">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-grade'}">Academic Grade</a>
+              <li
+                *ngIf="userRights.includes('professional membership')"
+                routerLink="/setup/prof-membership"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'prof-membership'
+                  }"
+                  >Professional Membership</a
+                >
               </li>
-              <li *ngIf="userRights.includes('professional certification')" routerLink="/setup/prof-certification">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'prof-certification'}">Professional
-                  Certification</a>
+
+              <li
+                *ngIf="userRights.includes('academic grade')"
+                routerLink="/setup/academic-grade"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'academic-grade'
+                  }"
+                  >Academic Grade</a
+                >
               </li>
-              <li *ngIf="userRights.includes('academic discipline')" routerLink="/setup/academic-discipline">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-discipline' }">Academic
-                  Discipline</a>
+              <li
+                *ngIf="userRights.includes('professional certification')"
+                routerLink="/setup/prof-certification"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'prof-certification'
+                  }"
+                  >Professional Certification</a
+                >
               </li>
-              <li *ngIf="userRights.includes('gym/workout')" routerLink="/setup/gym-workout">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'gym-workout' }">Gym/Workout </a>
+              <li
+                *ngIf="userRights.includes('academic discipline')"
+                routerLink="/setup/academic-discipline"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'academic-discipline'
+                  }"
+                  >Academic Discipline</a
+                >
               </li>
-              <li *ngIf="userRights.includes('academic qualification')" routerLink="/setup/academic-qualification">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'academic-qualification' }">Academic
-                  Qualification</a>
+              <li
+                *ngIf="userRights.includes('gym/workout')"
+                routerLink="/setup/gym-workout"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{ active: urlComplete.subUrl === 'gym-workout' }"
+                  >Gym/Workout
+                </a>
               </li>
-              <li *ngIf="userRights.includes('high school grades')" routerLink="/setup/high-school-grade">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'high-school-grade' }">High School
-                  Grade</a>
+              <li
+                *ngIf="userRights.includes('academic qualification')"
+                routerLink="/setup/academic-qualification"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'academic-qualification'
+                  }"
+                  >Academic Qualification</a
+                >
               </li>
-              <li *ngIf="userRights.includes('location')" routerLink="/setup/location">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'location' }">Location </a>
+              <li
+                *ngIf="userRights.includes('high school grades')"
+                routerLink="/setup/high-school-grade"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'high-school-grade'
+                  }"
+                  >High School Grade</a
+                >
               </li>
-              <li *ngIf="userRights.includes('hospital management')" routerLink="/setup/hospital-management">
-                <a href="javascript:" [ngClass]="{ active: urlComplete.subUrl === 'hospital-management' }">Hospital
-                  Management </a>
+              <li
+                *ngIf="userRights.includes('location')"
+                routerLink="/setup/location"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{ active: urlComplete.subUrl === 'location' }"
+                  >Location
+                </a>
               </li>
-              <li *ngIf="userRights.includes('job title')" routerLink="/setup/job-title">
-                <a href="javascript:" [ngClass]="{
-                    active:
-                      urlComplete.subUrl === 'job-title'}">Job Title</a>
+              <li
+                *ngIf="userRights.includes('hospital management')"
+                routerLink="/setup/hospital-management"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'hospital-management'
+                  }"
+                  >Hospital Management
+                </a>
+              </li>
+              <li
+                *ngIf="userRights.includes('job title')"
+                routerLink="/setup/job-title"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'job-title'
+                  }"
+                  >Job Title</a
+                >
               </li>
             </ul>
           </li>
           <!-- /Setup sidebar -->
           <!--Performance Management-->
-          <li class="submenu" [ngClass]="{
+          <li
+            class="submenu"
+            [ngClass]="{
               active:
-              (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'kpi-category')||
-            (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'kpi-indicators')||
-            (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'grade-setting')||
-            (urlComplete.mainUrl === 'performance' &&
-            urlComplete.childUrl === 'point-settings')||
-            (urlComplete.mainUrl === 'performance' &&
-            urlComplete.childUrl === 'kpi-to-jobgrade')||
-            (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'appraisal-preference')||
-              (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'appraisal-cycle')||
-              (urlComplete.mainUrl === 'performance' &&
-            urlComplete.childUrl === 'appraisal-feedback')||
                 (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'appraisal-objective-view')||
+                  urlComplete.childUrl === 'kpi-category') ||
                 (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.subUrl === 'appraisal-objective-form')||
+                  urlComplete.childUrl === 'kpi-indicators') ||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.childUrl === 'grade-setting') ||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.childUrl === 'point-settings') ||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.childUrl === 'kpi-to-jobgrade') ||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.childUrl === 'appraisal-preference') ||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.childUrl === 'appraisal-cycle') ||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.childUrl === 'appraisal-feedback') ||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-objective-view') ||
+                (urlComplete.mainUrl === 'performance' &&
+                  urlComplete.subUrl === 'appraisal-objective-form') ||
                 (urlComplete.mainUrl === 'performance' &&
                   urlComplete.subUrl === 'appraisal-objectives')
-
-            }">
-            <a href="javascript:" [ngClass]="{
+            }"
+          >
+            <a
+              href="javascript:"
+              [ngClass]="{
                 subdrop:
-                (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'kpi-category')||
-              (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'kpi-indicators')||
-              (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'grade-setting')||
-              (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'point-settings')||
-              (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'kpi-to-jobgrade')||
-              (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'appraisal-preference')||
-                (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'appraisal-cycle')||
-                (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'appraisal-feedback')||
-              (urlComplete.mainUrl === 'performance' &&
-                urlComplete.subUrl === 'appraisal-objective-view')||
-              (urlComplete.mainUrl === 'performance' &&
-                urlComplete.subUrl === 'appraisal-objective-form')||
-              (urlComplete.mainUrl === 'performance' &&
-                urlComplete.subUrl === 'appraisal-objectives')
-
-              }" class="noti-dot"><i class="la la-chart-bar"></i> <span> Performance</span>
-              <span class="menu-arrow"></span></a>
-            <ul style="display: none;" [ngStyle]="{
-              display:
-              (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'kpi-category')||
-            (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'kpi-indicators')||
-            (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'grade-setting')||
-            (urlComplete.mainUrl === 'performance' &&
-            urlComplete.childUrl === 'point-settings')||
-            (urlComplete.mainUrl === 'performance' &&
-            urlComplete.childUrl === 'kpi-to-jobgrade')||
-            (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'appraisal-preference')||
-              (urlComplete.mainUrl === 'performance' &&
-            urlComplete.childUrl === 'appraisal-cycle')||
-            (urlComplete.mainUrl === 'performance' &&
-          urlComplete.childUrl === 'appraisal-feedback')
-
-            }">
-              <li class="submenu" [ngClass]="{
-                active:
-                (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'kpi-category')||
-              (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'kpi-indicators')||
-              (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'grade-setting')||
-              (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'point-settings')||
-              (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'kpi-to-jobgrade')||
-              (urlComplete.mainUrl === 'performance' &&
-                urlComplete.childUrl === 'appraisal-preference')||
-                (urlComplete.mainUrl === 'performance' &&
-              urlComplete.childUrl === 'appraisal-cycle')||
-              (urlComplete.mainUrl === 'performance' &&
-            urlComplete.childUrl === 'appraisal-feedback')
-
-              }">
-                <a href="javascript:" [ngClass]="{
-                  subdrop:
-                    (urlComplete.mainUrl === 'performance' &&
-                      urlComplete.childUrl === 'kpi-category')||
-                    (urlComplete.mainUrl === 'performance' &&
-                      urlComplete.childUrl === 'kpi-indicators')||
-                    (urlComplete.mainUrl === 'performance' &&
-                      urlComplete.childUrl === 'grade-setting')||
-                    (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.childUrl === 'point-settings')||
-                    (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.childUrl === 'kpi-to-jobgrade')||
-                    (urlComplete.mainUrl === 'performance' &&
-                      urlComplete.childUrl === 'appraisal-preference')||
-                      (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.childUrl === 'appraisal-cycle')||
-                    (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.childUrl === 'appraisal-feedback')
-
-                }" class="noti-dot"><i class=""></i> <span class="float-left"> Setup</span>
-                  <span class="menu-arrow"></span></a>
-                <ul style="display: none;" [ngStyle]="{
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'kpi-category') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'kpi-indicators') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'grade-setting') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'point-settings') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'kpi-to-jobgrade') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'appraisal-preference') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'appraisal-cycle') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'appraisal-feedback') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'appraisal-objective-view') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'appraisal-objective-form') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'appraisal-objectives')
+              }"
+              class="noti-dot"
+              ><i class="la la-chart-bar"></i> <span> Performance</span>
+              <span class="menu-arrow"></span
+            ></a>
+            <ul
+              style="display: none"
+              [ngStyle]="{
                 display:
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.childUrl === 'kpi-category')||
+                    urlComplete.childUrl === 'kpi-category') ||
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.childUrl === 'kpi-indicators')||
+                    urlComplete.childUrl === 'kpi-indicators') ||
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.childUrl === 'grade-setting')||
+                    urlComplete.childUrl === 'grade-setting') ||
                   (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.childUrl === 'point-settings')||
+                    urlComplete.childUrl === 'point-settings') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'kpi-to-jobgrade') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'appraisal-preference') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'appraisal-cycle') ||
+                  (urlComplete.mainUrl === 'performance' &&
+                    urlComplete.childUrl === 'appraisal-feedback')
+              }"
+            >
+              <li
+                class="submenu"
+                [ngClass]="{
+                  active:
                     (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.childUrl === 'kpi-to-jobgrade')||
+                      urlComplete.childUrl === 'kpi-category') ||
                     (urlComplete.mainUrl === 'performance' &&
-                      urlComplete.childUrl === 'appraisal-preference')||
+                      urlComplete.childUrl === 'kpi-indicators') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'grade-setting') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'point-settings') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'kpi-to-jobgrade') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'appraisal-preference') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'appraisal-cycle') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'appraisal-feedback')
+                }"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    subdrop:
                       (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.childUrl === 'appraisal-cycle')||
-                    (urlComplete.mainUrl === 'performance' &&
-                  urlComplete.childUrl === 'appraisal-feedback')||
-                  (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'appraisal-objective-view')||
-                  (urlComplete.mainUrl === 'performance' &&
-                    urlComplete.subUrl === 'appraisal-objective-form')||
-                 (urlComplete.mainUrl === 'performance' &&
-                   urlComplete.subUrl === 'appraisal-objectives')
-                    ? 'block'
-                    : 'none'
-              }">
+                        urlComplete.childUrl === 'kpi-category') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'kpi-indicators') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'grade-setting') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'point-settings') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'kpi-to-jobgrade') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-preference') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-cycle') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-feedback')
+                  }"
+                  class="noti-dot"
+                  ><i class=""></i> <span class="float-left"> Setup</span>
+                  <span class="menu-arrow"></span
+                ></a>
+                <ul
+                  style="display: none"
+                  [ngStyle]="{
+                    display:
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'kpi-category') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'kpi-indicators') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'grade-setting') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'point-settings') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'kpi-to-jobgrade') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-preference') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-cycle') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-feedback') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.subUrl === 'appraisal-objective-view') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.subUrl === 'appraisal-objective-form') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.subUrl === 'appraisal-objectives')
+                        ? 'block'
+                        : 'none'
+                  }"
+                >
                   <li routerLink="/performance/setup/kpi-category">
-                    <a href="javascript:" [ngClass]="{
-                    active:
-                      urlComplete.childUrl === 'kpi-category'
-                  }">KPI Category</a>
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active: urlComplete.childUrl === 'kpi-category'
+                      }"
+                      >KPI Category</a
+                    >
                   </li>
                   <li routerLink="/performance/setup/kpi-indicators">
-                    <a href="javascript:" [ngClass]="{
-                    active:
-                      urlComplete.childUrl === 'kpi-indicators'
-                  }">Key Performance Indicator</a>
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active: urlComplete.childUrl === 'kpi-indicators'
+                      }"
+                      >Key Performance Indicator</a
+                    >
                   </li>
                   <li routerLink="/performance/setup/grade-setting">
-                    <a href="javascript:" [ngClass]="{
-                    active:
-                      urlComplete.childUrl === 'grade-setting'
-                  }">Grade Setting</a>
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active: urlComplete.childUrl === 'grade-setting'
+                      }"
+                      >Grade Setting</a
+                    >
                   </li>
                   <li routerLink="/performance/setup/point-settings">
-                    <a href="javascript:" [ngClass]="{
-                    active:
-                      urlComplete.childUrl === 'point-settings'
-                  }">Point Settings</a>
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active: urlComplete.childUrl === 'point-settings'
+                      }"
+                      >Point Settings</a
+                    >
                   </li>
                   <li routerLink="/performance/setup/appraisal-preference">
-                    <a href="javascript:" [ngClass]="{
-                        active:
-                          urlComplete.childUrl === 'appraisal-preference'
-                      }">Appraisal Preference</a>
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active: urlComplete.childUrl === 'appraisal-preference'
+                      }"
+                      >Appraisal Preference</a
+                    >
                   </li>
                   <li routerLink="/performance/setup/kpi-to-jobgrade">
-                    <a href="javascript:" [ngClass]="{
-                    active:
-                      urlComplete.childUrl === 'kpi-to-jobgrade'
-                  }">KPI To Job Grade</a>
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active: urlComplete.childUrl === 'kpi-to-jobgrade'
+                      }"
+                      >KPI To Job Grade</a
+                    >
                   </li>
                   <li routerLink="/performance/setup/appraisal-cycle">
-                    <a href="javascript:" [ngClass]="{
-                        active:
-                          urlComplete.childUrl === 'appraisal-cycle'
-                      }">Appraisal Cycle</a>
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active: urlComplete.childUrl === 'appraisal-cycle'
+                      }"
+                      >Appraisal Cycle</a
+                    >
                   </li>
 
-<!--                  <li routerLink="/performance/appraisal-objective-form">-->
-<!--                    <a href="javascript:" [ngClass]="{-->
-<!--                    active:-->
-<!--                      urlComplete.subUrl === 'appraisal-objective-form'-->
-<!--                  }">Appraisal Objective Form</a>-->
-<!--                  </li>-->
+                  <!--                  <li routerLink="/performance/appraisal-objective-form">-->
+                  <!--                    <a href="javascript:" [ngClass]="{-->
+                  <!--                    active:-->
+                  <!--                      urlComplete.subUrl === 'appraisal-objective-form'-->
+                  <!--                  }">Appraisal Objective Form</a>-->
+                  <!--                  </li>-->
                   <li routerLink="/performance/appraisal-objectives">
-                    <a href="javascript:" [ngClass]="{
-                    active:
-                      urlComplete.subUrl === 'appraisal-objectives'
-                  }">Appraisal Objectives</a>
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active: urlComplete.subUrl === 'appraisal-objectives'
+                      }"
+                      >Appraisal Objectives</a
+                    >
                   </li>
                 </ul>
               </li>

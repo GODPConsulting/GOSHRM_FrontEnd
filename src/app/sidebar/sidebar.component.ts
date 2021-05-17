@@ -28,7 +28,7 @@ export class SidebarComponent implements OnInit {
   userRights: any[] = [];
   staffId: number;
   user: any;
-  hrmUser: string;
+  hrmUser: any = {};
 
   constructor(
     private router: Router,
@@ -66,7 +66,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.userRights = this.jwtService.getUserActivities();
-    //this.user = this.jwtService.getHrmUserDetails();
+    this.user = this.jwtService.getUserDetails();
 
     // Slide up and down of menus
     $(document).on("click", "#sidebar-menu a", function (e) {

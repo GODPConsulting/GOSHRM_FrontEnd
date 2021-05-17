@@ -139,7 +139,8 @@ export class EmployeeFormComponent implements OnInit {
 
   addEmployeeToHrm(EmployeeForm: FormGroup) {
     let payload = EmployeeForm.value;
-
+    console.log(payload.userRoleNames);
+    // return;
     // validations to check if the form fields have value
     if (!payload.firstName) {
       // if first name is empty string, undefined or null
@@ -201,43 +202,57 @@ export class EmployeeFormComponent implements OnInit {
       return swal.fire("Error", "Access Level is required", "error");
     }
 
-    EmployeeForm.get("dateOfBirth").setValue(
-      new Date(EmployeeForm.get("dateOfBirth").value).toLocaleDateString(
-        "en-CA"
-      )
+    // EmployeeForm.get("dateOfBirth").setValue(
+    //   new Date(EmployeeForm.get("dateOfBirth").value).toLocaleDateString(
+    //     "en-CA"
+    //   )
+    // );
+    // EmployeeForm.get("dateOfJoin").setValue(
+    //   new Date(EmployeeForm.get("dateOfJoin").value).toLocaleDateString("en-CA")
+    // );
+    // let formData = new FormData();
+    // for (const key in EmployeeForm.value) {
+    //   formData.append(key, EmployeeForm.get(key).value);
+    // }
+    // const formData = new FormData();
+    // for (let key in payload) {
+    //   Array.isArray(payload[key])
+    //     ? payload[key].forEach((value) => formData.append(key + "[]", value))
+    //     : formData.append(key, payload[key]);
+    // }
+    // formData.set("accessLevel", "1");
+    // formData.set("staffLimit", "1000");
+    payload.accessLevel = "1";
+    payload.staffLimit = "1000";
+    payload.dateOfBirth = new Date(payload.dateOfBirth).toLocaleDateString(
+      "en-CA"
     );
-    EmployeeForm.get("dateOfJoin").setValue(
-      new Date(EmployeeForm.get("dateOfJoin").value).toLocaleDateString("en-CA")
+    payload.dateOfJoin = new Date(payload.dateOfJoin).toLocaleDateString(
+      "en-CA"
     );
-    let formData = new FormData();
-    for (const key in EmployeeForm.value) {
-      formData.append(key, EmployeeForm.get(key).value);
-    }
-    formData.set("accessLevel", "1");
-    formData.set("staffLimit", "1000");
-
+    const val = this.convertModelToFormData(payload);
+    // console.log(val);
+    // return;
     this.loading = true;
-    return this.setupService
-      .updateData("/hrm/add/update/staff", formData)
-      .subscribe(
-        (res) => {
-          this.loading = false;
-          const message = res.status.message.friendlyMessage;
+    return this.setupService.updateData("/hrm/add/update/staff", val).subscribe(
+      (res) => {
+        this.loading = false;
+        const message = res.status.message.friendlyMessage;
 
-          if (res.status.isSuccessful) {
-            swal.fire("Success", message, "success");
-            this.initializeForm();
-            this.router.navigateByUrl("employees/employeeviews");
-          } else {
-            swal.fire("GOSHRM", message, "error");
-          }
-        },
-        (err) => {
-          this.loading = false;
-          const message = err.status.message.friendlyMessage;
+        if (res.status.isSuccessful) {
+          swal.fire("Success", message, "success");
+          this.initializeForm();
+          this.router.navigateByUrl("employees/employeeviews");
+        } else {
           swal.fire("GOSHRM", message, "error");
         }
-      );
+      },
+      (err) => {
+        this.loading = false;
+        const message = err.status.message.friendlyMessage;
+        swal.fire("GOSHRM", message, "error");
+      }
+    );
   }
 
   getJobTitle() {
@@ -268,11 +283,15 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   getStatesByCountryId(id) {
-    return this.utilitiesService.getCountryById(id).subscribe(
+    this.loadingService.show();
+    return this.commonService.getStatesByCountryId(id).subscribe(
       (data) => {
+        this.loadingService.hide();
         this.states = data.commonLookups;
       },
-      (err) => {}
+      (err) => {
+        this.loadingService.hide();
+      }
     );
   }
   getStaffDepartments() {
@@ -387,4 +406,35 @@ export class EmployeeFormComponent implements OnInit {
     return new File([u8arr], filename, { type: mime });
   }
   uploadImage() {}
+
+  convertModelToFormData(val, formData = new FormData(), namespace = "") {
+    if (typeof val !== "undefined" && val !== null) {
+      if (val instanceof Date) {
+        formData.append(namespace, val.toISOString());
+      } else if (val instanceof Array) {
+        for (let i = 0; i < val.length; i++) {
+          this.convertModelToFormData(
+            val[i],
+            formData,
+            namespace + "[" + i + "]"
+          );
+        }
+      } else if (typeof val === "object" && !(val instanceof File)) {
+        for (let propertyName in val) {
+          if (val.hasOwnProperty(propertyName)) {
+            this.convertModelToFormData(
+              val[propertyName],
+              formData,
+              namespace ? `${namespace}[${propertyName}]` : propertyName
+            );
+          }
+        }
+      } else if (val instanceof File) {
+        formData.append(namespace, val);
+      } else {
+        formData.append(namespace, val.toString());
+      }
+    }
+    return formData;
+  }
 }

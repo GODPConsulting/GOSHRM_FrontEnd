@@ -76,4 +76,8 @@ export class AppraisalsComponent implements OnInit {
   delete() {}
 
   checkAll($event: Event) {}
+
+  stopParentEvent($event: MouseEvent) {}
+
+  addItemId($event: Event, id: any) {}
 }
