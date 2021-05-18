@@ -85,10 +85,7 @@ export class DependentContactComponent implements OnInit {
       address: ["", Validators.required],
       countryId: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      approval_status: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
+      approval_status: [""],
       staffId: this.dataFromParent.user.staffId,
       // identicationFile: ["", Validators.required],
     });
@@ -96,29 +93,15 @@ export class DependentContactComponent implements OnInit {
   }
 
   submitDependentContactForm(form: FormGroup) {
-    form.get("approval_status").enable();
-    // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Dependent Contact",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approval_status").value !== 2) {
-        form.get("approval_status").setValue(2);
-      }
-    }
+    // form.get("approval_status").enable();
+
     if (!form.valid) {
       form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
-    payload.approval_status = +payload.approval_status;
+    payload.approval_status = 1;
     payload.countryId = +payload.countryId;
     form.get("approval_status").disable();
     this.spinner = true;
@@ -127,10 +110,28 @@ export class DependentContactComponent implements OnInit {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#dependent_contact_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            // Send mail to HR
+            if (!this.dataFromParent.isHr) {
+              this.utilitiesService
+                .sendToHr(
+                  "Add Dependent Contact",
+                  this.dataFromParent.user.firstName,
+                  this.dataFromParent.user.lastName,
+                  this.dataFromParent.user.email,
+                  this.dataFromParent.user.userId
+                )
+                .subscribe();
+              if (form.get("approval_status").value !== 2) {
+                form.get("approval_status").setValue(2);
+              }
+            }
+            $("#dependent_contact_modal").modal("hide");
+            this.getEmployeeDependentContact(this.dataFromParent.user.staffId);
+          });
+        } else {
+          return swal.fire("GOS HRM", message, "error");
         }
-        this.getEmployeeDependentContact(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;

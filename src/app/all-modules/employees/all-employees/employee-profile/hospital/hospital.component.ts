@@ -207,9 +207,15 @@ export class HospitalComponent implements OnInit {
       return;
     }
     const payload = form.value;
+    payload.expectedDateOfChange = new Date(
+      payload.expectedDateOfChange
+    ).toLocaleDateString("en-CA");
     payload.suggestedHospital = +payload.suggestedHospital;
     payload.hospitalId = +payload.hospitalId;
+    console.log(payload);
+    // return;
     const formData = new FormData();
+    Object.keys(payload).forEach((key) => formData.append(key, payload[key]));
     for (const key in form.value) {
       formData.append(key, this.hospitalChangeReqForm.get(key).value);
     }
@@ -221,10 +227,11 @@ export class HospitalComponent implements OnInit {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#hmo_req_change_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            $("#hmo_req_change_modal").modal("hide");
+            this.getEmployeeHospital(this.dataFromParent.user.staffId);
+          });
         }
-        this.getEmployeeHospital(this.dataFromParent.user.staffId);
       },
       (err) => {
         form.get("dateOfRequest").disable();

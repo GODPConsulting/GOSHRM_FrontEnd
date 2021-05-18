@@ -15,7 +15,6 @@
           ><i class="fa fa-download"></i></a
         ><a
           *ngIf="dataFromParent.canSeeProfileElement"
-          (click)="initProfCertForm()"
           class="hint edit-icon mr-1"
           data-toggle="modal"
           data-target="#prof_cert_modal"
@@ -318,40 +317,40 @@
                 />
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Approval Status</label>
-                <select
-                  class="form-control"
-                  [class.invalid]="
-                    profCertForm.get('approvalStatus').invalid &&
-                    profCertForm.get('approvalStatus').touched
-                  "
-                  formControlName="approvalStatus"
-                >
-                  <option selected value="">Select Status</option>
-                  <option value="1">Confirmed</option>
-                  <option value="2">Pending</option>
-                  <option value="3">Unconfirmed</option>
-                </select>
-                <div
-                  *ngIf="
-                    profCertForm.get('approvalStatus').invalid &&
-                    profCertForm.get('approvalStatus').touched
-                  "
-                >
-                  <small
-                    *ngIf="
-                      profCertForm.get('approvalStatus').invalid &&
-                      profCertForm.get('approvalStatus').touched
-                    "
-                    class="text-danger"
-                  >
-                    *Field is required</small
-                  >
-                </div>
-              </div>
-            </div>
+            <!--            <div class="col-md-6">-->
+            <!--              <div class="form-group">-->
+            <!--                <label>Approval Status</label>-->
+            <!--                <select-->
+            <!--                  class="form-control"-->
+            <!--                  [class.invalid]="-->
+            <!--                    profCertForm.get('approvalStatus').invalid &&-->
+            <!--                    profCertForm.get('approvalStatus').touched-->
+            <!--                  "-->
+            <!--                  formControlName="approvalStatus"-->
+            <!--                >-->
+            <!--                  <option selected value="">Select Status</option>-->
+            <!--                  <option value="1">Confirmed</option>-->
+            <!--                  <option value="2">Pending</option>-->
+            <!--                  <option value="3">Unconfirmed</option>-->
+            <!--                </select>-->
+            <!--                <div-->
+            <!--                  *ngIf="-->
+            <!--                    profCertForm.get('approvalStatus').invalid &&-->
+            <!--                    profCertForm.get('approvalStatus').touched-->
+            <!--                  "-->
+            <!--                >-->
+            <!--                  <small-->
+            <!--                    *ngIf="-->
+            <!--                      profCertForm.get('approvalStatus').invalid &&-->
+            <!--                      profCertForm.get('approvalStatus').touched-->
+            <!--                    "-->
+            <!--                    class="text-danger"-->
+            <!--                  >-->
+            <!--                    *Field is required</small-->
+            <!--                  >-->
+            <!--                </div>-->
+            <!--              </div>-->
+            <!--            </div>-->
           </div>
           <div class="submit-section">
             <button

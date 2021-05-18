@@ -4,7 +4,9 @@ import { EmployeeService } from "src/app/services/employee.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
-import { Subject } from "rxjs";
+import { Subject, zip } from "rxjs";
+import { CommonService } from "../../../../../services/common.service";
+import { SetupService } from "../../../../../services/setup.service";
 declare const $: any;
 
 @Component({
@@ -32,12 +34,14 @@ export class AssetsComponent implements OnInit {
 
   // To hold data for each card
   employeeAsset: any = {};
-
+  locations: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private utilitiesService: UtilitiesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private commonService: CommonService,
+    private setupService: SetupService
   ) {}
 
   ngOnInit(): void {
@@ -66,8 +70,35 @@ export class AssetsComponent implements OnInit {
     };
     this.getEmployeeAsset(this.dataFromParent.user.staffId);
     this.initAssetForm();
+    this.getStaffDepartments();
+    this.getLocation();
+    this.getData();
   }
-
+  getLocation() {
+    return this.setupService.getLocation().subscribe(
+      (data) => {
+        this.locations = data.setuplist;
+      },
+      (err) => {}
+    );
+  }
+  getStaffDepartments() {
+    this.loadingService.show();
+    return this.commonService.getCompanyStructures().subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.offices = data.companyStructures;
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
+  }
+  getData() {
+    zip([this.getLocation(), this.getStaffDepartments()]).subscribe((data) => {
+      console.log(data);
+    });
+  }
   initAssetForm() {
     this.cardFormTitle = "Add Asset";
     this.assetForm = this.formBuilder.group({
@@ -81,14 +112,8 @@ export class AssetsComponent implements OnInit {
       classification: ["", Validators.required],
       physicalCondition: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      requestApprovalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
-      returnApprovalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
+      requestApprovalStatus: [""],
+      returnApprovalStatus: [""],
       staffId: this.dataFromParent.user.staffId,
       // identicationFile: ["", Validators.required],
     });
@@ -96,29 +121,9 @@ export class AssetsComponent implements OnInit {
   }
 
   submitAssetForm(form: FormGroup) {
-    form.get("requestApprovalStatus").enable();
-    form.get("returnApprovalStatus").enable();
+    // form.get("requestApprovalStatus").enable();
+    // form.get("returnApprovalStatus").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Assets",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      // Handles if user edits
-      if (form.get("requestApprovalStatus").value !== 2) {
-        form.get("requestApprovalStatus").setValue(2);
-      } else if (
-        form.get("requestApprovalStatus").value === 1 &&
-        form.get("returnApprovalStatus").value !== 2
-      ) {
-        form.get("returnApprovalStatus").setValue(2);
-      }
-    }
     if (!form.valid) {
       form.get("requestApprovalStatus").disable();
       form.get("returnApprovalStatus").disable();
@@ -130,8 +135,8 @@ export class AssetsComponent implements OnInit {
     payload.physicalCondition = +payload.physicalCondition;
     payload.locationId = +payload.locationId;
     payload.officeId = +payload.officeId;
-    payload.returnApprovalStatus = +payload.returnApprovalStatus;
-    payload.requestApprovalStatus = +payload.requestApprovalStatus;
+    payload.returnApprovalStatus = 1;
+    payload.requestApprovalStatus = 1;
 
     /* const formData = new FormData();
     for (const key in form.value) {
@@ -140,18 +145,41 @@ export class AssetsComponent implements OnInit {
     }
  */
 
-    form.get("requestApprovalStatus").disable();
-    form.get("returnApprovalStatus").disable();
+    // form.get("requestApprovalStatus").disable();
+    // form.get("returnApprovalStatus").disable();
     this.spinner = true;
     return this.employeeService.postAsset(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#asset_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            if (!this.dataFromParent.isHr) {
+              this.utilitiesService
+                .sendToHr(
+                  "Add Assets",
+                  this.dataFromParent.user.firstName,
+                  this.dataFromParent.user.lastName,
+                  this.dataFromParent.user.email,
+                  this.dataFromParent.user.userId
+                )
+                .subscribe();
+              // Handles if user edits
+              if (form.get("requestApprovalStatus").value !== 2) {
+                form.get("requestApprovalStatus").setValue(2);
+              } else if (
+                form.get("requestApprovalStatus").value === 1 &&
+                form.get("returnApprovalStatus").value !== 2
+              ) {
+                form.get("returnApprovalStatus").setValue(2);
+              }
+            }
+            $("#asset_modal").modal("hide");
+            this.getEmployeeAsset(this.dataFromParent.user.staffId);
+          });
+        } else {
+          swal.fire("GOS HRM", message, "error");
         }
-        this.getEmployeeAsset(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;

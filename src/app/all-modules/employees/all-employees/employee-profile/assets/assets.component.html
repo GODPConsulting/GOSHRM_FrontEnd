@@ -1,273 +1,423 @@
 <div>
-    <div class="card profile-box flex-fill">
-        <div class="card-body">
-            <h3 class="card-title">Assets<a class="edit-icon hint" (click)="delete()"><span
-                        class="hint-text">Delete</span><i class="fa fa-trash"></i></a>
-                <a *ngIf="dataFromParent.isHr" class="edit-icon hint mr-1" (click)="downloadFile()" download><span
-                        class="hint-text">Download</span><i class="fa fa-download"></i></a>
-                <a *ngIf="dataFromParent.canSeeProfileElement" (click)="initAssetForm()" class="hint edit-icon mr-1"
-                    data-toggle="modal" data-target="#asset_modal"><span class="hint-text">Add </span><i
-                        class="fa fa-plus"></i></a>
-            </h3>
-            <div class="table-responsive">
-                <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" [checked]="selectedId.length === employeeAsset.length"
-                                    (change)="checkAll($event)" />
-                            </th>
-                            <th>S/N</th>
-                            <!-- <th>Employee Name</th>
+  <div class="card profile-box flex-fill">
+    <div class="card-body">
+      <h3 class="card-title">
+        Assets<a class="edit-icon hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
+        <a
+          *ngIf="dataFromParent.isHr"
+          class="edit-icon hint mr-1"
+          (click)="downloadFile()"
+          download
+          ><span class="hint-text">Download</span><i class="fa fa-download"></i
+        ></a>
+        <a
+          *ngIf="dataFromParent.canSeeProfileElement"
+          (click)="initAssetForm()"
+          class="hint edit-icon mr-1"
+          data-toggle="modal"
+          data-target="#asset_modal"
+          ><span class="hint-text">Add </span><i class="fa fa-plus"></i
+        ></a>
+      </h3>
+      <div class="table-responsive">
+        <table
+          class="table table-nowrap table-hover"
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+        >
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.length === employeeAsset.length"
+                  (change)="checkAll($event)"
+                />
+              </th>
+              <th>S/N</th>
+              <!-- <th>Employee Name</th>
                             <th>Office</th> -->
-                            <th>Asset Name</th>
-                            <th>Asset No.</th>
-                            <th>Description</th>
-                            <th>Classification</th>
-                            <th>Physical Condition</th>
-                            <th>Request Status</th>
-                            <th>Return Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="modal" class="pointer" data-target="#asset_modal" (click)="edit(row)"
-                            *ngFor="let row of hack(employeeAsset); let i = index">
-                            <td (click)="stopParentEvent($event)">
-                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id)" />
-                            </td>
-                            <td>{{i +1}}</td>
-                            <!-- <td>{{row.employeeName}}</td>
+              <th>Asset Name</th>
+              <th>Asset No.</th>
+              <th>Description</th>
+              <th>Classification</th>
+              <th>Physical Condition</th>
+              <th>Request Status</th>
+              <th>Return Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              data-toggle="modal"
+              class="pointer"
+              data-target="#asset_modal"
+              (click)="edit(row)"
+              *ngFor="let row of hack(employeeAsset); let i = index"
+            >
+              <td (click)="stopParentEvent($event)">
+                <input
+                  type="checkbox"
+                  [checked]="selectedId.includes(row.id)"
+                  (change)="addItemId($event, row.id)"
+                />
+              </td>
+              <td>{{ i + 1 }}</td>
+              <!-- <td>{{row.employeeName}}</td>
 
                             <td>{{row.office}}</td> -->
-                            <td>{{row.assetName}}</td>
-                            <td>{{row.assetNumber}}</td>
-                            <td>{{row.description}}</td>
-                            <td>{{row.classification}}</td>
-                            <td>{{row.physicalCondition}}</td>
-                            <td>{{row.requestApprovalStatusName}}</td>
-                            <td>{{row.returnApprovalStatusName}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+              <td>{{ row.assetName }}</td>
+              <td>{{ row.assetNumber }}</td>
+              <td>{{ row.description }}</td>
+              <td>{{ row.classification }}</td>
+              <td>{{ row.physicalCondition }}</td>
+              <td>{{ row.requestApprovalStatusName }}</td>
+              <td>{{ row.returnApprovalStatusName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 <!-- Asset Modal -->
 <div id="asset_modal" class="modal custom-modal fade" role="dialog">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{cardFormTitle}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ cardFormTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="submitAssetForm(assetForm)" [formGroup]="assetForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Employee Name <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    assetForm.get('employeeName').invalid &&
+                    assetForm.get('employeeName').touched
+                  "
+                  formControlName="employeeName"
+                />
+                <div
+                  *ngIf="
+                    assetForm.get('employeeName').invalid &&
+                    assetForm.get('employeeName').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      assetForm.get('employeeName').invalid &&
+                      assetForm.get('employeeName').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-            <div class="modal-body">
-                <form (ngSubmit)="submitAssetForm(assetForm)" [formGroup]="assetForm">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Employee Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                assetForm.get('employeeName').invalid &&
-                                assetForm.get('employeeName').touched" formControlName="employeeName">
-                                <div *ngIf="
-                                assetForm.get('employeeName').invalid &&
-                                assetForm.get('employeeName').touched
-                    ">
-                                    <small *ngIf="
-                                    assetForm.get('employeeName').invalid &&
-                                    assetForm.get('employeeName').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Location <span class="text-danger">*</span></label>
-                                <input type="numbergi" class="form-control" [class.invalid]="
-                                assetForm.get('locationId').invalid &&
-                                assetForm.get('locationId').touched" formControlName="locationId">
-                                <div *ngIf="
-                                assetForm.get('locationId').invalid &&
-                                assetForm.get('locationId').touched
-                    ">
-                                    <small *ngIf="
-                                    assetForm.get('locationId').invalid &&
-                                    assetForm.get('locationId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Office <span class="text-danger">*</span></label>
-                                <select type="text" class="form-control" [class.invalid]="
-                                assetForm.get('officeId').invalid &&
-                                assetForm.get('officeId').touched" formControlName="officeId">
-                                    <option selected value="">Office</option>
-                                    <option *ngFor="let row of offices " value="{{row.companyStructureId}}">{{row.name}}
-                                    </option>
-                                </select>
-                                <div *ngIf="
-                                assetForm.get('officeId').invalid &&
-                                assetForm.get('officeId').touched
-                    ">
-                                    <small *ngIf="
-                                    assetForm.get('officeId').invalid &&
-                                    assetForm.get('officeId').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Asset Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                assetForm.get('assetName').invalid &&
-                                assetForm.get('assetName').touched" formControlName="assetName">
-                                <div *ngIf="
-                                assetForm.get('assetName').invalid &&
-                                assetForm.get('assetName').touched
-                    ">
-                                    <small *ngIf="
-                                    assetForm.get('assetName').invalid &&
-                                    assetForm.get('assetName').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Asset Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                assetForm.get('assetNumber').invalid &&
-                                assetForm.get('assetNumber').touched" formControlName="assetNumber">
-                                <div *ngIf="
-                                assetForm.get('assetNumber').invalid &&
-                                assetForm.get('assetNumber').touched
-                    ">
-                                    <small *ngIf="
-                                    assetForm.get('assetNumber').invalid &&
-                                    assetForm.get('assetNumber').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Description</label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                assetForm.get('description').invalid &&
-                                assetForm.get('description').touched" formControlName="description">
-                                <div *ngIf="
-                                assetForm.get('description').invalid &&
-                                assetForm.get('description').touched
-                    ">
-                                    <small *ngIf="
-                                    assetForm.get('description').invalid &&
-                                    assetForm.get('description').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Classification <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" [class.invalid]="
-                                assetForm.get('classification').invalid &&
-                                assetForm.get('classification').touched" formControlName="classification">
-                                <div *ngIf="
-                                assetForm.get('classification').invalid &&
-                                assetForm.get('classification').touched
-                    ">
-                                    <small *ngIf="
-                                    assetForm.get('classification').invalid &&
-                                    assetForm.get('classification').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Physical Condition <span class="text-danger">*</span></label>
-                                <select class="form-control" [class.invalid]="
-                                assetForm.get('physicalCondition').invalid &&
-                                assetForm.get('physicalCondition').touched" formControlName="physicalCondition">
-                                    <option selected value="">Select Condition</option>
-                                    <option value="1">Active</option>
-                                    <option value="2">Inactive</option>
-                                    <option value="3">Decline</option>
-                                </select>
-                                <div *ngIf="
-                                assetForm.get('physicalCondition').invalid &&
-                                assetForm.get('physicalCondition').touched
-                    ">
-                                    <small *ngIf="
-                                    assetForm.get('physicalCondition').invalid &&
-                                    assetForm.get('physicalCondition').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Request Approval Status <span class="text-danger">*</span></label>
-                                <select class="form-control" [class.invalid]="
-                                assetForm.get('requestApprovalStatus').invalid &&
-                                assetForm.get('requestApprovalStatus').touched"
-                                    formControlName="requestApprovalStatus">
-                                    <option selected value="">Select Status</option>
-                                    <option value="1">Approve</option>
-                                    <option value="2">Pending</option>
-                                    <option value="3">Decline</option>
-                                </select>
-                                <div *ngIf="
-                                assetForm.get('requestApprovalStatus').invalid &&
-                                assetForm.get('requestApprovalStatus').touched
-                    ">
-                                    <small *ngIf="
-                                    assetForm.get('requestApprovalStatus').invalid &&
-                                    assetForm.get('requestApprovalStatus').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Return Approval Status</label>
-                                <select class="form-control" [class.invalid]="
-                                assetForm.get('returnApprovalStatus').invalid &&
-                                assetForm.get('returnApprovalStatus').touched" formControlName="returnApprovalStatus">
-                                    <option selected value="">Select Status</option>
-                                    <option value="1">Approve</option>
-                                    <option value="2">Pending</option>
-                                    <option value="3">Decline</option>
-                                    <option value="4">Not Returned</option>
-                                </select>
-                                <div *ngIf="
-                                assetForm.get('returnApprovalStatus').invalid &&
-                                assetForm.get('returnApprovalStatus').touched
-                    ">
-                                    <small *ngIf="
-                                    assetForm.get('returnApprovalStatus').invalid &&
-                                    assetForm.get('returnApprovalStatus').touched
-                      " class="text-danger"> *Field is required</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="submit-section">
-                        <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
-                            <span *ngIf="!spinner">Submit</span>
-                            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
-                        </button>
-                    </div>
-                </form>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Location <span class="text-danger">*</span></label>
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    assetForm.get('locationId').invalid &&
+                    assetForm.get('locationId').touched
+                  "
+                  formControlName="locationId"
+                >
+                  <option value="">--Select Location</option>
+                  <option *ngFor="let item of locations" [value]="item.id">
+                    {{ item.location }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    assetForm.get('locationId').invalid &&
+                    assetForm.get('locationId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      assetForm.get('locationId').invalid &&
+                      assetForm.get('locationId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Office <span class="text-danger">*</span></label>
+                <select
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    assetForm.get('officeId').invalid &&
+                    assetForm.get('officeId').touched
+                  "
+                  formControlName="officeId"
+                >
+                  <option selected value="">Office</option>
+                  <option
+                    *ngFor="let row of offices"
+                    value="{{ row.companyStructureId }}"
+                  >
+                    {{ row.name }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="
+                    assetForm.get('officeId').invalid &&
+                    assetForm.get('officeId').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      assetForm.get('officeId').invalid &&
+                      assetForm.get('officeId').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Asset Name <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    assetForm.get('assetName').invalid &&
+                    assetForm.get('assetName').touched
+                  "
+                  formControlName="assetName"
+                />
+                <div
+                  *ngIf="
+                    assetForm.get('assetName').invalid &&
+                    assetForm.get('assetName').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      assetForm.get('assetName').invalid &&
+                      assetForm.get('assetName').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Asset Number <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    assetForm.get('assetNumber').invalid &&
+                    assetForm.get('assetNumber').touched
+                  "
+                  formControlName="assetNumber"
+                />
+                <div
+                  *ngIf="
+                    assetForm.get('assetNumber').invalid &&
+                    assetForm.get('assetNumber').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      assetForm.get('assetNumber').invalid &&
+                      assetForm.get('assetNumber').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Description</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    assetForm.get('description').invalid &&
+                    assetForm.get('description').touched
+                  "
+                  formControlName="description"
+                />
+                <div
+                  *ngIf="
+                    assetForm.get('description').invalid &&
+                    assetForm.get('description').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      assetForm.get('description').invalid &&
+                      assetForm.get('description').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Classification <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [class.invalid]="
+                    assetForm.get('classification').invalid &&
+                    assetForm.get('classification').touched
+                  "
+                  formControlName="classification"
+                />
+                <div
+                  *ngIf="
+                    assetForm.get('classification').invalid &&
+                    assetForm.get('classification').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      assetForm.get('classification').invalid &&
+                      assetForm.get('classification').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label
+                  >Physical Condition <span class="text-danger">*</span></label
+                >
+                <select
+                  class="form-control"
+                  [class.invalid]="
+                    assetForm.get('physicalCondition').invalid &&
+                    assetForm.get('physicalCondition').touched
+                  "
+                  formControlName="physicalCondition"
+                >
+                  <option selected value="">Select Condition</option>
+                  <option value="1">Active</option>
+                  <option value="2">Inactive</option>
+                  <option value="3">Decline</option>
+                </select>
+                <div
+                  *ngIf="
+                    assetForm.get('physicalCondition').invalid &&
+                    assetForm.get('physicalCondition').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      assetForm.get('physicalCondition').invalid &&
+                      assetForm.get('physicalCondition').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <!--                        <div class="col-md-6">-->
+            <!--                            <div class="form-group">-->
+            <!--                                <label>Request Approval Status <span class="text-danger">*</span></label>-->
+            <!--                                <select class="form-control" [class.invalid]="-->
+            <!--                                assetForm.get('requestApprovalStatus').invalid &&-->
+            <!--                                assetForm.get('requestApprovalStatus').touched"-->
+            <!--                                    formControlName="requestApprovalStatus">-->
+            <!--                                    <option selected value="">Select Status</option>-->
+            <!--                                    <option value="1">Approve</option>-->
+            <!--                                    <option value="2">Pending</option>-->
+            <!--                                    <option value="3">Decline</option>-->
+            <!--                                </select>-->
+            <!--                                <div *ngIf="-->
+            <!--                                assetForm.get('requestApprovalStatus').invalid &&-->
+            <!--                                assetForm.get('requestApprovalStatus').touched-->
+            <!--                    ">-->
+            <!--                                    <small *ngIf="-->
+            <!--                                    assetForm.get('requestApprovalStatus').invalid &&-->
+            <!--                                    assetForm.get('requestApprovalStatus').touched-->
+            <!--                      " class="text-danger"> *Field is required</small>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                        <div class="col-md-6">-->
+            <!--                            <div class="form-group">-->
+            <!--                                <label>Return Approval Status</label>-->
+            <!--                                <select class="form-control" [class.invalid]="-->
+            <!--                                assetForm.get('returnApprovalStatus').invalid &&-->
+            <!--                                assetForm.get('returnApprovalStatus').touched" formControlName="returnApprovalStatus">-->
+            <!--                                    <option selected value="">Select Status</option>-->
+            <!--                                    <option value="1">Approve</option>-->
+            <!--                                    <option value="2">Pending</option>-->
+            <!--                                    <option value="3">Decline</option>-->
+            <!--                                    <option value="4">Not Returned</option>-->
+            <!--                                </select>-->
+            <!--                                <div *ngIf="-->
+            <!--                                assetForm.get('returnApprovalStatus').invalid &&-->
+            <!--                                assetForm.get('returnApprovalStatus').touched-->
+            <!--                    ">-->
+            <!--                                    <small *ngIf="-->
+            <!--                                    assetForm.get('returnApprovalStatus').invalid &&-->
+            <!--                                    assetForm.get('returnApprovalStatus').touched-->
+            <!--                      " class="text-danger"> *Field is required</small>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Asset Modal -->

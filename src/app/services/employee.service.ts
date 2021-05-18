@@ -11,7 +11,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 export class EmployeeService {
   constructor(private apiService: ApiService) {}
   handleError(error: HttpErrorResponse) {
-    return throwError(error.error);
+    return throwError(error);
   }
   postMailToHr(payload) {
     return this.apiService.post("/email/send/emails", payload).pipe(
@@ -271,7 +271,7 @@ export class EmployeeService {
 
   postHmoChangeRequest(payload: FormData) {
     return this.apiService
-      .post("/hrm/add/update/employee/hmo-request", payload)
+      .post("/hrm/add/update/employee/hmo-requests", payload)
       .pipe(
         tap(),
         map((res) => {

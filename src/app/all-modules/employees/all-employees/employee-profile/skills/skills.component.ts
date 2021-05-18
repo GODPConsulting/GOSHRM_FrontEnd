@@ -30,7 +30,7 @@ export class SkillsComponent implements OnInit {
   jobTitle: any;
   dtTrigger: Subject<any> = new Subject();
   public dtOptions: DataTables.Settings = {};
-
+  expectedScore: number;
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -40,6 +40,7 @@ export class SkillsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.dataFromParent);
     this.getEmployeeSkills(this.dataFromParent.user.staffId);
     this.initSkillsForm();
     this.getSingleStaffById(this.dataFromParent.user.staffId);
@@ -88,7 +89,11 @@ export class SkillsComponent implements OnInit {
     let chosenSkill = this.jobSkills.filter(
       (skill) => skill.id == (<HTMLInputElement>event.target).value
     );
-    this.skillsForm.get("expectedScore").setValue(chosenSkill[0].weight);
+    this.expectedScore = chosenSkill[0].weight;
+    this.skillsForm.patchValue({
+      expectedScore: chosenSkill[0].weight,
+    });
+    // this.skillsForm.get("expectedScore").setValue(chosenSkill[0].weight);
   }
 
   initSkillsForm() {
@@ -99,10 +104,7 @@ export class SkillsComponent implements OnInit {
       expectedScore: [{ value: "", disabled: true }, Validators.required],
       actualScore: [""],
       proofOfSkills: ["", Validators.required],
-      approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
+      approvalStatus: [""],
       staffId: this.dataFromParent.user.staffId,
       skillFile: ["", Validators.required],
     });
@@ -150,47 +152,55 @@ export class SkillsComponent implements OnInit {
   }
 
   submitSkillsForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    const payload = form.value;
+    // form.get("approvalStatus").enable();
     form.get("expectedScore").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Skills",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
-    }
+    // if (!this.dataFromParent.isHr) {
+    //   this.utilitiesService
+    //     .sendToHr(
+    //       "Add Skills",
+    //       this.dataFromParent.user.firstName,
+    //       this.dataFromParent.user.lastName,
+    //       this.dataFromParent.user.email,
+    //       this.dataFromParent.user.userId
+    //     )
+    //     .subscribe();
+    //   if (form.get("approvalStatus").value !== 2) {
+    //     form.get("approvalStatus").setValue(2);
+    //   }
+    // }
     if (!form.valid) {
       form.get("expectedScore").disable();
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
+    payload.approvalStatus = 2;
+    payload.expectedScore = this.expectedScore;
+    // console.log(payload);
+    // return;
     const formData = new FormData();
-    for (const key in form.value) {
-      formData.append(key, this.skillsForm.get(key).value);
-    }
+    Object.keys(payload).forEach((key) => {
+      formData.append(key, payload[key]);
+    });
+    // const formData = new FormData();
+    // for (const key in form.value) {
+    //   formData.append(key, this.skillsForm.get(key).value);
+    // }
     this.skillsForm.get("expectedScore").disable();
-    form.get("approvalStatus").disable();
-
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.addSkill(formData).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#skills_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            this.getEmployeeSkills(this.dataFromParent.user.staffId);
+            $("#skills_modal").modal("hide");
+          });
         }
-
-        this.getEmployeeSkills(this.dataFromParent.user.staffId);
       },
       (err) => {
         form.get("expectedScore").disable();

@@ -47,13 +47,13 @@ export class KpiCategoryComponent implements OnInit {
 
   kpiCategory: any[] = [];
   selectedId: number[] = [];
-  employeeSetObjectives: string = "";
+  employeePermitted: string = "";
   name: string = "";
   description: string = "";
   weightModel: string = "";
   hrSelectReviewer: string = "";
   currentUserId: number;
-  id: number;
+  id: number = 0;
   dtTrigger: Subject<any> = new Subject();
   @ViewChild(DataTableDirective, { static: true })
   dtElement: DataTableDirective;
@@ -97,12 +97,13 @@ export class KpiCategoryComponent implements OnInit {
   }
   submitKpiCategoryForm() {
     const payload = {
+      id: this.id,
       name: this.name,
       description: this.description,
       weightModel: +this.weightModel,
 
       hrSelectReviewer: +this.hrSelectReviewer,
-      employeeSetObjectives: +this.employeeSetObjectives,
+      employeePermitted: +this.employeePermitted,
     };
     // payload.weightModel = +payload.weightModel;
     // payload.hrSelectReviewer = +payload.hrSelectReviewer;
@@ -120,7 +121,7 @@ export class KpiCategoryComponent implements OnInit {
             this.hrSelectReviewer = "";
             this.name = "";
             this.description = "";
-            this.employeeSetObjectives = "";
+            this.employeePermitted = "";
             // this.rerender();
             this.getkpiCategory();
           });
@@ -161,8 +162,10 @@ export class KpiCategoryComponent implements OnInit {
     this.id = row.id;
     this.name = row.name;
     this.hrSelectReviewer = row.hrSelectReviewer;
-    this.employeeSetObjectives = row.employeePermitted;
+    this.employeePermitted = row.employeePermitted;
     this.weightModel = row.weightModel;
+    this.description = row.description;
+    this.setWeightModel(row.weightModel);
     $("#kpi_category_modal").modal("show");
   }
 
@@ -236,8 +239,8 @@ export class KpiCategoryComponent implements OnInit {
     }
   }
 
-  setWeightModel(event) {
-    this.allLocation = +event.target.value;
+  setWeightModel(value) {
+    this.allLocation = value;
     this.kpiCategoryForm.get("weightModel");
     if (this.allLocation === 1 || this.allLocation === 2) {
       // this.kpiCategoryForm.get("weightModel").enable();

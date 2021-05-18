@@ -8,7 +8,6 @@
         ></a>
         <a
           *ngIf="dataFromParent.canSeeProfileElement"
-          (click)="initHmoForm()"
           class="hint edit-icon mr-1"
           data-toggle="modal"
           data-target="#hmo_modal"
@@ -16,7 +15,6 @@
           <span class="hint-text">Add HMO</span><i class="fa fa-plus"></i
         ></a>
         <a
-          (click)="initHmoChangeForm()"
           class="hint edit-icon mr-1"
           data-toggle="modal"
           data-target="#hmo_req_change_modal"
@@ -335,14 +333,14 @@
                     employeeHmoForm.get('approvalStatus').touched
                   "
                 >
-                  <small
+                  <smallf
                     *ngIf="
                       employeeHmoForm.get('approvalStatus').invalid &&
                       employeeHmoForm.get('approvalStatus').touched
                     "
                     class="text-danger"
                   >
-                    *Field is required</small
+                    *Field is required</smallf
                   >
                 </div>
               </div>

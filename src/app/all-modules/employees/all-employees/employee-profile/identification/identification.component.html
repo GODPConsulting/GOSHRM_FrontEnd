@@ -235,7 +235,7 @@
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label>ID upload (file format)</label>
+                <label>ID upload (JPG/PNG)</label>
                 <input
                   class="form-control"
                   name="identicationFile"
@@ -249,40 +249,40 @@
                 />
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Approval Status</label>
-                <select
-                  class="form-control"
-                  [class.invalid]="
-                    identificationForm.get('approval_status').invalid &&
-                    identificationForm.get('approval_status').touched
-                  "
-                  formControlName="approval_status"
-                >
-                  <option selected value="">Select Status</option>
-                  <option value="1">Approve</option>
-                  <option value="2">Pending</option>
-                  <option value="3">Decline</option>
-                </select>
-                <div
-                  *ngIf="
-                    identificationForm.get('approval_status').invalid &&
-                    identificationForm.get('approval_status').touched
-                  "
-                >
-                  <small
-                    *ngIf="
-                      identificationForm.get('approval_status').invalid &&
-                      identificationForm.get('approval_status').touched
-                    "
-                    class="text-danger"
-                  >
-                    *Field is required</small
-                  >
-                </div>
-              </div>
-            </div>
+            <!--            <div class="col-md-6">-->
+            <!--              <div class="form-group">-->
+            <!--                <label>Approval Status</label>-->
+            <!--                <select-->
+            <!--                  class="form-control"-->
+            <!--                  [class.invalid]="-->
+            <!--                    identificationForm.get('approval_status').invalid &&-->
+            <!--                    identificationForm.get('approval_status').touched-->
+            <!--                  "-->
+            <!--                  formControlName="approval_status"-->
+            <!--                >-->
+            <!--                  <option selected value="">Select Status</option>-->
+            <!--                  <option value="1">Approve</option>-->
+            <!--                  <option value="2">Pending</option>-->
+            <!--                  <option value="3">Decline</option>-->
+            <!--                </select>-->
+            <!--                <div-->
+            <!--                  *ngIf="-->
+            <!--                    identificationForm.get('approval_status').invalid &&-->
+            <!--                    identificationForm.get('approval_status').touched-->
+            <!--                  "-->
+            <!--                >-->
+            <!--                  <small-->
+            <!--                    *ngIf="-->
+            <!--                      identificationForm.get('approval_status').invalid &&-->
+            <!--                      identificationForm.get('approval_status').touched-->
+            <!--                    "-->
+            <!--                    class="text-danger"-->
+            <!--                  >-->
+            <!--                    *Field is required</small-->
+            <!--                  >-->
+            <!--                </div>-->
+            <!--              </div>-->
+            <!--            </div>-->
           </div>
           <div class="submit-section">
             <button

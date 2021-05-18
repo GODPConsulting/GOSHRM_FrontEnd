@@ -96,12 +96,12 @@ export class KpiToJobgradeComponent implements OnInit {
       weight: row.weight,
       //kpIs: row.kpIs
     });
-
+    $("#add_kpi_to_job_grade").modal("show");
     /* this.confirmed = row.kpIs.filter(id=>{
       id === source.id
     }) */
     this.confirmed = this.source.filter((source) => {
-      row.kpIs.include(source.id);
+      row.kpIs.includes(source.id);
     });
   }
 

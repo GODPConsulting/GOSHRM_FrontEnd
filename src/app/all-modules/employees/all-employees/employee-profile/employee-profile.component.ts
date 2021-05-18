@@ -11,6 +11,7 @@ import { Subscription } from "rxjs";
 import { DataService } from "src/app/services/data.service";
 import { LoadingService } from "../../../../services/loading.service";
 import { CommonService } from "../../../../services/common.service";
+import { JwtService } from "../../../../services/jwt.service";
 declare const $: any;
 
 @Component({
@@ -65,7 +66,8 @@ export class EmployeeProfileComponent implements OnInit {
     private router: Router,
     private dataService: DataService,
     private loadingService: LoadingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private jwtService: JwtService
   ) {
     // Handles route reloading...solves view not changing when user navigates to his/her own profile from another user's profile route
     this.navigationSubscription = this.router.events.subscribe((e) => {
@@ -80,16 +82,23 @@ export class EmployeeProfileComponent implements OnInit {
       this.employeeId = +params.get("id");
     });
     // Get access to the user data shared from sidebar
-    this.dataService.currentUser.subscribe((result) => {
-      console.log(result);
-      this.dataToChild.user = result;
-      this.dataToChild.isHr = this.dataToChild.user?.userRoleNames.includes(
-        "HR Admin"
-      );
-      this.dataToChild.canSeeProfileElement =
-        this.dataToChild.user?.userRoleNames.includes("HR Admin") ||
-        this.dataToChild.user?.staffId === this.employeeId;
-    });
+    this.dataToChild.user = this.jwtService.getHrmUserDetails();
+    this.dataToChild.isHr = this.dataToChild.user?.userRoleNames.includes(
+      "HR Admin"
+    );
+    this.dataToChild.canSeeProfileElement =
+      this.dataToChild.user?.userRoleNames.includes("HR Admin") ||
+      this.dataToChild.user?.staffId === this.employeeId;
+    // this.dataService.currentUser.subscribe((result) => {
+    //   console.log(result);
+    //   this.dataToChild.user = result;
+    //   this.dataToChild.isHr = this.dataToChild.user?.userRoleNames.includes(
+    //     "HR Admin"
+    //   );
+    //   this.dataToChild.canSeeProfileElement =
+    //     this.dataToChild.user?.userRoleNames.includes("HR Admin") ||
+    //     this.dataToChild.user?.staffId === this.employeeId;
+    // });
     this.getUserData();
     this.initializeForm();
     this.getCountry();
@@ -114,10 +123,6 @@ export class EmployeeProfileComponent implements OnInit {
       address: ["", Validators.required],
       countryId: [""],
       countryName: ["", Validators.required],
-      approval_status: [
-        { value: "2", disabled: !this.dataToChild.isHr },
-        Validators.required,
-      ],
       staffId: this.employeeId,
     });
   }
@@ -125,13 +130,10 @@ export class EmployeeProfileComponent implements OnInit {
     this.languageRatingForm = this.formBuilder.group({
       id: [0],
       languageId: ["", Validators.required],
-      reading_Rating: ["", Validators.required],
-      writing_Rating: ["", Validators.required],
-      speaking_Rating: ["", Validators.required],
-      approval_status: [
-        { value: "2", disabled: !this.dataToChild.isHr },
-        Validators.required,
-      ],
+      reading_Rating: [""],
+      writing_Rating: [""],
+      speaking_Rating: [""],
+      approval_status: [""],
       staffId: this.employeeId,
     });
   }
@@ -144,10 +146,7 @@ export class EmployeeProfileComponent implements OnInit {
       startDate: ["", Validators.required],
       endDate: ["", Validators.required],
       gradeId: ["", Validators.required],
-      approvalStatus: [
-        { value: "2", disabled: !this.dataToChild.isHr },
-        Validators.required,
-      ],
+      approvalStatus: [""],
       staffId: this.employeeId,
       qualificationFile: ["", Validators.required],
     });
@@ -172,31 +171,11 @@ export class EmployeeProfileComponent implements OnInit {
 
   /* Emergency Contact */
   addEmergencyContact(form: FormGroup) {
-    form.get("approval_status").enable();
     // Send mail to HR
-    if (!this.dataToChild.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Emergency Contact",
-          this.dataToChild.user.firstName,
-          this.dataToChild.user.lastName,
-          this.dataToChild.user.email,
-          this.dataToChild.user.userId
-        )
-        .subscribe();
-      if (form.get("approval_status").value !== 2) {
-        form.get("approval_status").setValue(2);
-      }
-    }
-    if (!form.valid) {
-      form.get("approval_status").disable();
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    }
 
     const payload = form.value;
     payload.staffId = this.employeeId;
-    payload.approval_status = +payload.approval_status;
+    payload.approval_status = 1;
     payload.countryId = +payload.countryId;
     if (!payload.fullName) {
       return swal.fire("Error", "Full Name is empty", "error");
@@ -213,16 +192,12 @@ export class EmployeeProfileComponent implements OnInit {
     if (!this.utilitiesService.validateEmail(payload.email)) {
       return swal.fire("Error", "Email not valid", "error");
     }
-    if (!payload.country) {
+    if (!payload.countryId) {
       return swal.fire("Error", "Country is empty", "error");
     }
     if (!payload.address) {
       return swal.fire("Error", "Address is empty", "error");
     }
-    if (!payload.approvalStatus) {
-      return swal.fire("Error", "Approval Status is empty", "error");
-    }
-    form.get("approval_status").disable();
 
     this.loading = true;
     this.employeeService.addEmergencyContact(payload).subscribe(
@@ -230,9 +205,21 @@ export class EmployeeProfileComponent implements OnInit {
         this.loading = false;
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
-          swal.fire("Success", message, "success");
-          this.getSavedEmergencyContact(this.employeeId);
-          $("#emergency_contact_modal").modal("hide");
+          swal.fire("Success", message, "success").then(() => {
+            if (!this.dataToChild.isHr) {
+              this.utilitiesService
+                .sendToHr(
+                  "Add Emergency Contact",
+                  this.dataToChild.user.firstName,
+                  this.dataToChild.user.lastName,
+                  this.dataToChild.user.email,
+                  this.dataToChild.user.userId
+                )
+                .subscribe();
+            }
+            this.getSavedEmergencyContact(this.employeeId);
+            $("#emergency_contact_modal").modal("hide");
+          });
         } else {
           swal.fire("GOSHRM", message, "error");
         }
@@ -338,30 +325,13 @@ export class EmployeeProfileComponent implements OnInit {
 
   /* Language */
   addLanguageRating(form: FormGroup) {
-    form.get("approval_status").enable();
-    // Send mail to HR
-    if (!this.dataToChild.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Language",
-          this.dataToChild.user.firstName,
-          this.dataToChild.user.lastName,
-          this.dataToChild.user.email,
-          this.dataToChild.user.userId
-        )
-        .subscribe();
-      if (form.get("approval_status").value !== 2) {
-        form.get("approval_status").setValue(2);
-      }
-    }
     if (!form.valid) {
-      form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
     payload.staffId = this.employeeId;
-    payload.approval_status = +payload.approval_status;
+    payload.approval_status = 1;
     payload.reading_Rating = this.readingRating;
     payload.writing_Rating = this.writingRating;
     payload.speaking_Rating = this.speakingRating;
@@ -390,13 +360,29 @@ export class EmployeeProfileComponent implements OnInit {
         this.loading = false;
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
-          swal.fire("Success", message, "success");
-          this.initLaguageRatingForm();
-          this.readingRating = 0;
-          this.writingRating = 0;
-          this.speakingRating = 0;
-          this.getSavedLanguageRating(this.employeeId);
-          $("#language_rating_modal").modal("hide");
+          swal.fire("Success", message, "success").then(() => {
+            // Send mail to HR
+            if (!this.dataToChild.isHr) {
+              this.utilitiesService
+                .sendToHr(
+                  "Add Language",
+                  this.dataToChild.user.firstName,
+                  this.dataToChild.user.lastName,
+                  this.dataToChild.user.email,
+                  this.dataToChild.user.userId
+                )
+                .subscribe();
+              if (form.get("approval_status").value !== 2) {
+                form.get("approval_status").setValue(2);
+              }
+            }
+            this.initLaguageRatingForm();
+            this.readingRating = 0;
+            this.writingRating = 0;
+            this.speakingRating = 0;
+            this.getSavedLanguageRating(this.employeeId);
+            $("#language_rating_modal").modal("hide");
+          });
         } else {
           swal.fire("GOSHRM", message, "error");
         }
@@ -544,7 +530,7 @@ export class EmployeeProfileComponent implements OnInit {
   }
   // EmployeeQualification
   addEmployeeQualification(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     // Send mail to HR
     // if (!this.dataToChild.isHr) {
     //   this.utilitiesService
@@ -562,7 +548,7 @@ export class EmployeeProfileComponent implements OnInit {
     // }
     const payload = form.value;
     if (!form.valid) {
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     } else {
@@ -584,11 +570,12 @@ export class EmployeeProfileComponent implements OnInit {
       if (!this.fileToUpload) {
         return swal.fire("Error!", "Select a file", "error");
       }
-      if (!payload.approvalStatus) {
-        return swal.fire("Error!", "Select a status", "error");
-      }
+      // if (!payload.approvalStatus) {
+      //   return swal.fire("Error!", "Select a status", "error");
+      // }
     }
-    form.get("approvalStatus").disable();
+    // form.get("approvalStatus").disable();
+    payload.approvalStatus = 1;
     this.spinner = true;
     this.employeeService
       .addEmployeeQualification(payload, this.fileToUpload)
@@ -606,8 +593,8 @@ export class EmployeeProfileComponent implements OnInit {
       })
       .catch((err) => {
         this.spinner = false;
-
-        const message = err.status.message.friendlyMessage;
+        const error = JSON.parse(err);
+        const message = error.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       });
   }
@@ -722,4 +709,11 @@ export class EmployeeProfileComponent implements OnInit {
     }
   }
   /* Handles Route reloading */
+  editProfile() {
+    this.router.navigate(["/employees/employee-form"], {
+      queryParams: {
+        id: this.employeeId,
+      },
+    });
+  }
 }

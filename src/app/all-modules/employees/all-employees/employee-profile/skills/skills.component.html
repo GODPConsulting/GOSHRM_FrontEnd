@@ -14,8 +14,7 @@
         ></a>
         <!--        *ngIf="dataFromParent.canSeeProfileElement"-->
         <a
-          *ngIf="dataFromParent.isHr"
-          (click)="initSkillsForm()"
+          *ngIf="dataFromParent.canSeeProfileElement"
           class="hint edit-icon mr-1"
           data-toggle="modal"
           data-target="#skills_modal"
@@ -239,40 +238,40 @@
                 />
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Approval Status</label>
-                <select
-                  class="form-control"
-                  [class.invalid]="
-                    skillsForm.get('approvalStatus').invalid &&
-                    skillsForm.get('approvalStatus').touched
-                  "
-                  formControlName="approvalStatus"
-                >
-                  <option selected value="">Select Status</option>
-                  <option value="1">Approve</option>
-                  <option value="2">Pending</option>
-                  <option value="3">Decline</option>
-                </select>
-                <div
-                  *ngIf="
-                    skillsForm.get('approvalStatus').invalid &&
-                    skillsForm.get('approvalStatus').touched
-                  "
-                >
-                  <small
-                    *ngIf="
-                      skillsForm.get('approvalStatus').invalid &&
-                      skillsForm.get('approvalStatus').touched
-                    "
-                    class="text-danger"
-                  >
-                    *Field is required</small
-                  >
-                </div>
-              </div>
-            </div>
+            <!--            <div class="col-md-6">-->
+            <!--              <div class="form-group">-->
+            <!--                <label>Approval Status</label>-->
+            <!--                <select-->
+            <!--                  class="form-control"-->
+            <!--                  [class.invalid]="-->
+            <!--                    skillsForm.get('approvalStatus').invalid &&-->
+            <!--                    skillsForm.get('approvalStatus').touched-->
+            <!--                  "-->
+            <!--                  formControlName="approvalStatus"-->
+            <!--                >-->
+            <!--                  <option selected value="">Select Status</option>-->
+            <!--                  <option value="1">Approve</option>-->
+            <!--                  <option value="2">Pending</option>-->
+            <!--                  <option value="3">Decline</option>-->
+            <!--                </select>-->
+            <!--                <div-->
+            <!--                  *ngIf="-->
+            <!--                    skillsForm.get('approvalStatus').invalid &&-->
+            <!--                    skillsForm.get('approvalStatus').touched-->
+            <!--                  "-->
+            <!--                >-->
+            <!--                  <small-->
+            <!--                    *ngIf="-->
+            <!--                      skillsForm.get('approvalStatus').invalid &&-->
+            <!--                      skillsForm.get('approvalStatus').touched-->
+            <!--                    "-->
+            <!--                    class="text-danger"-->
+            <!--                  >-->
+            <!--                    *Field is required</small-->
+            <!--                  >-->
+            <!--                </div>-->
+            <!--              </div>-->
+            <!--            </div>-->
           </div>
           <div class="submit-section">
             <button

@@ -78,10 +78,7 @@ export class EmployeeHmoComponent implements OnInit {
       contactPhoneNo: ["", Validators.required],
       startDate: ["", Validators.required],
       end_Date: ["", Validators.required],
-      approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
+      approvalStatus: [{ value: "2", disabled: !this.dataFromParent.isHr }],
       staffId: this.dataFromParent.user.staffId,
       setCurrentDate: [""],
     });
@@ -115,29 +112,16 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   submitHmoForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add HMO",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
-    }
+
     if (!form.valid) {
       form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
-    payload.approvalStatus = +payload.approvalStatus;
+    payload.approvalStatus = 2;
     payload.hmoId = +payload.hmoId;
     /* const formData = new FormData();
     for (const key in form.value) {
@@ -151,7 +135,22 @@ export class EmployeeHmoComponent implements OnInit {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            if (!this.dataFromParent.isHr) {
+              this.utilitiesService
+                .sendToHr(
+                  "Add HMO",
+                  this.dataFromParent.user.firstName,
+                  this.dataFromParent.user.lastName,
+                  this.dataFromParent.user.email,
+                  this.dataFromParent.user.userId
+                )
+                .subscribe();
+              if (form.get("approvalStatus").value !== 2) {
+                form.get("approvalStatus").setValue(2);
+              }
+            }
+          });
           $("#hmo_modal").modal("hide");
         }
         this.getEmployeeHmo(this.dataFromParent.user.staffId);

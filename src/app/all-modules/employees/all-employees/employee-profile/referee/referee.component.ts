@@ -103,10 +103,7 @@ export class RefereeComponent implements OnInit {
       address: ["", Validators.required],
       confirmationReceived: ["", Validators.required],
       confirmationDate: ["", Validators.required],
-      approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
+      approvalStatus: [""],
       staffId: this.dataFromParent.user.staffId,
       refereeFile: ["", Validators.required],
     });
@@ -140,27 +137,7 @@ export class RefereeComponent implements OnInit {
   }
 
   submitRefereeForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Referee",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
-    }
-    if (!form.valid) {
-      form.get("approvalStatus").disable();
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    }
 
     form
       .get("confirmationDate")
@@ -178,10 +155,25 @@ export class RefereeComponent implements OnInit {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#referee_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            if (!this.dataFromParent.isHr) {
+              this.utilitiesService
+                .sendToHr(
+                  "Add Referee",
+                  this.dataFromParent.user.firstName,
+                  this.dataFromParent.user.lastName,
+                  this.dataFromParent.user.email,
+                  this.dataFromParent.user.userId
+                )
+                .subscribe();
+              // if (form.get("approvalStatus").value !== 2) {
+              //   form.get("approvalStatus").setValue(2);
+              // }
+            }
+            $("#referee_modal").modal("hide");
+            this.getEmployeeReferee(this.dataFromParent.user.staffId);
+          });
         }
-        this.getEmployeeReferee(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;

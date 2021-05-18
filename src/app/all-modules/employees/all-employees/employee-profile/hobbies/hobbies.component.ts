@@ -62,49 +62,48 @@ export class HobbiesComponent implements OnInit {
       hobbyName: ["", Validators.required],
       rating: ["", Validators.required],
       description: ["", Validators.required],
-      approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
+      approvalStatus: [""],
       staffId: this.dataFromParent.user.staffId,
     });
   }
 
   submitHobbyForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Hobbies",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
-    }
+
     if (!form.valid) {
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
-    payload.approvalStatus = +payload.approvalStatus;
-    form.get("approvalStatus").disable();
+    payload.approvalStatus = 2;
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHobby(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#hobby_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            if (!this.dataFromParent.isHr) {
+              this.utilitiesService
+                .sendToHr(
+                  "Add Hobbies",
+                  this.dataFromParent.user.firstName,
+                  this.dataFromParent.user.lastName,
+                  this.dataFromParent.user.email,
+                  this.dataFromParent.user.userId
+                )
+                .subscribe();
+              if (form.get("approvalStatus").value !== 2) {
+                form.get("approvalStatus").setValue(2);
+              }
+            }
+            this.getEmployeeHobby(this.dataFromParent.user.staffId);
+            $("#hobby_modal").modal("hide");
+          });
         }
-        this.getEmployeeHobby(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;

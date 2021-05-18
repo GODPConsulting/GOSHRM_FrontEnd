@@ -123,11 +123,11 @@
               <div class="form-group">
                 <label>Employee Permitted</label>
                 <select
-                  (change)="setWeightModel($event)"
+                  (change)="setWeightModel($event.target.value)"
                   name="employeeSetObjectives"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="employeeSetObjectives"
+                  [(ngModel)]="employeePermitted"
                 >
                   <option selected value="">Employee Permitted</option>
                   <option value="1">Yes</option>
@@ -145,7 +145,7 @@
                   [disabled]="modelDisabled"
                   [(ngModel)]="weightModel"
                 >
-                  <option selected value="">Weight Model</option>
+                  <option selected value="" disabled>Weight Model</option>
                   <option *ngIf="allLocation === 1" value="2">
                     Independent Allocation
                   </option>

@@ -94,7 +94,7 @@
             </div>
             <div class="pro-edit">
               <a
-                routerLink="/employees/employee-form/edit"
+                (click)="editProfile()"
                 data-target="#profile_info"
                 data-toggle="modal"
                 class="edit-icon"
@@ -551,7 +551,7 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Attachment (file format)</label>
+                          <label>Attachment</label>
                           <input
                             class="form-control"
                             formControlName="qualificationFile"
@@ -567,24 +567,24 @@
                           />
                         </div>
                       </div>
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label
-                            >Approval Status<span class="text-danger"
-                              >*</span
-                            ></label
-                          >
-                          <select
-                            class="select form-control"
-                            formControlName="approvalStatus"
-                          >
-                            <option disabled>Select Status</option>
-                            <option value="1">Confirmed</option>
-                            <option value="2">Pending</option>
-                            <option value="3">Unconfirmed</option>
-                          </select>
-                        </div>
-                      </div>
+                      <!--                      <div class="col-md-6">-->
+                      <!--                        <div class="form-group">-->
+                      <!--                          <label-->
+                      <!--                            >Approval Status<span class="text-danger"-->
+                      <!--                              >*</span-->
+                      <!--                            ></label-->
+                      <!--                          >-->
+                      <!--                          <select-->
+                      <!--                            class="select form-control"-->
+                      <!--                            formControlName="approvalStatus"-->
+                      <!--                          >-->
+                      <!--                            <option disabled>Select Status</option>-->
+                      <!--                            <option value="1">Confirmed</option>-->
+                      <!--                            <option value="2">Pending</option>-->
+                      <!--                            <option value="3">Unconfirmed</option>-->
+                      <!--                          </select>-->
+                      <!--                        </div>-->
+                      <!--                      </div>-->
                     </div>
                   </div>
                 </div>
@@ -734,7 +734,7 @@
                       "
                       formControlName="countryId"
                     >
-                      <option selected value="">Country</option>
+                      <option selected value="">--Select Country--</option>
                       <option
                         *ngFor="let row of countries"
                         value="{{ row.lookupId }}"
@@ -754,22 +754,22 @@
                     />
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label
-                      >Approval Status<span class="text-danger">*</span></label
-                    >
-                    <select
-                      class="select form-control"
-                      formControlName="approval_status"
-                    >
-                      <option disabled>Select Status</option>
-                      <option value="1">Approved</option>
-                      <option value="2">Pending</option>
-                      <option value="3">Declined</option>
-                    </select>
-                  </div>
-                </div>
+                <!--                <div class="col-md-6">-->
+                <!--                  <div class="form-group">-->
+                <!--                    <label-->
+                <!--                      >Approval Status<span class="text-danger">*</span></label-->
+                <!--                    >-->
+                <!--                    <select-->
+                <!--                      class="select form-control"-->
+                <!--                      formControlName="approval_status"-->
+                <!--                    >-->
+                <!--                      <option disabled>Select Status</option>-->
+                <!--                      <option value="1">Approved</option>-->
+                <!--                      <option value="2">Pending</option>-->
+                <!--                      <option value="3">Declined</option>-->
+                <!--                    </select>-->
+                <!--                  </div>-->
+                <!--                </div>-->
               </div>
             </div>
           </div>
@@ -877,22 +877,22 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label
-                      >Approval Status<span class="text-danger">*</span></label
-                    >
-                    <select
-                      class="select form-control"
-                      formControlName="approval_status"
-                    >
-                      <option disabled>Select Status</option>
-                      <option value="1">Approved</option>
-                      <option value="2">Pending</option>
-                      <option value="3">Declined</option>
-                    </select>
-                  </div>
-                </div>
+                <!--                <div class="col-md-6">-->
+                <!--                  <div class="form-group">-->
+                <!--                    <label-->
+                <!--                      >Approval Status<span class="text-danger">*</span></label-->
+                <!--                    >-->
+                <!--                    <select-->
+                <!--                      class="select form-control"-->
+                <!--                      formControlName="approval_status"-->
+                <!--                    >-->
+                <!--                      <option disabled>Select Status</option>-->
+                <!--                      <option value="1">Approved</option>-->
+                <!--                      <option value="2">Pending</option>-->
+                <!--                      <option value="3">Declined</option>-->
+                <!--                    </select>-->
+                <!--                  </div>-->
+                <!--                </div>-->
               </div>
             </div>
           </div>

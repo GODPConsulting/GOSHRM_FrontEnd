@@ -83,7 +83,7 @@
       <div class="profile-widget">
         <div class="profile-img">
           <a
-            [routerLink]="['/employees/employeeprofile/', emp.employeeId]"
+            [routerLink]="['/employees/employeeprofile/', emp.staffId]"
             class="avatar grid-avi"
             ><i *ngIf="!emp.photo" class="fa fa-user"></i
             ><img *ngIf="emp.photo" src="{{ emp?.photo }}" alt=""
@@ -91,7 +91,7 @@
         </div>
         <p>Staff Code: {{ emp.staffCode }}</p>
         <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-          <a [routerLink]="['/employees/employeeprofile/', emp.employeeId]"
+          <a [routerLink]="['/employees/employeeprofile/', emp.staffId]"
             >{{ emp.firstName }} {{ emp.lastName }}</a
           >
         </h4>

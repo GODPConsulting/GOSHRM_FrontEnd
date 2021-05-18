@@ -104,10 +104,7 @@ export class ProfCertComponent implements OnInit {
       institution: ["", Validators.required],
       dateGranted: ["", Validators.required],
       expiryDate: ["", Validators.required],
-      approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
+      approvalStatus: [""],
       staffId: this.dataFromParent.user.staffId,
       gradeId: ["", Validators.required],
       profCertificationFile: ["", Validators.required],
@@ -138,39 +135,48 @@ export class ProfCertComponent implements OnInit {
   }
 
   submitProfCertForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Professional Certification",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
-    }
+    // if (!this.dataFromParent.isHr) {
+    //   this.utilitiesService
+    //     .sendToHr(
+    //       "Add Professional Certification",
+    //       this.dataFromParent.user.firstName,
+    //       this.dataFromParent.user.lastName,
+    //       this.dataFromParent.user.email,
+    //       this.dataFromParent.user.userId
+    //     )
+    //     .subscribe();
+    //   if (form.get("approvalStatus").value !== 2) {
+    //     form.get("approvalStatus").setValue(2);
+    //   }
+    // }
     if (!form.valid) {
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-
+    const payload = form.value;
+    payload.approvalStatus = 2;
+    payload.dateGranted = new Date(payload.dateGranted).toLocaleDateString(
+      "en-CA"
+    );
     const formData = new FormData();
-    form
-      .get("dateGranted")
-      .setValue(
-        new Date(form.get("dateGranted").value).toLocaleDateString("en-CA")
-      );
-
-    for (const key in form.value) {
-      formData.append(key, this.profCertForm.get(key).value);
-    }
-    form.get("approvalStatus").disable();
+    // form
+    //   .get("dateGranted")
+    //   .setValue(
+    //     new Date(form.get("dateGranted").value).toLocaleDateString("en-CA")
+    //   );
+    Object.keys(payload).forEach((key) => {
+      formData.append(key, payload[key]);
+    });
+    // for (const key in form.value) {
+    //   if (payload.hasOwnProperty()) {
+    //     formData.append(key, payload[key].value);
+    //   }
+    //
+    // }
+    // form.get("approvalStatus").disable();
 
     this.spinner = true;
     return this.employeeService.postProfCert(formData).subscribe(
@@ -178,14 +184,16 @@ export class ProfCertComponent implements OnInit {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#prof_cert_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            this.getEmployeeProfCert(this.dataFromParent.user.staffId);
+            $("#prof_cert_modal").modal("hide");
+          });
         }
-        this.getEmployeeProfCert(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
-        const message = err.status.message.friendlyMessage;
+        const error = JSON.parse(err);
+        const message = error.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
     );

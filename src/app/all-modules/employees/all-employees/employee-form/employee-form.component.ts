@@ -46,18 +46,26 @@ export class EmployeeFormComponent implements OnInit {
     private route: ActivatedRoute,
     private dataService: DataService,
     private loadingService: LoadingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private employeeService: EmployeeService
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((param) => {
-      if (param.has("editUser")) {
-        this.dataService.currentUser.subscribe((result) => {
-          this.initializeEditForm(result);
-        });
+    this.initializeForm();
+    this.route.queryParams.subscribe((param) => {
+      const id: number = param.id;
+      if (id !== undefined) {
+        this.getProfile(id);
       } else {
-        this.initializeForm();
       }
+      // this.getProfile(id)
+      // if (param.has("editUser")) {
+      //   this.dataService.currentUser.subscribe((result) => {
+      //     this.initializeEditForm(result);
+      //   });
+      // } else {
+      //   this.initializeForm();
+      // }
     });
     this.getJobTitle();
     this.getCountry();
@@ -66,6 +74,49 @@ export class EmployeeFormComponent implements OnInit {
     this.getAccess();
   }
 
+  getProfile(id: number) {
+    this.loadingService.show();
+    this.employeeService.getEmployeeById(id).subscribe(
+      (data) => {
+        this.loadingService.hide();
+        const result = data.employeeList[0];
+        this.getStatesByCountryId(result.countryId);
+        this.getAccessLevelsByAccessLevelId(result.accessLevelId);
+        this.EmployeeForm.patchValue({
+          staffId: result.staffId,
+          firstName: result.firstName,
+          lastName: result.lastName,
+          middleName: result.middleName,
+          jobTitle: result.jobTitle,
+          dateOfJoin: result.dateOfJoin,
+          phoneNumber: result.phoneNumber,
+          email: result.email,
+          address: result.address,
+          dateOfBirth: result.dateOfBirth,
+          gender: result.gender,
+          stateId: result.sateId,
+          countryId: result.countryId,
+          //staffLimit: [""],
+          accessLevel: result.accessLevel,
+          staffOfficeId: result.staffOfficeId,
+          userName: result.userName,
+          userStatus: "",
+          accessLevelId: result.accessLevelId,
+          userAccessLevels: result.userAccessLevels,
+          userRoleNames: result.userRoleNames,
+          password: [""],
+          photoFile: [""],
+          jobGrade: result.jobGrade,
+          isHRAdmin: result.isHRAdmin,
+        });
+        console.log(this.EmployeeForm.value);
+        // Resets the photo input field of the form
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
+  }
   initializeEditForm(result) {
     this.getStatesByCountryId(result?.countryId);
     this.getAccessLevelsByAccessLevelId(result?.accessLevelId);

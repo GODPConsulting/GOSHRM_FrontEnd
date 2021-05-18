@@ -117,23 +117,25 @@ export class LoginComponent implements OnInit {
         this.loadingService.hide();
         this.hrmUser = data.employeeList[0];
         this.router.navigateByUrl(this.redirectURL);
-        this.hrmUser.branchId = this.user.branchId;
-        this.hrmUser.branchName = this.user.branchName;
-        this.hrmUser.companyId = this.user.companyId;
-        this.hrmUser.companyName = this.user.companyName;
-        this.hrmUser.customerName = this.user.customerName;
-        this.hrmUser.departmentId = this.user.departmentId;
-        this.hrmUser.lastLoginDate = this.user.lastLoginDate;
-        this.hrmUser.staffName = this.user.staffName;
-        this.hrmUser.userStatus = this.user.status;
-        this.hrmUser.userId = this.user.userId;
-        this.hrmUser.userName = this.user.userName;
-        this.hrmUser.userRoleNames = [...this.user.roles];
-        this.hrmUser.activities = [...this.user.activities];
-        this.userRights = this.hrmUser.activities;
-        // share user data through data service
-        this.dataService.saveCurrentUser(this.hrmUser);
-        this.jwtService.saveHrmUserDetails(this.hrmUser);
+        if (this.hrmUser.length !== 0) {
+          this.hrmUser.branchId = this.user.branchId;
+          this.hrmUser.branchName = this.user.branchName;
+          this.hrmUser.companyId = this.user.companyId;
+          this.hrmUser.companyName = this.user.companyName;
+          this.hrmUser.customerName = this.user.customerName;
+          this.hrmUser.departmentId = this.user.departmentId;
+          this.hrmUser.lastLoginDate = this.user.lastLoginDate;
+          this.hrmUser.staffName = this.user.staffName;
+          this.hrmUser.userStatus = this.user.status;
+          this.hrmUser.userId = this.user.userId;
+          this.hrmUser.userName = this.user.userName;
+          this.hrmUser.userRoleNames = [...this.user.roles];
+          this.hrmUser.activities = [...this.user.activities];
+          this.userRights = this.hrmUser.activities;
+          // share user data through data service
+          this.dataService.saveCurrentUser(this.hrmUser);
+          this.jwtService.saveHrmUserDetails(this.hrmUser);
+        }
       },
       (err) => {
         this.loadingService.hide();
