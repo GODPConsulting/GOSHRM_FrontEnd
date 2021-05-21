@@ -25,6 +25,7 @@ import { AppraisalObjectivesComponent } from "./setup/appraisal-objectives/appra
 import { AppraisalsComponent } from "./setup/appraisal-cycle/appraisals/appraisals.component";
 import { CustomDatePipe } from "../../../assets/pipes/custom-date.pipe";
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+import { TreeTableModule } from "primeng/treetable";
 @NgModule({
   declarations: [
     PerformanceManagementComponent,

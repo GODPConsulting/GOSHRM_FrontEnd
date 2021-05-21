@@ -6,6 +6,16 @@
     </div>
     <div class="card-body">
       <div class="row">
+        <div class="objectives-container">
+          <div *ngFor="let item of addAbleOjectives" class="objective">
+            <span class="objective-name">{{ item.name | titlecase }}</span>
+            <span
+              class="objective-icon"
+              (click)="addObjective(item.kpiIndicators, item.id)"
+              ><i class="fa fa-plus"></i
+            ></span>
+          </div>
+        </div>
         <div class="col-auto float-right ml-auto mb_10">
           <a
             class="btn delete-btn hint"
@@ -17,75 +27,75 @@
             ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
           ></a>
 
-          <a
-            class="btn add-btn hint"
-            data-toggle="modal"
-            data-target="#appraisal_Objectives_modal"
-            ><span class="hint-text">Add</span><i class="fa fa-plus"></i>
-          </a>
+          <!--          <a-->
+          <!--            class="btn add-btn hint"-->
+          <!--            data-toggle="modal"-->
+          <!--            data-target="#appraisal_Objectives_modal"-->
+          <!--            ><span class="hint-text">Add</span><i class="fa fa-plus"></i>-->
+          <!--          </a>-->
         </div>
-        <p-table
-          class="table table-striped custom-table datatable table-hover"
-          #dt
-          [columns]="cols"
-          [(selection)]="selectedObjectives"
-          [scrollable]="true"
-          scrollHeight="600px"
-        >
-          <ng-template pTemplate="caption">
-            <div style="text-align: right">
-              <input
-                type="text"
-                pInputText
-                size="50"
-                class="form-control"
-                placeholder="Search..."
-                (keyup)="dt.filterGlobal($event.target.value, 'contains')"
-                style="width: auto"
-              />
-            </div>
-          </ng-template>
-          <ng-template pTemplate="header">
-            <tr>
-              <!--              <th>-->
-              <!--                <input type="checkbox" />-->
-              <!--              </th>-->
-              <th>KPI Type</th>
-              <th>objectives</th>
-              <th>Success targets</th>
-              <th>Key Action</th>
-              <th>Targets date</th>
-              <th>weights(%)</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-row let-i="rowIndex">
-            <div class="table-title">{{ title }}</div>
-            <tr *ngFor="let row of objectives; let i = index">
-              <!--              <td>-->
-              <!--                <input-->
-              <!--                  type="checkbox"-->
-              <!--                  [checked]="selectedId.includes(row.id)"-->
-              <!--                  (change)="addItemId($event, row.id)"-->
-              <!--                />-->
-              <!--              </td>-->
-              <td>{{ row }}</td>
-              <td>{{ row }}</td>
-              <td>{{ row }}</td>
-              <td>{{ row }}</td>
-              <td>{{ targetDate | customDate }}</td>
-              <td>{{ kpiWeight }}</td>
-            </tr>
-            <tr *ngFor="let item of empPermittedList">
-              <ng-container class="title">
-                <div>
-                  {{ item.kpiCategoryName }}
-                </div>
-              </ng-container>
-              <br />
-              <td *ngFor="let row of item.kpIsNameList">{{ row }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
+        <div *ngFor="let table of objectives; let i = index">
+          <h5 style="font-weight: bold" class="category">
+            {{ table.kpiCategoryName | titlecase }}
+          </h5>
+          <p-table
+            class="table table-striped custom-table datatable table-hover"
+            #dt
+            [columns]="cols"
+            [(selection)]="selectedObjectives"
+            [scrollable]="true"
+            [value]="table.employeeObjectiveIdicators"
+            scrollHeight="600px"
+          >
+            <!--           s-->
+            <ng-template pTemplate="header">
+              <tr>
+                <!--              <th>-->
+                <!--                <input type="checkbox" />-->
+                <!--              </th>-->
+                <th class="sn_width">S/N</th>
+                <th>KPI Type</th>
+                <th>Objectives</th>
+                <th>Success targets</th>
+                <th>Key Action</th>
+                <th>Targets date</th>
+                <th>weights(%)</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row let-i="rowIndex">
+              <tr
+                (click)="editItem(table, row)"
+                style="cursor: pointer"
+                [ngClass]="{ disabled: !table.canEmplyeeAddObjective }"
+              >
+                <!--              <td>-->
+                <!--                <input-->
+                <!--                  type="checkbox"-->
+                <!--                  [checked]="selectedId.includes(row.id)"-->
+                <!--                  (change)="addItemId($event, row.id)"-->
+                <!--                />-->
+                <!--              </td>-->
+                <td class="sn_width">{{ i + 1 }}</td>
+                <td>{{ row.kpiName | titlecase }}</td>
+                <td>{{ row.objective | titlecase }}</td>
+                <td>{{ row.successMeasure | titlecase }}</td>
+                <td>{{ row.keyActions | titlecase }}</td>
+                <td>{{ row.targetDate | date }}</td>
+                <td>{{ row.weightmodel }}</td>
+                <!--                <td>{{ kpiWeight }}</td>-->
+              </tr>
+              <tr *ngFor="let item of empPermittedList">
+                <ng-container class="title">
+                  <div>
+                    {{ item.kpiCategoryName }}
+                  </div>
+                </ng-container>
+                <br />
+                <td *ngFor="let row of item.kpIsNameList">{{ row }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
       </div>
     </div>
   </div>
@@ -117,16 +127,19 @@
               <div class="form-group">
                 <label for="KPIcategory">KPI Category</label>
                 <select
-                  name=""
+                  name="kpi"
                   id="KPIcategory"
                   class="form-control"
-                  formControlName="kpiCategoryId"
+                  [(ngModel)]="kpi"
+                  [disabled]="isEditing"
+                  [ngModelOptions]="{ standalone: true }"
                 >
+                  <option value="" disabled>--Select KPI Metric--</option>
                   <option
                     *ngFor="let category of kpiCategories"
                     [value]="category.id"
                   >
-                    {{ category.name }}
+                    {{ category.kpi | titlecase }}
                   </option>
                 </select>
               </div>

@@ -5,6 +5,7 @@ import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import {
+  AppraisalObjective,
   EmployeeKPI,
   IAppraisalCycle,
   IKpis,
@@ -426,11 +427,13 @@ export class PerformanceManagementService {
   }
   getEmployeeAppraisalCycle(
     employeeId: number,
-    deptId: number
+    deptId: number,
+    jobGradeId: number,
+    appraisalCycleId: number = 0
   ): Observable<IAppraisalCycle[]> {
     return this.apiService
       .get(
-        `/performance/get/employee_appraisal/cycle?EmployeeId=${employeeId}&Department=${deptId}`
+        `/performance/get/employee_appraisal/cycle?JobGarde=${jobGradeId}&EmployeeId=${employeeId}&Department=${deptId}&AppraisalCycleId=${appraisalCycleId}`
       )
       .pipe(
         tap(),
@@ -444,6 +447,77 @@ export class PerformanceManagementService {
   addEmployeeKPI(payload: EmployeeKPI): Observable<EmployeeKPI> {
     return this.apiService
       .post(`/performance/add/new_kpi/by_employee`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getAddableObjectives(jobGradeId: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_can_add/kpis/by_jobgrade?jobgrade=${jobGradeId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getCannotAddObjectives(jobGradeId: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_cannot_add/kpis/by_jobgrade?jobgrade=${jobGradeId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getEmployeeObjectives(id: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_added/kpis/by_employeeId?EmployeeId=${id}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        })
+      );
+  }
+
+  getEmployeeObjectiveDetails(
+    jobGrade,
+    employeeId,
+    deptId,
+    appraisalCycleId
+  ): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_obectves/by/employee_details?JobGarde=${jobGrade}&EmployeeId=${employeeId}&Department=${deptId}&AppraisalCycleId=${appraisalCycleId}`
+      )
+      .pipe(
+        tap(),
+        map((data) => {
+          return data.list;
+        }, catchError(this.handleError))
+      );
+  }
+
+  startAppraisal(payload: AppraisalObjective): Observable<AppraisalObjective> {
+    return this.apiService
+      .post(`/performance/add/update/employee-appraisal/objectives`, payload)
       .pipe(
         tap(),
         map((res) => {

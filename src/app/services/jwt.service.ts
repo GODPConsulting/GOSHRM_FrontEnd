@@ -23,7 +23,7 @@ export class JwtService {
   saveHrmUserDetails(hrmUser) {
     window.localStorage.setItem("hrmUserDetails", JSON.stringify(hrmUser));
   }
-  getHrmUserDetails() {
+  async getHrmUserDetails() {
     return JSON.parse(window.localStorage.getItem("hrmUserDetails"));
   }
   getUserDetails() {

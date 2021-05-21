@@ -66,9 +66,11 @@
                 <p-tableCheckbox [value]="row"></p-tableCheckbox>
               </td>
               <td>{{ i + 1 }}</td>
-              <td (click)="edit(row)">{{ row.name }}</td>
+              <td (click)="edit(row)">{{ row.name | titlecase }}</td>
 
-              <td (click)="edit(row)">{{ row.employeePermittedName }}</td>
+              <td (click)="edit(row)">
+                {{ row.employeePermittedName | titlecase }}
+              </td>
               <td (click)="edit(row)">{{ row.weightModelName }}</td>
               <td (click)="edit(row)">{{ row.hrSelectReviewerName }}</td>
             </tr>
@@ -90,6 +92,7 @@
           class="close"
           data-dismiss="modal"
           aria-label="Close"
+          (click)="closeModal()"
         >
           <span aria-hidden="true">&times;</span>
         </button>

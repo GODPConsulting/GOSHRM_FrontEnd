@@ -4,7 +4,7 @@
     <div class="card-header header-bg-color">
       <h5><b>Appraisal Objectives </b></h5>
     </div>
-    <div class="card-body">
+    <div class="card-body" style="padding: 2rem">
       <div class="row">
         <div class="col-auto float-right ml-auto">
           <span class="mr-1">
@@ -41,7 +41,10 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-item let-i="rowIndex">
-            <tr>
+            <tr
+              (click)="viewCycle(item.appraisalCycleId)"
+              style="cursor: pointer"
+            >
               <td class="table-checkbox">
                 <p-tableCheckbox [value]="item"></p-tableCheckbox>
               </td>

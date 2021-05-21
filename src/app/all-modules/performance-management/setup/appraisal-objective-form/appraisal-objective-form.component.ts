@@ -1,10 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { data } from "jquery";
 import { DataService } from "src/app/services/data.service";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { LoadingService } from "../../../../services/loading.service";
+import { JwtService } from "../../../../services/jwt.service";
 
 @Component({
   selector: "app-appraisal-objective-form",
@@ -17,48 +18,76 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   user: any;
   staffId: any;
   employeeAppraisalInfo: any = {};
-
+  appraisalCycleId: number;
+  deptId: number;
+  jobGradeId: number;
+  appraisalCycles: any[] = [];
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private router: Router,
     private dataService: DataService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private route: ActivatedRoute,
+    private jwtService: JwtService
   ) {}
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((param) => {
+      this.appraisalCycleId = param.appraisalCycleId;
+    });
     const user = JSON.parse(localStorage.getItem("userDetails"));
-    console.log(user);
     if (user) {
       this.staffId = user.staffId;
+      this.deptId = user.departmentId;
     }
+    this.jwtService.getHrmUserDetails().then((user) => {
+      if (user) {
+        this.jobGradeId = user.jobGrade;
+        this.getAppraisalCycle();
+      }
+    });
     this.initializeForm();
-    this.getAppraisalCycle();
+    // this.getAppraisalCycle();
     this.getCareer(this.staffId);
   }
   initializeForm() {
     this.appraisalObjectiveForm = this.formbuilder.group({
       id: [0],
       reviewYear: [""],
-      period: [""],
+      reviewPeriod: [""],
+      employee: [""],
+      lineManger: [""],
+      jobGradeId: [""],
+      firstReviewer: [""],
+      secondReviewer: [""],
+      thirdReviewer: [""],
+      comment: [""],
+      appraisalCycleId: [""],
+      department: [""],
       staffName: [""],
-      job_Grade: [""],
-      job_title: [""],
       line_ManagerName: [""],
       first_Level_ReviewerName: [""],
       second_Level_ReviewerName: [""],
       third_Level_ReviewerName: [""],
+      job_title: [""],
+      job_Grade: [""],
     });
   }
 
   getAppraisalCycle() {
     this.loadingService.show();
     return this.performanceManagementService
-      .getAppraisalCycleByStatus()
+      .getEmployeeAppraisalCycle(
+        this.staffId,
+        this.deptId,
+        this.jobGradeId,
+        this.appraisalCycleId
+      )
       .subscribe(
         (data) => {
           this.loadingService.hide();
-          this.reviewStatus = data.setupList;
+          this.appraisalCycles = data;
         },
         (err) => {
           this.loadingService.hide();
@@ -83,7 +112,39 @@ export class AppraisalObjectiveFormComponent implements OnInit {
             .second_Level_ReviewerName,
           third_Level_ReviewerName: this.employeeAppraisalInfo
             .second_Level_ReviewerName,
+          employee: this.employeeAppraisalInfo.staffId,
+          lineManger: this.employeeAppraisalInfo.line_ManagerId,
+          department: this.deptId,
+          appraisalCycleId: this.appraisalCycleId,
+          firstReviewer: this.employeeAppraisalInfo.first_Level_ReviewerId,
+          secondReviewer: this.employeeAppraisalInfo.second_Level_ReviewerId,
+          thirdReviewer: this.employeeAppraisalInfo.third_Level_ReviewerId,
+          jobGradeId: this.employeeAppraisalInfo.job_GradeId,
         });
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
+  }
+
+  viewObjectives() {
+    const payload = this.appraisalObjectiveForm.value;
+    payload.reviewYear = +payload.reviewYear;
+    payload.appraisalCycleId = +payload.appraisalCycleId;
+    this.loadingService.show();
+    return this.performanceManagementService.startAppraisal(payload).subscribe(
+      (res) => {
+        this.loadingService.hide();
+        const message = res["status"].message.friendlyMessage;
+        if (res["status"].isSuccessful) {
+          this.router.navigate(["/performance/appraisal-objectives"], {
+            queryParams: {
+              appraisalCycleId: this.appraisalCycleId,
+            },
+          });
+        } else {
+        }
       },
       (err) => {
         this.loadingService.hide();

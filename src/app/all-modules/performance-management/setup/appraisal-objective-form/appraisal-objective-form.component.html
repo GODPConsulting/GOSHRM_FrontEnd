@@ -14,10 +14,7 @@
           ><span class="hint-text">Back</span><i class="fa fa-backward"></i
         ></a>
 
-        <a
-          class="btn add-btn hint"
-          data-target="#add_appraisal_objectives"
-          routerLink="/performance/appraisal-objectives"
+        <a class="btn add-btn hint" (click)="viewObjectives()"
           ><span class="hint-text">Continue Objective</span
           ><i class="fa fa-play"></i>
         </a>
@@ -28,17 +25,13 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label>Review year <span class="text-danger">*</span></label>
-                <select
-                  class="form-control"
-                  formControlName="reviewYear"
-                  [class.invalid]="
-                    appraisalObjectiveForm.get('reviewYear').invalid &&
-                    appraisalObjectiveForm.get('reviewYear').touched
-                  "
-                >
+                <label>Review year</label>
+                <select class="form-control" formControlName="reviewYear">
                   <option selected value="">Review Year</option>
-                  <option *ngFor="let row of reviewStatus" value="{{ row.id }}">
+                  <option
+                    *ngFor="let row of appraisalCycles"
+                    value="{{ row.reviewYear }}"
+                  >
                     {{ row.reviewYear }}
                   </option>
                 </select>
@@ -47,18 +40,14 @@
 
             <div class="col-md-6">
               <div class="form-group">
-                <label>Review Period <span class="text-danger">*</span></label
-                ><select
-                  class="form-control"
-                  [class.invalid]="
-                    appraisalObjectiveForm.get('period').invalid &&
-                    appraisalObjectiveForm.get('period').touched
-                  "
-                  formControlName="period"
-                >
+                <label>Review Period</label
+                ><select class="form-control" formControlName="reviewPeriod">
                   <option selected value="">Review Period</option>
-                  <option *ngFor="let row of reviewStatus" value="{{ row.id }}">
-                    {{ row.period }}
+                  <option
+                    *ngFor="let row of appraisalCycles"
+                    value="{{ row.reviewPeriod }}"
+                  >
+                    {{ row.reviewPeriod }}
                   </option>
                 </select>
               </div>

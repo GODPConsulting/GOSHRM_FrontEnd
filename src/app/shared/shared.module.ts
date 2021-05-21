@@ -8,6 +8,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { ImageCropperModule } from "ngx-image-cropper";
 import { RatingModule } from "ngx-bootstrap/rating";
 import { TableModule } from "primeng/table";
+import { TreeTableModule } from "primeng/treetable";
 
 @NgModule({
   declarations: [LoadingComponent, AppMenuComponent, AppSubMenuComponent],
@@ -17,6 +18,7 @@ import { TableModule } from "primeng/table";
     ImageCropperModule,
     RatingModule,
     TableModule,
+    TreeTableModule,
     // NgSelectModule
   ],
   exports: [
@@ -26,6 +28,7 @@ import { TableModule } from "primeng/table";
     ImageCropperModule,
     RatingModule,
     TableModule,
+    TreeTableModule,
   ],
 })
 export class SharedModule {}

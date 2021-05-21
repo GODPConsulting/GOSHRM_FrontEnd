@@ -240,7 +240,7 @@ export class KpiCategoryComponent implements OnInit {
   }
 
   setWeightModel(value) {
-    this.allLocation = value;
+    this.allLocation = +value;
     this.kpiCategoryForm.get("weightModel");
     if (this.allLocation === 1 || this.allLocation === 2) {
       // this.kpiCategoryForm.get("weightModel").enable();
@@ -275,4 +275,8 @@ export class KpiCategoryComponent implements OnInit {
   //     this.dtTrigger.next();
   //   });
   // }
+  closeModal() {
+    $("#kpi_category_modal").modal("hide");
+    this.initKpiCategoryForm();
+  }
 }
