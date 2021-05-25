@@ -214,7 +214,7 @@ export class PerformanceManagementService {
 
   deleteAppraisalCycle(payload: any) {
     return this.apiService
-      .post("/performance/performancesetup​/delete​/appraisal-cycle", payload)
+      .post("/performance/delete/appraisal_cycles", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -524,6 +524,50 @@ export class PerformanceManagementService {
           return res;
         }),
         catchError(this.handleError)
+      );
+  }
+
+  saveObjectives(employeeObjectiveId: number): Observable<any> {
+    return this.apiService
+      .post(`/performance/employee/confirm/objectives/by_objectivesId`, {
+        employeeObjectiveId,
+      })
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getEmployeeObjectivesByLineManager(id: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_objectives/by_line_mamager?longMangerId=${id}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getSingleEmployeeObjective(
+    employeeId: number,
+    appraisalCycleId: number
+  ): Observable<AppraisalObjective> {
+    return this.apiService
+      .get(
+        `/performance/get/single/employee_objectives?EmployeeId=${employeeId}&AppraisalCycleId=${appraisalCycleId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res["list"];
+        })
       );
   }
 }

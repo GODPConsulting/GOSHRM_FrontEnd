@@ -47,10 +47,11 @@ export class AppraisalObjectiveViewComponent implements OnInit {
       );
   }
 
-  viewCycle(appraisalCycleId: any) {
+  viewCycle(item: any) {
     this.router.navigate(["/performance/appraisal-objective-form"], {
       queryParams: {
-        appraisalCycleId,
+        appraisalCycleId: item.appraisalCycleId,
+        objectiveId: item.id,
       },
     });
   }

@@ -472,12 +472,6 @@
                           >
                           <select
                             class="form-control"
-                            [class.invalid]="
-                              employeeQualificationForm.get('qualificationId')
-                                .invalid &&
-                              employeeQualificationForm.get('qualificationId')
-                                .touched
-                            "
                             formControlName="qualificationId"
                           >
                             <option selected value="">Qualification</option>
@@ -532,11 +526,6 @@
                           <label>Grade<span class="text-danger">*</span></label>
                           <select
                             class="form-control"
-                            [class.invalid]="
-                              employeeQualificationForm.get('gradeId')
-                                .invalid &&
-                              employeeQualificationForm.get('gradeId').touched
-                            "
                             formControlName="gradeId"
                           >
                             <option selected value="">Grades</option>
@@ -558,33 +547,27 @@
                             #fileInput
                             type="file"
                             (change)="handleFile($event)"
-                            [class.invalid]="
-                              employeeQualificationForm.get('qualificationFile')
-                                .invalid &&
-                              employeeQualificationForm.get('qualificationFile')
-                                .touched
-                            "
                           />
                         </div>
                       </div>
-                      <!--                      <div class="col-md-6">-->
-                      <!--                        <div class="form-group">-->
-                      <!--                          <label-->
-                      <!--                            >Approval Status<span class="text-danger"-->
-                      <!--                              >*</span-->
-                      <!--                            ></label-->
-                      <!--                          >-->
-                      <!--                          <select-->
-                      <!--                            class="select form-control"-->
-                      <!--                            formControlName="approvalStatus"-->
-                      <!--                          >-->
-                      <!--                            <option disabled>Select Status</option>-->
-                      <!--                            <option value="1">Confirmed</option>-->
-                      <!--                            <option value="2">Pending</option>-->
-                      <!--                            <option value="3">Unconfirmed</option>-->
-                      <!--                          </select>-->
-                      <!--                        </div>-->
-                      <!--                      </div>-->
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label
+                            >Approval Status<span class="text-danger"
+                              >*</span
+                            ></label
+                          >
+                          <select
+                            class="select form-control"
+                            formControlName="approvalStatus"
+                          >
+                            <option disabled>Select Status</option>
+                            <option value="1">Confirmed</option>
+                            <option value="2">Pending</option>
+                            <option value="3">Unconfirmed</option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -726,14 +709,7 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Country <span class="text-danger">*</span></label>
-                    <select
-                      class="form-control"
-                      [class.invalid]="
-                        emergencyContactForm.get('countryId').invalid &&
-                        emergencyContactForm.get('countryId').touched
-                      "
-                      formControlName="countryId"
-                    >
+                    <select class="form-control" formControlName="countryId">
                       <option selected value="">--Select Country--</option>
                       <option
                         *ngFor="let row of countries"
@@ -754,22 +730,22 @@
                     />
                   </div>
                 </div>
-                <!--                <div class="col-md-6">-->
-                <!--                  <div class="form-group">-->
-                <!--                    <label-->
-                <!--                      >Approval Status<span class="text-danger">*</span></label-->
-                <!--                    >-->
-                <!--                    <select-->
-                <!--                      class="select form-control"-->
-                <!--                      formControlName="approval_status"-->
-                <!--                    >-->
-                <!--                      <option disabled>Select Status</option>-->
-                <!--                      <option value="1">Approved</option>-->
-                <!--                      <option value="2">Pending</option>-->
-                <!--                      <option value="3">Declined</option>-->
-                <!--                    </select>-->
-                <!--                  </div>-->
-                <!--                </div>-->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label
+                      >Approval Status<span class="text-danger">*</span></label
+                    >
+                    <select
+                      class="select form-control"
+                      formControlName="approval_status"
+                    >
+                      <option disabled>Select Status</option>
+                      <option value="1">Approved</option>
+                      <option value="2">Pending</option>
+                      <option value="3">Declined</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

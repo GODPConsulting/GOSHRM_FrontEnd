@@ -41,10 +41,7 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-item let-i="rowIndex">
-            <tr
-              (click)="viewCycle(item.appraisalCycleId)"
-              style="cursor: pointer"
-            >
+            <tr (click)="viewCycle(item)" style="cursor: pointer">
               <td class="table-checkbox">
                 <p-tableCheckbox [value]="item"></p-tableCheckbox>
               </td>

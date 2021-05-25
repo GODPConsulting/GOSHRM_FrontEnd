@@ -73,7 +73,9 @@ Version      : 3.6
 64. Responsive
 
 ========================================*/
-
+* {
+  font-size: 14px;
+}
 @font-face {
   font-family: "Material Icons";
   font-style: normal;

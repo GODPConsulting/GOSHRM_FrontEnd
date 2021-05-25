@@ -82,13 +82,15 @@ export class EmployeeProfileComponent implements OnInit {
       this.employeeId = +params.get("id");
     });
     // Get access to the user data shared from sidebar
-    this.dataToChild.user = this.jwtService.getHrmUserDetails();
-    this.dataToChild.isHr = this.dataToChild.user?.userRoleNames.includes(
-      "HR Admin"
-    );
-    this.dataToChild.canSeeProfileElement =
-      this.dataToChild.user?.userRoleNames.includes("HR Admin") ||
-      this.dataToChild.user?.staffId === this.employeeId;
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.dataToChild.user = user;
+      this.dataToChild.isHr = this.dataToChild.user?.userRoleNames.includes(
+        "HR Admin"
+      );
+      this.dataToChild.canSeeProfileElement =
+        this.dataToChild.user?.userRoleNames.includes("HR Admin") ||
+        this.dataToChild.user?.staffId === this.employeeId;
+    });
     // this.dataService.currentUser.subscribe((result) => {
     //   console.log(result);
     //   this.dataToChild.user = result;
@@ -116,20 +118,20 @@ export class EmployeeProfileComponent implements OnInit {
   initializeForm() {
     this.emergencyContactForm = this.formBuilder.group({
       id: [0],
-      fullName: ["", Validators.required],
-      contact_phone_number: ["", Validators.required],
-      email: ["", Validators.required],
-      relationship: ["", Validators.required],
-      address: ["", Validators.required],
+      fullName: [""],
+      contact_phone_number: [""],
+      email: [""],
+      relationship: [""],
+      address: [""],
       countryId: [""],
-      countryName: ["", Validators.required],
+      countryName: [""],
       staffId: this.employeeId,
     });
   }
   initLaguageRatingForm() {
     this.languageRatingForm = this.formBuilder.group({
       id: [0],
-      languageId: ["", Validators.required],
+      languageId: [""],
       reading_Rating: [""],
       writing_Rating: [""],
       speaking_Rating: [""],
@@ -141,14 +143,14 @@ export class EmployeeProfileComponent implements OnInit {
   initEmployeeQualificationForm() {
     this.employeeQualificationForm = this.formBuilder.group({
       id: [0],
-      qualificationId: ["", Validators.required],
-      institution: ["", Validators.required],
-      startDate: ["", Validators.required],
-      endDate: ["", Validators.required],
-      gradeId: ["", Validators.required],
+      qualificationId: [""],
+      institution: [""],
+      startDate: [""],
+      endDate: [""],
+      gradeId: [""],
       approvalStatus: [""],
       staffId: this.employeeId,
-      qualificationFile: ["", Validators.required],
+      qualificationFile: [""],
     });
   }
 

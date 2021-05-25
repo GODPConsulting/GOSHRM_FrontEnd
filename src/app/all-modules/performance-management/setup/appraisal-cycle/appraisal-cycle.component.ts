@@ -219,7 +219,7 @@ export class AppraisalCycleComponent implements OnInit {
     } else {
     }
     this.selectedCycles.map((item) => {
-      this.selectedId.push(item.id);
+      this.selectedId.push(item.appraisalCycleId);
     });
     payload = {
       itemIds: this.selectedId,
@@ -236,7 +236,7 @@ export class AppraisalCycleComponent implements OnInit {
         if (result.value) {
           this.loadingService.show();
           return this.performanceManagementService
-            .deleteAppraisalCycle(payload)
+            .deleteAppraisalCycle(this.selectedId)
             .subscribe(
               (res) => {
                 this.loadingService.hide();

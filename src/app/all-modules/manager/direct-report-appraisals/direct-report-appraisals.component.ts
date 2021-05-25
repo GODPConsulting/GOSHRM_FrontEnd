@@ -4,6 +4,8 @@ import { ManagerService } from "src/app/services/manager.service";
 import swal from "sweetalert2";
 import { Subject } from "rxjs";
 import { LoadingService } from "../../../services/loading.service";
+import { PerformanceManagementService } from "../../../services/performance-management.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-direct-report-appraisals",
@@ -17,13 +19,24 @@ export class DirectReportAppraisalsComponent implements OnInit {
   user: any;
   dtTrigger: Subject<any> = new Subject<any>();
   activities: any;
+  jobGradeId: number;
+  employeeId: number;
+  deptId: number;
   constructor(
     private managerService: ManagerService,
     private jwtService: JwtService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private performanceManagementService: PerformanceManagementService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.jobGradeId = user.jobGrade;
+      this.employeeId = user.staffId;
+      this.deptId = user.departmentId;
+      this.getAppraisalObjByManagerId();
+    });
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -51,25 +64,42 @@ export class DirectReportAppraisalsComponent implements OnInit {
     this.activities = this.jwtService.getUserActivities();
     this.user = this.jwtService.getUserDetails();
     if (this.activities.includes("line manager")) {
-      this.getAppraisalObjByManagerId(this.user.staffId);
+      // this.getAppraisalObjByManagerId(this.user.staffId);
     }
   }
 
-  getAppraisalObjByManagerId(id: number) {
+  getAppraisalObjByManagerId() {
     this.loadingService.show();
-    this.managerService.getAppraisalObjByManagerId(id).subscribe(
-      (data) => {
-        this.loadingService.hide();
-        this.reportAppraisals = data.objectiveList;
-        this.dtTrigger.next();
-      },
-      (err) => {
-        this.loadingService.hide();
-        const message = err.status.message.friendlyMessage;
-        swal.fire("GOSHRM", message, "error");
-      }
-    );
+    this.performanceManagementService
+      .getEmployeeObjectivesByLineManager(this.employeeId)
+      .subscribe(
+        (data) => {
+          this.loadingService.hide();
+          this.reportAppraisals = data;
+          this.dtTrigger.next();
+        },
+        (err) => {
+          this.loadingService.hide();
+          const message = err.status.message.friendlyMessage;
+          swal.fire("GOSHRM", message, "error");
+        }
+      );
   }
 
   checkAll(event: Event) {}
+
+  stopParentEvent(event: Event) {
+    event.stopPropagation();
+  }
+
+  addItemId(event: Event, id: any) {}
+
+  viewObjectives(row: any) {
+    this.router.navigate(["/performance/appraisal-objective-form"], {
+      queryParams: {
+        appraisalCycleId: row.appraisalCycleId,
+        objectiveId: row.id,
+      },
+    });
+  }
 }

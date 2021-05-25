@@ -14,6 +14,12 @@
 
 .objective-icon {
   cursor: pointer;
+  width: 50px;
+  background: #ccc;
+  padding: 5px;
+  border-radius: 50%;
+  /* color: #fff; */
+  height: 50px;
 }
 
 .disabled{

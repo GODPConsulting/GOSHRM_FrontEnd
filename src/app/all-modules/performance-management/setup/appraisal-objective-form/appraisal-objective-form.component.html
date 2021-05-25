@@ -1,4 +1,4 @@
-<div class="content container-fluid">
+<div class="content container-fluid" style="padding-bottom: 0">
   <!-- Page Header Starts -->
   <div id="add_appraisal_objectives">
     <div class="card">
@@ -15,7 +15,9 @@
         ></a>
 
         <a class="btn add-btn hint" (click)="viewObjectives()"
-          ><span class="hint-text">Continue Objective</span
+          ><span class="hint-text">{{
+            lineManagerId === 0 ? "Start Objective" : "Continue Objective"
+          }}</span
           ><i class="fa fa-play"></i>
         </a>
       </div>
@@ -160,3 +162,7 @@
     </div>
   </div>
 </div>
+<app-appraisal-objectives
+  *ngIf="lineManagerId !== 0"
+  [objectiveId]="objectiveId"
+></app-appraisal-objectives>

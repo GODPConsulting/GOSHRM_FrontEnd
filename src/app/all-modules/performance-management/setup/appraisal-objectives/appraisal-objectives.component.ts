@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DataService } from "src/app/services/data.service";
@@ -41,6 +41,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   appraisalCyleId: number;
   isEditing: boolean = false;
   kpi: any;
+  @Input() objectiveId: number;
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -55,6 +56,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((param) => {
       this.appraisalCyleId = param.appraisalCycleId;
+      this.objectiveId = param.objectiveId;
     });
     const user = JSON.parse(localStorage.getItem("userDetails"));
     if (user) {
@@ -72,7 +74,7 @@ export class AppraisalObjectivesComponent implements OnInit {
     });
     this.initializeForm();
     this.getAppraisalObjectives(this.staffId);
-    this.getTargetDate();
+    // this.getTargetDate();
     // this.getEmployeeObjectives();
     // this.getKPICategories();
     // this.dtOptions = {
@@ -295,5 +297,26 @@ export class AppraisalObjectivesComponent implements OnInit {
     //   .setValue(row.kpi, { disable: true });
     // this.kpiCategories = table.employeeObjectiveIdicators;
     $("#appraisal_Objectives_modal").modal("show");
+  }
+
+  saveObjectives() {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .saveObjectives(+this.objectiveId)
+      .subscribe(
+        (res) => {
+          this.loadingService.hide();
+          const message = res.status.message.friendlyMessage;
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success");
+          } else {
+            this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
   }
 }
