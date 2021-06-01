@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
   allUsers: any;
   mails: any;
   emailCount: number;
-  userDetails: any = {}
+  userDetails: any = {};
   constructor(
     private headerService: HeaderService,
     private router: Router,
@@ -34,10 +34,12 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.getAllEmails();
-    this.userDetails = this.jwtService.getUserDetails()
+    this.userDetails = this.jwtService.getUserDetails();
     // this.getDatas("notification");
     // this.getDatas("message");
-    this.user = this.jwtService.getHrmUserDetails();
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.user = user;
+    });
     // Get access to the user data shared from sidebar
     /* this.dataService.currentUser.subscribe((result) => {
       this.user = result;
@@ -120,9 +122,9 @@ export class HeaderComponent implements OnInit {
     this.employeeService.getAllEmails().subscribe(
       (data) => {
         this.emailCount = data.emailCount;
-        this.mails = data.emails.filter(email =>  {
-          return email.emailStatus === 0
-        })
+        this.mails = data.emails.filter((email) => {
+          return email.emailStatus === 0;
+        });
         if (this.mails.length > 10) {
           this.mails = this.mails.slice(0, 10);
         }

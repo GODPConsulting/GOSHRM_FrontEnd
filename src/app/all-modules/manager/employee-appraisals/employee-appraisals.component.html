@@ -3,7 +3,7 @@
   <div id="add_appraisal_objectives">
     <div class="card">
       <div class="card-header header-bg-color">
-        <h3><b> Appraisal Objective Form </b></h3>
+        <h3><b>Performance Objective </b></h3>
       </div>
 
       <br />
@@ -11,14 +11,19 @@
         <a
           class="btn delete-btn hint"
           routerLink="/performance/appraisal-objective-view"
+          ><span class="hint-text">Disagree</span
+          ><i class="fa fa-thumbs-o-down" aria-hidden="true"></i
+        ></a>
+        <a class="btn hint" routerLink="/performance/appraisal-objective-view"
           ><span class="hint-text">Back</span><i class="fa fa-backward"></i
         ></a>
-
-        <a class="btn add-btn hint" (click)="viewObjectives()"
-          ><span class="hint-text">{{
-            lineManagerId === 0 ? "Start Objective" : "Continue Objective"
-          }}</span
-          ><i class="fa fa-play"></i>
+        <a class="btn hint" routerLink="/performance/appraisal-objective-view"
+          ><span class="hint-text">Revoke</span>
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+        <a class="btn add-btn hint" (click)="confirm()"
+          ><span class="hint-text">Discussed and agreed</span
+          ><i class="fa fa-thumbs-up" aria-hidden="true"></i>
         </a>
       </div>
 
@@ -28,7 +33,11 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Review year</label>
-                <select class="form-control" formControlName="reviewYear">
+                <select
+                  class="form-control"
+                  formControlName="reviewYear"
+                  disabled
+                >
                   <option selected value="">Review Year</option>
                   <option
                     *ngFor="let row of appraisalCycles"
@@ -43,7 +52,11 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Review Period</label
-                ><select class="form-control" formControlName="reviewPeriod">
+                ><select
+                  class="form-control"
+                  formControlName="reviewPeriod"
+                  disabled
+                >
                   <option selected value="">Review Period</option>
                   <option
                     *ngFor="let row of appraisalCycles"
@@ -163,7 +176,6 @@
   </div>
 </div>
 <app-appraisal-objectives
-  *ngIf="lineManagerId !== 0"
   [objectiveId]="objectiveId"
-  [fromLineManager]="false"
+  [fromLineManager]="true"
 ></app-appraisal-objectives>

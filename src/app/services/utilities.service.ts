@@ -231,4 +231,11 @@ export class UtilitiesService {
   showError(msg: string) {
     return swal.fire("GOSHRM", msg, "error");
   }
+
+  createYears(from, to) {
+    const years = [];
+    for (let i = from; i <= to; i++) {
+      return years.push({ year: i });
+    }
+  }
 }

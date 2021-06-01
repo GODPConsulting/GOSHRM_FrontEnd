@@ -63,5 +63,6 @@ import { TreeTableModule } from "primeng/treetable";
       multi: true,
     },
   ],
+  exports: [AppraisalObjectivesComponent],
 })
 export class PerformanceManagementModule {}

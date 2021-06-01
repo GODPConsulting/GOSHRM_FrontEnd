@@ -1,20 +1,19 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { PerformanceManagementService } from "../../../services/performance-management.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { data } from "jquery";
-import { DataService } from "src/app/services/data.service";
-import { PerformanceManagementService } from "src/app/services/performance-management.service";
-import { LoadingService } from "../../../../services/loading.service";
-import { JwtService } from "../../../../services/jwt.service";
-import { UtilitiesService } from "../../../../services/utilities.service";
+import { DataService } from "../../../services/data.service";
+import { LoadingService } from "../../../services/loading.service";
+import { JwtService } from "../../../services/jwt.service";
+import { UtilitiesService } from "../../../services/utilities.service";
 import { Location } from "@angular/common";
 
 @Component({
-  selector: "app-appraisal-objective-form",
-  templateUrl: "./appraisal-objective-form.component.html",
-  styleUrls: ["./appraisal-objective-form.component.css"],
+  selector: "app-employee-appraisals",
+  templateUrl: "./employee-appraisals.component.html",
+  styleUrls: ["./employee-appraisals.component.css"],
 })
-export class AppraisalObjectiveFormComponent implements OnInit {
+export class EmployeeAppraisalsComponent implements OnInit {
   appraisalObjectiveForm: FormGroup;
   reviewStatus: any[] = [];
   user: any;
@@ -26,6 +25,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   appraisalCycles: any[] = [];
   objectiveId: number;
   lineManagerId: number;
+  employeeId: number;
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -40,25 +40,18 @@ export class AppraisalObjectiveFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((param) => {
+      this.employeeId = param.employeeId;
       this.appraisalCycleId = param.appraisalCycleId;
       this.objectiveId = param.objectiveId;
-    });
-    const user = JSON.parse(localStorage.getItem("userDetails"));
-    if (user) {
-      this.staffId = user.staffId;
-      this.deptId = user.departmentId;
-    }
-    this.jwtService.getHrmUserDetails().then((user) => {
-      if (user) {
-        this.jobGradeId = user.jobGrade;
-        this.getAppraisalCycle();
-        this.getSingleEmployeeObjective();
-      }
+      this.jobGradeId = param.jobGradeId;
+      this.deptId = param.departmentId;
+      this.getCareer(this.employeeId);
     });
     this.initializeForm();
-    // this.getAppraisalCycle();
-    this.getCareer(this.staffId);
+    this.getAppraisalCycle();
+    this.getSingleEmployeeObjective();
   }
+
   initializeForm() {
     this.appraisalObjectiveForm = this.formbuilder.group({
       id: [0],
@@ -87,7 +80,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
     // this.loadingService.show();
     return this.performanceManagementService
       .getEmployeeAppraisalCycle(
-        this.staffId,
+        this.employeeId,
         this.deptId,
         this.jobGradeId,
         this.appraisalCycleId
@@ -135,58 +128,17 @@ export class AppraisalObjectiveFormComponent implements OnInit {
       }
     );
   }
-
-  viewObjectives() {
-    const payload = this.appraisalObjectiveForm.value;
-    payload.reviewYear = +payload.reviewYear;
-    payload.appraisalCycleId = +payload.appraisalCycleId;
-    this.loadingService.show();
-    return this.performanceManagementService.startAppraisal(payload).subscribe(
-      (res) => {
-        this.loadingService.hide();
-        const message = res["status"].message.friendlyMessage;
-        if (res["status"].isSuccessful) {
-          this.utilitiesService.showMessage(res, "success").then(() => {
-            this.getSingleEmployeeObjective();
-            const url = this.router
-              .createUrlTree([], {
-                relativeTo: this.route,
-                queryParams: {
-                  appraisalCycleId: this.appraisalCycleId,
-                  objectiveId: this.objectiveId,
-                },
-              })
-              .toString();
-
-            this.location.go(url);
-          });
-          // this.router.navigate(["/performance/appraisal-objectives"], {
-          //   queryParams: {
-          //     appraisalCycleId: this.appraisalCycleId,
-          //     objectiveId: this.objectiveId,
-          //   },
-          // });
-        } else {
-          return this.utilitiesService.showMessage(res, "error");
-        }
-      },
-      (err) => {
-        this.loadingService.hide();
-        return this.utilitiesService.showMessage(err, "error");
-      }
-    );
-  }
   getSingleEmployeeObjective() {
     this.loadingService.show();
     return this.performanceManagementService
-      .getSingleEmployeeObjective(this.staffId, this.appraisalCycleId)
+      .getSingleEmployeeObjective(this.employeeId, this.appraisalCycleId)
       .subscribe(
         (data) => {
-          console.log(data);
+          // console.log(data);
           this.loadingService.hide();
           this.lineManagerId = data[0].lineManger;
           this.objectiveId = data[0].id;
-          console.log(this.lineManagerId);
+          // console.log(this.lineManagerId);
           this.appraisalObjectiveForm.patchValue({
             reviewYear: data[0].reviewYear,
             reviewPeriod: data[0].reviewPeriod,
@@ -194,6 +146,25 @@ export class AppraisalObjectiveFormComponent implements OnInit {
         },
         (err) => {
           this.loadingService.hide();
+        }
+      );
+  }
+  confirm() {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .confirmByManager(this.objectiveId)
+      .subscribe(
+        (res) => {
+          this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            return this.utilitiesService.showMessage(res, "success");
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
         }
       );
   }

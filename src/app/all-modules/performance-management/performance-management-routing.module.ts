@@ -50,7 +50,7 @@ const routes: Routes = [
         component: AppraisalCyclePageComponent,
       },
       {
-        path: "setup/appraisal-feedback",
+        path: "appraisal-feedback",
         component: AppraisalFeedbackComponent,
       },
       {
@@ -58,7 +58,7 @@ const routes: Routes = [
         component: AppraisalsComponent,
       },
       {
-        path: "setup/appraisal-feedback/appraisal-feedback-page",
+        path: "appraisal-feedback-page",
         component: AppraisalFeedbackPageComponent,
       },
       {

@@ -1,0 +1,7 @@
+.btn {
+  border: 1px solid #ccc;
+  margin-right: 5px;
+}
+.add-btn, .delete-btn {
+  border: none;
+}

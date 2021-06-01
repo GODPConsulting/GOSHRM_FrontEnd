@@ -42,6 +42,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   isEditing: boolean = false;
   kpi: any;
   @Input() objectiveId: number;
+  @Input() fromLineManager: boolean;
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -54,15 +55,21 @@ export class AppraisalObjectivesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((param) => {
-      this.appraisalCyleId = param.appraisalCycleId;
-      this.objectiveId = param.objectiveId;
-    });
     const user = JSON.parse(localStorage.getItem("userDetails"));
     if (user) {
       this.staffId = user.staffId;
       this.deptId = user.departmentId;
     }
+    this.route.queryParams.subscribe((param) => {
+      this.appraisalCyleId = param.appraisalCycleId;
+      this.objectiveId = param.objectiveId;
+      console.log(this.fromLineManager);
+      if (this.fromLineManager) {
+        this.staffId = param.employeeId;
+        this.jobGradeId = param.jobGradeId;
+        this.deptId = param.departmentId;
+      }
+    });
     this.jwtService.getHrmUserDetails().then((employee) => {
       if (employee) {
         this.jobGradeId = employee.jobGrade;
@@ -251,7 +258,7 @@ export class AppraisalObjectivesComponent implements OnInit {
       .getEmployeeObjectiveDetails(
         this.jobGradeId,
         this.staffId,
-        this.jobGradeId,
+        this.deptId,
         this.appraisalCyleId
       )
       .subscribe(

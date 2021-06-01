@@ -484,6 +484,7 @@ table.dataTable thead > tr > td.sorting {
 
 .btn {
   border-radius: 5px;
+
 }
 .btn.disabled,
 .btn:disabled {
@@ -8502,6 +8503,7 @@ ul.comment-list li ul.children {
   /* Position the tooltip text - see examples below! */
   position: absolute;
   z-index: 1;
+  font-size: 12px;
 }
 /* Show the tooltip text when you mouse over the tooltip container */
 .hint:hover .hint-text {
@@ -8728,4 +8730,8 @@ rating span {
 }
 .sn_width {
   width: 4rem;
+}
+.content-wrapper {
+  padding: 20px 15px !important;
+  background: #fff !important;
 }

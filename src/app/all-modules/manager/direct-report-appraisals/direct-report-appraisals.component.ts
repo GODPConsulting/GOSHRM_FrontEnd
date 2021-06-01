@@ -95,10 +95,21 @@ export class DirectReportAppraisalsComponent implements OnInit {
   addItemId(event: Event, id: any) {}
 
   viewObjectives(row: any) {
-    this.router.navigate(["/performance/appraisal-objective-form"], {
+    this.router.navigate(["/manager/employee-appraisal"], {
       queryParams: {
         appraisalCycleId: row.appraisalCycleId,
         objectiveId: row.id,
+        employeeId: row.employeeId,
+        departmentId: row.departmentId,
+        jobGradeId: row.jobGradeId,
+      },
+    });
+  }
+  viewAppraisal(row) {
+    this.router.navigate(["/performance/appraisal-feedback-page"], {
+      queryParams: {
+        id: row.employeeId,
+        appraisalCycleId: row.appraisalCycleId,
       },
     });
   }
