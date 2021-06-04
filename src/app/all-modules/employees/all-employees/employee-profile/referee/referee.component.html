@@ -22,12 +22,7 @@
         ></a>
       </h3>
       <div class="table-responsive">
-        <table
-          class="table table-nowrap table-hover"
-          datatable
-          [dtOptions]="dtOptions"
-          [dtTrigger]="dtTrigger"
-        >
+        <table class="table table-nowrap table-hover">
           <thead>
             <tr>
               <th>
@@ -250,40 +245,40 @@
                     />
                   </div>
                 </div>
-                <!--                <div class="col-md-6">-->
-                <!--                  <div class="form-group">-->
-                <!--                    <label>Approval Status</label>-->
-                <!--                    <select-->
-                <!--                      class="form-control"-->
-                <!--                      [class.invalid]="-->
-                <!--                        refereeForm.get('approvalStatus').invalid &&-->
-                <!--                        refereeForm.get('approvalStatus').touched-->
-                <!--                      "-->
-                <!--                      formControlName="approvalStatus"-->
-                <!--                    >-->
-                <!--                      <option selected value="">Select Status</option>-->
-                <!--                      <option value="1">Approve</option>-->
-                <!--                      <option value="2">Pending</option>-->
-                <!--                      <option value="3">Decline</option>-->
-                <!--                    </select>-->
-                <!--                    <div-->
-                <!--                      *ngIf="-->
-                <!--                        refereeForm.get('approvalStatus').invalid &&-->
-                <!--                        refereeForm.get('approvalStatus').touched-->
-                <!--                      "-->
-                <!--                    >-->
-                <!--                      <small-->
-                <!--                        *ngIf="-->
-                <!--                          refereeForm.get('approvalStatus').invalid &&-->
-                <!--                          refereeForm.get('approvalStatus').touched-->
-                <!--                        "-->
-                <!--                        class="text-danger"-->
-                <!--                      >-->
-                <!--                        *Field is required</small-->
-                <!--                      >-->
-                <!--                    </div>-->
-                <!--                  </div>-->
-                <!--                </div>-->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Approval Status</label>
+                    <select
+                      class="form-control"
+                      [class.invalid]="
+                        refereeForm.get('approvalStatus').invalid &&
+                        refereeForm.get('approvalStatus').touched
+                      "
+                      formControlName="approvalStatus"
+                    >
+                      <option selected value="">Select Status</option>
+                      <option value="1">Approve</option>
+                      <option value="2">Pending</option>
+                      <option value="3">Decline</option>
+                    </select>
+                    <div
+                      *ngIf="
+                        refereeForm.get('approvalStatus').invalid &&
+                        refereeForm.get('approvalStatus').touched
+                      "
+                    >
+                      <small
+                        *ngIf="
+                          refereeForm.get('approvalStatus').invalid &&
+                          refereeForm.get('approvalStatus').touched
+                        "
+                        class="text-danger"
+                      >
+                        *Field is required</small
+                      >
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -78,8 +78,8 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      this.employeeId = +params.get("id");
+    this.route.params.subscribe((param) => {
+      this.employeeId = +param.id;
     });
     // Get access to the user data shared from sidebar
     this.jwtService.getHrmUserDetails().then((user) => {
@@ -718,4 +718,6 @@ export class EmployeeProfileComponent implements OnInit {
       },
     });
   }
+
+  downloadFile() {}
 }

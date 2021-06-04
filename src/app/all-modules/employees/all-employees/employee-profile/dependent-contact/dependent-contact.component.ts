@@ -27,7 +27,7 @@ export class DependentContactComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
   // Forms
   dependentContactForm: FormGroup;
 
@@ -68,7 +68,7 @@ export class DependentContactComponent implements OnInit {
       ],
       order: [[1, "asc"]],
     };
-    this.getEmployeeDependentContact(this.dataFromParent.user.staffId);
+    this.getEmployeeDependentContact(this.employeeId);
     this.initDependentContactForm();
     this.getCountry();
   }
@@ -86,7 +86,7 @@ export class DependentContactComponent implements OnInit {
       countryId: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
       approval_status: [""],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       // identicationFile: ["", Validators.required],
     });
     //this.fileInput.nativeElement.value = "";
@@ -127,7 +127,7 @@ export class DependentContactComponent implements OnInit {
               }
             }
             $("#dependent_contact_modal").modal("hide");
-            this.getEmployeeDependentContact(this.dataFromParent.user.staffId);
+            this.getEmployeeDependentContact(this.employeeId);
           });
         } else {
           return swal.fire("GOS HRM", message, "error");
@@ -174,7 +174,7 @@ export class DependentContactComponent implements OnInit {
       // idIssues: row.idIssues,
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
       approval_status: row.approval_status,
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       dependentContactFile: row.dependentContactFile,
     });
     $("#dependent_contact_modal").modal("show");
@@ -186,11 +186,7 @@ export class DependentContactComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -226,9 +222,7 @@ export class DependentContactComponent implements OnInit {
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
                   this.loadingService.hide();
-                  this.getEmployeeDependentContact(
-                    this.dataFromParent.user.staffId
-                  );
+                  this.getEmployeeDependentContact(this.employeeId);
                 });
               } else {
                 return swal.fire("GOSHRM", message, "error");

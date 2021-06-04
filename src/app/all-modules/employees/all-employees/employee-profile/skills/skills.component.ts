@@ -23,7 +23,7 @@ export class SkillsComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
   // To hold data for each card
   employeeSkills: any = {};
   staffs: any = {};
@@ -41,9 +41,9 @@ export class SkillsComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.dataFromParent);
-    this.getEmployeeSkills(this.dataFromParent.user.staffId);
+    this.getEmployeeSkills(this.employeeId);
     this.initSkillsForm();
-    this.getSingleStaffById(this.dataFromParent.user.staffId);
+    this.getSingleStaffById(this.employeeId);
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -105,7 +105,7 @@ export class SkillsComponent implements OnInit {
       actualScore: [""],
       proofOfSkills: ["", Validators.required],
       approvalStatus: [""],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       skillFile: ["", Validators.required],
     });
     // Resets the upload input of the add form
@@ -197,7 +197,7 @@ export class SkillsComponent implements OnInit {
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success").then(() => {
-            this.getEmployeeSkills(this.dataFromParent.user.staffId);
+            this.getEmployeeSkills(this.employeeId);
             $("#skills_modal").modal("hide");
           });
         }
@@ -221,7 +221,7 @@ export class SkillsComponent implements OnInit {
       actualScore: row.actualScore,
       proofOfSkills: row.proofOfSkills,
       approvalStatus: row.approvalStatus,
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       skillFile: row.skillFile,
     });
     $("#skills_modal").modal("show");
@@ -258,7 +258,7 @@ export class SkillsComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeSkills(this.dataFromParent.user.staffId);
+                  this.getEmployeeSkills(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");
@@ -291,10 +291,6 @@ export class SkillsComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 }

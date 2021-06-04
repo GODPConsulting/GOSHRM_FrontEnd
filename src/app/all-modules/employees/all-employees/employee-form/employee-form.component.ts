@@ -190,7 +190,7 @@ export class EmployeeFormComponent implements OnInit {
 
   addEmployeeToHrm(EmployeeForm: FormGroup) {
     let payload = EmployeeForm.value;
-    console.log(payload.userRoleNames);
+    // console.log(payload.userRoleNames);
     // return;
     // validations to check if the form fields have value
     if (!payload.firstName) {
@@ -284,10 +284,10 @@ export class EmployeeFormComponent implements OnInit {
     const val = this.convertModelToFormData(payload);
     // console.log(val);
     // return;
-    this.loading = true;
-    return this.setupService.updateData("/hrm/add/update/staff", val).subscribe(
+    this.loadingService.show();
+    return this.employeeService.addEmployee(val).subscribe(
       (res) => {
-        this.loading = false;
+        this.loadingService.hide();
         const message = res.status.message.friendlyMessage;
 
         if (res.status.isSuccessful) {
@@ -299,7 +299,7 @@ export class EmployeeFormComponent implements OnInit {
         }
       },
       (err) => {
-        this.loading = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }

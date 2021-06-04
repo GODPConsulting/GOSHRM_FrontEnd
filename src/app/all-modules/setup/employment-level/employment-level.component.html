@@ -30,45 +30,48 @@
   <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
-        <table
+        <p-table
           class="table table-striped custom-table datatable table-hover"
-          datatable
-          [dtOptions]="dtOptions"
-          [dtTrigger]="dtTrigger"
+          [value]="levels"
+          [(selection)]="selectLevels"
+          [columns]="cols"
+          [scrollable]="true"
+          scrollHeight="600px"
         >
-          <thead>
+          <ng-template pTemplate="caption">
+            <div style="text-align: right">
+              <input
+                type="text"
+                pInputText
+                size="50"
+                class="form-control"
+                placeholder="Search..."
+                (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width: auto"
+              />
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
             <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  [checked]="selectedId.length === levels.length"
-                  (change)="checkAll($event)"
-                />
+              <th class="table-checkbox">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
-              <th>S/N</th>
+              <th class="sn_width">S/N</th>
               <th>Employment Level</th>
+              <th>Description</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr
-              data-toggle="modal"
-              class="pointer"
-              data-target="#edit_employee"
-              (click)="edit(row)"
-              *ngFor="let row of levels; let i = index"
-            >
-              <td (click)="stopParentEvent($event)">
-                <input
-                  type="checkbox"
-                  [checked]="selectedId.includes(row.id)"
-                  (change)="addItemId($event, row.id)"
-                />
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr data-toggle="modal" class="pointer" (click)="edit(row)">
+              <td (click)="stopParentEvent($event)" class="table-checkbox">
+                <p-tableCheckbox [value]="row"></p-tableCheckbox>
               </td>
-              <td>{{ i + 1 }}</td>
-              <td>{{ row.employment_level }}</td>
+              <td class="sn_width">{{ i + 1 }}</td>
+              <td>{{ row.employment_level | titlecase }}</td>
+              <td>{{ row.description | titlecase }}</td>
             </tr>
-          </tbody>
-        </table>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>

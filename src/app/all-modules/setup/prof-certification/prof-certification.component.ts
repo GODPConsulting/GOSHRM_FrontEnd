@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import swal from "sweetalert2";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { LoadingService } from "../../../services/loading.service";
+import { ISearchColumn } from "../../../interface/interfaces";
 
 declare const $: any;
 @Component({
@@ -20,6 +21,8 @@ export class ProfCertificationComponent implements OnInit {
   public spinner: boolean = false;
   public selectedId: number[] = [];
   public profCertUploadForm: FormGroup;
+  selectCertifications: any[];
+  cols: ISearchColumn[];
 
   constructor(
     private setupService: SetupService,
@@ -29,18 +32,12 @@ export class ProfCertificationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "certification",
+        field: "certification",
       },
-      columns: [{ orderable: false }, null, null, null],
-      order: [[1, "asc"]],
-    };
+    ];
     this.initializeForm();
     this.getprofCertification();
   }

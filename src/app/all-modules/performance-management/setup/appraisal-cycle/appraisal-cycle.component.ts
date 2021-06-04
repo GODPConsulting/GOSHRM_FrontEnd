@@ -175,7 +175,7 @@ export class AppraisalCycleComponent implements OnInit {
     this.performanceManagementService.getAppraisalCycles().subscribe(
       (data) => {
         this.loadingService.hide();
-        this.appraisalCycles = data.list;
+        this.appraisalCycles = data;
         this.dtTrigger.next();
       },
       (err) => {

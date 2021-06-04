@@ -296,9 +296,9 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         this.commentTitle = "Reviewer 1 Comment";
         break;
       case "reviewer2":
-        this.commentTitle = "Reviewer 3 Comment";
+        this.commentTitle = "Reviewer 2 Comment";
         break;
-      case "reviewer 3":
+      case "reviewer3":
         this.commentTitle = "Reviewer 3 Comment";
         break;
       default:
@@ -334,7 +334,24 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     });
     $("#score_modal").modal("show");
   }
-  viewComments(comments) {
+  viewComments(comments, type) {
+    this.personnel = type;
+    switch (type) {
+      case "employee":
+        this.commentTitle = "Employee Comment";
+        break;
+      case "reviewer1":
+        this.commentTitle = "Reviewer 1 Comment";
+        break;
+      case "reviewer2":
+        this.commentTitle = "Reviewer 2 Comment";
+        break;
+      case "reviewer3":
+        this.commentTitle = "Reviewer 3 Comment";
+        break;
+      default:
+        this.commentTitle = "";
+    }
     this.employeeComments = comments;
     $("#comment_modal").modal("show");
   }
@@ -605,5 +622,10 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           return this.utilitiesService.showMessage(err, "error");
         }
       );
+  }
+
+  closeCommentModal() {
+    this.commentTitle = "";
+    $("#comment_modal").modal("hide");
   }
 }

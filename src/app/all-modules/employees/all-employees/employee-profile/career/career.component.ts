@@ -8,6 +8,7 @@ import { LoadingService } from "../../../../../services/loading.service";
 
 import { Subject } from "rxjs";
 import { CommonService } from "../../../../../services/common.service";
+import { ActivatedRoute } from "@angular/router";
 
 declare const $: any;
 
@@ -38,7 +39,7 @@ export class CareerComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
   // Forms
   careerForm: FormGroup;
 
@@ -51,11 +52,14 @@ export class CareerComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
     private loadingService: LoadingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    console.log(this.dataFromParent);
+    // this.route.params.subscribe((param) => {
+    //   this.employeeId = +param.id;
+    // });
     // Determines the structure of the table (Angular Datatables)
     this.dtOptions = {
       dom:
@@ -80,7 +84,7 @@ export class CareerComponent implements OnInit {
       ],
       order: [[1, "asc"]],
     };
-    this.getEmployeeCareer(this.dataFromParent.user.staffId);
+    this.getEmployeeCareer(this.employeeId);
     this.initCareerForm();
     this.getCountry();
     this.getJobGrade();
@@ -115,7 +119,7 @@ export class CareerComponent implements OnInit {
         { value: "2", disabled: !this.dataFromParent.isHr },
         Validators.required,
       ],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
     });
     //this.fileInput.nativeElement.value = "";
   }
@@ -205,7 +209,7 @@ export class CareerComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#career_modal").modal("hide");
         }
-        this.getEmployeeCareer(this.dataFromParent.user.staffId);
+        this.getEmployeeCareer(this.employeeId);
       },
       (err) => {
         this.spinner = false;
@@ -274,7 +278,7 @@ export class CareerComponent implements OnInit {
       startDate: row.startDate,
       endDate: row.endDate,
       approval_status_name: row.approval_status_name,
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       careerFile: row.careerFile,
     });
     $("#career_modal").modal("show");
@@ -286,11 +290,7 @@ export class CareerComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
@@ -323,7 +323,7 @@ export class CareerComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeCareer(this.dataFromParent.user.staffId);
+                  this.getEmployeeCareer(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

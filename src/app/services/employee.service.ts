@@ -13,6 +13,15 @@ export class EmployeeService {
   handleError(error: HttpErrorResponse) {
     return throwError(error);
   }
+  addEmployee(payload): Observable<any> {
+    return this.apiService.post(`/employee/hrm/add/update/staff`, payload).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
   postMailToHr(payload) {
     return this.apiService.post("/email/send/emails", payload).pipe(
       tap(),
@@ -176,7 +185,7 @@ export class EmployeeService {
   }
 
   getLanguages() {
-    return this.apiService.get("/hrmsetup/get/all/languages").pipe(
+    return this.apiService.get("/employee/hrmsetup/get/all/languages").pipe(
       tap(),
       map((res) => {
         return res;
@@ -476,7 +485,7 @@ export class EmployeeService {
   }
 
   getGrades() {
-    return this.apiService.get("/hrmsetup/get/all/academic/grades");
+    return this.apiService.get("/employee/hrmsetup/get/all/academic/grades");
   }
 
   deleteEmployeeQualification(payload) {

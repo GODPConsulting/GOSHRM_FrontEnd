@@ -5,6 +5,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
+import { ISearchColumn } from "../../../interface/interfaces";
 
 declare const $: any;
 @Component({
@@ -22,6 +23,8 @@ export class JobGradeComponent implements OnInit {
   public spinner: boolean = false;
   public jobGradeUploadForm: FormGroup;
   dtTrigger: Subject<any> = new Subject();
+  selectJobGrades: any[];
+  cols: ISearchColumn[];
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -30,20 +33,26 @@ export class JobGradeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-      columns: [{ orderable: false }, null, null, null, null, null],
-      order: [[1, "asc"]],
-    };
     this.getJobGrade();
     this.initializeForm();
+    this.cols = [
+      {
+        header: "job_grade",
+        field: "job_grade",
+      },
+      {
+        header: "job_grade_reporting_to",
+        field: "job_grade_reporting_to",
+      },
+      {
+        header: "rank",
+        field: "rank",
+      },
+      {
+        header: "probation_period_in_months",
+        field: "probation_period_in_months",
+      },
+    ];
   }
 
   downloadFile() {
@@ -177,13 +186,15 @@ export class JobGradeComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectJobGrades.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectJobGrades.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",

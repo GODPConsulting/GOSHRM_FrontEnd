@@ -23,7 +23,7 @@ export class EmployeeHmoComponent implements OnInit {
   fileInput: ElementRef;
   minDate: Date;
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
   // To hold data for each card
   employeeHmo: any[] = [];
   public dtOptions: DataTables.Settings = {};
@@ -43,7 +43,7 @@ export class EmployeeHmoComponent implements OnInit {
   ngOnInit(): void {
     this.initHmoForm();
     this.initHmoChangeForm();
-    this.getEmployeeHmo(this.dataFromParent.user.staffId);
+    this.getEmployeeHmo(this.employeeId);
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -79,7 +79,7 @@ export class EmployeeHmoComponent implements OnInit {
       startDate: ["", Validators.required],
       end_Date: ["", Validators.required],
       approvalStatus: [{ value: "2", disabled: !this.dataFromParent.isHr }],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       setCurrentDate: [""],
     });
   }
@@ -96,7 +96,7 @@ export class EmployeeHmoComponent implements OnInit {
       ],
       expectedDateOfChange: ["", Validators.required],
       hmoFile: ["", Validators.required],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       approvalStatus: [
         { value: "2", disabled: !this.dataFromParent.isHr },
         Validators.required,
@@ -153,7 +153,7 @@ export class EmployeeHmoComponent implements OnInit {
           });
           $("#hmo_modal").modal("hide");
         }
-        this.getEmployeeHmo(this.dataFromParent.user.staffId);
+        this.getEmployeeHmo(this.employeeId);
       },
       (err) => {
         this.spinner = false;
@@ -271,7 +271,7 @@ export class EmployeeHmoComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeHmo(this.dataFromParent.user.staffId);
+                  this.getEmployeeHmo(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");
@@ -304,11 +304,7 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"

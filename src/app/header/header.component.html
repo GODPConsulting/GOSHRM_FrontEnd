@@ -166,11 +166,11 @@
       >
         <span class="user-img"
           ><img
-            *ngIf="user.photo"
-            src="{{ user.photo }}"
+            *ngIf="user?.photo"
+            src="{{ user?.photo }}"
             alt="Profile Picture" />
           <img
-            *ngIf="!user.photo"
+            *ngIf="!user?.photo"
             src="../../assets/img/user.jpg"
             alt="Profile Picture" />
           <span class="status online"></span

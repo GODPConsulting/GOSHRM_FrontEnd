@@ -360,7 +360,7 @@ export class PerformanceManagementService {
   }
   getCareerByStaffId(id) {
     return this.apiService
-      .get(`/hrm/get/single/employee/career/staffId?staffId=${id}`)
+      .get(`/employee/hrm/get/single/employee/career/staffId?staffId=${id}`)
       .pipe(
         tap(),
         map((response) => {

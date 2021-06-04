@@ -26,7 +26,7 @@ export class AssetsComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
   @ViewChild("fileInput")
   fileInput: ElementRef;
-
+  @Input() employeeId: number;
   @Input() dataFromParent: any;
 
   // Forms
@@ -68,7 +68,7 @@ export class AssetsComponent implements OnInit {
       ],
       order: [[1, "asc"]],
     };
-    this.getEmployeeAsset(this.dataFromParent.user.staffId);
+    this.getEmployeeAsset(this.employeeId);
     this.initAssetForm();
     this.getStaffDepartments();
     this.getLocation();
@@ -114,7 +114,7 @@ export class AssetsComponent implements OnInit {
       // idExpiry_date: ["", Validators.required],
       requestApprovalStatus: [""],
       returnApprovalStatus: [""],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       // identicationFile: ["", Validators.required],
     });
     //this.fileInput.nativeElement.value = "";
@@ -175,7 +175,7 @@ export class AssetsComponent implements OnInit {
               }
             }
             $("#asset_modal").modal("hide");
-            this.getEmployeeAsset(this.dataFromParent.user.staffId);
+            this.getEmployeeAsset(this.employeeId);
           });
         } else {
           swal.fire("GOS HRM", message, "error");
@@ -216,7 +216,7 @@ export class AssetsComponent implements OnInit {
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
       requestApprovalStatus: row.requestApprovalStatus,
       returnApprovalStatus: row.returnApprovalStatus,
-      // staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       assetFile: row.assetFile,
     });
     $("#asset_modal").modal("show");
@@ -228,11 +228,7 @@ export class AssetsComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -267,7 +263,7 @@ export class AssetsComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeAsset(this.dataFromParent.user.staffId);
+                  this.getEmployeeAsset(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

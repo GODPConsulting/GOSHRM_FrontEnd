@@ -6,6 +6,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
+import { ISearchColumn } from "../../../interface/interfaces";
 
 declare const $: any;
 @Component({
@@ -26,7 +27,8 @@ export class JobSkillComponent implements OnInit {
   public jobSkills: any[] = [];
   public jobTitle;
   public jobFormTitle = "Add Job Title";
-  dtTrigger: Subject<any> = new Subject<any>();
+  selectJobSkill: any[];
+  cols: ISearchColumn[];
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -40,18 +42,12 @@ export class JobSkillComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.jobTitleId = +params.get("id");
       this.getSingleJobTitle(+params.get("id"));
-      this.dtOptions = {
-        dom:
-          "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-          "<'row'<'col-sm-12'tr>>" +
-          "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-        language: {
-          search: "_INPUT_",
-          searchPlaceholder: "Start typing to search by any field",
+      this.cols = [
+        {
+          header: "skill",
+          field: "skill",
         },
-        columns: [{ orderable: false }, null, null, null],
-        order: [[1, "asc"]],
-      };
+      ];
     });
 
     this.initializeForm();
@@ -65,7 +61,6 @@ export class JobSkillComponent implements OnInit {
         this.loadingService.hide();
 
         this.jobTitle = data.setuplist[0];
-        this.dtTrigger.next();
         //this.rows = this.jobTitle.sub_Skills;
         if (id !== 0) {
           this.jobFormTitle = "Edit Job Title";
@@ -115,7 +110,7 @@ export class JobSkillComponent implements OnInit {
             job_title: payload.job_title,
             job_description: payload.job_description,
           });
-          //$("#add_job_title").modal("hide");
+          // $("#add_job_title").modal("hide");
         } else {
           swal.fire("GOSHRM", message, "error");
         }
@@ -174,7 +169,7 @@ export class JobSkillComponent implements OnInit {
         } else {
           swal.fire("GOSHRM", message, "error");
         }
-        //this.getSubSkill();
+        // this.getSubSkill();
       },
       (err) => {
         this.spinner = false;
@@ -325,13 +320,15 @@ export class JobSkillComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectJobSkill.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectJobSkill.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",

@@ -6,6 +6,7 @@ import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
 import { CommonService } from "../../../services/common.service";
+import { ISearchColumn } from "../../../interface/interfaces";
 
 declare const $: any;
 
@@ -23,7 +24,9 @@ export class EmployeeIdFormatComponent implements OnInit {
   public selectedId: number[] = [];
   allCompanies: any[] = [];
   public format: string = "";
+  selectIdFormats: any[] = [];
   dtTrigger: Subject<any> = new Subject();
+  cols: ISearchColumn[];
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -37,18 +40,16 @@ export class EmployeeIdFormatComponent implements OnInit {
 
     this.getEmployeeIdFormat();
     this.getStaffDepartments();
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "companyStructureName",
+        field: "companyStructureName",
       },
-      columns: [{ orderable: false }, null, null, null],
-      order: [[1, "asc"]],
-    };
+      {
+        header: "format",
+        field: "format",
+      },
+    ];
   }
 
   setSuffix(digit: number) {
@@ -80,8 +81,6 @@ export class EmployeeIdFormatComponent implements OnInit {
         .setValue(prefix + suffix, { emitEvent: false });
     });
   }
-
-  // Set Values To Edit Modal Form
   editIdFormat(row) {
     this.formTitle = "Edit ID Format";
     this.idFormatForm.patchValue({
@@ -142,13 +141,15 @@ export class EmployeeIdFormatComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectIdFormats.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectIdFormats.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -189,7 +190,6 @@ export class EmployeeIdFormatComponent implements OnInit {
   addItemId(event: Event, id: number) {
     this.utilitiesService.deleteArray(event, id, this.selectedId);
   }
-
   // Prevents the edit modal from popping up when checkbox is clicked
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();

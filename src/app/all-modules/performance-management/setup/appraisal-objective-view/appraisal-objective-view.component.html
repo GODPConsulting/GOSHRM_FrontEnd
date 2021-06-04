@@ -47,9 +47,9 @@
               </td>
               <td>{{ item.reviewYear }}</td>
               <td>{{ item.reviewPeriod }}</td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{ item.lineManagerName | titlecase }}</td>
+              <td>{{ item.reviewStatus }}</td>
+              <td>{{ item.status }}</td>
             </tr>
           </ng-template>
           <tbody></tbody>

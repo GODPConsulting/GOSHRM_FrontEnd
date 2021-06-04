@@ -23,7 +23,7 @@ export class HobbiesComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
   // Forms
   hobbyForm: FormGroup;
 
@@ -51,7 +51,7 @@ export class HobbiesComponent implements OnInit {
       columns: [{ orderable: false }, null, null, null, null, null],
       order: [[1, "asc"]],
     };
-    this.getEmployeeHobby(this.dataFromParent.user.staffId);
+    this.getEmployeeHobby(this.employeeId);
     this.initHobbyForm();
   }
 
@@ -63,7 +63,7 @@ export class HobbiesComponent implements OnInit {
       rating: ["", Validators.required],
       description: ["", Validators.required],
       approvalStatus: [""],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
     });
   }
 
@@ -100,7 +100,7 @@ export class HobbiesComponent implements OnInit {
                 form.get("approvalStatus").setValue(2);
               }
             }
-            this.getEmployeeHobby(this.dataFromParent.user.staffId);
+            this.getEmployeeHobby(this.employeeId);
             $("#hobby_modal").modal("hide");
           });
         }
@@ -131,7 +131,7 @@ export class HobbiesComponent implements OnInit {
       rating: row.rating,
       description: row.description,
       approval_status_name: row.approval_status_name,
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       hobbyFile: row.hobbyFile,
     });
     $("#hobby_modal").modal("show");
@@ -143,11 +143,7 @@ export class HobbiesComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -182,7 +178,7 @@ export class HobbiesComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeHobby(this.dataFromParent.user.staffId);
+                  this.getEmployeeHobby(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

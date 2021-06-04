@@ -6,6 +6,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
+import { ISearchColumn } from "../../../interface/interfaces";
 
 declare const $: any;
 @Component({
@@ -26,7 +27,8 @@ export class AcademicQualificationComponent implements OnInit {
   public selectedId: number[] = [];
   public academicQualificationUploadForm: FormGroup;
   public file: File;
-  dtTrigger: Subject<any> = new Subject();
+  selectQualifications: any[];
+  cols: ISearchColumn[];
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -35,18 +37,12 @@ export class AcademicQualificationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "qualification",
+        field: "qualification",
       },
-      columns: [{ orderable: false }, null, null, null],
-      order: [[1, "asc"]],
-    };
+    ];
     this.getAcademicQualifications();
     this.initializeForm();
   }
@@ -117,7 +113,6 @@ export class AcademicQualificationComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.qualifications = data.setuplist;
-        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();
@@ -156,13 +151,15 @@ export class AcademicQualificationComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectQualifications.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectQualifications.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",

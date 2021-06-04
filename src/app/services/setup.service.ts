@@ -241,7 +241,7 @@ export class SetupService {
 
   getEmploymentLevel() {
     return this.apiService
-      .get("/employee/hrmsetup/get/all/employmentlevels")
+      .get("/employee/hrmsetup/get/all/emplpymentlevels")
       .pipe(
         tap(),
         map((res) => {

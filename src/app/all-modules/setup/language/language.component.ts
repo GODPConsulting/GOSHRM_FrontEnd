@@ -5,6 +5,7 @@ import swal from "sweetalert2";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
+import { ISearchColumn } from "../../../interface/interfaces";
 
 declare const $: any;
 @Component({
@@ -23,6 +24,8 @@ export class LanguageComponent implements OnInit {
   public selectedId: number[] = [];
   public languageForm: FormGroup;
   dtTrigger: Subject<any> = new Subject();
+  selectLanguage: any[];
+  cols: ISearchColumn[];
   constructor(
     private setupService: SetupService,
     private formBuilder: FormBuilder,
@@ -31,18 +34,12 @@ export class LanguageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "language",
+        field: "language",
       },
-      columns: [{ orderable: false }, null, null],
-      order: [[1, "asc"]],
-    };
+    ];
     this.initializeForm();
     this.getLanguages();
   }
@@ -165,13 +162,15 @@ export class LanguageComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectLanguage.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectLanguage.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",

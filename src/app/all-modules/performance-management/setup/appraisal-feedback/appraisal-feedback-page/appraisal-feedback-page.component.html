@@ -174,7 +174,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-row let-i="rowIndex">
               <tr>
-                <td>{{ row.kpiCatetory }}</td>
+                <td>{{ row.kpiCategory | titlecase }}</td>
                 <td>{{ row.kpiObjectives | titlecase }}</td>
                 <td>{{ row.successTarget | titlecase }}</td>
                 <td>
@@ -191,7 +191,9 @@
                   <a
                     class="hint"
                     data-toggle="modal"
-                    (click)="viewComments(row.feedBackComments)"
+                    (click)="
+                      viewComments(row.employeeFeedBackComments, 'employee')
+                    "
                     ><span class="hint-text">View </span
                     ><i class="fa fa-eye"></i
                   ></a>
@@ -229,7 +231,9 @@
                   <a
                     class="hint"
                     data-toggle="modal"
-                    data-target="#appraisal_feedback_page_modal"
+                    (click)="
+                      viewComments(row.reviewerOneFeedBackComments, 'reviewer1')
+                    "
                     ><span class="hint-text">View Comment </span
                     ><i class="fa fa-eye"></i
                   ></a>
@@ -267,7 +271,9 @@
                   <a
                     class="hint"
                     data-toggle="modal"
-                    data-target="#appraisal_feedback_page_modal"
+                    (click)="
+                      viewComments(row.reviewerTowFeedBackComments, 'reviewer2')
+                    "
                     ><span class="hint-text">View </span
                     ><i class="fa fa-eye"></i
                   ></a>
@@ -312,7 +318,12 @@
                   <a
                     class="hint"
                     data-toggle="modal"
-                    data-target="#appraisal_feedback_page_modal"
+                    (click)="
+                      viewComments(
+                        row.reviewerthreeFeedBackComments,
+                        'reviewer3'
+                      )
+                    "
                     ><span class="hint-text">View </span
                     ><i class="fa fa-eye"></i
                   ></a>
@@ -511,12 +522,13 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Reviewee Comment</h5>
+        <h5 class="modal-title">{{ commentTitle }}</h5>
         <button
           type="button"
           class="close"
           data-dismiss="modal"
           aria-label="Close"
+          (click)="closeCommentModal()"
         >
           <span aria-hidden="true">&times;</span>
         </button>
@@ -531,7 +543,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">
             <tr>
-              <td style="width: 250px"></td>
+              <td style="width: 250px">{{ row.date | date }}</td>
               <td>{{ row.comment | titlecase }}</td>
             </tr>
           </ng-template>

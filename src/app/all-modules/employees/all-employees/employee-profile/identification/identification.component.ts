@@ -24,7 +24,7 @@ export class IdentificationComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
   // To hold data for each card
   employeeIdentification: any[] = [];
   public dtOptions: DataTables.Settings = {};
@@ -42,7 +42,7 @@ export class IdentificationComponent implements OnInit {
   ngOnInit(): void {
     this.getIdentification();
     this.initIdentificationForm();
-    this.getEmployeeIdentification(this.dataFromParent.user.staffId);
+    this.getEmployeeIdentification(this.employeeId);
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -98,7 +98,7 @@ export class IdentificationComponent implements OnInit {
         { value: "2", disabled: !this.dataFromParent.isHr },
         Validators.required,
       ],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       identicationFile: ["", Validators.required],
     });
     // Resets the upload input of the add form
@@ -117,7 +117,7 @@ export class IdentificationComponent implements OnInit {
       idIssues: row.idIssues,
       idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
       approval_status: row.approval_status,
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       identicationFile: row.identicationFile,
     });
     this.fileInput.nativeElement.value = "";
@@ -167,7 +167,7 @@ export class IdentificationComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#identification_modal").modal("hide");
         }
-        this.getEmployeeIdentification(this.dataFromParent.user.staffId);
+        this.getEmployeeIdentification(this.employeeId);
       },
       (err) => {
         this.spinner = false;
@@ -207,11 +207,7 @@ export class IdentificationComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -253,9 +249,7 @@ export class IdentificationComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeIdentification(
-                    this.dataFromParent.user.staffId
-                  );
+                  this.getEmployeeIdentification(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

@@ -1,4 +1,3 @@
-
 <!-- Page Content -->
 <div class="content container-fluid">
   <!-- Page Header -->
@@ -7,19 +6,23 @@
       <div class="col">
         <h3 class="page-title">Add Professional Certification</h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
+          <li class="breadcrumb-item"><a>Setup</a></li>
           <li class="breadcrumb-item active">Professional Certification</li>
         </ul>
       </div>
       <div class="col-auto float-right ml-auto">
-        <a class="btn download-btn hint" (click)="downloadFile()"><span class="hint-text">Download</span><i
-            class="fa fa-download"></i></a>
-        <a class="btn upload-btn hint" (click)="openUploadModal()"><span class="hint-text">Upload</span><i
-            class="fa fa-upload"></i></a>
-        <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"><span class="hint-text">Add</span><i
-            class="fa fa-plus"></i></a>
-        <a class="btn delete-btn hint" (click)="delete()"><span class="hint-text">Delete</span><i
-            class="fa fa-trash"></i></a>
+        <a class="btn download-btn hint" (click)="downloadFile()"
+          ><span class="hint-text">Download</span><i class="fa fa-download"></i
+        ></a>
+        <a class="btn upload-btn hint" (click)="openUploadModal()"
+          ><span class="hint-text">Upload</span><i class="fa fa-upload"></i
+        ></a>
+        <a class="btn add-btn hint" data-toggle="modal" (click)="openModal()"
+          ><span class="hint-text">Add</span><i class="fa fa-plus"></i
+        ></a>
+        <a class="btn delete-btn hint" (click)="delete()"
+          ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+        ></a>
       </div>
     </div>
   </div>
@@ -27,30 +30,54 @@
   <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
-        <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions">
-          <thead>
+        <p-table
+          class="table table-striped custom-table datatable table-hover"
+          #dt
+          [value]="certifications"
+          [(selection)]="selectCertifications"
+          [columns]="cols"
+          [scrollable]="true"
+          scrollHeight="600px"
+        >
+          <ng-template pTemplate="caption">
+            <div style="text-align: right">
+              <input
+                type="text"
+                pInputText
+                size="50"
+                class="form-control"
+                placeholder="Search..."
+                (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width: auto"
+              />
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
             <tr>
-              <th>
-                <input type="checkbox" [checked]="selectedId.length === certifications.length"
-                  (change)="checkAll($event)" />
+              <th class="table-checkbox">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
-              <th>S/N</th>
+              <th class="sn_width">S/N</th>
               <th>Certification</th>
               <th>Rank</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr data-toggle="modal" class="pointer" data-target="#edit_employee" (click)="edit(row)"
-              *ngFor="let row of certifications; let i = index">
-              <td (click)="stopParentEvent($event)">
-                <input type="checkbox" [checked]="selectedId.includes(row.id)" (change)="addItemId($event, row.id)" />
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr data-toggle="modal" class="pointer" (click)="edit(row)">
+              <td (click)="stopParentEvent($event)" class="table-checkbox">
+                <!--                <input-->
+                <!--                  type="checkbox"-->
+                <!--                  [checked]="selectedId.includes(row.id)"-->
+                <!--                  (change)="addItemId($event, row.id)"-->
+                <!--                />-->
+                <p-tableCheckbox [value]="row"></p-tableCheckbox>
               </td>
-              <td>{{ i + 1 }}</td>
-              <td>{{ row.certification }}</td>
+              <td class="sn_width">{{ i + 1 }}</td>
+              <td>{{ row.certification | uppercase }}</td>
               <td>{{ row.rank }}</td>
             </tr>
-          </tbody>
-        </table>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>
@@ -62,50 +89,97 @@
     <div class="modal-content w-75 mx-auto">
       <div class="modal-header">
         <h5 class="modal-title">{{ formTitle }}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeModal()"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form (ngSubmit)="addProfCertification(profCertificationForm)" [formGroup]="profCertificationForm">
+        <form
+          (ngSubmit)="addProfCertification(profCertificationForm)"
+          [formGroup]="profCertificationForm"
+        >
           <div class="form-group">
-            <label class="col-form-label">Certification <span class="text-danger">*</span></label>
-            <input class="form-control" type="text" [class.invalid]="
-                    profCertificationForm.get('certification').invalid &&
-                    profCertificationForm.get('certification').touched
-                    " formControlName="certification" />
-            <div *ngIf="
-                    profCertificationForm.get('certification').invalid &&
-                    profCertificationForm.get('certification').touched
-                    ">
-              <small *ngIf="
-                      profCertificationForm.get('certification').invalid &&
-                      profCertificationForm.get('certification').touched
-                      " class="text-danger"> *Certification is required</small>
+            <label class="col-form-label"
+              >Certification <span class="text-danger">*</span></label
+            >
+            <input
+              class="form-control"
+              type="text"
+              [class.invalid]="
+                profCertificationForm.get('certification').invalid &&
+                profCertificationForm.get('certification').touched
+              "
+              formControlName="certification"
+            />
+            <div
+              *ngIf="
+                profCertificationForm.get('certification').invalid &&
+                profCertificationForm.get('certification').touched
+              "
+            >
+              <small
+                *ngIf="
+                  profCertificationForm.get('certification').invalid &&
+                  profCertificationForm.get('certification').touched
+                "
+                class="text-danger"
+              >
+                *Certification is required</small
+              >
             </div>
           </div>
           <div class="form-group">
-            <label class="col-form-label">Rank <span class="text-danger">*</span></label>
-            <input class="form-control" type="number" min="1" [class.invalid]="
-                    profCertificationForm.get('rank').invalid &&
-                    profCertificationForm.get('rank').touched
-                    " formControlName="rank" />
-            <div *ngIf="
-                    profCertificationForm.get('rank').invalid &&
-                    profCertificationForm.get('rank').touched
-                    ">
-              <small *ngIf="
-                      profCertificationForm.get('rank').invalid &&
-                      profCertificationForm.get('rank').touched
-                      " class="text-danger"> *Rank is required</small>
+            <label class="col-form-label"
+              >Rank <span class="text-danger">*</span></label
+            >
+            <input
+              class="form-control"
+              type="number"
+              min="1"
+              [class.invalid]="
+                profCertificationForm.get('rank').invalid &&
+                profCertificationForm.get('rank').touched
+              "
+              formControlName="rank"
+            />
+            <div
+              *ngIf="
+                profCertificationForm.get('rank').invalid &&
+                profCertificationForm.get('rank').touched
+              "
+            >
+              <small
+                *ngIf="
+                  profCertificationForm.get('rank').invalid &&
+                  profCertificationForm.get('rank').touched
+                "
+                class="text-danger"
+              >
+                *Rank is required</small
+              >
             </div>
           </div>
           <div class="form-group">
             <label>Description </label>
-            <textarea class="form-control" type="text" rows="5" formControlName="description"></textarea>
+            <textarea
+              class="form-control"
+              type="text"
+              rows="5"
+              formControlName="description"
+            ></textarea>
           </div>
           <div class="submit-section">
-            <button class="btn btn-primary submit-btn" type="submit" [disabled]="spinner">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
               <span *ngIf="!spinner">Submit</span>
               <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
             </button>
@@ -117,12 +191,22 @@
 </div>
 <!-- /Add Professional Certification Modal -->
 <!-- Upload Prof Certification Modal -->
-<div id="upload_prof_certification" class="modal custom-modal fade" role="dialog">
+<div
+  id="upload_prof_certification"
+  class="modal custom-modal fade"
+  role="dialog"
+>
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Upload Professional Certification</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeModal()"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -130,10 +214,18 @@
         <form (ngSubmit)="uploadProfCert()" [formGroup]="profCertUploadForm">
           <div class="row">
             <div class="form-group row">
-              <label class="col-form-label col-md-5">Choose File (excel format)</label>
+              <label class="col-form-label col-md-5"
+                >Choose File (excel format)</label
+              >
               <div class="col-md-7">
-                <input class="form-control" name="uploadInput" id="uploadInput" #fileInput type="file"
-                  (change)="onSelectedFile($event,profCertUploadForm)">
+                <input
+                  class="form-control"
+                  name="uploadInput"
+                  id="uploadInput"
+                  #fileInput
+                  type="file"
+                  (change)="onSelectedFile($event, profCertUploadForm)"
+                />
               </div>
             </div>
           </div>
@@ -148,7 +240,12 @@
             </table>
           </div>
           <div class="submit-section">
-            <button class="btn btn-primary submit-btn" type="submit" (ngSubmit)="uploadProfCert()" [disabled]="spinner">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              (ngSubmit)="uploadProfCert()"
+              [disabled]="spinner"
+            >
               <span *ngIf="!spinner">Submit</span>
               <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
             </button>

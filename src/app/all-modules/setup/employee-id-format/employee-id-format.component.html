@@ -6,14 +6,13 @@
       <div class="col">
         <h3 class="page-title">Employee Identity Format</h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Setup</a></li>
+          <li class="breadcrumb-item"><a>Setup</a></li>
           <li class="breadcrumb-item active">Employee Identity Format</li>
         </ul>
       </div>
       <div class="col-auto float-right ml-auto">
         <a
           class="btn add-btn hint"
-          (click)="initIdFormatForm()"
           data-toggle="modal"
           data-target="#employee_id_format"
           ><span class="hint-text">Add</span><i class="fa fa-plus"></i
@@ -28,47 +27,54 @@
   <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
-        <table
+        <p-table
           class="table table-striped custom-table datatable table-hover"
-          datatable
-          [dtOptions]="dtOptions"
-          [dtTrigger]="dtTrigger"
+          #dt
+          [value]="employeeIdFormats"
+          [(selection)]="selectIdFormats"
+          [columns]="cols"
+          [scrollable]="true"
+          scrollHeight="600px"
         >
-          <thead>
+          <ng-template pTemplate="caption">
+            <div style="text-align: right">
+              <input
+                type="text"
+                pInputText
+                size="50"
+                class="form-control"
+                placeholder="Search..."
+                (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width: auto"
+              />
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
             <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  [checked]="selectedId.length === employeeIdFormats.length"
-                  (change)="checkAll($event)"
-                />
+              <th class="table-checkbox">
+                <!--                <input-->
+                <!--                  type="checkbox"-->
+                <!--                  [checked]="selectedId.length === employeeIdFormats.length"-->
+                <!--                  (change)="checkAll($event)"-->
+                <!--                />-->
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
               <th>S/N</th>
               <th>Company</th>
               <th>Format</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr
-              data-toggle="modal"
-              class="pointer"
-              data-target="#edit_employee"
-              (click)="editIdFormat(row)"
-              *ngFor="let row of employeeIdFormats; let i = index"
-            >
-              <td (click)="stopParentEvent($event)">
-                <input
-                  type="checkbox"
-                  [checked]="selectedId.includes(row.id)"
-                  (change)="addItemId($event, row.id)"
-                />
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr data-toggle="modal" class="pointer" (click)="editIdFormat(row)">
+              <td (click)="stopParentEvent($event)" class="table-checkbox">
+                <p-tableCheckbox [value]="row"></p-tableCheckbox>
               </td>
               <td>{{ i + 1 }}</td>
               <td>{{ row.companyStructureName }}</td>
-              <td>{{ row.format }}</td>
+              <td>{{ row.format | uppercase }}</td>
             </tr>
-          </tbody>
-        </table>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>

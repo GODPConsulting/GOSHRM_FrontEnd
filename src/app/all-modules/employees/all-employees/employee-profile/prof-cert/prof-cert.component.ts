@@ -21,7 +21,7 @@ export class ProfCertComponent implements OnInit {
   profCertForm: FormGroup;
   @ViewChild("fileInput")
   fileInput: ElementRef;
-
+  @Input() employeeId: number;
   @Input() dataFromParent: any;
 
   // To hold data for card
@@ -42,7 +42,7 @@ export class ProfCertComponent implements OnInit {
 
   ngOnInit(): void {
     this.initProfCertForm();
-    this.getEmployeeProfCert(this.dataFromParent.user.staffId);
+    this.getEmployeeProfCert(this.employeeId);
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -105,7 +105,7 @@ export class ProfCertComponent implements OnInit {
       dateGranted: ["", Validators.required],
       expiryDate: ["", Validators.required],
       approvalStatus: [""],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       gradeId: ["", Validators.required],
       profCertificationFile: ["", Validators.required],
       setCurrentDate: [""],
@@ -126,7 +126,7 @@ export class ProfCertComponent implements OnInit {
       dateGranted: row.dateGranted,
       expiryDate: new Date(row.expiryDate).toLocaleDateString("en-CA"),
       approvalStatus: row.approvalStatus,
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       gradeId: row.gradeId,
       profCertificationFile: row.profCertificationFile,
     });
@@ -185,7 +185,7 @@ export class ProfCertComponent implements OnInit {
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success").then(() => {
-            this.getEmployeeProfCert(this.dataFromParent.user.staffId);
+            this.getEmployeeProfCert(this.employeeId);
             $("#prof_cert_modal").modal("hide");
           });
         }
@@ -216,11 +216,7 @@ export class ProfCertComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -254,7 +250,7 @@ export class ProfCertComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeProfCert(this.dataFromParent.user.staffId);
+                  this.getEmployeeProfCert(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

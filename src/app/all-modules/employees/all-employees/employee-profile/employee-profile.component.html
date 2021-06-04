@@ -145,6 +145,7 @@
         <app-identification
           *ngIf="dataToChild.user && employeeId"
           [dataFromParent]="dataToChild"
+          [employeeId]="employeeId"
         >
         </app-identification>
       </div>
@@ -305,6 +306,7 @@
       <app-referee
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
       ></app-referee>
       <!-- /Referee Card -->
       <!-- Dependent Contact Tab -->
@@ -312,6 +314,7 @@
         <app-dependent-contact
           *ngIf="dataToChild.user && employeeId"
           [dataFromParent]="dataToChild"
+          [employeeId]="employeeId"
         >
         </app-dependent-contact>
       </div>
@@ -325,6 +328,7 @@
         <app-assets
           *ngIf="dataToChild.user && employeeId"
           [dataFromParent]="dataToChild"
+          [employeeId]="employeeId"
         ></app-assets>
       </div>
       <!-- Assets card -->
@@ -336,6 +340,7 @@
       <app-career
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
       ></app-career>
       <!-- /Career card -->
       <!-- Qualification -->
@@ -587,6 +592,7 @@
       <!-- Qualification modal ends here  -->
       <!-- Professional Certification card -->
       <app-prof-cert
+        [employeeId]="employeeId"
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
       ></app-prof-cert>
@@ -595,6 +601,7 @@
       <app-skills
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
       ></app-skills>
       <!-- /Skills card -->
     </div>
@@ -606,6 +613,7 @@
         <app-hobbies
           *ngIf="dataToChild.user && employeeId"
           [dataFromParent]="dataToChild"
+          [employeeId]="employeeId"
         ></app-hobbies>
       </div>
     </div>
@@ -616,18 +624,21 @@
       <app-employee-hmo
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
       ></app-employee-hmo>
       <!-- Employee /Hmo card -->
       <!-- Hospital card -->
       <app-hospital
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
       ></app-hospital>
       <!-- /Hospital card -->
       <!-- Employee Gym card -->
       <app-employee-gym
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
       ></app-employee-gym>
       <!-- /Employee Gym card -->
     </div>
