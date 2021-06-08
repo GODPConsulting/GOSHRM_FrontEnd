@@ -12,7 +12,7 @@
   </div>
   <!-- Page Content -->
   <div class="modal-body">
-    <form [formGroup]="EmployeeForm">
+    <form [formGroup]="employeeForm">
       <label class="col-form-label">Profile photo</label>
       <div class="cropper-flex">
         <div>
@@ -711,7 +711,7 @@
         <button
           class="btn btn-primary submit-btn"
           type="submit"
-          (click)="addEmployeeToHrm(EmployeeForm)"
+          (click)="addEmployeeToHrm(employeeForm)"
         >
           Submit
         </button>

@@ -52,6 +52,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
       queryParams: {
         appraisalCycleId: item.appraisalCycleId,
         objectiveId: item.id,
+        jobgradeId: item.jobGradeId,
       },
     });
   }

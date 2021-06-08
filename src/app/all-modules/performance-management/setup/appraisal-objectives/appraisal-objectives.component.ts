@@ -42,7 +42,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   isEditing: boolean = false;
   kpi: any;
   @Input() objectiveId: number;
-  @Input() fromLineManager: boolean;
+  @Input() fromLineManager: boolean = false;
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -63,17 +63,18 @@ export class AppraisalObjectivesComponent implements OnInit {
     this.route.queryParams.subscribe((param) => {
       this.appraisalCyleId = param.appraisalCycleId;
       this.objectiveId = param.objectiveId;
+      this.jobGradeId = param.jobgradeId;
       console.log(this.fromLineManager);
       if (this.fromLineManager) {
         this.staffId = param.employeeId;
-        this.jobGradeId = param.jobGradeId;
+        // this.jobGradeId = param.jobGradeId;
         this.deptId = param.departmentId;
       }
     });
     this.jwtService.getHrmUserDetails().then((employee) => {
       if (employee) {
-        this.jobGradeId = employee.jobGrade;
-        this.getAddableObjectives(employee.jobGrade);
+        // this.jobGradeId = employee.jobGrade;
+        this.getAddableObjectives();
         this.getEmployeeObjectiveDetails();
         // this.getCannotAddObjectives(employee.jobGrade);
         // this.getData();
@@ -201,10 +202,10 @@ export class AppraisalObjectivesComponent implements OnInit {
     );
   }
 
-  getAddableObjectives(jobGradeId: number) {
+  getAddableObjectives() {
     this.loadingService.show();
     return this.performanceManagementService
-      .getAddableObjectives(jobGradeId)
+      .getAddableObjectives(this.jobGradeId)
       .subscribe(
         (data) => {
           this.loadingService.hide();

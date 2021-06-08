@@ -625,7 +625,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
 
   closeCommentModal() {
-    this.commentTitle = "";
-    $("#comment_modal").modal("hide");
+    // this.commentTitle = "";
+    $("#comment_modal ").modal("hide");
   }
 }

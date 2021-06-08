@@ -97,10 +97,7 @@ export class EmployeeHmoComponent implements OnInit {
       expectedDateOfChange: ["", Validators.required],
       hmoFile: ["", Validators.required],
       staffId: this.employeeId,
-      approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
+      approvalStatus: [{ value: "2", disabled: !this.dataFromParent.isHr }],
     });
     // Set dateOfRequest to be min date for expectedDateOfChange to
     this.minDate = new Date(this.hmoChangeReqForm.get("dateOfRequest").value);
@@ -112,7 +109,7 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   submitHmoForm(form: FormGroup) {
-    // form.get("approvalStatus").enable();
+    form.get("approvalStatus").enable();
     // Send mail to HR
 
     if (!form.valid) {

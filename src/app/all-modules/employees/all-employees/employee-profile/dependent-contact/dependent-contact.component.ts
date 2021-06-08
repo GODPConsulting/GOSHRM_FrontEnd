@@ -85,7 +85,7 @@ export class DependentContactComponent implements OnInit {
       address: ["", Validators.required],
       countryId: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      approval_status: [""],
+      approval_status: [{ value: "2", disabled: !this.dataFromParent.isHr }],
       staffId: this.employeeId,
       // identicationFile: ["", Validators.required],
     });

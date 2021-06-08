@@ -115,10 +115,7 @@ export class CareerComponent implements OnInit {
       third_Level_ReviewerId: ["", Validators.required],
       startDate: ["", Validators.required],
       endDate: ["", Validators.required],
-      approval_status: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
+      approval_status: [{ value: "2", disabled: !this.dataFromParent.isHr }],
       staffId: this.employeeId,
     });
     //this.fileInput.nativeElement.value = "";
@@ -198,6 +195,7 @@ export class CareerComponent implements OnInit {
     payload.first_Level_ReviewerId = +payload.first_Level_ReviewerId;
     payload.second_Level_ReviewerId = +payload.second_Level_ReviewerId;
     payload.third_Level_ReviewerId = +payload.third_Level_ReviewerId;
+    // payload.job_type = +payload.job_type;
     form.get("approval_status").disable();
 
     this.spinner = true;
@@ -267,11 +265,11 @@ export class CareerComponent implements OnInit {
       id: row.id,
       job_GradeId: row.job_GradeId,
       job_titleId: row.job_titleId,
-      job_type: row.job_type,
+      job_type: row.job_typeId,
       countryId: row.countryId,
       locationId: row.locationId,
-      officeId: row.officeName,
-      line_ManagerId: row.line_ManagerName,
+      officeId: row.officeId,
+      line_ManagerId: row.line_ManagerId,
       first_Level_ReviewerId: row.first_Level_ReviewerId,
       second_Level_ReviewerId: row.second_Level_ReviewerId,
       third_Level_ReviewerId: row.third_Level_ReviewerId,

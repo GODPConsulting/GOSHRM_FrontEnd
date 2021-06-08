@@ -104,7 +104,7 @@ export class ProfCertComponent implements OnInit {
       institution: ["", Validators.required],
       dateGranted: ["", Validators.required],
       expiryDate: ["", Validators.required],
-      approvalStatus: [""],
+      approvalStatus: [{ value: "2", disabled: !this.dataFromParent.isHr }],
       staffId: this.employeeId,
       gradeId: ["", Validators.required],
       profCertificationFile: ["", Validators.required],

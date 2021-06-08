@@ -62,13 +62,13 @@ export class HobbiesComponent implements OnInit {
       hobbyName: ["", Validators.required],
       rating: ["", Validators.required],
       description: ["", Validators.required],
-      approvalStatus: [""],
+      approvalStatus: [{ value: "2", disabled: !this.dataFromParent.isHr }],
       staffId: this.employeeId,
     });
   }
 
   submitHobbyForm(form: FormGroup) {
-    // form.get("approvalStatus").enable();
+    form.get("approvalStatus").enable();
     // Send mail to HR
 
     if (!form.valid) {
@@ -78,7 +78,7 @@ export class HobbiesComponent implements OnInit {
     }
     const payload = form.value;
     payload.approvalStatus = 2;
-    // form.get("approvalStatus").disable();
+    form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHobby(payload).subscribe(
       (res) => {

@@ -112,7 +112,9 @@ export class AssetsComponent implements OnInit {
       classification: ["", Validators.required],
       physicalCondition: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      requestApprovalStatus: [""],
+      requestApprovalStatus: [
+        { value: "2", disabled: !this.dataFromParent.isHr },
+      ],
       returnApprovalStatus: [""],
       staffId: this.employeeId,
       // identicationFile: ["", Validators.required],

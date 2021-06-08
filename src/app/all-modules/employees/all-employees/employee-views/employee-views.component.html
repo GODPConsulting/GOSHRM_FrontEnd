@@ -92,10 +92,10 @@
         <p>Staff Code: {{ emp.staffCode }}</p>
         <h4 class="user-name m-t-10 mb-0 text-ellipsis">
           <a [routerLink]="['/employees/employeeprofile/', emp.staffId]"
-            >{{ emp.firstName }} {{ emp.lastName }}</a
+            >{{ emp.firstName | titlecase }} {{ emp.lastName | titlecase }}</a
           >
         </h4>
-        <div class="small text-muted">{{ emp.jobTitleName }}</div>
+        <div class="small text-muted">{{ emp.jobTitleName | titlecase }}</div>
         <div class="small text-muted">
           <p>{{ emp.email }}</p>
         </div>
@@ -134,12 +134,13 @@
                     ><img *ngIf="row.photo" alt="" src="{{ row.photo }}"
                   /></a>
                   <a [routerLink]="['/employees/employeeprofile/', row.staffId]"
-                    >{{ row.firstName }} {{ row.lastName }}
-                    <span>{{ row.jobTitleName }} </span></a
+                    >{{ row.firstName | titlecase }}
+                    {{ row.lastName | titlecase }}
+                    <span>{{ row.jobTitleName | titlecase }} </span></a
                   >
                 </h2>
               </td>
-              <td>{{ row.staffCode }}</td>
+              <td>{{ row.staffCode | uppercase }}</td>
               <td>{{ row.jobGradeName }}</td>
               <td>{{ row.staffOfficeName }}</td>
               <td>

@@ -102,8 +102,8 @@ export class RefereeComponent implements OnInit {
       organization: ["", Validators.required],
       address: ["", Validators.required],
       confirmationReceived: ["", Validators.required],
-      confirmationDate: ["", Validators.required],
-      approvalStatus: ["2"],
+      approvalStatus: ["", Validators.required],
+      approval_status: [{ value: "2", disabled: !this.dataFromParent.isHr }],
       staffId: this.employeeId,
       refereeFile: ["", Validators.required],
     });

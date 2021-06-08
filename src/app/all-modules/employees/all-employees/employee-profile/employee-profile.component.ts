@@ -125,6 +125,7 @@ export class EmployeeProfileComponent implements OnInit {
       address: [""],
       countryId: [""],
       countryName: [""],
+      approval_status: [{ value: "2", disabled: !this.dataToChild.isHr }],
       staffId: this.employeeId,
     });
   }
@@ -135,7 +136,7 @@ export class EmployeeProfileComponent implements OnInit {
       reading_Rating: [""],
       writing_Rating: [""],
       speaking_Rating: [""],
-      approval_status: [""],
+      approval_status: [{ value: "2", disabled: !this.dataToChild.isHr }],
       staffId: this.employeeId,
     });
   }
@@ -148,7 +149,7 @@ export class EmployeeProfileComponent implements OnInit {
       startDate: [""],
       endDate: [""],
       gradeId: [""],
-      approvalStatus: [""],
+      approval_status: [{ value: "2", disabled: !this.dataToChild.isHr }],
       staffId: this.employeeId,
       qualificationFile: [""],
     });
@@ -532,22 +533,22 @@ export class EmployeeProfileComponent implements OnInit {
   }
   // EmployeeQualification
   addEmployeeQualification(form: FormGroup) {
-    // form.get("approvalStatus").enable();
+    form.get("approvalStatus").enable();
     // Send mail to HR
-    // if (!this.dataToChild.isHr) {
-    //   this.utilitiesService
-    //     .sendToHr(
-    //       "Add Qualification",
-    //       this.dataToChild.user.firstName,
-    //       this.dataToChild.user.lastName,
-    //       this.dataToChild.user.email,
-    //       this.dataToChild.user.userId
-    //     )
-    //     .subscribe();
-    //   if (form.get("approval_status").value !== 2) {
-    //     form.get("approval_status").setValue(2);
-    //   }
-    // }
+    if (!this.dataToChild.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Qualification",
+          this.dataToChild.user.firstName,
+          this.dataToChild.user.lastName,
+          this.dataToChild.user.email,
+          this.dataToChild.user.userId
+        )
+        .subscribe();
+      if (form.get("approval_status").value !== 2) {
+        form.get("approval_status").setValue(2);
+      }
+    }
     const payload = form.value;
     if (!form.valid) {
       // form.get("approvalStatus").disable();

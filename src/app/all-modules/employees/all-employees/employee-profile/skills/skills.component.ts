@@ -104,7 +104,7 @@ export class SkillsComponent implements OnInit {
       expectedScore: [{ value: "", disabled: true }, Validators.required],
       actualScore: [""],
       proofOfSkills: ["", Validators.required],
-      approvalStatus: [""],
+      approvalStatus: [{ value: "2", disabled: !this.dataFromParent.isHr }],
       staffId: this.employeeId,
       skillFile: ["", Validators.required],
     });
@@ -153,23 +153,23 @@ export class SkillsComponent implements OnInit {
 
   submitSkillsForm(form: FormGroup) {
     const payload = form.value;
-    // form.get("approvalStatus").enable();
+    form.get("approvalStatus").enable();
     form.get("expectedScore").enable();
     // Send mail to HR
-    // if (!this.dataFromParent.isHr) {
-    //   this.utilitiesService
-    //     .sendToHr(
-    //       "Add Skills",
-    //       this.dataFromParent.user.firstName,
-    //       this.dataFromParent.user.lastName,
-    //       this.dataFromParent.user.email,
-    //       this.dataFromParent.user.userId
-    //     )
-    //     .subscribe();
-    //   if (form.get("approvalStatus").value !== 2) {
-    //     form.get("approvalStatus").setValue(2);
-    //   }
-    // }
+    if (!this.dataFromParent.isHr) {
+      this.utilitiesService
+        .sendToHr(
+          "Add Skills",
+          this.dataFromParent.user.firstName,
+          this.dataFromParent.user.lastName,
+          this.dataFromParent.user.email,
+          this.dataFromParent.user.userId
+        )
+        .subscribe();
+      if (form.get("approvalStatus").value !== 2) {
+        form.get("approvalStatus").setValue(2);
+      }
+    }
     if (!form.valid) {
       form.get("expectedScore").disable();
       // form.get("approvalStatus").disable();
@@ -189,7 +189,7 @@ export class SkillsComponent implements OnInit {
     //   formData.append(key, this.skillsForm.get(key).value);
     // }
     this.skillsForm.get("expectedScore").disable();
-    // form.get("approvalStatus").disable();
+    form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.addSkill(formData).subscribe(
       (res) => {
@@ -203,8 +203,8 @@ export class SkillsComponent implements OnInit {
         }
       },
       (err) => {
-        form.get("expectedScore").disable();
         this.spinner = false;
+        form.get("expectedScore").disable();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }

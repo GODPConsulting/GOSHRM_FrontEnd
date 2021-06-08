@@ -21,7 +21,7 @@ export class EmployeeFormComponent implements OnInit {
   fileInput: ElementRef;
   imageChangedEvent: any = "";
   croppedImage: any = "";
-  EmployeeForm: FormGroup;
+  employeeForm: FormGroup;
   public jobTitles: any[] = [];
   public jobTitleId;
   public countryId: number;
@@ -80,9 +80,9 @@ export class EmployeeFormComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         const result = data.employeeList[0];
-        this.getStatesByCountryId(result.countryId);
         this.getAccessLevelsByAccessLevelId(result.accessLevelId);
-        this.EmployeeForm.patchValue({
+        this.employeeForm.patchValue({
+          employeeId: result.employeeId,
           staffId: result.staffId,
           firstName: result.firstName,
           lastName: result.lastName,
@@ -94,7 +94,7 @@ export class EmployeeFormComponent implements OnInit {
           address: result.address,
           dateOfBirth: result.dateOfBirth,
           gender: result.gender,
-          stateId: result.sateId,
+          stateId: result.stateId,
           countryId: result.countryId,
           //staffLimit: [""],
           accessLevel: result.accessLevel,
@@ -109,7 +109,8 @@ export class EmployeeFormComponent implements OnInit {
           jobGrade: result.jobGrade,
           isHRAdmin: result.isHRAdmin,
         });
-        console.log(this.EmployeeForm.value);
+        this.getStatesByCountryId(result.countryId);
+        // console.log(this.employeeForm.value);
         // Resets the photo input field of the form
       },
       (err) => {
@@ -120,7 +121,8 @@ export class EmployeeFormComponent implements OnInit {
   initializeEditForm(result) {
     this.getStatesByCountryId(result?.countryId);
     this.getAccessLevelsByAccessLevelId(result?.accessLevelId);
-    this.EmployeeForm = this.formBuilder.group({
+    this.employeeForm = this.formBuilder.group({
+      employeeId: result.employeeId,
       staffId: result?.staffId,
       firstName: [result?.firstName],
       lastName: [result?.lastName],
@@ -154,7 +156,8 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   initializeForm() {
-    this.EmployeeForm = this.formBuilder.group({
+    this.employeeForm = this.formBuilder.group({
+      employeeId: [0],
       staffId: [0],
       //staffCode: [""],
       firstName: [""],
@@ -189,7 +192,7 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   addEmployeeToHrm(EmployeeForm: FormGroup) {
-    let payload = EmployeeForm.value;
+    const payload = EmployeeForm.value;
     // console.log(payload.userRoleNames);
     // return;
     // validations to check if the form fields have value
@@ -282,10 +285,10 @@ export class EmployeeFormComponent implements OnInit {
       "en-CA"
     );
     const val = this.convertModelToFormData(payload);
-    // console.log(val);
+    console.log(val);
     // return;
     this.loadingService.show();
-    return this.employeeService.addEmployee(val).subscribe(
+    this.employeeService.addEmployee(val).subscribe(
       (res) => {
         this.loadingService.hide();
         const message = res.status.message.friendlyMessage;
@@ -399,7 +402,7 @@ export class EmployeeFormComponent implements OnInit {
 
   clearPhoto() {
     this.isVisible = false;
-    this.EmployeeForm.get("photoFile").setValue("");
+    this.employeeForm.get("photoFile").setValue("");
     // Resets the photo input field of the form
     if (this.fileInput) {
       this.fileInput.nativeElement.value = "";
@@ -409,10 +412,10 @@ export class EmployeeFormComponent implements OnInit {
   fileChangeEvent(event: any): void {
     this.isVisible = true;
     this.imageChangedEvent = event;
-    this.utilitiesService.uploadFileValidator(event, this.EmployeeForm);
+    this.utilitiesService.uploadFileValidator(event, this.employeeForm);
 
     if (
-      this.utilitiesService.uploadFileValidator(event, this.EmployeeForm) ===
+      this.utilitiesService.uploadFileValidator(event, this.employeeForm) ===
       "file valid"
     ) {
       $("#crop_photo_modal").modal("show");
@@ -428,7 +431,7 @@ export class EmployeeFormComponent implements OnInit {
     );
 
     // Appends profile photo to form
-    this.EmployeeForm.patchValue({
+    this.employeeForm.patchValue({
       photoFile: this.image,
     });
     return this.image;
