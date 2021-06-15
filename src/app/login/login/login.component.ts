@@ -100,6 +100,7 @@ export class LoginComponent implements OnInit {
           this.getUserDetails();
           // this.router.navigateByUrl('/')
         });
+        // this.router.navigateByUrl(this.redirectURL);
       },
       (err) => {
         this.loadingService.hide();
@@ -117,7 +118,7 @@ export class LoginComponent implements OnInit {
         this.loadingService.hide();
         this.hrmUser = data.employeeList[0];
         this.router.navigateByUrl(this.redirectURL);
-        if (this.hrmUser.length !== 0) {
+        if (this.hrmUser) {
           this.hrmUser.branchId = this.user.branchId;
           this.hrmUser.branchName = this.user.branchName;
           this.hrmUser.companyId = this.user.companyId;

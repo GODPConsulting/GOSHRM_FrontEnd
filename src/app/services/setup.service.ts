@@ -28,7 +28,7 @@ export class SetupService {
   }
 
   exportExcelFile(url: string) {
-    return this.apiService.getDownload(url).pipe(
+    return this.apiService.getDownload(`/employee${url}`).pipe(
       map((data) => {
         return data;
       })

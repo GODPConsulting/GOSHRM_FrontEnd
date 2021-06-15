@@ -45,11 +45,14 @@ export class ProfCertificationComponent implements OnInit {
   downloadFile() {
     this.setupService.downloadProfCert().subscribe(
       (resp) => {
-        const data = resp;
-        this.utilitiesService.byteToFile(
-          data,
-          "Professional Certification.xlsx"
-        );
+        if (resp) {
+          return this.utilitiesService.byteToFile(
+            resp,
+            "Professional Certification.xlsx"
+          );
+        } else {
+          return this.utilitiesService.showError("Unable to download file");
+        }
       },
       (err) => {}
     );
@@ -170,13 +173,15 @@ export class ProfCertificationComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectCertifications.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectCertifications.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",

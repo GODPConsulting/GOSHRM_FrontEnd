@@ -165,7 +165,9 @@ export class EmployeeIdFormatComponent implements OnInit {
             (res) => {
               this.loadingService.hide();
               if (res.status.isSuccessful) {
-                this.utilitiesService.showMessage(res, "success");
+                this.utilitiesService.showMessage(res, "success").then(() => {
+                  this.getEmployeeIdFormat();
+                });
               } else {
                 this.utilitiesService.showMessage(res, "error");
               }

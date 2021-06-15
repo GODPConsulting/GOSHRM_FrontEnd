@@ -85,7 +85,14 @@ export class ProfCertComponent implements OnInit {
         (resp) => {
           this.loadingService.hide();
           // Converts response to file and downloads it
-          this.utilitiesService.byteToFile(resp, `${fileName}.${extension}`);
+          if (resp) {
+            return this.utilitiesService.byteToFile(
+              resp,
+              `${fileName}.${extension}`
+            );
+          } else {
+            return this.utilitiesService.showError("Unable to download file");
+          }
         },
         (err) => {
           this.loadingService.hide();
