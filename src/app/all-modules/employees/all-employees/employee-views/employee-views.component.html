@@ -83,7 +83,7 @@
       <div class="profile-widget">
         <div class="profile-img">
           <a
-            [routerLink]="['/employees/employeeprofile/', emp.staffId]"
+            [routerLink]="['/employees/employeeprofile/', emp.employeeId]"
             class="avatar grid-avi"
             ><i *ngIf="!emp.photo" class="fa fa-user"></i
             ><img *ngIf="emp.photo" src="{{ emp?.photo }}" alt=""
@@ -128,7 +128,10 @@
               <td>
                 <h2 class="table-avatar">
                   <a
-                    [routerLink]="['/employees/employeeprofile/', row.staffId]"
+                    [routerLink]="[
+                      '/employees/employeeprofile/',
+                      row.employeeId
+                    ]"
                     class="avatar list-avi"
                     ><i *ngIf="!row.photo" class="fa fa-user"></i
                     ><img *ngIf="row.photo" alt="" src="{{ row.photo }}"
