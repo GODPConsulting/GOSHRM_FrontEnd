@@ -40,6 +40,7 @@ export class CareerComponent implements OnInit {
 
   @Input() dataFromParent: any;
   @Input() employeeId: number;
+  @Input() isHr: string;
   // Forms
   careerForm: FormGroup;
 
@@ -61,29 +62,29 @@ export class CareerComponent implements OnInit {
     //   this.employeeId = +param.id;
     // });
     // Determines the structure of the table (Angular Datatables)
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
-      order: [[1, "asc"]],
-    };
+    // this.dtOptions = {
+    //   dom:
+    //     "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+    //     "<'row'<'col-sm-12'tr>>" +
+    //     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    //   language: {
+    //     search: "_INPUT_",
+    //     searchPlaceholder: "Start typing to search by any field",
+    //   },
+    //
+    //   columns: [
+    //     { orderable: false },
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //   ],
+    //   order: [[1, "asc"]],
+    // };
     this.getEmployeeCareer(this.employeeId);
     this.initCareerForm();
     this.getCountry();
@@ -115,7 +116,7 @@ export class CareerComponent implements OnInit {
       third_Level_ReviewerId: ["", Validators.required],
       startDate: ["", Validators.required],
       endDate: ["", Validators.required],
-      approval_status: [{ value: "2", disabled: !this.dataFromParent.isHr }],
+      approval_status: [{ value: "2", disabled: this.isHr !== "true" }],
       staffId: this.employeeId,
     });
     //this.fileInput.nativeElement.value = "";
@@ -177,14 +178,14 @@ export class CareerComponent implements OnInit {
   }
 
   submitCareerForm(form: FormGroup) {
-    form.get("approval_status").enable();
-
     if (!form.valid) {
-      form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approval_status = 2;
+    }
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
     payload.locationId = +payload.locationId;
@@ -196,7 +197,7 @@ export class CareerComponent implements OnInit {
     payload.second_Level_ReviewerId = +payload.second_Level_ReviewerId;
     payload.third_Level_ReviewerId = +payload.third_Level_ReviewerId;
     // payload.job_type = +payload.job_type;
-    form.get("approval_status").disable();
+    // form.get("approval_status").disable();
 
     this.spinner = true;
     return this.employeeService.postCareer(payload).subscribe(

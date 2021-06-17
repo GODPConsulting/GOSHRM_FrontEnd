@@ -6,7 +6,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 // import { NgSelectModule } from '@ng-select/ng-select';
 
-//Bootstrap DataTable
+// Bootstrap DataTable
 import { DataTablesModule } from "angular-datatables";
 import { ToastrModule } from "ngx-toastr";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";

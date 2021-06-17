@@ -28,6 +28,7 @@ export class DependentContactComponent implements OnInit {
 
   @Input() dataFromParent: any;
   @Input() employeeId: number;
+  @Input() isHr: string;
   // Forms
   dependentContactForm: FormGroup;
 
@@ -44,30 +45,6 @@ export class DependentContactComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
-      order: [[1, "asc"]],
-    };
     this.getEmployeeDependentContact(this.employeeId);
     this.initDependentContactForm();
     this.getCountry();
@@ -85,7 +62,7 @@ export class DependentContactComponent implements OnInit {
       address: ["", Validators.required],
       countryId: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      approval_status: [{ value: "2", disabled: !this.dataFromParent.isHr }],
+      approval_status: [{ value: "2", disabled: this.isHr !== "true" }],
       staffId: this.employeeId,
       // identicationFile: ["", Validators.required],
     });
@@ -96,14 +73,17 @@ export class DependentContactComponent implements OnInit {
     // form.get("approval_status").enable();
 
     if (!form.valid) {
-      form.get("approval_status").disable();
+      // form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
-    payload.approval_status = 1;
+    if (this.isHr !== "true") {
+      payload.approval_status = 2;
+    }
+    payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
-    form.get("approval_status").disable();
+    // form.get("approval_status").disable();
     this.spinner = true;
     return this.employeeService.postDependentContact(payload).subscribe(
       (res) => {
@@ -122,9 +102,6 @@ export class DependentContactComponent implements OnInit {
                   this.dataFromParent.user.userId
                 )
                 .subscribe();
-              if (form.get("approval_status").value !== 2) {
-                form.get("approval_status").setValue(2);
-              }
             }
             $("#dependent_contact_modal").modal("hide");
             this.getEmployeeDependentContact(this.employeeId);

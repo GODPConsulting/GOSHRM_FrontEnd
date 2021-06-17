@@ -80,20 +80,16 @@
       class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
       *ngFor="let emp of filteredArray; let i = index"
     >
-      <div class="profile-widget">
+      <div class="profile-widget" (click)="viewProfile(emp.employeeId)">
         <div class="profile-img">
-          <a
-            [routerLink]="['/employees/employeeprofile/', emp.employeeId]"
-            class="avatar grid-avi"
+          <a class="avatar grid-avi"
             ><i *ngIf="!emp.photo" class="fa fa-user"></i
             ><img *ngIf="emp.photo" src="{{ emp?.photo }}" alt=""
           /></a>
         </div>
         <p>Staff Code: {{ emp.staffCode }}</p>
         <h4 class="user-name m-t-10 mb-0 text-ellipsis">
-          <a [routerLink]="['/employees/employeeprofile/', emp.staffId]"
-            >{{ emp.firstName | titlecase }} {{ emp.lastName | titlecase }}</a
-          >
+          <a>{{ emp.firstName | titlecase }} {{ emp.lastName | titlecase }}</a>
         </h4>
         <div class="small text-muted">{{ emp.jobTitleName | titlecase }}</div>
         <div class="small text-muted">

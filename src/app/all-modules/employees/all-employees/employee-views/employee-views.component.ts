@@ -7,6 +7,7 @@ import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
 import { CommonService } from "../../../../services/common.service";
 import { Subject } from "rxjs";
+import { Router } from "@angular/router";
 
 declare const $: any;
 @Component({
@@ -30,7 +31,8 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
     private setupService: SetupService,
     private jwtService: JwtService,
     private loadingService: LoadingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -140,6 +142,15 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   ngAfterViewChecked() {
     $('[data-toggle="tooltip"]').on("click", function () {
       $(this).tooltip("dispose");
+    });
+  }
+
+  viewProfile(employeeId: any) {
+    this.router.navigate(["/employees/employeeprofile"], {
+      queryParams: {
+        employeeId,
+        isHr: true,
+      },
     });
   }
 }

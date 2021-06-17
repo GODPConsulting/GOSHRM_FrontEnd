@@ -24,6 +24,7 @@ export class SkillsComponent implements OnInit {
   fileInput: ElementRef;
   @Input() dataFromParent: any;
   @Input() employeeId: number;
+  @Input() isHr: string;
   // To hold data for each card
   employeeSkills: any = {};
   staffs: any = {};
@@ -104,7 +105,7 @@ export class SkillsComponent implements OnInit {
       expectedScore: [{ value: "", disabled: true }, Validators.required],
       actualScore: [""],
       proofOfSkills: ["", Validators.required],
-      approvalStatus: [{ value: "2", disabled: !this.dataFromParent.isHr }],
+      approvalStatus: [{ value: "2", disabled: this.isHr !== "true" }],
       staffId: this.employeeId,
       skillFile: ["", Validators.required],
     });
@@ -128,9 +129,9 @@ export class SkillsComponent implements OnInit {
       if (data) {
         this.staffs = data.employeeList;
 
-        this.jobTitleId = data.employeeList[0].jobTitle;
-
-        this.getSingleJobTitle(this.jobTitleId);
+        // this.jobTitleId = data.employeeList[0].jobTitle;
+        //
+        // this.getSingleJobTitle(this.jobTitleId);
       }
     });
   }
@@ -153,7 +154,6 @@ export class SkillsComponent implements OnInit {
 
   submitSkillsForm(form: FormGroup) {
     const payload = form.value;
-    form.get("approvalStatus").enable();
     form.get("expectedScore").enable();
     // Send mail to HR
     if (!this.dataFromParent.isHr) {
@@ -176,7 +176,10 @@ export class SkillsComponent implements OnInit {
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    payload.approvalStatus = 2;
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
+    payload.approvalStatus = +payload.approvalStatus;
     payload.expectedScore = this.expectedScore;
     // console.log(payload);
     // return;
@@ -189,7 +192,7 @@ export class SkillsComponent implements OnInit {
     //   formData.append(key, this.skillsForm.get(key).value);
     // }
     this.skillsForm.get("expectedScore").disable();
-    form.get("approvalStatus").disable();
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.addSkill(formData).subscribe(
       (res) => {
