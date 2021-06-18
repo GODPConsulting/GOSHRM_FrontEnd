@@ -5,6 +5,7 @@ import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { HttpErrorResponse } from "@angular/common/http";
 import {
+  AppraisalObjective,
   EmployeeKPI,
   IAppraisalCycle,
   IKpis,
@@ -193,7 +194,7 @@ export class PerformanceManagementService {
     return this.apiService.get("/performance/get/all/appraisal_cycles").pipe(
       tap(),
       map((res) => {
-        return res;
+        return res.list;
       }),
       catchError(this.handleError)
     );
@@ -213,7 +214,7 @@ export class PerformanceManagementService {
 
   deleteAppraisalCycle(payload: any) {
     return this.apiService
-      .post("/performance/performancesetup​/delete​/appraisal-cycle", payload)
+      .post("/performance/delete/appraisal_cycles", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -302,27 +303,25 @@ export class PerformanceManagementService {
 
   getAppraisalCycleByCompanyId(id) {
     return this.apiService
-      .get(
-        `/performance/performancesetup/get/single/appraisal-cycle/companyId?setupId=${id}`
-      )
+      .get(`/performance/get/appraisal_cycles/bycompany?company=${id}`)
       .pipe(
         tap(),
         map((res) => {
-          return res;
+          return res.list;
         }),
         catchError(this.handleError)
       );
   }
 
-  getAppraisalFeedbacks(id) {
+  getAppraisalFeedbacks(employeeId: number) {
     return this.apiService
       .get(
-        `/performance/performance-appraisal/get/single/appraisal-objective/staffId?staffId=${id}`
+        `/performance/get/all/employee/feedbacks/byemployeeId?EmployeeId=${employeeId}`
       )
       .pipe(
         tap(),
         map((res) => {
-          return res;
+          return res.list;
         }),
         catchError(this.handleError)
       );
@@ -361,7 +360,7 @@ export class PerformanceManagementService {
   }
   getCareerByStaffId(id) {
     return this.apiService
-      .get(`/hrm/get/single/employee/career/staffId?staffId=${id}`)
+      .get(`/employee/hrm/get/single/employee/career/staffId?staffId=${id}`)
       .pipe(
         tap(),
         map((response) => {
@@ -426,11 +425,13 @@ export class PerformanceManagementService {
   }
   getEmployeeAppraisalCycle(
     employeeId: number,
-    deptId: number
+    deptId: number,
+    jobGradeId: number,
+    appraisalCycleId: number = 0
   ): Observable<IAppraisalCycle[]> {
     return this.apiService
       .get(
-        `/performance/get/employee_appraisal/cycle?EmployeeId=${employeeId}&Department=${deptId}`
+        `/performance/get/employee_appraisal/cycle?JobGarde=${jobGradeId}&EmployeeId=${employeeId}&Department=${deptId}&AppraisalCycleId=${appraisalCycleId}`
       )
       .pipe(
         tap(),
@@ -444,6 +445,267 @@ export class PerformanceManagementService {
   addEmployeeKPI(payload: EmployeeKPI): Observable<EmployeeKPI> {
     return this.apiService
       .post(`/performance/add/new_kpi/by_employee`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getAddableObjectives(jobGradeId: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_can_add/kpis/by_jobgrade?jobgrade=${jobGradeId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getCannotAddObjectives(jobGradeId: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_cannot_add/kpis/by_jobgrade?jobgrade=${jobGradeId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getEmployeeObjectives(id: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_added/kpis/by_employeeId?EmployeeId=${id}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        })
+      );
+  }
+
+  getEmployeeObjectiveDetails(
+    jobGrade,
+    employeeId,
+    deptId,
+    appraisalCycleId
+  ): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_obectves/by/employee_details?JobGarde=${jobGrade}&EmployeeId=${employeeId}&Department=${deptId}&AppraisalCycleId=${appraisalCycleId}`
+      )
+      .pipe(
+        tap(),
+        map((data) => {
+          return data.list;
+        }, catchError(this.handleError))
+      );
+  }
+
+  startAppraisal(payload: AppraisalObjective): Observable<AppraisalObjective> {
+    return this.apiService
+      .post(`/performance/add/update/employee-appraisal/objectives`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  saveObjectives(employeeObjectiveId: number): Observable<any> {
+    return this.apiService
+      .post(`/performance/employee/confirm/objectives/by_objectivesId`, {
+        employeeObjectiveId,
+      })
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getEmployeeObjectivesByLineManager(id: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_objectives/by_line_mamager?longMangerId=${id}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getSingleEmployeeObjective(
+    employeeId: number,
+    appraisalCycleId: number
+  ): Observable<AppraisalObjective> {
+    return this.apiService
+      .get(
+        `/performance/get/single/employee_objectives?EmployeeId=${employeeId}&AppraisalCycleId=${appraisalCycleId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res["list"];
+        })
+      );
+  }
+
+  // getAppraisalCycles():Observable<any> {
+  //   return this.apiService.get(`/performance/get/all/appraisal_cycles`).pipe(tap(), map(res => {
+  //     return res;
+  //   }), catchError(this.handleError))
+  // }
+
+  addEmployeeComment(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/add/feedback-comment/by-employee`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  addEmployeeScore(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/add/feedback-score/by-employee`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  addReviewerOneComment(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/add/feedback-comment/by-reviewerone`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  addReviewerOneScore(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/add/feedback-score/by-reviewerone`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  addReviewerTwoComment(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/add/feedback-comment/by-reviewertwo`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  addReviewerTwoScore(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/add/feedback-score/by-reviewertwo`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  addReviewerThreeComment(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/add/feedback-comment/by-reviewerthree`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  addReviewerThreeScore(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/add/feedback-score/by-reviewerthree`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getAppraisalFeedback(
+    employeedId: number,
+    loggedInStaffId: number,
+    appraisalCycleId: number
+  ): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee/feedbacks/byemployeeId?EmployeeId=${employeedId}&loggedInStaffId=${loggedInStaffId}&AppraisalCycleId=${appraisalCycleId}`
+      )
+      .pipe(
+        tap(),
+        map((data) => {
+          return data.list;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  confirmByManager(employeeObjectiveId: number): Observable<any> {
+    return this.apiService
+      .post(`/performance/linemanager/confirm/objectives/by_objectivesId`, {
+        employeeObjectiveId,
+      })
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  sendEmployeeFeedback(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/send/feedback/by-employee`, payload)
       .pipe(
         tap(),
         map((res) => {

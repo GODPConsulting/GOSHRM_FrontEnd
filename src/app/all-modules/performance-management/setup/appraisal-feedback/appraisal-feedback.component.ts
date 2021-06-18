@@ -12,8 +12,14 @@ import { JwtService } from "src/app/services/jwt.service";
 import { Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
 import { CommonService } from "../../../../services/common.service";
+import { Router } from "@angular/router";
 declare const $: any;
 
+interface Preference {
+  isReviewerOneInvloved: boolean;
+  isReviewertwoInvloved: boolean;
+  isReviewerThreeInvloved: boolean;
+}
 @Component({
   selector: "app-appraisal-feedback",
   templateUrl: "./appraisal-feedback.component.html",
@@ -53,6 +59,7 @@ export class AppraisalFeedbackComponent implements OnInit {
   public jobGrades: any[] = [];
   public user;
   dtTrigger: Subject<any> = new Subject();
+  preference: Preference;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -61,11 +68,14 @@ export class AppraisalFeedbackComponent implements OnInit {
     private _location: Location,
     private jwtService: JwtService,
     private loadingService: LoadingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.user = this.jwtService.getHrmUserDetails();
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.getAppraisalFeedbacks(user.staffId, user.staffId);
+    });
 
     this.dtOptions = {
       dom:
@@ -90,7 +100,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       ],
       order: [[1, "asc"]],
     };
-    this.getAppraisalFeedbacks(this.user.staffId);
+    // this.getAppraisalFeedbacks(this.user.staffId);
     this.getJobGrade();
     this.cardFormTitle = "Add Appraisal Feedback";
   }
@@ -134,7 +144,7 @@ export class AppraisalFeedbackComponent implements OnInit {
             this.secondLevelReviewerId = "";
           }
 
-          this.getAppraisalFeedbacks(this.user.staffId);
+          this.getAppraisalFeedbacks(this.user.staffId, this.user.staffId);
         },
         (err) => {
           this.spinner = false;
@@ -144,20 +154,18 @@ export class AppraisalFeedbackComponent implements OnInit {
       );
   }
 
-  getAppraisalFeedbacks(id) {
+  getAppraisalFeedbacks(id, staffId: number) {
     this.loadingService.show();
-    this.performanceManagementService
-      .getAppraisalFeedbacks(this.user.staffId)
-      .subscribe(
-        (data) => {
-          this.loadingService.hide();
-          this.appraisalFeedbacks = data.objectiveList;
-          this.dtTrigger.next();
-        },
-        (err) => {
-          this.loadingService.hide();
-        }
-      );
+    this.performanceManagementService.getAppraisalFeedbacks(id).subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.appraisalFeedbacks = data;
+        this.dtTrigger.next();
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
   }
 
   getJobGrade() {
@@ -234,7 +242,10 @@ export class AppraisalFeedbackComponent implements OnInit {
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
-                    this.getAppraisalFeedbacks(this.user.staffId);
+                    this.getAppraisalFeedbacks(
+                      this.user.staffId,
+                      this.user.staffId
+                    );
                   });
                 } else {
                   swal.fire("GOSHRM", message, "error");
@@ -252,4 +263,15 @@ export class AppraisalFeedbackComponent implements OnInit {
   }
 
   checkAll($event: Event) {}
+
+  addItemId($event: Event, id: any) {}
+
+  viewFeedback(row) {
+    this.router.navigate(["/performance/appraisal-feedback-page"], {
+      queryParams: {
+        id: row.staff,
+        appraisalCycleId: row.appraisalCycleId,
+      },
+    });
+  }
 }

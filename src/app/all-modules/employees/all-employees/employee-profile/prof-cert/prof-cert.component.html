@@ -15,7 +15,6 @@
           ><i class="fa fa-download"></i></a
         ><a
           *ngIf="dataFromParent.canSeeProfileElement"
-          (click)="initProfCertForm()"
           class="hint edit-icon mr-1"
           data-toggle="modal"
           data-target="#prof_cert_modal"
@@ -24,12 +23,7 @@
         ></a>
       </h3>
       <div class="table-responsive">
-        <table
-          class="table table-nowrap table-hover"
-          datatable
-          [dtOptions]="dtOptions"
-          [dtTrigger]="dtTrigger"
-        >
+        <table class="table table-nowrap table-hover">
           <thead>
             <tr>
               <th>
@@ -228,6 +222,7 @@
                   <label for="currentDate" class="mx-1">Does not expire</label>
                 </span>
                 <input
+                  id="currentDate"
                   [minDate]="minDate"
                   (bsValueChange)="
                     setMinMaxDate(profCertForm, 'dateGranted', 'expiryDate')

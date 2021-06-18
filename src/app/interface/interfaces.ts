@@ -12,7 +12,7 @@ export interface KpiCategory {
 }
 
 export interface EmployeeKPI {
-  employeeAddedKPIId: number;
+  employeeObjectiveIdicatorId: number;
   kpiCategoryId: number;
   kpi: number;
   objective: string;
@@ -22,6 +22,8 @@ export interface EmployeeKPI {
   weightmodel: number;
   jobGrade: number;
   employee: number;
+  department: number;
+  appraisalCycleId: number;
 }
 
 export interface IHighSchool {
@@ -83,5 +85,20 @@ export interface IAppraisalCycle {
   reviewerTwoWeight: number;
   reviewerThreeWeight: number;
   status: number;
+  department: number;
+}
+
+export interface AppraisalObjective {
+  id: number;
+  reviewYear: number;
+  reviewPeriod: string;
+  employee: number;
+  lineManger: number;
+  jobGradeId: number;
+  firstReviewer: number;
+  secondReviewer: number;
+  thirdReviewer: number;
+  comment: string;
+  appraisalCycleId: number;
   department: number;
 }

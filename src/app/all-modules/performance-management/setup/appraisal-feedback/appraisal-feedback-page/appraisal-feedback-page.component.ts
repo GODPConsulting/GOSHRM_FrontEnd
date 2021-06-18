@@ -9,7 +9,16 @@ import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
 import { CommonService } from "../../../../../services/common.service";
+import { JwtService } from "../../../../../services/jwt.service";
+import { ActivatedRoute } from "@angular/router";
+import { catchError } from "rxjs/operators";
 declare const $: any;
+
+interface Preference {
+  isReviewerOneInvloved: boolean;
+  isReviewertwoInvloved: boolean;
+  isReviewerThreeInvloved: boolean;
+}
 
 @Component({
   selector: "app-appraisal-feedback-page",
@@ -20,7 +29,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   cardFormTitle: string;
   spinner: boolean = false;
-
+  employeeComments: any[] = [];
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
@@ -30,8 +39,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   appraisalFeedbackForm: FormGroup;
 
   performanceAppraisalFeedback: any = {};
-  years: any[] = [];
-
+  years: any;
   appraisalFeedbacks: any[] = [];
   selectedId: number[] = [];
   company: string;
@@ -57,7 +65,16 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   secondLevelReviewer: any;
   score: any;
   date: any;
-
+  preference: Preference;
+  employeeId: number;
+  appraisalCycleId: number;
+  reviewer: string;
+  employeeCommentForm: FormGroup;
+  employeeScoreForm: FormGroup;
+  employeeObjectiveFeedbackID: number;
+  commentTitle: string;
+  scoreTitle: string;
+  personnel: string;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -65,45 +82,43 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     private setupService: SetupService,
     private _location: Location,
     private loadingService: LoadingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private jwtService: JwtService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
-      order: [[1, "asc"]],
-    };
-    this.getAppraisalFeedbacks();
-    this.cardFormTitle = "Add Appraisal Feedback";
-    this.createYears(2000, 2050);
+    this.route.queryParams.subscribe((param) => {
+      this.employeeId = param.id;
+      this.appraisalCycleId = param.appraisalCycleId;
+    });
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.staffId = user.staffId;
+      this.getAppraisalFeedbacks();
+      this.initialiseEmployeeComment();
+      this.initialiseEmployeeScore();
+    });
+    // this.getAppraisalFeedbacks();
+    this.cardFormTitle = "Appraisal Feedback";
+    this.years = this.utilitiesService.createYears(2000, 2050);
     this.getJobGrade();
   }
-
-  createYears(from, to) {
-    for (let i = from; i <= to; i++) {
-      this.years.push({ year: i });
-    }
+  initialiseEmployeeComment() {
+    this.employeeCommentForm = this.formBuilder.group({
+      employeeObjectiveFeedbackID: [0],
+      comment: [""],
+      staffId: this.staffId,
+      appraisalCycleId: +this.appraisalCycleId,
+    });
   }
-
+  initialiseEmployeeScore() {
+    this.employeeScoreForm = this.formBuilder.group({
+      employeeObjectiveFeedbackID: [0],
+      score: [""],
+      staffId: this.staffId,
+      appraisalCycleId: +this.appraisalCycleId,
+    });
+  }
   submitAppraisalFeedbackForm() {
     const payload = {
       reviewPeriod: this.reviewPeriod,
@@ -156,11 +171,23 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   getAppraisalFeedbacks() {
     this.loadingService.show();
     this.performanceManagementService
-      .getAppraisalFeedbacksByStaffId(2)
+      .getAppraisalFeedback(
+        this.employeeId,
+        this.staffId,
+        this.appraisalCycleId
+      )
       .subscribe(
         (data) => {
           this.loadingService.hide();
-          this.appraisalFeedbacks = data.objectiveList;
+          this.appraisalFeedbacks = data;
+          this.preference = {
+            isReviewerOneInvloved: data[0].isReviewerOneInvloved,
+            isReviewertwoInvloved: data[0].isReviewertwoInvloved,
+            isReviewerThreeInvloved: data[0].isReviewerThreeInvloved,
+          };
+          this.reviewer = data[0].reviewer;
+          this.employeeObjectiveFeedbackID =
+            data[0].employeeObjectiveFeedbackID;
         },
         (err) => {
           this.loadingService.hide();
@@ -187,7 +214,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
 
   edit(row) {
-    this.cardFormTitle = "Edit Appraisal Feedback";
+    this.cardFormTitle = "Appraisal Feedback";
     this.appraisalFeedbackForm.patchValue({
       id: row.id,
       reviewPeriod: row.reviewPeriod,
@@ -259,5 +286,346 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     this.selectedId = [];
   }
 
-  submitAppraisalFeedbackPageForm() {}
+  addComment(id: number, type: string) {
+    this.personnel = type;
+    switch (type) {
+      case "employee":
+        this.commentTitle = "Employee Comment";
+        break;
+      case "reviewer1":
+        this.commentTitle = "Reviewer 1 Comment";
+        break;
+      case "reviewer2":
+        this.commentTitle = "Reviewer 2 Comment";
+        break;
+      case "reviewer3":
+        this.commentTitle = "Reviewer 3 Comment";
+        break;
+      default:
+        this.commentTitle = "";
+    }
+    this.employeeCommentForm.patchValue({
+      employeeObjectiveFeedbackID: id,
+    });
+    $("#appraisal_feedback_page_modal").modal("show");
+  }
+  addScore(id: number, score: number, type: string) {
+    // console.log(id);
+    this.personnel = type;
+    switch (type) {
+      case "employee":
+        this.scoreTitle = "Employee Score";
+        break;
+      case "reviewer1":
+        this.scoreTitle = "Reviewer 1 Score";
+        break;
+      case "reviewer2":
+        this.scoreTitle = "Reviewer 2 Score";
+        break;
+      case "reviewer3":
+        this.scoreTitle = "Reviewer 3 Score";
+        break;
+      default:
+        "";
+    }
+    this.employeeScoreForm.patchValue({
+      employeeObjectiveFeedbackID: id,
+      score,
+    });
+    $("#score_modal").modal("show");
+  }
+  viewComments(comments, type) {
+    this.personnel = type;
+    switch (type) {
+      case "employee":
+        this.commentTitle = "Employee Comment";
+        break;
+      case "reviewer1":
+        this.commentTitle = "Reviewer 1 Comment";
+        break;
+      case "reviewer2":
+        this.commentTitle = "Reviewer 2 Comment";
+        break;
+      case "reviewer3":
+        this.commentTitle = "Reviewer 3 Comment";
+        break;
+      default:
+        this.commentTitle = "";
+    }
+    this.employeeComments = comments;
+    $("#comment_modal").modal("show");
+  }
+  submitAppraisalFeedbackPageForm(form: FormGroup) {
+    const payload = form.value;
+    switch (this.personnel) {
+      case "employee":
+        return this.submitEmployeeComment(payload);
+        break;
+      case "reviewer1":
+        return this.submitReviewerOneComment(payload);
+        break;
+      case "reviewer2":
+        return this.submitReviewerTwoComment(payload);
+        break;
+      case "reviewer3":
+        return this.submitReviewerThreeComment(payload);
+        break;
+    }
+    // this.loadingService.show();
+    // return this.performanceManagementService
+    //   .addEmployeeComment(payload)
+    //   .subscribe(
+    //     (res) => {
+    //       this.loadingService.hide();
+    //       if (res.status.isSuccessful) {
+    //         this.utilitiesService.showMessage(res, "success").then(() => {
+    //           this.initialiseEmployeeComment();
+    //           this.appraisalFeedbacks = res.list;
+    //           $("#appraisal_feedback_page_modal").modal("hide");
+    //         });
+    //       } else {
+    //         return this.utilitiesService.showMessage(res, "error");
+    //       }
+    //     },
+    //     (err) => {
+    //       this.loadingService.hide();
+    //       return this.utilitiesService.showMessage(err, "error");
+    //     }
+    //   );
+  }
+  saveScore(form: FormGroup) {
+    const payload = form.value;
+    switch (this.personnel) {
+      case "employee":
+        return this.submitEmployeeScore(payload);
+        break;
+      case "reviewer1":
+        return this.submitReviewerOneScore(payload);
+        break;
+      case "reviewer2":
+        return this.submitReviewerTwoScore(payload);
+        break;
+      case "reviewer3":
+        return this.submitReviewerThreeScore(payload);
+        break;
+    }
+  }
+  submitEmployeeFeedback() {
+    const payload = {
+      appraisalCycleId: +this.appraisalCycleId,
+      employee: +this.employeeId,
+      employeeObjectiveFeedbackID: this.employeeObjectiveFeedbackID,
+    };
+    this.loadingService.show();
+    this.performanceManagementService.sendEmployeeFeedback(payload).subscribe(
+      (res) => {
+        this.loadingService.hide();
+        if (res.status.isSuccessful) {
+          this.utilitiesService.showMessage(res, "success");
+        } else {
+          this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        this.loadingService.hide();
+        this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  submitEmployeeComment(payload) {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .addEmployeeComment(payload)
+      .subscribe(
+        (res) => {
+          this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.initialiseEmployeeComment();
+              $("#appraisal_feedback_page_modal").modal("hide");
+              this.appraisalFeedbacks = res.list;
+            });
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+  submitReviewerOneComment(payload) {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .addReviewerOneComment(payload)
+      .subscribe(
+        (res) => {
+          this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.initialiseEmployeeComment();
+              $("#appraisal_feedback_page_modal").modal("hide");
+              this.appraisalFeedbacks = res.list;
+            });
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+
+  submitReviewerTwoComment(payload) {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .addReviewerTwoComment(payload)
+      .subscribe(
+        (res) => {
+          this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.initialiseEmployeeComment();
+              $("#appraisal_feedback_page_modal").modal("hide");
+              this.appraisalFeedbacks = res.list;
+            });
+            // this.appraisalFeedbacks = res.list;
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+
+  submitReviewerThreeComment(payload) {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .addReviewerThreeComment(payload)
+      .subscribe(
+        (res) => {
+          this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.initialiseEmployeeComment();
+              $("#appraisal_feedback_page_modal").modal("hide");
+              this.appraisalFeedbacks = res.list;
+            });
+            // this.appraisalFeedbacks = res.list;
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+
+  submitEmployeeScore(payload) {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .addEmployeeScore(payload)
+      .subscribe(
+        (res) => {
+          this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.initialiseEmployeeScore();
+              this.appraisalFeedbacks = res.list;
+              $("#score_modal").modal("hide");
+            });
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+
+  submitReviewerOneScore(payload) {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .addReviewerOneScore(payload)
+      .subscribe(
+        (res) => {
+          this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.initialiseEmployeeScore();
+              this.appraisalFeedbacks = res.list;
+              $("#score_modal").modal("hide");
+            });
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+  submitReviewerTwoScore(payload) {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .addReviewerTwoScore(payload)
+      .subscribe(
+        (res) => {
+          this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.initialiseEmployeeScore();
+              this.appraisalFeedbacks = res.list;
+              $("#score_modal").modal("hide");
+            });
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+  submitReviewerThreeScore(payload) {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .addReviewerThreeScore(payload)
+      .subscribe(
+        (res) => {
+          this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.initialiseEmployeeScore();
+              this.appraisalFeedbacks = res.list;
+              $("#score_modal").modal("hide");
+            });
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+
+  closeCommentModal() {
+    // this.commentTitle = "";
+    $("#comment_modal ").modal("hide");
+  }
 }

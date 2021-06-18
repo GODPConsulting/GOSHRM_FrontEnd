@@ -6,6 +6,7 @@ import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
 import { CommonService } from "../../../services/common.service";
+import { ISearchColumn } from "../../../interface/interfaces";
 
 declare const $: any;
 
@@ -26,7 +27,8 @@ export class LocationComponent implements OnInit {
   public countries: any[] = [];
   public countryId: number;
   public states: any[] = [];
-  dtTrigger: Subject<any> = new Subject();
+  selectLocation: any[];
+  cols: ISearchColumn[];
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -36,18 +38,28 @@ export class LocationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "location",
+        field: "location",
       },
-      columns: [{ orderable: false }, null, null, null, null, null, null],
-      order: [[1, "asc"]],
-    };
+      {
+        header: "address",
+        field: "address",
+      },
+      {
+        header: "city",
+        field: "city",
+      },
+      {
+        header: "stateName",
+        field: "stateName",
+      },
+      {
+        header: "countryName",
+        field: "countryName",
+      },
+    ];
     this.getLocation();
     this.getCountry();
     this.initializeForm();
@@ -113,7 +125,7 @@ export class LocationComponent implements OnInit {
       countryId: ["", Validators.required],
       additionalInformation: [""],
     });
-    //initialize upload form
+    // initialize upload form
     this.locationUploadForm = this.formBuilder.group({
       uploadInput: [""],
     });
@@ -140,7 +152,6 @@ export class LocationComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.locations = data.setuplist;
-        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();
@@ -182,14 +193,15 @@ export class LocationComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId) {
-      if (this.selectedId.length === 0) {
-        return swal.fire("Error", "Select items to delete", "error");
-      }
-      payload = {
-        itemIds: this.selectedId,
-      };
+    if (this.selectLocation.length === 0) {
+      return swal.fire("Error", "Select items to delete", "error");
     }
+    this.selectLocation.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",

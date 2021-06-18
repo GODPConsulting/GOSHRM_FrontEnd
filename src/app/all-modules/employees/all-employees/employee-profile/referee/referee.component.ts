@@ -21,7 +21,8 @@ export class RefereeComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
+  @Input() isHr: string;
   // To hold data for each card
   employeeReferee: any = [];
   public dtOptions: DataTables.Settings = {};
@@ -34,34 +35,8 @@ export class RefereeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getEmployeeReferee(this.dataFromParent.user.staffId);
+    this.getEmployeeReferee(this.employeeId);
     this.initRefereeForm();
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
-      order: [[1, "asc"]],
-    };
   }
 
   downloadFile() {
@@ -102,13 +77,11 @@ export class RefereeComponent implements OnInit {
       organization: ["", Validators.required],
       address: ["", Validators.required],
       confirmationReceived: ["", Validators.required],
-      confirmationDate: ["", Validators.required],
-      approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
-      staffId: this.dataFromParent.user.staffId,
+      approvalStatus: ["", Validators.required],
+      approval_status: [{ value: "2", disabled: this.isHr !== "true" }],
+      staffId: this.employeeId,
       refereeFile: ["", Validators.required],
+      confirmationDate: [""],
     });
     // Resets the upload input of the add form
     if (this.fileInput) {
@@ -130,8 +103,8 @@ export class RefereeComponent implements OnInit {
       address: row.address,
       confirmationReceived: row.confirmationReceived,
       confirmationDate: row.confirmationDate,
-      approvalStatus: row.approvalStatus,
-      staffId: this.dataFromParent.user.staffId,
+      approval_status: row.approval_status,
+      staffId: this.employeeId,
     });
     if (this.fileInput) {
       this.fileInput.nativeElement.value = "";
@@ -140,28 +113,12 @@ export class RefereeComponent implements OnInit {
   }
 
   submitRefereeForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Referee",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
+    const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approval_status = 2;
     }
-    if (!form.valid) {
-      form.get("approvalStatus").disable();
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    }
-
+    payload.approval_status = +payload.approval_status;
     form
       .get("confirmationDate")
       .setValue(
@@ -169,22 +126,36 @@ export class RefereeComponent implements OnInit {
       );
     const formData = new FormData();
     for (const key in form.value) {
-      formData.append(key, this.refereeForm.get(key).value);
+      formData.append(key, payload[key]);
     }
-    form.get("approvalStatus").disable();
-    this.spinner = true;
+    this.loadingService.show();
     return this.employeeService.postReferee(formData).subscribe(
       (res) => {
-        this.spinner = false;
+        this.loadingService.hide();
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#referee_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            if (!this.dataFromParent.isHr) {
+              this.utilitiesService
+                .sendToHr(
+                  "Add Referee",
+                  this.dataFromParent.user.firstName,
+                  this.dataFromParent.user.lastName,
+                  this.dataFromParent.user.email,
+                  this.dataFromParent.user.userId
+                )
+                .subscribe();
+              // if (form.get("approvalStatus").value !== 2) {
+              //   form.get("approvalStatus").setValue(2);
+              // }
+            }
+            $("#referee_modal").modal("hide");
+            this.getEmployeeReferee(this.employeeId);
+          });
         }
-        this.getEmployeeReferee(this.dataFromParent.user.staffId);
       },
       (err) => {
-        this.spinner = false;
+        this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -210,11 +181,7 @@ export class RefereeComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -248,7 +215,7 @@ export class RefereeComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeReferee(this.dataFromParent.user.staffId);
+                  this.getEmployeeReferee(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

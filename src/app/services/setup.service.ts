@@ -10,7 +10,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 export class SetupService {
   constructor(private apiService: ApiService) {}
   handleError(error: HttpErrorResponse) {
-    return throwError(error.error);
+    return throwError(error);
   }
 
   updateData(url: string, payload: object): Observable<any> {
@@ -28,7 +28,7 @@ export class SetupService {
   }
 
   exportExcelFile(url: string) {
-    return this.apiService.getDownload(url).pipe(
+    return this.apiService.getDownload(`/employee${url}`).pipe(
       map((data) => {
         return data;
       })
@@ -36,18 +36,20 @@ export class SetupService {
   }
 
   getEmployeeIdFormat() {
-    return this.apiService.get("/hrmsetup/get/all/identity-formats").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/employee/hrmsetup/get/all/identity-formats")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   addEmployeeIdFormat(payload: any) {
     return this.apiService
-      .post("/hrmsetup/add/update/identity-format", payload)
+      .post("/employee/hrmsetup/add/update/identity-format", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -59,7 +61,7 @@ export class SetupService {
 
   deleteIdFormat(payload: object) {
     return this.apiService
-      .post("/hrmsetup/delete/identity-format", payload)
+      .post("/employee/hrmsetup/delete/identity-format", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -70,18 +72,20 @@ export class SetupService {
   }
 
   getAcademicDisplines() {
-    return this.apiService.get("/hrmsetup/get/all/academic/disciplines").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/employee/hrmsetup/get/all/academic/disciplines")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   addAcademicDiscipline(payload: any) {
     return this.apiService
-      .post("/hrmsetup/add/update/academic/discipline", payload)
+      .post("/employee/hrmsetup/add/update/academic/discipline", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -93,7 +97,7 @@ export class SetupService {
 
   uploadAcademicDiscipline(payload: FormData) {
     return this.apiService
-      .post("/hrmsetup/upload/academic/discipline", payload)
+      .post("/employee/hrmsetup/upload/academic/discipline", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -105,7 +109,7 @@ export class SetupService {
 
   deleteAcademicDiscipline(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/delete/academic/discipline", payload)
+      .post("/employee/hrmsetup/delete/academic/discipline", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -116,18 +120,20 @@ export class SetupService {
   }
 
   getAcademicGrade() {
-    return this.apiService.get("/hrmsetup/get/all/academic/grades").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/employee/hrmsetup/get/all/academic/grades")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   addAcademicGrade(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/add/update/academic/grade", payload)
+      .post("/employee/hrmsetup/add/update/academic/grade", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -139,7 +145,7 @@ export class SetupService {
 
   uploadAcademicGrade(payload: FormData) {
     return this.apiService
-      .post("/hrmsetup/upload/academic/grade", payload)
+      .post("/employee/hrmsetup/upload/academic/grade", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -151,7 +157,7 @@ export class SetupService {
 
   deleteAcademicGrade(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/delete/academic/grade", payload)
+      .post("/employee/hrmsetup/delete/academic/grade", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -163,7 +169,7 @@ export class SetupService {
 
   downloadAcademicGrade() {
     return this.apiService
-      .getDownload("/hrmsetup/download/academic/grades")
+      .getDownload("/employee/hrmsetup/download/academic/grades")
       .pipe(
         tap(),
         map((res) => {
@@ -175,7 +181,7 @@ export class SetupService {
 
   getAcademicQualification() {
     return this.apiService
-      .get("/hrmsetup/get/all/academic/qualifications")
+      .get("/employee/hrmsetup/get/all/academic/qualifications")
       .pipe(
         tap(),
         map((res) => {
@@ -187,7 +193,7 @@ export class SetupService {
 
   addAcademicQualification(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/add/update/academic/qualification", payload)
+      .post("/employee/hrmsetup/add/update/academic/qualification", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -199,7 +205,7 @@ export class SetupService {
 
   uploadAcademicQualification(payload: FormData) {
     return this.apiService
-      .post("/hrmsetup/upload/academic/qualification", payload)
+      .post("/employee/hrmsetup/upload/academic/qualification", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -211,7 +217,7 @@ export class SetupService {
 
   deleteAcademicQualification(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/delete/academic/qualification", payload)
+      .post("/employee/hrmsetup/delete/academic/qualification", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -223,7 +229,7 @@ export class SetupService {
 
   downloadAcademicQualification() {
     return this.apiService
-      .getDownload("/hrmsetup/download/academic/qualifications")
+      .getDownload("/employee/hrmsetup/download/academic/qualifications")
       .pipe(
         tap(),
         map((res) => {
@@ -234,18 +240,20 @@ export class SetupService {
   }
 
   getEmploymentLevel() {
-    return this.apiService.get("/hrmsetup/get/all/employmentlevels").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/employee/hrmsetup/get/all/emplpymentlevels")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   addEmploymentLevel(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/add/update/employmentlevel", payload)
+      .post("/employee/hrmsetup/add/update/employmentlevel", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -257,7 +265,7 @@ export class SetupService {
 
   uploadEmploymentLevel(payload: FormData) {
     return this.apiService
-      .post("/hrmsetup/upload/employmentlevel", payload)
+      .post("/employee/hrmsetup/upload/employmentlevel", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -269,7 +277,7 @@ export class SetupService {
 
   deleteEmploymentLevel(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/delete/employmentlevel", payload)
+      .post("/employee/hrmsetup/delete/employmentlevel", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -280,18 +288,20 @@ export class SetupService {
   }
 
   getEmploymentType() {
-    return this.apiService.get("/hrmsetup/get/all/employmenttypes").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/employee/hrmsetup/get/all/employmenttypes")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   addEmploymentType(payload: any) {
     return this.apiService
-      .post("/hrmsetup/add/update/employmenttype", payload)
+      .post("/employee/hrmsetup/add/update/employmenttype", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -303,7 +313,7 @@ export class SetupService {
 
   uploadEmploymentType(payload: FormData) {
     return this.apiService
-      .post("/hrmsetup/upload/employmenttype", payload)
+      .post("/employee/hrmsetup/upload/employmenttype", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -315,7 +325,7 @@ export class SetupService {
 
   deleteEmploymentType(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/delete/employmenttype", payload)
+      .post("/employee/hrmsetup/delete/employmenttype", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -326,7 +336,7 @@ export class SetupService {
   }
 
   getGymWorkout() {
-    return this.apiService.get("/hrmsetup/get/all/gymworkouts").pipe(
+    return this.apiService.get("/employee/hrmsetup/get/all/gymworkouts").pipe(
       tap(),
       map((res) => {
         return res;
@@ -337,7 +347,7 @@ export class SetupService {
 
   addGymWorkout(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/add/update/gymworkout", payload)
+      .post("/employee/hrmsetup/add/update/gymworkout", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -348,38 +358,44 @@ export class SetupService {
   }
 
   uploadGymWorkout(payload: FormData) {
-    return this.apiService.post("/hrmsetup/upload/gymworkout", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/upload/gymworkout", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   deleteGymWorkout(payload: Object) {
-    return this.apiService.post("/hrmsetup/delete/gymworkout", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/delete/gymworkout", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getHighSchoolGrade() {
-    return this.apiService.get("/hrmsetup/get/all/highschoolgrades").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/employee/hrmsetup/get/all/highschoolgrades")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   addHighSchoolGrade(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/add/update/highschoolgrade", payload)
+      .post("/employee/hrmsetup/add/update/highschoolgrade", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -391,7 +407,7 @@ export class SetupService {
 
   uploadHighSchoolGrade(payload: FormData) {
     return this.apiService
-      .post("/hrmsetup/upload/highschoolgrade", payload)
+      .post("/employee/hrmsetup/upload/highschoolgrade", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -403,7 +419,7 @@ export class SetupService {
 
   deleteHighSchoolGrade(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/delete/highschoolgrade", payload)
+      .post("/employee/hrmsetup/delete/highschoolgrade", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -414,18 +430,20 @@ export class SetupService {
   }
 
   getHighSchoolSub() {
-    return this.apiService.get("/hrmsetup/get/all/highschoolsubjects").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/employee/hrmsetup/get/all/highschoolsubjects")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   addHighSchoolSub(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/add/update/highschoolsubject", payload)
+      .post("/employee/hrmsetup/add/update/highschoolsubject", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -437,7 +455,7 @@ export class SetupService {
 
   uploadHighSchoolSub(payload: FormData) {
     return this.apiService
-      .post("/hrmsetup/upload/highschoolsubject", payload)
+      .post("/employee/hrmsetup/upload/highschoolsubject", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -449,7 +467,7 @@ export class SetupService {
 
   deleteHighSchoolSub(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/delete/highschoolsubject", payload)
+      .post("/employee/hrmsetup/delete/highschoolsubject", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -460,7 +478,7 @@ export class SetupService {
   }
 
   getHmo() {
-    return this.apiService.get("/hrmsetup/get/all/hmos").pipe(
+    return this.apiService.get("/employee/hrmsetup/get/all/hmos").pipe(
       tap(),
       map((res) => {
         return res;
@@ -470,17 +488,19 @@ export class SetupService {
   }
 
   addHmo(payload: Object) {
-    return this.apiService.post("/hrmsetup/add/update/hmo", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/add/update/hmo", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   uploadHmo(payload: FormData) {
-    return this.apiService.post("/hrmsetup/upload/hmo", payload).pipe(
+    return this.apiService.post("/employee/hrmsetup/upload/hmo", payload).pipe(
       tap(),
       map((res) => {
         return res;
@@ -490,7 +510,7 @@ export class SetupService {
   }
 
   deleteHmo(payload: Object) {
-    return this.apiService.post("/hrmsetup/delete/hmo", payload).pipe(
+    return this.apiService.post("/employee/hrmsetup/delete/hmo", payload).pipe(
       tap(),
       map((res) => {
         return res;
@@ -500,7 +520,7 @@ export class SetupService {
   }
 
   downloadHmo() {
-    return this.apiService.getDownload("/hrmsetup/download/hmo").pipe(
+    return this.apiService.getDownload("/employee/hrmsetup/download/hmo").pipe(
       tap(),
       map((res) => {
         return res;
@@ -510,18 +530,20 @@ export class SetupService {
   }
 
   getHospitalMgt() {
-    return this.apiService.get("/hrmsetup/get/all/hospital-managements").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/employee/hrmsetup/get/all/hospital-managements")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   addHospitalMgt(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/add/update/hospital-management", payload)
+      .post("/employee/hrmsetup/add/update/hospital-management", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -533,7 +555,7 @@ export class SetupService {
 
   uploadHospitalMgt(payload: FormData) {
     return this.apiService
-      .post("/hrmsetup/upload/hospital-management", payload)
+      .post("/employee/hrmsetup/upload/hospital-management", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -545,7 +567,7 @@ export class SetupService {
 
   deleteHospitalMgt(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/delete/hospital-management", payload)
+      .post("/employee/hrmsetup/delete/hospital-management", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -556,7 +578,7 @@ export class SetupService {
   }
 
   getJobGrades() {
-    return this.apiService.get("/hrmsetup/get/all/jobgrades").pipe(
+    return this.apiService.get("/employee/hrmsetup/get/all/jobgrades").pipe(
       tap(),
       map((res) => {
         return res;
@@ -566,38 +588,44 @@ export class SetupService {
   }
 
   addJobGrade(payload: Object) {
-    return this.apiService.post("/hrmsetup/add/update/jobgrade", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/add/update/jobgrade", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   uploadJobGrade(payload: FormData) {
-    return this.apiService.post("/hrmsetup/upload/jobgrade", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/upload/jobgrade", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   deleteJobGrade(payload: Object) {
-    return this.apiService.post("/hrmsetup/delete/jobgrade", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/delete/jobgrade", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getSingleJobTitleById(id: number) {
     return this.apiService
-      .get(`/hrmsetup/get/single/jobtitle?SetupId=${id}`)
+      .get(`/employee/hrmsetup/get/single/jobtitle?SetupId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -608,7 +636,7 @@ export class SetupService {
   }
 
   getJobTitle() {
-    return this.apiService.get("/hrmsetup/get/all/jobtitles").pipe(
+    return this.apiService.get("/employee/hrmsetup/get/all/jobtitles").pipe(
       tap(),
       map((res) => {
         return res;
@@ -618,37 +646,43 @@ export class SetupService {
   }
 
   addJobTitle(payload: Object) {
-    return this.apiService.post("/hrmsetup/add/update/jobtitle", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/add/update/jobtitle", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   uploadJobTitle(payload: FormData) {
-    return this.apiService.post("/hrmsetup/upload/jobtitle", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/upload/jobtitle", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   deleteJobTitle(payload: Object) {
-    return this.apiService.post("/hrmsetup/delete/jobtitle", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/delete/jobtitle", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getJobSkill() {
-    return this.apiService.get("/hrmsetup/get/all/job_skills").pipe(
+    return this.apiService.get("/employee/hrmsetup/get/all/job_skills").pipe(
       tap(),
       map((res) => {
         return res;
@@ -658,37 +692,43 @@ export class SetupService {
   }
 
   addJobSkill(payload: Object) {
-    return this.apiService.post("/hrmsetup/add/update/job_skill", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/add/update/job_skill", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   uploadJobSkill(payload: FormData) {
-    return this.apiService.post("/hrmsetup/upload/job_skill", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/upload/job_skill", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   deleteJobSkill(payload: Object) {
-    return this.apiService.post("/hrmsetup/delete/job_skill", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/delete/job_skill", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getLanguage() {
-    return this.apiService.get("/hrmsetup/get/all/languages").pipe(
+    return this.apiService.get("/employee/hrmsetup/get/all/languages").pipe(
       tap(),
       map((res) => {
         return res;
@@ -698,47 +738,55 @@ export class SetupService {
   }
 
   addLanguage(payload: Object) {
-    return this.apiService.post("/hrmsetup/add/update/language", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/add/update/language", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   uploadLanguage(payload: FormData) {
-    return this.apiService.post("/hrmsetup/upload/language", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/upload/language", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   deleteLanguage(payload: Object) {
-    return this.apiService.post("/hrmsetup/delete/language", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/delete/language", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   downloadLanguage() {
-    return this.apiService.getDownload("/hrmsetup/download/languages").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .getDownload("/employee/hrmsetup/download/languages")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getLocation() {
-    return this.apiService.get("/hrmsetup/get/all/locations").pipe(
+    return this.apiService.get("/employee/hrmsetup/get/all/locations").pipe(
       tap(),
       map((res) => {
         return res;
@@ -748,58 +796,68 @@ export class SetupService {
   }
 
   addLocation(payload: any) {
-    return this.apiService.post("/hrmsetup/add/update/location", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/add/update/location", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   uploadLocation(payload: FormData) {
-    return this.apiService.post("/hrmsetup/upload/location", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/upload/location", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   deleteLocation(payload: Object) {
-    return this.apiService.post("/hrmsetup/delete/location", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrmsetup/delete/location", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   downloadLocation() {
-    return this.apiService.getDownload("/hrmsetup/download/locations").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .getDownload("/employee/hrmsetup/download/location")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getProfCerts() {
-    return this.apiService.get("/hrmsetup/get/all/prof_certifications").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/employee/hrmsetup/get/all/prof_certifications")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   addProfCert(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/add/update/prof_certification", payload)
+      .post("/employee/hrmsetup/add/update/prof_certification", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -811,7 +869,7 @@ export class SetupService {
 
   uploadProfCert(payload: FormData) {
     return this.apiService
-      .post("/hrmsetup/upload/prof_certification", payload)
+      .post("/employee/hrmsetup/upload/prof_certification", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -823,7 +881,7 @@ export class SetupService {
 
   deleteProfCert(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/delete/prof_certification", payload)
+      .post("/employee/hrmsetup/delete/prof_certification", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -834,7 +892,7 @@ export class SetupService {
   }
   downloadProfCert() {
     return this.apiService
-      .getDownload("/hrmsetup/download/prof_certifications")
+      .getDownload("/employee/hrmsetup/download/prof_certifications")
       .pipe(
         tap(),
         map((res) => {
@@ -845,18 +903,20 @@ export class SetupService {
   }
 
   getProfMems() {
-    return this.apiService.get("/hrmsetup/get/all/prof_memberships").pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get("/employee/hrmsetup/get/all/prof_memberships")
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   addProfMem(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/add/update/prof_membership", payload)
+      .post("/employee/hrmsetup/add/update/prof_membership", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -868,7 +928,7 @@ export class SetupService {
 
   uploadProfMem(payload: FormData) {
     return this.apiService
-      .post("/hrmsetup/upload/prof_membership", payload)
+      .post("/employee/hrmsetup/upload/prof_membership", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -880,7 +940,7 @@ export class SetupService {
 
   deleteProfMem(payload: Object) {
     return this.apiService
-      .post("/hrmsetup/delete/prof_membership", payload)
+      .post("/employee/hrmsetup/delete/prof_membership", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -892,7 +952,7 @@ export class SetupService {
 
   downloadProfMem() {
     return this.apiService
-      .getDownload("/hrmsetup/download/prof_memberships")
+      .getDownload("/employee/hrmsetup/download/prof_memberships")
       .pipe(
         tap(),
         map((res) => {

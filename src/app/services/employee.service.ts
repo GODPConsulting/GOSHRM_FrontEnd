@@ -11,7 +11,16 @@ import { HttpErrorResponse } from "@angular/common/http";
 export class EmployeeService {
   constructor(private apiService: ApiService) {}
   handleError(error: HttpErrorResponse) {
-    return throwError(error.error);
+    return throwError(error);
+  }
+  addEmployee(payload): Observable<any> {
+    return this.apiService.post(`/employee/hrm/add/update/staff`, payload).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
   }
   postMailToHr(payload) {
     return this.apiService.post("/email/send/emails", payload).pipe(
@@ -34,7 +43,7 @@ export class EmployeeService {
   }
 
   getEmployees() {
-    return this.apiService.get("/hrm/get/all/staffs").pipe(
+    return this.apiService.get("/employee/hrm/get/all/staffs").pipe(
       tap(),
       map((res) => {
         return res;
@@ -44,18 +53,20 @@ export class EmployeeService {
   }
 
   getEmployeeById(id: number) {
-    return this.apiService.get(`/hrm/get/single/staff/Id?StaffId=${id}`).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .get(`/employee/hrm/get/single/staff/Id?StaffId=${id}`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getEmployee(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/staff/by_staffId?StaffId=${id}`)
+      .get(`/employee/hrm/get/single/staff/by_staffId?StaffId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -66,7 +77,7 @@ export class EmployeeService {
   }
 
   multiUploadEmployeePhotos() {
-    return this.apiService.post("/hrm/upload/multi-image").pipe(
+    return this.apiService.post("/employee/hrm/upload/multi-image").pipe(
       tap(),
       map((res) => {
         return res;
@@ -77,7 +88,9 @@ export class EmployeeService {
 
   getIdentificationByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/identification/staffId?staffId=${id}`)
+      .get(
+        `/employee/hrm/get/single/employee/identification/staffId?staffId=${id}`
+      )
       .pipe(
         tap(),
         map((res) => {
@@ -89,7 +102,7 @@ export class EmployeeService {
 
   postIdentificationId(payload: any) {
     return this.apiService
-      .post("/hrm/add/update/employee/identification", payload)
+      .post("/employee/hrm/add/update/employee/identification", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -101,7 +114,7 @@ export class EmployeeService {
 
   deleteIdentification(payload) {
     return this.apiService
-      .post("/hrm/delete/employee/identification", payload)
+      .post("/employee/hrm/delete/employee/identification", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -113,7 +126,7 @@ export class EmployeeService {
 
   downloadIdentification(id: number) {
     return this.apiService
-      .getDownload(`/hrm/download/identification/Id?EmpId=${id}`)
+      .getDownload(`/employee/hrm/download/identification/Id?EmpId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -125,7 +138,7 @@ export class EmployeeService {
 
   addEmergencyContact(payload) {
     return this.apiService
-      .post("/hrm/add/update/employee/emergency_contact", payload)
+      .post("/employee/hrm/add/update/employee/emergency_contact", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -136,7 +149,7 @@ export class EmployeeService {
   }
   deleteEmergencyContact(payload) {
     return this.apiService
-      .post("/hrm/delete/employee/emergency_contact", payload)
+      .post("/employee/hrm/delete/employee/emergency_contact", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -147,7 +160,9 @@ export class EmployeeService {
   }
   getEmergencyContactByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/emergency_contact/StaffId?StaffId=${id}`)
+      .get(
+        `/employee/hrm/get/single/employee/emergency_contact/StaffId?StaffId=${id}`
+      )
       .pipe(
         tap(),
         map((res) => {
@@ -159,7 +174,7 @@ export class EmployeeService {
 
   addLanguageRating(payload) {
     return this.apiService
-      .post("/hrm/add/update/employee/language", payload)
+      .post("/employee/hrm/add/update/employee/language", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -170,7 +185,7 @@ export class EmployeeService {
   }
 
   getLanguages() {
-    return this.apiService.get("/hrmsetup/get/all/languages").pipe(
+    return this.apiService.get("/employee/hrmsetup/get/all/languages").pipe(
       tap(),
       map((res) => {
         return res;
@@ -180,18 +195,20 @@ export class EmployeeService {
   }
 
   deleteLanguageRating(payload) {
-    return this.apiService.post("/hrm/delete/employee/language", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/delete/employee/language", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getLanguageRatingByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/language/staffId?staffId=${id}`)
+      .get(`/employee/hrm/get/single/employee/language/staffId?staffId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -203,7 +220,7 @@ export class EmployeeService {
 
   postReferee(payload: any) {
     return this.apiService
-      .post("/hrm/add/update/employee/referee", payload)
+      .post("/employee/hrm/add/update/employee/referee", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -215,7 +232,7 @@ export class EmployeeService {
 
   getRefereeByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/referee/staffId?StaffId=${id}`)
+      .get(`/employee/hrm/get/single/employee/referee/staffId?StaffId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -226,18 +243,20 @@ export class EmployeeService {
   }
 
   deleteReferee(payload: any) {
-    return this.apiService.post("/hrm/delete/employee/referee", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/delete/employee/referee", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   downloadReferee(id: number) {
     return this.apiService
-      .getDownload(`/hrm/download/employee/referee/Id?EmpId=${id}`)
+      .getDownload(`/employee/hrm/download/employee/referee/Id?EmpId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -249,7 +268,7 @@ export class EmployeeService {
 
   getHmoByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/hmo/staffId?StaffId=${id}`)
+      .get(`/employee/hrm/get/single/employee/hmo/staffId?StaffId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -260,18 +279,20 @@ export class EmployeeService {
   }
 
   postHmo(payload: FormData) {
-    return this.apiService.post("/hrm/add/update/employee/hmo", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/add/update/employee/hmo", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   postHmoChangeRequest(payload: FormData) {
     return this.apiService
-      .post("/hrm/add/update/employee/hmo-request", payload)
+      .post("/employee/hrm/add/update/employee/hmo-requests", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -282,18 +303,20 @@ export class EmployeeService {
   }
 
   deleteHmo(payload: any) {
-    return this.apiService.post("/hrm/delete/employee/hmo", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/delete/employee/hmo", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   downloadHmoRequest(id: number) {
     return this.apiService
-      .getDownload(`/hrm/download/employee/hmo-request/Id?EmpId=${id}`)
+      .getDownload(`/employee/hrm/download/employee/hmo-request/Id?EmpId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -305,7 +328,7 @@ export class EmployeeService {
 
   getHospitalByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/hospital/staffId?StaffId=${id}`)
+      .get(`/employee/hrm/get/single/employee/hospital/staffId?StaffId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -317,7 +340,7 @@ export class EmployeeService {
 
   postHospital(payload: FormData) {
     return this.apiService
-      .post("/hrm/add/update/employee/hospital", payload)
+      .post("/employee/hrm/add/update/employee/hospital", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -329,7 +352,7 @@ export class EmployeeService {
 
   postHospitalChangeRequest(payload: FormData) {
     return this.apiService
-      .post("/hrm/add/update/employee/hospital-request", payload)
+      .post("/employee/hrm/add/update/employee/hospital-request", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -341,7 +364,9 @@ export class EmployeeService {
 
   downloadHospitalRequest(id: number) {
     return this.apiService
-      .getDownload(`/hrm/download/employee/hospital-request/Id?EmpId=${id}`)
+      .getDownload(
+        `/employee/hrm/download/employee/hospital-request/Id?EmpId=${id}`
+      )
       .pipe(
         tap(),
         map((res) => {
@@ -352,18 +377,20 @@ export class EmployeeService {
   }
 
   deleteHospital(payload: any) {
-    return this.apiService.post("/hrm/delete/employee/hospital", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/delete/employee/hospital", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   postBookHospitalMeeting(payload: FormData) {
     return this.apiService
-      .post("/hrm/add/update/employee/hospital-meeting", payload)
+      .post("/employee/hrm/add/update/employee/hospital-meeting", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -375,7 +402,9 @@ export class EmployeeService {
 
   downloadHospitalMeeting(id: number) {
     return this.apiService
-      .getDownload(`/hrm/download/employee/hospital-meeting/Id?EmpId=${id}`)
+      .getDownload(
+        `/employee/hrm/download/employee/hospital-meeting/Id?EmpId=${id}`
+      )
       .pipe(
         tap(),
         map((res) => {
@@ -387,7 +416,9 @@ export class EmployeeService {
 
   getProfCertByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/prof-certification/staffId?StaffId=${id}`)
+      .get(
+        `/employee/hrm/get/single/employee/prof-certification/staffId?StaffId=${id}`
+      )
       .pipe(
         tap(),
         map((res) => {
@@ -399,7 +430,7 @@ export class EmployeeService {
 
   postProfCert(payload: FormData) {
     return this.apiService
-      .post("/hrm/add/update/employee/prof-certification", payload)
+      .post("/employee/hrm/add/update/employee/prof-certification", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -411,7 +442,7 @@ export class EmployeeService {
 
   deleteProfCert(payload: object) {
     return this.apiService
-      .post("/hrm/delete/employee/prof-certification", payload)
+      .post("/employee/hrm/delete/employee/prof-certification", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -423,7 +454,9 @@ export class EmployeeService {
 
   downloadProfCert(id: number) {
     return this.apiService
-      .getDownload(`/hrm/download/employee/prof-certification/Id?EmpId=${id}`)
+      .getDownload(
+        `/employee/hrm/download/employee/prof-certification/Id?EmpId=${id}`
+      )
       .pipe(
         tap(),
         map((res) => {
@@ -435,7 +468,11 @@ export class EmployeeService {
 
   addEmployeeQualification(payload: FormData, file: File): Promise<any> {
     return this.apiService
-      .addCertificate("/hrm/add/update/employee/qualification", payload, file)
+      .addCertificate(
+        "/employee/hrm/add/update/employee/qualification",
+        payload,
+        file
+      )
       .then((data) => {
         return data;
       });
@@ -443,17 +480,17 @@ export class EmployeeService {
 
   getEmployeeQualificationByStaffId(id: number) {
     return this.apiService.get(
-      `/hrm/get/single/employee/qualification/staffId?staffId=${id}`
+      `/employee/hrm/get/single/employee/qualification/staffId?staffId=${id}`
     );
   }
 
   getGrades() {
-    return this.apiService.get("/hrmsetup/get/all/academic/grades");
+    return this.apiService.get("/employee/hrmsetup/get/all/academic/grades");
   }
 
   deleteEmployeeQualification(payload) {
     return this.apiService
-      .post("/hrm/delete/employee/qualification", payload)
+      .post("/employee/hrm/delete/employee/qualification", payload)
       .pipe(tap())
       .pipe(
         tap(),
@@ -466,33 +503,37 @@ export class EmployeeService {
 
   getHobbyByStaffId(id: number) {
     return this.apiService.get(
-      `/hrm/get/single/employee/hobby/staffId?StaffId=${id}`
+      `/employee/hrm/get/single/employee/hobby/staffId?StaffId=${id}`
     );
   }
 
   postHobby(payload: any) {
-    return this.apiService.post("/hrm/add/update/employee/hobby", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/add/update/employee/hobby", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   deleteHobby(payload) {
-    return this.apiService.post("/hrm/delete/employee/hobby", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/delete/employee/hobby", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getAssetByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/asset/staffId?StaffId=${id}`)
+      .get(`/employee/hrm/get/single/employee/asset/staffId?StaffId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -503,28 +544,34 @@ export class EmployeeService {
   }
 
   postAsset(payload: any) {
-    return this.apiService.post("/hrm/add/update/employee/asset", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/add/update/employee/asset", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   deleteAsset(payload) {
-    return this.apiService.post("/hrm/delete/employee/asset", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/delete/employee/asset", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getDependentContactByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/dependent_contact/staffId?StaffId=${id}`)
+      .get(
+        `/employee/hrm/get/single/employee/dependent_contact/staffId?StaffId=${id}`
+      )
       .pipe(
         tap(),
         map((res) => {
@@ -536,7 +583,7 @@ export class EmployeeService {
 
   postDependentContact(payload: any) {
     return this.apiService
-      .post("/hrm/add/update/employee/dependent_contact", payload)
+      .post("/employee/hrm/add/update/employee/dependent_contact", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -548,7 +595,7 @@ export class EmployeeService {
 
   deleteDependentContact(payload) {
     return this.apiService
-      .post("/hrm/delete/employee/dependent_contact", payload)
+      .post("/employee/hrm/delete/employee/dependent_contact", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -560,7 +607,7 @@ export class EmployeeService {
 
   getCareerByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/career/staffId?StaffId=${id}`)
+      .get(`/employee/hrm/get/single/employee/career/staffId?StaffId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -572,7 +619,7 @@ export class EmployeeService {
 
   postCareer(payload: any) {
     return this.apiService
-      .post("/hrm/add/update/employee/career", payload)
+      .post("/employee/hrm/add/update/employee/career", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -583,18 +630,20 @@ export class EmployeeService {
   }
 
   deleteCareer(payload) {
-    return this.apiService.post("/hrm/delete/employee/career", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/delete/employee/career", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
   // Employee Skills
   getSkillByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/skill/staffId?StaffId=${id}`)
+      .get(`/employee/hrm/get/single/employee/skill/staffId?StaffId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -605,28 +654,32 @@ export class EmployeeService {
   }
 
   addSkill(payload: any) {
-    return this.apiService.post(`/hrm/add/update/employee/skill`, payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post(`/employee/hrm/add/update/employee/skill`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   deleteSkills(payload) {
-    return this.apiService.post(`/hrm/delete/employee/skill`, payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post(`/employee/hrm/delete/employee/skill`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   downloadEmployeeSkill(id: number) {
     return this.apiService
-      .getDownload(`/hrm/download/employee/skill/Id?EmpId=${id}`)
+      .getDownload(`/employee/hrm/download/employee/skill/Id?EmpId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -638,7 +691,7 @@ export class EmployeeService {
 
   getGymByStaffId(id: number) {
     return this.apiService
-      .get(`/hrm/get/single/employee/gym/staffId?StaffId=${id}`)
+      .get(`/employee/hrm/get/single/employee/gym/staffId?StaffId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -649,18 +702,20 @@ export class EmployeeService {
   }
 
   postGym(payload: FormData) {
-    return this.apiService.post("/hrm/add/update/employee/gym", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/add/update/employee/gym", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   postGymChangeRequest(payload: FormData) {
     return this.apiService
-      .post("/hrm/add/update/employee/gym-request", payload)
+      .post("/employee/hrm/add/update/employee/gym-request", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -672,7 +727,7 @@ export class EmployeeService {
 
   downloadGymRequest(id: number) {
     return this.apiService
-      .getDownload(`/hrm/download/employee/gym-request/Id?EmpId=${id}`)
+      .getDownload(`/employee/hrm/download/employee/gym-request/Id?EmpId=${id}`)
       .pipe(
         tap(),
         map((res) => {
@@ -683,18 +738,20 @@ export class EmployeeService {
   }
 
   deleteGym(payload: any) {
-    return this.apiService.post("/hrm/delete/employee/gym", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+    return this.apiService
+      .post("/employee/hrm/delete/employee/gym", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   postBookGymMeeting(payload: FormData) {
     return this.apiService
-      .post("/hrm/add/update/employee/gym-meeting", payload)
+      .post("/employee/hrm/add/update/employee/gym-meeting", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -706,7 +763,7 @@ export class EmployeeService {
 
   downloadGymMeeting(id: number) {
     return this.apiService
-      .getDownload(`/hrm/download/employee/gym-meeting/Id?EmpId=${id}`)
+      .getDownload(`/employee/hrm/download/employee/gym-meeting/Id?EmpId=${id}`)
       .pipe(
         tap(),
         map((res) => {

@@ -66,9 +66,11 @@
                 <p-tableCheckbox [value]="row"></p-tableCheckbox>
               </td>
               <td>{{ i + 1 }}</td>
-              <td (click)="edit(row)">{{ row.name }}</td>
+              <td (click)="edit(row)">{{ row.name | titlecase }}</td>
 
-              <td (click)="edit(row)">{{ row.employeePermittedName }}</td>
+              <td (click)="edit(row)">
+                {{ row.employeePermittedName | titlecase }}
+              </td>
               <td (click)="edit(row)">{{ row.weightModelName }}</td>
               <td (click)="edit(row)">{{ row.hrSelectReviewerName }}</td>
             </tr>
@@ -90,6 +92,7 @@
           class="close"
           data-dismiss="modal"
           aria-label="Close"
+          (click)="closeModal()"
         >
           <span aria-hidden="true">&times;</span>
         </button>
@@ -123,11 +126,11 @@
               <div class="form-group">
                 <label>Employee Permitted</label>
                 <select
-                  (change)="setWeightModel($event)"
+                  (change)="setWeightModel($event.target.value)"
                   name="employeeSetObjectives"
                   type="text"
                   class="form-control"
-                  [(ngModel)]="employeeSetObjectives"
+                  [(ngModel)]="employeePermitted"
                 >
                   <option selected value="">Employee Permitted</option>
                   <option value="1">Yes</option>
@@ -145,7 +148,7 @@
                   [disabled]="modelDisabled"
                   [(ngModel)]="weightModel"
                 >
-                  <option selected value="">Weight Model</option>
+                  <option selected value="" disabled>Weight Model</option>
                   <option *ngIf="allLocation === 1" value="2">
                     Independent Allocation
                   </option>

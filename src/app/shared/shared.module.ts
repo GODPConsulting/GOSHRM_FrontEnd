@@ -8,15 +8,25 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { ImageCropperModule } from "ngx-image-cropper";
 import { RatingModule } from "ngx-bootstrap/rating";
 import { TableModule } from "primeng/table";
+import { TreeTableModule } from "primeng/treetable";
+import { CustomDatePipe } from "../pipes/custom-date.pipe";
+import { ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
-  declarations: [LoadingComponent, AppMenuComponent, AppSubMenuComponent],
+  declarations: [
+    LoadingComponent,
+    AppMenuComponent,
+    AppSubMenuComponent,
+    CustomDatePipe,
+  ],
   imports: [
     CommonModule,
     RouterModule,
     ImageCropperModule,
     RatingModule,
     TableModule,
+    TreeTableModule,
+    ReactiveFormsModule,
     // NgSelectModule
   ],
   exports: [
@@ -26,6 +36,8 @@ import { TableModule } from "primeng/table";
     ImageCropperModule,
     RatingModule,
     TableModule,
+    TreeTableModule,
+    CustomDatePipe,
   ],
 })
 export class SharedModule {}

@@ -13,7 +13,7 @@ export class CommonService {
     return throwError(error);
   }
   getJobGrades(): Observable<any> {
-    return this.apiService.get(`/hrmsetup/get/all/jobgrades`).pipe(
+    return this.apiService.get(`/employee/hrmsetup/get/all/jobgrades`).pipe(
       tap(),
       map((res) => {
         return res;

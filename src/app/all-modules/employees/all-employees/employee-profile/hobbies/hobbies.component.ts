@@ -23,7 +23,8 @@ export class HobbiesComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
+  @Input() isHr: string;
   // Forms
   hobbyForm: FormGroup;
 
@@ -38,20 +39,20 @@ export class HobbiesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [{ orderable: false }, null, null, null, null, null],
-      order: [[1, "asc"]],
-    };
-    this.getEmployeeHobby(this.dataFromParent.user.staffId);
+    // this.dtOptions = {
+    //   dom:
+    //     "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+    //     "<'row'<'col-sm-12'tr>>" +
+    //     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    //   language: {
+    //     search: "_INPUT_",
+    //     searchPlaceholder: "Start typing to search by any field",
+    //   },
+    //
+    //   columns: [{ orderable: false }, null, null, null, null, null],
+    //   order: [[1, "asc"]],
+    // };
+    this.getEmployeeHobby(this.employeeId);
     this.initHobbyForm();
   }
 
@@ -62,49 +63,51 @@ export class HobbiesComponent implements OnInit {
       hobbyName: ["", Validators.required],
       rating: ["", Validators.required],
       description: ["", Validators.required],
-      approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
-      staffId: this.dataFromParent.user.staffId,
+      approvalStatus: [{ value: "2", disabled: this.isHr !== "true" }],
+      staffId: this.employeeId,
     });
   }
 
   submitHobbyForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Hobbies",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
-    }
+
     if (!form.valid) {
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
     payload.approvalStatus = +payload.approvalStatus;
-    form.get("approvalStatus").disable();
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHobby(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#hobby_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            if (!this.dataFromParent.isHr) {
+              this.utilitiesService
+                .sendToHr(
+                  "Add Hobbies",
+                  this.dataFromParent.user.firstName,
+                  this.dataFromParent.user.lastName,
+                  this.dataFromParent.user.email,
+                  this.dataFromParent.user.userId
+                )
+                .subscribe();
+              // if (form.get("approvalStatus").value !== 2) {
+              //   form.get("approvalStatus").setValue(2);
+              // }
+            }
+            this.getEmployeeHobby(this.employeeId);
+            $("#hobby_modal").modal("hide");
+          });
         }
-        this.getEmployeeHobby(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -132,7 +135,7 @@ export class HobbiesComponent implements OnInit {
       rating: row.rating,
       description: row.description,
       approval_status_name: row.approval_status_name,
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       hobbyFile: row.hobbyFile,
     });
     $("#hobby_modal").modal("show");
@@ -144,11 +147,7 @@ export class HobbiesComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -183,7 +182,7 @@ export class HobbiesComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeHobby(this.dataFromParent.user.staffId);
+                  this.getEmployeeHobby(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

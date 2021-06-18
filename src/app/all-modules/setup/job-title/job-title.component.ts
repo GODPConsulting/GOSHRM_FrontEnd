@@ -5,6 +5,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
+import { ISearchColumn } from "../../../interface/interfaces";
 
 declare const $: any;
 @Component({
@@ -22,7 +23,8 @@ export class JobTitleComponent implements OnInit {
   public jobTitleForm: FormGroup;
   public selectedId: number[] = [];
   public jobTitleUploadForm: FormGroup;
-  dtTrigger: Subject<any> = new Subject();
+  selectJobTitle: any[];
+  cols: ISearchColumn[];
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -115,7 +117,6 @@ export class JobTitleComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.jobTitles = data.setuplist;
-        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();
@@ -168,13 +169,15 @@ export class JobTitleComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectJobTitle.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectJobTitle.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",

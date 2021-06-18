@@ -71,9 +71,13 @@
                 <p-tableCheckbox [value]="row"></p-tableCheckbox>
               </td>
               <td>{{ i + 1 }}</td>
-              <td (click)="editKPIndicator(row)">{{ row.kpiCategoryName }}</td>
-              <td (click)="editKPIndicator(row)">{{ row.kpi }}</td>
-              <td (click)="editKPIndicator(row)">{{ row.description }}</td>
+              <td (click)="editKPIndicator(row)">
+                {{ row.kpiCategoryName | titlecase }}
+              </td>
+              <td (click)="editKPIndicator(row)">{{ row.kpi | titlecase }}</td>
+              <td (click)="editKPIndicator(row)">
+                {{ row.description | titlecase }}
+              </td>
               <td (click)="editKPIndicator(row)">
                 {{ row.resultFromExternalName }}
               </td>

@@ -25,7 +25,7 @@ export class HospitalComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() dataFromParent: any;
-
+  @Input() isHr: string;
   // To hold data for each card
   employeeHospital: any[] = [];
   allHospitals$: Observable<any>;
@@ -33,6 +33,7 @@ export class HospitalComponent implements OnInit {
   minDate: Date;
   maxDate: Date;
   dtTrigger: Subject<any> = new Subject();
+  @Input() employeeId: number;
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -45,7 +46,7 @@ export class HospitalComponent implements OnInit {
     this.initHospitalForm();
     this.initHospitalChangeForm();
     this.initBookHospitalForm();
-    this.getEmployeeHospital(this.dataFromParent.user.staffId);
+    this.getEmployeeHospital(this.employeeId);
     // Observable to subscribe to in the template
     this.allHospitals$ = this.setupService.getHospitalMgt();
     this.dtOptions = {
@@ -83,10 +84,10 @@ export class HospitalComponent implements OnInit {
       startDate: ["", Validators.required],
       endDate: ["", Validators.required],
       approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
+        { value: "2", disabled: this.isHr !== "true" },
         Validators.required,
       ],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       setCurrentDate: [""],
     });
   }
@@ -103,9 +104,9 @@ export class HospitalComponent implements OnInit {
       ],
       expectedDateOfChange: ["", Validators.required],
       hospitalFile: ["", Validators.required],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
+        { value: "2", disabled: this.isHr !== "true" },
         Validators.required,
       ],
     });
@@ -127,34 +128,37 @@ export class HospitalComponent implements OnInit {
       proposedMeetingDate: ["", Validators.required],
       reasonsForMeeting: ["", Validators.required],
       hospitalMeetingFile: ["", Validators.required],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
     });
     this.minDate = new Date(this.bookHospitalForm.get("dateOfRequest").value);
   }
 
   submitHospitalForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Hospital",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
-    }
+    // if (!this.dataFromParent.isHr) {
+    //   this.utilitiesService
+    //     .sendToHr(
+    //       "Add Hospital",
+    //       this.dataFromParent.user.firstName,
+    //       this.dataFromParent.user.lastName,
+    //       this.dataFromParent.user.email,
+    //       this.dataFromParent.user.userId
+    //     )
+    //     .subscribe();
+    //   if (form.get("approvalStatus").value !== 2) {
+    //     form.get("approvalStatus").setValue(2);
+    //   }
+    // }
     if (!form.valid) {
       form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
     payload.hospitalId = +payload.hospitalId;
     payload.approvalStatus = +payload.approvalStatus;
     /*  const formData = new FormData();
@@ -162,7 +166,7 @@ export class HospitalComponent implements OnInit {
       formData.append(key, this.hospitalForm.get(key).value);
     }
  */
-    form.get("approvalStatus").disable();
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHospital(payload).subscribe(
       (res) => {
@@ -172,7 +176,7 @@ export class HospitalComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#hospital_modal").modal("hide");
         }
-        this.getEmployeeHospital(this.dataFromParent.user.staffId);
+        this.getEmployeeHospital(this.employeeId);
       },
       (err) => {
         this.spinner = false;
@@ -183,37 +187,47 @@ export class HospitalComponent implements OnInit {
   }
 
   submitHospitalChangeReqForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     form.get("dateOfRequest").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Identification",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
-    }
+    // if (!this.dataFromParent.isHr) {
+    //   this.utilitiesService
+    //     .sendToHr(
+    //       "Add Identification",
+    //       this.dataFromParent.user.firstName,
+    //       this.dataFromParent.user.lastName,
+    //       this.dataFromParent.user.email,
+    //       this.dataFromParent.user.userId
+    //     )
+    //     .subscribe();
+    //   if (form.get("approvalStatus").value !== 2) {
+    //     form.get("approvalStatus").setValue(2);
+    //   }
+    // }
     if (!form.valid) {
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       form.get("dateOfRequest").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
+    payload.approvalStatus = +payload.approvalStatus;
+    payload.expectedDateOfChange = new Date(
+      payload.expectedDateOfChange
+    ).toLocaleDateString("en-CA");
     payload.suggestedHospital = +payload.suggestedHospital;
     payload.hospitalId = +payload.hospitalId;
+    console.log(payload);
+    // return;
     const formData = new FormData();
+    Object.keys(payload).forEach((key) => formData.append(key, payload[key]));
     for (const key in form.value) {
       formData.append(key, this.hospitalChangeReqForm.get(key).value);
     }
-    form.get("approvalStatus").disable();
+    // form.get("approvalStatus").disable();
     form.get("dateOfRequest").disable();
     this.spinner = true;
     return this.employeeService.postHospitalChangeRequest(formData).subscribe(
@@ -221,10 +235,11 @@ export class HospitalComponent implements OnInit {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#hmo_req_change_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            $("#hmo_req_change_modal").modal("hide");
+            this.getEmployeeHospital(this.employeeId);
+          });
         }
-        this.getEmployeeHospital(this.dataFromParent.user.staffId);
       },
       (err) => {
         form.get("dateOfRequest").disable();
@@ -323,7 +338,7 @@ export class HospitalComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeHospital(this.dataFromParent.user.staffId);
+                  this.getEmployeeHospital(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");
@@ -356,11 +371,7 @@ export class HospitalComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   // Fixes the misleading error message "Cannot find a differ supporting object '[object Object]'"

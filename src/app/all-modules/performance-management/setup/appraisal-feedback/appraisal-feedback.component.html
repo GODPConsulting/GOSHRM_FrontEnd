@@ -1,70 +1,57 @@
-
-<div  class="content container-fluid">
-    <!--Page Header starts  -->
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h3 class="page-title">Appraisal Feedback</h3>
-            </div>
-
-        </div>
+<div class="content container-fluid">
+  <!--Page Header starts  -->
+  <div class="page-header content-wrapper">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">Appraisal Feedback</h3>
+      </div>
     </div>
-    <div class="table-responsive">
-        <table class="table table-nowrap table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
-            <thead>
-                <tr>
-                    <th>
-                        <input type="checkbox" [checked]="selectedId.length === appraisalFeedbacks.length"
-                            (change)="checkAll($event)" />
-                    </th>
-                    <th>S/N</th>
-                    <th>Review Period</th>
-                    <th>Job Title</th>
-                    <th>Job Grade</th>
-                    <th>Submitted for Review</th>
-                    <th>Review Cycle Status</th>
-                    <th>Due Date</th>
-                    <th>Final Comment</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                <tr data-toggle="modal" class="pointer" data-target="#appraisal_feedback_modal" (click)="edit(row)"
-                    *ngFor="let row of hack(appraisalFeedbacks); let i = index">
-                    <td (click)="stopParentEvent($event)">
-                        <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                            (change)="addItemId($event, row.id)" />
-                    </td>
-                    <td>{{i +1}}</td>
-                    <td><a *ngIf='reviewPeriod'
-                            routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
-                            data-target="#appraisal_feedback_modal"></a>{{row.reviewPeriod}}
-                    </td>
-                    <td><a *ngIf='jobTitleName'
-                            routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
-                            data-target="#appraisal_feedback_modal"></a>{{row.jobTitleName}}
-                    </td>
-                    <td><a *ngIf='jobGradeName'
-                            routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
-                            data-target="#appraisal_feedback_modal"></a>{{row.jobGradeName}}
-                    </td>
-                    <td><a *ngIf='submittedForReview'
-                            routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
-                            data-target="#appraisal_feedback_modal"></a>{{row.submittedForReview}}
-                    </td>
-                    <td><a *ngIf='reviewStatusName'
-                            routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
-                            data-target="#appraisal_feedback_modal"></a>{{row.reviewStatusName}}
-                    </td>
-                    <td><a *ngIf='dueDate' routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
-                            data-target="#appraisal_feedback_modal"></a>{{row.dueDate}}
-                    </td>
-                    <td><a *ngIf='comment' routerLink="/performance/setup/appraisal-feedback/appraisal-feedback-page"
-                            data-target="#appraisal_feedback_modal"></a>{{row.comment}}
-                    </td>
-
-                </tr>
-            </tbody>
-        </table>
-    </div>
+  </div>
+  <div class="table-responsive">
+    <p-table
+      class="table table-nowrap table-hover"
+      [value]="appraisalFeedbacks"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <!--          <th class="table-checkbox">-->
+          <!--            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
+          <!--          </th>-->
+          <!--          <th class="sn_width">S/N</th>-->
+          <th style="width: 210px; text-align: center">Review Period</th>
+          <th>Job Title</th>
+          <th>Job Grade</th>
+          <th>Submitted for Review</th>
+          <th>Review Cycle Status</th>
+          <th>Due Date</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row let-i="rowIndex">
+        <tr class="pointer">
+          <!--          <td (click)="stopParentEvent($event)">-->
+          <!--            <p-tableCheckbox [value]="row"></p-tableCheckbox>-->
+          <!--          </td>-->
+          <!--          <td class="sn_width">{{ i + 1 }}</td>-->
+          <td style="width: 210px" (click)="viewFeedback(row)">
+            {{ row.reviewPeriod }}
+          </td>
+          <td>
+            {{ row.jobTitle | titlecase }}
+          </td>
+          <td>
+            {{ row.jobGrade }}
+          </td>
+          <td>
+            {{ row.submittedForReview }}
+          </td>
+          <td>
+            {{ row.reviewCycle }}
+          </td>
+          <td>
+            {{ row.dueDate }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </div>

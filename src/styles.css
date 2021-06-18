@@ -73,7 +73,9 @@ Version      : 3.6
 64. Responsive
 
 ========================================*/
-
+* {
+  font-size: 14px;
+}
 @font-face {
   font-family: "Material Icons";
   font-style: normal;
@@ -482,6 +484,7 @@ table.dataTable thead > tr > td.sorting {
 
 .btn {
   border-radius: 5px;
+
 }
 .btn.disabled,
 .btn:disabled {
@@ -8500,6 +8503,7 @@ ul.comment-list li ul.children {
   /* Position the tooltip text - see examples below! */
   position: absolute;
   z-index: 1;
+  font-size: 12px;
 }
 /* Show the tooltip text when you mouse over the tooltip container */
 .hint:hover .hint-text {
@@ -8725,5 +8729,20 @@ rating span {
   width: 3rem;
 }
 .sn_width {
-  width: 2rem;
+  width: 4rem;
+}
+.content-wrapper {
+  padding: 20px 15px !important;
+  background: #fff !important;
+}
+
+.table-link {
+  text-decoration: none;
+  color: #1d6ad2;
+}
+.p-checkbox-box {
+  width: 15px !important;
+  height: 15px !important;
+  border-radius: 4px !important;
+  border: 1px solid #bbb !important;
 }

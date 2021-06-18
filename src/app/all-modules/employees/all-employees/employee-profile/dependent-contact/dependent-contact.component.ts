@@ -27,7 +27,8 @@ export class DependentContactComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
+  @Input() isHr: string;
   // Forms
   dependentContactForm: FormGroup;
 
@@ -44,31 +45,7 @@ export class DependentContactComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
-      order: [[1, "asc"]],
-    };
-    this.getEmployeeDependentContact(this.dataFromParent.user.staffId);
+    this.getEmployeeDependentContact(this.employeeId);
     this.initDependentContactForm();
     this.getCountry();
   }
@@ -85,52 +62,53 @@ export class DependentContactComponent implements OnInit {
       address: ["", Validators.required],
       countryId: ["", Validators.required],
       // idExpiry_date: ["", Validators.required],
-      approval_status: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
-      staffId: this.dataFromParent.user.staffId,
+      approval_status: [{ value: "2", disabled: this.isHr !== "true" }],
+      staffId: this.employeeId,
       // identicationFile: ["", Validators.required],
     });
     //this.fileInput.nativeElement.value = "";
   }
 
   submitDependentContactForm(form: FormGroup) {
-    form.get("approval_status").enable();
-    // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Dependent Contact",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approval_status").value !== 2) {
-        form.get("approval_status").setValue(2);
-      }
-    }
+    // form.get("approval_status").enable();
+
     if (!form.valid) {
-      form.get("approval_status").disable();
+      // form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approval_status = 2;
+    }
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
-    form.get("approval_status").disable();
+    // form.get("approval_status").disable();
     this.spinner = true;
     return this.employeeService.postDependentContact(payload).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#dependent_contact_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            // Send mail to HR
+            if (!this.dataFromParent.isHr) {
+              this.utilitiesService
+                .sendToHr(
+                  "Add Dependent Contact",
+                  this.dataFromParent.user.firstName,
+                  this.dataFromParent.user.lastName,
+                  this.dataFromParent.user.email,
+                  this.dataFromParent.user.userId
+                )
+                .subscribe();
+            }
+            $("#dependent_contact_modal").modal("hide");
+            this.getEmployeeDependentContact(this.employeeId);
+          });
+        } else {
+          return swal.fire("GOS HRM", message, "error");
         }
-        this.getEmployeeDependentContact(this.dataFromParent.user.staffId);
       },
       (err) => {
         this.spinner = false;
@@ -173,7 +151,7 @@ export class DependentContactComponent implements OnInit {
       // idIssues: row.idIssues,
       // idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
       approval_status: row.approval_status,
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       dependentContactFile: row.dependentContactFile,
     });
     $("#dependent_contact_modal").modal("show");
@@ -185,11 +163,7 @@ export class DependentContactComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -225,9 +199,7 @@ export class DependentContactComponent implements OnInit {
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
                   this.loadingService.hide();
-                  this.getEmployeeDependentContact(
-                    this.dataFromParent.user.staffId
-                  );
+                  this.getEmployeeDependentContact(this.employeeId);
                 });
               } else {
                 return swal.fire("GOSHRM", message, "error");

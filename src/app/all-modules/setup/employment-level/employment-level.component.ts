@@ -5,6 +5,7 @@ import swal from "sweetalert2";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
+import { ISearchColumn } from "../../../interface/interfaces";
 
 declare const $: any;
 @Component({
@@ -24,6 +25,8 @@ export class EmploymentLevelComponent implements OnInit {
   public spinner: boolean = false; // Controls the visibilty of the spinner
   public employmentLevelUploadForm: FormGroup;
   dtTrigger: Subject<any> = new Subject();
+  selectLevels: any[];
+  cols: ISearchColumn[];
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -32,18 +35,16 @@ export class EmploymentLevelComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "employment_level",
+        field: "employment_level",
       },
-      columns: [{ orderable: false }, null, null],
-      order: [[1, "asc"]],
-    };
+      {
+        header: "description",
+        field: "description",
+      },
+    ];
     this.initializeForm();
     this.getEmploymentLevels();
   }
@@ -170,13 +171,15 @@ export class EmploymentLevelComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectLevels.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectLevels.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -188,10 +191,11 @@ export class EmploymentLevelComponent implements OnInit {
       .then((result) => {
         if (result.value) {
           this.loadingService.show();
-          return this.setupService.deleteEmploymentLevel(payload).subscribe(
+          this.setupService.deleteEmploymentLevel(payload).subscribe(
             (res) => {
+              let message: string;
               this.loadingService.hide();
-              const message = res.status.message.friendlyMessage;
+              message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
                   this.getEmploymentLevels();
@@ -235,7 +239,6 @@ export class EmploymentLevelComponent implements OnInit {
   }
 
   // Appends a selected file to "uploadInput"
-
   onSelectedFile(event: Event, form: FormGroup) {
     this.utilitiesService.uploadFileValidator(event, form, "hr");
   }

@@ -94,7 +94,7 @@
             </div>
             <div class="pro-edit">
               <a
-                routerLink="/employees/employee-form/edit"
+                (click)="editProfile()"
                 data-target="#profile_info"
                 data-toggle="modal"
                 class="edit-icon"
@@ -145,6 +145,8 @@
         <app-identification
           *ngIf="dataToChild.user && employeeId"
           [dataFromParent]="dataToChild"
+          [employeeId]="employeeId"
+          [isHr]="isHr"
         >
         </app-identification>
       </div>
@@ -162,6 +164,7 @@
                   ><span class="hint-text">Delete</span
                   ><i class="fa fa-trash"></i>
                 </a>
+
                 <a
                   *ngIf="dataToChild.canSeeProfileElement"
                   class="edit-icon hint mr-1"
@@ -305,6 +308,8 @@
       <app-referee
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-referee>
       <!-- /Referee Card -->
       <!-- Dependent Contact Tab -->
@@ -312,6 +317,8 @@
         <app-dependent-contact
           *ngIf="dataToChild.user && employeeId"
           [dataFromParent]="dataToChild"
+          [employeeId]="employeeId"
+          [isHr]="isHr"
         >
         </app-dependent-contact>
       </div>
@@ -325,6 +332,7 @@
         <app-assets
           *ngIf="dataToChild.user && employeeId"
           [dataFromParent]="dataToChild"
+          [employeeId]="employeeId"
         ></app-assets>
       </div>
       <!-- Assets card -->
@@ -336,6 +344,8 @@
       <app-career
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-career>
       <!-- /Career card -->
       <!-- Qualification -->
@@ -472,12 +482,6 @@
                           >
                           <select
                             class="form-control"
-                            [class.invalid]="
-                              employeeQualificationForm.get('qualificationId')
-                                .invalid &&
-                              employeeQualificationForm.get('qualificationId')
-                                .touched
-                            "
                             formControlName="qualificationId"
                           >
                             <option selected value="">Qualification</option>
@@ -532,11 +536,6 @@
                           <label>Grade<span class="text-danger">*</span></label>
                           <select
                             class="form-control"
-                            [class.invalid]="
-                              employeeQualificationForm.get('gradeId')
-                                .invalid &&
-                              employeeQualificationForm.get('gradeId').touched
-                            "
                             formControlName="gradeId"
                           >
                             <option selected value="">Grades</option>
@@ -551,19 +550,13 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label>Attachment (file format)</label>
+                          <label>Attachment</label>
                           <input
                             class="form-control"
                             formControlName="qualificationFile"
                             #fileInput
                             type="file"
                             (change)="handleFile($event)"
-                            [class.invalid]="
-                              employeeQualificationForm.get('qualificationFile')
-                                .invalid &&
-                              employeeQualificationForm.get('qualificationFile')
-                                .touched
-                            "
                           />
                         </div>
                       </div>
@@ -576,7 +569,7 @@
                           >
                           <select
                             class="select form-control"
-                            formControlName="approvalStatus"
+                            formControlName="approval_status"
                           >
                             <option disabled>Select Status</option>
                             <option value="1">Confirmed</option>
@@ -604,14 +597,18 @@
       <!-- Qualification modal ends here  -->
       <!-- Professional Certification card -->
       <app-prof-cert
+        [employeeId]="employeeId"
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [isHr]="isHr"
       ></app-prof-cert>
       <!-- /Professional Certification card -->
       <!-- Skills card -->
       <app-skills
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-skills>
       <!-- /Skills card -->
     </div>
@@ -623,6 +620,8 @@
         <app-hobbies
           *ngIf="dataToChild.user && employeeId"
           [dataFromParent]="dataToChild"
+          [employeeId]="employeeId"
+          [isHr]="isHr"
         ></app-hobbies>
       </div>
     </div>
@@ -633,18 +632,24 @@
       <app-employee-hmo
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-employee-hmo>
       <!-- Employee /Hmo card -->
       <!-- Hospital card -->
       <app-hospital
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-hospital>
       <!-- /Hospital card -->
       <!-- Employee Gym card -->
       <app-employee-gym
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-employee-gym>
       <!-- /Employee Gym card -->
     </div>
@@ -726,15 +731,8 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Country <span class="text-danger">*</span></label>
-                    <select
-                      class="form-control"
-                      [class.invalid]="
-                        emergencyContactForm.get('countryId').invalid &&
-                        emergencyContactForm.get('countryId').touched
-                      "
-                      formControlName="countryId"
-                    >
-                      <option selected value="">Country</option>
+                    <select class="form-control" formControlName="countryId">
+                      <option selected value="">--Select Country--</option>
                       <option
                         *ngFor="let row of countries"
                         value="{{ row.lookupId }}"

@@ -163,6 +163,7 @@ export class KeyPerformanceIndicatorsComponent
 
   closeKPIndicatorModal() {
     $("#kp_indicator_modal").modal("hide");
+    this.initializeForm();
   }
   openUploadModal() {
     this.initializeForm();

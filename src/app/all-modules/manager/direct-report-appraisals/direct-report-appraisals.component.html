@@ -1,63 +1,66 @@
-
 <!-- Page Content -->
 <div class="content container-fluid">
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="row align-items-center">
-            <div class="col">
-                <h3 class="page-title">Direct Report Appraisals</h3>
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a> Manager</a></li>
-                    <li class="breadcrumb-item active"><a routerLink="">Direct Report Appraisals</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">Direct Report Appraisals</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a> Manager</a></li>
+          <li class="breadcrumb-item active">
+            <a routerLink="">Direct Report Appraisals</a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <!-- /Page Header -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="table-responsive">
-                <table class="table table-striped custom-table datatable table-hover" datatable [dtOptions]="dtOptions">
-                    <thead>
-                        <tr>
-                            <th>
-                                <input type="checkbox" [checked]="selectedId.length === reportAppraisals.length"
-                                    (change)="checkAll($event)" />
-                            </th>
-                            <th>S/N</th>
-                            <th>Review Year</th>
-                            <th>Review Period</th>
-                            <th>Employee</th>
-                            <th>Job Grade</th>
-                            <th>Office</th>
-                            <th>Review Status</th>
-                            <th>Points</th>
-                            <th>Appraisal Forms</th>
-                            <th>Final Comments</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="modal" class="pointer" *ngFor="let row of reportAppraisals; let i = index">
-                            <td (click)="stopParentEvent($event)">
-                                <input type="checkbox" [checked]="selectedId.includes(row.id)"
-                                    (change)="addItemId($event, row.id)" />
-                            </td>
-                            <td>{{ i + 1 }}</td>
-                            <td>{{row.reviewYear}}</td>
-                            <td>{{row.reviewPeriod}}</td>
-                            <td>{{row.employeeName}}</td>
-                            <td>{{row.jobGradeName}}</td>
-                            <td>{{row.companyName}}</td>
-                            <td>{{row.reviewStatusName}}</td>
-                            <td>{{row.points}}</td>
-                            <td>{{row.reviewYear}}</td>
-                            <td>{{row.comment}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  </div>
+  <!-- /Page Header -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <p-table [value]="reportAppraisals">
+          <ng-template pTemplate="header">
+            <tr>
+              <!--              <th>-->
+              <!--                <input-->
+              <!--                  type="checkbox"-->
+              <!--                  [checked]="selectedId.length === reportAppraisals.length"-->
+              <!--                  (change)="checkAll($event)"-->
+              <!--                />-->
+              <!--              </th>-->
+              <th class="sn_width">S/N</th>
+              <th>Review Year</th>
+              <th>Review Period</th>
+              <th>Employee</th>
+              <th>Job Grade</th>
+              <th>Office</th>
+              <th>Review Status</th>
+              <th>Points</th>
+              <th></th>
+              <!--              <th>Final Comments</th>-->
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr data-toggle="modal" class="pointer">
+              <td class="sn_width">{{ i + 1 }}</td>
+              <td>{{ row.reviewYear }}</td>
+              <td (click)="viewObjectives(row)">
+                <a class="table-link">{{ row.reviewPeriod }}</a>
+              </td>
+              <td>{{ row.employeeName }}</td>
+              <td>{{ row.jobGradeName }}</td>
+              <td>{{ row.officeName }}</td>
+              <td>{{ row.reviewStatus }}</td>
+              <td>{{ row.points }}</td>
+              <td (click)="viewAppraisal(row)">
+                <a class="table-link">Appraisal Forms</a>
+              </td>
+              <!--              <td>{{ row.comment }}</td>-->
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
     </div>
+  </div>
 </div>
 <!-- /Page Content -->

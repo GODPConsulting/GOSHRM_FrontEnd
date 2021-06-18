@@ -8,6 +8,7 @@ import { LoadingService } from "../../../../../services/loading.service";
 
 import { Subject } from "rxjs";
 import { CommonService } from "../../../../../services/common.service";
+import { ActivatedRoute } from "@angular/router";
 
 declare const $: any;
 
@@ -38,7 +39,8 @@ export class CareerComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
+  @Input() isHr: string;
   // Forms
   careerForm: FormGroup;
 
@@ -51,36 +53,39 @@ export class CareerComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
     private loadingService: LoadingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    console.log(this.dataFromParent);
+    // this.route.params.subscribe((param) => {
+    //   this.employeeId = +param.id;
+    // });
     // Determines the structure of the table (Angular Datatables)
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
-      order: [[1, "asc"]],
-    };
-    this.getEmployeeCareer(this.dataFromParent.user.staffId);
+    // this.dtOptions = {
+    //   dom:
+    //     "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+    //     "<'row'<'col-sm-12'tr>>" +
+    //     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    //   language: {
+    //     search: "_INPUT_",
+    //     searchPlaceholder: "Start typing to search by any field",
+    //   },
+    //
+    //   columns: [
+    //     { orderable: false },
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //     null,
+    //   ],
+    //   order: [[1, "asc"]],
+    // };
+    this.getEmployeeCareer(this.employeeId);
     this.initCareerForm();
     this.getCountry();
     this.getJobGrade();
@@ -111,11 +116,8 @@ export class CareerComponent implements OnInit {
       third_Level_ReviewerId: ["", Validators.required],
       startDate: ["", Validators.required],
       endDate: ["", Validators.required],
-      approval_status: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
-      staffId: this.dataFromParent.user.staffId,
+      approval_status: [{ value: "2", disabled: this.isHr !== "true" }],
+      staffId: this.employeeId,
     });
     //this.fileInput.nativeElement.value = "";
   }
@@ -176,14 +178,14 @@ export class CareerComponent implements OnInit {
   }
 
   submitCareerForm(form: FormGroup) {
-    form.get("approval_status").enable();
-
     if (!form.valid) {
-      form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approval_status = 2;
+    }
     payload.approval_status = +payload.approval_status;
     payload.countryId = +payload.countryId;
     payload.locationId = +payload.locationId;
@@ -194,7 +196,8 @@ export class CareerComponent implements OnInit {
     payload.first_Level_ReviewerId = +payload.first_Level_ReviewerId;
     payload.second_Level_ReviewerId = +payload.second_Level_ReviewerId;
     payload.third_Level_ReviewerId = +payload.third_Level_ReviewerId;
-    form.get("approval_status").disable();
+    // payload.job_type = +payload.job_type;
+    // form.get("approval_status").disable();
 
     this.spinner = true;
     return this.employeeService.postCareer(payload).subscribe(
@@ -205,7 +208,7 @@ export class CareerComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#career_modal").modal("hide");
         }
-        this.getEmployeeCareer(this.dataFromParent.user.staffId);
+        this.getEmployeeCareer(this.employeeId);
       },
       (err) => {
         this.spinner = false;
@@ -263,18 +266,18 @@ export class CareerComponent implements OnInit {
       id: row.id,
       job_GradeId: row.job_GradeId,
       job_titleId: row.job_titleId,
-      job_type: row.job_type,
+      job_type: row.job_typeId,
       countryId: row.countryId,
       locationId: row.locationId,
-      officeId: row.officeName,
-      line_ManagerId: row.line_ManagerName,
+      officeId: row.officeId,
+      line_ManagerId: row.line_ManagerId,
       first_Level_ReviewerId: row.first_Level_ReviewerId,
       second_Level_ReviewerId: row.second_Level_ReviewerId,
       third_Level_ReviewerId: row.third_Level_ReviewerId,
       startDate: row.startDate,
       endDate: row.endDate,
       approval_status_name: row.approval_status_name,
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       careerFile: row.careerFile,
     });
     $("#career_modal").modal("show");
@@ -286,11 +289,7 @@ export class CareerComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
@@ -323,7 +322,7 @@ export class CareerComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeCareer(this.dataFromParent.user.staffId);
+                  this.getEmployeeCareer(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

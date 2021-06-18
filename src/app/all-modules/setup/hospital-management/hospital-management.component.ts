@@ -5,6 +5,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
+import { ISearchColumn } from "../../../interface/interfaces";
 
 declare const $: any;
 @Component({
@@ -23,7 +24,8 @@ export class HospitalManagementComponent implements OnInit {
   public spinner: boolean = false;
   public hospitalManagementUploadForm: FormGroup;
   public hmos: any[] = [];
-  dtTrigger: Subject<any> = new Subject();
+  selectHospitalMgt: any[];
+  cols: ISearchColumn[];
   constructor(
     private formBuilder: FormBuilder,
     private setupService: SetupService,
@@ -32,18 +34,24 @@ export class HospitalManagementComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "hospital",
+        field: "hospital",
       },
-      columns: [{ orderable: false }, null, null, null, null, null, null],
-      order: [[1, "asc"]],
-    };
+      {
+        header: "hmoName",
+        field: "hmoName",
+      },
+      {
+        header: "contactPhoneNo",
+        field: "contactPhoneNo",
+      },
+      {
+        header: "email",
+        field: "email",
+      },
+    ];
     this.getHospitalManagement();
     this.initializeForm();
     this.getHmos();
@@ -110,7 +118,7 @@ export class HospitalManagementComponent implements OnInit {
       address: ["", Validators.required],
       otherComments: [""],
     });
-    //initialize upload form
+    // initialize upload form
     this.hospitalManagementUploadForm = this.formBuilder.group({
       uploadInput: [""],
     });
@@ -150,7 +158,6 @@ export class HospitalManagementComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.hospitalManagements = data.setuplist;
-        this.dtTrigger.next();
       },
       (err) => {
         this.loadingService.hide();
@@ -195,13 +202,15 @@ export class HospitalManagementComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectHospitalMgt.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
-      payload = {
-        itemIds: this.selectedId,
-      };
     }
+    this.selectHospitalMgt.map((item) => {
+      this.selectedId.push(item.id);
+    });
+    payload = {
+      itemIds: this.selectedId,
+    };
     swal
       .fire({
         title: "Are you sure you want to delete this record?",

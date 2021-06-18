@@ -20,10 +20,13 @@ export class JwtService {
   saveUserDetails(user) {
     window.localStorage.setItem("userDetails", JSON.stringify(user));
   }
-  saveHrmUserDetails(hrmUser) {
-    window.localStorage.setItem("hrmUserDetails", JSON.stringify(hrmUser));
+  async saveHrmUserDetails(hrmUser) {
+    await window.localStorage.setItem(
+      "hrmUserDetails",
+      JSON.stringify(hrmUser)
+    );
   }
-  getHrmUserDetails() {
+  async getHrmUserDetails() {
     return JSON.parse(window.localStorage.getItem("hrmUserDetails"));
   }
   getUserDetails() {

@@ -23,14 +23,15 @@ export class SkillsComponent implements OnInit {
   @ViewChild("fileInput")
   fileInput: ElementRef;
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
+  @Input() isHr: string;
   // To hold data for each card
   employeeSkills: any = {};
   staffs: any = {};
   jobTitle: any;
   dtTrigger: Subject<any> = new Subject();
   public dtOptions: DataTables.Settings = {};
-
+  expectedScore: number;
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -40,9 +41,10 @@ export class SkillsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getEmployeeSkills(this.dataFromParent.user.staffId);
+    console.log(this.dataFromParent);
+    this.getEmployeeSkills(this.employeeId);
     this.initSkillsForm();
-    this.getSingleStaffById(this.dataFromParent.user.staffId);
+    this.getSingleStaffById(this.employeeId);
     this.dtOptions = {
       dom:
         "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
@@ -88,7 +90,11 @@ export class SkillsComponent implements OnInit {
     let chosenSkill = this.jobSkills.filter(
       (skill) => skill.id == (<HTMLInputElement>event.target).value
     );
-    this.skillsForm.get("expectedScore").setValue(chosenSkill[0].weight);
+    this.expectedScore = chosenSkill[0].weight;
+    this.skillsForm.patchValue({
+      expectedScore: chosenSkill[0].weight,
+    });
+    // this.skillsForm.get("expectedScore").setValue(chosenSkill[0].weight);
   }
 
   initSkillsForm() {
@@ -99,11 +105,8 @@ export class SkillsComponent implements OnInit {
       expectedScore: [{ value: "", disabled: true }, Validators.required],
       actualScore: [""],
       proofOfSkills: ["", Validators.required],
-      approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
-        Validators.required,
-      ],
-      staffId: this.dataFromParent.user.staffId,
+      approvalStatus: [{ value: "2", disabled: this.isHr !== "true" }],
+      staffId: this.employeeId,
       skillFile: ["", Validators.required],
     });
     // Resets the upload input of the add form
@@ -126,9 +129,9 @@ export class SkillsComponent implements OnInit {
       if (data) {
         this.staffs = data.employeeList;
 
-        this.jobTitleId = data.employeeList[0].jobTitle;
-
-        this.getSingleJobTitle(this.jobTitleId);
+        // this.jobTitleId = data.employeeList[0].jobTitle;
+        //
+        // this.getSingleJobTitle(this.jobTitleId);
       }
     });
   }
@@ -150,7 +153,7 @@ export class SkillsComponent implements OnInit {
   }
 
   submitSkillsForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    const payload = form.value;
     form.get("expectedScore").enable();
     // Send mail to HR
     if (!this.dataFromParent.isHr) {
@@ -169,32 +172,42 @@ export class SkillsComponent implements OnInit {
     }
     if (!form.valid) {
       form.get("expectedScore").disable();
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
-    const formData = new FormData();
-    for (const key in form.value) {
-      formData.append(key, this.skillsForm.get(key).value);
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
     }
+    payload.approvalStatus = +payload.approvalStatus;
+    payload.expectedScore = this.expectedScore;
+    // console.log(payload);
+    // return;
+    const formData = new FormData();
+    Object.keys(payload).forEach((key) => {
+      formData.append(key, payload[key]);
+    });
+    // const formData = new FormData();
+    // for (const key in form.value) {
+    //   formData.append(key, this.skillsForm.get(key).value);
+    // }
     this.skillsForm.get("expectedScore").disable();
-    form.get("approvalStatus").disable();
-
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.addSkill(formData).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          $("#skills_modal").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            this.getEmployeeSkills(this.employeeId);
+            $("#skills_modal").modal("hide");
+          });
         }
-
-        this.getEmployeeSkills(this.dataFromParent.user.staffId);
       },
       (err) => {
-        form.get("expectedScore").disable();
         this.spinner = false;
+        form.get("expectedScore").disable();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -211,7 +224,7 @@ export class SkillsComponent implements OnInit {
       actualScore: row.actualScore,
       proofOfSkills: row.proofOfSkills,
       approvalStatus: row.approvalStatus,
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       skillFile: row.skillFile,
     });
     $("#skills_modal").modal("show");
@@ -248,7 +261,7 @@ export class SkillsComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeSkills(this.dataFromParent.user.staffId);
+                  this.getEmployeeSkills(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");
@@ -281,10 +294,6 @@ export class SkillsComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 }

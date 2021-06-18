@@ -24,7 +24,8 @@ export class IdentificationComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() dataFromParent: any;
-
+  @Input() employeeId: number;
+  @Input() isHr: string;
   // To hold data for each card
   employeeIdentification: any[] = [];
   public dtOptions: DataTables.Settings = {};
@@ -42,20 +43,7 @@ export class IdentificationComponent implements OnInit {
   ngOnInit(): void {
     this.getIdentification();
     this.initIdentificationForm();
-    this.getEmployeeIdentification(this.dataFromParent.user.staffId);
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [{ orderable: false }, null, null, null, null, null, null],
-      order: [[1, "asc"]],
-    };
+    this.getEmployeeIdentification(this.employeeId);
   }
 
   downloadFile() {
@@ -95,10 +83,10 @@ export class IdentificationComponent implements OnInit {
       idIssues: ["", Validators.required],
       idExpiry_date: ["", Validators.required],
       approval_status: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
+        { value: "2", disabled: this.isHr !== "true" },
         Validators.required,
       ],
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       identicationFile: ["", Validators.required],
     });
     // Resets the upload input of the add form
@@ -117,7 +105,7 @@ export class IdentificationComponent implements OnInit {
       idIssues: row.idIssues,
       idExpiry_date: new Date(row.idExpiry_date).toLocaleDateString("en-CA"),
       approval_status: row.approval_status,
-      staffId: this.dataFromParent.user.staffId,
+      staffId: this.employeeId,
       identicationFile: row.identicationFile,
     });
     this.fileInput.nativeElement.value = "";
@@ -125,23 +113,21 @@ export class IdentificationComponent implements OnInit {
   }
 
   submitIdentificationForm(form: FormGroup) {
-    form.get("approval_status").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Identification",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approval_status").value !== 2) {
-        form.get("approval_status").setValue(2);
-      }
-    }
-
+    // if (!this.dataFromParent.isHr) {
+    //   this.utilitiesService
+    //     .sendToHr(
+    //       "Add Identification",
+    //       this.dataFromParent.user.firstName,
+    //       this.dataFromParent.user.lastName,
+    //       this.dataFromParent.user.email,
+    //       this.dataFromParent.user.userId
+    //     )
+    //     .subscribe();
+    //   if (form.get("approval_status").value !== 2) {
+    //     form.get("approval_status").setValue(2);
+    //   }
+    // }
     if (!form.valid) {
       form.get("approval_status").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
@@ -153,10 +139,14 @@ export class IdentificationComponent implements OnInit {
       .setValue(
         new Date(form.get("idExpiry_date").value).toLocaleDateString("en-CA")
       );
-    for (const key in form.value) {
-      formData.append(key, this.identificationForm.get(key).value);
+    const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approval_status = 2;
     }
-    form.get("approval_status").disable();
+    payload.approval_status = +payload.approval_status;
+    for (const key in payload) {
+      formData.append(key, payload[key]);
+    }
 
     this.spinner = true;
     return this.employeeService.postIdentificationId(formData).subscribe(
@@ -167,7 +157,7 @@ export class IdentificationComponent implements OnInit {
           swal.fire("GOSHRM", message, "success");
           $("#identification_modal").modal("hide");
         }
-        this.getEmployeeIdentification(this.dataFromParent.user.staffId);
+        this.getEmployeeIdentification(this.employeeId);
       },
       (err) => {
         this.spinner = false;
@@ -207,11 +197,7 @@ export class IdentificationComponent implements OnInit {
   }
 
   onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(
-      event,
-      form,
-      this.dataFromParent.user.staffId
-    );
+    this.utilitiesService.uploadFileValidator(event, form, this.employeeId);
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
@@ -253,9 +239,7 @@ export class IdentificationComponent implements OnInit {
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getEmployeeIdentification(
-                    this.dataFromParent.user.staffId
-                  );
+                  this.getEmployeeIdentification(this.employeeId);
                 });
               } else {
                 swal.fire("GOSHRM", message, "error");

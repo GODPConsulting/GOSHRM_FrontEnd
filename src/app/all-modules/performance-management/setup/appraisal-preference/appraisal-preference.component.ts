@@ -6,6 +6,7 @@ import swal from "sweetalert2";
 import { Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
 import { CommonService } from "../../../../services/common.service";
+import { JwtService } from "../../../../services/jwt.service";
 
 @Component({
   selector: "app-appraisal-preference",
@@ -20,14 +21,25 @@ export class AppraisalPreferenceComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
   spinner: boolean;
+  jobGradeId: number;
+  staffId: number;
+  deptId: number;
+
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
     private loadingService: LoadingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private jwtService: JwtService
   ) {}
 
   ngOnInit(): void {
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.staffId = user.staffId;
+      this.jobGradeId = user.jobGrade;
+      this.deptId = user.departmentId;
+      // this.getAppraisalCycleByCompanyId();
+    });
     this.initializeForm();
     this.getCompanies();
   }
@@ -94,7 +106,7 @@ export class AppraisalPreferenceComponent implements OnInit {
       .subscribe(
         (data) => {
           this.loadingService.hide();
-          this.cycles = data.setupList;
+          this.cycles = data;
         },
         (err) => {
           this.loadingService.hide();

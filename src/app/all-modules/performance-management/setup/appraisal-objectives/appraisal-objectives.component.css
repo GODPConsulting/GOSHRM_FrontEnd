@@ -1,3 +1,34 @@
 .table-title {
   padding: .5rem;
 }
+.objectives-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.objective {
+  margin-right: 10px;
+}
+.objective-name {
+  margin-right: 5px;
+}
+
+.objective-icon {
+  cursor: pointer;
+  width: 50px;
+  background: #ccc;
+  padding: 5px;
+  border-radius: 50%;
+  /* color: #fff; */
+  height: 50px;
+}
+
+.disabled{
+  cursor: not-allowed;
+}
+.category {
+  font-weight: bold;
+  margin-top: 20px;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}

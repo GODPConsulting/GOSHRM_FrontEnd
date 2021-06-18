@@ -15,7 +15,6 @@
         ></a>
         <a
           *ngIf="dataFromParent.canSeeProfileElement"
-          (click)="initDependentContactForm()"
           class="hint edit-icon mr-1"
           data-toggle="modal"
           data-target="#dependent_contact_modal"
@@ -23,12 +22,7 @@
         ></a>
       </h3>
       <div class="table-responsive">
-        <table
-          class="table table-nowrap table-hover"
-          datatable
-          [dtOptions]="dtOptions"
-          [dtTrigger]="dtTrigger"
-        >
+        <table class="table table-nowrap table-hover">
           <thead>
             <tr>
               <th>
