@@ -124,15 +124,12 @@
               <td>
                 <h2 class="table-avatar">
                   <a
-                    [routerLink]="[
-                      '/employees/employeeprofile/',
-                      row.employeeId
-                    ]"
+                    (click)="viewProfile(row.employeeId)"
                     class="avatar list-avi"
                     ><i *ngIf="!row.photo" class="fa fa-user"></i
                     ><img *ngIf="row.photo" alt="" src="{{ row.photo }}"
                   /></a>
-                  <a [routerLink]="['/employees/employeeprofile/', row.staffId]"
+                  <a (click)="viewProfile(row.employeeId)"
                     >{{ row.firstName | titlecase }}
                     {{ row.lastName | titlecase }}
                     <span>{{ row.jobTitleName | titlecase }} </span></a

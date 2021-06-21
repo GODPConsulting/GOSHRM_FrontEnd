@@ -63,7 +63,6 @@ export class AppraisalObjectivesComponent implements OnInit {
     this.route.queryParams.subscribe((param) => {
       this.appraisalCyleId = param.appraisalCycleId;
       this.objectiveId = param.objectiveId;
-      this.jobGradeId = param.jobgradeId;
       console.log(this.fromLineManager);
       if (this.fromLineManager) {
         this.staffId = param.employeeId;
@@ -73,8 +72,8 @@ export class AppraisalObjectivesComponent implements OnInit {
     });
     this.jwtService.getHrmUserDetails().then((employee) => {
       if (employee) {
-        // this.jobGradeId = employee.jobGrade;
-        this.getAddableObjectives();
+        this.jobGradeId = employee.jobGrade;
+        this.getAddableObjectives(employee.jobGrade);
         this.getEmployeeObjectiveDetails();
         // this.getCannotAddObjectives(employee.jobGrade);
         // this.getData();
@@ -202,20 +201,18 @@ export class AppraisalObjectivesComponent implements OnInit {
     );
   }
 
-  getAddableObjectives() {
+  getAddableObjectives(id) {
     this.loadingService.show();
-    return this.performanceManagementService
-      .getAddableObjectives(this.jobGradeId)
-      .subscribe(
-        (data) => {
-          this.loadingService.hide();
-          this.addAbleOjectives = data;
-          // this.employeeObjectives$ = data;
-        },
-        (err) => {
-          this.loadingService.hide();
-        }
-      );
+    return this.performanceManagementService.getAddableObjectives(id).subscribe(
+      (data) => {
+        this.loadingService.hide();
+        this.addAbleOjectives = data;
+        // this.employeeObjectives$ = data;
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
   }
   getCannotAddObjectives(jobGradeId: number) {
     this.loadingService.show();

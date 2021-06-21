@@ -34,13 +34,13 @@
                 <div class="col-md-5">
                   <div class="profile-info-left">
                     <h3 class="user-name m-t-0 mb-0">
-                      {{ employeeDetails?.firstName }}
-                      {{ employeeDetails?.middleName }}
-                      {{ employeeDetails?.lastName }}
+                      {{ employeeDetails?.firstName | titlecase }}
+                      {{ employeeDetails?.middleName | titlecase }}
+                      {{ employeeDetails?.lastName | titlecase }}
                     </h3>
                     <!-- <h6 class="text-muted">{{employeeDetails.jobTitleName}}</h6> -->
                     <small class="text-muted">{{
-                      employeeDetails?.jobTitleName
+                      employeeDetails?.jobTitleName | titlecase
                     }}</small>
                     <div class="staff-id">
                       Staff Code : {{ employeeDetails?.staffCode }}
