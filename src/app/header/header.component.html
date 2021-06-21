@@ -16,7 +16,7 @@
   </a>
   <!-- Header Title -->
   <div class="page-title-box">
-    <h3 class="user_name">{{ userDetails.staffName }}</h3>
+    <h3 class="user_name">{{ userDetails?.staffName }}</h3>
   </div>
   <!-- /Header Title -->
   <a id="mobile_btn" class="mobile_btn" href="javascript:"
@@ -179,8 +179,9 @@
       </a>
       <div class="dropdown-menu">
         <a
+          style="cursor: pointer"
           class="dropdown-item"
-          [routerLink]="['/employees/employeeprofile/', user?.staffId]"
+          (click)="viewProfile(user?.staffId)"
           >My Profile</a
         >
         <a class="dropdown-item" routerLink="/settings/company-settings"

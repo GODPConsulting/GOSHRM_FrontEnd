@@ -2,13 +2,17 @@ import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
 import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
-import { HttpErrorResponse } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
 })
 export class CommonService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private http: HttpClient) {}
   handleError(error: HttpErrorResponse) {
     return throwError(error);
   }
@@ -23,8 +27,8 @@ export class CommonService {
   }
 
   getCompanyStructures(): Observable<any> {
-    return this.apiService.get(`/company/get/all/companystructures`).pipe(
-      tap(),
+    //return this.http.get(`http://107.180.93.38:5050/company/get/all/companystructures`).pipe(tap(),
+    return this.apiService.get(`/company/get/all/companystructures`).pipe(tap(),
       map((res) => {
         return res;
       }),
@@ -32,8 +36,8 @@ export class CommonService {
     );
   }
   getRoles(): Observable<any> {
-    return this.apiService.get(`/admin/get/all/role`).pipe(
-      tap(),
+    //return this.http.get(`http://107.180.93.38:5050/admin/get/all/role`).pipe(tap(),
+    return this.apiService.get(`/admin/get/all/role`).pipe(tap(),
       map((res) => {
         return res;
       }),
@@ -42,10 +46,8 @@ export class CommonService {
   }
 
   getCompanyStructureDefinition(): Observable<any> {
-    return this.apiService
-      .get(`/company/get/all/companystructureDefinition`)
-      .pipe(
-        tap(),
+    //return this.http.get(`http://107.180.93.38:5050/company/get/all/companystructureDefinition`).pipe(tap(),
+    return this.apiService.get(`/company/get/all/companystructureDefinition`).pipe(tap(),
         map((res) => {
           return res;
         }),
@@ -53,10 +55,8 @@ export class CommonService {
       );
   }
   getAccessLevelsByAccessLevelId(id): Observable<any> {
-    return this.apiService
-      .get(`/company/get/all/companystructure/accessId?AccessId=${id}`)
-      .pipe(
-        tap(),
+    //return this.http.get(`http://107.180.93.38:5050/company/get/all/companystructure/accessId?AccessId=${id}`).pipe(tap(),
+    return this.apiService.get(`/company/get/all/companystructure/accessId?AccessId=${id}`).pipe(tap(),
         map((res) => {
           return res;
         }),
@@ -74,8 +74,8 @@ export class CommonService {
   }
 
   getCountries(): Observable<any> {
-    return this.apiService.get(`/common/countries`).pipe(
-      tap(),
+    //return this.http.get(`http://107.180.93.38:5050/common/countries`).pipe(tap(),
+    return this.apiService.get(`/common/countries`).pipe(tap(),
       map((res) => {
         return res;
       }),
@@ -84,10 +84,8 @@ export class CommonService {
   }
 
   getStatesByCountryId(id): Observable<any> {
-    return this.apiService
-      .get(`/common/get/states/countryId?CountryId=${id}`)
-      .pipe(
-        tap(),
+    //return this.http.get(`http://107.180.93.38:5050/common/get/states/countryId?CountryId=${id}`).pipe(tap(),
+    return this.apiService.get(`/common/get/states/countryId?CountryId=${id}`).pipe(tap(),
         map((res) => {
           return res;
         }),

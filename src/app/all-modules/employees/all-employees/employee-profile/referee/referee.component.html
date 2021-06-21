@@ -251,10 +251,10 @@
                     <select
                       class="form-control"
                       [class.invalid]="
-                        refereeForm.get('approvalStatus').invalid &&
-                        refereeForm.get('approvalStatus').touched
+                        refereeForm.get('approval_status').invalid &&
+                        refereeForm.get('approval_status').touched
                       "
-                      formControlName="approvalStatus"
+                      formControlName="approval_status"
                     >
                       <option selected value="">Select Status</option>
                       <option value="1">Approve</option>
@@ -263,14 +263,14 @@
                     </select>
                     <div
                       *ngIf="
-                        refereeForm.get('approvalStatus').invalid &&
-                        refereeForm.get('approvalStatus').touched
+                        refereeForm.get('approval_status').invalid &&
+                        refereeForm.get('approval_status').touched
                       "
                     >
                       <small
                         *ngIf="
-                          refereeForm.get('approvalStatus').invalid &&
-                          refereeForm.get('approvalStatus').touched
+                          refereeForm.get('approval_status').invalid &&
+                          refereeForm.get('approval_status').touched
                         "
                         class="text-danger"
                       >

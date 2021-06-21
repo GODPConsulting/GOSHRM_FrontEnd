@@ -59,7 +59,11 @@ export class AcademicGradeComponent implements OnInit {
     this.setupService.downloadAcademicGrade().subscribe(
       (resp) => {
         this.loadingService.hide();
-        this.utilitiesService.byteToFile(resp, "Academicgrade.xlsx");
+        if (resp) {
+          return this.utilitiesService.byteToFile(resp, "Academicgrade.xlsx");
+        } else {
+          return this.utilitiesService.showError("Unable to download file");
+        }
       },
       (err) => {
         this.loadingService.hide();
@@ -202,11 +206,11 @@ export class AcademicGradeComponent implements OnInit {
               this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
-                this.utilitiesService.showMessage(res, "error").then(() => {
+                this.utilitiesService.showMessage(res, "success").then(() => {
                   this.getAcademicGrade();
                 });
               } else {
-                this.utilitiesService.showMessage(res, "error");
+                return this.utilitiesService.showMessage(res, "error");
               }
             },
             (err) => {

@@ -120,7 +120,9 @@ export class EmployeeIdFormatComponent implements OnInit {
       },
       (err) => {
         this.spinner = false;
-        this.utilitiesService.showMessage(err, "error");
+        // console.log(err);
+        const error = err.status.message.friendlyMessage;
+        this.utilitiesService.showError(error);
       }
     );
   }
@@ -165,7 +167,9 @@ export class EmployeeIdFormatComponent implements OnInit {
             (res) => {
               this.loadingService.hide();
               if (res.status.isSuccessful) {
-                this.utilitiesService.showMessage(res, "success");
+                this.utilitiesService.showMessage(res, "success").then(() => {
+                  this.getEmployeeIdFormat();
+                });
               } else {
                 this.utilitiesService.showMessage(res, "error");
               }
@@ -205,5 +209,10 @@ export class EmployeeIdFormatComponent implements OnInit {
         this.loadingService.hide();
       }
     );
+  }
+
+  closeModal() {
+    $("#employee_id_format").modal("hide");
+    this.initIdFormatForm();
   }
 }

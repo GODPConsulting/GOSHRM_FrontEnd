@@ -25,6 +25,7 @@ export class EmployeeGymComponent implements OnInit {
 
   @Input() dataFromParent: any;
   @Input() employeeId: number;
+  @Input() isHr: string;
   // To hold data for each card
   employeeGym: any[] = [];
   allGyms$: Observable<any>;
@@ -82,7 +83,7 @@ export class EmployeeGymComponent implements OnInit {
       startDate: ["", Validators.required],
       end_Date: ["", Validators.required],
       approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
+        { value: "2", disabled: this.isHr !== "true" },
         Validators.required,
       ],
       staffId: this.employeeId,
@@ -104,7 +105,7 @@ export class EmployeeGymComponent implements OnInit {
       gymFile: ["", Validators.required],
       staffId: this.employeeId,
       approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
+        { value: "2", disabled: this.isHr !== "true" },
         Validators.required,
       ],
     });
@@ -131,7 +132,7 @@ export class EmployeeGymComponent implements OnInit {
   }
 
   submitGymForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     // Send mail to HR
     if (!this.dataFromParent.isHr) {
       this.utilitiesService
@@ -143,19 +144,22 @@ export class EmployeeGymComponent implements OnInit {
           this.dataFromParent.user.userId
         )
         .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
+      // if (form.get("approvalStatus").value !== 2) {
+      //   form.get("approvalStatus").setValue(2);
+      // }
     }
     if (!form.valid) {
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
     payload.approvalStatus = +payload.approvalStatus;
     payload.gymId = +payload.gymId;
-    form.get("approvalStatus").disable();
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postGym(payload).subscribe(
       (res) => {
@@ -177,25 +181,25 @@ export class EmployeeGymComponent implements OnInit {
 
   submitGymChangeReqForm(form: FormGroup) {
     form.get("dateOfRequest").enable();
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     // Send mail to HR
     if (!this.dataFromParent.isHr) {
       this.utilitiesService
         .sendToHr(
-          "Add Identification",
+          "Change Gym",
           this.dataFromParent.user.firstName,
           this.dataFromParent.user.lastName,
           this.dataFromParent.user.email,
           this.dataFromParent.user.userId
         )
         .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
+      // if (form.get("approvalStatus").value !== 2) {
+      //   form.get("approvalStatus").setValue(2);
+      // }
     }
 
     if (!form.valid) {
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       form.get("dateOfRequest").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
@@ -207,12 +211,17 @@ export class EmployeeGymComponent implements OnInit {
           "en-CA"
         )
       );
+    const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
+    payload.approvalStatus = +payload.approvalStatus;
     const formData = new FormData();
-    for (const key in form.value) {
-      formData.append(key, this.gymChangeReqForm.get(key).value);
+    for (const key in payload) {
+      formData.append(key, payload[key]);
     }
     form.get("dateOfRequest").disable();
-    form.get("approvalStatus").disable();
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postGymChangeRequest(formData).subscribe(
       (res) => {

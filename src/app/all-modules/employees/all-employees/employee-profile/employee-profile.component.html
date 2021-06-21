@@ -146,6 +146,7 @@
           *ngIf="dataToChild.user && employeeId"
           [dataFromParent]="dataToChild"
           [employeeId]="employeeId"
+          [isHr]="isHr"
         >
         </app-identification>
       </div>
@@ -163,6 +164,7 @@
                   ><span class="hint-text">Delete</span
                   ><i class="fa fa-trash"></i>
                 </a>
+
                 <a
                   *ngIf="dataToChild.canSeeProfileElement"
                   class="edit-icon hint mr-1"
@@ -307,6 +309,7 @@
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
         [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-referee>
       <!-- /Referee Card -->
       <!-- Dependent Contact Tab -->
@@ -315,6 +318,7 @@
           *ngIf="dataToChild.user && employeeId"
           [dataFromParent]="dataToChild"
           [employeeId]="employeeId"
+          [isHr]="isHr"
         >
         </app-dependent-contact>
       </div>
@@ -341,6 +345,7 @@
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
         [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-career>
       <!-- /Career card -->
       <!-- Qualification -->
@@ -564,7 +569,7 @@
                           >
                           <select
                             class="select form-control"
-                            formControlName="approvalStatus"
+                            formControlName="approval_status"
                           >
                             <option disabled>Select Status</option>
                             <option value="1">Confirmed</option>
@@ -595,6 +600,7 @@
         [employeeId]="employeeId"
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
+        [isHr]="isHr"
       ></app-prof-cert>
       <!-- /Professional Certification card -->
       <!-- Skills card -->
@@ -602,6 +608,7 @@
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
         [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-skills>
       <!-- /Skills card -->
     </div>
@@ -614,6 +621,7 @@
           *ngIf="dataToChild.user && employeeId"
           [dataFromParent]="dataToChild"
           [employeeId]="employeeId"
+          [isHr]="isHr"
         ></app-hobbies>
       </div>
     </div>
@@ -625,6 +633,7 @@
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
         [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-employee-hmo>
       <!-- Employee /Hmo card -->
       <!-- Hospital card -->
@@ -632,6 +641,7 @@
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
         [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-hospital>
       <!-- /Hospital card -->
       <!-- Employee Gym card -->
@@ -639,6 +649,7 @@
         *ngIf="dataToChild.user && employeeId"
         [dataFromParent]="dataToChild"
         [employeeId]="employeeId"
+        [isHr]="isHr"
       ></app-employee-gym>
       <!-- /Employee Gym card -->
     </div>

@@ -23,7 +23,7 @@ export class ProfCertComponent implements OnInit {
   fileInput: ElementRef;
   @Input() employeeId: number;
   @Input() dataFromParent: any;
-
+  @Input() isHr: string;
   // To hold data for card
   employeeProfCert: any[] = [];
   allCertificates$: Observable<any> = this.setupService.getProfCerts();
@@ -43,19 +43,19 @@ export class ProfCertComponent implements OnInit {
   ngOnInit(): void {
     this.initProfCertForm();
     this.getEmployeeProfCert(this.employeeId);
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [{ orderable: false }, null, null, null, null, null, null],
-      order: [[1, "asc"]],
-    };
+    // this.dtOptions = {
+    //   dom:
+    //     "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+    //     "<'row'<'col-sm-12'tr>>" +
+    //     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    //   language: {
+    //     search: "_INPUT_",
+    //     searchPlaceholder: "Start typing to search by any field",
+    //   },
+    //
+    //   columns: [{ orderable: false }, null, null, null, null, null, null],
+    //   order: [[1, "asc"]],
+    // };
   }
 
   setMinMaxDate(form: FormGroup, startDate: string, endDate: string) {
@@ -85,7 +85,14 @@ export class ProfCertComponent implements OnInit {
         (resp) => {
           this.loadingService.hide();
           // Converts response to file and downloads it
-          this.utilitiesService.byteToFile(resp, `${fileName}.${extension}`);
+          if (resp) {
+            return this.utilitiesService.byteToFile(
+              resp,
+              `${fileName}.${extension}`
+            );
+          } else {
+            return this.utilitiesService.showError("Unable to download file");
+          }
         },
         (err) => {
           this.loadingService.hide();
@@ -104,7 +111,7 @@ export class ProfCertComponent implements OnInit {
       institution: ["", Validators.required],
       dateGranted: ["", Validators.required],
       expiryDate: ["", Validators.required],
-      approvalStatus: [{ value: "2", disabled: !this.dataFromParent.isHr }],
+      approvalStatus: [{ value: "2", disabled: this.isHr !== "true" }],
       staffId: this.employeeId,
       gradeId: ["", Validators.required],
       profCertificationFile: ["", Validators.required],
@@ -157,7 +164,10 @@ export class ProfCertComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    payload.approvalStatus = 2;
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
+    payload.approvalStatus = +payload.approvalStatus;
     payload.dateGranted = new Date(payload.dateGranted).toLocaleDateString(
       "en-CA"
     );

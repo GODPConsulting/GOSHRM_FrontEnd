@@ -22,6 +22,7 @@ export class RefereeComponent implements OnInit {
 
   @Input() dataFromParent: any;
   @Input() employeeId: number;
+  @Input() isHr: string;
   // To hold data for each card
   employeeReferee: any = [];
   public dtOptions: DataTables.Settings = {};
@@ -36,32 +37,6 @@ export class RefereeComponent implements OnInit {
   ngOnInit(): void {
     this.getEmployeeReferee(this.employeeId);
     this.initRefereeForm();
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
-      order: [[1, "asc"]],
-    };
   }
 
   downloadFile() {
@@ -103,9 +78,10 @@ export class RefereeComponent implements OnInit {
       address: ["", Validators.required],
       confirmationReceived: ["", Validators.required],
       approvalStatus: ["", Validators.required],
-      approval_status: [{ value: "2", disabled: !this.dataFromParent.isHr }],
+      approval_status: [{ value: "2", disabled: this.isHr !== "true" }],
       staffId: this.employeeId,
       refereeFile: ["", Validators.required],
+      confirmationDate: [""],
     });
     // Resets the upload input of the add form
     if (this.fileInput) {
@@ -127,7 +103,7 @@ export class RefereeComponent implements OnInit {
       address: row.address,
       confirmationReceived: row.confirmationReceived,
       confirmationDate: row.confirmationDate,
-      approvalStatus: row.approvalStatus,
+      approval_status: row.approval_status,
       staffId: this.employeeId,
     });
     if (this.fileInput) {
@@ -139,7 +115,10 @@ export class RefereeComponent implements OnInit {
   submitRefereeForm(form: FormGroup) {
     // Send mail to HR
     const payload = form.value;
-    payload.approvalStatus = +payload.approvalStatus;
+    if (this.isHr !== "true") {
+      payload.approval_status = 2;
+    }
+    payload.approval_status = +payload.approval_status;
     form
       .get("confirmationDate")
       .setValue(
@@ -147,14 +126,13 @@ export class RefereeComponent implements OnInit {
       );
     const formData = new FormData();
     for (const key in form.value) {
-      formData.append(key, this.refereeForm.get(key).value);
+      formData.append(key, payload[key]);
     }
-    form.get("approvalStatus").disable();
     this.loadingService.show();
     return this.employeeService.postReferee(formData).subscribe(
       (res) => {
         this.loadingService.hide();
-        let message = res.status.message.friendlyMessage;
+        const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success").then(() => {
             if (!this.dataFromParent.isHr) {

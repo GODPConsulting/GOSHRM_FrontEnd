@@ -150,4 +150,12 @@ export class HeaderComponent implements OnInit {
   logOut() {
     this.authService.clearSession();
   }
+  viewProfile(employeeId: any) {
+    console.log(employeeId);
+    this.router.navigate(["/employees/employeeprofile"], {
+      queryParams: {
+        employeeId,
+      },
+    });
+  }
 }

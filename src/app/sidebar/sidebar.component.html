@@ -6,7 +6,7 @@
         <ul *ngIf="sidebarMenus.default">
           <!-- ESS -->
           <li
-            *ngIf="userRights.includes('profile')"
+            *ngIf="userRights?.includes('profile')"
             class="submenu"
             [ngClass]="{
               active:
@@ -36,7 +36,7 @@
               }"
             >
               <li
-                *ngIf="userRights.includes('profile')"
+                *ngIf="userRights?.includes('profile')"
                 [routerLink]="['/employees/employeeprofile/', user?.staffId]"
               >
                 <a
@@ -70,7 +70,7 @@
           <!-- /ESS -->
           <!-- Employee sidebar -->
           <li
-            *ngIf="userRights.includes('allemployees')"
+            *ngIf="userRights?.includes('allemployees')"
             class="submenu"
             [ngClass]="{
               active:
@@ -100,7 +100,7 @@
               }"
             >
               <li
-                *ngIf="userRights.includes('allemployees')"
+                *ngIf="userRights?.includes('allemployees')"
                 routerLink="/employees/employeeviews"
               >
                 <a
@@ -362,7 +362,7 @@
           <!-- /Employee sidebar -->
           <!-- Managers -->
           <li
-            *ngIf="userRights.includes('line manager')"
+            *ngIf="userRights?.includes('line manager')"
             class="submenu"
             [ngClass]="{
               active:
@@ -383,7 +383,7 @@
             ></a>
             <ul>
               <li
-                *ngIf="userRights.includes('line manager')"
+                *ngIf="userRights?.includes('line manager')"
                 class="submenu"
                 [ngClass]="{
                   active:
@@ -403,7 +403,7 @@
                 ></a>
                 <ul>
                   <li
-                    *ngIf="userRights.includes('line manager')"
+                    *ngIf="userRights?.includes('line manager')"
                     class="submenu"
                     [ngClass]="{
                       active:
@@ -433,7 +433,7 @@
                       }"
                     >
                       <li
-                        *ngIf="userRights.includes('line manager')"
+                        *ngIf="userRights?.includes('line manager')"
                         routerLink="/manager/direct-report-appraisals"
                       >
                         <a
@@ -461,7 +461,7 @@
                 ></a>
                 <ul>
                   <li
-                    *ngIf="userRights.includes('line manager')"
+                    *ngIf="userRights?.includes('line manager')"
                     class="submenu"
                     [ngClass]="{
                       active:
@@ -488,7 +488,7 @@
           <!-- Managers -->
           <!-- Setup sidebar -->
           <li
-            *ngIf="userRights.includes('job title')"
+            *ngIf="userRights?.includes('job title')"
             class="submenu"
             [ngClass]="{
               active:
@@ -648,7 +648,7 @@
               }"
             >
               <li
-                *ngIf="userRights.includes('employeeidformat')"
+                *ngIf="userRights?.includes('employeeidformat')"
                 routerLink="/setup/employee-id-format"
               >
                 <a
@@ -660,7 +660,7 @@
                 >
               </li>
               <li
-                *ngIf="userRights.includes('job grade')"
+                *ngIf="userRights?.includes('job grade')"
                 routerLink="/setup/job-grade"
               >
                 <a
@@ -672,7 +672,7 @@
                 >
               </li>
               <li
-                *ngIf="userRights.includes('high school subject')"
+                *ngIf="userRights?.includes('high school subject')"
                 routerLink="/setup/high-school-subjects"
               >
                 <a
@@ -684,7 +684,7 @@
                 >
               </li>
               <li
-                *ngIf="userRights.includes('employment type')"
+                *ngIf="userRights?.includes('employment type')"
                 routerLink="/setup/employment-type"
               >
                 <a
@@ -696,7 +696,7 @@
                 >
               </li>
               <li
-                *ngIf="userRights.includes('employment level')"
+                *ngIf="userRights?.includes('employment level')"
                 routerLink="/setup/employment-level"
               >
                 <a
@@ -707,7 +707,7 @@
                   >Employment Level</a
                 >
               </li>
-              <li *ngIf="userRights.includes('hmo')" routerLink="/setup/hmo">
+              <li *ngIf="userRights?.includes('hmo')" routerLink="/setup/hmo">
                 <a
                   href="javascript:"
                   [ngClass]="{ active: urlComplete.subUrl === 'hmo' }"
@@ -715,7 +715,7 @@
                 >
               </li>
               <li
-                *ngIf="userRights.includes('languages')"
+                *ngIf="userRights?.includes('languages')"
                 routerLink="/setup/language"
               >
                 <a
@@ -725,7 +725,7 @@
                 >
               </li>
               <li
-                *ngIf="userRights.includes('professional membership')"
+                *ngIf="userRights?.includes('professional membership')"
                 routerLink="/setup/prof-membership"
               >
                 <a
@@ -738,7 +738,7 @@
               </li>
 
               <li
-                *ngIf="userRights.includes('academic grade')"
+                *ngIf="userRights?.includes('academic grade')"
                 routerLink="/setup/academic-grade"
               >
                 <a
@@ -750,7 +750,7 @@
                 >
               </li>
               <li
-                *ngIf="userRights.includes('professional certification')"
+                *ngIf="userRights?.includes('professional certification')"
                 routerLink="/setup/prof-certification"
               >
                 <a
@@ -762,7 +762,7 @@
                 >
               </li>
               <li
-                *ngIf="userRights.includes('academic discipline')"
+                *ngIf="userRights?.includes('academic discipline')"
                 routerLink="/setup/academic-discipline"
               >
                 <a
@@ -774,7 +774,7 @@
                 >
               </li>
               <li
-                *ngIf="userRights.includes('gym/workout')"
+                *ngIf="userRights?.includes('gym/workout')"
                 routerLink="/setup/gym-workout"
               >
                 <a
@@ -784,7 +784,7 @@
                 </a>
               </li>
               <li
-                *ngIf="userRights.includes('academic qualification')"
+                *ngIf="userRights?.includes('academic qualification')"
                 routerLink="/setup/academic-qualification"
               >
                 <a
@@ -796,7 +796,7 @@
                 >
               </li>
               <li
-                *ngIf="userRights.includes('high school grades')"
+                *ngIf="userRights?.includes('high school grades')"
                 routerLink="/setup/high-school-grade"
               >
                 <a
@@ -808,7 +808,7 @@
                 >
               </li>
               <li
-                *ngIf="userRights.includes('location')"
+                *ngIf="userRights?.includes('location')"
                 routerLink="/setup/location"
               >
                 <a
@@ -818,7 +818,7 @@
                 </a>
               </li>
               <li
-                *ngIf="userRights.includes('hospital management')"
+                *ngIf="userRights?.includes('hospital management')"
                 routerLink="/setup/hospital-management"
               >
                 <a
@@ -830,7 +830,7 @@
                 </a>
               </li>
               <li
-                *ngIf="userRights.includes('job title')"
+                *ngIf="userRights?.includes('job title')"
                 routerLink="/setup/job-title"
               >
                 <a

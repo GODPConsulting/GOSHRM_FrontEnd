@@ -24,6 +24,7 @@ export class EmployeeHmoComponent implements OnInit {
   minDate: Date;
   @Input() dataFromParent: any;
   @Input() employeeId: number;
+  @Input() isHr: string;
   // To hold data for each card
   employeeHmo: any[] = [];
   public dtOptions: DataTables.Settings = {};
@@ -78,7 +79,7 @@ export class EmployeeHmoComponent implements OnInit {
       contactPhoneNo: ["", Validators.required],
       startDate: ["", Validators.required],
       end_Date: ["", Validators.required],
-      approvalStatus: [{ value: "2", disabled: !this.dataFromParent.isHr }],
+      approvalStatus: [{ value: "2", disabled: this.isHr !== "true" }],
       staffId: this.employeeId,
       setCurrentDate: [""],
     });
@@ -97,7 +98,7 @@ export class EmployeeHmoComponent implements OnInit {
       expectedDateOfChange: ["", Validators.required],
       hmoFile: ["", Validators.required],
       staffId: this.employeeId,
-      approvalStatus: [{ value: "2", disabled: !this.dataFromParent.isHr }],
+      approvalStatus: [{ value: "2", disabled: this.isHr !== "true" }],
     });
     // Set dateOfRequest to be min date for expectedDateOfChange to
     this.minDate = new Date(this.hmoChangeReqForm.get("dateOfRequest").value);
@@ -109,23 +110,26 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   submitHmoForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     // Send mail to HR
 
     if (!form.valid) {
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
-    payload.approvalStatus = 2;
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
+    payload.approvalStatus = +payload.approvalStatus;
     payload.hmoId = +payload.hmoId;
     /* const formData = new FormData();
     for (const key in form.value) {
 
       formData.append(key, this.employeeHmoForm.get(key).value);
     } */
-    form.get("approvalStatus").disable();
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHmo(payload).subscribe(
       (res) => {
@@ -133,20 +137,20 @@ export class EmployeeHmoComponent implements OnInit {
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success").then(() => {
-            if (!this.dataFromParent.isHr) {
-              this.utilitiesService
-                .sendToHr(
-                  "Add HMO",
-                  this.dataFromParent.user.firstName,
-                  this.dataFromParent.user.lastName,
-                  this.dataFromParent.user.email,
-                  this.dataFromParent.user.userId
-                )
-                .subscribe();
-              if (form.get("approvalStatus").value !== 2) {
-                form.get("approvalStatus").setValue(2);
-              }
-            }
+            // if (!this.dataFromParent.isHr) {
+            //   this.utilitiesService
+            //     .sendToHr(
+            //       "Add HMO",
+            //       this.dataFromParent.user.firstName,
+            //       this.dataFromParent.user.lastName,
+            //       this.dataFromParent.user.email,
+            //       this.dataFromParent.user.userId
+            //     )
+            //     .subscribe();
+            //   // if (form.get("approvalStatus").value !== 2) {
+            //   //   form.get("approvalStatus").setValue(2);
+            //   // }
+            // }
           });
           $("#hmo_modal").modal("hide");
         }
@@ -161,26 +165,26 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   submitHmoChangeReqForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     form.get("dateOfRequest").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Identification",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
-    }
+    // if (!this.dataFromParent.isHr) {
+    //   this.utilitiesService
+    //     .sendToHr(
+    //       "Add Identification",
+    //       this.dataFromParent.user.firstName,
+    //       this.dataFromParent.user.lastName,
+    //       this.dataFromParent.user.email,
+    //       this.dataFromParent.user.userId
+    //     )
+    //     .subscribe();
+    //   if (form.get("approvalStatus").value !== 2) {
+    //     form.get("approvalStatus").setValue(2);
+    //   }
+    // }
     if (!form.valid) {
       form.get("dateOfRequest").disable();
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
@@ -197,11 +201,16 @@ export class EmployeeHmoComponent implements OnInit {
           "en-CA"
         )
       );
-    for (const key in form.value) {
-      formData.append(key, this.hmoChangeReqForm.get(key)?.value);
+    const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
+    payload.approvalStatus = +payload.approvalStatus;
+    for (const key in payload) {
+      formData.append(key, payload[key]);
     }
     form.get("dateOfRequest").disable();
-    form.get("approvalStatus").disable();
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHmoChangeRequest(formData).subscribe(
       (res) => {

@@ -32,11 +32,8 @@ export class AuthService {
     });
     return (
       this.http
-        //.post("http://104.238.103.48:70/identity/login", JSON.stringify(payload), {
-        .post(
-          environment.api_url + "/identity/login",
-          JSON.stringify(payload),
-          {
+        //.post("http://107.180.93.38:5050/identity/login", JSON.stringify(payload), {
+        .post(environment.api_url + "/identity/login", JSON.stringify(payload),{
             headers: reqHeaders,
           }
         )
@@ -51,8 +48,8 @@ export class AuthService {
     );
   }
   getProfile(): Observable<any> {
-    return this.apiService.get(`/identity/profile`).pipe(
-      tap((data) => {
+    //return this.http.get(`http://107.180.93.38:5050/identity/profile`).pipe(tap((data) => {
+    return this.apiService.get(`/identity/profile`).pipe(tap((data) => {
         return data;
       })
     );

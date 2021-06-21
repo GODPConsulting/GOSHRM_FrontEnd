@@ -51,13 +51,17 @@ export class EmploymentTypeComponent implements OnInit {
       .subscribe(
         (resp) => {
           this.loadingService.hide();
-          return this.utilitiesService.byteToFile(
-            resp,
-            "Employment Type.xlsx",
-            {
-              type: "application/vnd.ms-excel",
-            }
-          );
+          if (resp) {
+            return this.utilitiesService.byteToFile(
+              resp,
+              "Employment Type.xlsx",
+              {
+                type: "application/vnd.ms-excel",
+              }
+            );
+          } else {
+            return this.utilitiesService.showError("Unable to download file");
+          }
         },
         (err) => {
           this.loadingService.hide();

@@ -25,7 +25,7 @@ export class HospitalComponent implements OnInit {
   fileInput: ElementRef;
 
   @Input() dataFromParent: any;
-
+  @Input() isHr: string;
   // To hold data for each card
   employeeHospital: any[] = [];
   allHospitals$: Observable<any>;
@@ -84,7 +84,7 @@ export class HospitalComponent implements OnInit {
       startDate: ["", Validators.required],
       endDate: ["", Validators.required],
       approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
+        { value: "2", disabled: this.isHr !== "true" },
         Validators.required,
       ],
       staffId: this.employeeId,
@@ -106,7 +106,7 @@ export class HospitalComponent implements OnInit {
       hospitalFile: ["", Validators.required],
       staffId: this.employeeId,
       approvalStatus: [
-        { value: "2", disabled: !this.dataFromParent.isHr },
+        { value: "2", disabled: this.isHr !== "true" },
         Validators.required,
       ],
     });
@@ -134,28 +134,31 @@ export class HospitalComponent implements OnInit {
   }
 
   submitHospitalForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Hospital",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
-    }
+    // if (!this.dataFromParent.isHr) {
+    //   this.utilitiesService
+    //     .sendToHr(
+    //       "Add Hospital",
+    //       this.dataFromParent.user.firstName,
+    //       this.dataFromParent.user.lastName,
+    //       this.dataFromParent.user.email,
+    //       this.dataFromParent.user.userId
+    //     )
+    //     .subscribe();
+    //   if (form.get("approvalStatus").value !== 2) {
+    //     form.get("approvalStatus").setValue(2);
+    //   }
+    // }
     if (!form.valid) {
       form.get("approvalStatus").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
     payload.hospitalId = +payload.hospitalId;
     payload.approvalStatus = +payload.approvalStatus;
     /*  const formData = new FormData();
@@ -163,7 +166,7 @@ export class HospitalComponent implements OnInit {
       formData.append(key, this.hospitalForm.get(key).value);
     }
  */
-    form.get("approvalStatus").disable();
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHospital(payload).subscribe(
       (res) => {
@@ -184,30 +187,34 @@ export class HospitalComponent implements OnInit {
   }
 
   submitHospitalChangeReqForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     form.get("dateOfRequest").enable();
     // Send mail to HR
-    if (!this.dataFromParent.isHr) {
-      this.utilitiesService
-        .sendToHr(
-          "Add Identification",
-          this.dataFromParent.user.firstName,
-          this.dataFromParent.user.lastName,
-          this.dataFromParent.user.email,
-          this.dataFromParent.user.userId
-        )
-        .subscribe();
-      if (form.get("approvalStatus").value !== 2) {
-        form.get("approvalStatus").setValue(2);
-      }
-    }
+    // if (!this.dataFromParent.isHr) {
+    //   this.utilitiesService
+    //     .sendToHr(
+    //       "Add Identification",
+    //       this.dataFromParent.user.firstName,
+    //       this.dataFromParent.user.lastName,
+    //       this.dataFromParent.user.email,
+    //       this.dataFromParent.user.userId
+    //     )
+    //     .subscribe();
+    //   if (form.get("approvalStatus").value !== 2) {
+    //     form.get("approvalStatus").setValue(2);
+    //   }
+    // }
     if (!form.valid) {
-      form.get("approvalStatus").disable();
+      // form.get("approvalStatus").disable();
       form.get("dateOfRequest").disable();
       swal.fire("Error", "please fill all mandatory fields", "error");
       return;
     }
     const payload = form.value;
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
+    payload.approvalStatus = +payload.approvalStatus;
     payload.expectedDateOfChange = new Date(
       payload.expectedDateOfChange
     ).toLocaleDateString("en-CA");
@@ -220,7 +227,7 @@ export class HospitalComponent implements OnInit {
     for (const key in form.value) {
       formData.append(key, this.hospitalChangeReqForm.get(key).value);
     }
-    form.get("approvalStatus").disable();
+    // form.get("approvalStatus").disable();
     form.get("dateOfRequest").disable();
     this.spinner = true;
     return this.employeeService.postHospitalChangeRequest(formData).subscribe(

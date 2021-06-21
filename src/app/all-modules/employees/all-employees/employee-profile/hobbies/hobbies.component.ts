@@ -24,6 +24,7 @@ export class HobbiesComponent implements OnInit {
 
   @Input() dataFromParent: any;
   @Input() employeeId: number;
+  @Input() isHr: string;
   // Forms
   hobbyForm: FormGroup;
 
@@ -38,19 +39,19 @@ export class HobbiesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [{ orderable: false }, null, null, null, null, null],
-      order: [[1, "asc"]],
-    };
+    // this.dtOptions = {
+    //   dom:
+    //     "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
+    //     "<'row'<'col-sm-12'tr>>" +
+    //     "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    //   language: {
+    //     search: "_INPUT_",
+    //     searchPlaceholder: "Start typing to search by any field",
+    //   },
+    //
+    //   columns: [{ orderable: false }, null, null, null, null, null],
+    //   order: [[1, "asc"]],
+    // };
     this.getEmployeeHobby(this.employeeId);
     this.initHobbyForm();
   }
@@ -62,13 +63,13 @@ export class HobbiesComponent implements OnInit {
       hobbyName: ["", Validators.required],
       rating: ["", Validators.required],
       description: ["", Validators.required],
-      approvalStatus: [{ value: "2", disabled: !this.dataFromParent.isHr }],
+      approvalStatus: [{ value: "2", disabled: this.isHr !== "true" }],
       staffId: this.employeeId,
     });
   }
 
   submitHobbyForm(form: FormGroup) {
-    form.get("approvalStatus").enable();
+    // form.get("approvalStatus").enable();
     // Send mail to HR
 
     if (!form.valid) {
@@ -77,8 +78,11 @@ export class HobbiesComponent implements OnInit {
       return;
     }
     const payload = form.value;
-    payload.approvalStatus = 2;
-    form.get("approvalStatus").disable();
+    if (this.isHr !== "true") {
+      payload.approvalStatus = 2;
+    }
+    payload.approvalStatus = +payload.approvalStatus;
+    // form.get("approvalStatus").disable();
     this.spinner = true;
     return this.employeeService.postHobby(payload).subscribe(
       (res) => {
@@ -96,9 +100,9 @@ export class HobbiesComponent implements OnInit {
                   this.dataFromParent.user.userId
                 )
                 .subscribe();
-              if (form.get("approvalStatus").value !== 2) {
-                form.get("approvalStatus").setValue(2);
-              }
+              // if (form.get("approvalStatus").value !== 2) {
+              //   form.get("approvalStatus").setValue(2);
+              // }
             }
             this.getEmployeeHobby(this.employeeId);
             $("#hobby_modal").modal("hide");

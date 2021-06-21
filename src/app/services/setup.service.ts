@@ -10,7 +10,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 export class SetupService {
   constructor(private apiService: ApiService) {}
   handleError(error: HttpErrorResponse) {
-    return throwError(error.error);
+    return throwError(error);
   }
 
   updateData(url: string, payload: object): Observable<any> {
@@ -28,7 +28,7 @@ export class SetupService {
   }
 
   exportExcelFile(url: string) {
-    return this.apiService.getDownload(url).pipe(
+    return this.apiService.getDownload(`/employee${url}`).pipe(
       map((data) => {
         return data;
       })
@@ -833,7 +833,7 @@ export class SetupService {
 
   downloadLocation() {
     return this.apiService
-      .getDownload("/employee/hrmsetup/download/locations")
+      .getDownload("/employee/hrmsetup/download/location")
       .pipe(
         tap(),
         map((res) => {

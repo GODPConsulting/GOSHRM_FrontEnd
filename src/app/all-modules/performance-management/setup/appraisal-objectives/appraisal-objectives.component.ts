@@ -67,7 +67,7 @@ export class AppraisalObjectivesComponent implements OnInit {
       console.log(this.fromLineManager);
       if (this.fromLineManager) {
         this.staffId = param.employeeId;
-        // this.jobGradeId = param.jobGradeId;
+        this.jobGradeId = param.jobGradeId;
         this.deptId = param.departmentId;
       }
     });

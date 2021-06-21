@@ -62,12 +62,12 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">
-            <tr data-toggle="modal" class="pointer" (click)="edit(row)">
-              <td (click)="stopParentEvent($event)" class="table-checkbox">
-                <p-tableCheckbox></p-tableCheckbox>
+            <tr data-toggle="modal" class="pointer">
+              <td class="table-checkbox">
+                <p-tableCheckbox [value]="row"></p-tableCheckbox>
               </td>
               <td class="sn_width">{{ i + 1 }}</td>
-              <td>{{ row.employment_type | titlecase }}</td>
+              <td (click)="edit(row)">{{ row.employment_type | titlecase }}</td>
             </tr>
           </ng-template>
         </p-table>
