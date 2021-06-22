@@ -116,7 +116,7 @@ export class LoginComponent implements OnInit {
     this.employeeService.getEmployee(id).subscribe(
       (data) => {
         this.loadingService.hide();
-        // this.hrmUser = data.employeeList[0];
+        this.hrmUser = data.employeeList[0];
         if (this.hrmUser) {
           this.hrmUser.branchId = this.user.branchId;
           this.hrmUser.branchName = this.user.branchName;

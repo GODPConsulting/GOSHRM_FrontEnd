@@ -67,6 +67,9 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.userRights = this.jwtService.getUserActivities();
     this.user = this.jwtService.getUserDetails();
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.hrmUser = user;
+    });
 
     // Slide up and down of menus
     $(document).on("click", "#sidebar-menu a", function (e) {

@@ -87,7 +87,6 @@ export class EmployeeProfileComponent implements OnInit {
     // Get access to the user data shared from sidebar
     this.jwtService.getHrmUserDetails().then((user) => {
       this.dataToChild.user = user;
-      console.log(user);
       this.dataToChild.isHr = this.dataToChild.user?.userRoleNames.includes(
         "HR Admin"
       );

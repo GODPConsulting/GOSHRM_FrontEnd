@@ -121,9 +121,10 @@ export class KpiToJobgradeComponent implements OnInit {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-
-          $("#add_kpi_to_job_grade").modal("hide");
+          swal.fire("GOSHRM", message, "success").then(() => {
+            $("#add_kpi_to_job_grade").modal("hide");
+            this.initializeForm();
+          });
         } else {
           swal.fire("GOSHRM", message, "error");
         }
@@ -182,9 +183,12 @@ export class KpiToJobgradeComponent implements OnInit {
 
   delete() {
     let payload: object;
-    if (this.selectedId.length === 0) {
+    if (this.selectedValues.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
     } else {
+      this.selectedValues.map((item) => {
+        this.selectedId.push(item.id);
+      });
       payload = {
         itemIds: this.selectedId,
       };
@@ -235,5 +239,10 @@ export class KpiToJobgradeComponent implements OnInit {
 
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
+  }
+
+  closeModal() {
+    this.initializeForm();
+    $("#add_kpi_to_job_grade").modal("hide");
   }
 }

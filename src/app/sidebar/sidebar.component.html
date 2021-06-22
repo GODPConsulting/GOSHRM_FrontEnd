@@ -37,7 +37,8 @@
             >
               <li
                 *ngIf="userRights?.includes('profile')"
-                [routerLink]="['/employees/employeeprofile/', user?.staffId]"
+                [routerLink]="['/employees/employeeprofile']"
+                [queryParams]="{ employeeId: hrmUser?.employeeId }"
               >
                 <a
                   href="javascript:"

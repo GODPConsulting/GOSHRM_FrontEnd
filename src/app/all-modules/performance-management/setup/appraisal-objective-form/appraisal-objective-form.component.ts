@@ -48,16 +48,16 @@ export class AppraisalObjectiveFormComponent implements OnInit {
       this.staffId = user.staffId;
       this.deptId = user.departmentId;
     }
-    this.jwtService.getHrmUserDetails().then((user) => {
-      if (user) {
-        this.jobGradeId = user.jobGrade;
+    this.jwtService.getHrmUserDetails().then((employee) => {
+      if (employee) {
+        this.jobGradeId = employee.jobGrade;
         this.getAppraisalCycle();
         this.getSingleEmployeeObjective();
+        this.getCareer(employee.employeeId);
       }
     });
     this.initializeForm();
     // this.getAppraisalCycle();
-    this.getCareer(this.staffId);
   }
   initializeForm() {
     this.appraisalObjectiveForm = this.formbuilder.group({
