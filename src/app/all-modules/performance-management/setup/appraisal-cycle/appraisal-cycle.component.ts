@@ -11,6 +11,7 @@ import { Subject } from "rxjs";
 
 import { ISearchColumn } from "../../../../interface/interfaces";
 import { CommonService } from "../../../../services/common.service";
+import { Router } from "@angular/router";
 
 declare const $: any;
 
@@ -63,7 +64,8 @@ export class AppraisalCycleComponent implements OnInit {
     private setupService: SetupService,
     private _location: Location,
     private loadingService: LoadingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private _router: Router
   ) {
     this.appraisalCycleUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -185,21 +187,29 @@ export class AppraisalCycleComponent implements OnInit {
   }
 
   edit(row) {
-    this.cardFormTitle = "Edit Appraisal Cycle";
-    this.appraisalCycleForm.patchValue({
-      id: row.id,
-      reviewYear: row.reviewYear,
-      company: row.company,
-      startDate: row.startDate,
-      endDate: row.endDate,
-      dueDate: row.dueDate,
-      reviewerOneWeight: row.reviewerOneWeight,
-      reviewerTwoWeight: row.reviewerTwoWeight,
-      reviewerThreeWeight: row.reviewerThreeWeight,
-      revieweeWeight: row.revieweeWeight,
-      status: row.status,
-    });
-    $("#appraisal_cycle_modal").modal("show");
+    this._router.navigate(
+      ["/performance/setup/appraisal-cycle/appraisal-cycle-page"],
+      {
+        queryParams: {
+          id: row.appraisalCycleId,
+        },
+      }
+    );
+    // this.cardFormTitle = "Edit Appraisal Cycle";
+    // this.appraisalCycleForm.patchValue({
+    //   id: row.id,
+    //   reviewYear: row.reviewYear,
+    //   company: row.company,
+    //   startDate: row.startDate,
+    //   endDate: row.endDate,
+    //   dueDate: row.dueDate,
+    //   reviewerOneWeight: row.reviewerOneWeight,
+    //   reviewerTwoWeight: row.reviewerTwoWeight,
+    //   reviewerThreeWeight: row.reviewerThreeWeight,
+    //   revieweeWeight: row.revieweeWeight,
+    //   status: row.status,
+    // });
+    // $("#appraisal_cycle_modal").modal("show");
   }
   hack(val: any[]) {
     return Array.from(val);

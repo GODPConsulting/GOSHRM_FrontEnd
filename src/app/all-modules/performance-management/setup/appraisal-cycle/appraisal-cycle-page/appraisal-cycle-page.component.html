@@ -39,7 +39,6 @@
             <div class="form-group">
               <label>Review Year</label>
               <select
-                type="date"
                 name="reviewYear"
                 class="form-control"
                 formControlName="reviewYear"
@@ -57,8 +56,14 @@
               <input
                 type="date"
                 name="startDate"
-                class="form-control"
+                class="form-control datetimepicker"
                 formControlName="startPeriod"
+                bsDatepicker
+                [bsConfig]="{
+                  isAnimated: true,
+                  dateInputFormat: 'YYYY-MM-DD',
+                  returnFocusToInput: true
+                }"
               />
             </div>
           </div>
@@ -68,8 +73,14 @@
               <input
                 type="date"
                 name="endDate"
-                class="form-control"
+                class="form-control datetimepicker"
                 formControlName="endPeriod"
+                bsDatepicker
+                [bsConfig]="{
+                  isAnimated: true,
+                  dateInputFormat: 'YYYY-MM-DD',
+                  returnFocusToInput: true
+                }"
               />
             </div>
           </div>
@@ -79,8 +90,14 @@
               <input
                 type="date"
                 name="dueDate"
-                class="form-control"
+                class="form-control datetimepicker"
                 formControlName="dueDate"
+                bsDatepicker
+                [bsConfig]="{
+                  isAnimated: true,
+                  dateInputFormat: 'YYYY-MM-DD',
+                  returnFocusToInput: true
+                }"
               />
             </div>
           </div>
@@ -108,7 +125,7 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label>Reviewer Weight iii</label>
+              <label>Reviewer Weight III</label>
               <input
                 name="reviewerThreeWeight"
                 type="number"

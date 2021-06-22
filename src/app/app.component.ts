@@ -1,5 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { PrimeNGConfig } from "primeng/api";
+import { JwtHelperService } from "@auth0/angular-jwt";
+import { JwtService } from "./services/jwt.service";
+import { Router } from "@angular/router";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
   selector: "app-root",
@@ -8,8 +12,23 @@ import { PrimeNGConfig } from "primeng/api";
 })
 export class AppComponent implements OnInit {
   title = "smarthr";
-  constructor(private primengConfig: PrimeNGConfig) {}
+  constructor(
+    private primengConfig: PrimeNGConfig,
+    private jwtService: JwtService,
+    private router: Router
+  ) {}
   ngOnInit() {
+    const helper = new JwtHelperService();
+    const token = this.jwtService.getToken();
+    const decodedToken = helper.decodeToken(token);
+    console.log(decodedToken);
+    const isExpired = helper.isTokenExpired(token);
+    if (isExpired) {
+      this.jwtService.destroyToken().then(() => {
+        this.router.navigate(["/login"]);
+      });
+    }
+
     this.primengConfig.ripple = true;
     // Minified Sidebar
 

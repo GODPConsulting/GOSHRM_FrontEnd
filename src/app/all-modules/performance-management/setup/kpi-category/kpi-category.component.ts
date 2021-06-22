@@ -150,7 +150,6 @@ export class KpiCategoryComponent implements OnInit {
   }
 
   edit(row) {
-    console.log(row);
     this.cardFormTitle = "Edit KPI Category";
     // this.kpiCategoryForm.patchValue({
     //   id: row.id,
@@ -276,7 +275,14 @@ export class KpiCategoryComponent implements OnInit {
   //   });
   // }
   closeModal() {
+    // this.initKpiCategoryForm();
+    this.id = 0;
+    this.name = "";
+    this.hrSelectReviewer = "";
+    this.employeePermitted = "";
+    this.weightModel = "";
+    this.description = "";
+    this.setWeightModel(this.weightModel);
     $("#kpi_category_modal").modal("hide");
-    this.initKpiCategoryForm();
   }
 }

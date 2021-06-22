@@ -96,12 +96,8 @@
           <!--              >{{ i + 1 }}</a-->
           <!--            >-->
           <!--          </td>-->
-          <td>
-            <a
-              class="text-dark d-block text-center"
-              [routerLink]="['appraisals', row.appraisalCycleId]"
-              >{{ row.reviewYear }}</a
-            >
+          <td (click)="edit(row)">
+            <a class="text-dark d-block text-center">{{ row.reviewYear }}</a>
           </td>
           <td>
             <a

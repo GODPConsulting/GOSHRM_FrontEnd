@@ -714,4 +714,15 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
+  getAppraisalCycle(id: number): Observable<IAppraisalCycle> {
+    return this.apiService
+      .get(`/performance/get/single/appraisal_cycle?Id=${id}`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list[0];
+        }),
+        catchError(this.handleError)
+      );
+  }
 }

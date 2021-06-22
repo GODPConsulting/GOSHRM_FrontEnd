@@ -5,16 +5,23 @@ import swal from "sweetalert2";
 import { saveAs } from "file-saver";
 import { isInteger } from "lodash";
 import { EmployeeService } from "./employee.service";
+import { BehaviorSubject } from "rxjs";
+import { JwtService } from "./jwt.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class UtilitiesService {
+  user = new BehaviorSubject<any>({});
+  employee = this.user.asObservable();
   constructor(
     private apiService: ApiService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private jwtService: JwtService
   ) {}
-
+  getCurrentUser() {
+    this.user.next(this.user);
+  }
   sendToHr(
     card,
     firstName: string,
