@@ -47,10 +47,10 @@
               <td (click)="viewObjectives(row)">
                 <a class="table-link">{{ row.reviewPeriod }}</a>
               </td>
-              <td>{{ row.employeeName }}</td>
+              <td>{{ row.employeeName | titlecase }}</td>
               <td>{{ row.jobGradeName }}</td>
-              <td>{{ row.officeName }}</td>
-              <td>{{ row.reviewStatus }}</td>
+              <td>{{ row.officeName | titlecase }}</td>
+              <td>{{ row.reviewStatus | titlecase }}</td>
               <td>{{ row.points }}</td>
               <td (click)="viewAppraisal(row)">
                 <a class="table-link">Appraisal Forms</a>
