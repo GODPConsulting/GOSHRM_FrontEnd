@@ -159,11 +159,9 @@
           <span aria-hidden="true" (click)="closeModal()">&times;</span>
         </button>
       </div>
+      <!--      <div>Total Weight: {{ totalWeight | number: "1.2-2" }}</div>-->
       <div class="modal-body">
-        <form
-          (ngSubmit)="submitKpiToJobGrades(kpiToJobGradeForm)"
-          [formGroup]="kpiToJobGradeForm"
-        >
+        <form [formGroup]="kpiToJobGradeForm">
           <div class="row">
             <div class="col-sm-4">
               <div class="form-group">
@@ -262,14 +260,14 @@
                 />
                 <div
                   *ngIf="
-                    kpiToJobGradeForm.get('kpiCategoryId').invalid &&
-                    kpiToJobGradeForm.get('kpiCategoryId').touched
+                    kpiToJobGradeForm.get('weight').invalid &&
+                    kpiToJobGradeForm.get('weight').touched
                   "
                 >
                   <small
                     *ngIf="
-                      kpiToJobGradeForm.get('kpiCategoryId').invalid &&
-                      kpiToJobGradeForm.get('kpiCategoryId').touched
+                      kpiToJobGradeForm.get('weight').invalid &&
+                      kpiToJobGradeForm.get('weight').touched
                     "
                     class="text-danger"
                   >
@@ -290,9 +288,16 @@
           </div>
           <div class="submit-section">
             <button
+              (click)="saveItem(kpiToJobGradeForm)"
+              class="btn btn-success submit-btn save-btn"
+            >
+              Save
+            </button>
+            <button
               class="btn btn-primary submit-btn"
               type="submit"
               [disabled]="spinner"
+              (click)="submitKpiToJobGrades(kpiToJobGradeForm)"
             >
               <span *ngIf="!spinner">Submit</span>
               <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>

@@ -3,7 +3,7 @@
   <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
-        <h3 class="page-title">Appraisal Cycle</h3>
+        <h3 class="page-title">Performance Cycle</h3>
       </div>
       <div class="col-md-4">
         <div class="form-group">
@@ -78,9 +78,7 @@
           <th pSortableColumn="reviewerOneWeight">Reviewer I</th>
           <th pSortableColumn="reviewerTwoWeight">Reviewer II</th>
           <th pSortableColumn="reviewerThreeWeight">Reviewer III</th>
-          <!--          <th pSortableColumn="revieweeWeight" style="width: 10rem">-->
-          <!--            Reviewee Weight-->
-          <!--          </th>-->
+          <th pSortableColumn="revieweeWeight">Reviewee Weight</th>
           <th pSortableColumn="status">Status</th>
         </tr>
       </ng-template>
@@ -141,13 +139,13 @@
               >{{ row.reviewerThreeWeight }}</a
             >
           </td>
-          <!--          <td style="width: 10rem">-->
-          <!--            <a-->
-          <!--              class="text-dark d-block text-center"-->
-          <!--              [routerLink]="['appraisals', row.id]"-->
-          <!--              >{{ row.revieweeWeight }}</a-->
-          <!--            >-->
-          <!--          </td>-->
+          <td>
+            <a
+              class="text-dark d-block text-center"
+              [routerLink]="['appraisals', row.appraisalCycleId]"
+              >{{ row.revieweeWeight }}</a
+            >
+          </td>
           <td>
             <a
               class="text-dark d-block text-center"

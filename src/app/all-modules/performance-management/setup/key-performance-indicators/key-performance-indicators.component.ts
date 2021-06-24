@@ -108,9 +108,11 @@ export class KeyPerformanceIndicatorsComponent
           const message = res.status.message.friendlyMessage;
 
           if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.fileInput.nativeElement.value = "";
-            $("#upload_kp_indicator").modal("hide");
+            swal.fire("GOSHRM", message, "success").then(() => {
+              this.fileInput.nativeElement.value = "";
+              $("#upload_kp_indicator").modal("hide");
+              this.getSavedKPIndicators();
+            });
           } else {
             swal.fire("GOSHRM", message, "error");
           }

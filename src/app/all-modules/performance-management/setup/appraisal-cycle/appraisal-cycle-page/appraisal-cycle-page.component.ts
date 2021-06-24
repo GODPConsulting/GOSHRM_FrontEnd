@@ -70,7 +70,7 @@ export class AppraisalCyclePageComponent implements OnInit {
       if (id) this.getAppraisalCycle(id);
     });
     this.getAppraisalCycles();
-    this.cardFormTitle = "Add Appraisal Cycle";
+    this.cardFormTitle = "Add Performance Cycle";
     this.createYears(2000, 2050);
     this.getStaffDepartments();
     this.initialiseForm();
@@ -88,6 +88,7 @@ export class AppraisalCyclePageComponent implements OnInit {
       startPeriod: [""],
       endPeriod: [""],
       dueDate: [""],
+      revieweeWeight: [""],
       reviewerOneWeight: [""],
       reviewerTwoWeight: [""],
       reviewerThreeWeight: [""],
@@ -111,6 +112,7 @@ export class AppraisalCyclePageComponent implements OnInit {
           reviewerThreeWeight: res.reviewerThreeWeight,
           status: res.status,
           department: res.department,
+          revieweeWeight: res.revieweeWeight,
         });
       },
       (err) => {
@@ -123,6 +125,16 @@ export class AppraisalCyclePageComponent implements OnInit {
     payload.department = +payload.department;
     payload.status = +payload.status;
     payload.reviewYear = +payload.reviewYear;
+    const sum =
+      payload.revieweeWeight +
+      payload.reviewerOneWeight +
+      payload.reviewerTwoWeight +
+      payload.reviewerThreeWeight;
+    if (sum !== 100) {
+      return this.utilitiesService.showError(
+        `All assigned weight must be 100%, assigned weight is ${sum}`
+      );
+    }
     this.loadingService.show();
     return this.performanceManagementService
       .postAppraisalCycle(payload)
