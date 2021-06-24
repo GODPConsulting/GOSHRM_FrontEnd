@@ -266,7 +266,18 @@ export class KpiCategoryComponent implements OnInit {
     }
   }
 
-  downloadFile() {}
+  downloadFile() {
+    this.loadingService.show();
+    this.performanceManagementService.downloadKpiCategory().subscribe(
+      (res) => {
+        this.loadingService.hide();
+        return this.utilitiesService.byteToFile(res, "KPI Category.xlsx");
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
+  }
 
   // rerender(): void {
   //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {

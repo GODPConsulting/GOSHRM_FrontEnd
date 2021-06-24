@@ -31,7 +31,17 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
-
+  downloadKpiCategory() {
+    return this.apiService
+      .get(`/performance/performancesetup/download/kpi-categories`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
   postkpiCategory(payload: Object) {
     return this.apiService
       .post("/performance/performancesetup/add/update/kpi-category", payload)
