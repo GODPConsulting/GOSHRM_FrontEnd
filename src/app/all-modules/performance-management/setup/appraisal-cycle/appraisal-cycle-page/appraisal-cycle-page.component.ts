@@ -8,7 +8,7 @@ import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
 import { CommonService } from "../../../../../services/common.service";
 import { IAppraisalCycle } from "../../../../../interface/interfaces";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 declare const $: any;
 @Component({
@@ -56,7 +56,8 @@ export class AppraisalCyclePageComponent implements OnInit {
     private setupService: SetupService,
     private loadingService: LoadingService,
     private commonService: CommonService,
-    private router: Router
+    private router: Router,
+    private _route: ActivatedRoute
   ) {
     this.appraisalCycleUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -64,8 +65,12 @@ export class AppraisalCyclePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._route.queryParams.subscribe((param) => {
+      const id: number = param.id;
+      if (id) this.getAppraisalCycle(id);
+    });
     this.getAppraisalCycles();
-    this.cardFormTitle = "Add Appraisal Cycle";
+    this.cardFormTitle = "Add Performance Cycle";
     this.createYears(2000, 2050);
     this.getStaffDepartments();
     this.initialiseForm();
@@ -83,6 +88,7 @@ export class AppraisalCyclePageComponent implements OnInit {
       startPeriod: [""],
       endPeriod: [""],
       dueDate: [""],
+      revieweeWeight: [""],
       reviewerOneWeight: [""],
       reviewerTwoWeight: [""],
       reviewerThreeWeight: [""],
@@ -90,11 +96,45 @@ export class AppraisalCyclePageComponent implements OnInit {
       department: [""],
     });
   }
+  getAppraisalCycle(id: number) {
+    this.loadingService.show();
+    return this.performanceManagementService.getAppraisalCycle(id).subscribe(
+      (res) => {
+        this.loadingService.hide();
+        this.appraisalCycleForm.patchValue({
+          appraisalCycleId: res.appraisalCycleId,
+          reviewYear: res.reviewYear,
+          startPeriod: new Date(res.startPeriod).toLocaleDateString("en-CA"),
+          endPeriod: new Date(res.endPeriod).toLocaleDateString("en-CA"),
+          dueDate: new Date(res.dueDate).toLocaleDateString("en-CA"),
+          reviewerOneWeight: res.reviewerOneWeight,
+          reviewerTwoWeight: res.reviewerTwoWeight,
+          reviewerThreeWeight: res.reviewerThreeWeight,
+          status: res.status,
+          department: res.department,
+          revieweeWeight: res.revieweeWeight,
+        });
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
+  }
   submitAppraisalCycleForm(form: FormGroup) {
     const payload: IAppraisalCycle = form.value;
     payload.department = +payload.department;
     payload.status = +payload.status;
     payload.reviewYear = +payload.reviewYear;
+    const sum =
+      payload.revieweeWeight +
+      payload.reviewerOneWeight +
+      payload.reviewerTwoWeight +
+      payload.reviewerThreeWeight;
+    if (sum !== 100) {
+      return this.utilitiesService.showError(
+        `All assigned weight must be 100%, assigned weight is ${sum}`
+      );
+    }
     this.loadingService.show();
     return this.performanceManagementService
       .postAppraisalCycle(payload)

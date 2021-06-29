@@ -70,6 +70,7 @@ export class GradeSettingComponent implements OnInit {
       },
       (err) => {
         this.spinner = false;
+        this.utilitiesService.showMessage(err, "error");
         // const message = err.status.message.friendlyMessage;
         // swal.fire('GOS HRM', message, 'success')
       }

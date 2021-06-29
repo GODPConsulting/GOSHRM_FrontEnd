@@ -7,9 +7,14 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
 import { ISearchColumn } from "../../../../interface/interfaces";
+import { totalmem } from "os";
 
 declare const $: any;
-
+interface Indicator {
+  kpi: number;
+  categoryId?: number;
+  weight?: number;
+}
 @Component({
   selector: "app-kpi-to-jobgrade",
   templateUrl: "./kpi-to-jobgrade.component.html",
@@ -33,6 +38,10 @@ export class KpiToJobgradeComponent implements OnInit {
   cols: ISearchColumn[] = [];
   selectedValues: any[] = [];
   weightSummaryCols: ISearchColumn[] = [];
+  indicators: Indicator[] = [];
+  payload: any[] = [];
+  tempArr: any[] = [];
+  totalWeight: number = 100;
   constructor(
     private setupService: SetupService,
     private performanceService: PerformanceManagementService,
@@ -81,7 +90,7 @@ export class KpiToJobgradeComponent implements OnInit {
       jobGradeId: ["", Validators.required],
       kpiCategoryId: ["", Validators.required],
       weight: ["", Validators.required],
-      kpIs: [[], Validators.required],
+      kpIs: [[]],
     });
     this.source = [];
     this.confirmed = [];
@@ -104,13 +113,26 @@ export class KpiToJobgradeComponent implements OnInit {
       row.kpIs.includes(source.id);
     });
   }
-
+  calculateSum(arr): number {
+    return arr.reduce((total, item) => item.weight + total, 0);
+  }
   submitKpiToJobGrades(form: FormGroup) {
-    const kpiIds = this.confirmed.map((kpi) => kpi.id);
-    form.get("kpIs").setValue(kpiIds);
+    // const kpiIds = this.confirmed.map((kpi) => kpi.id);
+    // form.get("kpIs").setValue(kpiIds);
     const payload = form.value;
     payload.jobGradeId = +payload.jobGradeId;
     payload.kpiCategoryId = +payload.kpiCategoryId;
+    const data = {
+      jobGradeId: +payload.jobGradeId,
+      payload: this.payload,
+    };
+    // const sum = this.payload.reduce((total, item) => item.weight + total, 0);
+    // if (sum > 100)
+    //   return this.utilitiesService.showError(
+    //     "Total weight is greater than 100"
+    //   );
+    console.log(JSON.stringify(data));
+    return;
     if (!form.valid) {
       swal.fire("GOSHRM", "Please fill all mandatory fields", "error");
       return;
@@ -157,6 +179,9 @@ export class KpiToJobgradeComponent implements OnInit {
 
   getKpiByKpiCategoryId(id: number) {
     this.confirmed = [];
+    this.kpiToJobGradeForm.patchValue({
+      weight: "",
+    });
     this.performanceService.getKpiByKpiCategoryId(id).subscribe(
       (data) => {
         this.source = data.setupList;
@@ -244,5 +269,50 @@ export class KpiToJobgradeComponent implements OnInit {
   closeModal() {
     this.initializeForm();
     $("#add_kpi_to_job_grade").modal("hide");
+  }
+
+  saveItem(form) {
+    const data = form.value;
+    if (!data.jobGradeId) {
+      return this.utilitiesService.showError("Select Job grade");
+    }
+    if (!data.kpiCategoryId) {
+      return this.utilitiesService.showError("Select KPI category");
+    }
+    if (!data.weight) {
+      return this.utilitiesService.showError("Weight is required");
+    }
+    let kpiIds: any[] = [];
+    // console.log(this.confirmed);
+    this.confirmed.forEach((kpi) => {
+      kpiIds.push(kpi.id);
+    });
+    if (kpiIds.length === 0) {
+      return this.utilitiesService.showError("Select KPIs");
+    }
+    // kpiIds.weight = +data.weight;
+    // kpiIds.categoryId = +data.kpiCategoryId;
+    // const kpiIds = this.confirmed.map((kpi) => kpi.id);
+    const payload = {
+      kpis: kpiIds,
+      weight: +data.weight,
+      kpiCategoryId: +data.kpiCategoryId,
+    };
+    this.tempArr.push(payload);
+    const sum = this.calculateSum(this.tempArr);
+    // if (sum < 100) {
+    //   this.totalWeight -= sum;
+    // }
+    if (sum > 100) {
+      return this.utilitiesService
+        .showError(`Total weight is greater than 100`)
+        .then(() => {
+          this.tempArr.pop();
+        });
+    } else {
+      this.payload.push(payload);
+      this.confirmed = [];
+      this.source = [];
+    }
   }
 }

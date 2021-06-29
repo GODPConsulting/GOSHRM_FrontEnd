@@ -23,12 +23,10 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const user = this.jwtService.getUserDetails();
-    this.employeeId = user.staffId;
-    this.deptId = user.companyId;
-    this.jwtService.getHrmUserDetails().then((user) => {
-      console.log(user);
-      this.jobGradeId = user.jobGrade;
+    this.jwtService.getHrmUserDetails().then((employee) => {
+      this.employeeId = employee.staffId;
+      this.jobGradeId = employee.jobGrade;
+      this.deptId = employee.companyId;
       this.getEmployeeAppraisalCycle();
     });
   }

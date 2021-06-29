@@ -54,18 +54,6 @@ export class KeyPerformanceIndicatorsComponent
     this.initializeForm();
     this.getKpiCategory();
     this.getSavedKPIndicators();
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-      columns: [{ orderable: false }, null, null, null, null, null, null],
-      order: [[1, "asc"]],
-    };
   }
 
   addKPIndicator(keyPerformanceIndicatorForm) {
@@ -120,9 +108,11 @@ export class KeyPerformanceIndicatorsComponent
           const message = res.status.message.friendlyMessage;
 
           if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", message, "success");
-            this.fileInput.nativeElement.value = "";
-            $("#upload_kp_indicator").modal("hide");
+            swal.fire("GOSHRM", message, "success").then(() => {
+              this.fileInput.nativeElement.value = "";
+              $("#upload_kp_indicator").modal("hide");
+              this.getSavedKPIndicators();
+            });
           } else {
             swal.fire("GOSHRM", message, "error");
           }
@@ -153,11 +143,15 @@ export class KeyPerformanceIndicatorsComponent
     );
   }
   getSavedKPIndicators() {
+    this.loadingService.show();
     return this.performanceManagementService.getKPIndicators().subscribe(
       (data) => {
+        this.loadingService.hide();
         this.kpIndicators = data["setupList"];
       },
-      (err) => {}
+      (err) => {
+        this.loadingService.hide();
+      }
     );
   }
 

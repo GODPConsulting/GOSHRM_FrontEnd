@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import swal from "sweetalert2";
 
@@ -34,21 +34,26 @@ export class AppraisalPreferenceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initializeForm();
+    this.getCompanies();
     this.jwtService.getHrmUserDetails().then((user) => {
       this.staffId = user.staffId;
       this.jobGradeId = user.jobGrade;
-      this.deptId = user.departmentId;
+      this.deptId = user.departmentId.toString();
       // this.getAppraisalCycleByCompanyId();
+      console.log(this.appraisalPreferenceForm.value);
+      this.appraisalPreferenceForm.patchValue({
+        company: this.deptId,
+      });
+      this.getAppraisalCycleByCompanyId(this.deptId);
     });
-    this.initializeForm();
-    this.getCompanies();
   }
 
   initializeForm() {
     this.appraisalPreferenceForm = this.formBuilder.group({
       id: [0],
       company: [0],
-      appraisalCircle: [0],
+      appraisalCircle: [0, Validators.required],
       reviewerOneCommentVisibility: [0],
       reviewerTwoCommentVisibility: [0],
       reviewerThreeCommentVisibility: [0],
