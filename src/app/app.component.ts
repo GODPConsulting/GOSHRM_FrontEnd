@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     const helper = new JwtHelperService();
     const token = this.jwtService.getToken();
     const decodedToken = helper.decodeToken(token);
-    console.log(decodedToken);
+    // console.log(decodedToken);
     const isExpired = helper.isTokenExpired(token);
     if (isExpired) {
       this.jwtService.destroyToken().then(() => {

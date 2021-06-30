@@ -61,10 +61,10 @@
                 <!--                  (change)="checkAll($event)"-->
                 <!--                />-->
               </th>
-              <th>S/N</th>
-              <th>Job Grade</th>
-              <th>KPI Category</th>
-              <th>Weight</th>
+              <th class="sn_width">S/N</th>
+              <th style="width: 7em">Job Grade</th>
+              <th style="width: 10em">KPI Category</th>
+              <th style="width: 7em">Weight</th>
               <th>KPIs</th>
             </tr>
           </ng-template>
@@ -73,11 +73,13 @@
               <td (click)="stopParentEvent($event)" class="table-checkbox">
                 <p-tableCheckbox [value]="row"></p-tableCheckbox>
               </td>
-              <td>{{ i + 1 }}</td>
-              <td>{{ row.jobGradeName }}</td>
-              <td>{{ row.kpiCategoryName }}</td>
-              <td>{{ row.weight }}</td>
-              <td>{{ row.kpIsNameList }}</td>
+              <td class="sn_width">{{ i + 1 }}</td>
+              <td style="width: 7em">{{ row.jobGradeName }}</td>
+              <td style="width: 10em">{{ row.kpiCategoryName }}</td>
+              <td style="width: 7em">{{ row.weight }}</td>
+              <td *ngFor="let item of row.payloads">
+                {{ getKpiNames(item.kpis) }}
+              </td>
             </tr>
           </ng-template>
         </p-table>

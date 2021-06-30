@@ -23,7 +23,7 @@ interface Indicator {
 export class KpiToJobgradeComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   public dtWeightOptions: DataTables.Settings = {};
-  public kpiToJobGrades: any[] = [];
+  public kpiToJobGrades: any;
   public spinner: boolean = false;
   public formTitle = "Add KPI To Job Grade";
   public kpiToJobGradeForm: FormGroup;
@@ -132,16 +132,17 @@ export class KpiToJobgradeComponent implements OnInit {
     //     "Total weight is greater than 100"
     //   );
     console.log(JSON.stringify(data));
-    return;
     if (!form.valid) {
       swal.fire("GOSHRM", "Please fill all mandatory fields", "error");
       return;
     }
     this.spinner = true;
-    this.performanceService.postKpiToJobGrade(payload).subscribe(
+    this.performanceService.postKpiToJobGrade(data).subscribe(
       (res) => {
         this.spinner = false;
         const message = res.status.message.friendlyMessage;
+        this.payload = [];
+        this.tempArr = [];
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success").then(() => {
             $("#add_kpi_to_job_grade").modal("hide");
@@ -154,12 +155,16 @@ export class KpiToJobgradeComponent implements OnInit {
       },
       (err) => {
         this.spinner = false;
+        this.payload = [];
+        this.tempArr = [];
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
     );
   }
-
+  getKpiNames(arr: Array<any>): string {
+    return arr.map((item) => item.kpiName).toString();
+  }
   getKpiToJobGrades() {
     this.loadingService.show();
     this.performanceService.getKpiToJobGrades().subscribe(
@@ -167,7 +172,7 @@ export class KpiToJobgradeComponent implements OnInit {
         this.loadingService.hide();
         this.getWeightSummary();
         this.kpiToJobGrades = data.setupList;
-        this.dtTrigger.next();
+        // this.getKpiNames(this.kpiToJobGrades.payloads[0].kpis);
       },
       (err) => {
         this.loadingService.hide();
@@ -285,7 +290,9 @@ export class KpiToJobgradeComponent implements OnInit {
     let kpiIds: any[] = [];
     // console.log(this.confirmed);
     this.confirmed.forEach((kpi) => {
-      kpiIds.push(kpi.id);
+      kpiIds.push({
+        kpiId: kpi.id,
+      });
     });
     if (kpiIds.length === 0) {
       return this.utilitiesService.showError("Select KPIs");
@@ -298,6 +305,7 @@ export class KpiToJobgradeComponent implements OnInit {
       weight: +data.weight,
       kpiCategoryId: +data.kpiCategoryId,
     };
+    console.log(payload);
     this.tempArr.push(payload);
     const sum = this.calculateSum(this.tempArr);
     // if (sum < 100) {
