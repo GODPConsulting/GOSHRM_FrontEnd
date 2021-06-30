@@ -201,6 +201,7 @@ export class PerformanceManagementService {
   }
 
   getAppraisalCycles() {
+    //return this.apiService.get("/performance/performancesetup/get/all/appraisal-cycles").pipe(
     return this.apiService.get("/performance/get/all/appraisal_cycles").pipe(
       tap(),
       map((res) => {

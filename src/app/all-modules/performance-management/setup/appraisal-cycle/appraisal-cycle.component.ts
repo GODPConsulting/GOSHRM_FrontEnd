@@ -48,7 +48,7 @@ export class AppraisalCycleComponent implements OnInit {
   reviewerOneWeight: any;
   reviewerTwoWeight: any;
   reviewerThreeWeight: any;
-  revieweeWeight: any;
+  reviewerWeight: any;
   status: string;
   filteredArray: any[] = [];
   public offices: number[] = [];
@@ -133,7 +133,7 @@ export class AppraisalCycleComponent implements OnInit {
       reviewerOneWeight: this.reviewerOneWeight,
       reviewerTwoWeight: this.reviewerTwoWeight,
       reviewerThreeWeight: this.reviewerThreeWeight,
-      revieweeWeight: this.revieweeWeight,
+      reviewerWeight: this.reviewerWeight,
       status: +this.status,
       calenderRange: this.calenderRange,
     };
@@ -157,7 +157,7 @@ export class AppraisalCycleComponent implements OnInit {
             this.reviewerOneWeight = "";
             this.reviewerTwoWeight = "";
             this.reviewerThreeWeight = "";
-            this.revieweeWeight = "";
+            this.reviewerWeight = "";
             this.status = "";
             this.calenderRange = "";
           }
