@@ -249,13 +249,23 @@ export class PerformanceManagementService {
       );
   }
 
-  getKpiToJobGrades() {
+  getKpiToJobGrades(): Observable<any> {
     return this.apiService
       .get("/performance/performancesetup/get/all/kpi-to-jobgrades")
       .pipe(
         tap(),
         map((res) => {
-          return res;
+          return res.setupList.map((item) => {
+            return {
+              jobGradeName: item.jobGradeName,
+              kpiCategoryName: item.kpiCategoryName,
+              weight: item.weight,
+              kpis: item.payloads
+                .map((item) => item.kpis)
+                .map((kpi) => kpi.map((row) => row.kpiName))
+                .toString(),
+            };
+          });
         }),
         catchError(this.handleError)
       );

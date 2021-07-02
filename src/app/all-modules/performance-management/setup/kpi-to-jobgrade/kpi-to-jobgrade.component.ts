@@ -163,7 +163,17 @@ export class KpiToJobgradeComponent implements OnInit {
     );
   }
   getKpiNames(arr: Array<any>): string {
-    return arr.map((item) => item.kpiName).toString();
+    return arr
+      .map((item) => {
+        console.log(item.kpiName);
+        return item.kpiName;
+      })
+      .toString();
+  }
+  getScores(arr: any) {
+    arr.map((item) => {
+      return item.weight;
+    });
   }
   getKpiToJobGrades() {
     this.loadingService.show();
@@ -171,7 +181,8 @@ export class KpiToJobgradeComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.getWeightSummary();
-        this.kpiToJobGrades = data.setupList;
+        console.log(data);
+        this.kpiToJobGrades = data;
         // this.getKpiNames(this.kpiToJobGrades.payloads[0].kpis);
       },
       (err) => {
