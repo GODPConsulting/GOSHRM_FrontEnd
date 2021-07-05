@@ -209,7 +209,9 @@
                   >KPI Category<span class="text-danger">*</span></label
                 >
                 <select
-                  (change)="getKpiByKpiCategoryId($event.target.value)"
+                  (change)="
+                    getKpiByKpiCategoryId($event.target.value, 'changed')
+                  "
                   class="form-control"
                   type="text"
                   [class.invalid]="
@@ -280,6 +282,7 @@
               <dual-list
                 [source]="source"
                 [(destination)]="confirmed"
+                (destinationChange)="getConfirmed()"
                 key="id"
                 display="kpi"
                 height="200px"
