@@ -96,7 +96,8 @@ export class KpiToJobgradeComponent implements OnInit {
     this.confirmed = [];
   }
   edit(row) {
-    this.getKpiByKpiCategoryId(row.kpiCategoryId);
+    console.log(row);
+    this.getKpiByKpiCategoryId(row.kpiCategoryId, "edit");
     this.formTitle = "Edit KPI To Job Grade";
     this.kpiToJobGradeForm.patchValue({
       id: row.id,
@@ -131,7 +132,6 @@ export class KpiToJobgradeComponent implements OnInit {
     //   return this.utilitiesService.showError(
     //     "Total weight is greater than 100"
     //   );
-    console.log(JSON.stringify(data));
     if (!form.valid) {
       swal.fire("GOSHRM", "Please fill all mandatory fields", "error");
       return;
@@ -181,7 +181,7 @@ export class KpiToJobgradeComponent implements OnInit {
       (data) => {
         this.loadingService.hide();
         this.getWeightSummary();
-        console.log(data);
+        // console.log(data);
         this.kpiToJobGrades = data;
         // this.getKpiNames(this.kpiToJobGrades.payloads[0].kpis);
       },
@@ -193,8 +193,9 @@ export class KpiToJobgradeComponent implements OnInit {
     );
   }
 
-  getKpiByKpiCategoryId(id: number) {
-    this.confirmed = [];
+  getKpiByKpiCategoryId(id: number, source: string) {
+    // this.confirmed = [];
+    console.log(source);
     this.kpiToJobGradeForm.patchValue({
       weight: "",
     });
@@ -211,8 +212,8 @@ export class KpiToJobgradeComponent implements OnInit {
     this.performanceService.getKpiToJobGradesWeightSumary().subscribe(
       (data) => {
         this.loadingService.hide();
-        this.weightSummary = data.setupList;
-        this.dtWeightTrigger.next();
+        console.log(data);
+        this.weightSummary = data;
       },
       (err) => {
         this.loadingService.hide();
@@ -288,6 +289,8 @@ export class KpiToJobgradeComponent implements OnInit {
   }
 
   saveItem(form) {
+    // console.log(this.confirmed);
+    // return;
     const data = form.value;
     if (!data.jobGradeId) {
       return this.utilitiesService.showError("Select Job grade");
@@ -333,5 +336,9 @@ export class KpiToJobgradeComponent implements OnInit {
       this.confirmed = [];
       this.source = [];
     }
+  }
+
+  getConfirmed() {
+    return this.confirmed;
   }
 }

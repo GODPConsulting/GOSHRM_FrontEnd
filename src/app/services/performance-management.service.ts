@@ -257,9 +257,13 @@ export class PerformanceManagementService {
         map((res) => {
           return res.setupList.map((item) => {
             return {
+              jobGradeId: item.jobGradeId,
               jobGradeName: item.jobGradeName,
               kpiCategoryName: item.kpiCategoryName,
               weight: item.weight,
+              kpiCategoryId: item.payloads
+                .map((item) => item.kpiCategoryId)
+                .toString(),
               kpis: item.payloads
                 .map((item) => item.kpis)
                 .map((kpi) => kpi.map((row) => row.kpiName))
@@ -277,7 +281,11 @@ export class PerformanceManagementService {
       .pipe(
         tap(),
         map((res) => {
-          return res;
+          return res.setupList.filter(
+            (value, index, self) =>
+              self.map((item) => item.jobGradeId).indexOf(value.jobGradeId) ===
+              index
+          );
         }),
         catchError(this.handleError)
       );
