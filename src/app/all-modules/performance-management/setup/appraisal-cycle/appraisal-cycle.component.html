@@ -78,7 +78,7 @@
           <th pSortableColumn="reviewerOneWeight">Reviewer I</th>
           <th pSortableColumn="reviewerTwoWeight">Reviewer II</th>
           <th pSortableColumn="reviewerThreeWeight">Reviewer III</th>
-          <th pSortableColumn="reviewerWeight">Reviewee Weight</th>
+          <th pSortableColumn="revieweeWeight">Reviewee Weight</th>
           <th pSortableColumn="status">Status</th>
         </tr>
       </ng-template>
@@ -143,7 +143,7 @@
             <a
               class="text-dark d-block text-center"
               [routerLink]="['appraisals', row.appraisalCycleId]"
-              >{{ row.reviewerWeight }}</a
+              >{{ row.revieweeWeight }}</a
             >
           </td>
           <td>
