@@ -33,7 +33,7 @@ export class DirectReportAppraisalsComponent implements OnInit {
   ngOnInit(): void {
     this.jwtService.getHrmUserDetails().then((user) => {
       this.jobGradeId = user.jobGrade;
-      this.employeeId = user.staffId;
+      this.employeeId = user.employeeId;
       this.deptId = user.departmentId;
       this.getAppraisalObjByManagerId();
     });

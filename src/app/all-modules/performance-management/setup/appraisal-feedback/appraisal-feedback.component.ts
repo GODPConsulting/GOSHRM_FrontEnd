@@ -74,7 +74,7 @@ export class AppraisalFeedbackComponent implements OnInit {
 
   ngOnInit(): void {
     this.jwtService.getHrmUserDetails().then((user) => {
-      this.getAppraisalFeedbacks(user.staffId, user.staffId);
+      this.getAppraisalFeedbacks(user.employeeId, user.employeeId);
     });
 
     this.dtOptions = {

@@ -93,7 +93,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       this.appraisalCycleId = param.appraisalCycleId;
     });
     this.jwtService.getHrmUserDetails().then((user) => {
-      this.staffId = user.staffId;
+      this.staffId = user.employeeId;
       this.getAppraisalFeedbacks();
       this.initialiseEmployeeComment();
       this.initialiseEmployeeScore();

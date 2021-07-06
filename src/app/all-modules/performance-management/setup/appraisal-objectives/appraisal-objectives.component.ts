@@ -55,11 +55,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem("userDetails"));
-    if (user) {
-      this.staffId = user.staffId;
-      this.deptId = user.departmentId;
-    }
+    // const user = JSON.parse(localStorage.getItem("userDetails"));
     this.route.queryParams.subscribe((param) => {
       this.appraisalCyleId = param.appraisalCycleId;
       this.objectiveId = param.objectiveId;
@@ -68,13 +64,22 @@ export class AppraisalObjectivesComponent implements OnInit {
         this.staffId = param.employeeId;
         this.jobGradeId = param.jobGradeId;
         this.deptId = param.departmentId;
+        this.getEmployeeObjectiveDetails(this.staffId);
+      } else {
+        this.jwtService.getHrmUserDetails().then((user) => {
+          if (user) {
+            this.staffId = user.employeeId;
+            this.deptId = user.departmentId;
+            this.jobGradeId = user.jobGrade;
+            this.getAddableObjectives(user.jobGrade);
+            this.getEmployeeObjectiveDetails(this.staffId);
+          }
+        });
       }
     });
     this.jwtService.getHrmUserDetails().then((employee) => {
       if (employee) {
-        this.jobGradeId = employee.jobGrade;
-        this.getAddableObjectives(employee.jobGrade);
-        this.getEmployeeObjectiveDetails();
+        // this.getEmployeeObjectiveDetails();
         // this.getCannotAddObjectives(employee.jobGrade);
         // this.getData();
       }
@@ -189,7 +194,7 @@ export class AppraisalObjectivesComponent implements OnInit {
       (res) => {
         this.loadingService.hide();
         this.utilitiesService.showMessage(res, "success").then(() => {
-          this.getEmployeeObjectiveDetails();
+          this.getEmployeeObjectiveDetails(this.staffId);
           this.closeAppraisalObjectivesModal();
           this.isEditing = false;
         });
@@ -250,12 +255,12 @@ export class AppraisalObjectivesComponent implements OnInit {
         // });
       });
   }
-  getEmployeeObjectiveDetails() {
+  getEmployeeObjectiveDetails(staffId: number) {
     this.loadingService.show();
     return this.performanceManagementService
       .getEmployeeObjectiveDetails(
         this.jobGradeId,
-        this.staffId,
+        staffId,
         this.deptId,
         this.appraisalCyleId
       )
