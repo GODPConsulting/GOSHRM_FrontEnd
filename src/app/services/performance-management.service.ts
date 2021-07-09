@@ -766,4 +766,17 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
+
+  getEmployeeAppraisalDetails(employeeId: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/performance-appraisal/get/appraisal-feedback/EmployeeId?EmployeeId=${employeeId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list[0];
+        })
+      );
+  }
 }

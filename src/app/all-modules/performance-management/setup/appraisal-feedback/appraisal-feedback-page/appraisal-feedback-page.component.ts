@@ -89,9 +89,11 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initialiseFeedbackForm();
     this.route.queryParams.subscribe((param) => {
       this.employeeId = param.id;
       this.appraisalCycleId = param.appraisalCycleId;
+      this.getEmployeeAppraisalDetails(this.employeeId);
     });
     this.jwtService.getHrmUserDetails().then((user) => {
       this.staffId = user.employeeId;
@@ -117,6 +119,22 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       score: [""],
       staffId: this.staffId,
       appraisalCycleId: +this.appraisalCycleId,
+    });
+  }
+  initialiseFeedbackForm() {
+    this.appraisalFeedbackForm = this.formBuilder.group({
+      reviewYear: [""],
+      employeeName: [""],
+      jobGradeName: [""],
+      jobTitleName: [""],
+      lengthOfService: [""],
+      firstReviewerName: [""],
+      secondReviewerName: [""],
+      thirdReviewerName: [""],
+      timeInPresentPosition: [""],
+      startDate: [""],
+      endDate: [""],
+      overallRemark: [""],
     });
   }
   submitAppraisalFeedbackForm() {
@@ -179,15 +197,17 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       .subscribe(
         (data) => {
           this.loadingService.hide();
-          this.appraisalFeedbacks = data;
-          this.preference = {
-            isReviewerOneInvloved: data[0].isReviewerOneInvloved,
-            isReviewertwoInvloved: data[0].isReviewertwoInvloved,
-            isReviewerThreeInvloved: data[0].isReviewerThreeInvloved,
-          };
-          this.reviewer = data[0].reviewer;
-          this.employeeObjectiveFeedbackID =
-            data[0].employeeObjectiveFeedbackID;
+          if (data.length > 0) {
+            this.appraisalFeedbacks = data;
+            this.preference = {
+              isReviewerOneInvloved: data[0].isReviewerOneInvloved,
+              isReviewertwoInvloved: data[0].isReviewertwoInvloved,
+              isReviewerThreeInvloved: data[0].isReviewerThreeInvloved,
+            };
+            this.reviewer = data[0].reviewer;
+            this.employeeObjectiveFeedbackID =
+              data[0].employeeObjectiveFeedbackID;
+          }
         },
         (err) => {
           this.loadingService.hide();
@@ -215,21 +235,21 @@ export class AppraisalFeedbackPageComponent implements OnInit {
 
   edit(row) {
     this.cardFormTitle = "Appraisal Feedback";
-    this.appraisalFeedbackForm.patchValue({
-      id: row.id,
-      reviewPeriod: row.reviewPeriod,
-      company: row.company,
-      startTitle: row.startTitle,
-      jobGradeId: row.jobGradeId,
-      jobTitleId: row.jobTitleId,
-      submittedForReview: row.submittedForReview,
-      reviewCycleStatus: row.reviewCycleStatus,
-      firstLevelReviewerId: row.firstLevelReviewerId,
-      dateDue: row.dateDue,
-      table: row.table,
-      comment: row.comment,
-    });
-    $("#appraisal_feedback_modal").modal("show");
+    // this.appraisalFeedbackForm.patchValue({
+    //   id: row.id,
+    //   reviewPeriod: row.reviewPeriod,
+    //   company: row.company,
+    //   startTitle: row.startTitle,
+    //   jobGradeId: row.jobGradeId,
+    //   jobTitleId: row.jobTitleId,
+    //   submittedForReview: row.submittedForReview,
+    //   reviewCycleStatus: row.reviewCycleStatus,
+    //   firstLevelReviewerId: row.firstLevelReviewerId,
+    //   dateDue: row.dateDue,
+    //   table: row.table,
+    //   comment: row.comment,
+    // });
+    // $("#appraisal_feedback_modal").modal("show");
   }
   hack(val: any[]) {
     return Array.from(val);
@@ -651,5 +671,35 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   closeCommentModal() {
     // this.commentTitle = "";
     $("#comment_modal ").modal("hide");
+  }
+
+  getEmployeeAppraisalDetails(employeeId: number) {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .getEmployeeAppraisalDetails(employeeId)
+      .subscribe(
+        (data) => {
+          this.loadingService.hide();
+          if (data.length > 0) {
+            this.appraisalFeedbackForm.patchValue({
+              reviewYear: data.reviewYear,
+              employeeName: data.employeeName,
+              jobGradeName: data.jobGradeName,
+              jobTitleName: data.jobTitleName,
+              lengthOfService: data.lengthOfService,
+              firstReviewerName: data.firstReviewerName,
+              secondReviewerName: data.secondReviewerName,
+              thirdReviewerName: data.thirdReviewerName,
+              timeInPresentPosition: data.timeInPresentPosition,
+              startDate: data.startDate,
+              endDate: data.endDate,
+              overallRemark: data.overallRemark,
+            });
+          }
+        },
+        (error) => {
+          this.loadingService.hide();
+        }
+      );
   }
 }

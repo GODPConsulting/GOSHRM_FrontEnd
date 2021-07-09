@@ -7,12 +7,17 @@
       <h4>{{ cardFormTitle }}</h4>
     </div>
     <div class="card-body">
-      <form>
+      <form [formGroup]="appraisalFeedbackForm">
         <div class="row">
           <div class="col-md-4">
             <div class="form-group">
               <label>Review Year</label>
-              <input type="text" name="reviewPeriod" class="form-control" />
+              <input
+                type="text"
+                name="reviewPeriod"
+                class="form-control"
+                formControlName="reviewYear"
+              />
             </div>
           </div>
 
@@ -20,10 +25,16 @@
             <div class="form-group">
               <label>Review Period Start</label>
               <input
-                type="text"
-                name="startTitle"
-                class="form-control"
-                [(ngModel)]="startTitle"
+                type="date"
+                name="startDate"
+                class="form-control datetimepicker"
+                bsDatepicker
+                [bsConfig]="{
+                  isAnimate: true,
+                  dateInputFormat: 'YYYY-MM-DD',
+                  returnFocusToInput: true
+                }"
+                formControlName="startDate"
               />
             </div>
           </div>
@@ -31,37 +42,72 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Review Period End</label>
-              <input type="text" name="reviewYear" class="form-control" />
+              <input
+                type="date"
+                bsDatepicker
+                [bsConfig]="{
+                  isAnimate: true,
+                  dateInputFormat: 'YYYY-MM-DD',
+                  returnFocusToInput: true
+                }"
+                formControlName="endDate"
+                name="endDate"
+                class="form-control datetimepicker"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Employee</label>
-              <input type="text" name="employee" class="form-control" />
+              <input
+                type="text"
+                formControlName="employeeName"
+                name="employee"
+                class="form-control"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Job Grade</label>
-              <input type="text" name="employee" class="form-control" />
+              <input
+                type="text"
+                formControlName="jobGradeName"
+                name="employee"
+                class="form-control"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Job Title</label>
-              <input type="text" name="jobTitle" class="form-control" />
+              <input
+                type="text"
+                formControlName="jobTitleName"
+                name="jobTitle"
+                class="form-control"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Length of Service</label>
-              <input type="text" class="form-control" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="lengthOfService"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Time in Present Position</label>
-              <input type="text" name="employee" class="form-control" />
+              <input
+                type="text"
+                formControlName="timeInPresentPosition"
+                name="employee"
+                class="form-control"
+              />
             </div>
           </div>
           <div class="col-md-12">
@@ -71,6 +117,7 @@
                 type="text"
                 name="submittedForReview"
                 class="form-control"
+                formControlName="overallRemark"
               />
             </div>
           </div>
@@ -80,19 +127,34 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="reviewer1">First Reviewer</label>
-              <input type="text" id="reviewer1" class="form-control" />
+              <input
+                type="text"
+                formControlName="firstReviewerName"
+                id="reviewer1"
+                class="form-control"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="reviewer2">Second Reviewer</label>
-              <input type="text" id="reviewer2" class="form-control" />
+              <input
+                type="text"
+                formControlName="secondReviewerName"
+                id="reviewer2"
+                class="form-control"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="reviewer3">Third Reviewer</label>
-              <input type="text" id="reviewer3" class="form-control" />
+              <input
+                type="text"
+                id="reviewer3"
+                class="form-control"
+                formControlName="thirdReviewerName"
+              />
             </div>
           </div>
           <!--          <div class="col-md-6">-->
@@ -168,22 +230,22 @@
                 <th>Success Target</th>
                 <th>Reviewee Comments</th>
                 <th>Reviewee Score</th>
-                <th *ngIf="preference.isReviewerOneInvloved">
+                <th *ngIf="preference?.isReviewerOneInvloved">
                   Reviewer I Comment
                 </th>
-                <th *ngIf="preference.isReviewerOneInvloved">
+                <th *ngIf="preference?.isReviewerOneInvloved">
                   Reviewer I Score
                 </th>
-                <th *ngIf="preference.isReviewertwoInvloved">
+                <th *ngIf="preference?.isReviewertwoInvloved">
                   Reviewer II Comment
                 </th>
-                <th *ngIf="preference.isReviewertwoInvloved">
+                <th *ngIf="preference?.isReviewertwoInvloved">
                   Reviewer II Score
                 </th>
-                <th *ngIf="preference.isReviewerThreeInvloved">
+                <th *ngIf="preference?.isReviewerThreeInvloved">
                   Reviewer III Comment
                 </th>
-                <th *ngIf="preference.isReviewerThreeInvloved">
+                <th *ngIf="preference?.isReviewerThreeInvloved">
                   Reviewer III Score
                 </th>
               </tr>
