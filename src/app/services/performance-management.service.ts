@@ -329,7 +329,19 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
-
+  getAppraisalPreference(id: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/performancesetup/get/update/appraisal-preference?AppraisalCycle=${id}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.setupList[0];
+        }),
+        catchError(this.handleError)
+      );
+  }
   getAppraisalCycleByCompanyId(id) {
     return this.apiService
       .get(`/performance/get/appraisal_cycles/bycompany?company=${id}`)

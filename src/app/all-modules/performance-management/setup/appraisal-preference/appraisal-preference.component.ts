@@ -41,7 +41,7 @@ export class AppraisalPreferenceComponent implements OnInit {
       this.jobGradeId = user.jobGrade;
       this.deptId = user.departmentId.toString();
       // this.getAppraisalCycleByCompanyId();
-      console.log(this.appraisalPreferenceForm.value);
+      // console.log(this.appraisalPreferenceForm.value);
       this.appraisalPreferenceForm.patchValue({
         company: this.deptId,
       });
@@ -79,7 +79,7 @@ export class AppraisalPreferenceComponent implements OnInit {
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
           swal.fire("Success", message, "success");
-          this.initializeForm();
+          // this.initializeForm();
         } else {
           swal.fire("GOSHRM", message, "error");
         }
@@ -114,6 +114,32 @@ export class AppraisalPreferenceComponent implements OnInit {
           this.cycles = data;
         },
         (err) => {
+          this.loadingService.hide();
+        }
+      );
+  }
+  getAppraisalPreference(id: number) {
+    this.loadingService.show();
+    return this.performanceManagementService
+      .getAppraisalPreference(id)
+      .subscribe(
+        (data) => {
+          this.loadingService.hide();
+          if (data) {
+            this.appraisalPreferenceForm.patchValue({
+              id: data.id,
+              appraisalCircle: data.appraisalCircle,
+              company: data.company,
+              reviewerOneCommentVisibility: data.reviewerOneCommentVisibility,
+              reviewerTwoCommentVisibility: data.reviewerTwoCommentVisibility,
+              reviewerThreeCommentVisibility:
+                data.reviewerThreeCommentVisibility,
+              status: data.status,
+              coachPerformanceVisibility: data.coachPerformanceVisibility,
+            });
+          }
+        },
+        (error) => {
           this.loadingService.hide();
         }
       );

@@ -1,6 +1,6 @@
 import { id } from "./../../../../../../assets/all-modules-data/id";
 import { SetupService } from "src/app/services/setup.service";
-import { Validators } from "@angular/forms";
+import { FormControl, Validators } from "@angular/forms";
 import { Component, OnInit, ElementRef, Input, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
@@ -75,6 +75,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   commentTitle: string;
   scoreTitle: string;
   personnel: string;
+  formControlName: string = "";
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -106,7 +107,6 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   initialiseEmployeeComment() {
     this.employeeCommentForm = this.formBuilder.group({
       employeeObjectiveFeedbackID: [0],
-      comment: [""],
       staffId: this.staffId,
       appraisalCycleId: +this.appraisalCycleId,
     });
@@ -291,15 +291,35 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     switch (type) {
       case "employee":
         this.commentTitle = "Employee Comment";
+        this.formControlName = "revieweeComment";
+        this.employeeCommentForm.addControl(
+          this.formControlName,
+          new FormControl()
+        );
         break;
       case "reviewer1":
         this.commentTitle = "Reviewer 1 Comment";
+        this.formControlName = "reviewerOneComment";
+        this.employeeCommentForm.addControl(
+          this.formControlName,
+          new FormControl()
+        );
         break;
       case "reviewer2":
         this.commentTitle = "Reviewer 2 Comment";
+        this.formControlName = "reviewertwoComment";
+        this.employeeCommentForm.addControl(
+          this.formControlName,
+          new FormControl()
+        );
         break;
       case "reviewer3":
         this.commentTitle = "Reviewer 3 Comment";
+        this.formControlName = "reviewerthreeComment";
+        this.employeeCommentForm.addControl(
+          this.formControlName,
+          new FormControl()
+        );
         break;
       default:
         this.commentTitle = "";
@@ -444,7 +464,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeComment();
               $("#appraisal_feedback_page_modal").modal("hide");
-              this.appraisalFeedbacks = res.list;
+              // this.appraisalFeedbacks = res.list;
+              this.getAppraisalFeedbacks();
             });
           } else {
             return this.utilitiesService.showMessage(res, "error");
@@ -467,7 +488,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeComment();
               $("#appraisal_feedback_page_modal").modal("hide");
-              this.appraisalFeedbacks = res.list;
+              // this.appraisalFeedbacks = res.list;
+              this.getAppraisalFeedbacks();
             });
           } else {
             return this.utilitiesService.showMessage(res, "error");
@@ -491,7 +513,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeComment();
               $("#appraisal_feedback_page_modal").modal("hide");
-              this.appraisalFeedbacks = res.list;
+              // this.appraisalFeedbacks = res.list;
+              this.getAppraisalFeedbacks();
             });
             // this.appraisalFeedbacks = res.list;
           } else {
@@ -516,7 +539,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeComment();
               $("#appraisal_feedback_page_modal").modal("hide");
-              this.appraisalFeedbacks = res.list;
+              // this.appraisalFeedbacks = res.list;
+              this.getAppraisalFeedbacks();
             });
             // this.appraisalFeedbacks = res.list;
           } else {

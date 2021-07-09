@@ -70,6 +70,7 @@
                   appraisalPreferenceForm.get('appraisalCircle').touched
                 "
                 formControlName="appraisalCircle"
+                (change)="getAppraisalPreference($event.target.value)"
               >
                 <option selected value="">Appraisal Cycle</option>
                 <option

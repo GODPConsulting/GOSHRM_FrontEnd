@@ -2,28 +2,23 @@
 
 <div class="content container-fluid">
   <!-- Page Header -->
-  <div class="page-header content-wrapper">
-    <div class="col">
-      <h5 class="page-title">{{ cardFormTitle }}</h5>
+  <div class="card">
+    <div class="card-header header-bg-color">
+      <h4>{{ cardFormTitle }}</h4>
     </div>
-    <div class="modal-body">
-      <form (ngSubmit)="submitAppraisalFeedbackForm()">
+    <div class="card-body">
+      <form>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group">
-              <label>Review Period</label>
-              <input
-                type="date"
-                name="reviewPeriod"
-                class="form-control"
-                [(ngModel)]="reviewPeriod"
-              />
+              <label>Review Year</label>
+              <input type="text" name="reviewPeriod" class="form-control" />
             </div>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group">
-              <label>Start Title</label>
+              <label>Review Period Start</label>
               <input
                 type="text"
                 name="startTitle"
@@ -33,114 +28,135 @@
             </div>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group">
-              <label>Review Year</label>
-              <select
-                type="date"
-                name="reviewYear"
-                class="form-control"
-                [(ngModel)]="reviewYear"
-              >
-                <option selected value="Review Year">Review Year</option>
-                <option *ngFor="let row of years" value="{{ row.year }}">
-                  {{ row.year }}
-                </option>
-              </select>
+              <label>Review Period End</label>
+              <input type="text" name="reviewYear" class="form-control" />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Employee</label>
+              <input type="text" name="employee" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-4">
             <div class="form-group">
               <label>Job Grade</label>
-              <select
-                type="text"
-                name="job_GradeId"
-                class="form-control"
-                [(ngModel)]="job_GradeId"
-              >
-                <option value="">Job Grade</option>
-                <option *ngFor="let row of jobGrades" value="{{ row.id }}">
-                  {{ row.job_grade }}
-                </option>
-              </select>
+              <input type="text" name="employee" class="form-control" />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group">
-              <label>Submited for Review</label>
-              <select
+              <label>Job Title</label>
+              <input type="text" name="jobTitle" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Length of Service</label>
+              <input type="text" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label>Time in Present Position</label>
+              <input type="text" name="employee" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Overall Remark</label>
+              <input
                 type="text"
                 name="submittedForReview"
                 class="form-control"
-                [(ngModel)]="submittedForReview"
-              >
-                <option value="1">Yes</option>
-                <option value="2">No</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Review Cycle Status</label>
-              <select
-                type="text"
-                name="reviewCycleStatus"
-                class="form-control"
-                [(ngModel)]="reviewCycleStatus"
-              >
-                <option value="">Open</option>
-                <option value="">Locked</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Date Due</label>
-              <input
-                name="dueDate"
-                type="date"
-                class="form-control"
-                [(ngModel)]="dueDate"
               />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-12 card-header header-bg-color mb_10">
+            <h4>Performance Reviewer</h4>
+          </div>
+          <div class="col-md-4">
             <div class="form-group">
-              <label>Final Comment</label>
-              <input
-                name="finalComment"
-                type="text"
-                class="form-control"
-                [(ngModel)]="finalComment"
-              />
+              <label for="reviewer1">First Reviewer</label>
+              <input type="text" id="reviewer1" class="form-control" />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group">
-              <label>First Level Reviewer</label>
-              <select
-                name="firstLevelReviewer"
-                type="text"
-                class="form-control"
-                [(ngModel)]="firstLevelReviewer"
-              >
-                <option value="">First Level Reviewer</option>
-              </select>
+              <label for="reviewer2">Second Reviewer</label>
+              <input type="text" id="reviewer2" class="form-control" />
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="form-group">
-              <label>Second Level Reviewer</label>
-              <select
-                name="secondLevelReviewer"
-                type="text"
-                class="form-control"
-                [(ngModel)]="secondLevelReviewer"
-              >
-                <option value="">Second Level Reviewer</option>
-              </select>
+              <label for="reviewer3">Third Reviewer</label>
+              <input type="text" id="reviewer3" class="form-control" />
             </div>
           </div>
+          <!--          <div class="col-md-6">-->
+          <!--            <div class="form-group">-->
+          <!--              <label>Review Cycle Status</label>-->
+          <!--              <select-->
+          <!--                type="text"-->
+          <!--                name="reviewCycleStatus"-->
+          <!--                class="form-control"-->
+          <!--                [(ngModel)]="reviewCycleStatus"-->
+          <!--              >-->
+          <!--                <option value="">Open</option>-->
+          <!--                <option value="">Locked</option>-->
+          <!--              </select>-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--          <div class="col-md-6">-->
+          <!--            <div class="form-group">-->
+          <!--              <label>Date Due</label>-->
+          <!--              <input-->
+          <!--                name="dueDate"-->
+          <!--                type="date"-->
+          <!--                class="form-control"-->
+          <!--                [(ngModel)]="dueDate"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--          <div class="col-md-6">-->
+          <!--            <div class="form-group">-->
+          <!--              <label>Final Comment</label>-->
+          <!--              <input-->
+          <!--                name="finalComment"-->
+          <!--                type="text"-->
+          <!--                class="form-control"-->
+          <!--                [(ngModel)]="finalComment"-->
+          <!--              />-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--          <div class="col-md-6">-->
+          <!--            <div class="form-group">-->
+          <!--              <label>First Level Reviewer</label>-->
+          <!--              <select-->
+          <!--                name="firstLevelReviewer"-->
+          <!--                type="text"-->
+          <!--                class="form-control"-->
+          <!--                [(ngModel)]="firstLevelReviewer"-->
+          <!--              >-->
+          <!--                <option value="">First Level Reviewer</option>-->
+          <!--              </select>-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--          <div class="col-md-6">-->
+          <!--            <div class="form-group">-->
+          <!--              <label>Second Level Reviewer</label>-->
+          <!--              <select-->
+          <!--                name="secondLevelReviewer"-->
+          <!--                type="text"-->
+          <!--                class="form-control"-->
+          <!--                [(ngModel)]="secondLevelReviewer"-->
+          <!--              >-->
+          <!--                <option value="">Second Level Reviewer</option>-->
+          <!--              </select>-->
+          <!--            </div>-->
+          <!--          </div>-->
         </div>
 
         <div *ngIf="tableDisabled" class="table-responsive">
@@ -191,9 +207,7 @@
                   <a
                     class="hint"
                     data-toggle="modal"
-                    (click)="
-                      viewComments(row.employeeFeedBackComments, 'employee')
-                    "
+                    (click)="viewComments(row.feedBackComments, 'employee')"
                     ><span class="hint-text">View </span
                     ><i class="fa fa-eye"></i
                   ></a>
@@ -232,7 +246,7 @@
                     class="hint"
                     data-toggle="modal"
                     (click)="
-                      viewComments(row.reviewerOneFeedBackComments, 'reviewer1')
+                      viewComments(row.feedBackRevieweOneComments, 'reviewer1')
                     "
                     ><span class="hint-text">View Comment </span
                     ><i class="fa fa-eye"></i
@@ -272,7 +286,7 @@
                     class="hint"
                     data-toggle="modal"
                     (click)="
-                      viewComments(row.reviewerTowFeedBackComments, 'reviewer2')
+                      viewComments(row.feedBackRevieweTwoComments, 'reviewer2')
                     "
                     ><span class="hint-text">View </span
                     ><i class="fa fa-eye"></i
@@ -320,7 +334,7 @@
                     data-toggle="modal"
                     (click)="
                       viewComments(
-                        row.reviewerthreeFeedBackComments,
+                        row.feedBackReviewethreeComments,
                         'reviewer3'
                       )
                     "
@@ -434,7 +448,7 @@
                   type="text"
                   name="comment"
                   class="form-control"
-                  formControlName="comment"
+                  formControlName="{{ formControlName }}"
                 />
               </div>
             </div>
@@ -543,7 +557,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">
             <tr>
-              <td style="width: 250px">{{ row.date | date }}</td>
+              <td style="width: 250px">{{ row.createdOn | date }}</td>
               <td>{{ row.comment | titlecase }}</td>
             </tr>
           </ng-template>
