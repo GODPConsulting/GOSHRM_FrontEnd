@@ -816,4 +816,38 @@ export class PerformanceManagementService {
         })
       );
   }
+  getReviewYears(): Observable<any> {
+    return this.apiService
+      .get(`/performance/performance-appraisal/get/all/appraisal-review-year`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.objectiveList;
+        })
+      );
+  }
+  filterFeedback(year: string): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/all/employee/feedbacks/byreview_year?ReviewYear=${year}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        })
+      );
+  }
+  filterObjectves(year: string): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_objectives/by_review_year?ReviewYear=${year}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        })
+      );
+  }
 }

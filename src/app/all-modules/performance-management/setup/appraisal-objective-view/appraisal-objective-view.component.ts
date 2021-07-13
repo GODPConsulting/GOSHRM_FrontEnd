@@ -4,6 +4,7 @@ import { PerformanceManagementService } from "../../../../services/performance-m
 import { JwtService } from "../../../../services/jwt.service";
 import { IAppraisalCycle } from "../../../../interface/interfaces";
 import { Router } from "@angular/router";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-appraisal-objective-view",
@@ -14,7 +15,8 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   employeeId: number;
   deptId: number;
   jobGradeId: number;
-  employeeAppraialCycle: IAppraisalCycle[] = [];
+  employeeAppraisalCycle: IAppraisalCycle[] = [];
+  reviewYears$: Observable<any> = this.performanceManagementService.getReviewYears();
   constructor(
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
@@ -24,7 +26,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.jwtService.getHrmUserDetails().then((employee) => {
-      this.employeeId = employee.staffId;
+      this.employeeId = employee.employeeId;
       this.jobGradeId = employee.jobGrade;
       this.deptId = employee.companyId;
       this.getEmployeeAppraisalCycle();
@@ -37,7 +39,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
       .subscribe(
         (data) => {
           // this.loadingService.hide();
-          this.employeeAppraialCycle = data;
+          this.employeeAppraisalCycle = data;
         },
         (err) => {
           // this.loadingService.hide();
@@ -53,5 +55,12 @@ export class AppraisalObjectiveViewComponent implements OnInit {
         jobgradeId: item.jobGradeId,
       },
     });
+  }
+  filter(value: any) {
+    return this.performanceManagementService
+      .filterObjectves(value)
+      .subscribe((data) => {
+        this.employeeAppraisalCycle = data;
+      });
   }
 }

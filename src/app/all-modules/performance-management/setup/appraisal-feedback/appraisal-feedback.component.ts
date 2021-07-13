@@ -9,7 +9,7 @@ import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { JwtService } from "src/app/services/jwt.service";
 
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
 import { CommonService } from "../../../../services/common.service";
 import { Router } from "@angular/router";
@@ -60,6 +60,7 @@ export class AppraisalFeedbackComponent implements OnInit {
   public user;
   dtTrigger: Subject<any> = new Subject();
   preference: Preference;
+  reviewYears$: Observable<any> = this.performanceManagementService.getReviewYears();
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -76,30 +77,6 @@ export class AppraisalFeedbackComponent implements OnInit {
     this.jwtService.getHrmUserDetails().then((user) => {
       this.getAppraisalFeedbacks(user.employeeId, user.employeeId);
     });
-
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
-      order: [[1, "asc"]],
-    };
     // this.getAppraisalFeedbacks(this.user.staffId);
     this.getJobGrade();
     this.cardFormTitle = "Add Appraisal Feedback";
@@ -273,5 +250,19 @@ export class AppraisalFeedbackComponent implements OnInit {
         appraisalCycleId: row.appraisalCycleId,
       },
     });
+  }
+  getReviewYear() {
+    return this.performanceManagementService
+      .getReviewYears()
+      .subscribe((data) => {
+        // this.reviewYears = data;
+      });
+  }
+  filter(value: any) {
+    return this.performanceManagementService
+      .filterFeedback(value)
+      .subscribe((data) => {
+        this.appraisalFeedbacks = data;
+      });
   }
 }

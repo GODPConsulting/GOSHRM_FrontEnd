@@ -8746,3 +8746,11 @@ rating span {
   border-radius: 4px !important;
   border: 1px solid #bbb !important;
 }
+.appraisal-select {
+  width: 200px;
+  height: 40px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  padding: 0 1rem;
+  border-radius: 4px;
+}

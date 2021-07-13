@@ -45,14 +45,16 @@ export class AppraisalObjectiveFormComponent implements OnInit {
       this.objectiveId = param.objectiveId;
       this.getComment(this.objectiveId);
     });
-    const user = JSON.parse(localStorage.getItem("userDetails"));
+    /*const user = JSON.parse(localStorage.getItem("userDetails"));
     if (user) {
       this.staffId = user.staffId;
       this.deptId = user.departmentId;
-    }
+    }*/
     this.jwtService.getHrmUserDetails().then((employee) => {
       if (employee) {
         this.jobGradeId = employee.jobGrade;
+        this.staffId = employee.employeeId;
+        this.deptId = employee.departmentId;
         this.getAppraisalCycle();
         this.getSingleEmployeeObjective();
         this.getCareer(employee.employeeId);
