@@ -34,7 +34,7 @@ export class NotificationListComponent implements OnInit {
       order: [[1, "asc"]],
     };
     this.dataService.currentMail.subscribe((result) => {
-      this.loadingService.hide();
+      // this.loadingService.hide();
       this.mails = result;
     });
   }

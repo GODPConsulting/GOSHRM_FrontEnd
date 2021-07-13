@@ -48,14 +48,14 @@ export class AcademicQualificationComponent implements OnInit {
   }
 
   downloadFile() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.setupService.downloadAcademicQualification().subscribe(
       (resp) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.utilitiesService.byteToFile(resp, "AcademicQualification.xlsx");
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -108,14 +108,14 @@ export class AcademicQualificationComponent implements OnInit {
   }
 
   getAcademicQualifications() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getAcademicQualification().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.qualifications = data.setuplist;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -170,12 +170,12 @@ export class AcademicQualificationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.setupService
             .deleteAcademicQualification(payload)
             .subscribe(
               (res) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -186,7 +186,7 @@ export class AcademicQualificationComponent implements OnInit {
                 }
               },
               (err) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 this.utilitiesService.showMessage(err, "error");
               }
             );

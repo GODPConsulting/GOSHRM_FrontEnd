@@ -56,16 +56,16 @@ export class JobGradeComponent implements OnInit {
   }
 
   downloadFile() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.setupService.exportExcelFile("/hrmsetup/download/jobgrade").subscribe(
       (resp) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.utilitiesService.byteToFile(resp, "Job Grade.xlsx", {
           type: "application/vnd.ms-excel",
         });
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -141,15 +141,15 @@ export class JobGradeComponent implements OnInit {
   }
 
   getJobGrade() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getJobGrades().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.jobGrades = data.setuplist;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -205,10 +205,10 @@ export class JobGradeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.setupService.deleteJobGrade(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -219,7 +219,7 @@ export class JobGradeComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               this.utilitiesService.showMessage(err, "error");
             }
           );

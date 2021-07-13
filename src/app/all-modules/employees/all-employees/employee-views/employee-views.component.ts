@@ -82,10 +82,10 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           this.employeeService.multiUploadEmployeePhotos().subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -96,7 +96,7 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }
@@ -105,16 +105,16 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
       });
   }
   loadEmployees() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.employeeService.getEmployees().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
 
         this.employeesList = data.employeeList;
         this.filteredArray = data.employeeList;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }

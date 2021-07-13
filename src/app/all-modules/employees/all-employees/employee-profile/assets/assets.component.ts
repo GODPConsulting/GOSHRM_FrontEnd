@@ -83,14 +83,14 @@ export class AssetsComponent implements OnInit {
     );
   }
   getStaffDepartments() {
-    this.loadingService.show();
+    // // this.loadingService.show();
     return this.commonService.getCompanyStructures().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.offices = data.companyStructures;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -258,10 +258,10 @@ export class AssetsComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.employeeService.deleteAsset(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -272,7 +272,7 @@ export class AssetsComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

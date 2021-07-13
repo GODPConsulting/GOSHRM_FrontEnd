@@ -39,9 +39,11 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initializeForm();
     this.route.queryParams.subscribe((param) => {
       this.appraisalCycleId = param.appraisalCycleId;
       this.objectiveId = param.objectiveId;
+      this.getComment(this.objectiveId);
     });
     const user = JSON.parse(localStorage.getItem("userDetails"));
     if (user) {
@@ -56,7 +58,6 @@ export class AppraisalObjectiveFormComponent implements OnInit {
         this.getCareer(employee.employeeId);
       }
     });
-    this.initializeForm();
     // this.getAppraisalCycle();
   }
   initializeForm() {
@@ -82,9 +83,19 @@ export class AppraisalObjectiveFormComponent implements OnInit {
       job_Grade: [""],
     });
   }
-
+  getComment(id: number) {
+    return this.performanceManagementService
+      .getComment(id)
+      .subscribe((data) => {
+        if (data) {
+          this.appraisalObjectiveForm.patchValue({
+            comment: data,
+          });
+        }
+      });
+  }
   getAppraisalCycle() {
-    // this.loadingService.show();
+    // // this.loadingService.show();
     return this.performanceManagementService
       .getEmployeeAppraisalCycle(
         this.staffId,
@@ -94,20 +105,20 @@ export class AppraisalObjectiveFormComponent implements OnInit {
       )
       .subscribe(
         (data) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.appraisalCycles = data;
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }
 
   getCareer(id) {
-    // this.loadingService.show();
+    // // this.loadingService.show();
     return this.performanceManagementService.getCareerByStaffId(id).subscribe(
       (data) => {
-        // this.loadingService.hide();
+        // // this.loadingService.hide();
         this.employeeAppraisalInfo = data.employeeList[0];
         this.appraisalObjectiveForm.patchValue({
           staffName: this.employeeAppraisalInfo.staffName,
@@ -131,7 +142,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
         });
       },
       (err) => {
-        // this.loadingService.hide();
+        // // this.loadingService.hide();
       }
     );
   }
@@ -140,10 +151,10 @@ export class AppraisalObjectiveFormComponent implements OnInit {
     const payload = this.appraisalObjectiveForm.value;
     payload.reviewYear = +payload.reviewYear;
     payload.appraisalCycleId = +payload.appraisalCycleId;
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService.startAppraisal(payload).subscribe(
       (res) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = res["status"].message.friendlyMessage;
         if (res["status"].isSuccessful) {
           this.utilitiesService.showMessage(res, "success").then(() => {
@@ -171,19 +182,19 @@ export class AppraisalObjectiveFormComponent implements OnInit {
         }
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         return this.utilitiesService.showMessage(err, "error");
       }
     );
   }
   getSingleEmployeeObjective() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .getSingleEmployeeObjective(this.staffId, this.appraisalCycleId)
       .subscribe(
         (data) => {
           console.log(data);
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.lineManagerId = data[0].lineManger;
           this.objectiveId = data[0].id;
           console.log(this.lineManagerId);
@@ -193,7 +204,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
           });
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }

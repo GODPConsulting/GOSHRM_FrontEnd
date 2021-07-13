@@ -64,6 +64,7 @@ export class AppraisalObjectivesComponent implements OnInit {
         this.staffId = param.employeeId;
         this.jobGradeId = param.jobGradeId;
         this.deptId = param.departmentId;
+        this.getAddableObjectives(param.jobGradeId);
         this.getEmployeeObjectiveDetails(this.staffId);
       } else {
         this.jwtService.getHrmUserDetails().then((user) => {
@@ -130,18 +131,18 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   getAppraisalObjectives(id) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .getAppraisalObjectives(id)
       .subscribe(
         (data) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           // this.title = data.empNotPermitedList[0].kpiCategoryName;
           // this.objectives = data.empNotPermitedList[0].kpIsNameList;
           // this.kpiWeight = data.empNotPermitedList[0].weight;
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }
@@ -189,10 +190,10 @@ export class AppraisalObjectivesComponent implements OnInit {
 
     // console.log(payload);
     // return;
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService.addEmployeeKPI(payload).subscribe(
       (res) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.utilitiesService.showMessage(res, "success").then(() => {
           this.getEmployeeObjectiveDetails(this.staffId);
           this.closeAppraisalObjectivesModal();
@@ -200,37 +201,37 @@ export class AppraisalObjectivesComponent implements OnInit {
         });
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         return this.utilitiesService.showMessage(err, "error");
       }
     );
   }
 
   getAddableObjectives(id) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService.getAddableObjectives(id).subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.addAbleOjectives = data;
         // this.employeeObjectives$ = data;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
   getCannotAddObjectives(jobGradeId: number) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .getCannotAddObjectives(jobGradeId)
       .subscribe(
         (data) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.nonAddAbleOjectives = data;
           // this.nonEmployeeObjectives$ = data;
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }
@@ -256,7 +257,7 @@ export class AppraisalObjectivesComponent implements OnInit {
       });
   }
   getEmployeeObjectiveDetails(staffId: number) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .getEmployeeObjectiveDetails(
         this.jobGradeId,
@@ -266,11 +267,11 @@ export class AppraisalObjectivesComponent implements OnInit {
       )
       .subscribe(
         (data) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.objectives = data;
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }
@@ -310,12 +311,12 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   saveObjectives() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .saveObjectives(+this.objectiveId)
       .subscribe(
         (res) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success");
@@ -324,7 +325,7 @@ export class AppraisalObjectivesComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           return this.utilitiesService.showMessage(err, "error");
         }
       );

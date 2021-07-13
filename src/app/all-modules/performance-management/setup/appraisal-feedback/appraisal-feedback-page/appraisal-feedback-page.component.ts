@@ -86,10 +86,12 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     private commonService: CommonService,
     private jwtService: JwtService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.initialiseFeedbackForm();
+  }
 
   ngOnInit(): void {
-    this.initialiseFeedbackForm();
+    // this.initialiseFeedbackForm();
     this.route.queryParams.subscribe((param) => {
       this.employeeId = param.id;
       this.appraisalCycleId = param.appraisalCycleId;
@@ -98,7 +100,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     this.jwtService.getHrmUserDetails().then((user) => {
       this.staffId = user.employeeId;
       this.getAppraisalFeedbacks();
-      this.initialiseEmployeeComment();
+      // this.initialiseEmployeeComment();
       this.initialiseEmployeeScore();
     });
     // this.getAppraisalFeedbacks();
@@ -187,7 +189,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
 
   getAppraisalFeedbacks() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.performanceManagementService
       .getAppraisalFeedback(
         this.employeeId,
@@ -196,7 +198,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       )
       .subscribe(
         (data) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           if (data.length > 0) {
             this.appraisalFeedbacks = data;
             this.preference = {
@@ -210,21 +212,21 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }
 
   getJobGrade() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getJobGrades().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
 
         this.jobGrades = data.setuplist;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -281,12 +283,12 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.performanceManagementService
             .deleteAppraisalFeedback(payload)
             .subscribe(
               (res) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -297,7 +299,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
                 }
               },
               (err) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 this.utilitiesService.showMessage(err, "error");
               }
             );
@@ -308,6 +310,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
 
   addComment(id: number, type: string) {
     this.personnel = type;
+    this.initialiseEmployeeComment();
     switch (type) {
       case "employee":
         this.commentTitle = "Employee Comment";
@@ -411,12 +414,12 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         return this.submitReviewerThreeComment(payload);
         break;
     }
-    // this.loadingService.show();
+    // // this.loadingService.show();
     // return this.performanceManagementService
     //   .addEmployeeComment(payload)
     //   .subscribe(
     //     (res) => {
-    //       this.loadingService.hide();
+    // //       this.loadingService.hide();
     //       if (res.status.isSuccessful) {
     //         this.utilitiesService.showMessage(res, "success").then(() => {
     //           this.initialiseEmployeeComment();
@@ -428,7 +431,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     //       }
     //     },
     //     (err) => {
-    //       this.loadingService.hide();
+    // //       this.loadingService.hide();
     //       return this.utilitiesService.showMessage(err, "error");
     //     }
     //   );
@@ -456,10 +459,10 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       employee: +this.employeeId,
       employeeObjectiveFeedbackID: this.employeeObjectiveFeedbackID,
     };
-    this.loadingService.show();
+    // this.loadingService.show();
     this.performanceManagementService.sendEmployeeFeedback(payload).subscribe(
       (res) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         if (res.status.isSuccessful) {
           this.utilitiesService.showMessage(res, "success");
         } else {
@@ -467,19 +470,19 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         }
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.utilitiesService.showMessage(err, "error");
       }
     );
   }
 
   submitEmployeeComment(payload) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .addEmployeeComment(payload)
       .subscribe(
         (res) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeComment();
@@ -492,18 +495,18 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           return this.utilitiesService.showMessage(err, "error");
         }
       );
   }
   submitReviewerOneComment(payload) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .addReviewerOneComment(payload)
       .subscribe(
         (res) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeComment();
@@ -516,19 +519,19 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           return this.utilitiesService.showMessage(err, "error");
         }
       );
   }
 
   submitReviewerTwoComment(payload) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .addReviewerTwoComment(payload)
       .subscribe(
         (res) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeComment();
@@ -542,19 +545,19 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           return this.utilitiesService.showMessage(err, "error");
         }
       );
   }
 
   submitReviewerThreeComment(payload) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .addReviewerThreeComment(payload)
       .subscribe(
         (res) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeComment();
@@ -568,19 +571,19 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           return this.utilitiesService.showMessage(err, "error");
         }
       );
   }
 
   submitEmployeeScore(payload) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .addEmployeeScore(payload)
       .subscribe(
         (res) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeScore();
@@ -592,19 +595,19 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           return this.utilitiesService.showMessage(err, "error");
         }
       );
   }
 
   submitReviewerOneScore(payload) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .addReviewerOneScore(payload)
       .subscribe(
         (res) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeScore();
@@ -616,18 +619,18 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           return this.utilitiesService.showMessage(err, "error");
         }
       );
   }
   submitReviewerTwoScore(payload) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .addReviewerTwoScore(payload)
       .subscribe(
         (res) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeScore();
@@ -639,18 +642,18 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           return this.utilitiesService.showMessage(err, "error");
         }
       );
   }
   submitReviewerThreeScore(payload) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .addReviewerThreeScore(payload)
       .subscribe(
         (res) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeScore();
@@ -662,7 +665,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           return this.utilitiesService.showMessage(err, "error");
         }
       );
@@ -674,13 +677,14 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
 
   getEmployeeAppraisalDetails(employeeId: number) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .getEmployeeAppraisalDetails(employeeId)
       .subscribe(
         (data) => {
-          this.loadingService.hide();
-          if (data.length > 0) {
+          // this.loadingService.hide();
+          if (data) {
+            // this.initialiseFeedbackForm();
             this.appraisalFeedbackForm.patchValue({
               reviewYear: data.reviewYear,
               employeeName: data.employeeName,
@@ -695,10 +699,11 @@ export class AppraisalFeedbackPageComponent implements OnInit {
               endDate: data.endDate,
               overallRemark: data.overallRemark,
             });
+            // this.initialiseFeedbackForm();
           }
         },
         (error) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }

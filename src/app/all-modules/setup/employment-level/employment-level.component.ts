@@ -50,18 +50,18 @@ export class EmploymentLevelComponent implements OnInit {
   }
 
   downloadFile() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.setupService
       .exportExcelFile("/hrmsetup/download/employmentlevels")
       .subscribe(
         (resp) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.utilitiesService.byteToFile(resp, "Employment Level.xlsx", {
             type: "application/vnd.ms-excel",
           });
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }
@@ -116,15 +116,15 @@ export class EmploymentLevelComponent implements OnInit {
   }
 
   getEmploymentLevels() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getEmploymentLevel().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.levels = data.setuplist;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -190,11 +190,11 @@ export class EmploymentLevelComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           this.setupService.deleteEmploymentLevel(payload).subscribe(
             (res) => {
               let message: string;
-              this.loadingService.hide();
+              // this.loadingService.hide();
               message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -205,7 +205,7 @@ export class EmploymentLevelComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               this.utilitiesService.showMessage(err, "error");
             }
           );

@@ -81,15 +81,15 @@ export class GradeSettingComponent implements OnInit {
     $("#add_grade_setting").modal("hide");
   }
   getSavedGradeSetting() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService.getGradeSettings().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.gradeSettings = data.setupList;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -134,12 +134,12 @@ export class GradeSettingComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.performanceManagementService
             .deleteGradeSetting(payload)
             .subscribe(
               (res) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -150,7 +150,7 @@ export class GradeSettingComponent implements OnInit {
                 }
               },
               (err) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 const message = err.status.message.friendlyMessage;
                 swal.fire("GOSHRM", message, "error");
               }

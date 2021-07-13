@@ -52,18 +52,18 @@ export class GymWorkoutComponent implements OnInit {
   }
 
   downloadFile() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.setupService
       .exportExcelFile("/hrmsetup/download/gymworkouts")
       .subscribe(
         (resp) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.utilitiesService.byteToFile(resp, "Gym/Workout.xlsx", {
             type: "application/vnd.ms-excel",
           });
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }
@@ -120,14 +120,14 @@ export class GymWorkoutComponent implements OnInit {
   }
 
   getGymWorkout() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getGymWorkout().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.gymWorkouts = data.setuplist;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -209,10 +209,10 @@ export class GymWorkoutComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.setupService.deleteGymWorkout(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -223,7 +223,7 @@ export class GymWorkoutComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

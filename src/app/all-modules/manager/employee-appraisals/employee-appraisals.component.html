@@ -8,16 +8,18 @@
 
       <br />
       <div class="col-auto float-right ml-auto">
-        <a
-          class="btn delete-btn hint"
-          routerLink="/performance/appraisal-objective-view"
+        <a class="btn delete-btn hint" (click)="revokeAndDisagree()"
           ><span class="hint-text">Disagree</span
           ><i class="fa fa-thumbs-o-down" aria-hidden="true"></i
         ></a>
+        <a class="btn hint" (click)="saveComment()"
+          ><span class="hint-text">Save Comment</span
+          ><i class="fa fa-floppy-o" aria-hidden="true"></i>
+        </a>
         <a class="btn hint" routerLink="/performance/appraisal-objective-view"
           ><span class="hint-text">Back</span><i class="fa fa-backward"></i
         ></a>
-        <a class="btn hint" routerLink="/performance/appraisal-objective-view"
+        <a class="btn hint" (click)="revokeAndDisagree()"
           ><span class="hint-text">Revoke</span>
           <i class="fa fa-times" aria-hidden="true"></i>
         </a>
@@ -119,12 +121,12 @@
                     />
                   </div>
                   <div>
-                    <label>comments <span class="text-danger">*</span></label>
+                    <label>Comments <span class="text-danger">*</span></label>
                     <textarea
                       class="form-control"
-                      [attr.disabled]="true"
                       type="text"
                       rows="5"
+                      formControlName="comment"
                     ></textarea>
                   </div>
                 </div>

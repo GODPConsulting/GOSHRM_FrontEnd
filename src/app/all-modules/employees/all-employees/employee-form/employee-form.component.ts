@@ -75,10 +75,10 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   getProfile(id: number) {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.employeeService.getEmployeeById(id).subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const result = data.employeeList[0];
         this.getAccessLevelsByAccessLevelId(result.accessLevelId);
         this.employeeForm.patchValue({
@@ -114,7 +114,7 @@ export class EmployeeFormComponent implements OnInit {
         // Resets the photo input field of the form
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -287,10 +287,10 @@ export class EmployeeFormComponent implements OnInit {
     const val = this.convertModelToFormData(payload);
     console.log(val);
     // return;
-    this.loadingService.show();
+    // this.loadingService.show();
     this.employeeService.addEmployee(val).subscribe(
       (res) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = res.status.message.friendlyMessage;
 
         if (res.status.isSuccessful) {
@@ -302,7 +302,7 @@ export class EmployeeFormComponent implements OnInit {
         }
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -310,92 +310,92 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   getJobTitle() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getJobTitle().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
 
         this.jobTitles = data.setuplist;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
 
   getCountry() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getCountries().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.countries = data.commonLookups;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
 
   getStatesByCountryId(id) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getStatesByCountryId(id).subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.states = data.commonLookups;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
   getStaffDepartments() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getCompanyStructures().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.departments = data.companyStructures;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
 
   getUserRole() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getRoles().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.roles = data.roles;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
 
   getAccess() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getCompanyStructureDefinition().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.access = data.companyStructureDefinitions;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
 
   getAccessLevelsByAccessLevelId(id) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getAccessLevelsByAccessLevelId(id).subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.accessLevel = data.companyStructures;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }

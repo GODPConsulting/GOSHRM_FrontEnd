@@ -31,16 +31,16 @@ export class AppraisalObjectiveViewComponent implements OnInit {
     });
   }
   getEmployeeAppraisalCycle() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .getEmployeeAppraisalCycle(this.employeeId, this.deptId, this.jobGradeId)
       .subscribe(
         (data) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.employeeAppraialCycle = data;
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }

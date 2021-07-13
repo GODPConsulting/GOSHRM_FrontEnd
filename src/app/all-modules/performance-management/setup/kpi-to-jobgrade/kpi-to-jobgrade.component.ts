@@ -176,17 +176,17 @@ export class KpiToJobgradeComponent implements OnInit {
     });
   }
   getKpiToJobGrades() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.performanceService.getKpiToJobGrades().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.getWeightSummary();
         // console.log(data);
         this.kpiToJobGrades = data;
         // this.getKpiNames(this.kpiToJobGrades.payloads[0].kpis);
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -208,15 +208,15 @@ export class KpiToJobgradeComponent implements OnInit {
   }
 
   getWeightSummary() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.performanceService.getKpiToJobGradesWeightSumary().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         console.log(data);
         this.weightSummary = data;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -245,10 +245,10 @@ export class KpiToJobgradeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.performanceService.deleteKpiToJobGrade(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -259,7 +259,7 @@ export class KpiToJobgradeComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               this.utilitiesService.showMessage(err, "error");
             }
           );

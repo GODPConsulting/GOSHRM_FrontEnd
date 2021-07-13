@@ -45,16 +45,16 @@ export class LanguageComponent implements OnInit {
   }
 
   downloadFile() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.setupService.downloadLanguage().subscribe(
       (resp) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.utilitiesService.byteToFile(resp, "Language.xlsx", {
           type: "application/vnd.ms-excel",
         });
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -109,15 +109,15 @@ export class LanguageComponent implements OnInit {
   }
 
   getLanguages() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getLanguage().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.languages = data.setuplist;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -181,10 +181,10 @@ export class LanguageComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.setupService.deleteLanguage(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -195,7 +195,7 @@ export class LanguageComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

@@ -66,16 +66,16 @@ export class LocationComponent implements OnInit {
   }
 
   downloadFile() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.setupService.downloadLocation().subscribe(
       (resp) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.utilitiesService.byteToFile(resp, "Location.xlsx", {
           type: "application/vnd.ms-excel",
         });
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -147,14 +147,14 @@ export class LocationComponent implements OnInit {
   }
 
   getLocation() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getLocation().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.locations = data.setuplist;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -212,10 +212,10 @@ export class LocationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.setupService.deleteLocation(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("Success", message, "success").then(() => {
@@ -226,7 +226,7 @@ export class LocationComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               this.utilitiesService.showMessage(err, "error");
             }
           );
@@ -253,27 +253,27 @@ export class LocationComponent implements OnInit {
 
   /* Put in utilities service */
   getCountry() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getCountries().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.countries = data.commonLookups;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
 
   getStatesByCountryId(id) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getStatesByCountryId(id).subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.states = data.commonLookups;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }

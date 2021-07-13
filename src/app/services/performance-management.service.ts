@@ -779,4 +779,41 @@ export class PerformanceManagementService {
         })
       );
   }
+
+  addComment(payload: any): Observable<any> {
+    return this.apiService
+      .post(
+        `/performance/add/update/employee-appraisal/objectives_comment`,
+        payload
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+  getComment(id: number): Observable<any> {
+    return this.apiService
+      .get(`/performance/get/appraisal-objectives/comment?Id=${id}`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list[0].comment;
+        })
+      );
+  }
+  revokeAndDisagree(employeeObjectiveId: number): Observable<any> {
+    return this.apiService
+      .post(
+        `/performance/linemanager/revoke_and_disagree/objectives/by_objectivesId`,
+        { employeeObjectiveId }
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
 }

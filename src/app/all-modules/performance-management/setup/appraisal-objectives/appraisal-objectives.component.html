@@ -26,7 +26,11 @@
           <a class="btn delete-btn hint"
             ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
           ></a>
-          <a class="btn add-btn hint" (click)="saveObjectives()">
+          <a
+            class="btn add-btn hint"
+            (click)="saveObjectives()"
+            [hidden]="fromLineManager"
+          >
             <span class="hint-text">Save and Send to Line Manager</span
             ><i class="fa fa-floppy-o" aria-hidden="true"></i>
           </a>

@@ -128,7 +128,7 @@ export class RefereeComponent implements OnInit {
     for (const key in form.value) {
       formData.append(key, payload[key]);
     }
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.employeeService.postReferee(formData).subscribe(
       (res) => {
         this.loadingService.hide();
@@ -163,7 +163,7 @@ export class RefereeComponent implements OnInit {
   }
 
   getEmployeeReferee(id: number) {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.employeeService.getRefereeByStaffId(id).subscribe(
       (data) => {
         this.loadingService.hide();
@@ -208,7 +208,7 @@ export class RefereeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.employeeService.deleteReferee(payload).subscribe(
             (res) => {
               this.loadingService.hide();

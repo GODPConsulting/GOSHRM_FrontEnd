@@ -93,38 +93,38 @@ export class AppraisalPreferenceComponent implements OnInit {
   }
 
   getCompanies() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getCompanyStructures().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.companies = data.companyStructures;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
   getAppraisalCycleByCompanyId(id) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .getAppraisalCycleByCompanyId(id)
       .subscribe(
         (data) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.cycles = data;
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }
   getAppraisalPreference(id: number) {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .getAppraisalPreference(id)
       .subscribe(
         (data) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           if (data) {
             this.appraisalPreferenceForm.patchValue({
               id: data.id,
@@ -140,7 +140,7 @@ export class AppraisalPreferenceComponent implements OnInit {
           }
         },
         (error) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }

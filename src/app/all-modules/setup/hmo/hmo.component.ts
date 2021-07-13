@@ -56,14 +56,14 @@ export class HmoComponent implements OnInit {
   }
 
   downloadFile() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.setupService.downloadHmo().subscribe(
       (resp) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.utilitiesService.byteToFile(resp, "HMO.xlsx");
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -120,15 +120,15 @@ export class HmoComponent implements OnInit {
   }
 
   getHmo() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getHmo().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.hmos = data.setuplist;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -212,10 +212,10 @@ export class HmoComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.setupService.deleteHmo(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -226,7 +226,7 @@ export class HmoComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               this.utilitiesService.showMessage(err, "error");
             }
           );

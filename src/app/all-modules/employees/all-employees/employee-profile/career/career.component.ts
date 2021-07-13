@@ -47,6 +47,7 @@ export class CareerComponent implements OnInit {
   // To hold data for each card
   employeeCareer: any = {};
   dtTrigger: Subject<any> = new Subject<any>();
+  showEndate: boolean;
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -123,56 +124,56 @@ export class CareerComponent implements OnInit {
   }
 
   getJobGrade() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getJobGrades().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
 
         this.jobGrades = data.setuplist;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
   getJobTitle() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getJobTitle().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
 
         this.jobTitles = data.setuplist;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
 
   getEmploymentType() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getEmploymentType().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
 
         this.employmentTypes = data.setuplist;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
 
   loadEmployees() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.employeeService.getEmployees().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
 
         this.employeesList = data.employeeList;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -246,14 +247,14 @@ export class CareerComponent implements OnInit {
   }
 
   getStaffDepartments() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getCompanyStructures().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.offices = data.companyStructures;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -315,10 +316,10 @@ export class CareerComponent implements OnInit {
 
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.employeeService.deleteCareer(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -329,7 +330,7 @@ export class CareerComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               this.utilitiesService.showMessage(err, "error");
             }
           );
@@ -361,4 +362,8 @@ export class CareerComponent implements OnInit {
   }
 
   downloadFile() {}
+
+  checkValue(event: any) {
+    this.showEndate = event.target.checked;
+  }
 }

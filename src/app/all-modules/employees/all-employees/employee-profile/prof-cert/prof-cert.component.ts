@@ -80,10 +80,10 @@ export class ProfCertComponent implements OnInit {
       // Gets the file name and extension of the file
       const fileName = idFileToDownload[0].CertificateName;
       const extension = idFileToDownload[0].Attachment.split(".")[1];
-      this.loadingService.show();
+      // this.loadingService.show();
       this.employeeService.downloadProfCert(this.selectedId[0]).subscribe(
         (resp) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           // Converts response to file and downloads it
           if (resp) {
             return this.utilitiesService.byteToFile(
@@ -95,7 +95,7 @@ export class ProfCertComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
     } else {
@@ -210,15 +210,15 @@ export class ProfCertComponent implements OnInit {
   }
 
   getEmployeeProfCert(id: number) {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.employeeService.getProfCertByStaffId(id).subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.employeeProfCert = data.employeeList;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -253,10 +253,10 @@ export class ProfCertComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.employeeService.deleteProfCert(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -267,7 +267,7 @@ export class ProfCertComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

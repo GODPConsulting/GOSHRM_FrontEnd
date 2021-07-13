@@ -58,15 +58,15 @@ export class AppraisalsComponent implements OnInit {
   }
 
   getAppraisalsByCycleId(id: number) {
-    this.loadingService.show();
+    // this.loadingService.show();
 
     this.performanceService.getAppraisalsByCycleId(id).subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.appraisalList = data.objectiveList;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }

@@ -92,15 +92,15 @@ export class PointSettingsComponent implements OnInit {
   }
 
   getPointSettings() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.performanceManagementService.getPointSettings().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.pointSettings = data.setupList;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -147,12 +147,12 @@ export class PointSettingsComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.performanceManagementService
             .deletePointSettings(payload)
             .subscribe(
               (res) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -163,7 +163,7 @@ export class PointSettingsComponent implements OnInit {
                 }
               },
               (err) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 const message = err.status.message.friendlyMessage;
                 swal.fire("GOSHRM", message, "error");
               }

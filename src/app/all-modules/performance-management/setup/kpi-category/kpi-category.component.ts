@@ -107,10 +107,10 @@ export class KpiCategoryComponent implements OnInit {
     };
     // payload.weightModel = +payload.weightModel;
     // payload.hrSelectReviewer = +payload.hrSelectReviewer;
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService.postkpiCategory(payload).subscribe(
       (res) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = res.status.message.friendlyMessage;
         if (res.status.isSuccessful) {
           swal.fire("GOSHRM", message, "success").then(() => {
@@ -128,7 +128,7 @@ export class KpiCategoryComponent implements OnInit {
         }
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -136,15 +136,15 @@ export class KpiCategoryComponent implements OnInit {
   }
 
   getkpiCategory() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.performanceManagementService.getkpiCategory().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.kpiCategory = data.setupList;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -201,12 +201,12 @@ export class KpiCategoryComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.performanceManagementService
             .deleteKpiCategory(payload)
             .subscribe(
               (res) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -217,7 +217,7 @@ export class KpiCategoryComponent implements OnInit {
                 }
               },
               (err) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 this.utilitiesService.showMessage(err, "error");
               }
             );
@@ -267,14 +267,14 @@ export class KpiCategoryComponent implements OnInit {
   }
 
   downloadFile() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.performanceManagementService.downloadKpiCategory().subscribe(
       (res) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         return this.utilitiesService.byteToFile(res, "KPI Category.xlsx");
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }

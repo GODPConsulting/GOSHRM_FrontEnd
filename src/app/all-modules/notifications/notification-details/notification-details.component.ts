@@ -18,16 +18,16 @@ export class NotificationDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.route.paramMap.subscribe((param) => {
       this.emailId = +param.get("id");
       this.employeeService.getEmailById(this.emailId).subscribe(
         (data) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.mail = data.emails[0];
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
     });

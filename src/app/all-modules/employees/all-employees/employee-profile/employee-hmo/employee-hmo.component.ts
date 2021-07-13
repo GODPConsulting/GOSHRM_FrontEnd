@@ -231,10 +231,10 @@ export class EmployeeHmoComponent implements OnInit {
   }
 
   getEmployeeHmo(id: number) {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.employeeService.getHmoByStaffId(id).subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.employeeHmo = data.employeeList;
         this.dtTrigger.next();
       },
@@ -270,10 +270,10 @@ export class EmployeeHmoComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.employeeService.deleteHmo(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -284,7 +284,7 @@ export class EmployeeHmoComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

@@ -49,16 +49,16 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   downloadFile() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.setupService.downloadProfMem().subscribe(
       (resp) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.utilitiesService.byteToFile(resp, "Professional Membership.xlsx", {
           type: "application/vnd.ms-excel",
         });
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -114,15 +114,15 @@ export class ProfMembershipComponent implements OnInit {
   }
 
   getProfMembershipForm() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getProfMems().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.profMemberships = data.setuplist;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -196,10 +196,10 @@ export class ProfMembershipComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.setupService.deleteProfMem(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -210,7 +210,7 @@ export class ProfMembershipComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

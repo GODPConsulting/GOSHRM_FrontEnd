@@ -42,23 +42,23 @@ export class AcademicGradeComponent implements OnInit {
     this.initializeForm();
   }
   getAcademicGrade() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getAcademicGrade().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.grades = data.setuplist;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
 
   downloadFile() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.setupService.downloadAcademicGrade().subscribe(
       (resp) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         if (resp) {
           return this.utilitiesService.byteToFile(resp, "Academicgrade.xlsx");
         } else {
@@ -66,7 +66,7 @@ export class AcademicGradeComponent implements OnInit {
         }
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -200,10 +200,10 @@ export class AcademicGradeComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.setupService.deleteAcademicGrade(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 this.utilitiesService.showMessage(res, "success").then(() => {
@@ -214,7 +214,7 @@ export class AcademicGradeComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               this.utilitiesService.showMessage(err, "error");
             }
           );

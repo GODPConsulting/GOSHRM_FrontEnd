@@ -7,7 +7,7 @@
       <h4>{{ cardFormTitle }}</h4>
     </div>
     <div class="card-body">
-      <form [formGroup]="appraisalFeedbackForm">
+      <form #newsFeedform="ngForm" [formGroup]="appraisalFeedbackForm">
         <div class="row">
           <div class="col-md-4">
             <div class="form-group">
@@ -510,7 +510,7 @@
                   type="text"
                   name="comment"
                   class="form-control"
-                  formControlName="{{ formControlName }}"
+                  [formControlName]="formControlName"
                 />
               </div>
             </div>

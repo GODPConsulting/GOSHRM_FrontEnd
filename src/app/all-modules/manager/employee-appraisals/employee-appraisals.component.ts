@@ -87,11 +87,11 @@ export class EmployeeAppraisalsComponent implements OnInit {
       )
       .subscribe(
         (data) => {
-          this.loadingService.hide();
+          // // this.loadingService.hide();
           this.appraisalCycles = data;
         },
         (err) => {
-          this.loadingService.hide();
+          // // this.loadingService.hide();
         }
       );
   }
@@ -100,7 +100,7 @@ export class EmployeeAppraisalsComponent implements OnInit {
     // this.loadingService.show();
     return this.performanceManagementService.getCareerByStaffId(id).subscribe(
       (data) => {
-        // this.loadingService.hide();
+        // // this.loadingService.hide();
         this.employeeAppraisalInfo = data.employeeList[0];
         this.appraisalObjectiveForm.patchValue({
           staffName: this.employeeAppraisalInfo.staffName,
@@ -124,18 +124,18 @@ export class EmployeeAppraisalsComponent implements OnInit {
         });
       },
       (err) => {
-        // this.loadingService.hide();
+        // // this.loadingService.hide();
       }
     );
   }
   getSingleEmployeeObjective() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .getSingleEmployeeObjective(this.employeeId, this.appraisalCycleId)
       .subscribe(
         (data) => {
           // console.log(data);
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.lineManagerId = data[0].lineManger;
           this.objectiveId = data[0].id;
           // console.log(this.lineManagerId);
@@ -145,17 +145,17 @@ export class EmployeeAppraisalsComponent implements OnInit {
           });
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }
   confirm() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.performanceManagementService
       .confirmByManager(this.objectiveId)
       .subscribe(
         (res) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           if (res.status.isSuccessful) {
             return this.utilitiesService.showMessage(res, "success");
           } else {
@@ -163,8 +163,51 @@ export class EmployeeAppraisalsComponent implements OnInit {
           }
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           return this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+
+  saveComment() {
+    const formObj = this.appraisalObjectiveForm.value;
+    const payload = {
+      id: this.objectiveId,
+      comment: formObj.comment,
+    };
+    // this.loadingService.show();
+    return this.performanceManagementService.addComment(payload).subscribe(
+      (res) => {
+        // this.loadingService.hide();
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success");
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        // this.loadingService.hide();
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  revokeAndDisagree() {
+    // this.loadingService.show();
+    return this.performanceManagementService
+      .revokeAndDisagree(+this.objectiveId)
+      .subscribe(
+        (res) => {
+          // // this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            return this.utilitiesService.showMessage(res, "success");
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          return this.utilitiesService.showMessage(err, "error");
+          // // this.loadingService.hide();
         }
       );
   }

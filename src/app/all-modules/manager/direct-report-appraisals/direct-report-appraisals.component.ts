@@ -74,12 +74,12 @@ export class DirectReportAppraisalsComponent implements OnInit {
       .getEmployeeObjectivesByLineManager(this.employeeId)
       .subscribe(
         (data) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.reportAppraisals = data;
           this.dtTrigger.next();
         },
         (err) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           const message = err.status.message.friendlyMessage;
           swal.fire("GOSHRM", message, "error");
         }

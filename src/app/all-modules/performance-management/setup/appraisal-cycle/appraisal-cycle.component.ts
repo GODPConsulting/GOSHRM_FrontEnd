@@ -173,15 +173,15 @@ export class AppraisalCycleComponent implements OnInit {
   }
 
   getAppraisalCycles() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.performanceManagementService.getAppraisalCycles().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.appraisalCycles = data;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -244,12 +244,12 @@ export class AppraisalCycleComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.performanceManagementService
             .deleteAppraisalCycle(this.selectedId)
             .subscribe(
               (res) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -260,7 +260,7 @@ export class AppraisalCycleComponent implements OnInit {
                 }
               },
               (err) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 const message = err.status.message.friendlyMessage;
                 swal.fire("GOSHRM", message, "error");
               }
@@ -271,14 +271,14 @@ export class AppraisalCycleComponent implements OnInit {
   }
 
   getStaffDepartments() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getCompanyStructures().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.offices = data.companyStructures;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }

@@ -168,15 +168,15 @@ export class IdentificationComponent implements OnInit {
   }
 
   getEmployeeIdentification(id: number) {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.employeeService.getIdentificationByStaffId(id).subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.employeeIdentification = data.employeeList;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = err.status.message.friendlyMessage;
         swal.fire("GOSHRM", message, "error");
       }
@@ -184,14 +184,14 @@ export class IdentificationComponent implements OnInit {
   }
 
   getIdentification() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getIdentifications().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.identifications = data.commonLookups;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -232,10 +232,10 @@ export class IdentificationComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.employeeService.deleteIdentification(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = res.status.message.friendlyMessage;
               if (res.status.isSuccessful) {
                 swal.fire("GOSHRM", message, "success").then(() => {
@@ -246,7 +246,7 @@ export class IdentificationComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               const message = err.status.message.friendlyMessage;
               swal.fire("GOSHRM", message, "error");
             }

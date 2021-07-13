@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit {
         }
       },
       (error) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         const message = error.status.message.friendlyMessage;
         swal.fire(`Error`, message, "error");
       }
@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
 
   login(loginForm: FormGroup) {
     const payload = loginForm.value;
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.authService.userLogin(payload).subscribe(
       (res) => {
         this.jwtService.saveToken(res.token).then(() => {
@@ -103,7 +103,7 @@ export class LoginComponent implements OnInit {
         // this.router.navigateByUrl(this.redirectURL);
       },
       (err) => {
-        this.loadingService.hide();
+        // // this.loadingService.hide();
         if (err.status) {
           const message = err.status.message.friendlyMessage;
           swal.fire("GOSHRM", message, "error");
@@ -115,7 +115,7 @@ export class LoginComponent implements OnInit {
   getEmployeeByEmail(id: number) {
     this.employeeService.getEmployee(id).subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.hrmUser = data.employeeList[0];
         if (this.hrmUser) {
           this.hrmUser.branchId = this.user.branchId;
@@ -162,7 +162,7 @@ export class LoginComponent implements OnInit {
         }
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }

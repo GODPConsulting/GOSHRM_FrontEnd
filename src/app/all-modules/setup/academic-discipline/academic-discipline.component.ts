@@ -79,18 +79,18 @@ export class AcademicDisciplineComponent implements OnInit {
   }
 
   downloadFile() {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.setupService
       .exportExcelFile("/hrmsetup/download/academic/disciplines")
       .subscribe(
         (resp) => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
           this.utilitiesService.byteToFile(resp, "Academic Discipline.xlsx", {
             type: "application/vnd.ms-excel",
           });
         },
         () => {
-          this.loadingService.hide();
+          // this.loadingService.hide();
         }
       );
   }
@@ -115,14 +115,14 @@ export class AcademicDisciplineComponent implements OnInit {
   }
 
   getAcademicDisplines() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.setupService.getAcademicDisplines().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.disciplines = data.setuplist;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -199,10 +199,10 @@ export class AcademicDisciplineComponent implements OnInit {
         confirmButtonText: "Yes!",
         showLoaderOnConfirm: true,
         preConfirm: (login) => {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.setupService.deleteAcademicDiscipline(payload).subscribe(
             (res) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               if (res.status.isSuccessful) {
                 this.utilitiesService.showMessage(res, "success").then(() => {
                   this.getAcademicDisplines();
@@ -215,7 +215,7 @@ export class AcademicDisciplineComponent implements OnInit {
               }
             },
             (err) => {
-              this.loadingService.hide();
+              // this.loadingService.hide();
               this.utilitiesService.showMessage(err, "error");
             }
           );

@@ -155,29 +155,29 @@ export class AppraisalFeedbackComponent implements OnInit {
   }
 
   getAppraisalFeedbacks(id, staffId: number) {
-    this.loadingService.show();
+    // this.loadingService.show();
     this.performanceManagementService.getAppraisalFeedbacks(id).subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
         this.appraisalFeedbacks = data;
         this.dtTrigger.next();
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
 
   getJobGrade() {
-    this.loadingService.show();
+    // this.loadingService.show();
     return this.commonService.getJobGrades().subscribe(
       (data) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
 
         this.jobGrades = data.setuplist;
       },
       (err) => {
-        this.loadingService.hide();
+        // this.loadingService.hide();
       }
     );
   }
@@ -233,12 +233,12 @@ export class AppraisalFeedbackComponent implements OnInit {
       })
       .then((result) => {
         if (result.value) {
-          this.loadingService.show();
+          // this.loadingService.show();
           return this.performanceManagementService
             .deleteAppraisalFeedback(payload)
             .subscribe(
               (res) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
@@ -252,7 +252,7 @@ export class AppraisalFeedbackComponent implements OnInit {
                 }
               },
               (err) => {
-                this.loadingService.hide();
+                // this.loadingService.hide();
                 const message = err.status.message.friendlyMessage;
                 swal.fire("GOSHRM", message, "error");
               }
