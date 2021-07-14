@@ -9,6 +9,8 @@ import { LoadingService } from "../../../../../services/loading.service";
 import { CommonService } from "../../../../../services/common.service";
 import { IAppraisalCycle } from "../../../../../interface/interfaces";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Observable } from "rxjs";
+import { JwtService } from "../../../../../services/jwt.service";
 
 declare const $: any;
 @Component({
@@ -47,6 +49,7 @@ export class AppraisalCyclePageComponent implements OnInit {
   status: string;
   appraisalCycleForm: FormGroup;
   offices: any[] = [];
+  offices$: Observable<any>;
   appraisalCycleUploadForm: any;
   dateObj: any;
   constructor(
@@ -57,7 +60,8 @@ export class AppraisalCyclePageComponent implements OnInit {
     private loadingService: LoadingService,
     private commonService: CommonService,
     private router: Router,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private jwtService: JwtService
   ) {
     this.appraisalCycleUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -72,7 +76,10 @@ export class AppraisalCyclePageComponent implements OnInit {
     this.getAppraisalCycles();
     this.cardFormTitle = "Add Performance Cycle";
     this.createYears(2000, 2050);
-    this.getStaffDepartments();
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.offices$ = this.commonService.getCompanies(user.staffId);
+    });
+    // this.getStaffDepartments();
     this.initialiseForm();
   }
 
@@ -94,6 +101,7 @@ export class AppraisalCyclePageComponent implements OnInit {
       reviewerThreeWeight: [""],
       status: [""],
       department: [""],
+      calenderRange: [""],
     });
   }
   getAppraisalCycle(id: number) {
@@ -113,6 +121,7 @@ export class AppraisalCyclePageComponent implements OnInit {
           status: res.status,
           department: res.department,
           revieweeWeight: res.revieweeWeight,
+          calenderRange: res.calenderRange,
         });
       },
       (err) => {

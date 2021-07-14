@@ -15,8 +15,9 @@
             (change)="filterByCompany($event.target.value)"
           >
             <option value="" selected disabled>Company</option>
+            <option value="0">All</option>
             <option
-              *ngFor="let row of offices"
+              *ngFor="let row of offices$ | async"
               value="{{ row?.companyStructureId }}"
             >
               {{ row?.name }}
@@ -46,7 +47,7 @@
     <p-table
       class="table table-nowrap table-hover"
       #dt
-      [value]="appraisalCycles"
+      [value]="filteredArray"
       [columns]="cols"
       [(selection)]="selectedCycles"
       [scrollable]="true"

@@ -8,7 +8,7 @@ import {
   HttpResponse,
 } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { tap, catchError, map } from "rxjs/operators";
+import { tap, catchError, map, finalize } from "rxjs/operators";
 
 // import { JwtService } from "../services/jwt.service";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -20,6 +20,7 @@ import { LoadingService } from "./loading.service";
 @Injectable()
 export class HttpTokenInterceptor implements HttpInterceptor {
   routePath: string;
+  serviceCount: number = 0;
   constructor(
     private jwtService: JwtService,
     private router: Router,
@@ -37,6 +38,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    this.serviceCount++;
     this.loadingService.show();
     const headersConfig = {
       /* "Content-Type": "application/json",*/
@@ -54,7 +56,10 @@ export class HttpTokenInterceptor implements HttpInterceptor {
       .handle(request)
       .pipe(
         catchError((error: any, caught: Observable<any>) => {
-          this.loadingService.hide();
+          this.serviceCount--;
+          if (this.serviceCount === 0) {
+            this.loadingService.hide();
+          }
           if (error.status === 1100) {
             // this.jwtService.saveToken()
           }
@@ -83,10 +88,11 @@ export class HttpTokenInterceptor implements HttpInterceptor {
         })
       )
       .pipe(
-        map<HttpEvent<any>, any>((evt: HttpEvent<any>) => {
-          if (evt instanceof HttpResponse) {
+        finalize(() => {
+          this.serviceCount--;
+
+          if (this.serviceCount === 0) {
             this.loadingService.hide();
-            return evt;
           }
         })
       );

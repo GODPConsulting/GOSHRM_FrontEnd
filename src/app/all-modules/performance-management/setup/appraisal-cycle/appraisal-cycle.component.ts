@@ -7,11 +7,12 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 
 import { ISearchColumn } from "../../../../interface/interfaces";
 import { CommonService } from "../../../../services/common.service";
 import { Router } from "@angular/router";
+import { JwtService } from "../../../../services/jwt.service";
 
 declare const $: any;
 
@@ -51,7 +52,8 @@ export class AppraisalCycleComponent implements OnInit {
   reviewerWeight: any;
   status: string;
   filteredArray: any[] = [];
-  public offices: number[] = [];
+  public offices: any[] = [];
+  offices$: Observable<any[]>;
   appraisalCycleUploadForm: any;
   public employeesList: any = [];
   dtTrigger: Subject<any> = new Subject();
@@ -65,7 +67,8 @@ export class AppraisalCycleComponent implements OnInit {
     private _location: Location,
     private loadingService: LoadingService,
     private commonService: CommonService,
-    private _router: Router
+    private _router: Router,
+    private jwtService: JwtService
   ) {
     this.appraisalCycleUploadForm = this.formBuilder.group({
       uploadInput: [""],
@@ -114,7 +117,10 @@ export class AppraisalCycleComponent implements OnInit {
     this.getAppraisalCycles();
     this.cardFormTitle = "Add Appraisal Cycle";
     this.createYears(2000, 2050);
-    this.getStaffDepartments();
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.offices$ = this.commonService.getCompanies(user.staffId);
+    });
+    // this.getStaffDepartments();
   }
 
   createYears(from, to) {
@@ -177,8 +183,8 @@ export class AppraisalCycleComponent implements OnInit {
     this.performanceManagementService.getAppraisalCycles().subscribe(
       (data) => {
         // this.loadingService.hide();
+        this.filteredArray = data;
         this.appraisalCycles = data;
-        this.dtTrigger.next();
       },
       (err) => {
         // this.loadingService.hide();
@@ -288,7 +294,7 @@ export class AppraisalCycleComponent implements OnInit {
       this.filteredArray = this.appraisalCycles;
     } else {
       this.filteredArray = this.appraisalCycles.filter(
-        (item) => item.staffOfficeId === +id
+        (item) => item.department === +id
       );
     }
   }

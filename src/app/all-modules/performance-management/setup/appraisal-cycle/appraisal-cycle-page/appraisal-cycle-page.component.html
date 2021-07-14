@@ -12,7 +12,12 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Calender Range</label>
-              <input type="text" name="calenderRange" class="form-control" />
+              <input
+                type="text"
+                name="calenderRange"
+                formControlName="calenderRange"
+                class="form-control"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -26,7 +31,7 @@
               >
                 <option selected value="">Company</option>
                 <option
-                  *ngFor="let row of offices"
+                  *ngFor="let row of offices$ | async"
                   value="{{ row.companyStructureId }}"
                 >
                   {{ row.name }}
@@ -166,8 +171,8 @@
                 formControlName="status"
               >
                 <option selected value="">Status</option>
-                <option value="1">Locked</option>
-                <option value="2">Open</option>
+                <option value="0">Locked</option>
+                <option value="1">Open</option>
               </select>
             </div>
           </div>

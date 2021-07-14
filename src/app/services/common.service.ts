@@ -28,7 +28,8 @@ export class CommonService {
 
   getCompanyStructures(): Observable<any> {
     //return this.http.get(`http://107.180.93.38:5050/company/get/all/companystructures`).pipe(tap(),
-    return this.apiService.get(`/company/get/all/companystructures`).pipe(tap(),
+    return this.apiService.get(`/company/get/all/companystructures`).pipe(
+      tap(),
       map((res) => {
         return res;
       }),
@@ -37,7 +38,8 @@ export class CommonService {
   }
   getRoles(): Observable<any> {
     //return this.http.get(`http://107.180.93.38:5050/admin/get/all/role`).pipe(tap(),
-    return this.apiService.get(`/admin/get/all/role`).pipe(tap(),
+    return this.apiService.get(`/admin/get/all/role`).pipe(
+      tap(),
       map((res) => {
         return res;
       }),
@@ -47,7 +49,10 @@ export class CommonService {
 
   getCompanyStructureDefinition(): Observable<any> {
     //return this.http.get(`http://107.180.93.38:5050/company/get/all/companystructureDefinition`).pipe(tap(),
-    return this.apiService.get(`/company/get/all/companystructureDefinition`).pipe(tap(),
+    return this.apiService
+      .get(`/company/get/all/companystructureDefinition`)
+      .pipe(
+        tap(),
         map((res) => {
           return res;
         }),
@@ -56,7 +61,10 @@ export class CommonService {
   }
   getAccessLevelsByAccessLevelId(id): Observable<any> {
     //return this.http.get(`http://107.180.93.38:5050/company/get/all/companystructure/accessId?AccessId=${id}`).pipe(tap(),
-    return this.apiService.get(`/company/get/all/companystructure/accessId?AccessId=${id}`).pipe(tap(),
+    return this.apiService
+      .get(`/company/get/all/companystructure/accessId?AccessId=${id}`)
+      .pipe(
+        tap(),
         map((res) => {
           return res;
         }),
@@ -75,7 +83,8 @@ export class CommonService {
 
   getCountries(): Observable<any> {
     //return this.http.get(`http://107.180.93.38:5050/common/countries`).pipe(tap(),
-    return this.apiService.get(`/common/countries`).pipe(tap(),
+    return this.apiService.get(`/common/countries`).pipe(
+      tap(),
       map((res) => {
         return res;
       }),
@@ -85,11 +94,24 @@ export class CommonService {
 
   getStatesByCountryId(id): Observable<any> {
     //return this.http.get(`http://107.180.93.38:5050/common/get/states/countryId?CountryId=${id}`).pipe(tap(),
-    return this.apiService.get(`/common/get/states/countryId?CountryId=${id}`).pipe(tap(),
+    return this.apiService
+      .get(`/common/get/states/countryId?CountryId=${id}`)
+      .pipe(
+        tap(),
         map((res) => {
           return res;
         }),
         catchError(this.handleError)
+      );
+  }
+  getCompanies(staffId: number): Observable<any> {
+    return this.apiService
+      .get(`/company/get/companystructure/staffId?StaffId=${staffId}`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.companyStructures;
+        })
       );
   }
 }
