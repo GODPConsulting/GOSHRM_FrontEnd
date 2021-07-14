@@ -8,6 +8,7 @@ import { LoadingService } from "../../../../services/loading.service";
 import { JwtService } from "../../../../services/jwt.service";
 import { UtilitiesService } from "../../../../services/utilities.service";
 import { Location } from "@angular/common";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-appraisal-objective-form",
@@ -26,6 +27,10 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   appraisalCycles: any[] = [];
   objectiveId: number;
   lineManagerId: number;
+  reviewYears$: Observable<any> = this.performanceManagementService.getReviewYears();
+  reviewPeriods$: Observable<any>;
+  status: string;
+  reviewPeriods: any[] = [];
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -35,7 +40,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
     private route: ActivatedRoute,
     private jwtService: JwtService,
     private utilitiesService: UtilitiesService,
-    private location: Location
+    public location: Location
   ) {}
 
   ngOnInit(): void {
@@ -43,7 +48,9 @@ export class AppraisalObjectiveFormComponent implements OnInit {
     this.route.queryParams.subscribe((param) => {
       this.appraisalCycleId = param.appraisalCycleId;
       this.objectiveId = param.objectiveId;
-      this.getComment(this.objectiveId);
+      this.status = param.start;
+      console.log(status);
+      // this.getComment(this.objectiveId);
     });
     /*const user = JSON.parse(localStorage.getItem("userDetails"));
     if (user) {
@@ -55,8 +62,8 @@ export class AppraisalObjectiveFormComponent implements OnInit {
         this.jobGradeId = employee.jobGrade;
         this.staffId = employee.employeeId;
         this.deptId = employee.departmentId;
-        this.getAppraisalCycle();
-        this.getSingleEmployeeObjective();
+        // this.getAppraisalCycle();
+        // this.getSingleEmployeeObjective();
         this.getCareer(employee.employeeId);
       }
     });
@@ -152,7 +159,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   viewObjectives() {
     const payload = this.appraisalObjectiveForm.value;
     payload.reviewYear = +payload.reviewYear;
-    payload.appraisalCycleId = +payload.appraisalCycleId;
+    payload.appraisalCycleId = this.appraisalCycleId;
     // this.loadingService.show();
     return this.performanceManagementService.startAppraisal(payload).subscribe(
       (res) => {
@@ -160,18 +167,19 @@ export class AppraisalObjectiveFormComponent implements OnInit {
         const message = res["status"].message.friendlyMessage;
         if (res["status"].isSuccessful) {
           this.utilitiesService.showMessage(res, "success").then(() => {
-            this.getSingleEmployeeObjective();
-            const url = this.router
-              .createUrlTree([], {
-                relativeTo: this.route,
-                queryParams: {
-                  appraisalCycleId: this.appraisalCycleId,
-                  objectiveId: this.objectiveId,
-                },
-              })
-              .toString();
-
-            this.location.go(url);
+            // this.getSingleEmployeeObjective();
+            this.status = "false";
+            // const url = this.router
+            //   .createUrlTree([], {
+            //     relativeTo: this.route,
+            //     queryParams: {
+            //       appraisalCycleId: this.appraisalCycleId,
+            //       objectiveId: this.objectiveId,
+            //     },
+            //   })
+            //   .toString();
+            //
+            // this.location.go(url);
           });
           // this.router.navigate(["/performance/appraisal-objectives"], {
           //   queryParams: {
@@ -200,14 +208,28 @@ export class AppraisalObjectiveFormComponent implements OnInit {
           this.lineManagerId = data[0].lineManger;
           this.objectiveId = data[0].id;
           console.log(this.lineManagerId);
-          this.appraisalObjectiveForm.patchValue({
-            reviewYear: data[0].reviewYear,
-            reviewPeriod: data[0].reviewPeriod,
-          });
+          // this.appraisalObjectiveForm.patchValue({
+          //   reviewYear: data[0].reviewYear,
+          //   reviewPeriod: data[0].reviewPeriod,
+          // });
         },
         (err) => {
           // this.loadingService.hide();
         }
       );
+  }
+
+  getAppraisalPeriods(value: any) {
+    // this.reviewPeriods$ =
+    this.performanceManagementService
+      .getAppraisalPeriods(value)
+      .subscribe((res) => {
+        this.reviewPeriods = res;
+      });
+  }
+
+  getValue(value: any) {
+    const item = this.reviewPeriods.find((item) => item.period === value);
+    this.appraisalCycleId = item.appraisalCycleId;
   }
 }

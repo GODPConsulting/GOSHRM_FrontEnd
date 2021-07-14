@@ -38,7 +38,14 @@ export class AppraisalObjectivesComponent implements OnInit {
   jobGradeId: number;
   employeeObjectives: any[] = [];
   deptId: number;
-  appraisalCyleId: number;
+  _appraisalCycleId: number;
+  @Input() set appraisalCyleId(value: number) {
+    console.log(value);
+    this._appraisalCycleId = value;
+  }
+  get appraisalCyleId(): number {
+    return this._appraisalCycleId;
+  }
   isEditing: boolean = false;
   kpi: any;
   @Input() objectiveId: number;
@@ -57,7 +64,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   ngOnInit(): void {
     // const user = JSON.parse(localStorage.getItem("userDetails"));
     this.route.queryParams.subscribe((param) => {
-      this.appraisalCyleId = param.appraisalCycleId;
+      // this.appraisalCyleId = param.appraisalCycleId;
       this.objectiveId = param.objectiveId;
       console.log(this.fromLineManager);
       if (this.fromLineManager) {
@@ -86,7 +93,7 @@ export class AppraisalObjectivesComponent implements OnInit {
       }
     });
     this.initializeForm();
-    this.getAppraisalObjectives(this.staffId);
+    // this.getAppraisalObjectives(this.staffId);
     // this.getTargetDate();
     // this.getEmployeeObjectives();
     // this.getKPICategories();
@@ -196,6 +203,7 @@ export class AppraisalObjectivesComponent implements OnInit {
         // this.loadingService.hide();
         this.utilitiesService.showMessage(res, "success").then(() => {
           this.getEmployeeObjectiveDetails(this.staffId);
+          this.getAddableObjectives(this.jobGradeId);
           this.closeAppraisalObjectivesModal();
           this.isEditing = false;
         });

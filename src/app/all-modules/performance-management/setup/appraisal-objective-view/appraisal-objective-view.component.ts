@@ -63,4 +63,12 @@ export class AppraisalObjectiveViewComponent implements OnInit {
         this.employeeAppraisalCycle = data;
       });
   }
+
+  addObjective() {
+    this.router.navigate(["/performance/appraisal-objective-form"], {
+      queryParams: {
+        start: true,
+      },
+    });
+  }
 }

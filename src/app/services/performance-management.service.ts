@@ -850,4 +850,17 @@ export class PerformanceManagementService {
         })
       );
   }
+
+  getAppraisalPeriods(year: string): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/performance-appraisal/get/all/appraisal-period/by/year?Year=${year}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.periodList;
+        })
+      );
+  }
 }

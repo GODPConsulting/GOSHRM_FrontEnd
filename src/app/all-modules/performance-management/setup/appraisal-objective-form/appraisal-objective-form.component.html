@@ -1,4 +1,8 @@
-<div class="content container-fluid" style="padding-bottom: 0">
+<div
+  *ngIf="status === 'true'"
+  class="content container-fluid"
+  style="padding-bottom: 0"
+>
   <!-- Page Header Starts -->
   <div id="add_appraisal_objectives">
     <div class="card">
@@ -8,15 +12,13 @@
 
       <br />
       <div class="col-auto float-right ml-auto">
-        <a
-          class="btn delete-btn hint"
-          routerLink="/performance/appraisal-objective-view"
+        <a class="btn delete-btn hint" (click)="location.back()"
           ><span class="hint-text">Back</span><i class="fa fa-backward"></i
         ></a>
 
         <a class="btn add-btn hint" (click)="viewObjectives()"
           ><span class="hint-text">{{
-            lineManagerId === 0 ? "Start Objective" : "Continue Objective"
+            status === "true" ? "Start Objective" : "Continue Objective"
           }}</span
           ><i class="fa fa-play"></i>
         </a>
@@ -28,11 +30,15 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Review year</label>
-                <select class="form-control" formControlName="reviewYear">
-                  <option selected value="">Review Year</option>
+                <select
+                  class="form-control"
+                  formControlName="reviewYear"
+                  (change)="getAppraisalPeriods($event.target.value)"
+                >
+                  <option disabled value="">Review Year</option>
                   <option
-                    *ngFor="let row of appraisalCycles"
-                    value="{{ row.reviewYear }}"
+                    *ngFor="let row of reviewYears$ | async"
+                    [value]="row.reviewYear"
                   >
                     {{ row.reviewYear }}
                   </option>
@@ -43,13 +49,17 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Review Period</label
-                ><select class="form-control" formControlName="reviewPeriod">
+                ><select
+                  class="form-control"
+                  formControlName="reviewPeriod"
+                  (change)="getValue($event.target.value)"
+                >
                   <option selected value="">Review Period</option>
                   <option
-                    *ngFor="let row of appraisalCycles"
-                    value="{{ row.reviewPeriod }}"
+                    *ngFor="let row of reviewPeriods"
+                    value="{{ row.period }}"
                   >
-                    {{ row.reviewPeriod }}
+                    {{ row.period }}
                   </option>
                 </select>
               </div>
@@ -163,7 +173,8 @@
   </div>
 </div>
 <app-appraisal-objectives
-  *ngIf="lineManagerId !== 0"
+  *ngIf="status !== 'true'"
   [objectiveId]="objectiveId"
   [fromLineManager]="false"
+  [appraisalCyleId]="appraisalCycleId"
 ></app-appraisal-objectives>

@@ -26,3 +26,9 @@
 .btn-primary {
   margin-right: 15px;
 }
+
+.checkbox-flex {
+  display: flex;
+  align-items: center;
+  margin-top: 10px
+}

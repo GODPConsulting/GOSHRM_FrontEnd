@@ -7,7 +7,7 @@ import {
   HttpRequest,
   HttpResponse,
 } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { tap, catchError, map, finalize } from "rxjs/operators";
 
 // import { JwtService } from "../services/jwt.service";
@@ -16,6 +16,8 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
 import { JwtService } from "./jwt.service";
 import { LoadingService } from "./loading.service";
+import { HttpCacheService } from "./http-cache.service";
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Injectable()
 export class HttpTokenInterceptor implements HttpInterceptor {
@@ -26,7 +28,8 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     private router: Router,
     private loadingService: LoadingService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private cacheService: HttpCacheService
   ) {
     this.route.url.subscribe((data) => {
       // Get the last piece of the URL
@@ -38,6 +41,32 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    const token = this.jwtService.getToken();
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(token);
+    // console.log(decodedToken);
+    const isExpired = helper.isTokenExpired(token);
+    if (isExpired) {
+      this.jwtService.destroyToken().then(() => {
+        this.router.navigate(["/login"]);
+      });
+    }
+    /*if (req.method !== "GET") {
+      this.cacheService.invalidateCache();
+      this.serviceCount++;
+      this.loadingService.show();
+      return next.handle(req);
+    }
+    // attempt to retrieve a cached response
+    const cachedResponse: HttpResponse<any> = this.cacheService.get(req.url);
+
+    // return cached response
+    if (cachedResponse) {
+      console.log(`Returning a cached response: ${cachedResponse.url}`);
+      console.log(cachedResponse);
+      return of(cachedResponse);
+      this.loadingService.hide();
+    }*/
     this.serviceCount++;
     this.loadingService.show();
     const headersConfig = {
@@ -45,57 +74,31 @@ export class HttpTokenInterceptor implements HttpInterceptor {
       Accept: "application/json",
     };
 
-    const token = this.jwtService.getToken();
-
     if (token) {
       headersConfig["Authorization"] = `Bearer ${token}`;
     }
 
     const request = req.clone({ setHeaders: headersConfig });
-    return next
-      .handle(request)
-      .pipe(
-        catchError((error: any, caught: Observable<any>) => {
-          this.serviceCount--;
-          if (this.serviceCount === 0) {
-            this.loadingService.hide();
-          }
-          if (error.status === 1100) {
-            // this.jwtService.saveToken()
-          }
-          if (error.status === 401) {
-            this.handleAuthError();
-          }
-          // if (error.status === 403) {
-          //   // this.loadingService.hide()
-          //   const message = error.error.Status.Message.FriendlyMessage
-          //   swal.fire('Error', message, 'error').then(() => {
-          //     this.location.back()
-          //   });
-          //   if (message === null) {
-          //     const message = 'You do not have privilege to perform this action';
-          //     swal.fire('Error', message, 'error').then(() => {
-          //       this.location.back()
-          //     });
-          //   }
-          //
-          //   // this.handleAuthError();
+    return next.handle(request).pipe(
+      tap((event) => {
+        /*if (event instanceof HttpResponse) {
+          console.log(`Adding item to cache: ${req.url}`);
+          this.cacheService.put(req.url, event);
+          // this.serviceCount--;
+          // this.loadingService.hide();
+          // if (this.serviceCount === 0) {
+          //   this.loadingServ ice.hide();
           // }
-          // if (error.status === 502) {
-          //   this.handleAuthError()
-          // }
-          throw error;
-        })
-      )
-      .pipe(
-        finalize(() => {
-          this.serviceCount--;
+        }*/
+      }),
+      finalize(() => {
+        this.serviceCount--;
 
-          if (this.serviceCount === 0) {
-            this.loadingService.hide();
-          }
-        })
-      );
+        if (this.serviceCount === 0) {
+          this.loadingService.hide();
+        }
+      })
+    );
   }
   private handleAuthError() {
     // this.loadingService.hide();

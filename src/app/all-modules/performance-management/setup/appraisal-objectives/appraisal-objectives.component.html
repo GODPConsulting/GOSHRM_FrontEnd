@@ -61,6 +61,9 @@
                 <!--              <th>-->
                 <!--                <input type="checkbox" />-->
                 <!--              </th>-->
+                <th class="table-checkbox">
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
                 <th class="sn_width">S/N</th>
                 <th>KPI Type</th>
                 <th>Objectives</th>
@@ -83,6 +86,9 @@
                 <!--                  (change)="addItemId($event, row.id)"-->
                 <!--                />-->
                 <!--              </td>-->
+                <td class="table-checkbox">
+                  <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                </td>
                 <td class="sn_width">{{ i + 1 }}</td>
                 <td>{{ row.kpiName | titlecase }}</td>
                 <td>{{ row.objective | titlecase }}</td>
@@ -117,7 +123,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Appraisal Objectives</h5>
+        <h5 class="modal-title">Objectives</h5>
         <button
           type="button"
           class="close"
