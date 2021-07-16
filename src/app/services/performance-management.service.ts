@@ -495,10 +495,14 @@ export class PerformanceManagementService {
       );
   }
 
-  getAddableObjectives(jobGradeId: number): Observable<any> {
+  getAddableObjectives(
+    jobGradeId: number,
+    employeeId: number,
+    employeePerformId: number
+  ): Observable<any> {
     return this.apiService
       .get(
-        `/performance/get/employee_can_add/kpis/by_jobgrade?jobgrade=${jobGradeId}`
+        `/performance/get/employee_can_add/kpis/by_jobgrade?jobgrade=${jobGradeId}&EmployeeId=${employeeId}&EmployeePerformId=${employeePerformId}`
       )
       .pipe(
         tap(),

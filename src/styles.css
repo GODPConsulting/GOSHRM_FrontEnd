@@ -8757,3 +8757,8 @@ rating span {
 .resize {
   resize: none
 }
+
+.btn {
+  border: 1px solid #ddd;
+  margin-right: 3px;
+}

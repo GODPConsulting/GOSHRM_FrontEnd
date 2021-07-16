@@ -56,6 +56,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   kpi: any;
   @Input() objectiveId: number;
   @Input() fromLineManager: boolean = false;
+  @Input() employeeId: number;
   totalWeight: number;
   showOthers: boolean;
   constructor(
@@ -232,17 +233,19 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
   getAddableObjectives(id) {
     // this.loadingService.show();
-    return this.performanceManagementService.getAddableObjectives(id).subscribe(
-      (data) => {
-        // this.loadingService.hide();
-        this.addAbleOjectives = data;
-        // console.log(this.getObjectiveNames(this.addAbleOjectives));
-        // this.employeeObjectives$ = data;
-      },
-      (err) => {
-        // this.loadingService.hide();
-      }
-    );
+    return this.performanceManagementService
+      .getAddableObjectives(id, this.staffId, this.employeePerformId)
+      .subscribe(
+        (data) => {
+          // this.loadingService.hide();
+          this.addAbleOjectives = data;
+          // console.log(this.getObjectiveNames(this.addAbleOjectives));
+          // this.employeeObjectives$ = data;
+        },
+        (err) => {
+          // this.loadingService.hide();
+        }
+      );
   }
   getCannotAddObjectives(jobGradeId: number) {
     // this.loadingService.show();

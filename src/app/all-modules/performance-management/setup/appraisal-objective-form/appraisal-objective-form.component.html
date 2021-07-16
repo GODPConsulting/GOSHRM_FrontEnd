@@ -35,8 +35,9 @@
                 <label>Review year</label>
                 <select
                   class="form-control"
-                  formControlName="reviewYear"
+                  [(ngModel)]="reviewYear"
                   [disabled]="disableField"
+                  [ngModelOptions]="{ standalone: true }"
                   (change)="getAppraisalPeriods($event.target.value)"
                 >
                   <option disabled value="">Review Year</option>
@@ -55,8 +56,9 @@
                 <label>Review Period</label
                 ><select
                   class="form-control"
-                  formControlName="reviewPeriod"
+                  [(ngModel)]="reviewPeriod"
                   [disabled]="disableField"
+                  [ngModelOptions]="{ standalone: true }"
                   (change)="getValue($event.target.value)"
                 >
                   <option selected value="">Review Period</option>

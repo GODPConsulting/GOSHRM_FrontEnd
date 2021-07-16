@@ -35,6 +35,9 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   pageStatus: number = 0;
   employeePerformId: number = 0;
   disableField: boolean = false;
+  reviewYear: any;
+  reviewPeriod: any;
+  employeeId: any;
 
   constructor(
     private formbuilder: FormBuilder,
@@ -56,7 +59,10 @@ export class AppraisalObjectiveFormComponent implements OnInit {
     this.initializeForm();
     this.route.queryParams.subscribe((param) => {
       this.appraisalCycleId = param.appraisalCycleId;
-      this.employeePerformId = param.employeePerformId;
+      if (param.employeePerformId) {
+        this.employeePerformId = param.employeePerformId;
+        this.disableField = true;
+      }
       this.objectiveId = param.objectiveId;
       this.status = param.start;
       this.pageStatus = +param.pageStatus;
@@ -177,9 +183,13 @@ export class AppraisalObjectiveFormComponent implements OnInit {
 
   viewObjectives() {
     const payload = this.appraisalObjectiveForm.value;
-    payload.reviewYear = +payload.reviewYear;
+    payload.reviewYear = +this.reviewYear;
+    payload.reviewPeriod = this.reviewPeriod;
     payload.appraisalCycleId = +this.appraisalCycleId;
     payload.id = +this.employeePerformId;
+    if (!payload.id) {
+      payload.id = 0;
+    }
     // this.loadingService.show();
     return this.performanceManagementService.startAppraisal(payload).subscribe(
       (res) => {
@@ -231,13 +241,14 @@ export class AppraisalObjectiveFormComponent implements OnInit {
           this.lineManagerId = data[0].lineManger;
           this.objectiveId = data[0].id;
           const year = data[0].reviewYear;
-          // console.log(this.lineManagerId);
           this.getAppraisalPeriods(year);
-          this.appraisalObjectiveForm.patchValue({
-            reviewYear: data[0].reviewYear,
-            reviewPeriod: data[0].reviewPeriod,
-          });
-          this.disableField = true;
+          this.reviewYear = data[0].reviewYear;
+          this.reviewPeriod = data[0].reviewPeriod;
+          // console.log(this.lineManagerId);
+          // this.appraisalObjectiveForm.patchValue({
+          //   reviewYear: data[0].reviewYear,
+          //   reviewPeriod: data[0].reviewPeriod,
+          // });
         },
         (err) => {
           // this.loadingService.hide();
