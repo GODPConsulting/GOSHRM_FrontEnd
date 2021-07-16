@@ -186,9 +186,10 @@ export class AppraisalObjectiveFormComponent implements OnInit {
         const message = res["status"].message.friendlyMessage;
         if (res["status"].isSuccessful) {
           this.status = "false";
-          /*this.utilitiesService.showMessage(res, "success").then(() => {
+          this.employeePerformId = res.list[0].employeePerformId;
+          /* this.utilitiesService.showMessage(res, "success").then(() => {
             // this.getSingleEmployeeObjective();
-            this.employeePerformId = res.list[0].employeePerformId;
+
 
             // const url = this.router
             //   .createUrlTree([], {
