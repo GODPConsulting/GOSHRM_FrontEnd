@@ -1,5 +1,5 @@
 <div
-  *ngIf="status === 'true'"
+  *ngIf="status === 'true' || pageStatus === 1"
   class="content container-fluid"
   style="padding-bottom: 0"
 >
@@ -12,16 +12,21 @@
 
       <br />
       <div class="col-auto float-right ml-auto">
-        <a class="btn delete-btn hint" (click)="location.back()"
-          ><span class="hint-text">Back</span><i class="fa fa-backward"></i
-        ></a>
-
-        <a class="btn add-btn hint" (click)="viewObjectives()"
+        <a class="btn hint" (click)="sendToLineManager()">
+          <span class="hint-text">Send to Line Manager</span>
+          <i class="fa fa-paper-plane" aria-hidden="true"></i>
+        </a>
+        <a class="btn hint" (click)="viewObjectives()"
           ><span class="hint-text">{{
-            status === "true" ? "Start Objective" : "Continue Objective"
+            appraisalCycleId === undefined
+              ? "Start Objective"
+              : "Continue Objective"
           }}</span
           ><i class="fa fa-play"></i>
         </a>
+        <a class="btn hint" (click)="location.back()"
+          ><span class="hint-text">Back</span><i class="fa fa-backward"></i
+        ></a>
       </div>
 
       <div class="card-body">
@@ -33,6 +38,7 @@
                 <select
                   class="form-control"
                   formControlName="reviewYear"
+                  [attr.disabled]="disableField"
                   (change)="getAppraisalPeriods($event.target.value)"
                 >
                   <option disabled value="">Review Year</option>
@@ -52,6 +58,7 @@
                 ><select
                   class="form-control"
                   formControlName="reviewPeriod"
+                  [attr.disabled]="disableField"
                   (change)="getValue($event.target.value)"
                 >
                   <option selected value="">Review Period</option>
@@ -172,9 +179,11 @@
     </div>
   </div>
 </div>
+<!--*ngIf="status !== 'true' || pageStatus === 1"-->
 <app-appraisal-objectives
-  *ngIf="status !== 'true'"
+  *ngIf="status !== 'true' || pageStatus === 1"
   [objectiveId]="objectiveId"
   [fromLineManager]="false"
   [appraisalCyleId]="appraisalCycleId"
+  [employeePerformId]="employeePerformId"
 ></app-appraisal-objectives>

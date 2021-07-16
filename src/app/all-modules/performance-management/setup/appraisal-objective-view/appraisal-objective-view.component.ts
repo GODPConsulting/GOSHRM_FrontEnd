@@ -51,8 +51,11 @@ export class AppraisalObjectiveViewComponent implements OnInit {
     this.router.navigate(["/performance/appraisal-objective-form"], {
       queryParams: {
         appraisalCycleId: item.appraisalCycleId,
+        employeePerformId: item.employeePerformId,
         objectiveId: item.id,
         jobgradeId: item.jobGradeId,
+        start: true,
+        // pageStatus: 1,
       },
     });
   }

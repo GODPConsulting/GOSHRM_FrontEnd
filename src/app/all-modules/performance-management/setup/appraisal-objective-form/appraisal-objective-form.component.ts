@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { data } from "jquery";
@@ -9,6 +9,7 @@ import { JwtService } from "../../../../services/jwt.service";
 import { UtilitiesService } from "../../../../services/utilities.service";
 import { Location } from "@angular/common";
 import { Observable } from "rxjs";
+import { AppraisalObjectivesComponent } from "../appraisal-objectives/appraisal-objectives.component";
 
 @Component({
   selector: "app-appraisal-objective-form",
@@ -31,6 +32,10 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   reviewPeriods$: Observable<any>;
   status: string;
   reviewPeriods: any[] = [];
+  pageStatus: number = 0;
+  employeePerformId: number;
+  disableField: boolean = false;
+
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -41,16 +46,27 @@ export class AppraisalObjectiveFormComponent implements OnInit {
     private jwtService: JwtService,
     private utilitiesService: UtilitiesService,
     public location: Location
-  ) {}
+  ) {
+    this.dataService.setPageStatus.subscribe((res) => {
+      this.pageStatus = res;
+    });
+  }
 
   ngOnInit(): void {
     this.initializeForm();
     this.route.queryParams.subscribe((param) => {
       this.appraisalCycleId = param.appraisalCycleId;
+      this.employeePerformId = param.employeePerformId;
       this.objectiveId = param.objectiveId;
       this.status = param.start;
-      console.log(status);
-      // this.getComment(this.objectiveId);
+      this.pageStatus = +param.pageStatus;
+      if (this.appraisalCycleId) {
+        // this.getSingleEmployeeObjective();
+        this.getComment(this.objectiveId);
+      }
+      /* if (this.pageStatus === 1) {
+        // this.getSingleEmployeeObjective();
+      }*/
     });
     /*const user = JSON.parse(localStorage.getItem("userDetails"));
     if (user) {
@@ -63,7 +79,10 @@ export class AppraisalObjectiveFormComponent implements OnInit {
         this.staffId = employee.employeeId;
         this.deptId = employee.departmentId;
         // this.getAppraisalCycle();
-        // this.getSingleEmployeeObjective();
+        if (this.appraisalCycleId) {
+          this.getSingleEmployeeObjective();
+          // this.getComment(this.objectiveId);
+        }
         this.getCareer(employee.employeeId);
       }
     });
@@ -159,16 +178,18 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   viewObjectives() {
     const payload = this.appraisalObjectiveForm.value;
     payload.reviewYear = +payload.reviewYear;
-    payload.appraisalCycleId = this.appraisalCycleId;
+    payload.appraisalCycleId = +this.appraisalCycleId;
     // this.loadingService.show();
     return this.performanceManagementService.startAppraisal(payload).subscribe(
       (res) => {
         // this.loadingService.hide();
         const message = res["status"].message.friendlyMessage;
         if (res["status"].isSuccessful) {
-          this.utilitiesService.showMessage(res, "success").then(() => {
+          this.status = "false";
+          /*this.utilitiesService.showMessage(res, "success").then(() => {
             // this.getSingleEmployeeObjective();
-            this.status = "false";
+            this.employeePerformId = res.list[0].employeePerformId;
+
             // const url = this.router
             //   .createUrlTree([], {
             //     relativeTo: this.route,
@@ -180,7 +201,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
             //   .toString();
             //
             // this.location.go(url);
-          });
+          });*/
           // this.router.navigate(["/performance/appraisal-objectives"], {
           //   queryParams: {
           //     appraisalCycleId: this.appraisalCycleId,
@@ -200,18 +221,21 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   getSingleEmployeeObjective() {
     // this.loadingService.show();
     return this.performanceManagementService
-      .getSingleEmployeeObjective(this.staffId, this.appraisalCycleId)
+      .getSingleEmployeeObjective(this.staffId, this.employeePerformId)
       .subscribe(
         (data) => {
-          console.log(data);
+          // console.log(data);
           // this.loadingService.hide();
           this.lineManagerId = data[0].lineManger;
           this.objectiveId = data[0].id;
-          console.log(this.lineManagerId);
-          // this.appraisalObjectiveForm.patchValue({
-          //   reviewYear: data[0].reviewYear,
-          //   reviewPeriod: data[0].reviewPeriod,
-          // });
+          const year = data[0].reviewYear;
+          // console.log(this.lineManagerId);
+          this.getAppraisalPeriods(year);
+          this.appraisalObjectiveForm.patchValue({
+            reviewYear: data[0].reviewYear,
+            reviewPeriod: data[0].reviewPeriod,
+          });
+          this.disableField = true;
         },
         (err) => {
           // this.loadingService.hide();
@@ -231,5 +255,28 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   getValue(value: any) {
     const item = this.reviewPeriods.find((item) => item.period === value);
     this.appraisalCycleId = item.appraisalCycleId;
+    this.employeePerformId = item.employeePerformId;
+    // this.status = "false";
+  }
+
+  sendToLineManager() {
+    return this.performanceManagementService
+      .saveObjectives(+this.employeePerformId)
+      .subscribe(
+        (res) => {
+          // this.loadingService.hide();
+          const message = res.status.message.friendlyMessage;
+          this.dataService.setPageStatus.emit(1);
+          if (res.status.isSuccessful) {
+            return this.utilitiesService.showMessage(res, "success");
+          } else {
+            this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          // this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
   }
 }

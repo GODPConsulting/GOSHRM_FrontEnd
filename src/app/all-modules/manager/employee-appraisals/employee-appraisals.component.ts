@@ -26,6 +26,7 @@ export class EmployeeAppraisalsComponent implements OnInit {
   objectiveId: number;
   lineManagerId: number;
   employeeId: number;
+  employeePerformId: number;
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -45,6 +46,7 @@ export class EmployeeAppraisalsComponent implements OnInit {
       this.objectiveId = param.objectiveId;
       this.jobGradeId = param.jobGradeId;
       this.deptId = param.departmentId;
+      this.employeePerformId = param.employeePerformId;
       this.getCareer(this.employeeId);
     });
     this.initializeForm();
@@ -131,18 +133,20 @@ export class EmployeeAppraisalsComponent implements OnInit {
   getSingleEmployeeObjective() {
     // this.loadingService.show();
     return this.performanceManagementService
-      .getSingleEmployeeObjective(this.employeeId, this.appraisalCycleId)
+      .getSingleEmployeeObjective(this.employeeId, this.employeePerformId)
       .subscribe(
         (data) => {
           // console.log(data);
           // this.loadingService.hide();
-          this.lineManagerId = data[0].lineManger;
-          this.objectiveId = data[0].id;
-          // console.log(this.lineManagerId);
-          this.appraisalObjectiveForm.patchValue({
-            reviewYear: data[0].reviewYear,
-            reviewPeriod: data[0].reviewPeriod,
-          });
+          if (data) {
+            this.lineManagerId = data[0].lineManger;
+            this.objectiveId = data[0].id;
+            // console.log(this.lineManagerId);
+            this.appraisalObjectiveForm.patchValue({
+              reviewYear: data[0].reviewYear,
+              reviewPeriod: data[0].reviewPeriod,
+            });
+          }
         },
         (err) => {
           // this.loadingService.hide();
@@ -175,6 +179,9 @@ export class EmployeeAppraisalsComponent implements OnInit {
       id: this.objectiveId,
       comment: formObj.comment,
     };
+    if (!payload.comment) {
+      return this.utilitiesService.showError("Comment is required");
+    }
     // this.loadingService.show();
     return this.performanceManagementService.addComment(payload).subscribe(
       (res) => {
@@ -194,6 +201,14 @@ export class EmployeeAppraisalsComponent implements OnInit {
 
   revokeAndDisagree() {
     // this.loadingService.show();
+    const formObj = this.appraisalObjectiveForm.value;
+    const payload = {
+      id: this.objectiveId,
+      comment: formObj.comment,
+    };
+    if (!payload.comment) {
+      return this.utilitiesService.showError("Comment is required");
+    }
     return this.performanceManagementService
       .revokeAndDisagree(+this.objectiveId)
       .subscribe(

@@ -4,9 +4,13 @@
 .objectives-container {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 .objective {
   margin-right: 10px;
+  padding: 5px;
+  color: #fff;
+  border-radius: 6px;
 }
 .objective-name {
   margin-right: 5px;
@@ -15,7 +19,7 @@
 .objective-icon {
   cursor: pointer;
   width: 50px;
-  background: #ccc;
+  /*background: #ccc;*/
   padding: 5px;
   border-radius: 50%;
   /* color: #fff; */
@@ -31,4 +35,15 @@
   font-size: 18px;
   border-bottom: 1px solid #ccc;
   padding-bottom: 5px;
+}
+
+.green {
+  background-color: #00bf6f;
+}
+.red {
+  background-color: tomato;
+}
+
+.yellow {
+  background-color: #d9d931;
 }

@@ -102,6 +102,7 @@ export class DirectReportAppraisalsComponent implements OnInit {
         employeeId: row.employeeId,
         departmentId: row.departmentId,
         jobGradeId: row.jobGradeId,
+        employeePerformId: row.employeePerformId,
       },
     });
   }

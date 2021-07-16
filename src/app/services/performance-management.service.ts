@@ -540,11 +540,12 @@ export class PerformanceManagementService {
     jobGrade,
     employeeId,
     deptId,
-    appraisalCycleId
+    appraisalCycleId,
+    employeePerformId
   ): Observable<any> {
     return this.apiService
       .get(
-        `/performance/get/employee_obectves/by/employee_details?JobGarde=${jobGrade}&EmployeeId=${employeeId}&Department=${deptId}&AppraisalCycleId=${appraisalCycleId}`
+        `/performance/get/employee_obectves/by/employee_details?JobGarde=${jobGrade}&EmployeeId=${employeeId}&Department=${deptId}&AppraisalCycleId=${appraisalCycleId}&EmployeePerformId=${employeePerformId}`
       )
       .pipe(
         tap(),
@@ -554,7 +555,7 @@ export class PerformanceManagementService {
       );
   }
 
-  startAppraisal(payload: AppraisalObjective): Observable<AppraisalObjective> {
+  startAppraisal(payload: AppraisalObjective): Observable<any> {
     return this.apiService
       .post(`/performance/add/update/employee-appraisal/objectives`, payload)
       .pipe(
@@ -566,10 +567,10 @@ export class PerformanceManagementService {
       );
   }
 
-  saveObjectives(employeeObjectiveId: number): Observable<any> {
+  saveObjectives(employeePerformId: number): Observable<any> {
     return this.apiService
       .post(`/performance/employee/confirm/objectives/by_objectivesId`, {
-        employeeObjectiveId,
+        employeePerformId,
       })
       .pipe(
         tap(),
@@ -579,7 +580,16 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
-
+  deleteObjectives(payload: any): Observable<any> {
+    return this.apiService
+      .post(`/performance/delete/employee_appraisal/objective`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
   getEmployeeObjectivesByLineManager(id: number): Observable<any> {
     return this.apiService
       .get(
@@ -596,11 +606,11 @@ export class PerformanceManagementService {
 
   getSingleEmployeeObjective(
     employeeId: number,
-    appraisalCycleId: number
+    employeePerformId: number
   ): Observable<AppraisalObjective> {
     return this.apiService
       .get(
-        `/performance/get/single/employee_objectives?EmployeeId=${employeeId}&AppraisalCycleId=${appraisalCycleId}`
+        `/performance/get/single/employee_objectives?EmployeeId=${employeeId}&EmployeePerformId=${employeePerformId}`
       )
       .pipe(
         tap(),

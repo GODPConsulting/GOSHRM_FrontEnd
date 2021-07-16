@@ -25,7 +25,6 @@ export class AppraisalObjectivesComponent implements OnInit {
   user: any;
   targetDate: any[] = [];
   kpiWeight: any;
-  dtOptions: any;
   title: string;
   empPermittedList: any[] = [];
   appraisalObjectivesForm: FormGroup;
@@ -39,17 +38,26 @@ export class AppraisalObjectivesComponent implements OnInit {
   employeeObjectives: any[] = [];
   deptId: number;
   _appraisalCycleId: number;
+  _employeePerformId: number;
   @Input() set appraisalCyleId(value: number) {
-    console.log(value);
+    // console.log(value);
     this._appraisalCycleId = value;
   }
   get appraisalCyleId(): number {
     return this._appraisalCycleId;
   }
+  @Input() set employeePerformId(value: number) {
+    this._employeePerformId = value;
+  }
+  get employeePerformId(): number {
+    return this._employeePerformId;
+  }
   isEditing: boolean = false;
   kpi: any;
   @Input() objectiveId: number;
   @Input() fromLineManager: boolean = false;
+  totalWeight: number;
+  showOthers: boolean;
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -71,6 +79,8 @@ export class AppraisalObjectivesComponent implements OnInit {
         this.staffId = param.employeeId;
         this.jobGradeId = param.jobGradeId;
         this.deptId = param.departmentId;
+        this.appraisalCyleId = param.appraisalCycleId;
+        this.employeePerformId = param.employeePerformId;
         this.getAddableObjectives(param.jobGradeId);
         this.getEmployeeObjectiveDetails(this.staffId);
       } else {
@@ -134,6 +144,7 @@ export class AppraisalObjectivesComponent implements OnInit {
       targetDate: [""],
       weightmodel: [0],
       kpi: [""],
+      employeePerformId: [0],
     });
   }
 
@@ -194,7 +205,7 @@ export class AppraisalObjectivesComponent implements OnInit {
     payload.appraisalCycleId = +this.appraisalCyleId;
     payload.department = +this.deptId;
     payload.jobGrade = +this.jobGradeId;
-
+    payload.employeePerformId = +this.employeePerformId;
     // console.log(payload);
     // return;
     // this.loadingService.show();
@@ -214,13 +225,18 @@ export class AppraisalObjectivesComponent implements OnInit {
       }
     );
   }
-
+  getObjectiveNames(arr) {
+    return arr.forEach((item) => {
+      return `<div>Total Weight: ${item.name}: ${item.totalWeight}</div>`;
+    });
+  }
   getAddableObjectives(id) {
     // this.loadingService.show();
     return this.performanceManagementService.getAddableObjectives(id).subscribe(
       (data) => {
         // this.loadingService.hide();
         this.addAbleOjectives = data;
+        // console.log(this.getObjectiveNames(this.addAbleOjectives));
         // this.employeeObjectives$ = data;
       },
       (err) => {
@@ -244,9 +260,10 @@ export class AppraisalObjectivesComponent implements OnInit {
       );
   }
 
-  addObjective(kpiIndicators: any[], kpiCategoryId: number) {
-    this.kpiCategories = kpiIndicators;
-    this.kpiCategoryId = kpiCategoryId;
+  addObjective(item: any) {
+    this.kpiCategories = item.kpiIndicators;
+    this.kpiCategoryId = item.id;
+    this.totalWeight = item.totalWeight;
     $("#appraisal_Objectives_modal").modal("show");
   }
 
@@ -271,7 +288,8 @@ export class AppraisalObjectivesComponent implements OnInit {
         this.jobGradeId,
         staffId,
         this.deptId,
-        this.appraisalCyleId
+        this.appraisalCyleId,
+        this.employeePerformId
       )
       .subscribe(
         (data) => {
@@ -308,6 +326,7 @@ export class AppraisalObjectivesComponent implements OnInit {
       targetDate: new Date(row.targetDate).toLocaleDateString("en-CA"),
       weightmodel: row.weightmodel,
       kpi: row.kpi,
+      employeePerformId: row.employeePerformId,
     });
     this.kpi = row.kpi;
     // this.appraisalObjectivesForm.get("kpi").setValue(row.kpi);
@@ -319,15 +338,32 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   saveObjectives() {
+    this.dataService.setPageStatus.emit(1);
     // this.loadingService.show();
+    // this.dataService.setPageStatus.emit(1);
+  }
+
+  deleteObjective() {
+    const payload = [];
+    this.selectedObjectives.forEach((item) => {
+      payload.push(item.employeeObjectiveIdicatorId);
+    });
+    console.log(payload);
+  }
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  sendToLineManager() {
     return this.performanceManagementService
-      .saveObjectives(+this.objectiveId)
+      .saveObjectives(+this.employeePerformId)
       .subscribe(
         (res) => {
           // this.loadingService.hide();
           const message = res.status.message.friendlyMessage;
+          this.dataService.setPageStatus.emit(1);
           if (res.status.isSuccessful) {
-            this.utilitiesService.showMessage(res, "success");
+            return this.utilitiesService.showMessage(res, "success");
           } else {
             this.utilitiesService.showMessage(res, "error");
           }
@@ -337,5 +373,13 @@ export class AppraisalObjectivesComponent implements OnInit {
           return this.utilitiesService.showMessage(err, "error");
         }
       );
+  }
+
+  checkValue(value: any) {
+    if (+value === 0) {
+      this.showOthers = true;
+    } else {
+      this.showOthers = false;
+    }
   }
 }

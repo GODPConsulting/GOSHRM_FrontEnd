@@ -8,6 +8,7 @@ import { BehaviorSubject } from "rxjs";
 export class DataService {
   private userSource = new BehaviorSubject<any>(null);
   private mailSource = new BehaviorSubject<any>(null);
+  setPageStatus: EventEmitter<number> = new EventEmitter<number>();
 
   currentUser = this.userSource.asObservable();
   sendUser: EventEmitter<any> = new EventEmitter<any>();

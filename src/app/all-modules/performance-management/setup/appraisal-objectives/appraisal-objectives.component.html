@@ -7,34 +7,43 @@
     <div class="card-body" style="padding: 2rem">
       <div class="row">
         <div class="objectives-container">
-          <div *ngFor="let item of addAbleOjectives" class="objective">
+          <!--          <div [innerHTML]="getObjectiveNames(addAbleOjectives)"></div>-->
+          <div
+            *ngFor="let item of addAbleOjectives"
+            [ngClass]="{
+              green: item.totalWeightFromAppriasal === 100,
+              red: item.totalWeightFromAppriasal > 100,
+              yellow: item.totalWeightFromAppriasal < 100
+            }"
+            class="objective"
+          >
             <span class="objective-name">{{ item.name | titlecase }}</span>
-            <span
-              class="objective-icon"
-              (click)="addObjective(item.kpiIndicators, item.id)"
+            <span>Weight: {{ item.totalWeightFromAppriasal }}</span>
+            <span class="objective-icon" (click)="addObjective(item)"
               ><i class="fa fa-plus"></i
             ></span>
           </div>
         </div>
         <div class="col-auto float-right ml-auto mb_10">
           <a
-            class="btn delete-btn hint"
-            routerLink="/performance/appraisal-objective-form"
-            ><span class="hint-text">Back</span><i class="fa fa-backward"></i
-          ></a>
-
-          <a class="btn delete-btn hint"
-            ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
-          ></a>
-          <a
-            class="btn add-btn hint"
+            class="btn hint"
             (click)="saveObjectives()"
             [hidden]="fromLineManager"
           >
-            <span class="hint-text">Save and Send to Line Manager</span
+            <span class="hint-text">Save</span
             ><i class="fa fa-floppy-o" aria-hidden="true"></i>
           </a>
+          <a class="btn hint" (click)="sendToLineManager()">
+            <span class="hint-text">Send to Line Manager</span>
+            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+          </a>
 
+          <a class="btn hint" (click)="deleteObjective()"
+            ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+          ></a>
+          <a class="btn hint"
+            ><span class="hint-text">Back</span><i class="fa fa-backward"></i
+          ></a>
           <!--          <a-->
           <!--            class="btn add-btn hint"-->
           <!--            data-toggle="modal"-->
@@ -87,7 +96,10 @@
                 <!--                />-->
                 <!--              </td>-->
                 <td class="table-checkbox">
-                  <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                  <p-tableCheckbox
+                    (click)="stopParentEvent($event)"
+                    [value]="row"
+                  ></p-tableCheckbox>
                 </td>
                 <td class="sn_width">{{ i + 1 }}</td>
                 <td>{{ row.kpiName | titlecase }}</td>
@@ -137,7 +149,7 @@
       <div class="modal-body">
         <form [formGroup]="appraisalObjectivesForm">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div class="form-group">
                 <label for="KPIcategory">KPI Category</label>
                 <select
@@ -147,6 +159,7 @@
                   [(ngModel)]="kpi"
                   [disabled]="isEditing"
                   [ngModelOptions]="{ standalone: true }"
+                  (change)="checkValue($event.target.value)"
                 >
                   <option value="" disabled>--Select KPI Metric--</option>
                   <option
@@ -155,41 +168,47 @@
                   >
                     {{ category.kpi | titlecase }}
                   </option>
-                  <option value="">Others</option>
+                  <option value="0">Others</option>
                 </select>
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="showOthers">
+              <div class="form-group">
+                <label for="others">KPI Metric</label>
+                <input class="form-control" type="text" id="others" />
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="objective">Objective</label>
-                <input
+                <textarea
                   id="objective"
                   type="text"
-                  class="form-control"
+                  class="form-control resize"
                   formControlName="objective"
-                />
+                ></textarea>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="successMeasures">Success Measures</label>
-                <input
+                <textarea
                   type="text"
                   id="successMeasures"
-                  class="form-control"
+                  class="form-control resize"
                   formControlName="successMeasure"
-                />
+                ></textarea>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div class="form-group">
                 <label for="keyActions">Key Actions</label>
-                <input
+                <textarea
                   id="keyActions"
                   type="text"
-                  class="form-control"
+                  class="form-control resize"
                   formControlName="keyActions"
-                />
+                ></textarea>
               </div>
             </div>
             <div class="col-md-6">
@@ -198,8 +217,15 @@
                 <input
                   id="targetDate"
                   type="date"
-                  class="form-control"
+                  class="form-control datetimepicker"
                   formControlName="targetDate"
+                  bsDatepicker
+                  [bsConfig]="{
+                    selectFromOtherMonth: true,
+                    isAnimated: true,
+                    dateInputFormat: 'YYYY-MM-DD',
+                    returnFocusToInput: true
+                  }"
                 />
               </div>
             </div>

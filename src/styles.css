@@ -1714,7 +1714,7 @@ table.dataTable thead > tr > td.sorting {
   border: 1px solid #ededed;
   border-radius: 4px;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
-  margin: 0 auto;
+  margin: 100px auto;
   overflow: hidden;
   width: 480px;
 }
@@ -8753,4 +8753,7 @@ rating span {
   border: 1px solid #ddd;
   padding: 0 1rem;
   border-radius: 4px;
+}
+.resize {
+  resize: none
 }
