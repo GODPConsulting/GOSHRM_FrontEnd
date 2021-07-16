@@ -33,7 +33,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   status: string;
   reviewPeriods: any[] = [];
   pageStatus: number = 0;
-  employeePerformId: number;
+  employeePerformId: number = 0;
   disableField: boolean = false;
 
   constructor(
@@ -179,6 +179,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
     const payload = this.appraisalObjectiveForm.value;
     payload.reviewYear = +payload.reviewYear;
     payload.appraisalCycleId = +this.appraisalCycleId;
+    payload.id = +this.employeePerformId;
     // this.loadingService.show();
     return this.performanceManagementService.startAppraisal(payload).subscribe(
       (res) => {

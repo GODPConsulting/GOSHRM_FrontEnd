@@ -18,9 +18,7 @@
         </a>
         <a class="btn hint" (click)="viewObjectives()"
           ><span class="hint-text">{{
-            employeePerformId === undefined
-              ? "Start Objective"
-              : "Continue Objective"
+            employeePerformId === 0 ? "Start Objective" : "Continue Objective"
           }}</span
           ><i class="fa fa-play"></i>
         </a>

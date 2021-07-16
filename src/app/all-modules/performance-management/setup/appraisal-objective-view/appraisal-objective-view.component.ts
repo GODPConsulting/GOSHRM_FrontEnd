@@ -74,4 +74,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
       },
     });
   }
+  stopParentEvent(event: MouseEvent) {
+    event.stopPropagation();
+  }
 }
