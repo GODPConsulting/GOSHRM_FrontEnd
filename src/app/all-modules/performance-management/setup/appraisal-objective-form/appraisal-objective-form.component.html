@@ -38,7 +38,7 @@
                 <select
                   class="form-control"
                   formControlName="reviewYear"
-                  [attr.disabled]="disableField"
+                  [disabled]="disableField"
                   (change)="getAppraisalPeriods($event.target.value)"
                 >
                   <option disabled value="">Review Year</option>
@@ -58,7 +58,7 @@
                 ><select
                   class="form-control"
                   formControlName="reviewPeriod"
-                  [attr.disabled]="disableField"
+                  [disabled]="disableField"
                   (change)="getValue($event.target.value)"
                 >
                   <option selected value="">Review Period</option>
