@@ -245,4 +245,14 @@ export class UtilitiesService {
       return years.push({ year: i });
     }
   }
+
+  confirmDelete() {
+    return swal.fire({
+      title: "Are you sure you want to delete this record?",
+      text: "You won't be able to revert this",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes!",
+    });
+  }
 }

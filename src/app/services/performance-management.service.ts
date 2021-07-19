@@ -744,11 +744,12 @@ export class PerformanceManagementService {
       );
   }
 
-  confirmByManager(employeeObjectiveId: number): Observable<any> {
+  confirmByManager(payload: Object): Observable<any> {
     return this.apiService
-      .post(`/performance/linemanager/confirm/objectives/by_objectivesId`, {
-        employeeObjectiveId,
-      })
+      .post(
+        `/performance/linemanager/confirm/objectives/by_objectivesId`,
+        payload
+      )
       .pipe(
         tap(),
         map((res) => {

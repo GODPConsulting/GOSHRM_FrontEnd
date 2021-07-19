@@ -347,11 +347,36 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   deleteObjective() {
-    const payload = [];
-    this.selectedObjectives.forEach((item) => {
-      payload.push(item.employeeObjectiveIdicatorId);
+    if (this.selectedId.length === 0) {
+      return this.utilitiesService.showError("Select an item to delete");
+    }
+    this.utilitiesService.confirmDelete().then((res) => {
+      if (res.isConfirmed) {
+        const payload = {
+          itemIds: this.selectedId,
+        };
+        return this.performanceManagementService
+          .deleteObjectives(payload)
+          .subscribe(
+            (res) => {
+              if (res.status.isSuccessful) {
+                return this.utilitiesService
+                  .showMessage(res, "success")
+                  .then(() => {
+                    this.selectedId = [];
+                    this.getAddableObjectives(this.jobGradeId);
+                    this.getEmployeeObjectiveDetails(this.staffId);
+                  });
+              } else {
+                return this.utilitiesService.showMessage(res, "error");
+              }
+            },
+            (err) => {
+              return this.utilitiesService.showMessage(err, "error");
+            }
+          );
+      }
     });
-    console.log(payload);
   }
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
@@ -384,5 +409,42 @@ export class AppraisalObjectivesComponent implements OnInit {
     } else {
       this.showOthers = false;
     }
+  }
+
+  checkAll(event) {
+    let ids;
+    if (event.target.checked) {
+      ids = this.objectives.map((item) => {
+        return item.employeeObjectiveIdicators.map((val) => {
+          return val.employeeObjectiveIdicatorId;
+        });
+      });
+      this.selectedId = ids.flat();
+      // this.selectedId = flattenedArr;
+    } else {
+      event.target.checked = false;
+      this.selectedId = [];
+    }
+  }
+
+  checkItem(event, employeeObjectiveIdicatorId: number) {
+    if (event.target.checked) {
+      if (!this.selectedId.includes(employeeObjectiveIdicatorId)) {
+        this.selectedId.push(employeeObjectiveIdicatorId);
+      }
+    } else {
+      this.selectedId = this.selectedId.filter((_id) => {
+        return _id !== employeeObjectiveIdicatorId;
+      });
+    }
+  }
+
+  concatNarrays(args) {
+    args = Array.prototype.slice.call(arguments);
+    var newArr = args.reduce(function (prev, next) {
+      return prev.concat(next);
+    });
+
+    return newArr;
   }
 }

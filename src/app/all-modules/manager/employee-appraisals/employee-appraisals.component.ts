@@ -155,8 +155,16 @@ export class EmployeeAppraisalsComponent implements OnInit {
   }
   confirm() {
     // this.loadingService.show();
+    const formObj = this.appraisalObjectiveForm.value;
+    const payload = {
+      employeePerformId: this.employeePerformId,
+      comment: formObj.comment,
+    };
+    if (!payload.comment) {
+      return this.utilitiesService.showError("Comment is required");
+    }
     return this.performanceManagementService
-      .confirmByManager(this.objectiveId)
+      .confirmByManager(payload)
       .subscribe(
         (res) => {
           // this.loadingService.hide();

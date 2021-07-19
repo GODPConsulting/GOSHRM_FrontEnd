@@ -33,7 +33,11 @@
             <span class="hint-text">Save</span
             ><i class="fa fa-floppy-o" aria-hidden="true"></i>
           </a>
-          <a class="btn hint" (click)="sendToLineManager()">
+          <a
+            class="btn hint"
+            [hidden]="fromLineManager"
+            (click)="sendToLineManager()"
+          >
             <span class="hint-text">Send to Line Manager</span>
             <i class="fa fa-paper-plane" aria-hidden="true"></i>
           </a>
@@ -71,7 +75,8 @@
                 <!--                <input type="checkbox" />-->
                 <!--              </th>-->
                 <th class="table-checkbox">
-                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  <!--                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
+                  <input type="checkbox" (change)="checkAll($event)" />
                 </th>
                 <th class="sn_width">S/N</th>
                 <th>KPI Type</th>
@@ -96,10 +101,20 @@
                 <!--                />-->
                 <!--              </td>-->
                 <td class="table-checkbox">
-                  <p-tableCheckbox
+                  <!--                  <p-tableCheckbox-->
+                  <!--                    (click)="stopParentEvent($event)"-->
+                  <!--                    [value]="row"-->
+                  <!--                  ></p-tableCheckbox>-->
+                  <input
+                    type="checkbox"
+                    [checked]="
+                      selectedId.includes(row.employeeObjectiveIdicatorId)
+                    "
+                    (change)="
+                      checkItem($event, row.employeeObjectiveIdicatorId)
+                    "
                     (click)="stopParentEvent($event)"
-                    [value]="row"
-                  ></p-tableCheckbox>
+                  />
                 </td>
                 <td class="sn_width">{{ i + 1 }}</td>
                 <td>{{ row.kpiName | titlecase }}</td>

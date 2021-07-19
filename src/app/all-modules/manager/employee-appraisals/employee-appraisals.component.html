@@ -16,7 +16,7 @@
           ><span class="hint-text">Save Comment</span
           ><i class="fa fa-floppy-o" aria-hidden="true"></i>
         </a>
-        <a class="btn hint" routerLink="/performance/appraisal-objective-view"
+        <a class="btn hint" (click)="location.back()"
           ><span class="hint-text">Back</span><i class="fa fa-backward"></i
         ></a>
         <a class="btn hint" (click)="revokeAndDisagree()"
