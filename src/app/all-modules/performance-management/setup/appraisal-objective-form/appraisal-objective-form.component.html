@@ -18,7 +18,9 @@
         </a>
         <a class="btn hint" (click)="viewObjectives()"
           ><span class="hint-text">{{
-            employeePerformId === 0 ? "Start Objective" : "Continue Objective"
+            employeePerformId === 0 || !employeePerformId
+              ? "Start Objective"
+              : "Continue Objective"
           }}</span
           ><i class="fa fa-play"></i>
         </a>
@@ -181,6 +183,7 @@
 </div>
 <!--*ngIf="status !== 'true' || pageStatus === 1"-->
 <app-appraisal-objectives
+  *ngIf="status !== 'true' || pageStatus === 1"
   [objectiveId]="objectiveId"
   [fromLineManager]="false"
   [appraisalCyleId]="appraisalCycleId"

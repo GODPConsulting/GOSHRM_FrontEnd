@@ -59,6 +59,9 @@ export class AppraisalObjectivesComponent implements OnInit {
   @Input() employeeId: number;
   totalWeight: number;
   showOthers: boolean;
+  others: string = "";
+  KpiIndicatorName: string = "";
+  otherSelected: boolean = false;
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -144,8 +147,9 @@ export class AppraisalObjectivesComponent implements OnInit {
       keyActions: [""],
       targetDate: [""],
       weightmodel: [0],
-      kpi: [""],
+      kpi: [0],
       employeePerformId: [0],
+      KpiIndicatorName: [""],
     });
   }
 
@@ -179,7 +183,9 @@ export class AppraisalObjectivesComponent implements OnInit {
   closeAppraisalObjectivesModal() {
     $("#appraisal_Objectives_modal").modal("hide");
     this.kpi = "";
+    this.KpiIndicatorName = "";
     this.isEditing = false;
+    this.otherSelected = false;
     this.initializeForm();
   }
 
@@ -202,11 +208,16 @@ export class AppraisalObjectivesComponent implements OnInit {
     payload.kpiCategoryId = +this.kpiCategoryId;
     payload.weightmodel = +payload.weightmodel;
     payload.employee = +this.staffId;
-    payload.kpi = +this.kpi;
+    payload.KpiIndicatorName = this.KpiIndicatorName;
     payload.appraisalCycleId = +this.appraisalCyleId;
     payload.department = +this.deptId;
     payload.jobGrade = +this.jobGradeId;
     payload.employeePerformId = +this.employeePerformId;
+    payload.otherSelected = this.otherSelected;
+    if (this.otherSelected) {
+      console.log(this.others);
+      payload.KpiIndicatorName = this.others;
+    }
     // console.log(payload);
     // return;
     // this.loadingService.show();
@@ -315,8 +326,8 @@ export class AppraisalObjectivesComponent implements OnInit {
     objectives.map((item) => {
       this.kpiCategories = item.kpiIndicators;
     });
-    console.log(this.kpiCategories);
-    console.log({ table }, { row, kpi: row.kpi });
+    // console.log(this.kpiCategories);
+    // console.log({ table }, { row, kpi: row.kpi });
     // this.appraisalObjectivesForm.get("kpi").disable();
     this.kpiCategoryId = table.kpiCategoryId;
     // this.appraisalObjectivesForm.get("kpi").disable();
@@ -331,7 +342,14 @@ export class AppraisalObjectivesComponent implements OnInit {
       kpi: row.kpi,
       employeePerformId: row.employeePerformId,
     });
-    this.kpi = row.kpi;
+    this.KpiIndicatorName = row.kpiName;
+    if (row.otherSelected) {
+      this.otherSelected = row.otherSelected;
+      this.KpiIndicatorName = "0";
+      this.others = row.kpiName;
+    }
+    console.log(this.KpiIndicatorName);
+    // this.kpi = row.kpi;
     // this.appraisalObjectivesForm.get("kpi").setValue(row.kpi);
     // this.appraisalObjectivesForm
     //   .get("kpi")
@@ -405,9 +423,11 @@ export class AppraisalObjectivesComponent implements OnInit {
 
   checkValue(value: any) {
     if (+value === 0) {
-      this.showOthers = true;
+      this.otherSelected = true;
     } else {
-      this.showOthers = false;
+      // const item = this.kpiCategories.find((item) => item.id === +value);
+      // console.log(item);
+      this.otherSelected = false;
     }
   }
 
@@ -437,14 +457,5 @@ export class AppraisalObjectivesComponent implements OnInit {
         return _id !== employeeObjectiveIdicatorId;
       });
     }
-  }
-
-  concatNarrays(args) {
-    args = Array.prototype.slice.call(arguments);
-    var newArr = args.reduce(function (prev, next) {
-      return prev.concat(next);
-    });
-
-    return newArr;
   }
 }

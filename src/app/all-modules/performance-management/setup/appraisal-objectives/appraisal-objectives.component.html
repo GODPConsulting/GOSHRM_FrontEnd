@@ -16,12 +16,11 @@
               yellow: item.totalWeightFromAppriasal < 100
             }"
             class="objective"
+            (click)="addObjective(item)"
           >
             <span class="objective-name">{{ item.name | titlecase }}</span>
             <span>Weight: {{ item.totalWeightFromAppriasal }}</span>
-            <span class="objective-icon" (click)="addObjective(item)"
-              ><i class="fa fa-plus"></i
-            ></span>
+            <span class="objective-icon"><i class="fa fa-plus"></i></span>
           </div>
         </div>
         <div class="col-auto float-right ml-auto mb_10">
@@ -171,7 +170,7 @@
                   name="kpi"
                   id="KPIcategory"
                   class="form-control"
-                  [(ngModel)]="kpi"
+                  [(ngModel)]="KpiIndicatorName"
                   [disabled]="isEditing"
                   [ngModelOptions]="{ standalone: true }"
                   (change)="checkValue($event.target.value)"
@@ -179,7 +178,7 @@
                   <option value="" disabled>--Select KPI Metric--</option>
                   <option
                     *ngFor="let category of kpiCategories"
-                    [value]="category.id"
+                    [value]="category.kpi"
                   >
                     {{ category.kpi | titlecase }}
                   </option>
@@ -187,10 +186,17 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-12" *ngIf="showOthers">
+            <div class="col-md-12" *ngIf="otherSelected">
               <div class="form-group">
                 <label for="others">KPI Metric</label>
-                <input class="form-control" type="text" id="others" />
+                <input
+                  class="form-control"
+                  type="text"
+                  id="others"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="others"
+                  name="others"
+                />
               </div>
             </div>
             <div class="col-md-6">
