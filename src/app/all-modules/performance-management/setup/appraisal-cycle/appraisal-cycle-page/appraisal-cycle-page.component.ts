@@ -102,6 +102,7 @@ export class AppraisalCyclePageComponent implements OnInit {
       status: [""],
       department: [""],
       calenderRange: [""],
+      allowMultipleCycle: [false],
     });
   }
   getAppraisalCycle(id: number) {
@@ -122,6 +123,7 @@ export class AppraisalCyclePageComponent implements OnInit {
           department: res.department,
           revieweeWeight: res.revieweeWeight,
           calenderRange: res.calenderRange,
+          allowMultipleCycle: res.allowMultipleCycle,
         });
       },
       (err) => {
@@ -134,6 +136,11 @@ export class AppraisalCyclePageComponent implements OnInit {
     payload.department = +payload.department;
     payload.status = +payload.status;
     payload.reviewYear = +payload.reviewYear;
+    payload.startPeriod = new Date(payload.startPeriod).toLocaleDateString(
+      "en-CA"
+    );
+    payload.endPeriod = new Date(payload.endPeriod).toLocaleDateString("en-CA");
+    payload.dueDate = new Date(payload.dueDate).toLocaleDateString("en-CA");
     const sum =
       payload.revieweeWeight +
       payload.reviewerOneWeight +

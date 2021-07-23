@@ -75,12 +75,13 @@
           <th pSortableColumn="reviewYear">Review Year</th>
           <th pSortableColumn="startDate">Start Period</th>
           <th pSortableColumn="endDate">End Period</th>
-          <th pSortableColumn="dueDate">Due Date</th>
+          <!--          <th pSortableColumn="dueDate">Due Date</th>-->
           <th pSortableColumn="reviewerOneWeight">Reviewer I</th>
           <th pSortableColumn="reviewerTwoWeight">Reviewer II</th>
           <th pSortableColumn="reviewerThreeWeight">Reviewer III</th>
           <th pSortableColumn="revieweeWeight">Reviewee Weight</th>
           <th pSortableColumn="status">Status</th>
+          <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-row let-i="rowIndex">
@@ -116,13 +117,6 @@
             <a
               class="text-dark d-block text-center"
               [routerLink]="['appraisals', row.appraisalCycleId]"
-              >{{ row.dueDate | date }}</a
-            >
-          </td>
-          <td>
-            <a
-              class="text-dark d-block text-center"
-              [routerLink]="['appraisals', row.appraisalCycleId]"
               >{{ row.reviewerOneWeight }}</a
             >
           </td>
@@ -148,11 +142,12 @@
             >
           </td>
           <td>
-            <a
-              class="text-dark d-block text-center"
-              [routerLink]="['appraisals', row.appraisalCycleId]"
-              >{{ row.statusName }}</a
-            >
+            <a class="text-dark d-block text-center">{{ row.statusName }}</a>
+          </td>
+          <td>
+            <a [routerLink]="['appraisals', row.appraisalCycleId]">
+              Appraisals
+            </a>
           </td>
         </tr>
       </ng-template>

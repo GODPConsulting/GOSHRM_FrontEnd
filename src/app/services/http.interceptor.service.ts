@@ -18,6 +18,7 @@ import { JwtService } from "./jwt.service";
 import { LoadingService } from "./loading.service";
 import { HttpCacheService } from "./http-cache.service";
 import { JwtHelperService } from "@auth0/angular-jwt";
+import swal from "sweetalert2";
 
 @Injectable()
 export class HttpTokenInterceptor implements HttpInterceptor {
@@ -80,16 +81,28 @@ export class HttpTokenInterceptor implements HttpInterceptor {
 
     const request = req.clone({ setHeaders: headersConfig });
     return next.handle(request).pipe(
-      tap((event) => {
-        /*if (event instanceof HttpResponse) {
-          console.log(`Adding item to cache: ${req.url}`);
-          this.cacheService.put(req.url, event);
-          // this.serviceCount--;
-          // this.loadingService.hide();
-          // if (this.serviceCount === 0) {
-          //   this.loadingServ ice.hide();
-          // }
-        }*/
+      catchError((error: any, caught: Observable<any>) => {
+        if (error) {
+          if (error.status === 401) {
+            const message = error.error.status.message.friendlyMessage;
+            if (message) {
+              swal.fire("GOS FINANCIAL", message, "error").then(() => {
+                this.handleAuthError();
+              });
+            } else {
+              swal
+                .fire(
+                  "GOS FINANCIAL",
+                  "Unauthorised, please log in again ",
+                  "error"
+                )
+                .then(() => {
+                  this.handleAuthError();
+                });
+            }
+          }
+        }
+        throw error;
       }),
       finalize(() => {
         this.serviceCount--;

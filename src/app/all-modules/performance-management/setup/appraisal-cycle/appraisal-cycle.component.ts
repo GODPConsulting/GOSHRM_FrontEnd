@@ -326,4 +326,8 @@ export class AppraisalCycleComponent implements OnInit {
   }
 
   downloadFile() {}
+
+  openAppraisals(appraisalCycleId: number) {
+    this._router.navigate(["/performance/setup/appraisal-cycle/appraisals"]);
+  }
 }

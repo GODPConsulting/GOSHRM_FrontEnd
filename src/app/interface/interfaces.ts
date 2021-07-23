@@ -76,13 +76,14 @@ export interface IPointSetting {
 }
 
 export interface IAppraisalCycle {
+  allowMultipleCycle: boolean;
   calenderRange: string;
   revieweeWeight: number;
   appraisalCycleId: number;
   reviewYear: number;
-  startPeriod: Date;
-  endPeriod: Date;
-  dueDate: Date;
+  startPeriod: string;
+  endPeriod: string;
+  dueDate: string;
   reviewerOneWeight: number;
   reviewerTwoWeight: number;
   reviewerThreeWeight: number;
