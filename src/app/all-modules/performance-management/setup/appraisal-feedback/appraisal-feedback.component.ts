@@ -248,6 +248,7 @@ export class AppraisalFeedbackComponent implements OnInit {
       queryParams: {
         id: row.staff,
         appraisalCycleId: row.appraisalCycleId,
+        employeePerformId: row.employeePerformId,
       },
     });
   }

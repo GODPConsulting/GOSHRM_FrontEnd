@@ -281,11 +281,7 @@ export class PerformanceManagementService {
       .pipe(
         tap(),
         map((res) => {
-          return res.setupList.filter(
-            (value, index, self) =>
-              self.map((item) => item.jobGradeId).indexOf(value.jobGradeId) ===
-              index
-          );
+          return res.setupList;
         }),
         catchError(this.handleError)
       );
@@ -729,11 +725,12 @@ export class PerformanceManagementService {
   getAppraisalFeedback(
     employeedId: number,
     loggedInStaffId: number,
-    appraisalCycleId: number
+    appraisalCycleId: number,
+    employeePerformId: number
   ): Observable<any> {
     return this.apiService
       .get(
-        `/performance/get/employee/feedbacks/byemployeeId?EmployeeId=${employeedId}&loggedInStaffId=${loggedInStaffId}&AppraisalCycleId=${appraisalCycleId}`
+        `/performance/get/employee/feedbacks/byemployeeId?EmployeeId=${employeedId}&loggedInStaffId=${loggedInStaffId}&AppraisalCycleId=${appraisalCycleId}&EmployeePerformId=${employeePerformId}`
       )
       .pipe(
         tap(),

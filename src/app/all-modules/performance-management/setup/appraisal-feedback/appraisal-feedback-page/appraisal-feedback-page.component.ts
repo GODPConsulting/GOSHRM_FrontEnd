@@ -76,6 +76,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   scoreTitle: string;
   personnel: string;
   formControlName: string = "";
+  employeePerformId: number;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -95,6 +96,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     this.route.queryParams.subscribe((param) => {
       this.employeeId = param.id;
       this.appraisalCycleId = param.appraisalCycleId;
+      this.employeePerformId = +param.employeePerformId;
       this.getEmployeeAppraisalDetails(this.employeeId);
     });
     this.jwtService.getHrmUserDetails().then((user) => {
@@ -194,7 +196,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       .getAppraisalFeedback(
         this.employeeId,
         this.staffId,
-        this.appraisalCycleId
+        this.appraisalCycleId,
+        this.employeePerformId
       )
       .subscribe(
         (data) => {
