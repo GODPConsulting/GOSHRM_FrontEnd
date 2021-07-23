@@ -46,7 +46,7 @@ export class EmployeeAppraisalsComponent implements OnInit {
       this.objectiveId = param.objectiveId;
       this.jobGradeId = param.jobGradeId;
       this.deptId = param.departmentId;
-      this.employeePerformId = param.employeePerformId;
+      this.employeePerformId = +param.employeePerformId;
       this.getCareer(this.employeeId);
     });
     this.initializeForm();
