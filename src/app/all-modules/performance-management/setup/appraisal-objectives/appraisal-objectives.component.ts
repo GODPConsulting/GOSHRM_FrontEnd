@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DataService } from "src/app/services/data.service";
@@ -57,6 +57,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   @Input() objectiveId: number;
   @Input() fromLineManager: boolean = false;
   @Input() employeeId: number;
+  @Output() sendData: EventEmitter<any> = new EventEmitter<any>();
   totalWeight: number;
   showOthers: boolean;
   others: string = "";
@@ -71,7 +72,13 @@ export class AppraisalObjectivesComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private jwtService: JwtService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.dataService.sendData.subscribe((data) => {
+      if (data) {
+        return this.sendToLineManager();
+      }
+    });
+  }
 
   ngOnInit(): void {
     // const user = JSON.parse(localStorage.getItem("userDetails"));
@@ -360,6 +367,7 @@ export class AppraisalObjectivesComponent implements OnInit {
 
   saveObjectives() {
     this.dataService.setPageStatus.emit(1);
+
     // this.loadingService.show();
     // this.dataService.setPageStatus.emit(1);
   }
@@ -401,24 +409,30 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   sendToLineManager() {
-    return this.performanceManagementService
-      .saveObjectives(+this.employeePerformId)
-      .subscribe(
-        (res) => {
-          // this.loadingService.hide();
-          const message = res.status.message.friendlyMessage;
-          this.dataService.setPageStatus.emit(1);
-          if (res.status.isSuccessful) {
-            return this.utilitiesService.showMessage(res, "success");
-          } else {
-            this.utilitiesService.showMessage(res, "error");
+    const { weight, name } = this.checkWeightValue(this.addAbleOjectives);
+    console.log(weight, name);
+    if (weight !== 100) {
+      return this.utilitiesService.showError(`${name} weight must be 100`);
+    } else {
+      return this.performanceManagementService
+        .saveObjectives(+this.employeePerformId)
+        .subscribe(
+          (res) => {
+            // this.loadingService.hide();
+            const message = res.status.message.friendlyMessage;
+            this.dataService.setPageStatus.emit(1);
+            if (res.status.isSuccessful) {
+              return this.utilitiesService.showMessage(res, "success");
+            } else {
+              this.utilitiesService.showMessage(res, "error");
+            }
+          },
+          (err) => {
+            // this.loadingService.hide();
+            return this.utilitiesService.showMessage(err, "error");
           }
-        },
-        (err) => {
-          // this.loadingService.hide();
-          return this.utilitiesService.showMessage(err, "error");
-        }
-      );
+        );
+    }
   }
 
   checkValue(value: any) {
@@ -457,5 +471,17 @@ export class AppraisalObjectivesComponent implements OnInit {
         return _id !== employeeObjectiveIdicatorId;
       });
     }
+  }
+
+  checkWeightValue(arr: any) {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].totalWeightFromAppriasal !== 100) {
+        return { name: arr[i].name, weight: arr[i].totalWeightFromAppriasal };
+      }
+    }
+  }
+  sendDataOutput() {
+    console.log("clicked");
+    this.sendData.emit(this.checkWeightValue(this.addAbleOjectives));
   }
 }

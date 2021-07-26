@@ -49,7 +49,8 @@ export class AppraisalObjectiveFormComponent implements OnInit {
     private jwtService: JwtService,
     private utilitiesService: UtilitiesService,
     public location: Location
-  ) {
+  ) // dataService: DataService,
+  {
     this.dataService.setPageStatus.subscribe((res) => {
       this.pageStatus = res;
     });
@@ -275,7 +276,8 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   }
 
   sendToLineManager() {
-    return this.performanceManagementService
+    this.dataService.sendData.emit(true);
+    /* return this.performanceManagementService
       .saveObjectives(+this.employeePerformId)
       .subscribe(
         (res) => {
@@ -292,6 +294,6 @@ export class AppraisalObjectiveFormComponent implements OnInit {
           // this.loadingService.hide();
           return this.utilitiesService.showMessage(err, "error");
         }
-      );
+      );*/
   }
 }

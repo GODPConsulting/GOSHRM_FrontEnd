@@ -13,7 +13,7 @@ export class DataService {
   currentUser = this.userSource.asObservable();
   sendUser: EventEmitter<any> = new EventEmitter<any>();
   currentMail = this.mailSource.asObservable();
-
+  sendData: EventEmitter<any> = new EventEmitter<any>();
   constructor() {}
 
   saveCurrentUser(data) {
