@@ -410,7 +410,6 @@ export class AppraisalObjectivesComponent implements OnInit {
 
   sendToLineManager() {
     const { weight, name } = this.checkWeightValue(this.addAbleOjectives);
-    console.log(weight, name);
     if (weight !== 100) {
       return this.utilitiesService.showError(`${name} weight must be 100`);
     } else {
@@ -475,13 +474,11 @@ export class AppraisalObjectivesComponent implements OnInit {
 
   checkWeightValue(arr: any) {
     for (let i = 0; i < arr.length; i++) {
-      if (arr[i].totalWeightFromAppriasal !== 100) {
-        return { name: arr[i].name, weight: arr[i].totalWeightFromAppriasal };
-      }
+      return { name: arr[i].name, weight: arr[i].totalWeightFromAppriasal };
     }
   }
-  sendDataOutput() {
-    console.log("clicked");
-    this.sendData.emit(this.checkWeightValue(this.addAbleOjectives));
-  }
+  // sendDataOutput() {
+  //   console.log("clicked");
+  //   this.sendData.emit(this.checkWeightValue(this.addAbleOjectives));
+  // }
 }
