@@ -26,3 +26,14 @@
 .btn-primary {
   margin-right: 10px;
 } */
+.flex-filter {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+.file-input {
+  width: 18rem;
+  margin-right: 5px;
+}

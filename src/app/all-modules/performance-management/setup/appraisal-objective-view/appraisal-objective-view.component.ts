@@ -54,6 +54,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
         employeePerformId: item.employeePerformId,
         objectiveId: item.id,
         jobgradeId: item.jobGradeId,
+        status: item.status,
         start: true,
         // pageStatus: 1,
       },

@@ -15,6 +15,8 @@ import { AppraisalObjectiveViewComponent } from "./setup/appraisal-objective-vie
 import { AppraisalObjectiveFormComponent } from "./setup/appraisal-objective-form/appraisal-objective-form.component";
 import { AppraisalObjectivesComponent } from "./setup/appraisal-objectives/appraisal-objectives.component";
 import { AppraisalsComponent } from "./setup/appraisal-cycle/appraisals/appraisals.component";
+import { ThreesixtyAppraisalsComponent } from "./threesixty-appraisals/threesixty-appraisals.component";
+import { ThreesixtyAppraisalComponent } from "./threesixty-appraisal/threesixty-appraisal.component";
 
 const routes: Routes = [
   {
@@ -76,6 +78,14 @@ const routes: Routes = [
       {
         path: "appraisal-objectives",
         component: AppraisalObjectivesComponent,
+      },
+      {
+        path: "360-appraisals",
+        component: ThreesixtyAppraisalsComponent,
+      },
+      {
+        path: "360-appraisal/:id",
+        component: ThreesixtyAppraisalComponent,
       },
     ],
   },

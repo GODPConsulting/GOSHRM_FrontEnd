@@ -39,6 +39,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   deptId: number;
   _appraisalCycleId: number;
   _employeePerformId: number;
+  _appraisalStatus: number;
   @Input() set appraisalCyleId(value: number) {
     // console.log(value);
     this._appraisalCycleId = value;
@@ -51,6 +52,19 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
   get employeePerformId(): number {
     return this._employeePerformId;
+  }
+  @Input() set appraisalStatus(value: number) {
+    this._appraisalStatus = value;
+  }
+  get appraisalStatus(): number {
+    return this._appraisalStatus;
+  }
+  _hasLineManagerApproved: boolean;
+  @Input() set hasLineManagerApproved(value) {
+    this._hasLineManagerApproved = value;
+  }
+  get hasLineManagerApproved(): boolean {
+    return this._hasLineManagerApproved;
   }
   isEditing: boolean = false;
   kpi: any;
@@ -282,10 +296,16 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   addObjective(item: any) {
-    this.kpiCategories = item.kpiIndicators;
-    this.kpiCategoryId = item.id;
-    this.totalWeight = item.totalWeight;
-    $("#appraisal_Objectives_modal").modal("show");
+    if (this.appraisalStatus != 1) {
+      return;
+    } else if (this.hasLineManagerApproved) {
+      return;
+    } else {
+      this.kpiCategories = item.kpiIndicators;
+      this.kpiCategoryId = item.id;
+      this.totalWeight = item.totalWeight;
+      $("#appraisal_Objectives_modal").modal("show");
+    }
   }
 
   getEmployeeObjectives() {
@@ -326,43 +346,47 @@ export class AppraisalObjectivesComponent implements OnInit {
     this.isEditing = true;
     if (!table.canEmplyeeAddObjective) {
       return;
+    } else if (this.appraisalStatus != 1) {
+      return;
+    } else if (this.hasLineManagerApproved) {
+      return;
+    } else {
+      const objectives = this.addAbleOjectives.filter((item) => {
+        return item.id === table.kpiCategoryId;
+      });
+      objectives.map((item) => {
+        this.kpiCategories = item.kpiIndicators;
+      });
+      // console.log(this.kpiCategories);
+      // console.log({ table }, { row, kpi: row.kpi });
+      // this.appraisalObjectivesForm.get("kpi").disable();
+      this.kpiCategoryId = table.kpiCategoryId;
+      // this.appraisalObjectivesForm.get("kpi").disable();
+      this.appraisalObjectivesForm.patchValue({
+        employeeObjectiveIdicatorId: row.employeeObjectiveIdicatorId,
+        kpiCategoryId: table.kpiCategoryId,
+        successMeasure: row.successMeasure,
+        objective: row.objective,
+        keyActions: row.keyActions,
+        targetDate: new Date(row.targetDate).toLocaleDateString("en-CA"),
+        weightmodel: row.weightmodel,
+        kpi: row.kpi,
+        employeePerformId: row.employeePerformId,
+      });
+      this.KpiIndicatorName = row.kpiName;
+      if (row.otherSelected) {
+        this.otherSelected = row.otherSelected;
+        this.KpiIndicatorName = "0";
+        this.others = row.kpiName;
+      }
+      // this.kpi = row.kpi;
+      // this.appraisalObjectivesForm.get("kpi").setValue(row.kpi);
+      // this.appraisalObjectivesForm
+      //   .get("kpi")
+      //   .setValue(row.kpi, { disable: true });
+      // this.kpiCategories = table.employeeObjectiveIdicators;
+      $("#appraisal_Objectives_modal").modal("show");
     }
-    const objectives = this.addAbleOjectives.filter((item) => {
-      return item.id === table.kpiCategoryId;
-    });
-    objectives.map((item) => {
-      this.kpiCategories = item.kpiIndicators;
-    });
-    // console.log(this.kpiCategories);
-    // console.log({ table }, { row, kpi: row.kpi });
-    // this.appraisalObjectivesForm.get("kpi").disable();
-    this.kpiCategoryId = table.kpiCategoryId;
-    // this.appraisalObjectivesForm.get("kpi").disable();
-    this.appraisalObjectivesForm.patchValue({
-      employeeObjectiveIdicatorId: row.employeeObjectiveIdicatorId,
-      kpiCategoryId: table.kpiCategoryId,
-      successMeasure: row.successMeasure,
-      objective: row.objective,
-      keyActions: row.keyActions,
-      targetDate: new Date(row.targetDate).toLocaleDateString("en-CA"),
-      weightmodel: row.weightmodel,
-      kpi: row.kpi,
-      employeePerformId: row.employeePerformId,
-    });
-    this.KpiIndicatorName = row.kpiName;
-    if (row.otherSelected) {
-      this.otherSelected = row.otherSelected;
-      this.KpiIndicatorName = "0";
-      this.others = row.kpiName;
-    }
-    console.log(this.KpiIndicatorName);
-    // this.kpi = row.kpi;
-    // this.appraisalObjectivesForm.get("kpi").setValue(row.kpi);
-    // this.appraisalObjectivesForm
-    //   .get("kpi")
-    //   .setValue(row.kpi, { disable: true });
-    // this.kpiCategories = table.employeeObjectiveIdicators;
-    $("#appraisal_Objectives_modal").modal("show");
   }
 
   saveObjectives() {

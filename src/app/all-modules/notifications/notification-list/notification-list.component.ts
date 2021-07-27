@@ -33,10 +33,10 @@ export class NotificationListComponent implements OnInit {
       columns: [{ orderable: false }, null, null, null, null],
       order: [[1, "asc"]],
     };
-    this.dataService.currentMail.subscribe((result) => {
-      // this.loadingService.hide();
-      this.mails = result;
-    });
+    // this.dataService.currentMail.subscribe((result) => {
+    //   // this.loadingService.hide();
+    //   this.mails = result;
+    // });
   }
 
   /*  clickMessage() {

@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getAllEmails();
+    // this.getAllEmails();
     this.userDetails = this.jwtService.getUserDetails();
     // this.getDatas("notification");
     // this.getDatas("message");

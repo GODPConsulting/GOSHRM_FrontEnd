@@ -3,20 +3,21 @@ import { ApiService } from "./api.service";
 import { Injectable } from "@angular/core";
 import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
-import { HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {
   AppraisalObjective,
   EmployeeKPI,
   IAppraisalCycle,
   IKpis,
   KpiCategory,
+  ThreesixtyFeedback,
 } from "../interface/interfaces";
 
 @Injectable({
   providedIn: "root",
 })
 export class PerformanceManagementService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private http: HttpClient) {}
   handleError(error: HttpErrorResponse) {
     return throwError(error);
   }
@@ -872,6 +873,17 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res.periodList;
+        })
+      );
+  }
+
+  getThreeSixtyFeedbacks(): Observable<ThreesixtyFeedback[]> {
+    return this.http
+      .get<ThreesixtyFeedback[]>(`assets/json/contacts.json`)
+      .pipe(
+        tap(),
+        map((item) => {
+          return item;
         })
       );
   }

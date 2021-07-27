@@ -330,4 +330,6 @@ export class AppraisalCycleComponent implements OnInit {
   openAppraisals(appraisalCycleId: number) {
     this._router.navigate(["/performance/setup/appraisal-cycle/appraisals"]);
   }
+
+  upload() {}
 }

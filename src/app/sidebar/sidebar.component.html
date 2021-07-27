@@ -66,6 +66,15 @@
                   >Appraisal Feedback</a
                 >
               </li>
+              <li routerLink="/performance/360-appraisals">
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.childUrl === 'appraisal-feedback'
+                  }"
+                  >360 Feedback</a
+                >
+              </li>
             </ul>
           </li>
           <!-- /ESS -->

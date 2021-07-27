@@ -105,3 +105,14 @@ export interface AppraisalObjective {
   appraisalCycleId: number;
   department: number;
 }
+export interface ThreesixtyFeedback {
+  id: number;
+  employee: string;
+  jobTitle: string;
+  jobTitleId: number;
+  officeId: number;
+  office: string;
+  requestDate: Date;
+  status: boolean;
+  statusName: string;
+}

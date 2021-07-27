@@ -38,7 +38,8 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   reviewYear: any;
   reviewPeriod: any;
   employeeId: any;
-
+  appraisalStatus: number;
+  hasLineManagerApproved: boolean;
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -48,9 +49,8 @@ export class AppraisalObjectiveFormComponent implements OnInit {
     private route: ActivatedRoute,
     private jwtService: JwtService,
     private utilitiesService: UtilitiesService,
-    public location: Location
-  ) // dataService: DataService,
-  {
+    public location: Location // dataService: DataService,
+  ) {
     this.dataService.setPageStatus.subscribe((res) => {
       this.pageStatus = res;
     });
@@ -63,6 +63,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
         this.appraisalCycleId = param.appraisalCycleId;
         this.objectiveId = param.objectiveId;
         this.pageStatus = +param.pageStatus;
+        this.appraisalStatus = param.status;
         this.getComment(this.objectiveId);
       }
       if (param.employeePerformId) {
@@ -247,6 +248,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
           this.getAppraisalPeriods(year);
           this.reviewYear = data[0].reviewYear;
           this.reviewPeriod = data[0].reviewPeriod;
+          this.hasLineManagerApproved = data[0].hasLineManagerApproved;
           // console.log(this.lineManagerId);
           // this.appraisalObjectiveForm.patchValue({
           //   reviewYear: data[0].reviewYear,
@@ -271,7 +273,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   getValue(value: any) {
     const item = this.reviewPeriods.find((item) => item.period === value);
     this.appraisalCycleId = item.appraisalCycleId;
-    this.employeePerformId = item.employeePerformId;
+    // this.employeePerformId = item.employeePerformId;
     // this.status = "false";
   }
 

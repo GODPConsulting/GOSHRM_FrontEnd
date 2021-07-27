@@ -4,7 +4,7 @@
         "role" : "Web Developer",
         "type" : "company",
         "number" : "9834553448",
-        "email": "johndoe@stanley.com",
+        "email": "pending",
         "id" : 121
     },
     {
@@ -12,7 +12,7 @@
         "role" : "React Developer",
         "type" : "client",
         "number" : "9834573448",
-        "email": "richardmiles@stanley.com",
+        "email": "pending",
         "id" : 122
     },
     {
@@ -20,7 +20,7 @@
         "role" : "Angular Developer",
         "type" : "staff",
         "number" : "9834593448",
-        "email": "johnsmith@stanley.com",
+        "email": "pending",
         "id" : 124
     },
     {
@@ -28,7 +28,7 @@
         "role" : "Web Developer",
         "type" : "company",
         "number" : "9834053448",
-        "email": "mikelitorus@stanley.com",
+        "email": "pending",
         "id" : 125
     },
     {
@@ -36,7 +36,7 @@
         "role" : "Front End Developer",
         "type" : "client",
         "number" : "9835553448",
-        "email": "wilmerdeluna@stanley.com",
+        "email": "pending",
         "id" : 126
     },
     {
@@ -44,7 +44,7 @@
         "role" : "Back End Developer",
         "type" : "company",
         "number" : "6834553448",
-        "email": "jefferywarden@stanley.com",
+        "email": "pending",
         "id" : 127
     },
     {
@@ -52,7 +52,7 @@
         "role" : "Web Developer",
         "type" : "staff",
         "number" : "9834552348",
-        "email": "lorengatlin@stanley.com",
+        "email": "pending",
         "id" : 128
     },
     {
@@ -60,7 +60,7 @@
         "role" : "Android Developer",
         "type" : "company",
         "number" : "9834233448",
-        "email": "lesleygrauer@stanley.com",
+        "email": "pending",
         "id" : 129
     }
 ]

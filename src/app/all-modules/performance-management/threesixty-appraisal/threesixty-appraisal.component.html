@@ -1,0 +1,481 @@
+<div class="content container-fluid" style="padding-bottom: 0">
+  <!-- Page Header Starts -->
+  <div id="add_appraisal_objectives">
+    <div class="card">
+      <div class="card-header header-bg-color">
+        <h3><b>360 Appraisal Feedback </b></h3>
+      </div>
+
+      <br />
+
+      <div class="card-body">
+        <form [formGroup]="appraisalFeedbackForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Review Cycle</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="reviewCycle"
+                  [attr.disabled]="true"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Employee</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="name"
+                  [attr.disabled]="true"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Job Title</label>
+                <input
+                  class="form-control"
+                  [attr.disabled]="true"
+                  type="text"
+                  formControlName="jobTitle"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Office</label>
+                <input
+                  class="form-control"
+                  [attr.disabled]="true"
+                  type="text"
+                  formControlName="office"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Point Awarded</label>
+                <input
+                  class="form-control"
+                  [attr.disabled]="true"
+                  type="text"
+                  formControlName="pointAwarded"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="maxPoint">Maximum Possible Point</label>
+                <input
+                  type="text"
+                  id="maxPoint"
+                  class="form-control"
+                  formControlName="maxPoint"
+                  [attr.disabled]="true"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="score">Score(%)</label>
+                <input
+                  type="text"
+                  id="score"
+                  class="form-control"
+                  formControlName="score"
+                  [attr.disabled]="true"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="status">Status</label>
+                <input
+                  type="text"
+                  id="status"
+                  class="form-control"
+                  formControlName="status"
+                  [attr.disabled]="true"
+                />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="maxPoint">Reviewer</label>
+                <input
+                  type="text"
+                  id="reviewer"
+                  class="form-control"
+                  formControlName="reviewer"
+                  [attr.disabled]="true"
+                />
+              </div>
+            </div>
+            <div style="padding: 0 1.1rem">
+              1=Unsatisfactory, 2=Fair, 3=Solid, 4= Outstanding, 5=Exceptional
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header header-bg-color"></div>
+      <div class="card-body">
+        <div>
+          <p-table>
+            <ng-template pTemplate="header" let-row let-i="rowIndex">
+              <tr>
+                <th>KPI</th>
+                <th>Objectives</th>
+                <th>Success Target</th>
+                <th>Reviewee Comments</th>
+                <th>Reviewee Score</th>
+                <th *ngIf="preference?.isReviewerOneInvloved">
+                  Reviewer I Comment
+                </th>
+                <th *ngIf="preference?.isReviewerOneInvloved">
+                  Reviewer I Score
+                </th>
+                <th *ngIf="preference?.isReviewertwoInvloved">
+                  Reviewer II Comment
+                </th>
+                <th *ngIf="preference?.isReviewertwoInvloved">
+                  Reviewer II Score
+                </th>
+                <th *ngIf="preference?.isReviewerThreeInvloved">
+                  Reviewer III Comment
+                </th>
+                <th *ngIf="preference?.isReviewerThreeInvloved">
+                  Reviewer III Score
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row let-i="rowIndex">
+              <tr>
+                <td>{{ row.kpiCategory | titlecase }}</td>
+                <td>{{ row.kpiObjectives | titlecase }}</td>
+                <td>{{ row.successTarget | titlecase }}</td>
+                <td>
+                  <a
+                    *ngIf="reviewer === 'employee'"
+                    class="hint mr_20"
+                    data-toggle="modal"
+                    (click)="
+                      addComment(row.employeeObjectiveFeedbackID, 'employee')
+                    "
+                    ><span class="hint-text">Add </span
+                    ><i class="fa fa-plus"></i
+                  ></a>
+                  <a
+                    class="hint"
+                    data-toggle="modal"
+                    (click)="viewComments(row.feedBackComments, 'employee')"
+                    ><span class="hint-text">View </span
+                    ><i class="fa fa-eye"></i
+                  ></a>
+                </td>
+                <td>
+                  <span style="margin-right: 20px">{{
+                    row.revieweeScore | number: "1.2-2"
+                  }}</span>
+                  <a
+                    *ngIf="reviewer === 'employee'"
+                    class="hint"
+                    data-toggle="modal"
+                    (click)="
+                      addScore(
+                        row.employeeObjectiveFeedbackID,
+                        row.revieweeScore,
+                        'employee'
+                      )
+                    "
+                    ><span class="hint-text">Edit </span
+                    ><i class="fa fa-edit"></i
+                  ></a>
+                </td>
+                <td *ngIf="preference.isReviewerOneInvloved">
+                  <a
+                    *ngIf="reviewer === 'reviewer1'"
+                    class="hint mr_20"
+                    data-toggle="modal"
+                    (click)="
+                      addComment(row.employeeObjectiveFeedbackID, 'reviewer1')
+                    "
+                    ><span class="hint-text">Add </span
+                    ><i class="fa fa-plus"></i
+                  ></a>
+                  <a
+                    class="hint"
+                    data-toggle="modal"
+                    (click)="
+                      viewComments(row.feedBackRevieweOneComments, 'reviewer1')
+                    "
+                    ><span class="hint-text">View Comment </span
+                    ><i class="fa fa-eye"></i
+                  ></a>
+                </td>
+                <td *ngIf="preference.isReviewerOneInvloved">
+                  <span class="mr_20">{{
+                    row.reviewerOneScore | number: "1.2-2"
+                  }}</span>
+                  <a
+                    *ngIf="reviewer === 'reviewer1'"
+                    class="hint"
+                    data-toggle="modal"
+                    (click)="
+                      addScore(
+                        row.employeeObjectiveFeedbackID,
+                        row.reviewerOneScore,
+                        'reviewer1'
+                      )
+                    "
+                    ><span class="hint-text">Edit </span
+                    ><i class="fa fa-edit"></i
+                  ></a>
+                </td>
+                <td *ngIf="preference.isReviewertwoInvloved">
+                  <a
+                    *ngIf="reviewer === 'reviewer2'"
+                    class="hint mr_20"
+                    data-toggle="modal"
+                    (click)="
+                      addComment(row.employeeObjectiveFeedbackID, 'reviewer2')
+                    "
+                    ><span class="hint-text">Add </span
+                    ><i class="fa fa-plus"></i
+                  ></a>
+                  <a
+                    class="hint"
+                    data-toggle="modal"
+                    (click)="
+                      viewComments(row.feedBackRevieweTwoComments, 'reviewer2')
+                    "
+                    ><span class="hint-text">View </span
+                    ><i class="fa fa-eye"></i
+                  ></a>
+                </td>
+                <td *ngIf="preference.isReviewertwoInvloved">
+                  <span class="mr_20">{{
+                    row.reviewerTwoScore | number: "1.2-2"
+                  }}</span>
+                  <a
+                    *ngIf="reviewer === 'reviewer2'"
+                    class="hint"
+                    data-toggle="modal"
+                    (click)="
+                      addScore(
+                        row.employeeObjectiveFeedbackID,
+                        row.reviewerTwoScore,
+                        'reviewer2'
+                      )
+                    "
+                    ><span class="hint-text">Edit </span
+                    ><i class="fa fa-edit"></i
+                  ></a>
+                  <!--                  <a-->
+                  <!--                    class="hint"-->
+                  <!--                    data-toggle="modal"-->
+                  <!--                    data-target="#appraisal_feedback_reviewee_modal"-->
+                  <!--                    ><span class="hint-text">View </span-->
+                  <!--                    ><i class="fa fa-eye"></i-->
+                  <!--                  ></a>-->
+                </td>
+                <td *ngIf="preference.isReviewerThreeInvloved">
+                  <a
+                    *ngIf="reviewer === 'reviewer3'"
+                    class="hint mr_20"
+                    data-toggle="modal"
+                    (click)="
+                      addComment(row.employeeObjectiveFeedbackID, 'reviewer3')
+                    "
+                    ><span class="hint-text">Add </span
+                    ><i class="fa fa-plus"></i
+                  ></a>
+                  <a
+                    class="hint"
+                    data-toggle="modal"
+                    (click)="
+                      viewComments(
+                        row.feedBackReviewethreeComments,
+                        'reviewer3'
+                      )
+                    "
+                    ><span class="hint-text">View </span
+                    ><i class="fa fa-eye"></i
+                  ></a>
+                </td>
+                <td *ngIf="preference.isReviewerThreeInvloved">
+                  <span class="mr_20">{{
+                    row.rewviewerThreeScore | number: "1.2-2"
+                  }}</span>
+                  <a
+                    *ngIf="reviewer === 'reviewer3'"
+                    class="hint"
+                    data-toggle="modal"
+                    (click)="
+                      addScore(
+                        row.employeeObjectiveFeedbackID,
+                        row.rewviewerThreeScore,
+                        'reviewer3'
+                      )
+                    "
+                    ><span class="hint-text">Edit </span
+                    ><i class="fa fa-edit"></i
+                  ></a>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  id="appraisal_feedback_page_modal"
+  class="modal custom-modal fade"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ commentTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="employeeCommentForm">
+          <div class="row row-flex">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Comment</label>
+                <input
+                  type="text"
+                  name="comment"
+                  class="form-control"
+                  [formControlName]="formControlName"
+                />
+              </div>
+            </div>
+            <!--            <div class="col-md-6">-->
+            <!--              <div class="form-group">-->
+            <!--                <label>Date</label>-->
+            <!--                <input-->
+            <!--                  type="date"-->
+            <!--                  name="date"-->
+            <!--                  class="form-control"-->
+            <!--                  [(ngModel)]="date"-->
+            <!--                />-->
+            <!--              </div>-->
+            <!--            </div>-->
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+              (click)="submitAppraisalFeedbackPageForm(employeeCommentForm)"
+            >
+              bool
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="score_modal" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ scoreTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="employeeScoreForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Reviewee Score</label>
+                <input
+                  type="number"
+                  name="number"
+                  class="form-control"
+                  formControlName="score"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+              (click)="saveScore(employeeScoreForm)"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- /Appraisal Feedback Reviewee modal -->
+<div id="comment_modal" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ commentTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeCommentModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p-table [value]="employeeComments$ | async">
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 250px">Date</th>
+              <th>Comment</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr>
+              <td style="width: 250px">{{ row.createdOn | date }}</td>
+              <td>{{ row.comment | titlecase }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>
