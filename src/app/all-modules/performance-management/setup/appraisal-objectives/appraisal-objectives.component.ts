@@ -433,9 +433,15 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   sendToLineManager() {
-    const { weight, name } = this.checkWeightValue(this.addAbleOjectives);
-    if (weight !== 100) {
-      return this.utilitiesService.showError(`${name} weight must be 100`);
+    // console.log(this.checkWeightValue(this.addAbleOjectives));
+    const totalWeightFromAppriasal = this.checkWeightValue(
+      this.addAbleOjectives
+    );
+    if (
+      totalWeightFromAppriasal !== 100 &&
+      totalWeightFromAppriasal !== undefined
+    ) {
+      return this.utilitiesService.showError(`Objectives weight must be 100`);
     } else {
       return this.performanceManagementService
         .saveObjectives(+this.employeePerformId)
@@ -497,11 +503,18 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   checkWeightValue(arr: any) {
-    for (let i = 0; i < arr.length; i++) {
+    /*for (let i = 0; i < arr.length; i++) {
       if (arr[i].totalWeightFromAppriasal !== 100) {
         return { name: arr[i].name, weight: arr[i].totalWeightFromAppriasal };
+      } else {
+        return { name: arr[i].name, weight: undefined };
       }
-    }
+    }*/
+    return (
+      arr.find((item) => {
+        return item.totalWeightFromAppriasal !== 100;
+      }) || undefined
+    );
   }
   // sendDataOutput() {
   //   console.log("clicked");
