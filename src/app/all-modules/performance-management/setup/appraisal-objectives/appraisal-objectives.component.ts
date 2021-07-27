@@ -498,7 +498,9 @@ export class AppraisalObjectivesComponent implements OnInit {
 
   checkWeightValue(arr: any) {
     for (let i = 0; i < arr.length; i++) {
-      return { name: arr[i].name, weight: arr[i].totalWeightFromAppriasal };
+      if (arr[i].totalWeightFromAppriasal !== 100) {
+        return { name: arr[i].name, weight: arr[i].totalWeightFromAppriasal };
+      }
     }
   }
   // sendDataOutput() {
