@@ -12,6 +12,7 @@ import { CommonService } from "../../../../../services/common.service";
 import { JwtService } from "../../../../../services/jwt.service";
 import { ActivatedRoute } from "@angular/router";
 import { catchError } from "rxjs/operators";
+import { Observable } from "rxjs";
 declare const $: any;
 
 interface Preference {
@@ -77,6 +78,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   personnel: string;
   formControlName: string = "";
   employeePerformId: number;
+  points$: Observable<any[]>;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -109,6 +111,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     this.cardFormTitle = "Appraisal Feedback";
     this.years = this.utilitiesService.createYears(2000, 2050);
     this.getJobGrade();
+    this.points$ = this.performanceManagementService.getPointSettings();
   }
   initialiseEmployeeComment() {
     this.employeeCommentForm = this.formBuilder.group({
@@ -441,6 +444,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
   saveScore(form: FormGroup) {
     const payload = form.value;
+    payload.score = +payload.score;
     switch (this.personnel) {
       case "employee":
         return this.submitEmployeeScore(payload);
@@ -590,7 +594,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeScore();
-              this.appraisalFeedbacks = res.list;
+              this.getAppraisalFeedbacks();
               $("#score_modal").modal("hide");
             });
           } else {
@@ -614,7 +618,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeScore();
-              this.appraisalFeedbacks = res.list;
+              this.getAppraisalFeedbacks();
               $("#score_modal").modal("hide");
             });
           } else {
@@ -637,7 +641,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeScore();
-              this.appraisalFeedbacks = res.list;
+              this.getAppraisalFeedbacks();
               $("#score_modal").modal("hide");
             });
           } else {
@@ -660,7 +664,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           if (res.status.isSuccessful) {
             this.utilitiesService.showMessage(res, "success").then(() => {
               this.initialiseEmployeeScore();
-              this.appraisalFeedbacks = res.list;
+              this.getAppraisalFeedbacks();
               $("#score_modal").modal("hide");
             });
           } else {

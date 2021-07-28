@@ -567,12 +567,18 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Reviewee Score</label>
-                <input
-                  type="number"
+                <select
                   name="number"
                   class="form-control"
                   formControlName="score"
-                />
+                >
+                  <option
+                    *ngFor="let point of points$ | async"
+                    [value]="point.point"
+                  >
+                    {{ point.pointName }}
+                  </option>
+                </select>
               </div>
             </div>
           </div>

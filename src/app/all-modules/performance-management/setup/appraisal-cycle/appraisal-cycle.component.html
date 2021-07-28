@@ -27,8 +27,13 @@
           </div>
         </div>
         <div style="display: flex">
-          <input type="file" class="form-control file-input" />
-          <a class="btn upload-btn hint" (click)="upload()" download
+          <input
+            type="file"
+            class="form-control file-input"
+            #fileInput
+            (change)="handleFileChange($event)"
+          />
+          <a class="btn upload-btn hint" (click)="upload()"
             ><span class="hint-text"
               >Upload:(Reviewee EmpID, Reviewer EmpID, CompanyName)</span
             ><i class="fa fa-upload"></i

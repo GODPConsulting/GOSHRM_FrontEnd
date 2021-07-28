@@ -6,3 +6,10 @@
 .submenu-slideup {
   display: none;
 }
+ul li a span{
+  font-size: 12px
+}
+li a {
+  text-decoration: none;
+  font-size: 12px;
+}

@@ -28,6 +28,9 @@ import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 import { TreeTableModule } from "primeng/treetable";
 import { ThreesixtyAppraisalsComponent } from './threesixty-appraisals/threesixty-appraisals.component';
 import { ThreesixtyAppraisalComponent } from './threesixty-appraisal/threesixty-appraisal.component';
+import { FeedbackKudosComponent } from './feedback-kudos/feedback-kudos.component';
+import { OthersFeedbackKudosComponent } from './others-feedback-kudos/others-feedback-kudos.component';
+import { MyFeedbackKudosComponent } from './my-feedback-kudos/my-feedback-kudos.component';
 @NgModule({
   declarations: [
     PerformanceManagementComponent,
@@ -48,6 +51,9 @@ import { ThreesixtyAppraisalComponent } from './threesixty-appraisal/threesixty-
     CustomDatePipe,
     ThreesixtyAppraisalsComponent,
     ThreesixtyAppraisalComponent,
+    FeedbackKudosComponent,
+    OthersFeedbackKudosComponent,
+    MyFeedbackKudosComponent,
   ],
   imports: [
     CommonModule,

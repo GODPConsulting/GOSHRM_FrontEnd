@@ -171,7 +171,7 @@ export class PerformanceManagementService {
       .pipe(
         tap(),
         map((res) => {
-          return res;
+          return res.setupList;
         }),
         catchError(this.handleError)
       );
@@ -878,13 +878,34 @@ export class PerformanceManagementService {
   }
 
   getThreeSixtyFeedbacks(): Observable<ThreesixtyFeedback[]> {
-    return this.http
-      .get<ThreesixtyFeedback[]>(`assets/json/contacts.json`)
+    return this.apiService.get(`/performance/get/all/feedback/360`).pipe(
+      tap(),
+      map((item) => {
+        return item.objectList;
+      })
+    );
+  }
+  getThreeSixtyFeedback(id: number): Observable<ThreesixtyFeedback> {
+    return this.apiService
+      .get(`/performance/get/feedback/360/by/employeeid?EmployeeId=${id}`)
       .pipe(
         tap(),
-        map((item) => {
-          return item;
+        map((res) => {
+          return res;
         })
+      );
+  }
+  uploadThreeSixtyFeedbacks(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append("file", file);
+    return this.apiService
+      .post(`/performance/upload/feedback/360`, formData)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
       );
   }
 }

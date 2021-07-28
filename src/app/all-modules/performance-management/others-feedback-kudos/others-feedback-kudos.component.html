@@ -1,0 +1,145 @@
+<div class="content container-fluid" style="padding-bottom: 0">
+  <!-- Page Header Starts -->
+  <div id="add_appraisal_objectives">
+    <h5><b>Performance Appraisal Feedback Nugget Form</b></h5>
+    <div class="card">
+      <div class="card-header header-bg-color">
+        <h3><b>Reviewee Information </b></h3>
+      </div>
+
+      <br />
+
+      <div class="card-body">
+        <form [formGroup]="appraisalFeedbackForm">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="employee">Employee</label>
+                <input
+                  id="employee"
+                  type="text"
+                  class="form-control"
+                  formControlName="employee"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="jobgrade">Job Grade</label>
+                <input
+                  id="jobgrade"
+                  type="text"
+                  class="form-control"
+                  formControlName="revieweeJobGrade"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="revieweeJobTitle">Job Title</label>
+                <input
+                  class="form-control"
+                  id="revieweeJobTitle"
+                  type="text"
+                  formControlName="revieweeJobTitle"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="office">Office/Dept</label>
+                <input
+                  class="form-control"
+                  id="office"
+                  type="text"
+                  formControlName="office"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="reviewPeriod">Review Period</label>
+                <input
+                  class="form-control"
+                  id="reviewPeriod"
+                  type="text"
+                  formControlName="reviewPeriod"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="length">Length of Service</label>
+                <input
+                  type="text"
+                  id="length"
+                  class="form-control"
+                  formControlName="lengthOfService"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header header-bg-color">
+        <h3><b>Reviewer Information </b></h3>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="appraisalFeedbackForm">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="name"> Name </label>
+                <input
+                  id="name"
+                  type="text"
+                  class="form-control"
+                  formControlName="reviewerName"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="department">Department</label>
+                <input
+                  type="text"
+                  id="department"
+                  class="form-control"
+                  formControlName="department"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label>Job Grade</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="reviewerJobGrade"
+                />
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="reviewerJobTitle">Job Title</label>
+                <input
+                  type="text"
+                  id="reviewerJobTitle"
+                  class="form-control"
+                  formControlName="reviewerJobTitle"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary">Continue</button>
+            <button class="btn btn-danger">Back</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+.header_flex {
+  display: flex;
+  margin-bottom: 1rem;
+  /* align-items: flex-end; */
+  /* width: 100%; */
+  /* float: right; */
+  margin-left: auto;
+}
+.search_field {
+  width: 25rem;
+  /* margin-bottom: 1rem; */
+  height: 2.4rem;
+}

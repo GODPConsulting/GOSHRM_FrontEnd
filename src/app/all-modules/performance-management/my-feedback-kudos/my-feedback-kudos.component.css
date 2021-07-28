@@ -1,0 +1,26 @@
+.header_flex {
+  display: flex;
+  margin-bottom: 1rem;
+  /* align-items: flex-end; */
+  /* width: 100%; */
+  /* float: right; */
+  margin-left: auto;
+}
+.search_field {
+  width: 25rem;
+  /* margin-bottom: 1rem; */
+  height: 2.4rem;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+

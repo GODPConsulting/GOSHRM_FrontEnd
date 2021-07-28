@@ -59,6 +59,8 @@ export class AppraisalCycleComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
   cols: ISearchColumn[] = [];
   selectedCycles: any[] = [];
+  file: File;
+  // @ViewChild('fileInput') fileInput: ElementRef
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -331,5 +333,26 @@ export class AppraisalCycleComponent implements OnInit {
     this._router.navigate(["/performance/setup/appraisal-cycle/appraisals"]);
   }
 
-  upload() {}
+  upload() {
+    return this.performanceManagementService
+      .uploadThreeSixtyFeedbacks(this.file)
+      .subscribe(
+        (res) => {
+          this.fileInput.nativeElement.value = "";
+          if (res.status.isSuccessful) {
+            return this.utilitiesService.showMessage(res, "success");
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          this.fileInput.nativeElement.value = "";
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+
+  handleFileChange(event) {
+    this.file = event.target.files[0];
+  }
 }

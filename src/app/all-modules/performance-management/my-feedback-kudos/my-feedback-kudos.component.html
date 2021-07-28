@@ -1,0 +1,76 @@
+<div class="content container-fluid">
+  <!-- page Header Start -->
+  <div class="card">
+    <div class="card-header header-bg-color">
+      <h5><b>Appraisal Feedback Nuggets </b></h5>
+    </div>
+    <div class="card-body" style="padding: 2rem">
+      <div class="row">
+        <div class="header_flex">
+          <select
+            name=""
+            id=""
+            class="form-control search_field"
+            style="margin-right: 3px"
+          >
+            <option value="" disabled>Review Period</option>
+          </select>
+          <a
+            routerLink="/performance/add-kudos"
+            routerLinkActive="router-link-active"
+            class="btn hint"
+            ><span class="hint-text">Add </span><i class="fa fa-plus"></i
+          ></a>
+          <a class="btn hint" (click)="delete()"
+            ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+          ></a>
+          <input
+            type="text"
+            class="form-control search_field"
+            placeholder="Search"
+          />
+        </div>
+        <p-table
+          class="table table-striped custom-table datatable table-hover"
+          [value]="feedbacks$ | async"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="table-checkbox">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th class="sn_width">S/N</th>
+              <th>Reviewer Name</th>
+              <th>No of Feedback Reviews</th>
+              <th>Reviewer Job grade</th>
+              <th>Reviewer Job title</th>
+              <th>Review Period</th>
+              <th>Average Scores (%)</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr
+              [routerLink]="['/performance/add-kudos', item.id]"
+              style="cursor: pointer"
+            >
+              <td class="table-checkbox">
+                <p-tableCheckbox
+                  (click)="stopParentEvent($event)"
+                  [value]="item"
+                ></p-tableCheckbox>
+              </td>
+              <td class="sn_width">{{ i + 1 }}</td>
+              <td>{{ item.name | titlecase }}</td>
+              <td>{{ item.role }}</td>
+              <td>{{ item.type | titlecase }}</td>
+              <td>{{ item.number }}</td>
+              <td>{{ item.email | titlecase }}</td>
+              <td></td>
+            </tr>
+          </ng-template>
+          <tbody></tbody>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
-import { Observable } from "rxjs";
+import { Observable, Subscription } from "rxjs";
+import { ActivatedRoute, Params } from "@angular/router";
+import { PerformanceManagementService } from "../../../services/performance-management.service";
 declare const $: any;
 interface Preference {
   isReviewerOneInvloved: boolean;
@@ -28,9 +30,16 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   appraisalCycleId: any;
   personnel: string;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private performanceManagementService: PerformanceManagementService
+  ) {}
 
   ngOnInit(): void {
+    this.route.params.subscribe((param: Params) => {
+      console.log(param.id);
+    });
     this.initializeForm();
   }
   initializeForm() {
@@ -60,6 +69,13 @@ export class ThreesixtyAppraisalComponent implements OnInit {
       staffId: this.staffId,
       appraisalCycleId: +this.appraisalCycleId,
     });
+  }
+  getThreeSixtyFeedback(id): Subscription {
+    return this.performanceManagementService
+      .getThreeSixtyFeedback(id)
+      .subscribe((res) => {
+        console.log(res);
+      });
   }
   getAppraisalPeriods(value: any) {}
 

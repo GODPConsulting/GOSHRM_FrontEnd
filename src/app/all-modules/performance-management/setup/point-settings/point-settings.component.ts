@@ -96,7 +96,7 @@ export class PointSettingsComponent implements OnInit {
     this.performanceManagementService.getPointSettings().subscribe(
       (data) => {
         // this.loadingService.hide();
-        this.pointSettings = data.setupList;
+        this.pointSettings = data;
         this.dtTrigger.next();
       },
       (err) => {

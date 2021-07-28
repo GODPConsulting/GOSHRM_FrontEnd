@@ -57,6 +57,57 @@
                   >Appraisal Objective</a
                 >
               </li>
+
+              <li
+                class="submenu"
+                [ngClass]="{
+                  active:
+                    urlComplete.mainUrl === 'performance' &&
+                    urlComplete.subUrl === 'feedback-kudos'
+                }"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    subdrop:
+                      urlComplete.mainUrl === 'performance' &&
+                      urlComplete.subUrl === 'feedback-kudos'
+                  }"
+                  class="noti-dot"
+                >
+                  <span> Feedback Kudos</span> <span class="menu-arrow"></span
+                ></a>
+                <ul
+                  style="display: none"
+                  [ngStyle]="{
+                    display:
+                      urlComplete.mainUrl === 'performance' &&
+                      urlComplete.subUrl === 'feedback-kudos'
+                        ? 'block'
+                        : 'none'
+                  }"
+                >
+                  <li routerLink="/performance/feedback-kudos">
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active: urlComplete.childUrl === 'feedback-kudos'
+                      }"
+                      >Give Feedback Kudos</a
+                    >
+                  </li>
+                  <li routerLink="/performance/my-kudos">
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active: urlComplete.childUrl === 'my-kudos'
+                      }"
+                      >My Feedback Kudos</a
+                    >
+                  </li>
+                </ul>
+              </li>
+
               <li routerLink="/performance/appraisal-feedback">
                 <a
                   href="javascript:"
