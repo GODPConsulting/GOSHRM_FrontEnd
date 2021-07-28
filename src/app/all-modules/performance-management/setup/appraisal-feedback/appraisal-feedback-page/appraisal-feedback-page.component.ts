@@ -118,6 +118,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       employeeObjectiveFeedbackID: [0],
       staffId: this.staffId,
       appraisalCycleId: +this.appraisalCycleId,
+      employeePerformId: this.employeePerformId,
     });
   }
   initialiseEmployeeScore() {
@@ -126,6 +127,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       score: [""],
       staffId: this.staffId,
       appraisalCycleId: +this.appraisalCycleId,
+      employeePerformId: this.employeePerformId,
     });
   }
   initialiseFeedbackForm() {
