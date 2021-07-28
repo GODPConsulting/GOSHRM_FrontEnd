@@ -111,6 +111,7 @@ export class DirectReportAppraisalsComponent implements OnInit {
       queryParams: {
         id: row.employeeId,
         appraisalCycleId: row.appraisalCycleId,
+        employeePerformId: row.employeePerformId,
       },
     });
   }
