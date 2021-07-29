@@ -111,7 +111,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       this.staffId = user.employeeId;
       this.getAppraisalFeedbacks();
       // this.initialiseEmployeeComment();
-      // this.initialiseEmployeeScore();
+      this.initialiseEmployeeScore();
     });
     // this.getAppraisalFeedbacks();
     this.cardFormTitle = "Appraisal Feedback";
