@@ -7,14 +7,13 @@
       <h4>{{ cardFormTitle }}</h4>
     </div>
     <div class="card-body">
-      <form #newsFeedform="ngForm" [formGroup]="appraisalFeedbackForm">
+      <form [formGroup]="appraisalFeedbackForm">
         <div class="row">
           <div class="col-md-4">
             <div class="form-group">
               <label>Review Year</label>
               <input
                 type="text"
-                name="reviewPeriod"
                 class="form-control"
                 formControlName="reviewYear"
               />
@@ -26,7 +25,6 @@
               <label>Review Period Start</label>
               <input
                 type="date"
-                name="startDate"
                 class="form-control datetimepicker"
                 bsDatepicker
                 [bsConfig]="{
@@ -51,7 +49,6 @@
                   returnFocusToInput: true
                 }"
                 formControlName="endDate"
-                name="endDate"
                 class="form-control datetimepicker"
               />
             </div>
@@ -62,7 +59,6 @@
               <input
                 type="text"
                 formControlName="employeeName"
-                name="employee"
                 class="form-control"
               />
             </div>
@@ -73,7 +69,6 @@
               <input
                 type="text"
                 formControlName="jobGradeName"
-                name="employee"
                 class="form-control"
               />
             </div>
@@ -84,7 +79,6 @@
               <input
                 type="text"
                 formControlName="jobTitleName"
-                name="jobTitle"
                 class="form-control"
               />
             </div>
@@ -105,17 +99,27 @@
               <input
                 type="text"
                 formControlName="timeInPresentPosition"
-                name="employee"
                 class="form-control"
               />
             </div>
+          </div>
+          <div class="col-md-4 btns-flex">
+            <a class="btn hint" (click)="showScheduleForm()"
+              ><span class="hint-text">Schedule Coaching </span
+              ><i class="fa fa-calendar"></i
+            ></a>
+            <a
+              class="btn hint"
+              [routerLink]="['/performance/coaching-schedules']"
+              ><span class="hint-text">Coaching Schedules</span
+              ><i class="fa fa-calendar-o"></i
+            ></a>
           </div>
           <div class="col-md-12">
             <div class="form-group">
               <label>Overall Remark</label>
               <input
                 type="text"
-                name="submittedForReview"
                 class="form-control"
                 formControlName="overallRemark"
               />
@@ -510,7 +514,7 @@
                   type="text"
                   name="comment"
                   class="form-control"
-                  [formControlName]="formControlName"
+                  formControlName="{{ formControlName }}"
                 />
               </div>
             </div>
@@ -630,6 +634,104 @@
             </tr>
           </ng-template>
         </p-table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--schedule modal-->
+<div id="schedlule_modal" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Schedule Coaching Session</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeScheduleModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row row-flex">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Reviewer Name</label>
+                <input
+                  type="text"
+                  name="reviewerName"
+                  class="form-control"
+                  [(ngModel)]="reviewerName"
+                />
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="scheduleDate">Date</label>
+                <input
+                  type="date"
+                  id="scheduleDate"
+                  name="scheduleDate"
+                  class="form-control"
+                  [(ngModel)]="scheduleDate"
+                />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="time">Time</label>
+                <input
+                  type="time"
+                  id="time"
+                  class="form-control"
+                  [(ngModel)]="time"
+                  name="time"
+                />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="objectives">Performance Objectives</label>
+                <select
+                  name="objectives"
+                  class="form-control"
+                  id="objectives"
+                  [(ngModel)]="objective"
+                >
+                  <option value="" disabled>None Selected</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="scheduleComment">Comment</label>
+                <textarea
+                  type="text"
+                  id="scheduleComment"
+                  class="form-control resize"
+                  [(ngModel)]="scheduleComment"
+                  name="scheduleComment"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+              (click)="submitSchedule()"
+            >
+              <span *ngIf="!spinner">Save</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

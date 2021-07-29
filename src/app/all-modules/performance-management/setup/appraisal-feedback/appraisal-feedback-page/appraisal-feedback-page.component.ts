@@ -79,6 +79,12 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   formControlName: string = "";
   employeePerformId: number;
   points$: Observable<any[]>;
+  scheduleForm: FormGroup;
+  reviewerName: string;
+  scheduleDate: string;
+  time: any;
+  objective: any;
+  scheduleComment: string;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -105,7 +111,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       this.staffId = user.employeeId;
       this.getAppraisalFeedbacks();
       // this.initialiseEmployeeComment();
-      this.initialiseEmployeeScore();
+      // this.initialiseEmployeeScore();
     });
     // this.getAppraisalFeedbacks();
     this.cardFormTitle = "Appraisal Feedback";
@@ -119,6 +125,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       staffId: this.staffId,
       appraisalCycleId: +this.appraisalCycleId,
       employeePerformId: this.employeePerformId,
+      comment: [""],
     });
   }
   initialiseEmployeeScore() {
@@ -715,5 +722,37 @@ export class AppraisalFeedbackPageComponent implements OnInit {
           // this.loadingService.hide();
         }
       );
+  }
+  initialiseScheduleForm() {
+    this.scheduleForm = this.formBuilder.group({
+      reviewerName: [""],
+      date: [""],
+      time: [""],
+      objective: [""],
+      scheduleComment: [""],
+    });
+  }
+  showScheduleForm() {
+    $("#schedlule_modal").modal("show");
+  }
+
+  submitSchedule() {
+    const payload = {
+      reviewerName: this.reviewerName,
+      date: this.scheduleDate,
+      time: this.time,
+      objective: this.objective,
+      scheduleComment: this.scheduleComment,
+    };
+    console.log(payload);
+  }
+
+  closeScheduleModal() {
+    $("#schedlule_modal").modal("hide");
+    this.reviewerName = "";
+    this.date = "";
+    this.time = "";
+    this.objective = "";
+    this.scheduleComment = "";
   }
 }

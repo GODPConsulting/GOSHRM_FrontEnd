@@ -17,6 +17,7 @@ import { AppraisalObjectivesComponent } from "./setup/appraisal-objectives/appra
 import { AppraisalsComponent } from "./setup/appraisal-cycle/appraisals/appraisals.component";
 import { ThreesixtyAppraisalsComponent } from "./threesixty-appraisals/threesixty-appraisals.component";
 import { ThreesixtyAppraisalComponent } from "./threesixty-appraisal/threesixty-appraisal.component";
+import { CoachingSchedulesComponent } from "./coaching-schedules/coaching-schedules.component";
 import { FeedbackKudosComponent } from "./feedback-kudos/feedback-kudos.component";
 import { OthersFeedbackKudosComponent } from "./others-feedback-kudos/others-feedback-kudos.component";
 import { MyFeedbackKudosComponent } from "./my-feedback-kudos/my-feedback-kudos.component";
@@ -101,6 +102,10 @@ const routes: Routes = [
       {
         path: "360-appraisal/:id",
         component: ThreesixtyAppraisalComponent,
+      },
+      {
+        path: "coaching-schedules",
+        component: CoachingSchedulesComponent,
       },
     ],
   },

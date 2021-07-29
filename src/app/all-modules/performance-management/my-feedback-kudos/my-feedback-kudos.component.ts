@@ -16,4 +16,6 @@ export class MyFeedbackKudosComponent implements OnInit {
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
   }
+
+  delete() {}
 }

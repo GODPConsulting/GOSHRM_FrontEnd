@@ -31,6 +31,7 @@ import { ThreesixtyAppraisalComponent } from './threesixty-appraisal/threesixty-
 import { FeedbackKudosComponent } from './feedback-kudos/feedback-kudos.component';
 import { OthersFeedbackKudosComponent } from './others-feedback-kudos/others-feedback-kudos.component';
 import { MyFeedbackKudosComponent } from './my-feedback-kudos/my-feedback-kudos.component';
+import { CoachingSchedulesComponent } from './coaching-schedules/coaching-schedules.component';
 @NgModule({
   declarations: [
     PerformanceManagementComponent,
@@ -54,6 +55,7 @@ import { MyFeedbackKudosComponent } from './my-feedback-kudos/my-feedback-kudos.
     FeedbackKudosComponent,
     OthersFeedbackKudosComponent,
     MyFeedbackKudosComponent,
+    CoachingSchedulesComponent,
   ],
   imports: [
     CommonModule,

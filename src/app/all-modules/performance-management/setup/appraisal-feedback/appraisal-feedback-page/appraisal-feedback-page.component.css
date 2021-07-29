@@ -55,3 +55,7 @@ th, td {
 .mr_20 {
   margin-right: 20px;
 }
+.btns-flex {
+  display: flex;
+  align-items: center;
+}

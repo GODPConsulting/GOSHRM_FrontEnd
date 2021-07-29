@@ -1,0 +1,57 @@
+<div class="content container-fluid">
+  <!-- page Header Start -->
+  <div class="card">
+    <div class="card-header header-bg-color">
+      <h5><b>Coaching List </b></h5>
+    </div>
+    <div class="card-body" style="padding: 2rem">
+      <div class="row">
+        <div class="col-auto float-right ml-auto">
+          <select class="form-control search_field">
+            <option value="" disabled>Due</option>
+          </select>
+        </div>
+        <p-table
+          class="table table-striped custom-table datatable table-hover"
+          [value]="coachingList$ | async"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="table-checkbox">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+              <th class="sn_width">S/N</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Review Period</th>
+              <th>Review Year</th>
+              <!--<th>Complete Status</th>
+              <th>Submitted</th>-->
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-item let-i="rowIndex">
+            <tr
+              [routerLink]="['/performance/360-appraisal', item.id]"
+              style="cursor: pointer"
+            >
+              <td class="table-checkbox">
+                <p-tableCheckbox
+                  (click)="stopParentEvent($event)"
+                  [value]="item"
+                ></p-tableCheckbox>
+              </td>
+              <td class="sn_width">{{ i + 1 }}</td>
+              <td>{{ item.name | titlecase }}</td>
+              <td>{{ item.role }}</td>
+              <td>{{ item.type | titlecase }}</td>
+              <td>{{ item.number }}</td>
+              <td>{{ item.email | titlecase }}</td>
+              <td></td>
+            </tr>
+          </ng-template>
+          <tbody></tbody>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>
