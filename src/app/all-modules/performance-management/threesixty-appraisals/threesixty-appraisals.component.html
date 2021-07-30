@@ -33,7 +33,10 @@
           </ng-template>
           <ng-template pTemplate="body" let-item let-i="rowIndex">
             <tr
-              [routerLink]="['/performance/360-appraisal', item.id]"
+              [routerLink]="[
+                '/performance/360-appraisal',
+                item.employeePerformanceFeedback360Id
+              ]"
               style="cursor: pointer"
             >
               <td class="table-checkbox">
@@ -43,12 +46,15 @@
                 ></p-tableCheckbox>
               </td>
               <td class="sn_width">{{ i + 1 }}</td>
-              <td>{{ item.name | titlecase }}</td>
-              <td>{{ item.role }}</td>
-              <td>{{ item.type | titlecase }}</td>
-              <td>{{ item.number }}</td>
-              <td>{{ item.email | titlecase }}</td>
-              <td></td>
+              <td>{{ item.revieweeName | titlecase }}</td>
+              <td>{{ item.jobTitleName | titlecase }}</td>
+              <td>{{ item.companyName | titlecase }}</td>
+              <td>{{ item.requestOn | date | date: "mediumDate" }}</td>
+              <td>{{ item.statusName | titlecase }}</td>
+              <td>
+                <span *ngIf="item.isSubmitted">Yes</span>
+                <span *ngIf="!item.isSubmitted">No</span>
+              </td>
             </tr>
           </ng-template>
           <tbody></tbody>

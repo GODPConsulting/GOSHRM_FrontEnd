@@ -38,7 +38,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((param: Params) => {
-      console.log(param.id);
+      this.getThreeSixtyFeedback(param.id);
     });
     this.initializeForm();
   }
@@ -74,7 +74,18 @@ export class ThreesixtyAppraisalComponent implements OnInit {
     return this.performanceManagementService
       .getThreeSixtyFeedback(id)
       .subscribe((res) => {
-        console.log(res);
+        const data = res;
+        this.appraisalFeedbackForm.patchValue({
+          reviewCycle: data.reviewCycle,
+          name: data.revieweeName,
+          jobTitle: data.jobTitleName,
+          office: data.companyName,
+          pointAwarded: data.pointAwarded,
+          maxPoint: data.maximumPossiblepoint,
+          score: data.score,
+          status: data.statusName,
+          reviewer: data.reviewerOneName,
+        });
       });
   }
   getAppraisalPeriods(value: any) {}

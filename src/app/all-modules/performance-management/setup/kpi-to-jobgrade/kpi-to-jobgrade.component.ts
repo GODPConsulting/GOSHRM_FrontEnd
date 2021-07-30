@@ -224,13 +224,15 @@ export class KpiToJobgradeComponent implements OnInit {
   }
 
   delete() {
-    let payload: object;
+    console.log(this.selectedValues);
+    let payload: any;
     if (this.selectedValues.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
     } else {
       this.selectedValues.map((item) => {
         this.selectedId.push(item.id);
       });
+
       payload = {
         itemIds: this.selectedId,
       };

@@ -258,6 +258,7 @@ export class PerformanceManagementService {
         map((res) => {
           return res.setupList.map((item) => {
             return {
+              id: item.id,
               jobGradeId: item.jobGradeId,
               jobGradeName: item.jobGradeName,
               kpiCategoryName: item.kpiCategoryName,
@@ -887,11 +888,13 @@ export class PerformanceManagementService {
   }
   getThreeSixtyFeedback(id: number): Observable<ThreesixtyFeedback> {
     return this.apiService
-      .get(`/performance/get/feedback/360/by/employeeid?EmployeeId=${id}`)
+      .get(
+        `/performance/get/feedback/360/by/employeefeedback360id?EmployeePerformanceFeedback360Id=${id}`
+      )
       .pipe(
         tap(),
         map((res) => {
-          return res;
+          return res.objectList[0];
         })
       );
   }

@@ -691,6 +691,7 @@
                   class="form-control"
                   [(ngModel)]="time"
                   name="time"
+                  (change)="onTimeChange($event.target.value)"
                 />
               </div>
             </div>
@@ -704,6 +705,12 @@
                   [(ngModel)]="objective"
                 >
                   <option value="" disabled>None Selected</option>
+                  <option
+                    *ngFor="let item of appraisalFeedbacks"
+                    [value]="item.employeeObjectiveIdicatorId"
+                  >
+                    {{ item.kpiObjectives | titlecase }}
+                  </option>
                 </select>
               </div>
             </div>

@@ -106,11 +106,15 @@ export interface AppraisalObjective {
   department: number;
 }
 export interface ThreesixtyFeedback {
-  id: number;
-  employee: string;
-  jobTitle: string;
-  jobTitleId: number;
-  officeId: number;
+  score: number;
+  pointAwarded: number;
+  companyName: string;
+  jobTitleName: string;
+  revieweeName: string;
+  reviewCycle: any;
+  employeePerformanceFeedback360Id: number;
+  maximumPossiblepoint: number;
+  reviewerOneName: string;
   office: string;
   requestDate: Date;
   status: boolean;

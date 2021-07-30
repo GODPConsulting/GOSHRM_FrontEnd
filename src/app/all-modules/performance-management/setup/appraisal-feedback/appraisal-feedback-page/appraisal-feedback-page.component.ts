@@ -83,7 +83,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   reviewerName: string;
   scheduleDate: string;
   time: any;
-  objective: any;
+  objective: string = "";
   scheduleComment: string;
   constructor(
     private formBuilder: FormBuilder,
@@ -735,7 +735,26 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   showScheduleForm() {
     $("#schedlule_modal").modal("show");
   }
-
+  onTimeChange(value) {
+    var timeSplit = value.split(":"),
+      hours,
+      minutes,
+      meridian;
+    hours = timeSplit[0];
+    minutes = timeSplit[1];
+    if (hours > 12) {
+      meridian = "PM";
+      hours -= 12;
+    } else if (hours < 12) {
+      meridian = "AM";
+      if (hours == 0) {
+        hours = 12;
+      }
+    } else {
+      meridian = "PM";
+    }
+    this.time = hours + ":" + minutes + " " + meridian;
+  }
   submitSchedule() {
     const payload = {
       reviewerName: this.reviewerName,
