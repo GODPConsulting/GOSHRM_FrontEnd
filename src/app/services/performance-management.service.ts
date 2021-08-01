@@ -886,10 +886,13 @@ export class PerformanceManagementService {
       })
     );
   }
-  getThreeSixtyFeedback(id: number): Observable<ThreesixtyFeedback> {
+  getThreeSixtyFeedback(
+    id: number,
+    companyId: number
+  ): Observable<ThreesixtyFeedback> {
     return this.apiService
       .get(
-        `/performance/get/feedback/360/by/employeefeedback360id?EmployeePerformanceFeedback360Id=${id}`
+        `/performance/get/feedback/360/by/employeefeedback360id?EmployeePerformanceFeedback360Id=${id}&CompanyId=${companyId}`
       )
       .pipe(
         tap(),

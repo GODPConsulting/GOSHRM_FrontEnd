@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Params } from "@angular/router";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
+import { JwtService } from "../../../services/jwt.service";
 declare const $: any;
 interface Preference {
   isReviewerOneInvloved: boolean;
@@ -29,18 +30,26 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   staffId: any;
   appraisalCycleId: any;
   personnel: string;
-
+  feedBackId: number;
+  employeeComments$: Observable<any>;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private performanceManagementService: PerformanceManagementService
+    private performanceManagementService: PerformanceManagementService,
+    private jwtService: JwtService
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((param: Params) => {
-      this.getThreeSixtyFeedback(param.id);
+      this.feedBackId = param.id;
+      // this.getThreeSixtyFeedback(param.id);
+    });
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.getThreeSixtyFeedback(this.feedBackId, user.companyId);
     });
     this.initializeForm();
+    this.initialiseEmployeeScore();
+    this.initialiseEmployeeComment();
   }
   initializeForm() {
     this.appraisalFeedbackForm = this.fb.group({
@@ -70,9 +79,9 @@ export class ThreesixtyAppraisalComponent implements OnInit {
       appraisalCycleId: +this.appraisalCycleId,
     });
   }
-  getThreeSixtyFeedback(id): Subscription {
+  getThreeSixtyFeedback(id, companyId): Subscription {
     return this.performanceManagementService
-      .getThreeSixtyFeedback(id)
+      .getThreeSixtyFeedback(id, companyId)
       .subscribe((res) => {
         const data = res;
         this.appraisalFeedbackForm.patchValue({
