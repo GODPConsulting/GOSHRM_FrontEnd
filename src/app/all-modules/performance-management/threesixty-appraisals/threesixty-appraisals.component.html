@@ -32,13 +32,7 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-item let-i="rowIndex">
-            <tr
-              [routerLink]="[
-                '/performance/360-appraisal',
-                item.employeePerformanceFeedback360Id
-              ]"
-              style="cursor: pointer"
-            >
+            <tr style="cursor: pointer" (click)="viewFeedback(item)">
               <td class="table-checkbox">
                 <p-tableCheckbox
                   (click)="stopParentEvent($event)"

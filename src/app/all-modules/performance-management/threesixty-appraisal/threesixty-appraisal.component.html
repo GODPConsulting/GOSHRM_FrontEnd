@@ -126,7 +126,7 @@
       <div class="card-header header-bg-color"></div>
       <div class="card-body">
         <div>
-          <p-table>
+          <p-table [value]="feedbacks$ | async">
             <ng-template pTemplate="header" let-row let-i="rowIndex">
               <tr>
                 <th>KPI</th>
@@ -134,10 +134,10 @@
                 <th>Success Target</th>
                 <th>Reviewee Comments</th>
                 <th>Reviewee Score</th>
-                <th *ngIf="preference?.isReviewerOneInvloved">
+                <!--<th>
                   Reviewer I Comment
                 </th>
-                <th *ngIf="preference?.isReviewerOneInvloved">
+                <th>
                   Reviewer I Score
                 </th>
                 <th *ngIf="preference?.isReviewertwoInvloved">
@@ -151,7 +151,7 @@
                 </th>
                 <th *ngIf="preference?.isReviewerThreeInvloved">
                   Reviewer III Score
-                </th>
+                </th>-->
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-row let-i="rowIndex">
@@ -161,7 +161,6 @@
                 <td>{{ row.successTarget | titlecase }}</td>
                 <td>
                   <a
-                    *ngIf="reviewer === 'employee'"
                     class="hint mr_20"
                     data-toggle="modal"
                     (click)="
@@ -183,7 +182,6 @@
                     row.revieweeScore | number: "1.2-2"
                   }}</span>
                   <a
-                    *ngIf="reviewer === 'employee'"
                     class="hint"
                     data-toggle="modal"
                     (click)="
@@ -197,7 +195,7 @@
                     ><i class="fa fa-edit"></i
                   ></a>
                 </td>
-                <td *ngIf="preference.isReviewerOneInvloved">
+                <!--<td *ngIf="preference.isReviewerOneInvloved">
                   <a
                     *ngIf="reviewer === 'reviewer1'"
                     class="hint mr_20"
@@ -276,13 +274,13 @@
                     ><span class="hint-text">Edit </span
                     ><i class="fa fa-edit"></i
                   ></a>
-                  <!--                  <a-->
-                  <!--                    class="hint"-->
-                  <!--                    data-toggle="modal"-->
-                  <!--                    data-target="#appraisal_feedback_reviewee_modal"-->
-                  <!--                    ><span class="hint-text">View </span-->
-                  <!--                    ><i class="fa fa-eye"></i-->
-                  <!--                  ></a>-->
+                  &lt;!&ndash;                  <a&ndash;&gt;
+                  &lt;!&ndash;                    class="hint"&ndash;&gt;
+                  &lt;!&ndash;                    data-toggle="modal"&ndash;&gt;
+                  &lt;!&ndash;                    data-target="#appraisal_feedback_reviewee_modal"&ndash;&gt;
+                  &lt;!&ndash;                    ><span class="hint-text">View </span&ndash;&gt;
+                  &lt;!&ndash;                    ><i class="fa fa-eye"></i&ndash;&gt;
+                  &lt;!&ndash;                  ></a>&ndash;&gt;
                 </td>
                 <td *ngIf="preference.isReviewerThreeInvloved">
                   <a
@@ -326,7 +324,7 @@
                     ><span class="hint-text">Edit </span
                     ><i class="fa fa-edit"></i
                   ></a>
-                </td>
+                </td>-->
               </tr>
             </ng-template>
           </p-table>

@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-appraisals",
@@ -14,7 +15,7 @@ export class AppraisalsComponent implements OnInit {
   public selectedId: number[] = [];
   public appraisalList: any[] = [];
   appraisalCycleId: number;
-
+  appraisals$: Observable<any>;
   constructor(
     private route: ActivatedRoute,
     private performanceService: PerformanceManagementService,
@@ -24,7 +25,10 @@ export class AppraisalsComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       this.appraisalCycleId = +params.get("id");
-      this.getAppraisalsByCycleId(this.appraisalCycleId);
+      this.appraisals$ = this.performanceService.getAppraisalsByCycleId(
+        this.appraisalCycleId
+      );
+      // this.getAppraisalsByCycleId(this.appraisalCycleId);
     });
 
     this.dtOptions = {

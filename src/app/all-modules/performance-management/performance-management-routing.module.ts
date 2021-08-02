@@ -100,7 +100,7 @@ const routes: Routes = [
         component: ThreesixtyAppraisalsComponent,
       },
       {
-        path: "360-appraisal/:id",
+        path: "360-appraisal",
         component: ThreesixtyAppraisalComponent,
       },
       {

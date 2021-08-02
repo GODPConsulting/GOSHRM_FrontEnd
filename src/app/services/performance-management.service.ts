@@ -452,12 +452,12 @@ export class PerformanceManagementService {
   getAppraisalsByCycleId(id: number) {
     return this.apiService
       .get(
-        `/performance/performance-appraisal/get/appraisal-objective/appraisalCycleId?appraisalCycleId=${id}`
+        `/performance/performance-appraisal/get/all/appraisal-summary?AppraisalcycleId=${id}`
       )
       .pipe(
         tap(),
         map((res) => {
-          return res;
+          return res.objectiveList;
         }),
         catchError(this.handleError)
       );
@@ -878,13 +878,20 @@ export class PerformanceManagementService {
       );
   }
 
-  getThreeSixtyFeedbacks(): Observable<ThreesixtyFeedback[]> {
-    return this.apiService.get(`/performance/get/all/feedback/360`).pipe(
-      tap(),
-      map((item) => {
-        return item.objectList;
-      })
-    );
+  getThreeSixtyFeedbacks(
+    employeeId: number,
+    companyId: number
+  ): Observable<ThreesixtyFeedback[]> {
+    return this.apiService
+      .get(
+        `/performance/get/feedback/360/by/employeeid?EmployeeId=${employeeId}&CompanyId=${companyId}`
+      )
+      .pipe(
+        tap(),
+        map((item) => {
+          return item.objectList;
+        })
+      );
   }
   getThreeSixtyFeedback(
     id: number,
@@ -912,6 +919,22 @@ export class PerformanceManagementService {
           return res;
         }),
         catchError(this.handleError)
+      );
+  }
+  getThreeSixtyAppraisalFeedbacks(
+    appraisalCycleId: number,
+    employeeId: number,
+    loggedInStaffId: number
+  ): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee/feedbacks/360/byemployeeId?EmployeeId=${employeeId}&loggedInStaffId=${loggedInStaffId}&AppraisalCycleId=${appraisalCycleId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        })
       );
   }
 }

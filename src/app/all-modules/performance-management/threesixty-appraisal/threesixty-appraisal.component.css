@@ -12,4 +12,7 @@ th, td {
   text-align: left;
   padding: 8px;
 }
+td a {
+  color: #1f1f1f;
+}
 

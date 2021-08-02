@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import { ThreesixtyFeedback } from "../../../interface/interfaces";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
 import { Router } from "@angular/router";
+import { JwtService } from "../../../services/jwt.service";
 
 @Component({
   selector: "app-threesixty-appraisals",
@@ -13,20 +14,28 @@ export class ThreesixtyAppraisalsComponent implements OnInit {
   feedbacks$: Observable<ThreesixtyFeedback[]>;
   constructor(
     private performanceManagementService: PerformanceManagementService,
-    private router: Router
+    private router: Router,
+    private jwtService: JwtService
   ) {}
 
   ngOnInit(): void {
-    this.feedbacks$ = this.performanceManagementService.getThreeSixtyFeedbacks();
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.feedbacks$ = this.performanceManagementService.getThreeSixtyFeedbacks(
+        user.employeeId,
+        user.companyId
+      );
+    });
   }
 
-  // viewFeedback(item) {
-  //   this.router.navigate(["/performance/360-appraisal"], {
-  //     queryParams: {
-  //       feedbackId: item.id,
-  //     },
-  //   });
-  // }
+  viewFeedback(item) {
+    this.router.navigate(["/performance/360-appraisal"], {
+      queryParams: {
+        id: item.employeePerformanceFeedback360Id,
+        employeeId: item.revieweeId,
+        appraisalCycleId: item.appraisalcycleId,
+      },
+    });
+  }
 
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();

@@ -32,6 +32,8 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   personnel: string;
   feedBackId: number;
   employeeComments$: Observable<any>;
+  feedbacks$: Observable<any>;
+  employeeId: number;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -40,12 +42,19 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((param: Params) => {
+    this.route.queryParams.subscribe((param: Params) => {
       this.feedBackId = param.id;
+      this.employeeId = param.employeeId;
+      this.appraisalCycleId = param.appraisalCycleId;
       // this.getThreeSixtyFeedback(param.id);
     });
     this.jwtService.getHrmUserDetails().then((user) => {
       this.getThreeSixtyFeedback(this.feedBackId, user.companyId);
+      this.feedbacks$ = this.performanceManagementService.getThreeSixtyAppraisalFeedbacks(
+        this.appraisalCycleId,
+        this.employeeId,
+        user.staffId
+      );
     });
     this.initializeForm();
     this.initialiseEmployeeScore();
