@@ -36,6 +36,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   feedbacks$: Observable<any>;
   employeeId: number;
   points$: Observable<any[]>;
+  comment: string;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -82,14 +83,14 @@ export class ThreesixtyAppraisalComponent implements OnInit {
     this.employeeCommentForm = this.fb.group({
       commentId: [0],
       staffId: +this.employeeId,
-      employeeFeedback360Id: +this.feedBackId,
+      kpicategoryid: [""],
       comment: [""],
     });
   }
   initialiseEmployeeScore() {
     this.employeeScoreForm = this.fb.group({
       id: [0],
-      employeeFeedback360Id: +this.feedBackId,
+      kpicategoryid: [""],
       staffId: +this.employeeId,
       reviewScore: [""],
     });
@@ -156,11 +157,11 @@ export class ThreesixtyAppraisalComponent implements OnInit {
         this.commentTitle = "";
     }*/
     this.employeeCommentForm.patchValue({
-      employeeFeedback360Id: +this.feedBackId,
+      kpicategoryid: +id,
     });
     $("#appraisal_feedback_page_modal").modal("show");
   }
-  addScore(score: number, type: string) {
+  addScore(kpiId: number, score: number, type: string) {
     // console.log(id);
     this.personnel = type;
     switch (type) {
@@ -180,13 +181,13 @@ export class ThreesixtyAppraisalComponent implements OnInit {
         "";
     }
     this.employeeScoreForm.patchValue({
-      employeeFeedback360Id: +this.feedBackId,
+      kpicategoryid: +kpiId,
       reviewScore: +score,
     });
     $("#score_modal").modal("show");
   }
   viewComments(comments, type) {
-    this.personnel = type;
+    /*this.personnel = type;
     switch (type) {
       case "employee":
         this.commentTitle = "Employee Comment";
@@ -202,8 +203,9 @@ export class ThreesixtyAppraisalComponent implements OnInit {
         break;
       default:
         this.commentTitle = "";
-    }
-    this.employeeComments = comments;
+    }*/
+    this.comment = comments;
+    console.log(comments, this.comment);
     $("#comment_modal").modal("show");
   }
   submitAppraisalFeedbackPageForm(employeeCommentForm: FormGroup) {}
