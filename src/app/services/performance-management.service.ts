@@ -921,19 +921,42 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
-  getThreeSixtyAppraisalFeedbacks(
-    appraisalCycleId: number,
-    employeeId: number,
-    loggedInStaffId: number
-  ): Observable<any> {
+  getThreeSixtyAppraisalFeedbacks(employeeId: number): Observable<any> {
     return this.apiService
       .get(
-        `/performance/get/employee/feedbacks/360/byemployeeId?EmployeeId=${employeeId}&loggedInStaffId=${loggedInStaffId}&AppraisalCycleId=${appraisalCycleId}`
+        `/performance/get/feedback/360/by/employeefeedback360KpiId?EmployeeId=${employeeId}`
       )
       .pipe(
         tap(),
         map((res) => {
-          return res.list;
+          return res.objectkpiList;
+        })
+      );
+  }
+  addThreeSixtyScore(payload: any): Observable<any> {
+    return this.apiService
+      .post(
+        `/performance/performance-appraisal/add/update/appraisal-feedback360score`,
+        payload
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+
+  addThreeSixtyComment(payload: any): Observable<any> {
+    return this.apiService
+      .post(
+        `/performance/performance-appraisal/add/update/feedback_360_comment`,
+        payload
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
         })
       );
   }

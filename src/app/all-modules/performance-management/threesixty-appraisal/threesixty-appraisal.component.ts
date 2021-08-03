@@ -4,6 +4,7 @@ import { Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Params } from "@angular/router";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
 import { JwtService } from "../../../services/jwt.service";
+import { UtilitiesService } from "../../../services/utilities.service";
 declare const $: any;
 interface Preference {
   isReviewerOneInvloved: boolean;
@@ -34,31 +35,35 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   employeeComments$: Observable<any>;
   feedbacks$: Observable<any>;
   employeeId: number;
+  points$: Observable<any[]>;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private performanceManagementService: PerformanceManagementService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((param: Params) => {
       this.feedBackId = param.id;
       this.employeeId = param.employeeId;
-      this.appraisalCycleId = param.appraisalCycleId;
+      // this.appraisalCycleId = param.appraisalCycleId;
       // this.getThreeSixtyFeedback(param.id);
     });
     this.jwtService.getHrmUserDetails().then((user) => {
       this.getThreeSixtyFeedback(this.feedBackId, user.companyId);
-      this.feedbacks$ = this.performanceManagementService.getThreeSixtyAppraisalFeedbacks(
-        this.appraisalCycleId,
-        this.employeeId,
-        user.staffId
-      );
+      this.getFeedBacks(this.employeeId);
     });
+    this.points$ = this.performanceManagementService.getPointSettings();
     this.initializeForm();
     this.initialiseEmployeeScore();
     this.initialiseEmployeeComment();
+  }
+  getFeedBacks(id: number) {
+    this.feedbacks$ = this.performanceManagementService.getThreeSixtyAppraisalFeedbacks(
+      id
+    );
   }
   initializeForm() {
     this.appraisalFeedbackForm = this.fb.group({
@@ -75,17 +80,18 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   }
   initialiseEmployeeComment() {
     this.employeeCommentForm = this.fb.group({
-      employeeObjectiveFeedbackID: [0],
-      staffId: this.staffId,
-      appraisalCycleId: +this.appraisalCycleId,
+      commentId: [0],
+      staffId: +this.employeeId,
+      employeeFeedback360Id: +this.feedBackId,
+      comment: [""],
     });
   }
   initialiseEmployeeScore() {
     this.employeeScoreForm = this.fb.group({
-      employeeObjectiveFeedbackID: [0],
-      score: [""],
-      staffId: this.staffId,
-      appraisalCycleId: +this.appraisalCycleId,
+      id: [0],
+      employeeFeedback360Id: +this.feedBackId,
+      staffId: +this.employeeId,
+      reviewScore: [""],
     });
   }
   getThreeSixtyFeedback(id, companyId): Subscription {
@@ -111,7 +117,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   getValue(value: any) {}
 
   addComment(id: number, type: string) {
-    this.personnel = type;
+    /*this.personnel = type;
     this.initialiseEmployeeComment();
     switch (type) {
       case "employee":
@@ -148,13 +154,13 @@ export class ThreesixtyAppraisalComponent implements OnInit {
         break;
       default:
         this.commentTitle = "";
-    }
+    }*/
     this.employeeCommentForm.patchValue({
-      employeeObjectiveFeedbackID: id,
+      employeeFeedback360Id: +this.feedBackId,
     });
     $("#appraisal_feedback_page_modal").modal("show");
   }
-  addScore(id: number, score: number, type: string) {
+  addScore(score: number, type: string) {
     // console.log(id);
     this.personnel = type;
     switch (type) {
@@ -174,8 +180,8 @@ export class ThreesixtyAppraisalComponent implements OnInit {
         "";
     }
     this.employeeScoreForm.patchValue({
-      employeeObjectiveFeedbackID: id,
-      score,
+      employeeFeedback360Id: +this.feedBackId,
+      reviewScore: +score,
     });
     $("#score_modal").modal("show");
   }
@@ -202,7 +208,50 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   }
   submitAppraisalFeedbackPageForm(employeeCommentForm: FormGroup) {}
 
-  saveScore(employeeScoreForm: FormGroup) {}
+  saveScore(employeeScoreForm: FormGroup) {
+    const payload = employeeScoreForm.value;
+    payload.reviewScore = +payload.reviewScore;
+    if (!payload.reviewScore) {
+      return this.utilitiesService.showError("Score is required");
+    }
+    this.performanceManagementService.addThreeSixtyScore(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success").then(() => {
+            $("#score_modal").modal("hide");
+            this.getFeedBacks(this.employeeId);
+          });
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
 
   closeCommentModal() {}
+
+  saveComment(employeeCommentForm: FormGroup) {
+    const payload = employeeCommentForm.value;
+    if (!payload.comment) {
+      return this.utilitiesService.showError("Comment is required");
+    }
+    this.performanceManagementService.addThreeSixtyComment(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success").then(() => {
+            $("#appraisal_feedback_page_modal").modal("hide");
+            this.getFeedBacks(this.employeeId);
+          });
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
 }
