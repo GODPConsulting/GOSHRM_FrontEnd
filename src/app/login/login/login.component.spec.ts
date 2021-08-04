@@ -7,8 +7,8 @@ import { By } from "@angular/platform-browser";
 import { Component } from "@angular/core";
 import { Location } from "@angular/common";
 import { SpyLocation } from "@angular/common/testing";
-import { DomHelper } from "../../../testing/dom-helper";
-import { AuthService } from "../../services/auth.service";
+import { DomHelper } from "../../../../testing/dom-helper";
+import { AuthService } from "../../../services/auth.service";
 import { of } from "rxjs";
 import { Router } from "@angular/router";
 describe("LoginComponent", () => {

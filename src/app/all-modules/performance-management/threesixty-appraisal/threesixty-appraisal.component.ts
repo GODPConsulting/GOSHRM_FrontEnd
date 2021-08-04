@@ -157,7 +157,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
         this.commentTitle = "";
     }*/
     this.employeeCommentForm.patchValue({
-      kpicategoryid: +id,
+      kpiId: +id,
     });
     $("#appraisal_feedback_page_modal").modal("show");
   }
@@ -181,7 +181,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
         "";
     }
     this.employeeScoreForm.patchValue({
-      kpicategoryid: +kpiId,
+      kpiId: +kpiId,
       reviewScore: +score,
     });
     $("#score_modal").modal("show");
