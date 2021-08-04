@@ -8801,12 +8801,13 @@ rating span {
 .bg-wrapper {
   background-image: url('assets/img/bg.png');
   background-color: var(--color-dark);
-  opacity: 0.9;
+  /*opacity: 0.9;*/
   display: flex;
   align-items: center;
   background-position: center;
   background-size: cover;
   flex-basis: 50%;
+  background-blend-mode: multiply;
 }
 
 .gs-h2 {
