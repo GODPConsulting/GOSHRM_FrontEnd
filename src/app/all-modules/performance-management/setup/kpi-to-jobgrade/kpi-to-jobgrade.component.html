@@ -299,7 +299,7 @@
             <button
               class="btn btn-primary submit-btn"
               type="submit"
-              [disabled]="spinner"
+              [disabled]="payload.length === 0"
               (click)="submitKpiToJobGrades(kpiToJobGradeForm)"
             >
               <span *ngIf="!spinner">Submit</span>

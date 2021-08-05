@@ -46,7 +46,7 @@ export class EmployeeService {
     return this.apiService.get("/employee/hrm/get/all/staffs").pipe(
       tap(),
       map((res) => {
-        return res;
+        return res.employeeList;
       }),
       catchError(this.handleError)
     );

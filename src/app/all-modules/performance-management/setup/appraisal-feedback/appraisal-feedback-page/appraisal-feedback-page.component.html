@@ -698,7 +698,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="objectives">Performance Objectives</label>
-                <select
+                <!--    <select
                   name="objectives"
                   class="form-control"
                   id="objectives"
@@ -711,7 +711,15 @@
                   >
                     {{ item.kpiObjectives | titlecase }}
                   </option>
-                </select>
+                </select>-->
+                <div class="col-md-4" style="padding-left: 0">
+                  <p-multiSelect
+                    [options]="appraisalFeedbacks"
+                    [(ngModel)]="objective"
+                    optionLabel="kpiObjectives"
+                    optionValue="employeeObjectiveIdicatorId"
+                  ></p-multiSelect>
+                </div>
               </div>
             </div>
             <div class="col-md-12">
