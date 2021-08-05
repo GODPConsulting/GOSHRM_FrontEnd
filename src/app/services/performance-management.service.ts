@@ -960,4 +960,19 @@ export class PerformanceManagementService {
         })
       );
   }
+
+  // OPEN APPRAISAL CYCLE
+  getOpenCycle(comapanyId: number): Observable<unknown> {
+    return this.apiService
+      .get(
+        `/performance/performance-appraisal/get/all/appraisal-open-period/by/companyid?CompanyId=${comapanyId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.openperiodList;
+        }),
+        catchError(this.handleError)
+      );
+  }
 }

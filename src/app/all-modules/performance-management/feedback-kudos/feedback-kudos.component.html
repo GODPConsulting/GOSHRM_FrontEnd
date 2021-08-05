@@ -13,7 +13,13 @@
             class="form-control search_field"
             style="margin-right: 3px"
           >
-            <option value="" disabled>Review Period</option>
+            <option value="" selected disabled>Review Period</option>
+            <option
+              *ngFor="let item of reviewPeriod$ | async"
+              [value]="item.appraisalCycleId"
+            >
+              {{ item.period }}
+            </option>
           </select>
           <a
             routerLink="/performance/add-kudos"

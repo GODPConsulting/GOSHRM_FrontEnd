@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { Observable } from "rxjs";
 import { EmployeeService } from "../../../services/employee.service";
 import { JwtService } from "../../../services/jwt.service";
+import { PerformanceManagementService } from "../../../services/performance-management.service";
 
 @Component({
   selector: "app-others-feedback-kudos",
@@ -18,11 +19,12 @@ export class OthersFeedbackKudosComponent implements OnInit {
   points$: Observable<any[]>;
   comment: string;
   showFeedback: boolean;
-
+  reviewPeriod$: Observable<unknown>;
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private performanceManagementService: PerformanceManagementService
   ) {}
 
   ngOnInit(): void {
@@ -31,6 +33,15 @@ export class OthersFeedbackKudosComponent implements OnInit {
     this.initialiseScoreForm();
     this.employees$ = this.employeeService.getEmployees();
     this.jwtService.getHrmUserDetails().then((user) => {
+      this.reviewPeriod$ = this.performanceManagementService.getOpenCycle(
+        user.companyId
+      );
+      this.reviewPeriod$.subscribe((res) => {
+        const data = res[0];
+        this.appraisalFeedbackForm.patchValue({
+          reviewPeriod: data.period,
+        });
+      });
       this.appraisalFeedbackForm.patchValue({
         reviewerName: `${user.firstName} ${user.lastName}`,
         reviewerJobGrade: user.jobGradeName,

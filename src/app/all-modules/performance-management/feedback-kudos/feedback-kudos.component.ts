@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
+import { PerformanceManagementService } from "../../../services/performance-management.service";
+import { JwtService } from "../../../services/jwt.service";
 
 @Component({
   selector: "app-feedback-kudos",
@@ -8,10 +10,19 @@ import { Observable } from "rxjs";
 })
 export class FeedbackKudosComponent implements OnInit {
   feedbacks$: Observable<any[]>;
+  reviewPeriod$: Observable<unknown>;
+  constructor(
+    private performanceManagementService: PerformanceManagementService,
+    private jwtService: JwtService
+  ) {}
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.jwtService.getHrmUserDetails().then((user) => {
+      this.reviewPeriod$ = this.performanceManagementService.getOpenCycle(
+        user.companyId
+      );
+    });
+  }
 
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
