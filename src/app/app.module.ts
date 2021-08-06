@@ -12,9 +12,10 @@ import { ToastrModule } from "ngx-toastr";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { HttpTokenInterceptor } from "./services/http.interceptor.service";
 import { EmployeeAppraisalsComponent } from "./all-modules/manager/employee-appraisals/employee-appraisals.component";
+import { AuthWrapperComponent } from './components/auth-wrapper/auth-wrapper.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AuthWrapperComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

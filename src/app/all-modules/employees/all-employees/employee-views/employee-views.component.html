@@ -78,7 +78,7 @@
   <div *ngIf="list" class="row staff-grid-row">
     <div
       class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3"
-      *ngFor="let emp of filteredArray; let i = index"
+      *ngFor="let emp of filteredEmployee$ | async; let i = index"
     >
       <div class="profile-widget" (click)="viewProfile(emp.employeeId)">
         <div class="profile-img">

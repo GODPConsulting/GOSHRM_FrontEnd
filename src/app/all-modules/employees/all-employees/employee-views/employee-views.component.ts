@@ -6,7 +6,7 @@ import { SetupService } from "src/app/services/setup.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
 import { CommonService } from "../../../../services/common.service";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { Router } from "@angular/router";
 
 declare const $: any;
@@ -24,7 +24,8 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   canAddEmployee: boolean;
   userActivities: any;
   dtTrigger: Subject<any> = new Subject<any>();
-
+  employees$: Observable<any[]>;
+  filteredEmployee$: Observable<any[]>;
   constructor(
     private employeeService: EmployeeService,
     private dataService: DataService,
@@ -36,11 +37,12 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit() {
+    this.employees$ = this.employeeService.getEmployees();
+    this.filteredEmployee$ = this.employeeService.getEmployees();
     this.userActivities = this.jwtService.getUserActivities();
-
     this.canAddEmployee = this.userActivities.includes("employeeform");
 
-    this.loadEmployees();
+    // this.loadEmployees();
     this.getStaffDepartments();
 
     // Determines the structure of the table (Angular Datatables)
@@ -134,9 +136,9 @@ export class EmployeeViewsComponent implements OnInit, AfterViewChecked {
     if (id == 0) {
       this.filteredArray = this.employeesList;
     } else {
-      this.filteredArray = this.employeesList.filter(
-        (item) => item.staffOfficeId == id
-      );
+      this.employees$.subscribe((res) => {
+        this.filteredArray = res.filter((item) => item.staffOfficeId == id);
+      });
     }
   }
   ngAfterViewChecked() {

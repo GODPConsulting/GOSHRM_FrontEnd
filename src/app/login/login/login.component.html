@@ -1,9 +1,10 @@
+<!--
 <div class="account-content">
-  <!-- <a routerLink="/login/joblist" class="btn btn-primary apply-btn">Apply Job</a> -->
+  &lt;!&ndash; <a routerLink="/login/joblist" class="btn btn-primary apply-btn">Apply Job</a> &ndash;&gt;
   <div class="container">
-    <!-- Account Logo -->
+    &lt;!&ndash; Account Logo &ndash;&gt;
 
-    <!-- /Account Logo -->
+    &lt;!&ndash; /Account Logo &ndash;&gt;
 
     <div class="account-box">
       <div class="account-wrapper">
@@ -13,7 +14,7 @@
           /></a>
         </div>
 
-        <!-- Account Form -->
+        &lt;!&ndash; Account Form &ndash;&gt;
         <form [formGroup]="loginForm">
           <div class="form-group">
             <label>Username</label>
@@ -58,8 +59,57 @@
             </p>
           </div>
         </form>
-        <!-- /Account Form -->
+        &lt;!&ndash; /Account Form &ndash;&gt;
       </div>
+    </div>
+  </div>
+</div>
+-->
+
+<div class="gos-login-container">
+  <div class="gos-login-wrapper">
+    <div class="bg-wrapper">
+      <h2 class="gs-h2 animate__animated animate__fadeInLeftBig">
+        The Efficient Human Capital Software
+      </h2>
+    </div>
+    <div class="gos-form-wrapper">
+      <img
+        src="../../../../assets/img/hr-logo.png"
+        class="logo"
+        alt="HRM Logo"
+      />
+      <form class="form" [formGroup]="loginForm">
+        <div class="gos-input-group">
+          <label for="username" class="gos-label">Username</label>
+          <input
+            type="text"
+            class="gos-control"
+            id="username"
+            placeholder="Username"
+            formControlName="userName"
+          />
+        </div>
+        <div class="gos-input-group">
+          <label for="passwordType" class="gos-label">Password</label>
+          <input
+            [type]="passwordType"
+            class="gos-control"
+            id="passwordType"
+            placeholder="Password"
+            formControlName="password"
+          />
+          <a class="show-btn" id="show-btn" (click)="togglePasswordType()">{{
+            btnTitle
+          }}</a>
+        </div>
+        <a class="gos-link" routerLink="/login/forgot"
+          >Did you forget your password, Reset it.</a
+        >
+        <div class="gos-btn-wrapper">
+          <button class="gos-btn" (click)="login(loginForm)">Login</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

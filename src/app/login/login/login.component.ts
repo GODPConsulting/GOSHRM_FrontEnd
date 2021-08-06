@@ -1,13 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { JwtService } from "../../services/jwt.service";
-import { AuthService } from "../../services/auth.service";
+
 import swal from "sweetalert2";
 import { DataService } from "src/app/services/data.service";
 import { exists } from "fs";
 import { EmployeeService } from "src/app/services/employee.service";
+import { AuthService } from "../../services/auth.service";
 import { LoadingService } from "../../services/loading.service";
+import { JwtService } from "../../services/jwt.service";
 
 @Component({
   selector: "app-login",
@@ -22,6 +23,8 @@ export class LoginComponent implements OnInit {
   user: any;
   hrmUser: any = {};
   userRights: any;
+  passwordType: string = "password";
+  btnTitle: string = "show";
 
   constructor(
     private fb: FormBuilder,
@@ -165,5 +168,11 @@ export class LoginComponent implements OnInit {
         // this.loadingService.hide();
       }
     );
+  }
+
+  togglePasswordType() {
+    this.passwordType = this.passwordType === "text" ? "password" : "text";
+    this.btnTitle = this.btnTitle === "show" ? "hide" : "show";
+    console.log(this.btnTitle);
   }
 }

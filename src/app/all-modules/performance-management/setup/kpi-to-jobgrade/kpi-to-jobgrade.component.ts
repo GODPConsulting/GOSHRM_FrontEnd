@@ -124,6 +124,7 @@ export class KpiToJobgradeComponent implements OnInit {
     payload.jobGradeId = +payload.jobGradeId;
     payload.kpiCategoryId = +payload.kpiCategoryId;
     const data = {
+      id: payload.id,
       jobGradeId: +payload.jobGradeId,
       payload: this.payload,
     };

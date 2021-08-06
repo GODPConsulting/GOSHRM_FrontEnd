@@ -469,6 +469,25 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         break;
     }
   }
+
+  submitFeedback(reviewer) {
+    switch (reviewer) {
+      case "employee":
+        return this.submitEmployeeFeedback();
+        break;
+      case "reviewer1":
+        return this.submitReviewerOneFeedback();
+        break;
+      case "reviewer2":
+        return this.submitReviewerTwoFeedback();
+        break;
+      case "reviewer3":
+        return this.submitReviewerThreeFeedback();
+        break;
+      default:
+        return "";
+    }
+  }
   submitEmployeeFeedback() {
     const payload = {
       appraisalCycleId: +this.appraisalCycleId,
@@ -490,6 +509,78 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         this.utilitiesService.showMessage(err, "error");
       }
     );
+  }
+  submitReviewerOneFeedback() {
+    const payload = {
+      appraisalCycleId: +this.appraisalCycleId,
+      employee: +this.employeeId,
+      employeeObjectiveFeedbackID: this.employeeObjectiveFeedbackID,
+    };
+    // this.loadingService.show();
+    this.performanceManagementService
+      .sendReviewerOneFeedback(payload)
+      .subscribe(
+        (res) => {
+          // this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success");
+          } else {
+            this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          // this.loadingService.hide();
+          this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+  submitReviewerTwoFeedback() {
+    const payload = {
+      appraisalCycleId: +this.appraisalCycleId,
+      employee: +this.employeeId,
+      employeeObjectiveFeedbackID: this.employeeObjectiveFeedbackID,
+    };
+    // this.loadingService.show();
+    this.performanceManagementService
+      .sendReviewerTwoFeedback(payload)
+      .subscribe(
+        (res) => {
+          // this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success");
+          } else {
+            this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          // this.loadingService.hide();
+          this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+  submitReviewerThreeFeedback() {
+    const payload = {
+      appraisalCycleId: +this.appraisalCycleId,
+      employee: +this.employeeId,
+      employeeObjectiveFeedbackID: this.employeeObjectiveFeedbackID,
+    };
+    // this.loadingService.show();
+    this.performanceManagementService
+      .sendReviewerThreeFeedback(payload)
+      .subscribe(
+        (res) => {
+          // this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            this.utilitiesService.showMessage(res, "success");
+          } else {
+            this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          // this.loadingService.hide();
+          this.utilitiesService.showMessage(err, "error");
+        }
+      );
   }
 
   submitEmployeeComment(payload) {

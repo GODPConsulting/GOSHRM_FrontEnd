@@ -769,6 +769,39 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
+  sendReviewerOneFeedback(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/send/feedback/by-reviewerone`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  sendReviewerTwoFeedback(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/send/feedback/by-reviewertwo`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  sendReviewerThreeFeedback(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/send/feedback/by-reviewerthree`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
   getAppraisalCycle(id: number): Observable<IAppraisalCycle> {
     return this.apiService
       .get(`/performance/get/single/appraisal_cycle?Id=${id}`)
@@ -921,20 +954,58 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
-  getThreeSixtyAppraisalFeedbacks(
-    appraisalCycleId: number,
-    employeeId: number,
-    loggedInStaffId: number
-  ): Observable<any> {
+  getThreeSixtyAppraisalFeedbacks(employeeId: number): Observable<any> {
     return this.apiService
       .get(
-        `/performance/get/employee/feedbacks/360/byemployeeId?EmployeeId=${employeeId}&loggedInStaffId=${loggedInStaffId}&AppraisalCycleId=${appraisalCycleId}`
+        `/performance/get/feedback/360/kpi/by/employeeid?EmployeeId=${employeeId}`
       )
       .pipe(
         tap(),
         map((res) => {
-          return res.list;
+          return res.objectkpiList;
         })
+      );
+  }
+  addThreeSixtyScore(payload: any): Observable<any> {
+    return this.apiService
+      .post(
+        `/performance/performance-appraisal/add/update/appraisal-feedback360score`,
+        payload
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+
+  addThreeSixtyComment(payload: any): Observable<any> {
+    return this.apiService
+      .post(
+        `/performance/performance-appraisal/add/update/feedback_360_comment`,
+        payload
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+
+  // OPEN APPRAISAL CYCLE
+  getOpenCycle(comapanyId: number): Observable<unknown> {
+    return this.apiService
+      .get(
+        `/performance/performance-appraisal/get/all/appraisal-open-period/by/companyid?CompanyId=${comapanyId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.openperiodList;
+        }),
+        catchError(this.handleError)
       );
   }
 }

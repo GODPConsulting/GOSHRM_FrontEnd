@@ -131,9 +131,8 @@
               <tr>
                 <th>KPI</th>
                 <th>Objectives</th>
-                <th>Success Target</th>
-                <th>Reviewee Comments</th>
-                <th>Reviewee Score</th>
+                <th>Reviewer Comments</th>
+                <th>Reviewer Score</th>
                 <!--<th>
                   Reviewer I Comment
                 </th>
@@ -156,23 +155,20 @@
             </ng-template>
             <ng-template pTemplate="body" let-row let-i="rowIndex">
               <tr>
-                <td>{{ row.kpiCategory | titlecase }}</td>
-                <td>{{ row.kpiObjectives | titlecase }}</td>
-                <td>{{ row.successTarget | titlecase }}</td>
+                <td>{{ row.kpi | titlecase }}</td>
+                <td>{{ row.objectives | titlecase }}</td>
                 <td>
                   <a
-                    class="hint mr_20"
+                    class="hint feedback-btn"
                     data-toggle="modal"
-                    (click)="
-                      addComment(row.employeeObjectiveFeedbackID, 'employee')
-                    "
+                    (click)="addComment(row.kpiId, 'employee')"
                     ><span class="hint-text">Add </span
                     ><i class="fa fa-plus"></i
                   ></a>
                   <a
-                    class="hint"
+                    class="hint feedback-btn"
                     data-toggle="modal"
-                    (click)="viewComments(row.feedBackComments, 'employee')"
+                    (click)="viewComments(row.revieweeComment, 'employee')"
                     ><span class="hint-text">View </span
                     ><i class="fa fa-eye"></i
                   ></a>
@@ -182,15 +178,9 @@
                     row.revieweeScore | number: "1.2-2"
                   }}</span>
                   <a
-                    class="hint"
+                    class="hint feedback-btn"
                     data-toggle="modal"
-                    (click)="
-                      addScore(
-                        row.employeeObjectiveFeedbackID,
-                        row.revieweeScore,
-                        'employee'
-                      )
-                    "
+                    (click)="addScore(row.kpiId, row.revieweeScore, 'employee')"
                     ><span class="hint-text">Edit </span
                     ><i class="fa fa-edit"></i
                   ></a>
@@ -342,7 +332,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{ commentTitle }}</h5>
+        <h5 class="modal-title">Add Comment</h5>
         <button
           type="button"
           class="close"
@@ -362,7 +352,7 @@
                   type="text"
                   name="comment"
                   class="form-control"
-                  [formControlName]="formControlName"
+                  formControlName="comment"
                 />
               </div>
             </div>
@@ -383,9 +373,8 @@
               class="btn btn-primary submit-btn"
               type="submit"
               [disabled]="spinner"
-              (click)="submitAppraisalFeedbackPageForm(employeeCommentForm)"
+              (click)="saveComment(employeeCommentForm)"
             >
-              bool
               <span *ngIf="!spinner">Submit</span>
               <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
             </button>
@@ -400,7 +389,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{ scoreTitle }}</h5>
+        <h5 class="modal-title">Add Score</h5>
         <button
           type="button"
           class="close"
@@ -416,12 +405,18 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Reviewee Score</label>
-                <input
-                  type="number"
+                <select
                   name="number"
                   class="form-control"
-                  formControlName="score"
-                />
+                  formControlName="reviewScore"
+                >
+                  <option
+                    *ngFor="let point of points$ | async"
+                    [value]="point.point"
+                  >
+                    {{ point.pointName }}
+                  </option>
+                </select>
               </div>
             </div>
           </div>
@@ -447,7 +442,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{ commentTitle }}</h5>
+        <h5 class="modal-title">Comment</h5>
         <button
           type="button"
           class="close"
@@ -459,20 +454,21 @@
         </button>
       </div>
       <div class="modal-body">
-        <p-table [value]="employeeComments$ | async">
-          <ng-template pTemplate="header">
+        <table>
+          <thead>
             <tr>
               <th style="width: 250px">Date</th>
               <th>Comment</th>
             </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-row let-i="rowIndex">
+          </thead>
+
+          <tbody>
             <tr>
-              <td style="width: 250px">{{ row.createdOn | date }}</td>
-              <td>{{ row.comment | titlecase }}</td>
+              <td style="width: 250px"></td>
+              <td>{{ comment | titlecase }}</td>
             </tr>
-          </ng-template>
-        </p-table>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

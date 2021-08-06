@@ -1,5 +1,9 @@
 <!-- Page Wrapper -->
-<div class="page-wrapper" (resized)="onResize($event)" [ngStyle]="{ height: innerHeight }">
-    <router-outlet></router-outlet>
+<div
+  class="page-wrapper"
+  (resized)="onResize($event)"
+  [ngStyle]="{ height: innerHeight }"
+>
+  <router-outlet></router-outlet>
 </div>
 <!-- /Page Wrapper -->

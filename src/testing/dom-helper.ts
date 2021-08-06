@@ -1,5 +1,4 @@
 import { ComponentFixture } from "@angular/core/testing";
-import { LoginComponent } from "../app/login/login/login.component";
 import { By } from "@angular/platform-browser";
 
 export class DomHelper<T> {
