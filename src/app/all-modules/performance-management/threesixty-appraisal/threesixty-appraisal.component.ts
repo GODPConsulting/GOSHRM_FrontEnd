@@ -83,14 +83,14 @@ export class ThreesixtyAppraisalComponent implements OnInit {
     this.employeeCommentForm = this.fb.group({
       commentId: [0],
       staffId: +this.employeeId,
-      kpicategoryid: [""],
+      kpiId: [""],
       comment: [""],
     });
   }
   initialiseEmployeeScore() {
     this.employeeScoreForm = this.fb.group({
       id: [0],
-      kpicategoryid: [""],
+      kpiId: [""],
       staffId: +this.employeeId,
       reviewScore: [""],
     });
