@@ -769,6 +769,39 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
+  sendReviewerOneFeedback(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/send/feedback/by-reviewerone`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  sendReviewerTwoFeedback(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/send/feedback/by-reviewertwo`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  sendReviewerThreeFeedback(payload): Observable<any> {
+    return this.apiService
+      .post(`/performance/send/feedback/by-reviewerthree`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
   getAppraisalCycle(id: number): Observable<IAppraisalCycle> {
     return this.apiService
       .get(`/performance/get/single/appraisal_cycle?Id=${id}`)
@@ -924,7 +957,7 @@ export class PerformanceManagementService {
   getThreeSixtyAppraisalFeedbacks(employeeId: number): Observable<any> {
     return this.apiService
       .get(
-        `/performance/get/feedback/360/by/employeefeedback360KpiId?EmployeeId=${employeeId}`
+        `/performance/get/feedback/360/kpi/by/employeeid?EmployeeId=${employeeId}`
       )
       .pipe(
         tap(),

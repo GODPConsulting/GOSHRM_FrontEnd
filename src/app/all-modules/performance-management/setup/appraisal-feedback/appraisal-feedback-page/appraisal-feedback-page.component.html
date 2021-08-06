@@ -457,13 +457,9 @@
                 <button
                   class="btn btn-primary"
                   type="submit"
-                  [disabled]="spinner"
-                  (click)="submitEmployeeFeedback()"
+                  (click)="submitFeedback(reviewer)"
                 >
-                  <span *ngIf="!spinner">Submit</span>
-                  <span *ngIf="spinner"
-                    ><i class="fa fa-spinner fa-spin"></i
-                  ></span>
+                  Submit
                 </button>
 
                 <button
