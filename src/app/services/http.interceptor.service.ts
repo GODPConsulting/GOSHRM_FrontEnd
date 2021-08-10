@@ -42,16 +42,6 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const token = this.jwtService.getToken();
-    const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(token);
-    // console.log(decodedToken);
-    const isExpired = helper.isTokenExpired(token);
-    if (isExpired) {
-      this.jwtService.destroyToken().then(() => {
-        this.router.navigate(["/login"]);
-      });
-    }
     /*if (req.method !== "GET") {
       this.cacheService.invalidateCache();
       this.serviceCount++;
@@ -68,6 +58,16 @@ export class HttpTokenInterceptor implements HttpInterceptor {
       return of(cachedResponse);
       this.loadingService.hide();
     }*/
+    const token = this.jwtService.getToken();
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(token);
+    // console.log(decodedToken);
+    const isExpired = helper.isTokenExpired(token);
+    if (isExpired) {
+      this.jwtService.destroyToken().then(() => {
+        this.router.navigate(["/login"]);
+      });
+    }
     this.serviceCount++;
     this.loadingService.show();
     const headersConfig = {

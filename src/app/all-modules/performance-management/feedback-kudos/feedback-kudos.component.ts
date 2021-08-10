@@ -11,6 +11,7 @@ import { JwtService } from "../../../services/jwt.service";
 export class FeedbackKudosComponent implements OnInit {
   feedbacks$: Observable<any[]>;
   reviewPeriod$: Observable<unknown>;
+
   constructor(
     private performanceManagementService: PerformanceManagementService,
     private jwtService: JwtService
@@ -19,6 +20,10 @@ export class FeedbackKudosComponent implements OnInit {
   ngOnInit(): void {
     this.jwtService.getHrmUserDetails().then((user) => {
       this.reviewPeriod$ = this.performanceManagementService.getOpenCycle(
+        user.companyId
+      );
+      this.feedbacks$ = this.performanceManagementService.getKudos(
+        user.employeeId,
         user.companyId
       );
     });

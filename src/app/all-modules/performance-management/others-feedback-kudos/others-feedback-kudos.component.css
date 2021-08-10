@@ -1,0 +1,13 @@
+.feedback-btn {
+  margin-right: 10px;
+  border: 1px solid;
+  padding: 5px;
+  border-radius: 4px;
+  /* height: 30px; */
+  text-align: center;
+  /* height: 26px; */
+  width: 30px;
+}
+td a {
+  color: #1f1f1f;
+}

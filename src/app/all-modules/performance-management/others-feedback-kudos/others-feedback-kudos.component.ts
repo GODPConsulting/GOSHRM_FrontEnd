@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { EmployeeService } from "../../../services/employee.service";
 import { JwtService } from "../../../services/jwt.service";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
-
+declare const $;
 @Component({
   selector: "app-others-feedback-kudos",
   templateUrl: "./others-feedback-kudos.component.html",
@@ -28,10 +28,11 @@ export class OthersFeedbackKudosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initialiseForm();
     this.initialiseCommentForm();
     this.initialiseScoreForm();
+    this.initialiseForm();
     this.employees$ = this.employeeService.getEmployees();
+    this.points$ = this.performanceManagementService.getPointSettings();
     this.jwtService.getHrmUserDetails().then((user) => {
       this.reviewPeriod$ = this.performanceManagementService.getOpenCycle(
         user.companyId
@@ -48,6 +49,9 @@ export class OthersFeedbackKudosComponent implements OnInit {
         reviewerJobTitle: user.jobTitleName,
         department: user.companyName,
       });
+      this.feedbacks$ = this.performanceManagementService.getKudosFeedback(
+        user.employeeId
+      );
     });
   }
   initialiseCommentForm() {
@@ -85,15 +89,26 @@ export class OthersFeedbackKudosComponent implements OnInit {
     });
   }
 
-  addComment(kpiId: any, employee: string) {}
+  addComment(kpiId: any, employee: string) {
+    $("#appraisal_feedback_page_modal").modal("show");
+  }
 
-  viewComments(revieweeComment: any, employee: string) {}
+  viewComments(revieweeComment: any, employee: string) {
+    $("#comment_modal").modal("show");
+  }
 
-  addScore(kpiId: any, revieweeScore: any, employee: string) {}
+  addScore(kpiId: any, revieweeScore: any) {
+    this.scoreForm.patchValue({
+      reviewScore: revieweeScore.toString(),
+    });
+    $("#score_modal").modal("show");
+  }
 
   saveComment(commentForm: FormGroup) {}
 
-  saveScore(scoreForm: FormGroup) {}
+  saveScore(scoreForm: FormGroup) {
+    console.log(scoreForm.value);
+  }
 
   closeCommentModal() {}
 }

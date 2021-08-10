@@ -153,16 +153,14 @@
             </div>
           </div>
           <div class="btn-group">
-            <button class="btn btn-primary" (click)="showFeedback = true">
-              Continue
-            </button>
+            <button class="btn btn-primary">Continue</button>
             <button class="btn btn-danger">Back</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-  <div class="card" *ngIf="showFeedback">
+  <div class="card">
     <div class="card-header header-bg-color"></div>
     <div class="card-body">
       <div>
@@ -177,7 +175,7 @@
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">
             <tr>
-              <td>{{ row.kpi | titlecase }}</td>
+              <td>{{ row.kpiCategory | titlecase }}</td>
               <td>{{ row.objectives | titlecase }}</td>
               <td>
                 <a
@@ -200,7 +198,7 @@
                 <a
                   class="hint feedback-btn"
                   data-toggle="modal"
-                  (click)="addScore(row.kpiId, row.revieweeScore, 'employee')"
+                  (click)="addScore(row.kpiId, row.revieweeScore)"
                   ><span class="hint-text">Edit </span><i class="fa fa-edit"></i
                 ></a>
               </td>

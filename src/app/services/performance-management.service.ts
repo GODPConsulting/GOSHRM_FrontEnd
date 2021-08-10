@@ -1008,4 +1008,29 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
+  getKudos(reviewerId: number, companyId: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/performance-appraisal/get/feedback/kudo/reviewerId?ReviewerId=${reviewerId}&CompanyId=${companyId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.objectiveList;
+        })
+      );
+  }
+
+  getKudosFeedback(reviewerId: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/feedback/Kudo/Kpi/by/reviewerId?ReviewerId=${reviewerId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.objkudosList;
+        })
+      );
+  }
 }
