@@ -4,6 +4,8 @@ import { Observable } from "rxjs";
 import { EmployeeService } from "../../../services/employee.service";
 import { JwtService } from "../../../services/jwt.service";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
+import { UtilitiesService } from "../../../services/utilities.service";
+import { KudosComment, KudosScore } from "../../../interface/interfaces";
 declare const $;
 @Component({
   selector: "app-others-feedback-kudos",
@@ -20,11 +22,13 @@ export class OthersFeedbackKudosComponent implements OnInit {
   comment: string;
   showFeedback: boolean;
   reviewPeriod$: Observable<unknown>;
+  reviewerId: number;
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private jwtService: JwtService,
-    private performanceManagementService: PerformanceManagementService
+    private performanceManagementService: PerformanceManagementService,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +38,7 @@ export class OthersFeedbackKudosComponent implements OnInit {
     this.employees$ = this.employeeService.getEmployees();
     this.points$ = this.performanceManagementService.getPointSettings();
     this.jwtService.getHrmUserDetails().then((user) => {
+      this.reviewerId = user.employeeId;
       this.reviewPeriod$ = this.performanceManagementService.getOpenCycle(
         user.companyId
       );
@@ -50,7 +55,7 @@ export class OthersFeedbackKudosComponent implements OnInit {
         department: user.companyName,
       });
       this.feedbacks$ = this.performanceManagementService.getKudosFeedback(
-        user.employeeId
+        this.reviewerId
       );
     });
   }
@@ -90,6 +95,9 @@ export class OthersFeedbackKudosComponent implements OnInit {
   }
 
   addComment(kpiId: any, employee: string) {
+    this.commentForm.patchValue({
+      kpiId: +kpiId,
+    });
     $("#appraisal_feedback_page_modal").modal("show");
   }
 
@@ -100,14 +108,54 @@ export class OthersFeedbackKudosComponent implements OnInit {
   addScore(kpiId: any, revieweeScore: any) {
     this.scoreForm.patchValue({
       reviewScore: revieweeScore.toString(),
+      kpiId: +kpiId,
     });
     $("#score_modal").modal("show");
   }
 
-  saveComment(commentForm: FormGroup) {}
+  saveComment(commentForm: FormGroup) {
+    const payload: KudosComment = commentForm.value;
+    payload.staffId = this.reviewerId;
+    this.performanceManagementService.addKudosComment(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          this.utilitiesService.showMessage(res, "success").then(() => {
+            $("#comment_modal").modal("hide");
+            this.feedbacks$ = this.performanceManagementService.getKudosFeedback(
+              this.reviewerId
+            );
+          });
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
 
   saveScore(scoreForm: FormGroup) {
-    console.log(scoreForm.value);
+    const payload: KudosScore = scoreForm.value;
+    payload.reviewScore = +payload.reviewScore;
+    payload.staffId = this.reviewerId;
+    this.performanceManagementService.addKudosScore(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          this.utilitiesService.showMessage(res, "success").then(() => {
+            $("#score_modal").modal("hide");
+            this.feedbacks$ = this.performanceManagementService.getKudosFeedback(
+              this.reviewerId
+            );
+          });
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
   }
 
   closeCommentModal() {}

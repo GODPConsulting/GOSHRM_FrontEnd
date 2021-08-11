@@ -36,7 +36,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   feedbacks$: Observable<any>;
   employeeId: number;
   points$: Observable<any[]>;
-  comment: string;
+  comments: any[] = [];
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -204,8 +204,8 @@ export class ThreesixtyAppraisalComponent implements OnInit {
       default:
         this.commentTitle = "";
     }*/
-    this.comment = comments;
-    console.log(comments, this.comment);
+    this.comments = comments;
+    // console.log(comments, this.comment);
     $("#comment_modal").modal("show");
   }
   submitAppraisalFeedbackPageForm(employeeCommentForm: FormGroup) {}
@@ -221,6 +221,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
         if (res.status.isSuccessful) {
           return this.utilitiesService.showMessage(res, "success").then(() => {
             $("#score_modal").modal("hide");
+            this.initialiseEmployeeScore();
             this.getFeedBacks(this.employeeId);
           });
         } else {
@@ -245,6 +246,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
         if (res.status.isSuccessful) {
           return this.utilitiesService.showMessage(res, "success").then(() => {
             $("#appraisal_feedback_page_modal").modal("hide");
+            this.initialiseEmployeeComment();
             this.getFeedBacks(this.employeeId);
           });
         } else {

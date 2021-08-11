@@ -120,3 +120,17 @@ export interface ThreesixtyFeedback {
   status: boolean;
   statusName: string;
 }
+export interface KudosComment {
+  commentId: number;
+  comment: string;
+  createdOn: Date;
+  kpiId: number;
+  staffId: number;
+}
+
+export interface KudosScore {
+  id: number;
+  reviewScore: number;
+  kpiId: number;
+  staffId: number;
+}

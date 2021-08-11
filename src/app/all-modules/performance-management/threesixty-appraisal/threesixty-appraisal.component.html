@@ -463,7 +463,7 @@
           </thead>
 
           <tbody>
-            <tr>
+            <tr *ngFor="let comment of comments">
               <td style="width: 250px"></td>
               <td>{{ comment | titlecase }}</td>
             </tr>

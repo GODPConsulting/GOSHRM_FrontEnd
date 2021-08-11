@@ -10,6 +10,8 @@ import {
   IAppraisalCycle,
   IKpis,
   KpiCategory,
+  KudosComment,
+  KudosScore,
   ThreesixtyFeedback,
 } from "../interface/interfaces";
 
@@ -1030,6 +1032,30 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res.objkudosList;
+        })
+      );
+  }
+  addKudosComment(payload: KudosComment): Observable<any> {
+    return this.apiService
+      .post(
+        `/performance/performance-appraisal/add/update/feedback_Kudo_comment`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+  addKudosScore(payload: KudosScore): Observable<any> {
+    return this.apiService
+      .post(
+        `/performance/performance-appraisal/add/update/appraisal-feedbackKudoscore`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
         })
       );
   }
