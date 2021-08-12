@@ -344,9 +344,9 @@
           </thead>
 
           <tbody>
-            <tr>
+            <tr *ngFor="let item of comment">
               <td style="width: 250px"></td>
-              <td>{{ comment | titlecase }}</td>
+              <td>{{ item | titlecase }}</td>
             </tr>
           </tbody>
         </table>

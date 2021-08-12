@@ -1038,7 +1038,8 @@ export class PerformanceManagementService {
   addKudosComment(payload: KudosComment): Observable<any> {
     return this.apiService
       .post(
-        `/performance/performance-appraisal/add/update/feedback_Kudo_comment`
+        `/performance/performance-appraisal/add/update/feedback_Kudo_comment`,
+        payload
       )
       .pipe(
         tap(),
@@ -1050,7 +1051,8 @@ export class PerformanceManagementService {
   addKudosScore(payload: KudosScore): Observable<any> {
     return this.apiService
       .post(
-        `/performance/performance-appraisal/add/update/appraisal-feedbackKudoscore`
+        `/performance/performance-appraisal/add/update/appraisal-feedbackKudoscore`,
+        payload
       )
       .pipe(
         tap(),

@@ -62,11 +62,13 @@ export class OthersFeedbackKudosComponent implements OnInit {
   initialiseCommentForm() {
     this.commentForm = this.fb.group({
       comment: [""],
+      kpiId: [""],
     });
   }
   initialiseScoreForm() {
     this.scoreForm = this.fb.group({
       reviewScore: [""],
+      kpiId: [""],
     });
   }
   getCareerDetails(id) {
@@ -102,6 +104,7 @@ export class OthersFeedbackKudosComponent implements OnInit {
   }
 
   viewComments(revieweeComment: any, employee: string) {
+    this.comment = revieweeComment;
     $("#comment_modal").modal("show");
   }
 
@@ -116,11 +119,13 @@ export class OthersFeedbackKudosComponent implements OnInit {
   saveComment(commentForm: FormGroup) {
     const payload: KudosComment = commentForm.value;
     payload.staffId = this.reviewerId;
+    console.log(payload);
     this.performanceManagementService.addKudosComment(payload).subscribe(
       (res) => {
         if (res.status.isSuccessful) {
+          $("#appraisal_feedback_page_modal").modal("hide");
           this.utilitiesService.showMessage(res, "success").then(() => {
-            $("#comment_modal").modal("hide");
+            this.initialiseCommentForm();
             this.feedbacks$ = this.performanceManagementService.getKudosFeedback(
               this.reviewerId
             );
@@ -139,11 +144,13 @@ export class OthersFeedbackKudosComponent implements OnInit {
     const payload: KudosScore = scoreForm.value;
     payload.reviewScore = +payload.reviewScore;
     payload.staffId = this.reviewerId;
+    console.log(payload);
     this.performanceManagementService.addKudosScore(payload).subscribe(
       (res) => {
         if (res.status.isSuccessful) {
+          $("#score_modal").modal("hide");
           this.utilitiesService.showMessage(res, "success").then(() => {
-            $("#score_modal").modal("hide");
+            this.initialiseScoreForm();
             this.feedbacks$ = this.performanceManagementService.getKudosFeedback(
               this.reviewerId
             );
