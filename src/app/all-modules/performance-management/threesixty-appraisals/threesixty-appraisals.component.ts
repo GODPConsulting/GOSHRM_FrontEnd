@@ -32,6 +32,8 @@ export class ThreesixtyAppraisalsComponent implements OnInit {
       queryParams: {
         id: item.employeePerformanceFeedback360Id,
         employeeId: item.revieweeId,
+        appraisalCycleId: item.appraisalcycleId,
+        reviewerOneId: item.reviewerOneId,
       },
     });
   }

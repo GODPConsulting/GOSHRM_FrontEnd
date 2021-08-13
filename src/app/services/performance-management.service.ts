@@ -11,7 +11,9 @@ import {
   IKpis,
   KpiCategory,
   KudosComment,
+  KudosFeedback,
   KudosScore,
+  ThreeSixtyFeedback,
   ThreesixtyFeedback,
 } from "../interface/interfaces";
 
@@ -1060,5 +1062,24 @@ export class PerformanceManagementService {
           return res;
         })
       );
+  }
+
+  sendKudosFeedback(payload: KudosFeedback): Observable<any> {
+    return this.apiService
+      .post(`/performance/send/feedback/kudo`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+  sendThreeSixtyFeedback(payload: ThreeSixtyFeedback): Observable<any> {
+    return this.apiService.post(`/performance/send/feedback/360`, payload).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      })
+    );
   }
 }

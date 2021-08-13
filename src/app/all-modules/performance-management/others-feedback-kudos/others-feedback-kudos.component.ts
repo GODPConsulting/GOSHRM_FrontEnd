@@ -166,4 +166,6 @@ export class OthersFeedbackKudosComponent implements OnInit {
   }
 
   closeCommentModal() {}
+
+  submitFeedback() {}
 }

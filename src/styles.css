@@ -2258,9 +2258,13 @@ table.dataTable thead > tr > td.sorting {
   text-align: center;
   margin-top: 40px;
 }
+.submit-div {
+  margin-top: 20px;
+  float: right;
+}
 .submit-btn {
   border-radius: 4px;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
   min-width: 200px;
   padding: 10px 20px;

@@ -5,6 +5,7 @@ import { ActivatedRoute, Params } from "@angular/router";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
 import { JwtService } from "../../../services/jwt.service";
 import { UtilitiesService } from "../../../services/utilities.service";
+import { ThreeSixtyFeedback } from "../../../interface/interfaces";
 declare const $: any;
 interface Preference {
   isReviewerOneInvloved: boolean;
@@ -29,7 +30,6 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   employeeScoreForm: FormGroup;
   employeeComments: any[] = [];
   staffId: any;
-  appraisalCycleId: any;
   personnel: string;
   feedBackId: number;
   employeeComments$: Observable<any>;
@@ -37,6 +37,9 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   employeeId: number;
   points$: Observable<any[]>;
   comments: any[] = [];
+  companyId: number;
+  appraisalCycleId: number;
+  reviewerOneId: number;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -49,10 +52,13 @@ export class ThreesixtyAppraisalComponent implements OnInit {
     this.route.queryParams.subscribe((param: Params) => {
       this.feedBackId = param.id;
       this.employeeId = param.employeeId;
+      this.appraisalCycleId = param.appraisalCycleId;
+      this.reviewerOneId = param.reviewerOneId;
       // this.appraisalCycleId = param.appraisalCycleId;
       // this.getThreeSixtyFeedback(param.id);
     });
     this.jwtService.getHrmUserDetails().then((user) => {
+      this.companyId = user.companyId;
       this.getThreeSixtyFeedback(this.feedBackId, user.companyId);
       this.getFeedBacks(this.employeeId);
     });
@@ -255,6 +261,28 @@ export class ThreesixtyAppraisalComponent implements OnInit {
       },
       (err) => {
         return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  submitFeedback() {
+    const payload: ThreeSixtyFeedback = {
+      revieweeId: +this.employeeId,
+      employeePerformanceFeedback360Id: +this.feedBackId,
+      companyId: +this.companyId,
+      reviewerOneId: +this.reviewerOneId,
+      appraisalCycleId: +this.appraisalCycleId,
+    };
+    this.performanceManagementService.sendThreeSixtyFeedback(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          this.utilitiesService.showMessage(res, "success");
+        } else {
+          this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        this.utilitiesService.showMessage(err, "error");
       }
     );
   }

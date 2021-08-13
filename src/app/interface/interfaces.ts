@@ -134,3 +134,17 @@ export interface KudosScore {
   kpiId: number;
   staffId: number;
 }
+export interface KudosFeedback {
+  appraisalNuggetId: number;
+  revieweeId: number;
+  reviewerOneId: number;
+  appraisalCycleId: number;
+  companyId: number;
+}
+export interface ThreeSixtyFeedback {
+  employeePerformanceFeedback360Id: number;
+  revieweeId: number;
+  reviewerOneId: number;
+  appraisalCycleId: number;
+  companyId: number;
+}
