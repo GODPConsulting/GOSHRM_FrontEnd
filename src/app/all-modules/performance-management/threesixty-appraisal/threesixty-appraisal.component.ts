@@ -60,7 +60,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
     this.jwtService.getHrmUserDetails().then((user) => {
       this.companyId = user.companyId;
       this.getThreeSixtyFeedback(this.feedBackId, user.companyId);
-      this.getFeedBacks(this.employeeId);
+      this.getFeedBacks(this.reviewerOneId);
     });
     this.points$ = this.performanceManagementService.getPointSettings();
     this.initializeForm();
@@ -97,8 +97,10 @@ export class ThreesixtyAppraisalComponent implements OnInit {
     this.employeeScoreForm = this.fb.group({
       id: [0],
       kpiId: [""],
-      staffId: +this.employeeId,
+      staffId: +this.reviewerOneId,
+      revieweeId: +this.employeeId,
       reviewScore: [""],
+      appraisalCycleId: [0],
     });
   }
   getThreeSixtyFeedback(id, companyId): Subscription {
@@ -189,6 +191,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
     this.employeeScoreForm.patchValue({
       kpiId: +kpiId,
       reviewScore: +score,
+      appraisalCycleId: +this.appraisalCycleId
     });
     $("#score_modal").modal("show");
   }
@@ -219,6 +222,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
   saveScore(employeeScoreForm: FormGroup) {
     const payload = employeeScoreForm.value;
     payload.reviewScore = +payload.reviewScore;
+    payload.appraisalCycleId = +this.appraisalCycleId;
     if (!payload.reviewScore) {
       return this.utilitiesService.showError("Score is required");
     }
@@ -228,7 +232,7 @@ export class ThreesixtyAppraisalComponent implements OnInit {
           return this.utilitiesService.showMessage(res, "success").then(() => {
             $("#score_modal").modal("hide");
             this.initialiseEmployeeScore();
-            this.getFeedBacks(this.employeeId);
+            this.getFeedBacks(this.reviewerOneId);
           });
         } else {
           return this.utilitiesService.showMessage(res, "error");
