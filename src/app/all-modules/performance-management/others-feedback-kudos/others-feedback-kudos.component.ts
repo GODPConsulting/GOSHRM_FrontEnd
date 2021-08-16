@@ -23,6 +23,8 @@ export class OthersFeedbackKudosComponent implements OnInit {
   showFeedback: boolean;
   reviewPeriod$: Observable<unknown>;
   reviewerId: number;
+  appraisalCycleId: number;
+  revieweeId: number;
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
@@ -67,8 +69,10 @@ export class OthersFeedbackKudosComponent implements OnInit {
   }
   initialiseScoreForm() {
     this.scoreForm = this.fb.group({
-      reviewScore: [""],
-      kpiId: [""],
+      reviewScore: [0],
+      kpiId: [0],
+      appraisalCycleId: [0],
+      revieweeId: [0]
     });
   }
   getCareerDetails(id) {
@@ -144,6 +148,8 @@ export class OthersFeedbackKudosComponent implements OnInit {
     const payload: KudosScore = scoreForm.value;
     payload.reviewScore = +payload.reviewScore;
     payload.staffId = this.reviewerId;
+    payload.revieweeId = +this.revieweeId;
+    payload.appraisalCycleId = +this.appraisalCycleId;
     console.log(payload);
     this.performanceManagementService.addKudosScore(payload).subscribe(
       (res) => {

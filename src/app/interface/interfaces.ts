@@ -126,6 +126,7 @@ export interface KudosComment {
   createdOn: Date;
   kpiId: number;
   staffId: number;
+
 }
 
 export interface KudosScore {
@@ -133,6 +134,9 @@ export interface KudosScore {
   reviewScore: number;
   kpiId: number;
   staffId: number;
+  appraisalCycleId: number;
+  revieweeId: number;
+
 }
 export interface KudosFeedback {
   appraisalNuggetId: number;
