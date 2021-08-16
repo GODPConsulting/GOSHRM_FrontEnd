@@ -23,6 +23,8 @@ export class OthersFeedbackKudosComponent implements OnInit {
   showFeedback: boolean;
   reviewPeriod$: Observable<unknown>;
   reviewerId: number;
+  revieweeId: number;
+  appraisalCycleId: number;
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
@@ -44,6 +46,7 @@ export class OthersFeedbackKudosComponent implements OnInit {
       );
       this.reviewPeriod$.subscribe((res) => {
         const data = res[0];
+        this.appraisalCycleId = data.appraisalCycleId;
         this.appraisalFeedbackForm.patchValue({
           reviewPeriod: data.period,
         });
@@ -74,6 +77,7 @@ export class OthersFeedbackKudosComponent implements OnInit {
     });
   }
   getCareerDetails(id) {
+    this.revieweeId = +id;
     this.employeeService.getCareerByStaffId(id).subscribe((res) => {
       const employee = res.employeeList[0];
       this.appraisalFeedbackForm.patchValue({
@@ -121,6 +125,8 @@ export class OthersFeedbackKudosComponent implements OnInit {
   saveComment(commentForm: FormGroup) {
     const payload: KudosComment = commentForm.value;
     payload.staffId = this.reviewerId;
+    payload.appraisalCycleId = this.appraisalCycleId;
+    payload.revieweeId = this.revieweeId;
     console.log(payload);
     this.performanceManagementService.addKudosComment(payload).subscribe(
       (res) => {
@@ -146,6 +152,8 @@ export class OthersFeedbackKudosComponent implements OnInit {
     const payload: KudosScore = scoreForm.value;
     payload.reviewScore = +payload.reviewScore;
     payload.staffId = this.reviewerId;
+    payload.appraisalCycleId = this.appraisalCycleId;
+    payload.revieweeId = this.revieweeId;
     console.log(payload);
     this.performanceManagementService.addKudosScore(payload).subscribe(
       (res) => {
