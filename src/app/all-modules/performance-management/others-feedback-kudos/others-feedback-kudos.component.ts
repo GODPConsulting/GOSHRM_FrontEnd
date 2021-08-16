@@ -5,7 +5,11 @@ import { EmployeeService } from "../../../services/employee.service";
 import { JwtService } from "../../../services/jwt.service";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
 import { UtilitiesService } from "../../../services/utilities.service";
-import { KudosComment, KudosScore } from "../../../interface/interfaces";
+import {
+  KudosComment,
+  KudosFeedback,
+  KudosScore,
+} from "../../../interface/interfaces";
 declare const $;
 @Component({
   selector: "app-others-feedback-kudos",
@@ -25,6 +29,7 @@ export class OthersFeedbackKudosComponent implements OnInit {
   reviewerId: number;
   revieweeId: number;
   appraisalCycleId: number;
+  companyId: number;
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
@@ -41,6 +46,7 @@ export class OthersFeedbackKudosComponent implements OnInit {
     this.points$ = this.performanceManagementService.getPointSettings();
     this.jwtService.getHrmUserDetails().then((user) => {
       this.reviewerId = user.employeeId;
+      this.companyId = user.companyId;
       this.reviewPeriod$ = this.performanceManagementService.getOpenCycle(
         user.companyId
       );
@@ -73,7 +79,7 @@ export class OthersFeedbackKudosComponent implements OnInit {
       reviewScore: [0],
       kpiId: [0],
       appraisalcycle: [0],
-      revieweeId: [0]
+      revieweeId: [0],
     });
   }
   getCareerDetails(id) {
@@ -103,6 +109,9 @@ export class OthersFeedbackKudosComponent implements OnInit {
   }
 
   addComment(kpiId: any, employee: string) {
+    if (!this.revieweeId) {
+      return this.utilitiesService.showError("Select an employee to review");
+    }
     this.commentForm.patchValue({
       kpiId: +kpiId,
     });
@@ -115,6 +124,9 @@ export class OthersFeedbackKudosComponent implements OnInit {
   }
 
   addScore(kpiId: any, revieweeScore: any) {
+    if (!this.revieweeId) {
+      return this.utilitiesService.showError("Select an employee to review");
+    }
     this.scoreForm.patchValue({
       reviewScore: revieweeScore.toString(),
       kpiId: +kpiId,
@@ -177,5 +189,28 @@ export class OthersFeedbackKudosComponent implements OnInit {
 
   closeCommentModal() {}
 
-  submitFeedback() {}
+  submitFeedback() {
+    if (!this.revieweeId) {
+      return this.utilitiesService.showError("Select an employee to review");
+    }
+    const payload: KudosFeedback = {
+      appraisalCycleId: this.appraisalCycleId,
+      revieweeId: this.revieweeId,
+      reviewerOneId: this.reviewerId,
+      companyId: this.companyId,
+      appraisalNuggetId: 0,
+    };
+    this.performanceManagementService.sendKudosFeedback(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success");
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
 }
