@@ -121,6 +121,8 @@ export interface ThreesixtyFeedback {
   statusName: string;
 }
 export interface KudosComment {
+  revieweeId: number;
+  appraisalCycleId: number;
   commentId: number;
   comment: string;
   createdOn: Date;
@@ -129,6 +131,8 @@ export interface KudosComment {
 }
 
 export interface KudosScore {
+  revieweeId: number;
+  appraisalCycleId: number;
   id: number;
   reviewScore: number;
   kpiId: number;

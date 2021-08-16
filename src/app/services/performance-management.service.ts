@@ -1082,4 +1082,41 @@ export class PerformanceManagementService {
       })
     );
   }
+
+  getObjectivesByFirstReviewer(id: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_objectives/by_first_reviewer?firstReviewerId=${id}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        })
+      );
+  }
+  getObjectivesBySecondReviewer(id: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_objectives/by_second_reviewer?secondReviewerId=${id}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        })
+      );
+  }
+  getObjectivesByThirdReviewer(id: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_objectives/by_third_reviewer?thirdReviewerId=${id}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        })
+      );
+  }
 }
