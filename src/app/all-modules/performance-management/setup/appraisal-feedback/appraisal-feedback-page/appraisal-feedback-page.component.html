@@ -657,12 +657,20 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Reviewer Name</label>
-                <input
-                  type="text"
+                <select
                   name="reviewerName"
                   class="form-control"
                   [(ngModel)]="reviewerName"
-                />
+                >
+                  <option value="" disabled>Select Reviewer</option>
+                  <option
+                    *ngFor="let emp of employees$ | async"
+                    [value]="emp.employeeId"
+                  >
+                    {{ emp.firstName | titlecase }}
+                    {{ emp.lastName | titlecase }}
+                  </option>
+                </select>
               </div>
             </div>
 

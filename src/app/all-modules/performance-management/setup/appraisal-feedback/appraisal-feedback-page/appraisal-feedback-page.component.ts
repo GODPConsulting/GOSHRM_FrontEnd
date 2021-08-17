@@ -13,6 +13,7 @@ import { JwtService } from "../../../../../services/jwt.service";
 import { ActivatedRoute } from "@angular/router";
 import { catchError } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { EmployeeService } from "../../../../../services/employee.service";
 declare const $: any;
 
 interface Preference {
@@ -85,6 +86,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   time: any;
   objective: string = "";
   scheduleComment: string;
+  scheduleTime: string;
+  employees$: Observable<any>;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -94,12 +97,14 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     private loadingService: LoadingService,
     private commonService: CommonService,
     private jwtService: JwtService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private employeeService: EmployeeService
   ) {
     this.initialiseFeedbackForm();
   }
 
   ngOnInit(): void {
+    this.employees$ = this.employeeService.getEmployees();
     // this.initialiseFeedbackForm();
     this.route.queryParams.subscribe((param) => {
       this.employeeId = param.id;
@@ -844,13 +849,13 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     } else {
       meridian = "PM";
     }
-    this.time = hours + ":" + minutes + " " + meridian;
+    this.scheduleTime = hours + ":" + minutes + " " + meridian;
   }
   submitSchedule() {
     const payload = {
       reviewerName: this.reviewerName,
       date: this.scheduleDate,
-      time: this.time,
+      time: this.scheduleTime,
       objective: this.objective,
       scheduleComment: this.scheduleComment,
     };
