@@ -121,14 +121,17 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       this.staffId = user.employeeId;
       this.companyId = user.companyId;
       this.getAppraisalFeedbacks();
-      // this.initialiseEmployeeComment();
       this.initialiseEmployeeScore();
+      this.initialiseEmployeeComment();
+      // this.initialiseEmployeeComment();
     });
     // this.getAppraisalFeedbacks();
     this.cardFormTitle = "Appraisal Feedback";
     this.years = this.utilitiesService.createYears(2000, 2050);
     this.getJobGrade();
     this.points$ = this.performanceManagementService.getPointSettings();
+    // this.initialiseScheduleForm();
+    this.initialiseFeedbackForm();
     this.initialiseScheduleForm();
   }
   initialiseEmployeeComment() {
@@ -138,6 +141,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       appraisalCycleId: +this.appraisalCycleId,
       employeePerformId: this.employeePerformId,
       comment: [""],
+      revieweeComment: [""],
     });
   }
   initialiseEmployeeScore() {
@@ -227,7 +231,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         (data) => {
           // this.loadingService.hide();
           if (data.length > 0) {
-            this.appraisalFeedbacks = data.map((item) => {
+            this.appraisalFeedbacks = data;
+            this.objectives = data.map((item) => {
               return {
                 label: item.kpiObjectives,
                 id: item.employeeObjectiveIdicatorId,
@@ -343,7 +348,6 @@ export class AppraisalFeedbackPageComponent implements OnInit {
 
   addComment(id: number, type: string) {
     this.personnel = type;
-    this.initialiseEmployeeComment();
     switch (type) {
       case "employee":
         this.commentTitle = "Employee Comment";
@@ -431,8 +435,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     this.employeeComments = comments;
     $("#comment_modal").modal("show");
   }
-  submitAppraisalFeedbackPageForm(form: FormGroup) {
-    const payload = form.value;
+  submitAppraisalFeedbackPageForm() {
+    const payload = this.employeeCommentForm.value;
     switch (this.personnel) {
       case "employee":
         return this.submitEmployeeComment(payload);

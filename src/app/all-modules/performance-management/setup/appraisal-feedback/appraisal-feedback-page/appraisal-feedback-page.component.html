@@ -224,7 +224,7 @@
         </div>
 
         <div *ngIf="tableDisabled" class="table-responsive">
-          <p-table [value]="hack(appraisalFeedbacks)">
+          <p-table [value]="appraisalFeedbacks">
             <ng-template pTemplate="header" let-row let-i="rowIndex">
               <tr>
                 <th>KPI</th>
@@ -484,6 +484,7 @@
   id="appraisal_feedback_page_modal"
   class="modal custom-modal fade"
   role="dialog"
+  *ngIf="staffId"
 >
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -507,8 +508,8 @@
                 <input
                   type="text"
                   name="comment"
-                  class="form-control"
                   formControlName="{{ formControlName }}"
+                  class="form-control"
                 />
               </div>
             </div>
@@ -528,11 +529,9 @@
             <button
               class="btn btn-primary submit-btn"
               type="submit"
-              [disabled]="spinner"
-              (click)="submitAppraisalFeedbackPageForm(employeeCommentForm)"
+              (click)="submitAppraisalFeedbackPageForm()"
             >
-              <span *ngIf="!spinner">Submit</span>
-              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+              <span>Submit</span>
             </button>
           </div>
         </form>
@@ -545,7 +544,12 @@
 
 <!-- Appraisal Feedback Reviewee modal -->
 
-<div id="score_modal" class="modal custom-modal fade" role="dialog">
+<div
+  id="score_modal"
+  class="modal custom-modal fade"
+  role="dialog"
+  *ngIf="staffId"
+>
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -716,7 +720,7 @@
                 </select>-->
                 <div class="col-md-4" style="padding-left: 0">
                   <ng-select
-                    [items]="appraisalFeedbacks"
+                    [items]="objectives"
                     [multiple]="true"
                     bindValue="id"
                     bindLabel="label"
