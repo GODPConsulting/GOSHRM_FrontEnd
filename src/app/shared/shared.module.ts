@@ -4,13 +4,13 @@ import { LoadingComponent } from "./loading/loading.component";
 import { MainLayoutComponent } from "./main-layout/main-layout.component";
 import { AppMenuComponent, AppSubMenuComponent } from "./app.menu.component";
 import { RouterModule } from "@angular/router";
-import { NgSelectModule } from "@ng-select/ng-select";
 import { ImageCropperModule } from "ngx-image-cropper";
 import { RatingModule } from "ngx-bootstrap/rating";
 import { TableModule } from "primeng/table";
 import { TreeTableModule } from "primeng/treetable";
 import { CustomDatePipe } from "../pipes/custom-date.pipe";
 import { ReactiveFormsModule } from "@angular/forms";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @NgModule({
   declarations: [
@@ -27,7 +27,7 @@ import { ReactiveFormsModule } from "@angular/forms";
     TableModule,
     TreeTableModule,
     ReactiveFormsModule,
-    // NgSelectModule
+    NgSelectModule,
   ],
   exports: [
     LoadingComponent,
@@ -38,6 +38,7 @@ import { ReactiveFormsModule } from "@angular/forms";
     TableModule,
     TreeTableModule,
     CustomDatePipe,
+    NgSelectModule,
   ],
 })
 export class SharedModule {}

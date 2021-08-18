@@ -108,9 +108,7 @@
               ><span class="hint-text">Schedule Coaching </span
               ><i class="fa fa-calendar"></i
             ></a>
-            <a
-              class="btn hint"
-              [routerLink]="['/performance/coaching-schedules']"
+            <a class="btn hint" (click)="viewSchedule()"
               ><span class="hint-text">Coaching Schedules</span
               ><i class="fa fa-calendar-o"></i
             ></a>
@@ -652,7 +650,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup]="scheduleForm">
           <div class="row row-flex">
             <div class="col-md-12">
               <div class="form-group">
@@ -660,7 +658,7 @@
                 <select
                   name="reviewerName"
                   class="form-control"
-                  [(ngModel)]="reviewerName"
+                  formControlName="reviewerId"
                 >
                   <option value="" disabled>Select Reviewer</option>
                   <option
@@ -682,7 +680,7 @@
                   id="scheduleDate"
                   name="scheduleDate"
                   class="form-control"
-                  [(ngModel)]="scheduleDate"
+                  formControlName="date"
                 />
               </div>
             </div>
@@ -693,7 +691,7 @@
                   type="time"
                   id="time"
                   class="form-control"
-                  [(ngModel)]="time"
+                  formControlName="time"
                   name="time"
                   (change)="onTimeChange($event.target.value)"
                 />
@@ -717,12 +715,37 @@
                   </option>
                 </select>-->
                 <div class="col-md-4" style="padding-left: 0">
-                  <p-multiSelect
-                    [options]="appraisalFeedbacks"
-                    [(ngModel)]="objective"
-                    optionLabel="kpiObjectives"
-                    optionValue="employeeObjectiveIdicatorId"
-                  ></p-multiSelect>
+                  <ng-select
+                    [items]="appraisalFeedbacks"
+                    [multiple]="true"
+                    bindValue="id"
+                    bindLabel="label"
+                    formControlName="objectiveId"
+                    [searchable]="true"
+                    [closeOnSelect]="false"
+                    placeholder="Select Objective"
+                  >
+                    <ng-template
+                      ng-option-tmp
+                      let-item="item"
+                      let-item$="item$"
+                      let-index="index"
+                    >
+                      <input
+                        id="item-{{ index }}"
+                        type="checkbox"
+                        [ngModel]="item$.selected"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      {{ item.label }}
+                    </ng-template>
+                  </ng-select>
+                  <!--                  <p-multiSelect-->
+                  <!--                    [options]="appraisalFeedbacks"-->
+                  <!--                    [(ngModel)]="objective"-->
+                  <!--                    optionLabel="name"-->
+                  <!--                    defaultLabel="Select Objective"-->
+                  <!--                  ></p-multiSelect>-->
                 </div>
               </div>
             </div>
@@ -733,7 +756,7 @@
                   type="text"
                   id="scheduleComment"
                   class="form-control resize"
-                  [(ngModel)]="scheduleComment"
+                  formControlName="comment"
                   name="scheduleComment"
                 ></textarea>
               </div>
@@ -743,11 +766,9 @@
             <button
               class="btn btn-primary submit-btn"
               type="submit"
-              [disabled]="spinner"
-              (click)="submitSchedule()"
+              (click)="submitSchedule(scheduleForm)"
             >
-              <span *ngIf="!spinner">Save</span>
-              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+              <span>Save</span>
             </button>
           </div>
         </form>

@@ -41,12 +41,12 @@
                 ></p-tableCheckbox>
               </td>
               <td class="sn_width">{{ i + 1 }}</td>
-              <td>{{ item.name | titlecase }}</td>
-              <td>{{ item.role }}</td>
-              <td>{{ item.type | titlecase }}</td>
-              <td>{{ item.number }}</td>
-              <td>{{ item.email | titlecase }}</td>
-              <td></td>
+              <td>{{ item.date }}</td>
+              <td>{{ item.time }}</td>
+              <td>{{ item.reviewPeriod | titlecase }}</td>
+              <td>{{ item.reviewYear }}</td>
+              <!--              <td>{{ item.email | titlecase }}</td>-->
+              <!--              <td></td>-->
             </tr>
           </ng-template>
           <tbody></tbody>

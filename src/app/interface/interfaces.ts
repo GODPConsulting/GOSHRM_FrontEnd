@@ -152,3 +152,12 @@ export interface ThreeSixtyFeedback {
   appraisalCycleId: number;
   companyId: number;
 }
+export interface CoachingSchedule {
+  id: number;
+  revieweeId: number;
+  reviewerId: number;
+  comment: string;
+  date: Date;
+  time: Date;
+  objectiveId: any;
+}

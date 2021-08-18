@@ -6,6 +6,7 @@ import { catchError, map, tap } from "rxjs/operators";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {
   AppraisalObjective,
+  CoachingSchedule,
   EmployeeKPI,
   IAppraisalCycle,
   IKpis,
@@ -1116,6 +1117,34 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res.list;
+        })
+      );
+  }
+  scheduleCoaching(payload: CoachingSchedule): Observable<any> {
+    return this.apiService
+      .post(
+        `/performance/performancesetup/add/update/schedulecoaching`,
+        payload
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+  getCoachingSchedule(
+    revieweeId: number,
+    companyId: number
+  ): Observable<CoachingSchedule[]> {
+    return this.apiService
+      .get(
+        `/performance/performancesetup/get/single/schedule-coaching/Revieweeid?RevieweeId=${revieweeId}&CompanyId=${companyId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res["setupList"];
         })
       );
   }

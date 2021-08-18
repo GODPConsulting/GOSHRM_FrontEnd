@@ -10,10 +10,11 @@ import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
 import { CommonService } from "../../../../../services/common.service";
 import { JwtService } from "../../../../../services/jwt.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { catchError } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { EmployeeService } from "../../../../../services/employee.service";
+import { CoachingSchedule } from "../../../../../interface/interfaces";
 declare const $: any;
 
 interface Preference {
@@ -84,10 +85,13 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   reviewerName: string;
   scheduleDate: string;
   time: any;
-  objective: string = "";
+  objective: any[] = [];
   scheduleComment: string;
   scheduleTime: string;
   employees$: Observable<any>;
+  objectives: any[] = [];
+  revieweeId: number;
+  companyId: number;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -98,7 +102,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     private commonService: CommonService,
     private jwtService: JwtService,
     private route: ActivatedRoute,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private router: Router
   ) {
     this.initialiseFeedbackForm();
   }
@@ -114,6 +119,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     });
     this.jwtService.getHrmUserDetails().then((user) => {
       this.staffId = user.employeeId;
+      this.companyId = user.companyId;
       this.getAppraisalFeedbacks();
       // this.initialiseEmployeeComment();
       this.initialiseEmployeeScore();
@@ -123,6 +129,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     this.years = this.utilitiesService.createYears(2000, 2050);
     this.getJobGrade();
     this.points$ = this.performanceManagementService.getPointSettings();
+    this.initialiseScheduleForm();
   }
   initialiseEmployeeComment() {
     this.employeeCommentForm = this.formBuilder.group({
@@ -220,7 +227,13 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         (data) => {
           // this.loadingService.hide();
           if (data.length > 0) {
-            this.appraisalFeedbacks = data;
+            this.appraisalFeedbacks = data.map((item) => {
+              return {
+                label: item.kpiObjectives,
+                id: item.employeeObjectiveIdicatorId,
+              };
+            });
+            // console.log(this.appraisalFeedbacks);
             this.preference = {
               isReviewerOneInvloved: data[0].isReviewerOneInvloved,
               isReviewertwoInvloved: data[0].isReviewertwoInvloved,
@@ -811,6 +824,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
               endDate: data.endDate,
               overallRemark: data.overallRemark,
             });
+            this.revieweeId = data.employeeId;
             // this.initialiseFeedbackForm();
           }
         },
@@ -821,11 +835,12 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
   initialiseScheduleForm() {
     this.scheduleForm = this.formBuilder.group({
-      reviewerName: [""],
+      reviewerId: [""],
+      revieweeId: [""],
       date: [""],
       time: [""],
-      objective: [""],
-      scheduleComment: [""],
+      objectiveId: [[]],
+      comment: [""],
     });
   }
   showScheduleForm() {
@@ -851,23 +866,39 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     }
     this.scheduleTime = hours + ":" + minutes + " " + meridian;
   }
-  submitSchedule() {
-    const payload = {
-      reviewerName: this.reviewerName,
-      date: this.scheduleDate,
-      time: this.scheduleTime,
-      objective: this.objective,
-      scheduleComment: this.scheduleComment,
-    };
-    console.log(payload);
+  submitSchedule(form: FormGroup) {
+    const payload: CoachingSchedule = form.value;
+    payload.revieweeId = +this.revieweeId;
+    payload.reviewerId = +payload.reviewerId;
+    payload.date = new Date(payload.date);
+    // console.log(payload);
+    this.performanceManagementService.scheduleCoaching(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success").then(() => {
+            this.closeScheduleModal();
+          });
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
   }
 
   closeScheduleModal() {
+    this.initialiseScheduleForm();
     $("#schedlule_modal").modal("hide");
-    this.reviewerName = "";
-    this.date = "";
-    this.time = "";
-    this.objective = "";
-    this.scheduleComment = "";
+  }
+
+  viewSchedule() {
+    this.router.navigate(["/performance/coaching-schedules"], {
+      queryParams: {
+        revieweeId: this.revieweeId,
+        companyId: this.companyId,
+      },
+    });
   }
 }

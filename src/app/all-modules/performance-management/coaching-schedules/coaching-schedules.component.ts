@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
+import { ActivatedRoute } from "@angular/router";
+import { PerformanceManagementService } from "../../../services/performance-management.service";
 
 @Component({
   selector: "app-coaching-schedules",
@@ -9,9 +11,19 @@ import { Observable } from "rxjs";
 export class CoachingSchedulesComponent implements OnInit {
   coachingList$: Observable<any>;
 
-  constructor() {}
+  constructor(
+    private route: ActivatedRoute,
+    private performanceManagementService: PerformanceManagementService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((param) => {
+      this.coachingList$ = this.performanceManagementService.getCoachingSchedule(
+        param.revieweeId,
+        param.companyId
+      );
+    });
+  }
 
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
