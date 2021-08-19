@@ -27,9 +27,7 @@
   height: 50px;
 }
 
-.disabled{
-  cursor: not-allowed;
-}
+
 .category {
   font-weight: bold;
   margin-top: 20px;

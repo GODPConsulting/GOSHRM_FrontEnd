@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
 import { JwtService } from "../../../services/jwt.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-feedback-kudos",
@@ -14,7 +15,8 @@ export class FeedbackKudosComponent implements OnInit {
 
   constructor(
     private performanceManagementService: PerformanceManagementService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -34,4 +36,15 @@ export class FeedbackKudosComponent implements OnInit {
   }
 
   delete() {}
+
+  viewKudos(item) {
+    if (item.submitted == "Yes") {
+      return;
+    }
+    this.router.navigate(["/performance/add-kudos"], {
+      queryParams: {
+        id: item.appraisalNuggetId,
+      },
+    });
+  }
 }

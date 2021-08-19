@@ -32,7 +32,11 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-item let-i="rowIndex">
-            <tr style="cursor: pointer" (click)="viewFeedback(item)">
+            <tr
+              style="cursor: pointer"
+              (click)="viewFeedback(item)"
+              [ngClass]="{ disabled: item.isSubmitted }"
+            >
               <td class="table-checkbox">
                 <p-tableCheckbox
                   (click)="stopParentEvent($event)"

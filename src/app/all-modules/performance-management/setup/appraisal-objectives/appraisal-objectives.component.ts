@@ -346,8 +346,8 @@ export class AppraisalObjectivesComponent implements OnInit {
     this.isEditing = true;
     if (!table.canEmplyeeAddObjective) {
       return;
-    } else if (this.appraisalStatus != 1) {
-      return;
+      // } else if (this.appraisalStatus != 1) {
+      //   return;
     } else if (this.hasLineManagerApproved) {
       return;
     } else {

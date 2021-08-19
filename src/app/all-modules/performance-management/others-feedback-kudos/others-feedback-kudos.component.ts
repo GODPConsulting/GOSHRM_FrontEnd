@@ -23,7 +23,7 @@ export class OthersFeedbackKudosComponent implements OnInit {
   commentForm: FormGroup;
   scoreForm: FormGroup;
   points$: Observable<any[]>;
-  comment: string;
+  comment: any[] = [];
   showFeedback: boolean;
   reviewPeriod$: Observable<unknown>;
   reviewerId: number;
@@ -72,6 +72,7 @@ export class OthersFeedbackKudosComponent implements OnInit {
     this.commentForm = this.fb.group({
       comment: [""],
       kpiId: [""],
+      createdOn: [""],
     });
   }
   initialiseScoreForm() {
@@ -139,6 +140,7 @@ export class OthersFeedbackKudosComponent implements OnInit {
     payload.staffId = this.reviewerId;
     payload.appraisalCycleId = this.appraisalCycleId;
     payload.revieweeId = this.revieweeId;
+    payload.createdOn = new Date(payload.createdOn);
     console.log(payload);
     this.performanceManagementService.addKudosComment(payload).subscribe(
       (res) => {

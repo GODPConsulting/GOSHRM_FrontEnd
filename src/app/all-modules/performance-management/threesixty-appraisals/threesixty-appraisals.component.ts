@@ -28,6 +28,9 @@ export class ThreesixtyAppraisalsComponent implements OnInit {
   }
 
   viewFeedback(item) {
+    if (item.isSubmitted) {
+      return;
+    }
     this.router.navigate(["/performance/360-appraisal"], {
       queryParams: {
         id: item.employeePerformanceFeedback360Id,

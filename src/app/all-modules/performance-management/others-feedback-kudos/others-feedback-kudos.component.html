@@ -206,7 +206,7 @@
           </ng-template>
         </p-table>
       </div>
-      <div class="submit-div" *ngIf="(feedbacks$ | async).length > 0">
+      <div class="submit-div" *ngIf="feedbacks$ | async">
         <button class="btn btn-primary submit-btn" (click)="submitFeedback()">
           Submit
         </button>
@@ -235,6 +235,17 @@
       <div class="modal-body">
         <form [formGroup]="commentForm">
           <div class="row row-flex">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="date">Date</label>
+                <input
+                  type="date"
+                  id="date"
+                  formControlName="createdOn"
+                  class="form-control"
+                />
+              </div>
+            </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Comment</label>
@@ -350,8 +361,8 @@
 
           <tbody>
             <tr *ngFor="let item of comment">
-              <td style="width: 250px"></td>
-              <td>{{ item | titlecase }}</td>
+              <td style="width: 250px">{{ item.createdOn | date }}</td>
+              <td>{{ item.revieweeComments | titlecase }}</td>
             </tr>
           </tbody>
         </table>

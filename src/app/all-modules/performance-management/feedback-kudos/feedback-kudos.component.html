@@ -52,12 +52,14 @@
               <th>Request On</th>
               <th>Review Cycle Status</th>
               <th>Review Date</th>
+              <!--              <th></th>-->
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-item let-i="rowIndex">
             <tr
-              [routerLink]="['/performance/add-kudos', item.id]"
+              (click)="viewKudos(item)"
               style="cursor: pointer"
+              [ngClass]="{ disabled: item.submitted == 'Yes' }"
             >
               <td class="table-checkbox">
                 <p-tableCheckbox
@@ -66,12 +68,12 @@
                 ></p-tableCheckbox>
               </td>
               <td class="sn_width">{{ i + 1 }}</td>
-              <td>{{ item.name | titlecase }}</td>
-              <td>{{ item.role }}</td>
-              <td>{{ item.type | titlecase }}</td>
-              <td>{{ item.number }}</td>
-              <td>{{ item.email | titlecase }}</td>
-              <td></td>
+              <td>{{ item.revieweeName | titlecase }}</td>
+              <td>{{ item.reviewCycle }}</td>
+              <td>{{ item.submitted | titlecase }}</td>
+              <td>{{ item.requestOn | date }}</td>
+              <td>{{ item.statusName }}</td>
+              <td>{{ item.reviewDate }}</td>
             </tr>
           </ng-template>
           <tbody></tbody>
