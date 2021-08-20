@@ -6,7 +6,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
 
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { CommonService } from "../../../../../services/common.service";
 import { ActivatedRoute } from "@angular/router";
 
@@ -34,7 +34,7 @@ export class CareerComponent implements OnInit {
   public jobTitles: any[] = [];
   public offices: any[] = [];
   public employmentTypes: any[] = [];
-  public employeesList: any = [];
+  public employeesList$: Observable<any>;
   @ViewChild("fileInput")
   fileInput: ElementRef;
 
@@ -93,10 +93,11 @@ export class CareerComponent implements OnInit {
     this.getJobTitle();
     this.getLocation();
     this.getStaffDepartments();
-    this.loadEmployees();
+    // this.loadEmployees();
     this.getEmploymentType();
 
     this.getJobTitle();
+    this.employeesList$ = this.employeeService.getEmployees();
   }
   //this.setupService.getData
   // Get All Employees
@@ -169,8 +170,7 @@ export class CareerComponent implements OnInit {
     this.employeeService.getEmployees().subscribe(
       (data) => {
         // this.loadingService.hide();
-
-        this.employeesList = data.employeeList;
+        // this.employeesList = data.employeeList;
       },
       (err) => {
         // this.loadingService.hide();

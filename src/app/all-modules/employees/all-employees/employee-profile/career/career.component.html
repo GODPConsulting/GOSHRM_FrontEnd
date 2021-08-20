@@ -325,7 +325,7 @@
                 >
                   <option selected value="">line Manager</option>
                   <option
-                    *ngFor="let row of employeesList; let i = index"
+                    *ngFor="let row of employeesList$ | async; let i = index"
                     value="{{ row.employeeId }}"
                   >
                     {{ row.firstName }} {{ row.lastName }}
@@ -366,7 +366,7 @@
                 >
                   <option selected value="">First Level Reviewer</option>
                   <option
-                    *ngFor="let row of employeesList; let i = index"
+                    *ngFor="let row of employeesList$ | async; let i = index"
                     value="{{ row.employeeId }}"
                   >
                     {{ row.firstName }} {{ row.lastName }}
@@ -407,7 +407,7 @@
                 >
                   <option selected value="">Second Level Reviewer</option>
                   <option
-                    *ngFor="let row of employeesList; let i = index"
+                    *ngFor="let row of employeesList$ | async; let i = index"
                     value="{{ row.employeeId }}"
                   >
                     {{ row.firstName }} {{ row.lastName }}
@@ -448,7 +448,7 @@
                 >
                   <option selected value="">Third Level Reviewer</option>
                   <option
-                    *ngFor="let row of employeesList; let i = index"
+                    *ngFor="let row of employeesList$ | async; let i = index"
                     value="{{ row.employeeId }}"
                   >
                     {{ row.firstName }} {{ row.lastName }}
