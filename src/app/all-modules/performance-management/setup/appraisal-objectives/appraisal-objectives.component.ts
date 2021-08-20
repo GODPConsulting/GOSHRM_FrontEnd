@@ -296,9 +296,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   addObjective(item: any) {
-    if (this.appraisalStatus != 1) {
-      return;
-    } else if (this.hasLineManagerApproved) {
+    if (this.hasLineManagerApproved) {
       return;
     } else {
       this.kpiCategories = item.kpiIndicators;

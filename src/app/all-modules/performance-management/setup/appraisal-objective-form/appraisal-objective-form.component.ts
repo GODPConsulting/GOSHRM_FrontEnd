@@ -240,6 +240,9 @@ export class AppraisalObjectiveFormComponent implements OnInit {
       .getSingleEmployeeObjective(this.staffId, this.employeePerformId)
       .subscribe(
         (data) => {
+          this.appraisalObjectiveForm.patchValue({
+            comment: data[0].comment,
+          });
           // console.log(data);
           // this.loadingService.hide();
           this.lineManagerId = data[0].lineManger;
