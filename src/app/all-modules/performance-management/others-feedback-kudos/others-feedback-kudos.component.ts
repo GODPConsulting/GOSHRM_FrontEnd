@@ -10,6 +10,7 @@ import {
   KudosFeedback,
   KudosScore,
 } from "../../../interface/interfaces";
+import { Location } from "@angular/common";
 declare const $;
 @Component({
   selector: "app-others-feedback-kudos",
@@ -35,7 +36,8 @@ export class OthersFeedbackKudosComponent implements OnInit {
     private employeeService: EmployeeService,
     private jwtService: JwtService,
     private performanceManagementService: PerformanceManagementService,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    public location: Location
   ) {}
 
   ngOnInit(): void {
@@ -63,9 +65,6 @@ export class OthersFeedbackKudosComponent implements OnInit {
         reviewerJobTitle: user.jobTitleName,
         department: user.companyName,
       });
-      this.feedbacks$ = this.performanceManagementService.getKudosFeedback(
-        this.reviewerId
-      );
     });
   }
   initialiseCommentForm() {
@@ -213,6 +212,15 @@ export class OthersFeedbackKudosComponent implements OnInit {
       (err) => {
         return this.utilitiesService.showMessage(err, "error");
       }
+    );
+  }
+
+  getFeedbacks() {
+    if (!this.revieweeId) {
+      return this.utilitiesService.showError("Select an employee");
+    }
+    this.feedbacks$ = this.performanceManagementService.getKudosFeedback(
+      this.revieweeId
     );
   }
 }
