@@ -164,7 +164,7 @@ export class KpiCategoryComponent implements OnInit {
     this.employeePermitted = row.employeePermitted;
     this.weightModel = row.weightModel;
     this.description = row.description;
-    this.setWeightModel(row.weightModel);
+    this.setWeightModel(row.employeePermitted);
     $("#kpi_category_modal").modal("show");
   }
 

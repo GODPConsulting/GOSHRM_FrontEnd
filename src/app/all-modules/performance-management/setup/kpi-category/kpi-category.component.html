@@ -148,7 +148,7 @@
                   [(ngModel)]="weightModel"
                 >
                   <option selected value="" disabled>Weight Model</option>
-                  <option *ngIf="allLocation === 1" value="2">
+                  <option *ngIf="allLocation === 1" value="1">
                     Independent Allocation
                   </option>
                   <option *ngIf="allLocation === 2" value="3">
@@ -157,7 +157,7 @@
                   <option *ngIf="!allLocation" value="2">
                     Even Distribution
                   </option>
-                  <option *ngIf="allLocation" value="1">
+                  <option *ngIf="allLocation" value="2">
                     Even Distribution
                   </option>
                 </select>
