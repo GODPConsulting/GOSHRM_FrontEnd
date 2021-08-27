@@ -605,8 +605,14 @@
 <div id="comment_modal" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div
+        class="modal-header"
+        style="justify-content: space-between; margin-top: 20px"
+      >
         <h5 class="modal-title">{{ commentTitle }}</h5>
+        <span (click)="deleteComment()">
+          <i class="fa fa-trash delete-comment-btn"></i>
+        </span>
         <button
           type="button"
           class="close"
@@ -618,17 +624,27 @@
         </button>
       </div>
       <div class="modal-body">
-        <p-table [value]="employeeComments">
+        <p-table [value]="employeeComments" [(selection)]="selectedComments">
           <ng-template pTemplate="header">
             <tr>
+              <th>
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
               <th style="width: 250px">Date</th>
               <th>Comment</th>
+              <th></th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">
             <tr>
+              <td>
+                <p-tableCheckbox [value]="row"></p-tableCheckbox>
+              </td>
               <td style="width: 250px">{{ row.createdOn | date }}</td>
               <td>{{ row.comment | titlecase }}</td>
+              <td>
+                <i class="fa fa-pencil" (click)="editComment(row)"></i>
+              </td>
             </tr>
           </ng-template>
         </p-table>
