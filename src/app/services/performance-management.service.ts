@@ -1148,4 +1148,15 @@ export class PerformanceManagementService {
         })
       );
   }
+
+  deleteComments(payload: any): Observable<any> {
+    return this.apiService
+      .post(`/performance/delete/feedback-comment/by-employeeId`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
 }

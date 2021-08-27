@@ -92,6 +92,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   objectives: any[] = [];
   revieweeId: number;
   companyId: number;
+  selectedComments: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -142,6 +143,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       employeePerformId: this.employeePerformId,
       comment: [""],
       revieweeComment: [""],
+      commentId: [0],
     });
   }
   initialiseEmployeeScore() {
@@ -903,6 +905,64 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         revieweeId: this.revieweeId,
         companyId: this.companyId,
       },
+    });
+  }
+
+  editComment(row) {
+    // appraisal_feedback_page_modal
+    $("#comment_modal").modal("hide");
+    this.formControlName = "revieweeComment";
+    this.employeeCommentForm.addControl(
+      this.formControlName,
+      new FormControl()
+    );
+    this.employeeCommentForm.patchValue({
+      commentId: row.commentId,
+      employeeObjectiveFeedbackID: row.employeeObjectiveFeedbackID,
+      staffId: this.staffId,
+      appraisalCycleId: +this.appraisalCycleId,
+      employeePerformId: this.employeePerformId,
+      comment: row.comment,
+      revieweeComment: row.comment,
+    });
+    console.log(this.employeeCommentForm.value);
+    $("#appraisal_feedback_page_modal").modal("show");
+  }
+
+  deleteComment() {
+    if (this.selectedComments.length === 0) {
+      return this.utilitiesService.showError("Select comment to delete");
+    }
+    const commentIds: number[] = [];
+    this.selectedComments.map((item) => {
+      commentIds.push(item.commentId);
+    });
+    const payload = {
+      itemIds: commentIds,
+    };
+    this.utilitiesService.confirmDelete().then((value) => {
+      if (value.isConfirmed) {
+        return this.performanceManagementService
+          .deleteComments(payload)
+          .subscribe(
+            (res) => {
+              if (res.status.isSuccessful) {
+                return this.utilitiesService
+                  .showMessage(res, "success")
+                  .then(() => {
+                    $("#comment_modal").modal("hide");
+                    this.getAppraisalFeedbacks();
+                  });
+              } else {
+                return this.utilitiesService.showMessage(res, "error");
+              }
+              this.selectedComments = [];
+            },
+            (err) => {
+              return this.utilitiesService.showMessage(err, "error");
+            }
+          );
+      }
     });
   }
 }

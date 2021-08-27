@@ -59,3 +59,13 @@ th, td {
   display: flex;
   align-items: center;
 }
+.delete-comment-btn {
+  border: 1px solid #eee;
+  padding: 5px;
+  width: 30px;
+  text-align: center;
+  color: tomato;
+  font-size: 15px;
+  border-radius: 4px;
+  cursor: pointer
+}
