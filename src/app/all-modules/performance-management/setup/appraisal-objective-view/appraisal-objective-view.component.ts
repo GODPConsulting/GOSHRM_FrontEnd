@@ -17,6 +17,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   jobGradeId: number;
   employeeAppraisalCycle: IAppraisalCycle[] = [];
   reviewYears$: Observable<any> = this.performanceManagementService.getReviewYears();
+  activeIndex: number;
   constructor(
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
@@ -77,5 +78,9 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   }
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
+  }
+  tabChange(event: any) {
+    this.activeIndex = event.index;
+    console.log(this.activeIndex);
   }
 }

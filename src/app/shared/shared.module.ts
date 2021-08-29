@@ -11,6 +11,8 @@ import { TreeTableModule } from "primeng/treetable";
 import { CustomDatePipe } from "../pipes/custom-date.pipe";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
+import { TabPanel, TabViewModule } from "primeng/tabview";
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { NgSelectModule } from "@ng-select/ng-select";
     TreeTableModule,
     ReactiveFormsModule,
     NgSelectModule,
+    CKEditorModule,
+    TabViewModule,
   ],
   exports: [
     LoadingComponent,
@@ -39,6 +43,9 @@ import { NgSelectModule } from "@ng-select/ng-select";
     TreeTableModule,
     CustomDatePipe,
     NgSelectModule,
+    CKEditorModule,
+    TabPanel,
+    TabViewModule,
   ],
 })
 export class SharedModule {}

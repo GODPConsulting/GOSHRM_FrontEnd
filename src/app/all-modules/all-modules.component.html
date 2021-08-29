@@ -1,5 +1,32 @@
+<!--<app-header></app-header>-->
+<!--<app-sidebar></app-sidebar>-->
+<!--&lt;!&ndash;<app-menu></app-menu>&ndash;&gt;-->
+<!--<router-outlet></router-outlet>-->
+<!--&lt;!&ndash;<div>right</div>&ndash;&gt;-->
+
 <app-header></app-header>
-<app-sidebar></app-sidebar>
-<!--<app-menu></app-menu>-->
-<router-outlet></router-outlet>
-<!--<div>right</div>-->
+<div class="layout__wrapper">
+  <div class="g-sidebar">
+    <app-sidebar></app-sidebar>
+  </div>
+  <div class="gos-main">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="gos-right">
+    <span class="gos-icon-span">
+      <span class="number-icon">26</span>
+    </span>
+    <span class="gos-icon-span">
+      <i class="fa fa-comment-o chat-icon"></i>
+    </span>
+    <span class="gos-icon-span">
+      <i class="fa fa-bell-o notification-icon"></i>
+    </span>
+    <span class="gos-icon-span">
+      <i class="fa fa-feed feed-icon"></i>
+    </span>
+    <span class="gos-icon-span">
+      <i class="fa fa-cog setting-icon"></i>
+    </span>
+  </div>
+</div>
