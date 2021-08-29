@@ -34,6 +34,7 @@
               "node_modules/ng-drag-drop/style.css",
               "node_modules/primeng/resources/themes/mdc-light-indigo/theme.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
+              "src/index.css",
               "src/styles.css"
             ],
             "scripts": [

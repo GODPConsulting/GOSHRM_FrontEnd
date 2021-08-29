@@ -76,6 +76,7 @@ export interface IPointSetting {
 }
 
 export interface IAppraisalCycle {
+  employeeName: string;
   allowMultipleCycle: boolean;
   calenderRange: string;
   revieweeWeight: number;

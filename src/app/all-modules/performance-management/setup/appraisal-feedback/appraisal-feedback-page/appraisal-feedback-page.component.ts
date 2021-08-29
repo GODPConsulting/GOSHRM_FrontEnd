@@ -15,6 +15,7 @@ import { catchError } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { EmployeeService } from "../../../../../services/employee.service";
 import { CoachingSchedule } from "../../../../../interface/interfaces";
+import * as ClassicEditor from "@ckeditor/ckeditor5-angular";
 declare const $: any;
 
 interface Preference {
@@ -93,6 +94,13 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   revieweeId: number;
   companyId: number;
   selectedComments: any[] = [];
+  public Editor = ClassicEditor;
+  public model = {
+    editordata: "",
+  };
+  public editorConfig = {
+    extraPlugins: [],
+  };
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
