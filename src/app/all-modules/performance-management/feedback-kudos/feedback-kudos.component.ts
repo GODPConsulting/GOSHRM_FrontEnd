@@ -12,6 +12,7 @@ import { Router } from "@angular/router";
 export class FeedbackKudosComponent implements OnInit {
   feedbacks$: Observable<any[]>;
   reviewPeriod$: Observable<unknown>;
+  activeIndex: number = 0;
 
   constructor(
     private performanceManagementService: PerformanceManagementService,
@@ -46,5 +47,9 @@ export class FeedbackKudosComponent implements OnInit {
         id: item.appraisalNuggetId,
       },
     });
+  }
+
+  tabChange(event: any) {
+    this.activeIndex = event.index
   }
 }

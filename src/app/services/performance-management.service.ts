@@ -17,12 +17,17 @@ import {
   ThreeSixtyFeedback,
   ThreesixtyFeedback,
 } from "../interface/interfaces";
+import { UtilitiesService } from "./utilities.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class PerformanceManagementService {
-  constructor(private apiService: ApiService, private http: HttpClient) {}
+  constructor(
+    private apiService: ApiService,
+    private http: HttpClient,
+    private utilitiesService: UtilitiesService
+  ) {}
   handleError(error: HttpErrorResponse) {
     return throwError(error);
   }
@@ -1152,6 +1157,64 @@ export class PerformanceManagementService {
   deleteComments(payload: any): Observable<any> {
     return this.apiService
       .post(`/performance/delete/feedback-comment/by-employeeId`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+  uploadPoints(file: FormData): Observable<any> {
+    return this.apiService
+      .post(`​/performance​/performancesetup​/upload​/point-setting`, file)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  uploadPointSetting(file: File): Promise<any> {
+    return this.apiService
+      .uploadExcel(
+        `​/performance​/performancesetup​/upload​/point-setting`,
+        file
+      )
+      .then((res) => {
+        return res;
+      });
+  }
+
+  downloadPointSettins(): Observable<any> {
+    return this.apiService
+      .get(`/performance​/performancesetup​/download​/point-setting`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+
+  uploadGradeSettings(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append("file", file);
+    console.log(formData);
+    return this.apiService
+      .post(`​/performance​/performancesetup​/upload​/grade-setting`, formData)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  downloadGradeSettings(): Observable<any> {
+    return this.apiService
+      .get(`/performance​/performancesetup​/download​/grade-setting`)
       .pipe(
         tap(),
         map((res) => {

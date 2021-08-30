@@ -33,10 +33,19 @@
             #fileInput
             (change)="handleFileChange($event)"
           />
-          <a class="btn upload-btn hint" (click)="upload()"
-            ><span class="hint-text"
-              >Upload:(Reviewee EmpID, Reviewer EmpID, CompanyName)</span
-            ><i class="fa fa-upload"></i
+          <a
+            class="btn upload-btn"
+            (click)="upload()"
+            pTooltip="Upload KPI Score:(Reviewee EmpID, KPI Name, Reviewee score, Reviewer 1 score,  Reviewer 2 score,  Reviewer 3 score)"
+          >
+            <i class="fa fa-upload"></i
+          ></a>
+          <a
+            class="btn upload-btn"
+            (click)="upload()"
+            pTooltip="Upload 360:(Reviewee EmpID, Reviewer EmpID, CompanyName)"
+          >
+            <i class="fa fa-upload"></i
           ></a>
           <a class="btn download-btn hint" (click)="downloadFile()" download
             ><span class="hint-text">Download</span

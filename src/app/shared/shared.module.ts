@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { TabPanel, TabViewModule } from "primeng/tabview";
+import { TooltipModule } from "primeng/tooltip";
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { TabPanel, TabViewModule } from "primeng/tabview";
     NgSelectModule,
     CKEditorModule,
     TabViewModule,
+    TooltipModule,
   ],
   exports: [
     LoadingComponent,
@@ -46,6 +48,7 @@ import { TabPanel, TabViewModule } from "primeng/tabview";
     CKEditorModule,
     TabPanel,
     TabViewModule,
+    TooltipModule,
   ],
 })
 export class SharedModule {}

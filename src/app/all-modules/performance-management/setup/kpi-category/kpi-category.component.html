@@ -163,9 +163,12 @@
                 </select>
               </div>
             </div>
-            <div *ngIf="!hrDisabled" class="col-md-6">
+            <div
+              *ngIf="employeePermitted == 2 && selectReview == 3"
+              class="col-md-6"
+            >
               <div class="form-group">
-                <label>HR Select Reviewer</label>
+                <label>HR Alone Select Reviewer</label>
                 <select
                   type="text"
                   class="form-control"
@@ -174,7 +177,9 @@
                   [disabled]="hrDisabled"
                   [(ngModel)]="hrSelectReviewer"
                 >
-                  <option selected value="">HR Select Reviewer</option>
+                  <option selected value="" disabled>
+                    HR Alone Select Reviewer
+                  </option>
                   <option value="1">Yes</option>
                   <option value="2">No</option>
                 </select>

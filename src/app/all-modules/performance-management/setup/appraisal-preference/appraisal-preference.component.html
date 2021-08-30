@@ -1,12 +1,14 @@
-<div class="content container-fluid">
+<div class="content container-fluid mb10">
   <!-- Page Header -->
   <div class="content-wrapper">
     <div class="page-header">
       <div class="col">
-        <h3 class="page-title">Appraisal Preference</h3>
+        <h3 class="page-title">Performance Management Preference</h3>
         <ul class="breadcrumb">
           <li class="breadcrumb-item">Performance Management</li>
-          <li class="breadcrumb-item active">Appraisal Preference</li>
+          <li class="breadcrumb-item active">
+            Performance Management Preference
+          </li>
         </ul>
       </div>
     </div>
@@ -101,8 +103,9 @@
 
           <div class="col-sm-6">
             <div class="form-group">
-              <label
-                >Reviewer 1 comment Visible to reviewee<span class="text-danger"
+              <label class="text-capitalize"
+                >Reviewer 1 comment Visible to reviewee?<span
+                  class="text-danger"
                   >*</span
                 ></label
               >
@@ -144,8 +147,9 @@
 
           <div class="col-sm-6">
             <div class="form-group">
-              <label
-                >Reviewer 2 comment Visible to reviewee<span class="text-danger"
+              <label class="text-capitalize"
+                >Reviewer 2 comment Visible to reviewee?<span
+                  class="text-danger"
                   >*</span
                 ></label
               >
@@ -187,8 +191,9 @@
 
           <div class="col-sm-6">
             <div class="form-group">
-              <label
-                >Reviewer 3 comment Visible to reviewee<span class="text-danger"
+              <label class="text-capitalize"
+                >Reviewer 3 comment Visible to reviewee?<span
+                  class="text-danger"
                   >*</span
                 ></label
               >
@@ -270,7 +275,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label
-                >Employee can view Coach's Performance Objectives Email<span
+                >Employee can view Coach's Performance Objectives?<span
                   class="text-danger"
                   >*</span
                 ></label
@@ -324,4 +329,32 @@
       </form>
     </div>
   </div>
+</div>
+<div class="p15">
+  <p-table>
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="text-center">Company</th>
+        <th class="text-capitalize text-center">
+          Current Performance mgt cycle
+        </th>
+        <th class="text-capitalize text-center">
+          reviewer 1 comment visible to reviewee
+        </th>
+        <th class="text-capitalize text-center">
+          reviewer 2 comment visible to reviewee
+        </th>
+        <th class="text-capitalize text-center">
+          reviewer 3 comment visible to reviewee
+        </th>
+        <th class="text-capitalize text-center">status</th>
+        <th class="text-capitalize text-center">
+          employee can view coach's performance objectives
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <tr></tr>
+    </ng-template>
+  </p-table>
 </div>

@@ -1,5 +1,6 @@
+<!--
 <div class="content container-fluid">
-  <!-- page Header Start -->
+  &lt;!&ndash; page Header Start &ndash;&gt;
   <div class="card">
     <div class="card-header header-bg-color">
       <h5><b>Appraisal Feedback Nuggets </b></h5>
@@ -52,7 +53,7 @@
               <th>Request On</th>
               <th>Review Cycle Status</th>
               <th>Review Date</th>
-              <!--              <th></th>-->
+              &lt;!&ndash;              <th></th>&ndash;&gt;
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-item let-i="rowIndex">
@@ -82,3 +83,13 @@
     </div>
   </div>
 </div>
+-->
+
+<p-tabView [activeIndex]="activeIndex" (onChange)="tabChange($event)">
+  <p-tabPanel header="Inward Nugget">
+    <app-inward-nuggets></app-inward-nuggets>
+  </p-tabPanel>
+  <p-tabPanel header="Outward Nugget">
+    <app-outward-nuggets *ngIf="activeIndex == 1"></app-outward-nuggets>
+  </p-tabPanel>
+</p-tabView>

@@ -255,4 +255,10 @@ export class UtilitiesService {
       confirmButtonText: "Yes!",
     });
   }
+
+  appendFile(file: File) {
+    const formData: FormData = new FormData();
+    formData.append("file", file);
+    return formData;
+  }
 }

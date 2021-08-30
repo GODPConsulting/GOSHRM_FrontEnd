@@ -90,4 +90,32 @@ export class ApiService {
       xhr.send(formData);
     });
   }
+
+  uploadExcel(path, file: File) {
+    return new Promise((resolve, reject) => {
+      const url = `${environment.api_url}${path}`;
+      const xhr: XMLHttpRequest = new XMLHttpRequest();
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            resolve(JSON.parse(xhr.response));
+          } else {
+            reject(xhr.response);
+          }
+        }
+      };
+
+      xhr.open("POST", url, true);
+      const formData = new FormData();
+      formData.append("file", file, file.name);
+      console.log(formData);
+
+      const token = this.jwtService.getToken();
+      xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+      xhr.send(formData);
+      console.log(formData);
+    });
+  }
 }

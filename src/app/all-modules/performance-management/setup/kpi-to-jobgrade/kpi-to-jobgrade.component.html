@@ -12,7 +12,16 @@
           <li class="breadcrumb-item active">KPI To Job Grade</li>
         </ul>
       </div>
-      <div class="col-auto float-right ml-auto">
+      <div class="col-auto float-right ml-auto df center-align">
+        <input type="file" class="form-control" />
+        <a
+          class="btn upload-btn"
+          pTooltip="Upload: Excel File Lorem Isum  dononr aauaauauauaayay "
+        >
+          <span>
+            <i class="fa fa-cloud-upload"></i>
+          </span>
+        </a>
         <a
           class="btn add-btn hint"
           data-toggle="modal"
@@ -49,6 +58,12 @@
                 (keyup)="dt.filterGlobal($event.target.value, 'contains')"
                 style="width: auto"
               />
+              <a
+                data-toggle="modal"
+                data-target="#weight_summary"
+                style="cursor: pointer; color: var(--color-primary)"
+                >View Weight Summary</a
+              >
             </div>
           </ng-template>
           <ng-template pTemplate="header">
@@ -62,10 +77,14 @@
                 <!--                />-->
               </th>
               <th class="sn_width">S/N</th>
-              <th style="width: 7em">Job Grade</th>
-              <th style="width: 10em">KPI Category</th>
-              <th style="width: 7em">Weight</th>
-              <th>KPIs</th>
+              <th style="width: 7em" [pSortableColumn]="'jobGradeName'">
+                Job Grade
+              </th>
+              <th style="width: 10em" [pSortableColumn]="'kpiCategoryName'">
+                KPI Category
+              </th>
+              <th style="width: 7em" [pSortableColumn]="'weight'">Weight</th>
+              <th [pSortableColumn]="'kpis'">KPIs</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">
@@ -86,7 +105,7 @@
   </div>
   <hr class="my-5" />
   <!-- Page Header -->
-  <div class="page-header">
+  <!--  <div class="page-header">
     <div class="row align-items-center">
       <div class="col">
         <h3 class="page-title">Weight Summary</h3>
@@ -98,10 +117,10 @@
         </ul>
       </div>
     </div>
-  </div>
+  </div>-->
   <!-- /Page Header -->
   <!-- Weight Summary -->
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
         <p-table
@@ -140,7 +159,7 @@
         </p-table>
       </div>
     </div>
-  </div>
+  </div>-->
   <!-- /Weight Summary -->
 </div>
 <!-- /Page Content -->
@@ -312,3 +331,66 @@
   </div>
 </div>
 <!-- /Add KpiToJobGrade Modal -->
+
+<!-- Weight Summary Modal -->
+<div id="weight_summary" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Weight Summary</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true" (click)="closeModal()">&times;</span>
+        </button>
+      </div>
+      <!--      <div>Total Weight: {{ totalWeight | number: "1.2-2" }}</div>-->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="weightSummary"
+                [columns]="weightSummaryCols"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>S/N</th>
+                    <th>Job Grade</th>
+                    <th>Total Weight</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr class="pointer">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ row.jobGradeName }}</td>
+                    <td>{{ row.weight }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Weight Summary Modal -->
