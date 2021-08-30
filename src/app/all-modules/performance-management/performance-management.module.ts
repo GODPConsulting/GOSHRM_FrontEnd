@@ -33,6 +33,9 @@ import { OthersFeedbackKudosComponent } from "./others-feedback-kudos/others-fee
 import { MyFeedbackKudosComponent } from "./my-feedback-kudos/my-feedback-kudos.component";
 import { CoachingSchedulesComponent } from "./coaching-schedules/coaching-schedules.component";
 import { MultiSelectModule } from "primeng/multiselect";
+import { InwardNuggetsComponent } from "./components/inward-nuggets/inward-nuggets.component";
+import { OutwardNuggetsComponent } from "./components/outward-nuggets/outward-nuggets.component";
+import { TooltipModule } from "primeng/tooltip";
 @NgModule({
   declarations: [
     PerformanceManagementComponent,
@@ -57,6 +60,8 @@ import { MultiSelectModule } from "primeng/multiselect";
     OthersFeedbackKudosComponent,
     MyFeedbackKudosComponent,
     CoachingSchedulesComponent,
+    InwardNuggetsComponent,
+    OutwardNuggetsComponent,
   ],
   imports: [
     CommonModule,

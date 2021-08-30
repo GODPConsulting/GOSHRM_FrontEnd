@@ -67,20 +67,20 @@ export class KpiCategoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "name",
+        field: "name",
       },
-
-      columns: [{ orderable: false }, null, null, null, null, null],
-      order: [[1, "asc"]],
-      // destroy: true,
-    };
+      {
+        header: "employeePermittedName",
+        field: "employeePermittedName",
+      },
+      {
+        header: "weightModelName",
+        field: "weightModelName",
+      },
+    ];
     this.getkpiCategory();
     this.initKpiCategoryForm();
   }
@@ -250,7 +250,7 @@ export class KpiCategoryComponent implements OnInit {
   setHrReview(event) {
     this.selectReview = +event.target.value;
     this.kpiCategoryForm.get("hrSelectReviewer");
-    if (this.selectReview === 3) {
+    if (this.selectReview == 3) {
       // this.kpiCategoryForm.get("hrSelectReviewer").enable();
       this.hrDisabled = false;
     }

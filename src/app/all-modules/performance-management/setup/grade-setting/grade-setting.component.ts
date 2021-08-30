@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Console } from "console";
@@ -29,7 +29,8 @@ export class GradeSettingComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
   cols: ISearchColumn[] = [];
   selectedGradeSettings: IGradeSettings[] = [];
-
+  file: File;
+  @ViewChild("fileInput") fileInput: ElementRef;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -39,6 +40,24 @@ export class GradeSettingComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.cols = [
+      {
+        header: "minimum",
+        field: "minimum",
+      },
+      {
+        header: "maximum",
+        field: "maximum",
+      },
+      {
+        header: "grade",
+        field: "grade",
+      },
+      {
+        header: "description",
+        field: "description",
+      },
+    ];
     this.initializeForm();
     this.getSavedGradeSetting();
   }
@@ -158,5 +177,52 @@ export class GradeSettingComponent implements OnInit {
         }
       });
     this.selectedGradeSettings = [];
+  }
+  handleFileInput(file: FileList) {
+    this.file = file.item(0);
+  }
+
+  uploadGradeSettings() {
+    if (!this.file) {
+      return this.utilitiesService.showError("Select an excel file to upload");
+    }
+    if (
+      this.file.type !=
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      return this.utilitiesService.showError("Only Excel file is allowed");
+    }
+    // console.log("");
+    this.performanceManagementService.uploadGradeSettings(this.file).subscribe(
+      (res) => {
+        console.log(res);
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success").then(() => {
+            this.fileInput.nativeElement.value = "";
+            this.getSavedGradeSetting();
+          });
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  downloadGradeSettings() {
+    return this.performanceManagementService.downloadGradeSettings().subscribe(
+      (data) => {
+        if (data.status.isSuccessful) {
+          return this.utilitiesService.byteToFile(data, "Grade Settings");
+        } else {
+          return this.utilitiesService.showMessage(data, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
   }
 }

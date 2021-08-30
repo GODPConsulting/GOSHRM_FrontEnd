@@ -19,7 +19,6 @@ export class PointSettingsComponent implements OnInit {
   spinner: boolean = false;
   @ViewChild("fileInput")
   fileInput: ElementRef;
-
   @Input() staffId: number;
   performancePointSettings: any = {};
 
@@ -32,6 +31,7 @@ export class PointSettingsComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
   cols: ISearchColumn[] = [];
   selectedPoints: IPointSetting[] = [];
+  file: File;
   constructor(
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
@@ -198,5 +198,50 @@ export class PointSettingsComponent implements OnInit {
   closeModal() {
     this.initialiseForm();
     $("#point_settings_modal").modal("hide");
+  }
+  handleFileInput(event) {
+    this.file = event.target.files[0];
+  }
+  uploadPointSettings() {
+    if (!this.file) {
+      return this.utilitiesService.showError("Select an excel file to upload");
+    }
+    if (
+      this.file.type !=
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    ) {
+      return this.utilitiesService.showError("Only Excel file is allowed");
+    }
+    const formData = new FormData();
+    formData.append("file", this.file, this.file.name);
+    console.log(formData);
+    return this.performanceManagementService.uploadPoints(formData).subscribe(
+      (res) => {
+        console.log(res);
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success");
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  downloadPointSettings() {
+    return this.performanceManagementService.downloadPointSettins().subscribe(
+      (data) => {
+        if (data.status.isSuccessful) {
+          return this.utilitiesService.byteToFile(data, "Point Settings");
+        } else {
+          return this.utilitiesService.showMessage(data, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
   }
 }

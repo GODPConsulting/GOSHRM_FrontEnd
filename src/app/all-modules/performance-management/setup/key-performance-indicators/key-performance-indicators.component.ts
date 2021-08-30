@@ -51,6 +51,24 @@ export class KeyPerformanceIndicatorsComponent
   }
 
   ngOnInit(): void {
+    this.cols = [
+      {
+        header: "kpiCategoryName",
+        field: "kpiCategoryName",
+      },
+      {
+        header: "kpi",
+        field: "kpi",
+      },
+      {
+        header: "description",
+        field: "description",
+      },
+      {
+        header: "resultFromExternalName",
+        field: "resultFromExternalName",
+      },
+    ];
     this.initializeForm();
     this.getKpiCategory();
     this.getSavedKPIndicators();
@@ -183,6 +201,7 @@ export class KeyPerformanceIndicatorsComponent
       kpiCategoryId: kpIndicator.kpiCategoryId,
       kpi: kpIndicator.kpi,
       description: kpIndicator.description,
+      resultFromExternal: kpIndicator.resultFromExternal.toString(),
     });
     $("#kp_indicator_modal").modal("show");
   }
