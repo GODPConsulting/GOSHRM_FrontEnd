@@ -76,7 +76,9 @@
                 />
               </td>
               <td>{{ i + 1 }}</td>
-              <td>{{ row.employeeName | titlecase }}</td>
+              <td (click)="viewAppraisal(row.empId)" style="cursor: pointer">
+                {{ row.employeeName | titlecase }}
+              </td>
               <td>{{ row.companyName | titlecase }}</td>
               <td>{{ row.reviewerOneScore }}</td>
               <td>{{ row.reviewerTwoScore }}</td>

@@ -47,6 +47,10 @@ export class JobSkillComponent implements OnInit {
           header: "skill",
           field: "skill",
         },
+        {
+          header: "weight",
+          field: "weight",
+        },
       ];
     });
 

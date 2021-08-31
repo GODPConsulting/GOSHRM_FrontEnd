@@ -21,6 +21,7 @@ import { CoachingSchedulesComponent } from "./coaching-schedules/coaching-schedu
 import { FeedbackKudosComponent } from "./feedback-kudos/feedback-kudos.component";
 import { OthersFeedbackKudosComponent } from "./others-feedback-kudos/others-feedback-kudos.component";
 import { MyFeedbackKudosComponent } from "./my-feedback-kudos/my-feedback-kudos.component";
+import { PerformanceAppraisalFeedbackComponent } from "./performance-appraisal-feedback/performance-appraisal-feedback.component";
 
 const routes: Routes = [
   {
@@ -106,6 +107,10 @@ const routes: Routes = [
       {
         path: "coaching-schedules",
         component: CoachingSchedulesComponent,
+      },
+      {
+        path: "performance-appraisal",
+        component: PerformanceAppraisalFeedbackComponent,
       },
     ],
   },

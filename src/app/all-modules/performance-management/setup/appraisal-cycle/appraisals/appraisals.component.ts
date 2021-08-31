@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
@@ -19,7 +19,8 @@ export class AppraisalsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private performanceService: PerformanceManagementService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -84,4 +85,12 @@ export class AppraisalsComponent implements OnInit {
   stopParentEvent($event: MouseEvent) {}
 
   addItemId($event: Event, id: any) {}
+
+  viewAppraisal(id: number) {
+    this.router.navigate(["/performance/performance-appraisal"], {
+      queryParams: {
+        id: id,
+      },
+    });
+  }
 }

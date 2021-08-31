@@ -31,9 +31,9 @@
                 formControlName="company"
                 (change)="getAppraisalCycleByCompanyId($event.target.value)"
               >
-                <option selected value="">Company</option>
+                <option selected value="" disabled>Company</option>
                 <option
-                  *ngFor="let row of companies"
+                  *ngFor="let row of offices$ | async"
                   value="{{ row.companyStructureId }}"
                 >
                   {{ row.name }}

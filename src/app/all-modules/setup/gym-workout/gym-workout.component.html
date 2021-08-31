@@ -58,10 +58,10 @@
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
               <th>S/N</th>
-              <th>Gym</th>
-              <th>Phone Number</th>
-              <th>Email</th>
-              <th>Ratings</th>
+              <th pSortableColumn="gym">Gym</th>
+              <th pSortableColumn="contact_phone_number">Phone Number</th>
+              <th pSortableColumn="email">Email</th>
+              <th pSortableColumn="ratings">Ratings</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">

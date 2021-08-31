@@ -219,25 +219,25 @@ export class PointSettingsComponent implements OnInit {
       (res) => {
         console.log(res);
         if (res.status.isSuccessful) {
-          return this.utilitiesService.showMessage(res, "success");
+          return this.utilitiesService.showMessage(res, "success").then(() => {
+            this.fileInput.nativeElement.value = "";
+            this.getPointSettings();
+          });
         } else {
           return this.utilitiesService.showMessage(res, "error");
         }
       },
       (err) => {
+        console.log(err);
         return this.utilitiesService.showMessage(err, "error");
       }
     );
   }
 
   downloadPointSettings() {
-    return this.performanceManagementService.downloadPointSettins().subscribe(
+    return this.performanceManagementService.downloadPointSettings().subscribe(
       (data) => {
-        if (data.status.isSuccessful) {
-          return this.utilitiesService.byteToFile(data, "Point Settings");
-        } else {
-          return this.utilitiesService.showMessage(data, "error");
-        }
+        return this.utilitiesService.byteToFile(data, "Point Settings.xlsx");
       },
       (err) => {
         return this.utilitiesService.showMessage(err, "error");

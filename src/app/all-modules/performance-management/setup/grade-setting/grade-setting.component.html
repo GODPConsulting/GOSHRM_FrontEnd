@@ -76,10 +76,10 @@
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
               <th>S/N</th>
-              <th>Min Score</th>
-              <th>Max Score</th>
-              <th>Grading</th>
-              <th>Description</th>
+              <th pSortableColumn="minimum">Min Score</th>
+              <th pSortableColumn="maximum">Max Score</th>
+              <th pSortableColumn="grade">Grading</th>
+              <th pSortableColumn="description">Description</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">

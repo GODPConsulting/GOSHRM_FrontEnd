@@ -49,10 +49,12 @@
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
               <th>S/N</th>
-              <th>Name</th>
-              <th>Employee Set Objectives</th>
-              <th>Weight Model</th>
-              <th>HR Select Reviewer</th>
+              <th pSortableColumn="name">Name</th>
+              <th pSortableColumn="employeePermittedName">
+                Employee Set Objectives
+              </th>
+              <th pSortableColumn="weightModelName">Weight Model</th>
+              <th pSortableColumn="hrSelectReviewerName">HR Select Reviewer</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">
