@@ -58,10 +58,12 @@
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
               <th class="sn_width">S/N</th>
-              <th>Job Grade</th>
-              <th>Report To</th>
-              <th>Rank</th>
-              <th>Probation Period(months)</th>
+              <th pSortableColumn="job_grade">Job Grade</th>
+              <th pSortableColumn="job_grade_reporting_to">Report To</th>
+              <th pSortableColumn="rank">Rank</th>
+              <th pSortableColumn="probation_period_in_months">
+                Probation Period(months)
+              </th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">

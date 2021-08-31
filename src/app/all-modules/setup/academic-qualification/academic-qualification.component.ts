@@ -42,6 +42,10 @@ export class AcademicQualificationComponent implements OnInit {
         header: "qualification",
         field: "qualification",
       },
+      {
+        header: "rank",
+        field: "rank",
+      },
     ];
     this.getAcademicQualifications();
     this.initializeForm();

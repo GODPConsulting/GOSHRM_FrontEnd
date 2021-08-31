@@ -58,8 +58,10 @@
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
               <th class="sn_width">S/N</th>
-              <th>Professional Membership</th>
-              <th>Description</th>
+              <th pSortableColumn="professional_membership">
+                Professional Membership
+              </th>
+              <th pSortableColumn="description">Description</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">

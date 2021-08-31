@@ -60,11 +60,11 @@
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
               <th class="sn_width">S/N</th>
-              <th>Name</th>
-              <th>Code</th>
-              <th>Phone Number</th>
-              <th>Email</th>
-              <th>Rating</th>
+              <th pSortableColumn="hmo_name">Name</th>
+              <th pSortableColumn="hmo_code">Code</th>
+              <th pSortableColumn="contact_phone_number">Phone Number</th>
+              <th pSortableColumn="contact_email">Email</th>
+              <th pSortableColumn="rating">Rating</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import swal from "sweetalert2";
 
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
 import { CommonService } from "../../../../services/common.service";
 import { JwtService } from "../../../../services/jwt.service";
@@ -24,6 +24,7 @@ export class AppraisalPreferenceComponent implements OnInit {
   jobGradeId: number;
   staffId: number;
   deptId: number;
+  offices$: Observable<any>;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +41,9 @@ export class AppraisalPreferenceComponent implements OnInit {
       this.staffId = user.staffId;
       this.jobGradeId = user.jobGrade;
       this.deptId = user.departmentId.toString();
+      this.jwtService.getHrmUserDetails().then((user) => {
+        this.offices$ = this.commonService.getCompanies(user.staffId);
+      });
       // this.getAppraisalCycleByCompanyId();
       // console.log(this.appraisalPreferenceForm.value);
       this.appraisalPreferenceForm.patchValue({

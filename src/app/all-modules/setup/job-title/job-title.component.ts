@@ -33,18 +33,16 @@ export class JobTitleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
+    this.cols = [
+      {
+        header: "job_title",
+        field: "job_title",
       },
-      columns: [{ orderable: false }, null, null, null],
-      order: [[1, "asc"]],
-    };
+      {
+        header: "totalSkillWeight",
+        field: "totalSkillWeight",
+      },
+    ];
     this.getJobTitle();
     this.initializeForm();
   }
