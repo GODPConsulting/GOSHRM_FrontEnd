@@ -84,12 +84,12 @@ export class AppraisalCycleComponent implements OnInit {
         field: "reviewYear",
       },
       {
-        header: "startDate",
-        field: "startDate",
+        header: "startPeriod",
+        field: "startPeriod",
       },
       {
-        header: "endDate",
-        field: "endDate",
+        header: "endPeriod",
+        field: "endPeriod",
       },
       {
         header: "dueDate",
@@ -112,8 +112,8 @@ export class AppraisalCycleComponent implements OnInit {
         field: "revieweeWeight",
       },
       {
-        header: "status",
-        field: "status",
+        header: "statusName",
+        field: "statusName",
       },
     ];
     this.getAppraisalCycles();

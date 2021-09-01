@@ -32,68 +32,94 @@
   <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
-        <table
+        <p-table
+          #dt
           class="table table-striped custom-table datatable table-hover"
-          datatable
-          [dtOptions]="dtOptions"
+          [value]="appraisals$ | async"
+          [columns]="cols"
+          [scrollable]="true"
+          [responsive]="true"
+          [style]="{ width: '200rem' }"
         >
-          <thead>
+          <ng-template pTemplate="caption">
+            <div style="text-align: right">
+              <input
+                type="text"
+                pInputText
+                size="50"
+                class="form-control"
+                placeholder="Search..."
+                (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width: auto"
+              />
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
             <tr>
-              <th>
-                <input
+              <th class="sn_width">
+                <!--<input
                   type="checkbox"
                   [checked]="selectedId.length === appraisalList.length"
                   (change)="checkAll($event)"
-                />
+                />-->
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
-              <th>S/N</th>
-              <th>Employee</th>
-              <th>Dept</th>
-              <th>Reviewer I score</th>
-              <th>Reviewer II score</th>
-              <th>Reviewer III score</th>
-              <th>360 (Managers)</th>
-              <th>360 (Peers)</th>
-              <th>360 (Reports)</th>
-              <th>360 (Self)</th>
-              <th>Overall</th>
-              <th>Overall remark</th>
-              <th>Score</th>
-              <th>Adjustment</th>
+              <th class="sn_width">S/N</th>
+              <th class="cell_width" pSortableColumn="employeeName">
+                Employee
+              </th>
+              <th class="cell_width" pSortableColumn="companyName">Dept</th>
+              <th pSortableColumn="reviewerOneScore">Reviewer I score</th>
+              <th pSortableColumn="reviewerTwoScore">Reviewer II score</th>
+              <th pSortableColumn="reviewerThreeScore">Reviewer III score</th>
+              <th class="text-center" pSortableColumn="">360 (Managers)</th>
+              <th class="text-center" pSortableColumn="_360Peers">
+                360 (Peers)
+              </th>
+              <th class="text-center" pSortableColumn="_360Report">
+                360 (Reports)
+              </th>
+              <th class="text-center" pSortableColumn="_360Self">360 (Self)</th>
+              <th class="text-center" pSortableColumn="overall">Overall</th>
+              <th class="cell_width" pSortableColumn="overallRemark">
+                Overall remark
+              </th>
+              <th class="text-center" pSortableColumn="score">Score</th>
+              <th class="cell_width" pSortableColumn="">Adjustment</th>
             </tr>
-          </thead>
-          <tbody>
-            <tr
-              data-toggle="modal"
-              class="pointer"
-              *ngFor="let row of appraisals$ | async; let i = index"
-            >
-              <td (click)="stopParentEvent($event)">
-                <input
+          </ng-template>
+          <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr class="pointer">
+              <td (click)="stopParentEvent($event)" class="sn_width">
+                <!-- <input
                   type="checkbox"
                   [checked]="selectedId.includes(row.id)"
                   (change)="addItemId($event, row.id)"
-                />
+                />-->
+                <p-tableCheckbox [value]="row"></p-tableCheckbox>
               </td>
-              <td>{{ i + 1 }}</td>
-              <td (click)="viewAppraisal(row.empId)" style="cursor: pointer">
+              <td class="sn_width">{{ i + 1 }}</td>
+              <td
+                (click)="viewAppraisal(row.empId)"
+                style="cursor: pointer; width: 15rem"
+              >
                 {{ row.employeeName | titlecase }}
               </td>
-              <td>{{ row.companyName | titlecase }}</td>
-              <td>{{ row.reviewerOneScore }}</td>
-              <td>{{ row.reviewerTwoScore }}</td>
-              <td>{{ row.reviewerThreeScore }}</td>
-              <td>{{ row.prop }}</td>
-              <td>{{ row._360Peers }}</td>
-              <td>{{ row._360Report }}</td>
-              <td>{{ row._360Self }}</td>
-              <td>{{ row.overall }}</td>
-              <td>{{ row.overallRemark }}</td>
-              <td>{{ row.score }}</td>
-              <td>{{ row.prop }}</td>
+              <td class="cell_width">{{ row.companyName | titlecase }}</td>
+              <td class="text-center">{{ row.reviewerOneScore }}</td>
+              <td class="text-center">{{ row.reviewerTwoScore }}</td>
+              <td class="text-center">{{ row.reviewerThreeScore }}</td>
+              <td class="text-center">{{ row.prop }}</td>
+              <td class="text-center">{{ row._360Peers }}</td>
+              <td class="text-center">{{ row._360Report }}</td>
+              <td class="text-center">{{ row._360Self }}</td>
+              <td class="text-center">{{ row.overall }}</td>
+              <td class="cell_width">{{ row.overallRemark }}</td>
+              <td class="cell_width text-center">{{ row.score }}</td>
+              <td class="cell_width">{{ row.prop }}</td>
             </tr>
-          </tbody>
-        </table>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>

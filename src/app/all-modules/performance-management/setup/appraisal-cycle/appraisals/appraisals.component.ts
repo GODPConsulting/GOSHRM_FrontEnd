@@ -4,6 +4,7 @@ import { PerformanceManagementService } from "src/app/services/performance-manag
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
 import { Observable } from "rxjs";
+import { ISearchColumn } from "../../../../../interface/interfaces";
 
 @Component({
   selector: "app-appraisals",
@@ -16,6 +17,7 @@ export class AppraisalsComponent implements OnInit {
   public appraisalList: any[] = [];
   appraisalCycleId: number;
   appraisals$: Observable<any>;
+  cols: ISearchColumn[];
   constructor(
     private route: ActivatedRoute,
     private performanceService: PerformanceManagementService,
@@ -24,6 +26,52 @@ export class AppraisalsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.cols = [
+      {
+        header: "employeeName",
+        field: "employeeName",
+      },
+      {
+        header: "companyName",
+        field: "companyName",
+      },
+      {
+        header: "reviewerOneScore",
+        field: "reviewerOneScore",
+      },
+      {
+        header: "reviewerTwoScore",
+        field: "reviewerTwoScore",
+      },
+      {
+        header: "reviewerThreeScore",
+        field: "reviewerThreeScore",
+      },
+      {
+        header: "_360Peers",
+        field: "_360Peers",
+      },
+      {
+        header: "_360Report",
+        field: "_360Report",
+      },
+      {
+        header: "_360Self",
+        field: "_360Self",
+      },
+      {
+        header: "overall",
+        field: "overall",
+      },
+      {
+        header: "overallRemark",
+        field: "overallRemark",
+      },
+      {
+        header: "score",
+        field: "score",
+      },
+    ];
     this.route.paramMap.subscribe((params) => {
       this.appraisalCycleId = +params.get("id");
       this.appraisals$ = this.performanceService.getAppraisalsByCycleId(
