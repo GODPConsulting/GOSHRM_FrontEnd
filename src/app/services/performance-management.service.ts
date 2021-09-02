@@ -1228,4 +1228,27 @@ export class PerformanceManagementService {
         })
       );
   }
+  upload360(file: File): Observable<any> {
+    const formData = this.utilitiesService.appendFile(file);
+    return this.apiService.post(``, formData).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  copyObjectives(): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/performance-appraisal/copy/previous/appraisal-objectives`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
 }
