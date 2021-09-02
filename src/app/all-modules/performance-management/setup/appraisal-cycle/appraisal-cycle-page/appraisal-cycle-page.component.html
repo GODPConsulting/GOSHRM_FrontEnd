@@ -233,11 +233,19 @@
                   Copy previous objectives
                 </button>
 
-                <button class="btn btn-success" type="button">
+                <button
+                  class="btn btn-success"
+                  type="button"
+                  (click)="sendObjectiveAlert()"
+                >
                   Send Objective Alert
                 </button>
 
-                <button class="btn btn-info" type="button">
+                <button
+                  class="btn btn-info"
+                  type="button"
+                  (click)="sendFeedbackAlert()"
+                >
                   Send Feedback Alert
                 </button>
               </div>

@@ -56,6 +56,7 @@ export class EmployeeProfileComponent implements OnInit {
   navigationSubscription: Subscription;
   dataToChild: any = {};
   isHr: string;
+  activeIndex: number = 0;
   constructor(
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
@@ -723,4 +724,8 @@ export class EmployeeProfileComponent implements OnInit {
   }
 
   downloadFile() {}
+
+  tabChange(event: any) {
+    this.activeIndex = event.index;
+  }
 }

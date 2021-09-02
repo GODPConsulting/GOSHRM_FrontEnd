@@ -42,6 +42,7 @@ export class KpiToJobgradeComponent implements OnInit {
   payload: any[] = [];
   tempArr: any[] = [];
   totalWeight: number = 100;
+  file: File;
   constructor(
     private setupService: SetupService,
     private performanceService: PerformanceManagementService,
@@ -346,5 +347,35 @@ export class KpiToJobgradeComponent implements OnInit {
 
   getConfirmed() {
     return this.confirmed;
+  }
+
+  downloadKpiToJobGrade() {
+    this.performanceService.downloadKpiToJobGrade().subscribe(
+      (res) => {
+        return this.utilitiesService.byteToFile(res, "KPI to Job Grade.xlsx");
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  uploadKpiToJobGrade() {
+    this.performanceService.uploadKpiToJobGrade(this.file).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success");
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  handleFile(files: FileList) {
+    this.file = files.item(0);
   }
 }

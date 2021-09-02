@@ -36,7 +36,7 @@ export class EmployeeAppraisalsComponent implements OnInit {
     private route: ActivatedRoute,
     private jwtService: JwtService,
     private utilitiesService: UtilitiesService,
-    private location: Location
+    public location: Location
   ) {}
 
   ngOnInit(): void {

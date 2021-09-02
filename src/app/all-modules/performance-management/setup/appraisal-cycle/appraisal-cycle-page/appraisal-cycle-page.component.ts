@@ -263,4 +263,34 @@ export class AppraisalCyclePageComponent implements OnInit {
       }
     );
   }
+
+  sendFeedbackAlert() {
+    this.performanceManagementService.sendFeedbackAlert().subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success");
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  sendObjectiveAlert() {
+    this.performanceManagementService.sendObjectiveAlert().subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success");
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
 }
