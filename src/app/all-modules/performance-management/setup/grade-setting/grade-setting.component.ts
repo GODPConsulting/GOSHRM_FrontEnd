@@ -214,11 +214,7 @@ export class GradeSettingComponent implements OnInit {
   downloadGradeSettings() {
     return this.performanceManagementService.downloadGradeSettings().subscribe(
       (data) => {
-        if (data.status.isSuccessful) {
-          return this.utilitiesService.byteToFile(data, "Grade Settings");
-        } else {
-          return this.utilitiesService.showMessage(data, "error");
-        }
+        return this.utilitiesService.byteToFile(data, "Grade Settings.xlsx");
       },
       (err) => {
         return this.utilitiesService.showMessage(err, "error");

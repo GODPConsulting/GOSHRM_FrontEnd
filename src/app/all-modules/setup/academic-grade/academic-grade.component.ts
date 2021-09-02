@@ -34,8 +34,12 @@ export class AcademicGradeComponent implements OnInit {
   ngOnInit(): void {
     this.cols = [
       {
-        header: "",
-        field: "",
+        header: "grade",
+        field: "grade",
+      },
+      {
+        header: "rank",
+        field: "rank",
       },
     ];
     this.getAcademicGrade();

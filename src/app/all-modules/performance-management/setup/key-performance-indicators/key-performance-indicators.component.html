@@ -60,10 +60,12 @@
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
               <th>S/N</th>
-              <th>KPI Category</th>
-              <th>KPI</th>
-              <th>Description</th>
-              <th>Upload of Actual Result</th>
+              <th pSortableColumn="kpiCategoryName">KPI Category</th>
+              <th pSortableColumn="kpi">KPI</th>
+              <th pSortableColumn="description">Description</th>
+              <th pSortableColumn="resultFromExternalName">
+                Upload of Actual Result
+              </th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">

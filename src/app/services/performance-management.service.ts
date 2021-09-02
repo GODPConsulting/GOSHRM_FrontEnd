@@ -29,6 +29,7 @@ export class PerformanceManagementService {
     private utilitiesService: UtilitiesService
   ) {}
   handleError(error: HttpErrorResponse) {
+    console.log(error);
     return throwError(error);
   }
   getkpiCategory() {
@@ -1165,10 +1166,15 @@ export class PerformanceManagementService {
       );
   }
   uploadPoints(file: FormData): Observable<any> {
+    // /performance/upload/feedback/360
+    // ​/performance​/performancesetup​/upload​/point-setting
+    console.log("hi");
     return this.apiService
-      .post(`​/performance​/performancesetup​/upload​/point-setting`, file)
+      .post(`/performance/performancesetup/upload/point-setting`, file)
       .pipe(
-        tap(),
+        tap((data) => {
+          console.log(data);
+        }),
         map((res) => {
           return res;
         }),
@@ -1186,9 +1192,9 @@ export class PerformanceManagementService {
       });
   }
 
-  downloadPointSettins(): Observable<any> {
+  downloadPointSettings(): Observable<any> {
     return this.apiService
-      .get(`/performance​/performancesetup​/download​/point-setting`)
+      .get(`/performance/performancesetup/download/point-setting`)
       .pipe(
         tap(),
         map((res) => {
@@ -1202,7 +1208,7 @@ export class PerformanceManagementService {
     formData.append("file", file);
     console.log(formData);
     return this.apiService
-      .post(`​/performance​/performancesetup​/upload​/grade-setting`, formData)
+      .post(`/performance/performancesetup/upload/grade-setting`, formData)
       .pipe(
         tap(),
         map((res) => {
@@ -1214,7 +1220,30 @@ export class PerformanceManagementService {
 
   downloadGradeSettings(): Observable<any> {
     return this.apiService
-      .get(`/performance​/performancesetup​/download​/grade-setting`)
+      .get(`/performance/performancesetup/download/grade-setting`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+  upload360(file: File): Observable<any> {
+    const formData = this.utilitiesService.appendFile(file);
+    return this.apiService.post(``, formData).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  copyObjectives(): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/performance-appraisal/copy/previous/appraisal-objectives`
+      )
       .pipe(
         tap(),
         map((res) => {

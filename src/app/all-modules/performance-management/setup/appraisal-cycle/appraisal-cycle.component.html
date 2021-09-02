@@ -1,4 +1,4 @@
-<div class="content container-fluid">
+<div class="">
   <!--Page Header starts  -->
   <div class="card">
     <div class="card-header header-bg-color">
@@ -72,7 +72,7 @@
           [columns]="cols"
           [(selection)]="selectedCycles"
           [scrollable]="true"
-          scrollHeight="600px"
+          scrollHeight="100%"
         >
           <ng-template pTemplate="caption">
             <div style="text-align: right">
@@ -94,13 +94,15 @@
               </th>
               <!--          <th class="sn_width">S/N</th>-->
               <th pSortableColumn="reviewYear">Review Year</th>
-              <th pSortableColumn="startDate">Start Period</th>
-              <th pSortableColumn="endDate">End Period</th>
+              <th pSortableColumn="startPeriod">Start Period</th>
+              <th pSortableColumn="endPeriod">End Period</th>
               <!--          <th pSortableColumn="dueDate">Due Date</th>-->
               <th pSortableColumn="reviewerOneWeight">Reviewer I</th>
               <th pSortableColumn="reviewerTwoWeight">Reviewer II</th>
               <th pSortableColumn="reviewerThreeWeight">Reviewer III</th>
-              <th pSortableColumn="revieweeWeight">Reviewee Weight</th>
+              <th pSortableColumn="revieweeWeight" style="width: 15rem">
+                Reviewee Weight
+              </th>
               <th pSortableColumn="status">Status</th>
               <th></th>
             </tr>
@@ -157,7 +159,7 @@
                   >{{ row.reviewerThreeWeight }}</a
                 >
               </td>
-              <td>
+              <td style="width: 15rem">
                 <a
                   class="text-dark d-block text-center"
                   [routerLink]="['appraisals', row.appraisalCycleId]"

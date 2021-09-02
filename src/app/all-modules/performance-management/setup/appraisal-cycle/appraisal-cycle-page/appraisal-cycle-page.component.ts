@@ -248,4 +248,19 @@ export class AppraisalCyclePageComponent implements OnInit {
       this.selectedId = [];
     }
   }
+
+  copyObjectives() {
+    this.performanceManagementService.copyObjectives().subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success");
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
 }

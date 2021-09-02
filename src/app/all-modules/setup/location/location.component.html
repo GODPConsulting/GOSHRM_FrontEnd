@@ -63,11 +63,11 @@
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
               <th class="sn_width">S/N</th>
-              <th>Location</th>
-              <th style="width: 30%">Address</th>
-              <th>City</th>
-              <th>State</th>
-              <th>Country</th>
+              <th pSortableColumn="location">Location</th>
+              <th style="width: 30%" pSortableColumn="address">Address</th>
+              <th pSortableColumn="city">City</th>
+              <th pSortableColumn="stateName">State</th>
+              <th pSortableColumn="stateName">Country</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">

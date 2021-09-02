@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
 import { Observable } from "rxjs";
+import { ISearchColumn } from "../../../../../interface/interfaces";
 
 @Component({
   selector: "app-appraisals",
@@ -16,13 +17,61 @@ export class AppraisalsComponent implements OnInit {
   public appraisalList: any[] = [];
   appraisalCycleId: number;
   appraisals$: Observable<any>;
+  cols: ISearchColumn[];
   constructor(
     private route: ActivatedRoute,
     private performanceService: PerformanceManagementService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.cols = [
+      {
+        header: "employeeName",
+        field: "employeeName",
+      },
+      {
+        header: "companyName",
+        field: "companyName",
+      },
+      {
+        header: "reviewerOneScore",
+        field: "reviewerOneScore",
+      },
+      {
+        header: "reviewerTwoScore",
+        field: "reviewerTwoScore",
+      },
+      {
+        header: "reviewerThreeScore",
+        field: "reviewerThreeScore",
+      },
+      {
+        header: "_360Peers",
+        field: "_360Peers",
+      },
+      {
+        header: "_360Report",
+        field: "_360Report",
+      },
+      {
+        header: "_360Self",
+        field: "_360Self",
+      },
+      {
+        header: "overall",
+        field: "overall",
+      },
+      {
+        header: "overallRemark",
+        field: "overallRemark",
+      },
+      {
+        header: "score",
+        field: "score",
+      },
+    ];
     this.route.paramMap.subscribe((params) => {
       this.appraisalCycleId = +params.get("id");
       this.appraisals$ = this.performanceService.getAppraisalsByCycleId(
@@ -84,4 +133,12 @@ export class AppraisalsComponent implements OnInit {
   stopParentEvent($event: MouseEvent) {}
 
   addItemId($event: Event, id: any) {}
+
+  viewAppraisal(id: number) {
+    this.router.navigate(["/performance/performance-appraisal"], {
+      queryParams: {
+        id: id,
+      },
+    });
+  }
 }

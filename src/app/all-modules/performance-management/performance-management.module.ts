@@ -36,6 +36,7 @@ import { MultiSelectModule } from "primeng/multiselect";
 import { InwardNuggetsComponent } from "./components/inward-nuggets/inward-nuggets.component";
 import { OutwardNuggetsComponent } from "./components/outward-nuggets/outward-nuggets.component";
 import { TooltipModule } from "primeng/tooltip";
+import { PerformanceAppraisalFeedbackComponent } from './performance-appraisal-feedback/performance-appraisal-feedback.component';
 @NgModule({
   declarations: [
     PerformanceManagementComponent,
@@ -62,6 +63,7 @@ import { TooltipModule } from "primeng/tooltip";
     CoachingSchedulesComponent,
     InwardNuggetsComponent,
     OutwardNuggetsComponent,
+    PerformanceAppraisalFeedbackComponent,
   ],
   imports: [
     CommonModule,
