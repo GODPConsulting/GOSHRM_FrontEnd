@@ -168,7 +168,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
           second_Level_ReviewerName: this.employeeAppraisalInfo
             .second_Level_ReviewerName,
           third_Level_ReviewerName: this.employeeAppraisalInfo
-            .second_Level_ReviewerName,
+            .third_Level_ReviewerName,
           employee: this.employeeAppraisalInfo.staffId,
           lineManager: this.employeeAppraisalInfo.line_ManagerId,
           department: this.deptId,

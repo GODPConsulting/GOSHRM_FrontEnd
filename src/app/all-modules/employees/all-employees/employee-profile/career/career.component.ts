@@ -179,10 +179,11 @@ export class CareerComponent implements OnInit {
   }
 
   submitCareerForm(form: FormGroup) {
-    if (!form.valid) {
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    }
+    // if (!form.valid) {
+    //   swal.fire("Error", "please fill all mandatory fields", "error");
+    //   return;
+    // }
+    
     const payload = form.value;
     if (this.isHr !== "true") {
       payload.approval_status = 2;
