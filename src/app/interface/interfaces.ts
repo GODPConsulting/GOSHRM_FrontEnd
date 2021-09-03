@@ -76,6 +76,14 @@ export interface IPointSetting {
 }
 
 export interface IAppraisalCycle {
+  reviewStatusName: string;
+  endDate: string;
+  startDate: string;
+  statusName: string;
+  companyName: string;
+  year_In_Company: string;
+  year_In_Position: string;
+  position: string;
   employeeName: string;
   allowMultipleCycle: boolean;
   calenderRange: string;
@@ -177,4 +185,13 @@ export interface AppraisalPreference {
   reviewerThreeCommentVisibilityName?: any;
   statusName?: any;
   coachPerformanceVisibilityName?: any;
+}
+export interface Appraisal {
+  id: number;
+  employee: number;
+  jobGradeId: number;
+  comment?: string;
+  appraisalCycleId: number;
+  department: number;
+  employeePerformId?: number;
 }

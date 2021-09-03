@@ -120,7 +120,7 @@
           ></a>
         </div>
         <div class="dg gtc3">
-          <div class="g-card p10">
+          <div class="g-card p10" *ngFor="let item of employeeAppraisalCycle">
             <div class="g-card-top df sb mb10">
               <input type="checkbox" />
               <div class="dropdown">
@@ -134,7 +134,11 @@
                 >
                 </i>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item p10 dropdown__link">Objective</a>
+                  <a
+                    class="dropdown-item p10 dropdown__link"
+                    (click)="viewObjective(item)"
+                    >Objective</a
+                  >
                   <a class="dropdown-item p10 dropdown__link" href="#"
                     >Feedback</a
                   >
@@ -151,11 +155,11 @@
             <div class="g-card-mid df sb">
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">employee</div>
-                <div class="g-card-title">joshua chukwu</div>
+                <div class="g-card-title">{{ item.employeeName }}</div>
               </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">years in the position</div>
-                <div class="g-card-title">3</div>
+                <div class="g-card-title">{{ item.year_In_Position }}</div>
               </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">reviewer 1</div>
@@ -165,11 +169,11 @@
             <div class="g-card-mid df sb">
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">position</div>
-                <div class="g-card-title">managing director</div>
+                <div class="g-card-title">{{ item.position | titlecase }}</div>
               </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">years in the company</div>
-                <div class="g-card-title">10</div>
+                <div class="g-card-title">{{ item.year_In_Company }}</div>
               </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">reviewer 2</div>
@@ -179,360 +183,25 @@
             <div class="g-card-mid df sb">
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">company</div>
-                <div class="g-card-title">ABC</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">status</div>
-                <div class="g-card-title">objective submitted</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(start)</div>
-                <div class="g-card-title">march 21, 2018</div>
-              </div>
-            </div>
-            <div class="g-card-mid df flex-end">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(end)</div>
-                <div class="g-card-title">dec 21, 2018</div>
-              </div>
-            </div>
-          </div>
-          <div class="g-card p10">
-            <div class="g-card-top df sb mb10">
-              <input type="checkbox" />
-              <div class="dropdown">
-                <i
-                  class="fa fa-ellipsis-v dropdown-toggle"
-                  id="dropdownMenuButton"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                  aria-hidden="true"
-                >
-                </i>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
+                <div class="g-card-title">
+                  {{ item.companyName | titlecase }}
                 </div>
               </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">employee</div>
-                <div class="g-card-title">joshua chukwu</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the position</div>
-                <div class="g-card-title">3</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 1</div>
-                <div class="g-card-title">etim essang</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">position</div>
-                <div class="g-card-title">managing director</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the company</div>
-                <div class="g-card-title">10</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 2</div>
-                <div class="g-card-title">samuel yekini</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">company</div>
-                <div class="g-card-title">ABC</div>
-              </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">status</div>
-                <div class="g-card-title">objective submitted</div>
+                <div class="g-card-title">
+                  {{ item.reviewStatusName | titlecase }}
+                </div>
               </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">review period(start)</div>
-                <div class="g-card-title">march 21, 2018</div>
+                <div class="g-card-title">{{ item.startDate | date }}</div>
               </div>
             </div>
             <div class="g-card-mid df flex-end">
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">review period(end)</div>
-                <div class="g-card-title">dec 21, 2018</div>
-              </div>
-            </div>
-          </div>
-          <div class="g-card p10">
-            <div class="g-card-top df sb mb10">
-              <input type="checkbox" />
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">employee</div>
-                <div class="g-card-title">joshua chukwu</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the position</div>
-                <div class="g-card-title">3</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 1</div>
-                <div class="g-card-title">etim essang</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">position</div>
-                <div class="g-card-title">managing director</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the company</div>
-                <div class="g-card-title">10</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 2</div>
-                <div class="g-card-title">samuel yekini</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">company</div>
-                <div class="g-card-title">ABC</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">status</div>
-                <div class="g-card-title">objective submitted</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(start)</div>
-                <div class="g-card-title">march 21, 2018</div>
-              </div>
-            </div>
-            <div class="g-card-mid df flex-end">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(end)</div>
-                <div class="g-card-title">dec 21, 2018</div>
-              </div>
-            </div>
-          </div>
-          <div class="g-card p10">
-            <div class="g-card-top df sb mb10">
-              <input type="checkbox" />
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">employee</div>
-                <div class="g-card-title">joshua chukwu</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the position</div>
-                <div class="g-card-title">3</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 1</div>
-                <div class="g-card-title">etim essang</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">position</div>
-                <div class="g-card-title">managing director</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the company</div>
-                <div class="g-card-title">10</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 2</div>
-                <div class="g-card-title">samuel yekini</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">company</div>
-                <div class="g-card-title">ABC</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">status</div>
-                <div class="g-card-title">objective submitted</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(start)</div>
-                <div class="g-card-title">march 21, 2018</div>
-              </div>
-            </div>
-            <div class="g-card-mid df flex-end">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(end)</div>
-                <div class="g-card-title">dec 21, 2018</div>
-              </div>
-            </div>
-          </div>
-          <div class="g-card p10">
-            <div class="g-card-top df sb mb10">
-              <input type="checkbox" />
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">employee</div>
-                <div class="g-card-title">joshua chukwu</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the position</div>
-                <div class="g-card-title">3</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 1</div>
-                <div class="g-card-title">etim essang</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">position</div>
-                <div class="g-card-title">managing director</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the company</div>
-                <div class="g-card-title">10</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 2</div>
-                <div class="g-card-title">samuel yekini</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">company</div>
-                <div class="g-card-title">ABC</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">status</div>
-                <div class="g-card-title">objective submitted</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(start)</div>
-                <div class="g-card-title">march 21, 2018</div>
-              </div>
-            </div>
-            <div class="g-card-mid df flex-end">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(end)</div>
-                <div class="g-card-title">dec 21, 2018</div>
-              </div>
-            </div>
-          </div>
-          <div class="g-card p10">
-            <div class="g-card-top df sb mb10">
-              <input type="checkbox" />
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">employee</div>
-                <div class="g-card-title">joshua chukwu</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the position</div>
-                <div class="g-card-title">3</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 1</div>
-                <div class="g-card-title">etim essang</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">position</div>
-                <div class="g-card-title">managing director</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the company</div>
-                <div class="g-card-title">10</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 2</div>
-                <div class="g-card-title">samuel yekini</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">company</div>
-                <div class="g-card-title">ABC</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">status</div>
-                <div class="g-card-title">objective submitted</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(start)</div>
-                <div class="g-card-title">march 21, 2018</div>
-              </div>
-            </div>
-            <div class="g-card-mid df flex-end">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(end)</div>
-                <div class="g-card-title">dec 21, 2018</div>
-              </div>
-            </div>
-          </div>
-          <div class="g-card p10">
-            <div class="g-card-top df sb mb10">
-              <input type="checkbox" />
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">employee</div>
-                <div class="g-card-title">joshua chukwu</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the position</div>
-                <div class="g-card-title">3</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 1</div>
-                <div class="g-card-title">etim essang</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">position</div>
-                <div class="g-card-title">managing director</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">years in the company</div>
-                <div class="g-card-title">10</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">reviewer 2</div>
-                <div class="g-card-title">samuel yekini</div>
-              </div>
-            </div>
-            <div class="g-card-mid df sb">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">company</div>
-                <div class="g-card-title">ABC</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">status</div>
-                <div class="g-card-title">objective submitted</div>
-              </div>
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(start)</div>
-                <div class="g-card-title">march 21, 2018</div>
-              </div>
-            </div>
-            <div class="g-card-mid df flex-end">
-              <div class="card-mid-item pt10 pb10">
-                <div class="g-card-label">review period(end)</div>
-                <div class="g-card-title">dec 21, 2018</div>
+                <div class="g-card-title">{{ item.endDate | date }}</div>
               </div>
             </div>
           </div>

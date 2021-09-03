@@ -270,7 +270,7 @@
   height: 100vh;
   background: #e5e5e5;
   padding: 2rem;
-
+  padding-bottom: 10rem;
 }
 
 .gos-right {
@@ -545,6 +545,9 @@ ul.gos-breadcrumb li a:hover {
 
 .bold-text {
   font-weight: bold;
+}
+.dropdown__link {
+  cursor: pointer;
 }
 .dropdown__link:hover {
   background: var(--color-primary-light);

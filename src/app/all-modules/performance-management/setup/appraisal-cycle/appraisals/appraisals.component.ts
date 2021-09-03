@@ -5,6 +5,7 @@ import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
 import { Observable } from "rxjs";
 import { ISearchColumn } from "../../../../../interface/interfaces";
+import { UtilitiesService } from "../../../../../services/utilities.service";
 
 @Component({
   selector: "app-appraisals",
@@ -18,11 +19,13 @@ export class AppraisalsComponent implements OnInit {
   appraisalCycleId: number;
   appraisals$: Observable<any>;
   cols: ISearchColumn[];
+  file: File;
   constructor(
     private route: ActivatedRoute,
     private performanceService: PerformanceManagementService,
     private loadingService: LoadingService,
-    private router: Router
+    private router: Router,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -141,4 +144,24 @@ export class AppraisalsComponent implements OnInit {
       },
     });
   }
+
+  downloadAppraisals() {
+    this.performanceService.downloadAppraisalSummary().subscribe(
+      (data) => {
+        return this.utilitiesService.byteToFile(
+          data,
+          "Appraisals Summary.xlsx"
+        );
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  handleFileUpload(files: FileList) {
+    this.file = files.item(0);
+  }
+
+  uploadAppraisalSummary() {}
 }
