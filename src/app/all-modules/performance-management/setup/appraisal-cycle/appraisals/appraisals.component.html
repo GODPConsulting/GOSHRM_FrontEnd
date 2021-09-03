@@ -15,11 +15,26 @@
           <li class="breadcrumb-item active">Appraisals</li>
         </ul>
       </div>
-      <div class="col-auto float-right ml-auto">
-        <a class="btn upload-btn hint" data-toggle="modal"
-          ><span class="hint-text">Upload</span><i class="fa fa-upload"></i
+      <div class="col-auto float-right ml-auto df">
+        <input
+          type="file"
+          class="form-control"
+          (change)="handleFileUpload($event.target.files)"
+        />
+        <a
+          (click)="uploadAppraisalSummary()"
+          class="btn upload-btn"
+          pTooltip="Upload Excel File: (Employee Name, Department, Reviewer I score,Reviewer II
+            score, Reviewer III score, 360(managers), 360(peers), 360(reports),
+            360(self), overall, overall remark, adjustment, score"
+          data-toggle="modal"
+        >
+          <i class="fa fa-upload"></i
         ></a>
-        <a class="btn download-btn hint" data-toggle="modal"
+        <a
+          class="btn download-btn hint"
+          data-toggle="modal"
+          (click)="downloadAppraisals()"
           ><span class="hint-text">Download</span><i class="fa fa-download"></i
         ></a>
         <a class="btn delete-btn hint" (click)="delete()"

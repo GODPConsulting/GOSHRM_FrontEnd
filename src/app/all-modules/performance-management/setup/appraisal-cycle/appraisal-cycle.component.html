@@ -125,46 +125,34 @@
                 }}</a>
               </td>
               <td>
-                <a
-                  class="text-dark d-block text-center"
-                  [routerLink]="['appraisals', row.appraisalCycleId]"
-                  >{{ row.startPeriod | date }}</a
-                >
+                <a class="text-dark d-block text-center" (click)="edit(row)">{{
+                  row.startPeriod | date
+                }}</a>
               </td>
               <td>
-                <a
-                  class="text-dark d-block text-center"
-                  [routerLink]="['appraisals', row.appraisalCycleId]"
-                  >{{ row.endPeriod | date }}</a
-                >
+                <a class="text-dark d-block text-center" (click)="edit(row)">{{
+                  row.endPeriod | date
+                }}</a>
               </td>
               <td>
-                <a
-                  class="text-dark d-block text-center"
-                  [routerLink]="['appraisals', row.appraisalCycleId]"
-                  >{{ row.reviewerOneWeight }}</a
-                >
+                <a class="text-dark d-block text-center" (click)="edit(row)">{{
+                  row.reviewerOneWeight
+                }}</a>
               </td>
               <td>
-                <a
-                  class="text-dark d-block text-center"
-                  [routerLink]="['appraisals', row.appraisalCycleId]"
-                  >{{ row.reviewerTwoWeight }}</a
-                >
+                <a class="text-dark d-block text-center" (click)="edit(row)">{{
+                  row.reviewerTwoWeight
+                }}</a>
               </td>
               <td>
-                <a
-                  class="text-dark d-block text-center"
-                  [routerLink]="['appraisals', row.appraisalCycleId]"
-                  >{{ row.reviewerThreeWeight }}</a
-                >
+                <a class="text-dark d-block text-center" (click)="edit(row)">{{
+                  row.reviewerThreeWeight
+                }}</a>
               </td>
               <td style="width: 15rem">
-                <a
-                  class="text-dark d-block text-center"
-                  [routerLink]="['appraisals', row.appraisalCycleId]"
-                  >{{ row.revieweeWeight }}</a
-                >
+                <a class="text-dark d-block text-center" (click)="edit(row)">{{
+                  row.revieweeWeight
+                }}</a>
               </td>
               <td>
                 <a class="text-dark d-block text-center">{{

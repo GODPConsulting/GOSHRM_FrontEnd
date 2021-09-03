@@ -2,9 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { LoadingService } from "../../../../services/loading.service";
 import { PerformanceManagementService } from "../../../../services/performance-management.service";
 import { JwtService } from "../../../../services/jwt.service";
-import { IAppraisalCycle } from "../../../../interface/interfaces";
+import { Appraisal, IAppraisalCycle } from "../../../../interface/interfaces";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
+import { UtilitiesService } from "../../../../services/utilities.service";
 
 @Component({
   selector: "app-appraisal-objective-view",
@@ -22,7 +23,8 @@ export class AppraisalObjectiveViewComponent implements OnInit {
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
     private jwtService: JwtService,
-    private router: Router
+    private router: Router,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -82,5 +84,32 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   tabChange(event: any) {
     this.activeIndex = event.index;
     console.log(this.activeIndex);
+  }
+
+  viewObjective(item) {
+    const payload: Appraisal = {
+      id: item.employeePerformId,
+      employee: item.employeeId,
+      appraisalCycleId: item.appraisalCycleId,
+      department: item.departmentId,
+      jobGradeId: item.jobGradeId,
+    };
+    return this.performanceManagementService.startAppraisal(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          this.router.navigate(["/performance/appraisal-objective-form"], {
+            queryParams: {
+              employeePerformId: item.employeePerformId,
+              appraisalCycleId: item.appraisalCycleId,
+            },
+          });
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
   }
 }

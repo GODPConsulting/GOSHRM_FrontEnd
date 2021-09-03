@@ -5,6 +5,7 @@ import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {
+  Appraisal,
   AppraisalObjective,
   AppraisalPreference,
   CoachingSchedule,
@@ -569,7 +570,7 @@ export class PerformanceManagementService {
       );
   }
 
-  startAppraisal(payload: AppraisalObjective): Observable<any> {
+  startAppraisal(payload: Appraisal): Observable<any> {
     return this.apiService
       .post(`/performance/add/update/employee-appraisal/objectives`, payload)
       .pipe(
@@ -1324,6 +1325,16 @@ export class PerformanceManagementService {
       map((res) => {
         return res;
       }, catchError(this.handleError))
+    );
+  }
+
+  downloadAppraisals(): Observable<any> {
+    return this.apiService.get(`/performance/downlad/appraisal_summary`).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
     );
   }
 }
