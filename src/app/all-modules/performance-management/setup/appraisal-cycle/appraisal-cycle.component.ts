@@ -327,7 +327,16 @@ export class AppraisalCycleComponent implements OnInit {
     }
   }
 
-  downloadFile() {}
+  downloadFile() {
+    this.performanceManagementService.downloadAppraisalCycles().subscribe(
+      (res) => {
+        return this.utilitiesService.byteToFile(res, "Appraisal Cycles.xlsx");
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
 
   openAppraisals(appraisalCycleId: number) {
     this._router.navigate(["/performance/setup/appraisal-cycle/appraisals"]);

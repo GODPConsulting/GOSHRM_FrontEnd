@@ -6,6 +6,7 @@ import { catchError, map, tap } from "rxjs/operators";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {
   AppraisalObjective,
+  AppraisalPreference,
   CoachingSchedule,
   EmployeeKPI,
   IAppraisalCycle,
@@ -1067,7 +1068,7 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res;
-        })
+        }, catchError(this.handleError))
       );
   }
 
@@ -1078,7 +1079,7 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res;
-        })
+        }, catchError(this.handleError))
       );
   }
   sendThreeSixtyFeedback(payload: ThreeSixtyFeedback): Observable<any> {
@@ -1086,7 +1087,7 @@ export class PerformanceManagementService {
       tap(),
       map((res) => {
         return res;
-      })
+      }, catchError(this.handleError))
     );
   }
 
@@ -1099,7 +1100,7 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res.list;
-        })
+        }, catchError(this.handleError))
       );
   }
   getObjectivesBySecondReviewer(id: number): Observable<any> {
@@ -1111,7 +1112,7 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res.list;
-        })
+        }, catchError(this.handleError))
       );
   }
   getObjectivesByThirdReviewer(id: number): Observable<any> {
@@ -1123,7 +1124,7 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res.list;
-        })
+        }, catchError(this.handleError))
       );
   }
   scheduleCoaching(payload: CoachingSchedule): Observable<any> {
@@ -1136,7 +1137,7 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res;
-        })
+        }, catchError(this.handleError))
       );
   }
   getCoachingSchedule(
@@ -1151,7 +1152,7 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res["setupList"];
-        })
+        }, catchError(this.handleError))
       );
   }
 
@@ -1162,7 +1163,7 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res;
-        })
+        }, catchError(this.handleError))
       );
   }
   uploadPoints(file: FormData): Observable<any> {
@@ -1189,7 +1190,7 @@ export class PerformanceManagementService {
       )
       .then((res) => {
         return res;
-      });
+      }, catchError(this.handleError));
   }
 
   downloadPointSettings(): Observable<any> {
@@ -1199,7 +1200,7 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res;
-        })
+        }, catchError(this.handleError))
       );
   }
 
@@ -1225,7 +1226,7 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res;
-        })
+        }, catchError(this.handleError))
       );
   }
   upload360(file: File): Observable<any> {
@@ -1241,14 +1242,88 @@ export class PerformanceManagementService {
 
   copyObjectives(): Observable<any> {
     return this.apiService
-      .get(
-        `/performance/performance-appraisal/copy/previous/appraisal-objectives`
+      .post(
+        `/performance/performance-appraisal/copy/previous/appraisal-objectives`,
+        {}
       )
       .pipe(
         tap(),
         map((res) => {
           return res;
-        })
+        }, catchError(this.handleError))
       );
+  }
+  downloadAppraisalCycles(): Observable<any> {
+    return this.apiService.get(`/performance/downlad/appraisal_cycles`).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }, catchError(this.handleError))
+    );
+  }
+
+  getAppraisalPreferences(): Observable<AppraisalPreference[]> {
+    return this.apiService
+      .get(`/performance/performancesetup/get/update/appraisal-preference`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.setupList;
+        }, catchError(this.handleError))
+      );
+  }
+
+  sendObjectiveAlert(): Observable<any> {
+    return this.apiService
+      .post(
+        `/performance/performance-appraisal/send/appraisal-objectives/alert`,
+        {}
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }, catchError(this.handleError))
+      );
+  }
+
+  downloadKpiToJobGrade(): Observable<string> {
+    return this.apiService
+      .get(`/performance/performancesetup/download/kpi-to-jobgrade`)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }, catchError(this.handleError))
+      );
+  }
+
+  uploadKpiToJobGrade(file: File): Observable<any> {
+    const formData = this.utilitiesService.appendFile(file);
+    return this.apiService
+      .post(`/performance/performancesetup/upload/kpi-to-jobgrade`, formData)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }, catchError(this.handleError))
+      );
+  }
+
+  downloadAppraisalSummary(): Observable<string> {
+    return this.apiService.get(`/performance/downlad/appraisal_summary`).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }, catchError(this.handleError))
+    );
+  }
+  sendFeedbackAlert(): Observable<any> {
+    return this.apiService.post(`/performance/send/feedback/Alert`, {}).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }, catchError(this.handleError))
+    );
   }
 }

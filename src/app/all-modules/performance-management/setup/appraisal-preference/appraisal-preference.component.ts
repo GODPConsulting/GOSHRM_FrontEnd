@@ -7,6 +7,7 @@ import { Observable, Subject } from "rxjs";
 import { LoadingService } from "../../../../services/loading.service";
 import { CommonService } from "../../../../services/common.service";
 import { JwtService } from "../../../../services/jwt.service";
+import { AppraisalPreference } from "../../../../interface/interfaces";
 
 @Component({
   selector: "app-appraisal-preference",
@@ -25,7 +26,7 @@ export class AppraisalPreferenceComponent implements OnInit {
   staffId: number;
   deptId: number;
   offices$: Observable<any>;
-
+  preferences$: Observable<AppraisalPreference[]>;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -37,6 +38,7 @@ export class AppraisalPreferenceComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.getCompanies();
+    this.getAppraisalPreferences();
     this.jwtService.getHrmUserDetails().then((user) => {
       this.staffId = user.staffId;
       this.jobGradeId = user.jobGrade;
@@ -95,7 +97,9 @@ export class AppraisalPreferenceComponent implements OnInit {
       }
     );
   }
-
+  getAppraisalPreferences() {
+    this.preferences$ = this.performanceManagementService.getAppraisalPreferences();
+  }
   getCompanies() {
     // this.loadingService.show();
     return this.commonService.getCompanyStructures().subscribe(

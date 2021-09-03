@@ -162,3 +162,19 @@ export interface CoachingSchedule {
   time: Date;
   objectiveId: any;
 }
+export interface AppraisalPreference {
+  id: number;
+  company: number;
+  appraisalCircle: number;
+  reviewerOneCommentVisibility: number;
+  reviewerTwoCommentVisibility: number;
+  reviewerThreeCommentVisibility: number;
+  status: number;
+  coachPerformanceVisibility: number;
+  appraisalCircleName?: any;
+  reviewerOneCommentVisibilityName?: any;
+  reviewerTwoCommentVisibilityName?: any;
+  reviewerThreeCommentVisibilityName?: any;
+  statusName?: any;
+  coachPerformanceVisibilityName?: any;
+}

@@ -13,13 +13,27 @@
         </ul>
       </div>
       <div class="col-auto float-right ml-auto df center-align">
-        <input type="file" class="form-control" />
+        <input
+          type="file"
+          class="form-control"
+          (change)="handleFile($event.target.files)"
+        />
         <a
+          (click)="uploadKpiToJobGrade()"
           class="btn upload-btn"
           pTooltip="Upload: Excel File Lorem Isum  dononr aauaauauauaayay "
         >
           <span>
             <i class="fa fa-cloud-upload"></i>
+          </span>
+        </a>
+        <a
+          class="btn upload-btn"
+          pTooltip="Download"
+          (click)="downloadKpiToJobGrade()"
+        >
+          <span>
+            <i class="fa fa-cloud-download"></i>
           </span>
         </a>
         <a
