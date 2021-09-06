@@ -106,7 +106,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     private performanceManagementService: PerformanceManagementService,
     private utilitiesService: UtilitiesService,
     private setupService: SetupService,
-    private _location: Location,
+    public _location: Location,
     private loadingService: LoadingService,
     private commonService: CommonService,
     private jwtService: JwtService,
@@ -447,7 +447,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
   submitAppraisalFeedbackPageForm() {
     const payload = this.employeeCommentForm.value;
-    switch (this.personnel) {
+    return this.submitEmployeeComment(payload);
+    /* switch (this.personnel) {
       case "employee":
         return this.submitEmployeeComment(payload);
         break;
@@ -460,7 +461,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       case "reviewer3":
         return this.submitReviewerThreeComment(payload);
         break;
-    }
+    }*/
     // // this.loadingService.show();
     // return this.performanceManagementService
     //   .addEmployeeComment(payload)

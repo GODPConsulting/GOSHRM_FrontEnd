@@ -1,8 +1,8 @@
 import { id } from "./../../assets/all-modules-data/id";
 import { ApiService } from "./api.service";
 import { Injectable } from "@angular/core";
-import { Observable, throwError } from "rxjs";
-import { catchError, map, tap } from "rxjs/operators";
+import { Observable, throwError, timer } from "rxjs";
+import { catchError, delayWhen, map, retryWhen, tap } from "rxjs/operators";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {
   Appraisal,
@@ -1324,7 +1324,8 @@ export class PerformanceManagementService {
       tap(),
       map((res) => {
         return res;
-      }, catchError(this.handleError))
+      }),
+      retryWhen((errors) => errors.pipe(delayWhen(() => timer(2000))))
     );
   }
 
@@ -1336,5 +1337,31 @@ export class PerformanceManagementService {
       }),
       catchError(this.handleError)
     );
+  }
+
+  getReviewers(employeeId: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee/names/byemployeeId?EmployeeId=${employeeId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.nameList;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  getObjectives(id: number, employeePermformId: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/performancesetup/get/scheduled/objectives?ReviewerId=${id}&EmployeePerformId=${employeePermformId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.setupLists;
+        })
+      );
   }
 }

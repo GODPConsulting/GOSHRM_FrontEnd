@@ -76,6 +76,7 @@ export interface IPointSetting {
 }
 
 export interface IAppraisalCycle {
+  employeePerformId: number;
   reviewStatusName: string;
   endDate: string;
   startDate: string;

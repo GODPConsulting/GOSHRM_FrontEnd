@@ -9,6 +9,7 @@ import { UtilitiesService } from "../../../../services/utilities.service";
 import { JwtService } from "../../../../services/jwt.service";
 import { forkJoin, Observable, zip } from "rxjs";
 import { map } from "rxjs/operators";
+import { Location } from "@angular/common";
 
 declare const $: any;
 
@@ -85,7 +86,8 @@ export class AppraisalObjectivesComponent implements OnInit {
     private loadingService: LoadingService,
     private utilitiesService: UtilitiesService,
     private jwtService: JwtService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public locatton: Location
   ) {
     this.dataService.sendData.subscribe((data) => {
       if (data) {

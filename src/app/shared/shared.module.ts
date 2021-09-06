@@ -14,6 +14,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { TabPanel, TabViewModule } from "primeng/tabview";
 import { TooltipModule } from "primeng/tooltip";
+import { SentenceCasePipe } from "../pipes/sentence-case.pipe";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { TooltipModule } from "primeng/tooltip";
     AppMenuComponent,
     AppSubMenuComponent,
     CustomDatePipe,
+    SentenceCasePipe,
   ],
   imports: [
     CommonModule,
@@ -49,6 +51,7 @@ import { TooltipModule } from "primeng/tooltip";
     TabPanel,
     TabViewModule,
     TooltipModule,
+    SentenceCasePipe,
   ],
 })
 export class SharedModule {}

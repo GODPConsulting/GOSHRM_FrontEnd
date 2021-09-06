@@ -3,6 +3,26 @@
   <div class="sidebar-inner slimscroll">
     <perfect-scrollbar [scrollIndicators]="false">
       <div id="sidebar-menu" class="sidebar-menu">
+        <div class="df fd-column center-align mb20 mt20">
+          <div class="nav-dp">
+            <img
+              class="user-dp"
+              *ngIf="hrmUser?.photo"
+              src="{{ hrmUser?.photo }}"
+              alt="Profile Picture"
+            />
+            <img
+              class="user-dp"
+              *ngIf="!hrmUser?.photo"
+              src="../../assets/img/user.jpg"
+              alt="Profile Picture"
+            />
+          </div>
+          <span class="gos-username">{{ hrmUser.firstName | titlecase }}</span
+          ><span class="gos-jobtitle">{{
+            hrmUser.jobTitleName | titlecase
+          }}</span>
+        </div>
         <ul *ngIf="sidebarMenus.default">
           <!-- ESS -->
           <li

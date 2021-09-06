@@ -139,10 +139,14 @@
                     (click)="viewObjective(item)"
                     >Objective</a
                   >
-                  <a class="dropdown-item p10 dropdown__link" href="#"
+                  <a
+                    class="dropdown-item p10 dropdown__link"
+                    (click)="viewFeedback(item)"
                     >Feedback</a
                   >
-                  <a class="dropdown-item p10 dropdown__link" href="#"
+                  <a
+                    class="dropdown-item p10 dropdown__link"
+                    (click)="showScheduleForm(item.employeePerformId)"
                     >Schedule Coaching</a
                   >
                   <a class="dropdown-item p10 dropdown__link" href="#"
@@ -217,4 +221,145 @@
       <app-feedback-kudos *ngIf="activeIndex == 2"></app-feedback-kudos>
     </p-tabPanel>
   </p-tabView>
+</div>
+<div id="schedlule_modal" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Schedule Coaching Session</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeScheduleModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="scheduleForm">
+          <div class="row row-flex">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Reviewer Name</label>
+                <select
+                  name="reviewerName"
+                  class="form-control"
+                  formControlName="reviewerId"
+                >
+                  <option value="" disabled>Select Reviewer</option>
+                  <option
+                    *ngFor="let emp of reviewers$ | async"
+                    [value]="emp.reviewerId"
+                  >
+                    {{ emp.reviewerName | titlecase }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="scheduleDate">Date</label>
+                <input
+                  type="date"
+                  id="scheduleDate"
+                  name="scheduleDate"
+                  class="form-control"
+                  formControlName="date"
+                />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="time">Time</label>
+                <input
+                  type="time"
+                  id="time"
+                  class="form-control"
+                  formControlName="time"
+                  name="time"
+                  (change)="onTimeChange($event.target.value)"
+                />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="objectives">Performance Objectives</label>
+                <!--    <select
+                  name="objectives"
+                  class="form-control"
+                  id="objectives"
+                  [(ngModel)]="objective"
+                >
+                  <option value="" disabled>None Selected</option>
+                  <option
+                    *ngFor="let item of appraisalFeedbacks"
+                    [value]="item.employeeObjectiveIdicatorId"
+                  >
+                    {{ item.kpiObjectives | titlecase }}
+                  </option>
+                </select>-->
+                <div class="col-md-4" style="padding-left: 0">
+                  <ng-select
+                    [items]="objectives"
+                    [multiple]="true"
+                    bindValue="id"
+                    bindLabel="label"
+                    formControlName="objectiveId"
+                    [searchable]="true"
+                    [closeOnSelect]="false"
+                    placeholder="Select Objective"
+                  >
+                    <ng-template
+                      ng-option-tmp
+                      let-item="item"
+                      let-item$="item$"
+                      let-index="index"
+                    >
+                      <input
+                        id="item-{{ index }}"
+                        type="checkbox"
+                        [ngModel]="item$.selected"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      {{ item.label }}
+                    </ng-template>
+                  </ng-select>
+                  <!--                  <p-multiSelect-->
+                  <!--                    [options]="appraisalFeedbacks"-->
+                  <!--                    [(ngModel)]="objective"-->
+                  <!--                    optionLabel="name"-->
+                  <!--                    defaultLabel="Select Objective"-->
+                  <!--                  ></p-multiSelect>-->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="scheduleComment">Comment</label>
+                <textarea
+                  type="text"
+                  id="scheduleComment"
+                  class="form-control resize"
+                  formControlName="comment"
+                  name="scheduleComment"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="submit-section">
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              (click)="submitSchedule(scheduleForm)"
+            >
+              <span>Save</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

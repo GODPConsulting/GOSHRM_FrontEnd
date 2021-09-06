@@ -29,7 +29,7 @@ export class SidebarComponent implements OnInit {
   staffId: number;
   user: any;
   hrmUser: any = {};
-
+  defaultImageUrl: string = "../../assets/img/user.jpg";
   constructor(
     private router: Router,
     private allModulesService: AllModulesService,

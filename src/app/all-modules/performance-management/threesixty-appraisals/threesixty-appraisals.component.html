@@ -70,7 +70,7 @@
       <input type="checkbox" />
       <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
     </div>
-    <div class="g-card-mid df sb">
+    <div class="g-card-mid df sb" *ngFor="let item of feedbacks$ | async">
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">employee</div>
         <div class="g-card-title">joshua chukwu</div>

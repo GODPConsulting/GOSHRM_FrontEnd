@@ -13,6 +13,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { HttpTokenInterceptor } from "./services/http.interceptor.service";
 import { EmployeeAppraisalsComponent } from "./all-modules/manager/employee-appraisals/employee-appraisals.component";
 import { AuthWrapperComponent } from "./components/auth-wrapper/auth-wrapper.component";
+import { SentenceCasePipe } from "./pipes/sentence-case.pipe";
 
 @NgModule({
   declarations: [AppComponent, AuthWrapperComponent],

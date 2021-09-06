@@ -2,11 +2,16 @@ import { Component, OnInit } from "@angular/core";
 import { LoadingService } from "../../../../services/loading.service";
 import { PerformanceManagementService } from "../../../../services/performance-management.service";
 import { JwtService } from "../../../../services/jwt.service";
-import { Appraisal, IAppraisalCycle } from "../../../../interface/interfaces";
+import {
+  Appraisal,
+  CoachingSchedule,
+  IAppraisalCycle,
+} from "../../../../interface/interfaces";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { UtilitiesService } from "../../../../services/utilities.service";
-
+import { FormBuilder, FormGroup } from "@angular/forms";
+declare const $: any;
 @Component({
   selector: "app-appraisal-objective-view",
   templateUrl: "./appraisal-objective-view.component.html",
@@ -19,12 +24,19 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   employeeAppraisalCycle: IAppraisalCycle[] = [];
   reviewYears$: Observable<any> = this.performanceManagementService.getReviewYears();
   activeIndex: number;
+  scheduleForm: FormGroup;
+  reviewers$: Observable<any>;
+  scheduleTime: string;
+  revieweeId: number;
+  objectives: any[] = [];
+  departmentId: number;
   constructor(
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
     private jwtService: JwtService,
     private router: Router,
-    private utilitiesService: UtilitiesService
+    private utilitiesService: UtilitiesService,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +45,32 @@ export class AppraisalObjectiveViewComponent implements OnInit {
       this.jobGradeId = employee.jobGrade;
       this.deptId = employee.companyId;
       this.getEmployeeAppraisalCycle();
+      this.reviewers$ = this.performanceManagementService.getReviewers(
+        this.employeeId
+      );
+    });
+    this.initialiseScheduleForm();
+  }
+  async getObjectives(id: number, emplooyeePerformId) {
+    await this.performanceManagementService
+      .getObjectives(id, emplooyeePerformId)
+      .subscribe((data) => {
+        this.objectives = data.map((item) => {
+          return {
+            label: item.objectiveName,
+            id: item.objectiveId,
+          };
+        });
+      });
+  }
+  initialiseScheduleForm() {
+    this.scheduleForm = this.formBuilder.group({
+      reviewerId: [""],
+      revieweeId: [""],
+      date: [""],
+      time: [""],
+      objectiveId: [[]],
+      comment: [""],
     });
   }
   getEmployeeAppraisalCycle() {
@@ -72,11 +110,25 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   }
 
   addObjective() {
-    this.router.navigate(["/performance/appraisal-objective-form"], {
-      queryParams: {
-        start: true,
+    const payload: Appraisal = {
+      id: 0,
+      employee: this.employeeId,
+      appraisalCycleId: 0,
+      department: this.deptId,
+      jobGradeId: this.jobGradeId,
+    };
+    return this.performanceManagementService.startAppraisal(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          this.getEmployeeAppraisalCycle();
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
       },
-    });
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
   }
   stopParentEvent(event: MouseEvent) {
     event.stopPropagation();
@@ -85,7 +137,11 @@ export class AppraisalObjectiveViewComponent implements OnInit {
     this.activeIndex = event.index;
     console.log(this.activeIndex);
   }
-
+  addNewObjective(type: string) {
+    switch (type) {
+      case "new":
+    }
+  }
   viewObjective(item) {
     const payload: Appraisal = {
       id: item.employeePerformId,
@@ -102,6 +158,67 @@ export class AppraisalObjectiveViewComponent implements OnInit {
               employeePerformId: item.employeePerformId,
               appraisalCycleId: item.appraisalCycleId,
             },
+          });
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  viewFeedback(item) {
+    this.router.navigate(["/performance/appraisal-feedback-page"], {
+      queryParams: {
+        id: item.employeeId,
+        appraisalCycleId: item.appraisalCycleId,
+        employeePerformId: item.employeePerformId,
+      },
+    });
+  }
+  closeScheduleModal() {
+    this.initialiseScheduleForm();
+    $("#schedlule_modal").modal("hide");
+  }
+
+  showScheduleForm(employeePerformId) {
+    this.getObjectives(this.employeeId, employeePerformId).then(() => {
+      $("#schedlule_modal").modal("show");
+    });
+  }
+  onTimeChange(value) {
+    var timeSplit = value.split(":"),
+      hours,
+      minutes,
+      meridian;
+    hours = timeSplit[0];
+    minutes = timeSplit[1];
+    if (hours > 12) {
+      meridian = "PM";
+      hours -= 12;
+    } else if (hours < 12) {
+      meridian = "AM";
+      if (hours == 0) {
+        hours = 12;
+      }
+    } else {
+      meridian = "PM";
+    }
+    this.scheduleTime = hours + ":" + minutes + " " + meridian;
+  }
+  submitSchedule(form: FormGroup) {
+    const payload: CoachingSchedule = form.value;
+    payload.revieweeId = +this.employeeId;
+    payload.reviewerId = +payload.reviewerId;
+    payload.date = new Date(payload.date);
+    // console.log(payload);
+    this.performanceManagementService.scheduleCoaching(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success").then(() => {
+            this.closeScheduleModal();
           });
         } else {
           return this.utilitiesService.showMessage(res, "error");
