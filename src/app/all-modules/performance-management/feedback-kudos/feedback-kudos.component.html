@@ -87,7 +87,9 @@
 
 <p-tabView [activeIndex]="activeIndex" (onChange)="tabChange($event)">
   <p-tabPanel header="Inward Nugget">
-    <app-inward-nuggets></app-inward-nuggets>
+    <app-inward-nuggets
+      [icomingFeedbacks]="feedbacks$ | async"
+    ></app-inward-nuggets>
   </p-tabPanel>
   <p-tabPanel header="Outward Nugget">
     <app-outward-nuggets *ngIf="activeIndex == 1"></app-outward-nuggets>

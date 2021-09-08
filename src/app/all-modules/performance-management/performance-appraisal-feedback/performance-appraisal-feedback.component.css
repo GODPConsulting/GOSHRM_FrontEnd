@@ -1,0 +1,19 @@
+.perf-btn {
+  padding: 1rem;
+  outline: none;
+  border: 1px solid #fff;
+  border-radius: 4px;
+}
+
+.btn-save {
+  color: #fff;
+  background: #00bf6f;
+}
+.promote-btn {
+  background: #00BCD4;
+  color: #fff;
+}
+.btn-360 {
+  background: var(--color-primary);
+  color: #fff;
+}

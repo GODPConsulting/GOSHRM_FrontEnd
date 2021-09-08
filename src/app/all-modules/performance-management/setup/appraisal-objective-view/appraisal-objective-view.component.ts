@@ -40,6 +40,9 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // this.jwtService.getData().subscribe((data) => {
+    //   console.log(data);
+    // });
     this.jwtService.getHrmUserDetails().then((employee) => {
       this.employeeId = employee.employeeId;
       this.jobGradeId = employee.jobGrade;
@@ -102,11 +105,15 @@ export class AppraisalObjectiveViewComponent implements OnInit {
     });
   }
   filter(value: any) {
-    return this.performanceManagementService
-      .filterObjectves(value)
-      .subscribe((data) => {
-        this.employeeAppraisalCycle = data;
-      });
+    if (value != 1) {
+      return this.performanceManagementService
+        .filterObjectves(value, this.employeeId, this.deptId)
+        .subscribe((data) => {
+          this.employeeAppraisalCycle = data;
+        });
+    } else {
+      return this.getEmployeeAppraisalCycle();
+    }
   }
 
   addObjective() {

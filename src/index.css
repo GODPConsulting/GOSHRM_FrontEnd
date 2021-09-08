@@ -1103,3 +1103,8 @@ ul .tab-item:active a {
   font-size: 1.3rem!important;
 }
 /* dashboard ends */
+.see-more, .see-more:hover {
+  color: var(--color-primary);
+  cursor: pointer;
+}
+

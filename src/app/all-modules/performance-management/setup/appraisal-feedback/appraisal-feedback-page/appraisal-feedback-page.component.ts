@@ -101,6 +101,8 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   public editorConfig = {
     extraPlugins: [],
   };
+  feedbackForm: FormGroup;
+  recommendation: string = "";
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -142,6 +144,10 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     // this.initialiseScheduleForm();
     this.initialiseFeedbackForm();
     this.initialiseScheduleForm();
+    this.initialiseRecommendationForm();
+  }
+  initialiseRecommendationForm() {
+    this.feedbackForm = this.formBuilder.group({});
   }
   initialiseEmployeeComment() {
     this.employeeCommentForm = this.formBuilder.group({
@@ -544,10 +550,14 @@ export class AppraisalFeedbackPageComponent implements OnInit {
     );
   }
   submitReviewerOneFeedback() {
+    // const data = this.feedbackForm.value;
+    // console.log(data);
+    // return;
     const payload = {
       appraisalCycleId: +this.appraisalCycleId,
       employee: +this.employeeId,
       employeeObjectiveFeedbackID: this.employeeObjectiveFeedbackID,
+      firstReviewerRecommendation: this.recommendation,
     };
     // this.loadingService.show();
     this.performanceManagementService
@@ -572,6 +582,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       appraisalCycleId: +this.appraisalCycleId,
       employee: +this.employeeId,
       employeeObjectiveFeedbackID: this.employeeObjectiveFeedbackID,
+      secondReviewerRecommendation: this.recommendation,
     };
     // this.loadingService.show();
     this.performanceManagementService
@@ -596,6 +607,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       appraisalCycleId: +this.appraisalCycleId,
       employee: +this.employeeId,
       employeeObjectiveFeedbackID: this.employeeObjectiveFeedbackID,
+      thirdReviewerRecommendation: this.recommendation,
     };
     // this.loadingService.show();
     this.performanceManagementService

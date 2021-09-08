@@ -145,7 +145,7 @@
                 formControlName="secondReviewerName"
                 id="reviewer2"
                 class="form-control"
-              />
+              />formControlName
             </div>
           </div>
           <div class="col-md-4">
@@ -225,6 +225,22 @@
 
 
       </form>-->
+      <form *ngIf="reviewer !== 'employee'">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="recommendation">Recommendation</label>
+              <input
+                type="text"
+                class="form-control"
+                id="recommendation"
+                name="recommendation"
+                [(ngModel)]="recommendation"
+              />
+            </div>
+          </div>
+        </div>
+      </form>
       <div class="table-responsive">
         <p-table
           [value]="appraisalFeedbacks"

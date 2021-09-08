@@ -65,44 +65,7 @@
 -->
 <!--*ngFor="let item of feedbacks$ | async"-->
 <div class="dg gtc mt10">
-  <div class="g-card p10">
-    <div class="g-card-top df sb mb10">
-      <input type="checkbox" />
-      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-    </div>
-    <div class="g-card-mid df sb" *ngFor="let item of feedbacks$ | async">
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">employee</div>
-        <div class="g-card-title">joshua chukwu</div>
-      </div>
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">request date</div>
-        <div class="g-card-title">02 feb, 2021</div>
-      </div>
-    </div>
-    <div class="g-card-mid df sb">
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">position</div>
-        <div class="g-card-title">engineering manager</div>
-      </div>
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">status</div>
-        <div class="g-card-title">submitted</div>
-      </div>
-    </div>
-    <div class="g-card-mid df sb">
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">company</div>
-        <div class="g-card-title company-name">abc</div>
-      </div>
-    </div>
-    <div class="g-card-mid df flex-end">
-      <div class="card-mid-item pt10 pb10">
-        <button class="feedback-btn gos-btn">feeback</button>
-      </div>
-    </div>
-  </div>
-  <div class="g-card p10">
+  <div class="g-card p10" *ngFor="let item of feedbacks$ | async">
     <div class="g-card-top df sb mb10">
       <input type="checkbox" />
       <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
@@ -110,101 +73,29 @@
     <div class="g-card-mid df sb">
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">employee</div>
-        <div class="g-card-title">joshua chukwu</div>
+        <div class="g-card-title">{{ item.employeeName }}</div>
       </div>
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">request date</div>
-        <div class="g-card-title">02 feb, 2021</div>
+        <div class="g-card-title">{{ item.requestDate | date }}</div>
       </div>
     </div>
     <div class="g-card-mid df sb">
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">position</div>
-        <div class="g-card-title">engineering manager</div>
+        <div class="g-card-title" style="width: 150%">
+          {{ item.jobTitleName }}
+        </div>
       </div>
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">status</div>
-        <div class="g-card-title">submitted</div>
+        <div class="g-card-title">{{ item.statusName }}</div>
       </div>
     </div>
     <div class="g-card-mid df sb">
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">company</div>
-        <div class="g-card-title company-name">abc</div>
-      </div>
-    </div>
-    <div class="g-card-mid df flex-end">
-      <div class="card-mid-item pt10 pb10">
-        <button class="feedback-btn gos-btn">feeback</button>
-      </div>
-    </div>
-  </div>
-  <div class="g-card p10">
-    <div class="g-card-top df sb mb10">
-      <input type="checkbox" />
-      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-    </div>
-    <div class="g-card-mid df sb">
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">employee</div>
-        <div class="g-card-title">joshua chukwu</div>
-      </div>
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">request date</div>
-        <div class="g-card-title">02 feb, 2021</div>
-      </div>
-    </div>
-    <div class="g-card-mid df sb">
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">position</div>
-        <div class="g-card-title">engineering manager</div>
-      </div>
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">status</div>
-        <div class="g-card-title">submitted</div>
-      </div>
-    </div>
-    <div class="g-card-mid df sb">
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">company</div>
-        <div class="g-card-title company-name">abc</div>
-      </div>
-    </div>
-    <div class="g-card-mid df flex-end">
-      <div class="card-mid-item pt10 pb10">
-        <button class="feedback-btn gos-btn">feeback</button>
-      </div>
-    </div>
-  </div>
-  <div class="g-card p10">
-    <div class="g-card-top df sb mb10">
-      <input type="checkbox" />
-      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-    </div>
-    <div class="g-card-mid df sb">
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">employee</div>
-        <div class="g-card-title">joshua chukwu</div>
-      </div>
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">request date</div>
-        <div class="g-card-title">02 feb, 2021</div>
-      </div>
-    </div>
-    <div class="g-card-mid df sb">
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">position</div>
-        <div class="g-card-title">engineering manager</div>
-      </div>
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">status</div>
-        <div class="g-card-title">submitted</div>
-      </div>
-    </div>
-    <div class="g-card-mid df sb">
-      <div class="card-mid-item pt10 pb10">
-        <div class="g-card-label">company</div>
-        <div class="g-card-title company-name">abc</div>
+        <div class="g-card-title company-name">{{ item.companyName }}</div>
       </div>
     </div>
     <div class="g-card-mid df flex-end">

@@ -25,6 +25,11 @@ export class FeedbackKudosComponent implements OnInit {
       this.reviewPeriod$ = this.performanceManagementService.getOpenCycle(
         user.companyId
       );
+      // this.performanceManagementService
+      //   .getKudos(user.employeeId, user.companyId)
+      //   .subscribe((res) => {
+      //     console.log(res);
+      //   });
       this.feedbacks$ = this.performanceManagementService.getKudos(
         user.employeeId,
         user.companyId
@@ -50,6 +55,6 @@ export class FeedbackKudosComponent implements OnInit {
   }
 
   tabChange(event: any) {
-    this.activeIndex = event.index
+    this.activeIndex = event.index;
   }
 }

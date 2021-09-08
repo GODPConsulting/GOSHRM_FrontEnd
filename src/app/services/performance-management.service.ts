@@ -898,10 +898,14 @@ export class PerformanceManagementService {
         })
       );
   }
-  filterObjectves(year: string): Observable<any> {
+  filterObjectves(
+    year: string,
+    employeeId: number,
+    deptId: number
+  ): Observable<any> {
     return this.apiService
       .get(
-        `/performance/get/employee_objectives/by_review_year?ReviewYear=${year}`
+        `/performance/get/employee_objectives/by_review_year?ReviewYear=${year}&EmployeeId=${employeeId}&Department=${deptId}`
       )
       .pipe(
         tap(),

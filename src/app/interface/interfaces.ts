@@ -116,6 +116,7 @@ export interface AppraisalObjective {
   department: number;
 }
 export interface ThreesixtyFeedback {
+  employeeName: string;
   score: number;
   pointAwarded: number;
   companyName: string;
@@ -149,11 +150,19 @@ export interface KudosScore {
   staffId: number;
 }
 export interface KudosFeedback {
+  endPeriod?: string;
+  officeName?: string;
+  jobGradeName?: string;
+  startperiod?: string;
+  companyName?: string;
   appraisalNuggetId: number;
   revieweeId: number;
   reviewerOneId: number;
   appraisalCycleId: number;
   companyId: number;
+  lengthOfService?: string;
+  revieweeJobTitleName?: string;
+  revieweeName?: string;
 }
 export interface ThreeSixtyFeedback {
   employeePerformanceFeedback360Id: number;

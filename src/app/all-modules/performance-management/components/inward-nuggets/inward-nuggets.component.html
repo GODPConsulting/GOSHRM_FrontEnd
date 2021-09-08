@@ -1,45 +1,45 @@
 <div class="dg gtc3 mt10">
-  <div class="g-card p10">
+  <div class="g-card p10" *ngFor="let item of icomingFeedbacks">
     <div class="g-card-top df sb mb10">
       <input type="checkbox" />
-      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+      <a class="see-more">See more</a>
     </div>
     <div class="g-card-mid df sb">
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">employee</div>
-        <div class="g-card-title">sam white</div>
+        <div class="g-card-title">{{ item.revieweeName }}</div>
       </div>
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">Job grade</div>
-        <div class="g-card-title">JG 6</div>
+        <div class="g-card-title">{{ item.jobGradeName }}</div>
       </div>
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">review period (start)</div>
-        <div class="g-card-title">feb 25, 2021</div>
+        <div class="g-card-title">{{ item.startperiod | customDate }}</div>
       </div>
     </div>
     <div class="g-card-mid df sb">
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">office/dept</div>
-        <div class="g-card-title">finance</div>
+        <div class="g-card-title">{{ item.officeName }}</div>
       </div>
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">company</div>
-        <div class="g-card-title company-name">abc</div>
+        <div class="g-card-title company-name">{{ item.companyName }}</div>
       </div>
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">review period (end)</div>
-        <div class="g-card-title">sept 30, 2021</div>
+        <div class="g-card-title">{{ item.endPeriod | customDate }}</div>
       </div>
     </div>
     <div class="g-card-mid df sb">
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">position</div>
-        <div class="g-card-title">managing director</div>
+        <div class="g-card-title">{{ item.revieweeJobTitleName }}</div>
       </div>
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">length of service</div>
-        <div class="g-card-title company-name">2 years, 4 months</div>
+        <div class="g-card-title company-name">{{ item.lengthOfService }}</div>
       </div>
     </div>
     <div class="g-card-mid df sb">
