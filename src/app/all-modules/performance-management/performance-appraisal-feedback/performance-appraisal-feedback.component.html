@@ -273,7 +273,9 @@
       </form>
 
       <div class="df center-align justify-content-center mt20">
-        <button class="perf-btn btn-danger mr10"><< Back</button>
+        <button class="perf-btn btn-danger mr10" (click)="location.back()">
+          << Back
+        </button>
         <button class="perf-btn btn-save mr10">Save Record</button>
         <button class="perf-btn promote-btn mr10">Promote Staff</button>
         <button class="perf-btn btn-360" (click)="show360Modal()">
@@ -286,8 +288,10 @@
 <div id="feedback_modal" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
-      <div class="p-4">
-        <h5 class="modal-title" style="font-size: 1.4rem">360 Feedback</h5>
+      <div class="p-3 header-bg-color mb20">
+        <h5 class="modal-title" style="font-size: 1.4rem">
+          {{ employeeName }} 360 Feedback
+        </h5>
 
         <button
           type="button"
@@ -303,7 +307,7 @@
         <button
           class="btn btn-primary submit-btn"
           type="submit"
-          (click)="save(feebackForm)"
+          (click)="addThreeSixtyReviewers()"
         >
           <span>Save</span>
         </button>
@@ -321,7 +325,7 @@
                     [multiple]="true"
                     bindValue="id"
                     bindLabel="label"
-                    formControlName="employeeId"
+                    formControlName="reviewerId"
                     [searchable]="true"
                     [closeOnSelect]="false"
                     placeholder="Select Employee"
@@ -366,6 +370,32 @@
             </div>
           </div>
         </form>
+        <div>
+          <p-table [value]="reviewers">
+            <ng-template pTemplate="header">
+              <tr>
+                <th class="sn_width">S/N</th>
+                <th>Name</th>
+                <th>Grade</th>
+                <th>Unit/Dept</th>
+                <th>Completion</th>
+                <th>Submitted On</th>
+                <th>Reviewer Selected By</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row let-i="rowIndex">
+              <tr>
+                <td class="sn_width">{{ i + 1 }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.grade }}</td>
+                <td>{{ row.dept }}</td>
+                <td>{{ row.completion }}</td>
+                <td>{{ row.submittedOn | customDate }}</td>
+                <td>{{ row.revieweBy }}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
       </div>
     </div>
   </div>

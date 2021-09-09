@@ -137,10 +137,12 @@ export class AppraisalsComponent implements OnInit {
 
   addItemId($event: Event, id: any) {}
 
-  viewAppraisal(id: number) {
+  viewAppraisal(row) {
+    this.utilitiesService.sendUser(row.employeeName);
     this.router.navigate(["/performance/performance-appraisal"], {
       queryParams: {
-        id: id,
+        emp: row.empId,
+        appraisalCycleId: row.appraisalCycleId,
       },
     });
   }

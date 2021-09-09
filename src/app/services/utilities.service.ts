@@ -12,8 +12,9 @@ import { JwtService } from "./jwt.service";
   providedIn: "root",
 })
 export class UtilitiesService {
-  user = new BehaviorSubject<any>({});
+  user = new BehaviorSubject<any>("");
   employee = this.user.asObservable();
+
   constructor(
     private apiService: ApiService,
     private employeeService: EmployeeService,
@@ -260,5 +261,8 @@ export class UtilitiesService {
     const formData: FormData = new FormData();
     formData.append("file", file);
     return formData;
+  }
+  sendUser(user) {
+    this.user.next(user);
   }
 }

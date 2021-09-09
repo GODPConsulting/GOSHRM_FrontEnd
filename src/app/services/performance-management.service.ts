@@ -18,6 +18,7 @@ import {
   KudosScore,
   ThreeSixtyFeedback,
   ThreesixtyFeedback,
+  ThreeSixtyReviewer,
 } from "../interface/interfaces";
 import { UtilitiesService } from "./utilities.service";
 
@@ -1365,6 +1366,45 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res.setupLists;
+        })
+      );
+  }
+
+  addThreeSixtyReviewer(payload: ThreeSixtyReviewer): Observable<any> {
+    return this.apiService
+      .post(`/performance/add/update/feedback/360Reviewers`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  getThreeSixtyReviewers(revieweeId: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee/feedbacks/360/reviewers?EmployeeId=${revieweeId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res._360List;
+        })
+      );
+  }
+  getPerformanceFeedback(
+    employeeId: number,
+    empPerformId: number
+  ): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/performance-appraisal/get/appraisal-feedback/EmployeeId?EmployeeId=${employeeId}&ID=${empPerformId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list[0];
         })
       );
   }

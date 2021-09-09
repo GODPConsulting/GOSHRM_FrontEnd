@@ -116,6 +116,7 @@ export interface AppraisalObjective {
   department: number;
 }
 export interface ThreesixtyFeedback {
+  isSubmitted?: boolean;
   employeeName: string;
   score: number;
   pointAwarded: number;
@@ -204,4 +205,12 @@ export interface Appraisal {
   appraisalCycleId: number;
   department: number;
   employeePerformId?: number;
+}
+export interface ThreeSixtyReviewer {
+  id: number;
+  reviewerId: number[];
+  revieweeId: number;
+  reviewerSelectedById: number;
+  completion?: string;
+  submittedOn?: Date;
 }

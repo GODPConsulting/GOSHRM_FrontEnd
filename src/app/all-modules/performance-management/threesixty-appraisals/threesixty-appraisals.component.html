@@ -73,7 +73,7 @@
     <div class="g-card-mid df sb">
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">employee</div>
-        <div class="g-card-title">{{ item.employeeName }}</div>
+        <div class="g-card-title">{{ item.revieweeName }}</div>
       </div>
       <div class="card-mid-item pt10 pb10">
         <div class="g-card-label">request date</div>
@@ -100,7 +100,13 @@
     </div>
     <div class="g-card-mid df flex-end">
       <div class="card-mid-item pt10 pb10">
-        <button class="feedback-btn gos-btn">feeback</button>
+        <button
+          class="feedback-btn gos-btn"
+          (click)="viewFeedback(item)"
+          [ngClass]="{ disabled: item.isSubmitted }"
+        >
+          feeback
+        </button>
       </div>
     </div>
   </div>

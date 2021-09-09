@@ -1,7 +1,7 @@
 <div class="content container-fluid" style="padding-bottom: 0">
   <!-- Page Header Starts -->
   <div id="add_appraisal_objectives">
-    <div class="card">
+    <!--<div class="card">
       <div class="card-header header-bg-color">
         <h3><b>360 Appraisal Feedback </b></h3>
       </div>
@@ -121,9 +121,14 @@
           </div>
         </form>
       </div>
-    </div>
+    </div>-->
     <div class="card">
-      <div class="card-header header-bg-color"></div>
+      <div class="card-header header-bg-color">
+        <h3>360 Feedback</h3>
+        <div>
+          1=Unsatisfactory, 2=Fair, 3=Solid, 4= Outstanding, 5=Exceptional
+        </div>
+      </div>
       <div class="card-body">
         <div>
           <p-table [value]="feedbacks$ | async">
@@ -159,14 +164,14 @@
                 <td>{{ row.objectives | titlecase }}</td>
                 <td>
                   <a
-                    class="hint feedback-btn"
+                    class="hint feedback_btn"
                     data-toggle="modal"
                     (click)="addComment(row.kpiId, 'employee')"
                     ><span class="hint-text">Add </span
                     ><i class="fa fa-plus"></i
                   ></a>
                   <a
-                    class="hint feedback-btn"
+                    class="hint feedback_btn"
                     data-toggle="modal"
                     (click)="viewComments(row.revieweeComment, 'employee')"
                     ><span class="hint-text">View </span
@@ -178,7 +183,7 @@
                     row.revieweeScore | number: "1.2-2"
                   }}</span>
                   <a
-                    class="hint feedback-btn"
+                    class="hint feedback_btn"
                     data-toggle="modal"
                     (click)="addScore(row.kpiId, row.revieweeScore, 'employee')"
                     ><span class="hint-text">Edit </span
