@@ -61,7 +61,8 @@ export class AppraisalCyclePageComponent implements OnInit {
     private commonService: CommonService,
     private router: Router,
     private _route: ActivatedRoute,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    public _location: Location
   ) {
     this.appraisalCycleUploadForm = this.formBuilder.group({
       uploadInput: [""],

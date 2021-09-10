@@ -103,6 +103,16 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   };
   feedbackForm: FormGroup;
   recommendation: string = "";
+  recommendations: string[] = [
+    "Development Required",
+    "Merit Increase",
+    "No Recommendation",
+    "Promote",
+    "Terminate",
+    "Transfer",
+    "Others",
+  ];
+  recommendationComment: string = "";
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,

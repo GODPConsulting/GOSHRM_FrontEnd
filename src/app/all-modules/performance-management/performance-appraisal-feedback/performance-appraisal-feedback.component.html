@@ -10,16 +10,29 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label class="gos-label">Review Year</label>
-              <select name="" id="" class="form-control">
+              <label class="gos-label" for="reviewYear">Review Year</label>
+              <!--<select name="" id="" class="form-control">
                 <option value="">2021</option>
-              </select>
+              </select>-->
+              <input
+                type="text"
+                id="reviewYear"
+                class="form-control"
+                name="reviewYear"
+                [(ngModel)]="appraisalFeedbackForm.reviewYear"
+              />
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="jobgrade" class="gos-label">Grade</label>
-              <input type="text" class="form-control" id="jobgrade" />
+              <input
+                type="text"
+                class="form-control"
+                id="jobgrade"
+                name="jobGradeName"
+                [(ngModel)]="appraisalFeedbackForm.jobGradeName"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -29,7 +42,13 @@
                   <label for="startperiod" class="gos-label text-uppercase"
                     >Review start period</label
                   >
-                  <input type="date" class="form-control" id="startperiod" />
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="startperiod"
+                    name="startperiod"
+                    [(ngModel)]="appraisalFeedbackForm.startDate"
+                  />
                 </div>
               </div>
               <div class="col-md-6">
@@ -37,7 +56,13 @@
                   <label for="endperiod" class="gos-label text-uppercase">
                     review period end</label
                   >
-                  <input type="date" class="form-control" id="endperiod" />
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="endperiod"
+                    name="endperiod"
+                    [(ngModel)]="appraisalFeedbackForm.endDate"
+                  />
                 </div>
               </div>
             </div>
@@ -48,7 +73,7 @@
               <label for="dept" class="gos-label text-uppercase"
                 >department</label
               >
-              <input type="text" class="form-control" id="dept" />
+              <input type="text" class="form-control" id="dept" name="dept" />
             </div>
           </div>
           <div class="col-md-6">
@@ -56,7 +81,12 @@
               <label for="employeenumber" class="gos-label text-uppercase"
                 >employee number</label
               >
-              <input type="text" class="form-control" id="employeenumber" />
+              <input
+                type="text"
+                class="form-control"
+                id="employeenumber"
+                name="employeenumber"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -64,7 +94,12 @@
               <label for="location" class="gos-label text-uppercase"
                 >location</label
               >
-              <input type="text" class="form-control" id="location" />
+              <input
+                type="text"
+                class="form-control"
+                name="location"
+                id="location"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -72,7 +107,13 @@
               <label for="employeename" class="gos-label text-uppercase"
                 >employee name</label
               >
-              <input type="text" class="form-control" id="employeename" />
+              <input
+                type="text"
+                class="form-control"
+                id="employeename"
+                name="employeeName"
+                [(ngModel)]="appraisalFeedbackForm.employeeName"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -80,7 +121,7 @@
               <label for="time" class="gos-label text-uppercase"
                 >time in present position</label
               >
-              <input type="text" class="form-control" id="time" />
+              <input type="text" class="form-control" id="time" name="time" />
             </div>
           </div>
           <div class="col-md-6">
@@ -88,7 +129,13 @@
               <label for="jobtitle" class="gos-label text-uppercase"
                 >job title</label
               >
-              <input type="text" class="form-control" id="jobtitle" />
+              <input
+                type="text"
+                class="form-control"
+                id="jobtitle"
+                name="jobTitleName"
+                [(ngModel)]="appraisalFeedbackForm.jobTitleName"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -96,7 +143,13 @@
               <label for="lengthofservice" class="gos-label text-uppercase"
                 >length of service</label
               >
-              <input type="text" class="form-control" id="lengthofservice" />
+              <input
+                type="text"
+                class="form-control"
+                id="lengthofservice"
+                name="lengthOfService"
+                [(ngModel)]="appraisalFeedbackForm.lengthOfService"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -104,7 +157,13 @@
               <label for="reviewer1" class="gos-label text-uppercase"
                 >reviewer i</label
               >
-              <input type="text" class="form-control" id="reviewer1" />
+              <input
+                type="text"
+                class="form-control"
+                id="reviewer1"
+                name="firstReviewerName"
+                [(ngModel)]="appraisalFeedbackForm.firstReviewerName"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -112,7 +171,13 @@
               <label for="reviewer1point" class="gos-label text-uppercase"
                 >reviewer I point</label
               >
-              <input type="text" class="form-control" id="reviewer1point" />
+              <input
+                type="text"
+                class="form-control"
+                id="reviewer1point"
+                name="firstReviewerPoint"
+                [(ngModel)]="appraisalFeedbackForm.firstReviewerPoint"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -120,7 +185,13 @@
               <label for="reviewer2" class="gos-label text-uppercase"
                 >reviewer II</label
               >
-              <input type="text" class="form-control" id="reviewer2" />
+              <input
+                type="text"
+                class="form-control"
+                id="reviewer2"
+                name="secondReviewerName"
+                [(ngModel)]="appraisalFeedbackForm.secondReviewerName"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -128,7 +199,13 @@
               <label for="reviewer2point" class="gos-label text-uppercase"
                 >reviewer II point average</label
               >
-              <input type="text" class="form-control" id="reviewer2point" />
+              <input
+                type="text"
+                class="form-control"
+                id="reviewer2point"
+                name="secondReviewerPoint"
+                [(ngModel)]="appraisalFeedbackForm.secondReviewerPoint"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -136,7 +213,13 @@
               <label for="reviewer3" class="gos-label text-uppercase"
                 >reviewer III</label
               >
-              <input type="text" class="form-control" id="reviewer3" />
+              <input
+                type="text"
+                class="form-control"
+                id="reviewer3"
+                name="thirdReviewerName"
+                [(ngModel)]="appraisalFeedbackForm.thirdReviewerName"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -144,7 +227,13 @@
               <label for="reviewer3point" class="gos-label text-uppercase"
                 >reviewer III point average</label
               >
-              <input type="text" class="form-control" id="reviewer3point" />
+              <input
+                type="text"
+                class="form-control"
+                id="reviewer3point"
+                name="thirdReviewerPoint"
+                [(ngModel)]="appraisalFeedbackForm.thirdReviewerPoint"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -158,6 +247,8 @@
                 type="text"
                 class="form-control"
                 id="reviewer1recommendation"
+                name="firstReviewerRecommendation"
+                [(ngModel)]="appraisalFeedbackForm.firstReviewerRecommendation"
               />
             </div>
           </div>
@@ -172,6 +263,8 @@
                 type="text"
                 class="form-control"
                 id="reviewer2recommendation"
+                name="secondReviewerRecommendation"
+                [(ngModel)]="appraisalFeedbackForm.secondReviewerRecommendation"
               />
             </div>
           </div>
@@ -186,6 +279,8 @@
                 type="text"
                 class="form-control"
                 id="reviewer3recommendation"
+                name="thirdReviewerRecommendation"
+                [(ngModel)]="appraisalFeedbackForm.thirdReviewerRecommendation"
               />
             </div>
           </div>
@@ -194,7 +289,13 @@
               <label for="overallremark" class="gos-label text-uppercase"
                 >overall remark</label
               >
-              <input type="text" class="form-control" id="overallremark" />
+              <input
+                type="text"
+                class="form-control"
+                id="overallremark"
+                name="overallRemark"
+                [(ngModel)]="appraisalFeedbackForm.overallRemark"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -206,6 +307,8 @@
                 type="text"
                 class="form-control"
                 id="revieweepointaverage"
+                name="averageReviewerPoint"
+                [(ngModel)]="appraisalFeedbackForm.averageReviewerPoint"
               />
             </div>
           </div>
@@ -214,7 +317,13 @@
               <label for="overallpoint" class="gos-label text-uppercase"
                 >overall point</label
               >
-              <input type="text" class="form-control" id="overallpoint" />
+              <input
+                type="text"
+                class="form-control"
+                id="overallpoint"
+                name="overallPoint"
+                [(ngModel)]="appraisalFeedbackForm.overallPoint"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -222,7 +331,13 @@
               <label for="overallscore" class="gos-label text-uppercase"
                 >overall score(%)</label
               >
-              <input type="text" class="form-control" id="overallscore" />
+              <input
+                type="text"
+                class="form-control"
+                id="overallscore"
+                name="overallScore"
+                [(ngModel)]="appraisalFeedbackForm.overallScore"
+              />
             </div>
           </div>
           <div class="col-md-6">
@@ -234,6 +349,8 @@
                 type="text"
                 class="form-control"
                 id="adjustedoverallscore"
+                name="adjustedOverallScore"
+                [(ngModel)]="appraisalFeedbackForm.adjustedOverallScore"
               />
             </div>
           </div>
@@ -242,9 +359,10 @@
               >hr recommendation</label
             >
             <textarea
-              name=""
+              name="hrRecommendation"
               id="hrrecommendation"
               class="form-control"
+              [(ngModel)]="appraisalFeedbackForm.hrRecommendation"
             ></textarea>
           </div>
           <div class="col-md-6">
@@ -258,6 +376,8 @@
                 type="text"
                 class="form-control"
                 id="employeefinaldecision"
+                name="employeeFinalDecision"
+                [(ngModel)]="appraisalFeedbackForm.employeeFinalDecision"
               />
             </div>
           </div>
@@ -266,7 +386,13 @@
               <label for="employeecomment" class="gos-label text-uppercase"
                 >employee comment</label
               >
-              <input type="text" class="form-control" id="employeecomment" />
+              <input
+                type="text"
+                class="form-control"
+                id="employeecomment"
+                name="employeeComment"
+                [(ngModel)]="appraisalFeedbackForm.employeeComment"
+              />
             </div>
           </div>
         </div>

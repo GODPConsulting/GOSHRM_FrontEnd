@@ -87,6 +87,37 @@
 
 <p-tabView [activeIndex]="activeIndex" (onChange)="tabChange($event)">
   <p-tabPanel header="Inward Nugget">
+    <div class="header_flex">
+      <select
+        name=""
+        id=""
+        class="form-control search_field"
+        style="margin-right: 3px"
+      >
+        <option value="" selected disabled>Review Period</option>
+        <option
+          *ngFor="let item of reviewPeriod$ | async"
+          [value]="item.appraisalCycleId"
+        >
+          {{ item.period }}
+        </option>
+      </select>
+      <a
+        routerLink="/performance/add-kudos"
+        routerLinkActive="router-link-active"
+        class="btn hint"
+        ><span class="hint-text">Add </span><i class="fa fa-plus"></i
+      ></a>
+      <a class="btn hint" (click)="delete()"
+        ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
+      ></a>
+      <input
+        type="text"
+        class="form-control search_field"
+        placeholder="Search"
+      />
+    </div>
+
     <app-inward-nuggets
       [icomingFeedbacks]="feedbacks$ | async"
     ></app-inward-nuggets>

@@ -183,13 +183,13 @@
               <!-- <td>{{ row.objectives | titlecase }}</td> -->
               <td>
                 <a
-                  class="hint feedback-btn"
+                  class="hint feedback__btn"
                   data-toggle="modal"
                   (click)="addComment(row.kpiId, 'employee')"
                   ><span class="hint-text">Add </span><i class="fa fa-plus"></i
                 ></a>
                 <a
-                  class="hint feedback-btn"
+                  class="hint feedback__btn"
                   data-toggle="modal"
                   (click)="viewComments(row.revieweeComment, 'employee')"
                   ><span class="hint-text">View </span><i class="fa fa-eye"></i
@@ -200,7 +200,7 @@
                   row.revieweeScore | number: "1.2-2"
                 }}</span>
                 <a
-                  class="hint feedback-btn"
+                  class="hint feedback__btn"
                   data-toggle="modal"
                   (click)="addScore(row.kpiId, row.revieweeScore)"
                   ><span class="hint-text">Edit </span><i class="fa fa-edit"></i

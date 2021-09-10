@@ -150,7 +150,13 @@ export interface KudosScore {
   kpiId: number;
   staffId: number;
 }
+export interface Kudos {
+  kpicategoryName: string;
+  comments: string;
+  scores: number;
+}
 export interface KudosFeedback {
+  payloads?: Kudos[];
   endPeriod?: string;
   officeName?: string;
   jobGradeName?: string;

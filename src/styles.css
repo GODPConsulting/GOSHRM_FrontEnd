@@ -8815,7 +8815,7 @@ rating span {
   border-radius: 4px;
 }
 .resize {
-  resize: none
+  resize: none !important
 }
 
 .btn {

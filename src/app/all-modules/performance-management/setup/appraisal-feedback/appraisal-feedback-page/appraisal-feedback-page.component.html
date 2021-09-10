@@ -227,16 +227,55 @@
       </form>-->
       <form *ngIf="reviewer !== 'employee'">
         <div class="row">
+          <div class="col-md-12 df flex-end">
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="_location.back()"
+            >
+              Back
+            </button>
+            <button class="btn btn-primary" (click)="submitFeedback(reviewer)">
+              Submit
+            </button>
+          </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="recommendation">Recommendation</label>
-              <input
+              <select
+                name="recommendation"
+                id="recommendation"
+                class="form-control"
+                [(ngModel)]="recommendation"
+              >
+                <option value="" disabled>--Select--</option>
+                <option
+                  *ngFor="let recommendation of recommendations"
+                  [value]="recommendation"
+                >
+                  {{ recommendation }}
+                </option>
+              </select>
+              <!--<input
                 type="text"
                 class="form-control"
                 id="recommendation"
                 name="recommendation"
                 [(ngModel)]="recommendation"
-              />
+              />-->
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="recommendationComment">Recommendation Comments</label>
+
+              <textarea
+                rows="5"
+                class="form-control resize"
+                id="recommendationComment"
+                name="recommendationComment"
+                [(ngModel)]="recommendationComment"
+              ></textarea>
             </div>
           </div>
         </div>

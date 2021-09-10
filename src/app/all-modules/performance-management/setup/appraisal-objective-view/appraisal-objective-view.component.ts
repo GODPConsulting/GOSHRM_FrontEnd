@@ -30,6 +30,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   revieweeId: number;
   objectives: any[] = [];
   departmentId: number;
+  companyId: number;
   constructor(
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
@@ -235,5 +236,13 @@ export class AppraisalObjectiveViewComponent implements OnInit {
         return this.utilitiesService.showMessage(err, "error");
       }
     );
+  }
+  viewSchedule() {
+    this.router.navigate(["/performance/coaching-schedules"], {
+      queryParams: {
+        revieweeId: this.employeeId,
+        companyId: this.deptId,
+      },
+    });
   }
 }

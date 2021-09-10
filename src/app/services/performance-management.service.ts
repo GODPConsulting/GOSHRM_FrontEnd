@@ -344,7 +344,7 @@ export class PerformanceManagementService {
   getAppraisalPreference(id: number): Observable<any> {
     return this.apiService
       .get(
-        `/performance/performancesetup/get/update/appraisal-preference?AppraisalCycle=${id}`
+        `/performance/performancesetup/get/update/appraisal-preference/AppraisalCycle?AppraisalCycleId=${id}`
       )
       .pipe(
         tap(),
@@ -1395,11 +1395,11 @@ export class PerformanceManagementService {
   }
   getPerformanceFeedback(
     employeeId: number,
-    empPerformId: number
+    appraisalCycleId: number
   ): Observable<any> {
     return this.apiService
       .get(
-        `/performance/performance-appraisal/get/appraisal-feedback/EmployeeId?EmployeeId=${employeeId}&ID=${empPerformId}`
+        `/performance/performance-appraisal/get/appraisal-feedback/EmployeeId?EmployeeId=${employeeId}&AppraisalCycleid=${appraisalCycleId}`
       )
       .pipe(
         tap(),

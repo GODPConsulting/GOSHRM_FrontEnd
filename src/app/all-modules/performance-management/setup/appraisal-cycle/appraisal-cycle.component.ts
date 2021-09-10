@@ -196,7 +196,7 @@ export class AppraisalCycleComponent implements OnInit {
 
   edit(row) {
     this._router.navigate(
-      ["/performance/setup/appraisal-cycle/appraisal-cycle-page"],
+      ["/performance/appraisal-cycle/appraisal-cycle-page"],
       {
         queryParams: {
           id: row.appraisalCycleId,

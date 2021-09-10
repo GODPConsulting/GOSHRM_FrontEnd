@@ -149,6 +149,7 @@ export class KeyPerformanceIndicatorsComponent
       kpi: [""],
       description: [""],
       resultFromExternal: [0],
+      upload_of_Actual_Result: [""],
     });
   }
 
@@ -201,7 +202,8 @@ export class KeyPerformanceIndicatorsComponent
       kpiCategoryId: kpIndicator.kpiCategoryId,
       kpi: kpIndicator.kpi,
       description: kpIndicator.description,
-      resultFromExternal: kpIndicator.resultFromExternal.toString(),
+      upload_of_Actual_Result: kpIndicator.upload_of_Actual_Result.toString(),
+      // resultFromExternal: kpIndicator.resultFromExternal.toString(),
     });
     $("#kp_indicator_modal").modal("show");
   }

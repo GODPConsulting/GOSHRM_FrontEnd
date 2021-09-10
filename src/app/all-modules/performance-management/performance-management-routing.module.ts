@@ -45,15 +45,15 @@ const routes: Routes = [
         component: PointSettingsComponent,
       },
       {
-        path: "setup/appraisal-preference",
+        path: "appraisal-preference",
         component: AppraisalPreferenceComponent,
       },
       {
-        path: "setup/appraisal-cycle",
+        path: "appraisal-cycle",
         component: AppraisalCycleComponent,
       },
       {
-        path: "setup/appraisal-cycle/appraisal-cycle-page",
+        path: "appraisal-cycle/appraisal-cycle-page",
         component: AppraisalCyclePageComponent,
       },
       {
@@ -61,7 +61,7 @@ const routes: Routes = [
         component: AppraisalFeedbackComponent,
       },
       {
-        path: "setup/appraisal-cycle/appraisals/:id",
+        path: "appraisal-cycle/appraisals/:id",
         component: AppraisalsComponent,
       },
       {
@@ -85,7 +85,7 @@ const routes: Routes = [
         component: KpiToJobgradeComponent,
       },
       {
-        path: "appraisal-objective-view",
+        path: "appraisals",
         component: AppraisalObjectiveViewComponent,
       },
       {

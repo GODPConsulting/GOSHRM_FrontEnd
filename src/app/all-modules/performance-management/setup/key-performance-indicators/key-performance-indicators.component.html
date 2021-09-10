@@ -82,7 +82,7 @@
                 {{ row.description | titlecase }}
               </td>
               <td (click)="editKPIndicator(row)">
-                {{ row.resultFromExternalName }}
+                {{ row.upload_of_Actual_Result_Name }}
               </td>
             </tr>
           </ng-template>
@@ -170,7 +170,7 @@
                     <label>Upload of Actual Result</label>
                     <select
                       class="select form-control"
-                      formControlName="resultFromExternal"
+                      formControlName="upload_of_Actual_Result"
                     >
                       <option disabled>Select Status</option>
                       <option value="1">Yes</option>

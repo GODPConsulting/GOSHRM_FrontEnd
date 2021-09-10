@@ -1,6 +1,9 @@
 .header_flex {
   display: flex;
   margin-bottom: 1rem;
+  background: #fff;
+  padding: 1rem;
+  justify-content: flex-end;
   /* align-items: flex-end; */
   /* width: 100%; */
   /* float: right; */
@@ -9,5 +12,5 @@
 .search_field {
   width: 25rem;
   /* margin-bottom: 1rem; */
-  height: 2.4rem;
+  height: 3.4rem;
 }

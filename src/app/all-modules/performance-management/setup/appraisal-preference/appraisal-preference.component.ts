@@ -84,7 +84,9 @@ export class AppraisalPreferenceComponent implements OnInit {
         this.loading = false;
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
-          swal.fire("Success", message, "success");
+          swal.fire("Success", message, "success").then(() => {
+            this.getAppraisalPreferences();
+          });
           // this.initializeForm();
         } else {
           swal.fire("GOSHRM", message, "error");

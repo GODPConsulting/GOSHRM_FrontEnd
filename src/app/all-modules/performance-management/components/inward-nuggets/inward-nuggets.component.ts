@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { KudosFeedback } from "../../../../interface/interfaces";
+declare const $: any;
 
 @Component({
   selector: "app-inward-nuggets",
@@ -11,4 +12,12 @@ export class InwardNuggetsComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  addFeedback() {
+    $("#feedback_modal").modal("show");
+  }
+
+  closeFeedbackModal() {
+    $("#feedback_modal").modal("hide");
+  }
 }

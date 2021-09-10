@@ -68,17 +68,17 @@
                   >Profile</a
                 >
               </li>
-              <li routerLink="/performance/appraisal-objective-view">
+              <li routerLink="/performance/appraisals">
                 <a
                   href="javascript:"
                   [ngClass]="{
-                    active: urlComplete.subUrl === 'appraisal-objective-view'
+                    active: urlComplete.subUrl === 'appraisals'
                   }"
-                  >Appraisal Objective</a
+                  >Performance Appraisals</a
                 >
               </li>
 
-              <li
+              <!--<li
                 class="submenu"
                 [ngClass]="{
                   active:
@@ -145,11 +145,11 @@
                   }"
                   >360 Feedback</a
                 >
-              </li>
+              </li>-->
             </ul>
           </li>
           <!-- /ESS -->
-          <!-- Employee sidebar -->
+          <!-- HR Admin -->
           <li
             *ngIf="userRights?.includes('allemployees')"
             class="submenu"
@@ -318,7 +318,8 @@
                             urlComplete.childUrl === 'appraisal-feedback')
                       }"
                       class="noti-dot"
-                      ><i class=""></i> <span class="float-left"> Setup</span>
+                      ><i class=""></i>
+                      <span class="float-left">Settings</span>
                       <span class="menu-arrow"></span
                     ></a>
                     <ul
@@ -398,7 +399,7 @@
                           >Point Settings</a
                         >
                       </li>
-                      <li routerLink="/performance/setup/appraisal-preference">
+                      <!-- <li routerLink="/performance/setup/appraisal-preference">
                         <a
                           href="javascript:"
                           [ngClass]="{
@@ -410,6 +411,87 @@
                       </li>
 
                       <li routerLink="/performance/setup/appraisal-cycle">
+                        <a
+                          href="javascript:"
+                          [ngClass]="{
+                            active: urlComplete.childUrl === 'appraisal-cycle'
+                          }"
+                          >Appraisal Cycle</a
+                        >
+                      </li>-->
+
+                      <!--                   <li routerLink="/performance/appraisal-objective-form">
+                                          <a href="javascript:" [ngClass]="{
+                                          active:
+                                            urlComplete.subUrl === 'appraisal-objective-form'
+                                        }">Appraisal Objective Form</a>
+                                        </li>
+                                            <li routerLink="/performance/appraisal-objectives">
+                                              <a
+                                                href="javascript:"
+                                                [ngClass]="{
+                                                  active:
+                                                    urlComplete.subUrl === 'appraisal-objectives'
+                                                }"
+                                                >Appraisal Objectives</a
+                                              >
+                                            </li>-->
+                    </ul>
+                  </li>
+                  <li
+                    class="submenu"
+                    [ngClass]="{
+                      active:
+                        (urlComplete.mainUrl === 'performance' &&
+                          urlComplete.childUrl === 'appraisal-preference') ||
+                        (urlComplete.mainUrl === 'performance' &&
+                          urlComplete.childUrl === 'appraisal-cycle') ||
+                        (urlComplete.mainUrl === 'performance' &&
+                          urlComplete.childUrl === 'appraisal-feedback')
+                    }"
+                  >
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        subdrop:
+                          (urlComplete.mainUrl === 'performance' &&
+                            urlComplete.childUrl === 'appraisal-preference') ||
+                          (urlComplete.mainUrl === 'performance' &&
+                            urlComplete.childUrl === 'appraisal-cycle') ||
+                          (urlComplete.mainUrl === 'performance' &&
+                            urlComplete.childUrl === 'appraisal-feedback')
+                      }"
+                      class="noti-dot"
+                      ><i class=""></i>
+                      <span class="float-left"> Appraisals</span>
+                      <span class="menu-arrow"></span
+                    ></a>
+                    <ul
+                      style="display: none"
+                      [ngStyle]="{
+                        display:
+                          (urlComplete.mainUrl === 'performance' &&
+                            urlComplete.childUrl === 'appraisal-preference') ||
+                          (urlComplete.mainUrl === 'performance' &&
+                            urlComplete.childUrl === 'appraisal-cycle') ||
+                          (urlComplete.mainUrl === 'performance' &&
+                            urlComplete.childUrl === 'appraisal-feedback')
+                            ? 'block'
+                            : 'none'
+                      }"
+                    >
+                      <li routerLink="/performance/appraisal-preference">
+                        <a
+                          href="javascript:"
+                          [ngClass]="{
+                            active:
+                              urlComplete.childUrl === 'appraisal-preference'
+                          }"
+                          >Appraisal Preference</a
+                        >
+                      </li>
+
+                      <li routerLink="/performance/appraisal-cycle">
                         <a
                           href="javascript:"
                           [ngClass]="{
@@ -441,7 +523,7 @@
               </li>
             </ul>
           </li>
-          <!-- /Employee sidebar -->
+          <!-- /HR Admin -->
           <!-- Managers -->
           <li
             *ngIf="userRights?.includes('line manager')"

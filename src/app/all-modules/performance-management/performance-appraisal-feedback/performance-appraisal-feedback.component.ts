@@ -24,6 +24,7 @@ export class PerformanceAppraisalFeedbackComponent implements OnInit {
   reviewers: ThreeSixtyReviewer[];
   appraisalCycleId: number;
   employeeName: string;
+  appraisalFeedbackForm: any;
   constructor(
     private formBuilder: FormBuilder,
     private utilitiesService: UtilitiesService,
@@ -35,6 +36,7 @@ export class PerformanceAppraisalFeedbackComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.appraisalFeedbackForm = {};
     this.utilitiesService.employee.subscribe((user) => {
       this.employeeName = user;
     });
@@ -62,16 +64,38 @@ export class PerformanceAppraisalFeedbackComponent implements OnInit {
       // console.log(this.employees);
     });
   }
+  /* initialiseAppraisalFeedbackForm() {
+    this.appraisalFeedbackForm = this.formBuilder.group({
+      reviewYear: [''],
+      jobGradeName: [''],
+      employeeName: [''],
+      lengthOfService: [''],
+      firstReviewerName: [''],
+      jobTitleName: [''],
+      firstReviewerPoint: [''],
+      secondReviewerName: [''],
+      secondReviewerPoint: [''],
+      thirdReviewerName: [''],
+      firstReviewerRecommendation: [''],
+      secondReviewerRecommendation: [''],
+      thirdReviewerRecommendation: [''],
+      overallRemark: ['']
+    })
+  }*/
   initialiseForm() {
     this.feebackForm = this.formBuilder.group({
       id: [0],
       reviewerId: [[]],
       revieweeId: [""],
       reviewerSelectedById: [""],
+      appraisalCycleId: [""],
     });
   }
   show360Modal() {
     $("#feedback_modal").modal("show");
+    if (this.reviewers.length > 0) {
+      this.getSelectedReviewers();
+    }
   }
 
   closeScheduleModal() {
@@ -82,12 +106,40 @@ export class PerformanceAppraisalFeedbackComponent implements OnInit {
     this.performanceManagementService
       .getPerformanceFeedback(empId, appraisalCycleId)
       .subscribe((data) => {
-        console.log(data);
+        const startDate = this.formatDate(data.startDate);
+        const endDate = this.formatDate(data.endDate);
+        this.appraisalFeedbackForm = data;
+        this.appraisalFeedbackForm.startDate = startDate;
+        this.appraisalFeedbackForm.endDate = endDate;
       });
+  }
+  formatDate(date) {
+    const d = new Date(date);
+    console.log(d);
+    let month = d.getMonth() + 1 + "";
+    if (month.length == 1) {
+      month = "0" + month;
+    }
+    let day = d.getDate() + "";
+    if (day.length == 1) {
+      day = "0" + day;
+    }
+    return `${d.getFullYear()}-${month}-${day}`;
   }
   getReviewers() {
     this.reviewers$.subscribe((data) => {
       this.reviewers = data;
+      if (this.reviewers.length > 0) {
+        this.getSelectedReviewers();
+      }
+    });
+  }
+  getSelectedReviewers() {
+    const reviewerIds = this.reviewers.map((item) => {
+      return item.reviewerId;
+    });
+    this.feebackForm.patchValue({
+      reviewerId: reviewerIds,
     });
   }
   public onSelectAll() {
@@ -104,6 +156,7 @@ export class PerformanceAppraisalFeedbackComponent implements OnInit {
     const payload = this.feebackForm.value;
     payload.revieweeId = +this.revieweeId;
     payload.reviewerSelectedById = +this.reviewerSelectedById;
+    payload.appraisalCycleId = +this.appraisalCycleId;
     // console.log(payload);
     return this.performanceManagementService
       .addThreeSixtyReviewer(payload)
