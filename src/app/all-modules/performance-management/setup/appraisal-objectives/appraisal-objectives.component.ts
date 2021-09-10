@@ -238,6 +238,9 @@ export class AppraisalObjectivesComponent implements OnInit {
     payload.jobGrade = +this.jobGradeId;
     payload.employeePerformId = +this.employeePerformId;
     payload.otherSelected = this.otherSelected;
+    if (!payload.weightmodel) {
+      payload.weightmodel = 0;
+    }
     if (this.otherSelected) {
       console.log(this.others);
       payload.KpiIndicatorName = this.others;
