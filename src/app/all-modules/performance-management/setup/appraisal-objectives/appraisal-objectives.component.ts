@@ -78,6 +78,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   others: string = "";
   KpiIndicatorName: string = "";
   otherSelected: boolean = false;
+  weightModel: number;
   constructor(
     private formbuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -304,6 +305,12 @@ export class AppraisalObjectivesComponent implements OnInit {
       this.kpiCategories = item.kpiIndicators;
       this.kpiCategoryId = item.id;
       this.totalWeight = item.totalWeight;
+      this.weightModel = item.weightModel;
+      if (this.weightModel === 2) {
+        this.appraisalObjectivesForm.get("weightmodel").disable();
+      } else {
+        this.appraisalObjectivesForm.get("weightmodel").enable();
+      }
       $("#appraisal_Objectives_modal").modal("show");
     }
   }

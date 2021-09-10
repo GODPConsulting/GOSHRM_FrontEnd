@@ -6,7 +6,7 @@
       <div class="col">
         <h3 class="page-title">Employee</h3>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+          <li class="breadcrumb-item"><a>Dashboard</a></li>
           <li class="breadcrumb-item active">Employee</li>
         </ul>
       </div>
@@ -92,6 +92,8 @@
           <a>{{ emp.firstName | titlecase }} {{ emp.lastName | titlecase }}</a>
         </h4>
         <div class="small text-muted">{{ emp.jobTitleName | titlecase }}</div>
+        <div class="small text-muted">{{ emp.jobGradeName }}</div>
+
         <div class="small text-muted">
           <p>{{ emp.email }}</p>
         </div>

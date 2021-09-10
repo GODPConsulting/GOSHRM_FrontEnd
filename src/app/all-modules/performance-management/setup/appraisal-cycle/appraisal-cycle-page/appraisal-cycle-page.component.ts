@@ -163,7 +163,7 @@ export class AppraisalCyclePageComponent implements OnInit {
             swal.fire("GOSHRM", message, "success");
             $("#appraisal_cycle_modal").modal("hide");
             this.initialiseForm();
-            this.router.navigate(["/performance/setup/appraisal-cycle"]);
+            this.router.navigate(["/performance/appraisal-cycle"]);
           }
         },
         (err) => {
