@@ -1,10 +1,19 @@
-<div class="content container-fluid" style="padding-top: 0">
+<div class="" style="padding-top: 0">
   <!-- page Header Start -->
   <div class="card">
     <div class="card-header header-bg-color">
       <h5><b>Appraisal Objectives</b></h5>
     </div>
     <div class="card-body" style="padding: 2rem">
+      <div *ngIf="fromLineManager" class="mb20">
+        <label>Comments <span class="text-danger">*</span></label>
+        <textarea
+          class="form-control resize"
+          [(ngModel)]="comment"
+          type="text"
+          rows="5"
+        ></textarea>
+      </div>
       <div class="row">
         <div class="objectives-container">
           <!--          <div [innerHTML]="getObjectiveNames(addAbleOjectives)"></div>-->
@@ -28,6 +37,37 @@
           </div>
         </div>
         <div class="col-auto float-right ml-auto mb_10">
+          <a
+            class="btn delete-btn hint"
+            [hidden]="!fromLineManager"
+            (click)="revokeAndDisagree()"
+            ><span class="hint-text">Disagree</span
+            ><i class="fa fa-thumbs-o-down" aria-hidden="true"></i
+          ></a>
+          <a
+            class="btn hint"
+            [hidden]="!fromLineManager"
+            (click)="saveComment()"
+            ><span class="hint-text">Save Comment</span
+            ><i class="fa fa-floppy-o" aria-hidden="true"></i>
+          </a>
+          <!-- <a class="btn hint" (click)="location.back()"
+            ><span class="hint-text">Back</span><i class="fa fa-backward"></i
+          ></a>-->
+          <a
+            class="btn hint"
+            [hidden]="!fromLineManager"
+            (click)="revokeAndDisagree()"
+            ><span class="hint-text">Revoke</span>
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </a>
+          <a
+            class="btn add-btn hint"
+            [hidden]="!fromLineManager"
+            (click)="confirm()"
+            ><span class="hint-text">Discussed and agreed</span
+            ><i class="fa fa-thumbs-up" aria-hidden="true"></i>
+          </a>
           <a
             class="btn hint"
             (click)="saveObjectives()"
@@ -109,6 +149,7 @@
                   <!--                    [value]="row"-->
                   <!--                  ></p-tableCheckbox>-->
                   <input
+                    [disabled]="!table.canEmplyeeAddObjective"
                     type="checkbox"
                     [checked]="
                       selectedId.includes(row.employeeObjectiveIdicatorId)

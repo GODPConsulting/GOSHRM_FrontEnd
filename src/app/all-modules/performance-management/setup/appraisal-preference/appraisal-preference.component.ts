@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import swal from "sweetalert2";
@@ -27,6 +27,10 @@ export class AppraisalPreferenceComponent implements OnInit {
   deptId: number;
   offices$: Observable<any>;
   preferences$: Observable<AppraisalPreference[]>;
+  @ViewChild("scroll") scrollContainer: ElementRef;
+  isDisabled: boolean;
+  company: number;
+  appraisalCircle: string;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -48,9 +52,10 @@ export class AppraisalPreferenceComponent implements OnInit {
       });
       // this.getAppraisalCycleByCompanyId();
       // console.log(this.appraisalPreferenceForm.value);
-      this.appraisalPreferenceForm.patchValue({
-        company: this.deptId,
-      });
+      // this.appraisalPreferenceForm.patchValue({
+      //   company: this.deptId,
+      // });
+      this.company = this.deptId;
       this.getAppraisalCycleByCompanyId(this.deptId);
     });
   }
@@ -70,20 +75,22 @@ export class AppraisalPreferenceComponent implements OnInit {
 
   addAppraisalPreference(appraisalPreferenceForm) {
     const payload = appraisalPreferenceForm.value;
-    payload.company = +payload.company;
-    payload.appraisalCircle = +payload.appraisalCircle;
+    // console.log(payload);
+    // return;
+    payload.company = +this.company;
+    payload.appraisalCircle = +this.appraisalCircle;
     payload.reviewerOneCommentVisibility = +payload.reviewerOneCommentVisibility;
     payload.reviewerTwoCommentVisibility = +payload.reviewerTwoCommentVisibility;
     payload.reviewerThreeCommentVisibility = +payload.reviewerThreeCommentVisibility;
     payload.status = +payload.status;
     payload.coachPerformanceVisibility = +payload.coachPerformanceVisibility;
 
-    this.loading = true;
     this.performanceManagementService.addAppraisalPreference(payload).subscribe(
       (data) => {
         this.loading = false;
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
+          this.isDisabled = false;
           swal.fire("Success", message, "success").then(() => {
             this.getAppraisalPreferences();
           });
@@ -136,6 +143,8 @@ export class AppraisalPreferenceComponent implements OnInit {
         (data) => {
           // this.loadingService.hide();
           if (data) {
+            this.company = data.company;
+            this.appraisalCircle = data.appraisalCircle;
             this.appraisalPreferenceForm.patchValue({
               id: data.id,
               appraisalCircle: data.appraisalCircle,
@@ -153,5 +162,36 @@ export class AppraisalPreferenceComponent implements OnInit {
           // this.loadingService.hide();
         }
       );
+  }
+
+  edit(data) {
+    console.log(data);
+    /*this.appraisalPreferenceForm = this.formBuilder.group({
+      id: [{ value: data.id }],
+      appraisalCircle: [data.appraisalCircle],
+      company: [data.company],
+      reviewerOneCommentVisibility: [data.reviewerOneCommentVisibility],
+      reviewerTwoCommentVisibility: [data.reviewerTwoCommentVisibility],
+      reviewerThreeCommentVisibility: [data.reviewerThreeCommentVisibility],
+      status: [data.status],
+      coachPerformanceVisibility: [data.coachPerformanceVisibility],
+    });*/
+    // this.appraisalPreferenceForm.get("company").disable();
+    // this.appraisalPreferenceForm.get("appraisalCircle").disable();
+    this.isDisabled = true;
+    this.company = data.company;
+    this.appraisalCircle = data.appraisalCircle;
+    this.appraisalPreferenceForm.patchValue({
+      id: data.id,
+      appraisalCircle: data.appraisalCircle,
+      company: data.company,
+      reviewerOneCommentVisibility: data.reviewerOneCommentVisibility,
+      reviewerTwoCommentVisibility: data.reviewerTwoCommentVisibility,
+      reviewerThreeCommentVisibility: data.reviewerThreeCommentVisibility,
+      status: data.status,
+      coachPerformanceVisibility: data.coachPerformanceVisibility,
+    });
+    console.log(this.appraisalPreferenceForm.value);
+    // this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
   }
 }

@@ -41,6 +41,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   _appraisalCycleId: number;
   _employeePerformId: number;
   _appraisalStatus: number;
+  comment: string;
   @Input() set appraisalCyleId(value: number) {
     // console.log(value);
     this._appraisalCycleId = value;
@@ -88,7 +89,8 @@ export class AppraisalObjectivesComponent implements OnInit {
     private utilitiesService: UtilitiesService,
     private jwtService: JwtService,
     private route: ActivatedRoute,
-    public locatton: Location
+    public locatton: Location,
+    private location: Location
   ) {
     this.dataService.sendData.subscribe((data) => {
       if (data) {
@@ -530,4 +532,82 @@ export class AppraisalObjectivesComponent implements OnInit {
   //   console.log("clicked");
   //   this.sendData.emit(this.checkWeightValue(this.addAbleOjectives));
   // }
+  confirm() {
+    // this.loadingService.show();
+    const payload = {
+      employeePerformId: this.employeePerformId,
+      comment: this.comment,
+    };
+    if (!payload.comment) {
+      return this.utilitiesService.showError("Comment is required");
+    }
+    return this.performanceManagementService
+      .confirmByManager(payload)
+      .subscribe(
+        (res) => {
+          // this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            return this.utilitiesService.showMessage(res, "success");
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          // this.loadingService.hide();
+          return this.utilitiesService.showMessage(err, "error");
+        }
+      );
+  }
+
+  saveComment() {
+    const payload = {
+      id: this.objectiveId,
+      comment: this.comment,
+    };
+    if (!payload.comment) {
+      return this.utilitiesService.showError("Comment is required");
+    }
+    // this.loadingService.show();
+    return this.performanceManagementService.addComment(payload).subscribe(
+      (res) => {
+        // this.loadingService.hide();
+        if (res.status.isSuccessful) {
+          return this.utilitiesService.showMessage(res, "success");
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        // this.loadingService.hide();
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  revokeAndDisagree() {
+    // this.loadingService.show();
+    const payload = {
+      id: this.objectiveId,
+      comment: this.comment,
+    };
+    if (!payload.comment) {
+      return this.utilitiesService.showError("Comment is required");
+    }
+    return this.performanceManagementService
+      .revokeAndDisagree(+this.objectiveId)
+      .subscribe(
+        (res) => {
+          // // this.loadingService.hide();
+          if (res.status.isSuccessful) {
+            return this.utilitiesService.showMessage(res, "success");
+          } else {
+            return this.utilitiesService.showMessage(res, "error");
+          }
+        },
+        (err) => {
+          return this.utilitiesService.showMessage(err, "error");
+          // // this.loadingService.hide();
+        }
+      );
+  }
 }

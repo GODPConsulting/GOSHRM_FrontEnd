@@ -1,5 +1,5 @@
-<div class="content container-fluid" style="padding-bottom: 0">
-  <!-- Page Header Starts -->
+<!--<div class="content container-fluid" style="padding-bottom: 0">
+  &lt;!&ndash; Page Header Starts &ndash;&gt;
   <div id="add_appraisal_objectives">
     <div class="card">
       <div class="card-header header-bg-color">
@@ -32,143 +32,15 @@
       <div class="card-body">
         <form [formGroup]="appraisalObjectiveForm">
           <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Review year</label>
-                <select
+            <div class="card-body">
+              <div>
+                <label>Comments <span class="text-danger">*</span></label>
+                <textarea
                   class="form-control"
-                  formControlName="reviewYear"
-                  disabled
-                >
-                  <option selected value="">Review Year</option>
-                  <option
-                    *ngFor="let row of appraisalCycles"
-                    value="{{ row.reviewYear }}"
-                  >
-                    {{ row.reviewYear }}
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Review Period</label
-                ><select
-                  class="form-control"
-                  formControlName="reviewPeriod"
-                  disabled
-                >
-                  <option selected value="">Review Period</option>
-                  <option
-                    *ngFor="let row of appraisalCycles"
-                    value="{{ row.reviewPeriod }}"
-                  >
-                    {{ row.reviewPeriod }}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Employee Name<span class="text-danger">*</span></label>
-                <input
-                  class="form-control"
-                  [attr.disabled]="true"
                   type="text"
-                  formControlName="staffName"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Job Grade <span class="text-danger">*</span></label>
-                <input
-                  class="form-control"
-                  [attr.disabled]="true"
-                  type="text"
-                  formControlName="job_Grade"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Job Title <span class="text-danger">*</span></label>
-                <input
-                  class="form-control"
-                  [attr.disabled]="true"
-                  type="text"
-                  formControlName="job_title"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6">
-              <div class="card">
-                <div class="card-header header-bg-color">
-                  <h5><b> Line Manager Detail</b></h5>
-                </div>
-                <div class="card-body">
-                  <div>
-                    <label>Name <span class="text-danger">*</span></label>
-                    <input
-                      class="form-control"
-                      [attr.disabled]="true"
-                      type="text"
-                      formControlName="line_ManagerName"
-                    />
-                  </div>
-                  <div>
-                    <label>Comments <span class="text-danger">*</span></label>
-                    <textarea
-                      class="form-control"
-                      type="text"
-                      rows="5"
-                      formControlName="comment"
-                    ></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="card">
-                <div class="card-header header-bg-color">
-                  <h5><b>Performance Reviewer</b></h5>
-                </div>
-                <div class="card-body">
-                  <div>
-                    <label>
-                      First Reviewer <span class="text-danger">*</span></label
-                    >
-                    <input
-                      class="form-control"
-                      [attr.disabled]="true"
-                      type="text"
-                      formControlName="first_Level_ReviewerName"
-                    />
-                  </div>
-                  <div>
-                    <label> Second Reviewer </label
-                    ><input
-                      class="form-control"
-                      [attr.disabled]="true"
-                      type="text"
-                      formControlName="second_Level_ReviewerName"
-                    />
-                  </div>
-                  <div>
-                    <label>Third Reviewer</label
-                    ><input
-                      class="form-control"
-                      [attr.disabled]="true"
-                      type="text"
-                      formControlName="third_Level_ReviewerName"
-                    />
-                  </div>
-                </div>
+                  rows="5"
+                  formControlName="comment"
+                ></textarea>
               </div>
             </div>
           </div>
@@ -176,7 +48,7 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->
 <app-appraisal-objectives
   [objectiveId]="objectiveId"
   [fromLineManager]="true"

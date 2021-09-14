@@ -531,15 +531,19 @@
             class="submenu"
             [ngClass]="{
               active:
-                urlComplete.mainUrl === 'performance' &&
-                urlComplete.subUrl === 'direct-report-appraisals'
+                (urlComplete.mainUrl === 'manager' &&
+                  urlComplete.subUrl === 'direct-report-appraisals') ||
+                (urlComplete.mainUrl === 'manager' &&
+                  urlComplete.subUrl === 'appraisals') ||
+                (urlComplete.mainUrl === 'manager' &&
+                  urlComplete.subUrl === 'feedbacks')
             }"
           >
             <a
               href="javascript:"
               [ngClass]="{
                 subdrop:
-                  urlComplete.mainUrl === 'performance' &&
+                  urlComplete.mainUrl === 'manager' &&
                   urlComplete.subUrl === 'direct-report-appraisals'
               }"
               class="noti-dot"
@@ -552,7 +556,7 @@
                 class="submenu"
                 [ngClass]="{
                   active:
-                    urlComplete.mainUrl === 'performance' &&
+                    urlComplete.mainUrl === 'manager' &&
                     urlComplete.subUrl === 'direct-report-appraisals'
                 }"
               >
@@ -560,7 +564,7 @@
                   href="javascript:"
                   [ngClass]="{
                     subdrop:
-                      urlComplete.mainUrl === 'performance' &&
+                      urlComplete.mainUrl === 'manager' &&
                       urlComplete.subUrl === 'direct-report-appraisals'
                   }"
                   class="noti-dot"
@@ -572,7 +576,7 @@
                     class="submenu"
                     [ngClass]="{
                       active:
-                        urlComplete.mainUrl === 'performance' &&
+                        urlComplete.mainUrl === 'manager' &&
                         urlComplete.subUrl === 'direct-report-appraisals'
                     }"
                   >
@@ -580,7 +584,7 @@
                       href="javascript:"
                       [ngClass]="{
                         subdrop:
-                          urlComplete.mainUrl === 'performance' &&
+                          urlComplete.mainUrl === 'manager' &&
                           urlComplete.subUrl === 'direct-report-appraisals'
                       }"
                       class="noti-dot"
@@ -591,7 +595,7 @@
                       style="display: none"
                       [ngStyle]="{
                         display:
-                          urlComplete.mainUrl === 'performance' &&
+                          urlComplete.mainUrl === 'manager' &&
                           urlComplete.subUrl === 'direct-report-appraisals'
                             ? 'block'
                             : 'none'
@@ -605,7 +609,7 @@
                           href="javascript:"
                           [ngClass]="{
                             active:
-                              urlComplete.subUrl === 'performance' ||
+                              urlComplete.subUrl === 'manager' ||
                               urlComplete.subUrl === 'direct-report-appraisals'
                           }"
                           >Appraisals</a
@@ -618,11 +622,11 @@
                   href="javascript:"
                   [ngClass]="{
                     subdrop:
-                      urlComplete.mainUrl === 'performance' &&
+                      urlComplete.mainUrl === 'manager' &&
                       urlComplete.subUrl === 'direct-report-appraisals'
                   }"
                   class="noti-dot"
-                  ><span> External Team</span> <span class="menu-arrow"></span
+                  ><span> Approvals</span> <span class="menu-arrow"></span
                 ></a>
                 <ul>
                   <li
@@ -630,7 +634,7 @@
                     class="submenu"
                     [ngClass]="{
                       active:
-                        urlComplete.mainUrl === 'performance' &&
+                        urlComplete.mainUrl === 'manager' &&
                         urlComplete.subUrl === 'direct-report-appraisals'
                     }"
                   >
@@ -638,13 +642,52 @@
                       href="javascript:"
                       [ngClass]="{
                         subdrop:
-                          urlComplete.mainUrl === 'performance' &&
+                          urlComplete.mainUrl === 'manager' &&
                           urlComplete.subUrl === 'direct-report-appraisals'
                       }"
                       class="noti-dot"
                     >
-                      <span> Something</span> <span class="menu-arrow"></span
+                      <span> Performance</span> <span class="menu-arrow"></span
                     ></a>
+                    <ul
+                      style="display: none"
+                      [ngStyle]="{
+                        display:
+                          urlComplete.mainUrl === 'manager' &&
+                          urlComplete.subUrl === 'appraisals'
+                            ? 'block'
+                            : 'none'
+                      }"
+                    >
+                      <li
+                        *ngIf="userRights?.includes('line manager')"
+                        routerLink="/manager/appraisals"
+                      >
+                        <a
+                          href="javascript:"
+                          [ngClass]="{
+                            active:
+                              urlComplete.subUrl === 'manager' ||
+                              urlComplete.subUrl === 'appraisals'
+                          }"
+                          >Appraisal Objective</a
+                        >
+                      </li>
+                      <li
+                        *ngIf="userRights?.includes('line manager')"
+                        routerLink="/manager/feedbacks"
+                      >
+                        <a
+                          href="javascript:"
+                          [ngClass]="{
+                            active:
+                              urlComplete.subUrl === 'manager' ||
+                              urlComplete.subUrl === 'feedbacks'
+                          }"
+                          >Appraisal Feedback</a
+                        >
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </li>

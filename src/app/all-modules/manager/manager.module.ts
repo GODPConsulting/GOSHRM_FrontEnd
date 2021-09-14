@@ -9,12 +9,16 @@ import { SharedModule } from "src/app/shared/shared.module";
 import { EmployeeAppraisalsComponent } from "./employee-appraisals/employee-appraisals.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { PerformanceManagementModule } from "../performance-management/performance-management.module";
+import { AppraisalsComponent } from './appraisals/appraisals.component';
+import { FeedbacksComponent } from './feedbacks/feedbacks.component';
 
 @NgModule({
   declarations: [
     ManagerComponent,
     DirectReportAppraisalsComponent,
     EmployeeAppraisalsComponent,
+    AppraisalsComponent,
+    FeedbacksComponent,
   ],
   imports: [
     CommonModule,

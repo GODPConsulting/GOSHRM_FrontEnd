@@ -158,13 +158,16 @@ export class KpiCategoryComponent implements OnInit {
     //   hrSelectReviewer: row.hrSelectReviewer,
     //   weightModel: row.weightModel,
     // });
+    console.log(row);
     this.id = row.id;
     this.name = row.name;
     this.hrSelectReviewer = row.hrSelectReviewer;
     this.employeePermitted = row.employeePermitted;
     this.weightModel = row.weightModel;
     this.description = row.description;
+    this.selectReview = row.weightModel;
     this.setWeightModel(row.employeePermitted);
+    this.hrDisabled = false;
     $("#kpi_category_modal").modal("show");
   }
 

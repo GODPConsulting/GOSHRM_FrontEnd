@@ -1,23 +1,21 @@
 import { Component, OnInit } from "@angular/core";
-import { JwtService } from "src/app/services/jwt.service";
-import { ManagerService } from "src/app/services/manager.service";
-import swal from "sweetalert2";
 import { Subject } from "rxjs";
+import { ManagerService } from "../../../services/manager.service";
+import { JwtService } from "../../../services/jwt.service";
 import { LoadingService } from "../../../services/loading.service";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
 import { Router } from "@angular/router";
+import swal from "sweetalert2";
 
 @Component({
-  selector: "app-direct-report-appraisals",
-  templateUrl: "./direct-report-appraisals.component.html",
-  styleUrls: ["./direct-report-appraisals.component.css"],
+  selector: "app-appraisals",
+  templateUrl: "./appraisals.component.html",
+  styleUrls: ["./appraisals.component.css"],
 })
-export class DirectReportAppraisalsComponent implements OnInit {
-  public dtOptions: DataTables.Settings = {};
+export class AppraisalsComponent implements OnInit {
   public selectedId: number[] = [];
   public reportAppraisals: any[] = [];
   user: any;
-  dtTrigger: Subject<any> = new Subject<any>();
   activities: any;
   jobGradeId: number;
   employeeId: number;
@@ -37,30 +35,7 @@ export class DirectReportAppraisalsComponent implements OnInit {
       this.deptId = user.departmentId;
       this.getAppraisalObjByManagerId();
     });
-    this.dtOptions = {
-      dom:
-        "<'row'<'col-sm-8 col-md-5'f><'col-sm-4 col-md-6 align-self-end'l>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      language: {
-        search: "_INPUT_",
-        searchPlaceholder: "Start typing to search by any field",
-      },
-      columns: [
-        { orderable: false },
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-      ],
-      order: [[1, "asc"]],
-    };
+
     this.activities = this.jwtService.getUserActivities();
     this.user = this.jwtService.getUserDetails();
     if (this.activities.includes("line manager")) {
@@ -76,7 +51,6 @@ export class DirectReportAppraisalsComponent implements OnInit {
         (data) => {
           // this.loadingService.hide();
           this.reportAppraisals = data;
-          // this.dtTrigger.next();
         },
         (err) => {
           // this.loadingService.hide();

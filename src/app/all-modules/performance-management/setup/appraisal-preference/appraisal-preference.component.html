@@ -23,12 +23,14 @@
                 >Company<span class="text-danger">*</span></label
               >
               <select
+                [disabled]="isDisabled"
                 class="form-control"
                 [class.invalid]="
                   appraisalPreferenceForm.get('company').invalid &&
                   appraisalPreferenceForm.get('company').touched
                 "
-                formControlName="company"
+                [(ngModel)]="company"
+                [ngModelOptions]="{ standalone: true }"
                 (change)="getAppraisalCycleByCompanyId($event.target.value)"
               >
                 <option selected value="" disabled>Company</option>
@@ -71,7 +73,9 @@
                   appraisalPreferenceForm.get('appraisalCircle').invalid &&
                   appraisalPreferenceForm.get('appraisalCircle').touched
                 "
-                formControlName="appraisalCircle"
+                [disabled]="isDisabled"
+                [(ngModel)]="appraisalCircle"
+                [ngModelOptions]="{ standalone: true }"
                 (change)="getAppraisalPreference($event.target.value)"
               >
                 <option selected value="">Appraisal Cycle</option>
@@ -338,7 +342,7 @@
         [value]="preferences$ | async"
         [scrollable]="true"
         [responsive]="true"
-        scrollHeight="100%"
+        scrollHeight="flex"
       >
         <ng-template pTemplate="header">
           <tr>
@@ -360,7 +364,7 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-row let-i="rowIndex">
-          <tr>
+          <tr (click)="edit(row)">
             <td>{{ row.companyName }}</td>
             <td>{{ row.appraisalCycleName }}</td>
             <td>{{ row.reviewerOneCommentVisibilityName }}</td>
