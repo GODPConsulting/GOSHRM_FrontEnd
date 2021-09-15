@@ -59,6 +59,7 @@ export class AppraisalObjectiveFormComponent implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.route.queryParams.subscribe((param) => {
+      console.log(param);
       if (param.appraisalCycleId) {
         this.appraisalCycleId = param.appraisalCycleId;
         this.objectiveId = param.objectiveId;

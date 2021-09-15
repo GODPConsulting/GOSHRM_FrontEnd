@@ -46,7 +46,7 @@ export class AppraisalsComponent implements OnInit {
   getAppraisalObjByManagerId() {
     this.loadingService.show();
     this.performanceManagementService
-      .getEmployeeObjectivesByLineManager(this.employeeId)
+      .getReviewersAppraisals(this.employeeId)
       .subscribe(
         (data) => {
           // this.loadingService.hide();

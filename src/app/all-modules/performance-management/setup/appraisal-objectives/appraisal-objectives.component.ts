@@ -374,6 +374,13 @@ export class AppraisalObjectivesComponent implements OnInit {
       // this.appraisalObjectivesForm.get("kpi").disable();
       this.kpiCategoryId = table.kpiCategoryId;
       // this.appraisalObjectivesForm.get("kpi").disable();
+      console.log({ row }, { table });
+      if (row.weightmodel === 2) {
+        console.log("hi");
+        this.appraisalObjectivesForm.get("weightmodel").disable();
+      } else {
+        this.appraisalObjectivesForm.get("weightmodel").enable();
+      }
       this.appraisalObjectivesForm.patchValue({
         employeeObjectiveIdicatorId: row.employeeObjectiveIdicatorId,
         kpiCategoryId: table.kpiCategoryId,

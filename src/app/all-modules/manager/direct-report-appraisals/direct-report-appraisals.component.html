@@ -156,8 +156,8 @@
               <div class="g-card-title">{{ item.thirdReviewerName }}</div>
             </div>
             <div class="fb-half pt10 pb10">
-              <div class="g-card-label">status</div>
-              <div class="g-card-title">{{ item.reviewStatusName }}</div>
+              <div class="g-card-label">line manager</div>
+              <div class="g-card-title">{{ item.lineManagerName }}</div>
             </div>
           </div>
           <div class="g-card-mid df sb">
@@ -168,6 +168,12 @@
             <div class="fb-half pt10 pb10">
               <div class="g-card-label">review period(end)</div>
               <div class="g-card-title">{{ item.endDate | date }}</div>
+            </div>
+          </div>
+          <div class="g-card-mid df sb">
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">status</div>
+              <div class="g-card-title">{{ item.reviewStatusName }}</div>
             </div>
           </div>
         </div>

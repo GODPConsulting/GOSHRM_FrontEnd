@@ -21,9 +21,10 @@ import {
   ThreeSixtyReviewer,
 } from "../interface/interfaces";
 import { UtilitiesService } from "./utilities.service";
+import { PerformanceManagementModule } from "../all-modules/performance-management/performance-management.module";
 
 @Injectable({
-  providedIn: "root",
+  providedIn: "any",
 })
 export class PerformanceManagementService {
   constructor(
@@ -32,7 +33,6 @@ export class PerformanceManagementService {
     private utilitiesService: UtilitiesService
   ) {}
   handleError(error: HttpErrorResponse) {
-    console.log(error);
     return throwError(error);
   }
   getkpiCategory() {
@@ -619,7 +619,18 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
-
+  getReviewersAppraisals(id: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/get/employee_objectives/by_employee_that's_not_direct_line_manager?longMangerId=${id}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        })
+      );
+  }
   getSingleEmployeeObjective(
     employeeId: number,
     employeePerformId: number
@@ -631,7 +642,9 @@ export class PerformanceManagementService {
       .pipe(
         tap(),
         map((res) => {
-          return res["list"];
+          if (res["list"].length > 0) {
+            return res["list"];
+          }
         })
       );
   }

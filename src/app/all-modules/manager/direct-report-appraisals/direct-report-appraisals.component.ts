@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { JwtService } from "src/app/services/jwt.service";
 import { ManagerService } from "src/app/services/manager.service";
 import swal from "sweetalert2";
@@ -15,7 +15,7 @@ import { Router } from "@angular/router";
 export class DirectReportAppraisalsComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   public selectedId: number[] = [];
-  public reportAppraisals: any[] = [];
+  reportAppraisals: any[] = [];
   user: any;
   dtTrigger: Subject<any> = new Subject<any>();
   activities: any;

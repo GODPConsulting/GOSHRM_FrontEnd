@@ -14,9 +14,10 @@ import { HttpTokenInterceptor } from "./services/http.interceptor.service";
 import { EmployeeAppraisalsComponent } from "./all-modules/manager/employee-appraisals/employee-appraisals.component";
 import { AuthWrapperComponent } from "./components/auth-wrapper/auth-wrapper.component";
 import { SentenceCasePipe } from "./pipes/sentence-case.pipe";
+import { ToFixedPipe } from './pipes/to-fixed.pipe';
 
 @NgModule({
-  declarations: [AppComponent, AuthWrapperComponent],
+  declarations: [AppComponent, AuthWrapperComponent, ToFixedPipe],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

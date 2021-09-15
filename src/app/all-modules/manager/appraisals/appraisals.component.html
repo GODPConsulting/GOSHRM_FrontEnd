@@ -1,6 +1,7 @@
-<!-- Page Content -->
+<!--
+ Page Content
 <div>
-  <!-- Page Header -->
+   Page Header
   <div class="card">
     <div class="card-header">
       <div class="page-header">
@@ -17,7 +18,7 @@
         </div>
       </div>
     </div>
-    <!-- /Page Header -->
+     /Page Header
     <div class="card-body">
       <div class="row">
         <div class="col-md-12">
@@ -25,13 +26,13 @@
             <p-table [value]="reportAppraisals">
               <ng-template pTemplate="header">
                 <tr>
-                  <!--              <th>-->
-                  <!--                <input-->
-                  <!--                  type="checkbox"-->
-                  <!--                  [checked]="selectedId.length === reportAppraisals.length"-->
-                  <!--                  (change)="checkAll($event)"-->
-                  <!--                />-->
-                  <!--              </th>-->
+                                <th>
+                                  <input
+                                    type="checkbox"
+                                    [checked]="selectedId.length === reportAppraisals.length"
+                                    (change)="checkAll($event)"
+                                  />
+                                </th>
                   <th class="sn_width">S/N</th>
                   <th>Review Year</th>
                   <th>Review Period</th>
@@ -41,7 +42,7 @@
                   <th>Review Status</th>
                   <th>Points</th>
                   <th></th>
-                  <!--              <th>Final Comments</th>-->
+                                <th>Final Comments</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-row let-i="rowIndex">
@@ -59,7 +60,7 @@
                   <td (click)="viewAppraisal(row)">
                     <a class="table-link">Appraisal Forms</a>
                   </td>
-                  <!--              <td>{{ row.comment }}</td>-->
+                                <td>{{ row.comment }}</td>
                 </tr>
               </ng-template>
             </p-table>
@@ -68,5 +69,192 @@
       </div>
     </div>
   </div>
+</div>
+ /Page Content
+-->
+<!-- Page Content -->
+<!--<div>
+  &lt;!&ndash; Page Header &ndash;&gt;
+ &lt;!&ndash; <div class="card">
+    <div class="card-header">
+      <div class="page-header">
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="page-title header-bg-color">Direct Report Appraisals</h3>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a> Manager</a></li>
+              <li class="breadcrumb-item active">
+                <a routerLink="">Direct Report Appraisals</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    &lt;!&ndash; /Page Header &ndash;&gt;
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="table-responsive">
+            <p-table [value]="reportAppraisals">
+              <ng-template pTemplate="header">
+                <tr>
+                  &lt;!&ndash;              <th>&ndash;&gt;
+                  &lt;!&ndash;                <input&ndash;&gt;
+                  &lt;!&ndash;                  type="checkbox"&ndash;&gt;
+                  &lt;!&ndash;                  [checked]="selectedId.length === reportAppraisals.length"&ndash;&gt;
+                  &lt;!&ndash;                  (change)="checkAll($event)"&ndash;&gt;
+                  &lt;!&ndash;                />&ndash;&gt;
+                  &lt;!&ndash;              </th>&ndash;&gt;
+                  <th class="sn_width">S/N</th>
+                  <th>Review Year</th>
+                  <th>Review Period</th>
+                  <th>Employee</th>
+                  <th>Job Grade</th>
+                  <th>Office</th>
+                  <th>Review Status</th>
+                  <th>Points</th>
+                  <th></th>
+                  &lt;!&ndash;              <th>Final Comments</th>&ndash;&gt;
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-row let-i="rowIndex">
+                <tr data-toggle="modal" class="pointer">
+                  <td class="sn_width">{{ i + 1 }}</td>
+                  <td>{{ row.reviewYear }}</td>
+                  <td (click)="viewObjectives(row)">
+                    <a class="table-link">{{ row.reviewPeriod }}</a>
+                  </td>
+                  <td>{{ row.employeeName | titlecase }}</td>
+                  <td>{{ row.jobGradeName }}</td>
+                  <td>{{ row.officeName | titlecase }}</td>
+                  <td>{{ row.reviewStatusName | titlecase }}</td>
+                  <td>{{ row.points }}</td>
+                  <td (click)="viewAppraisal(row)">
+                    <a class="table-link">Appraisal Forms</a>
+                  </td>
+                  &lt;!&ndash;              <td>{{ row.comment }}</td>&ndash;&gt;
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>&ndash;&gt;
+
+
+
+</div>-->
+<div class="df sb">
+  <ul class="gos-breadcrumb">
+    <li><a href="#">Manager</a></li>
+    <li><a href="#">Performance</a></li>
+  </ul>
+</div>
+<div>
+  <p-tabView>
+    <p-tabPanel header="Appraisals">
+      <div class="dg gtc mt10">
+        <div class="g-card p10" *ngFor="let item of reportAppraisals">
+          <div class="g-card-top df flex-end mb10">
+            <!-- <input type="checkbox" /> -->
+            <div class="dropdown">
+              <i
+                class="fa fa-ellipsis-v ellipsis-dropdown"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-hidden="true"
+              >
+              </i>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a
+                  class="dropdown-item p10 dropdown__link"
+                  (click)="viewObjectives(item)"
+                  >Objective</a
+                >
+                <a class="dropdown-item p10 dropdown__link">Feedback</a>
+              </div>
+            </div>
+          </div>
+          <div class="details-wrapper df center-align">
+            <div class="img-wrapper mr20 mb10">
+              <!--<img src="../../assets/img/hr-logo.png" alt="" />-->
+              <img
+                class="user-dp"
+                *ngIf="item?.photo"
+                src="{{ item?.photo }}"
+                alt="Profile Picture"
+              />
+              <img
+                class="user-dp"
+                *ngIf="!item?.photo"
+                src="../../../../assets/img/user.jpg"
+                alt="Profile Picture"
+              />
+            </div>
+            <div>
+              <div class="emp-details mb10">
+                <span class="emp-name">{{ item.employeeName }}</span>
+                <span class="emp-position">{{
+                  item.position | titlecase
+                }}</span>
+              </div>
+              <div class="emp-comp">{{ item.companyName }}</div>
+            </div>
+          </div>
+          <div class="g-card-mid df sb">
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">years in the position</div>
+              <div class="g-card-title">{{ item.year_In_Position }}</div>
+            </div>
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">reviewer 1</div>
+              <div class="g-card-title">{{ item.firstReviewerName }}</div>
+            </div>
+          </div>
+          <div class="g-card-mid df sb">
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">years in the company</div>
+              <div class="g-card-title">{{ item.year_In_Company }}</div>
+            </div>
+
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">reviewer 2</div>
+              <div class="g-card-title">{{ item.secondReviewerName }}</div>
+            </div>
+          </div>
+          <div class="g-card-mid df sb">
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">reviewer 3</div>
+              <div class="g-card-title">{{ item.thirdReviewerName }}</div>
+            </div>
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">line manager</div>
+              <div class="g-card-title">{{ item.lineManagerName }}</div>
+            </div>
+          </div>
+          <div class="g-card-mid df sb">
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">review period(start)</div>
+              <div class="g-card-title">{{ item.startDate | date }}</div>
+            </div>
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">review period(end)</div>
+              <div class="g-card-title">{{ item.endDate | date }}</div>
+            </div>
+          </div>
+          <div class="g-card-mid df sb">
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">status</div>
+              <div class="g-card-title">{{ item.reviewStatusName }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
 </div>
 <!-- /Page Content -->
