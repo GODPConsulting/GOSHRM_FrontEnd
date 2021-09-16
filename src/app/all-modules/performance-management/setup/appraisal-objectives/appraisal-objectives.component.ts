@@ -113,6 +113,12 @@ export class AppraisalObjectivesComponent implements OnInit {
         this.employeePerformId = param.employeePerformId;
         this.getAddableObjectives(param.jobGradeId);
         this.getEmployeeObjectiveDetails(this.staffId);
+        const hasLineManagerApproved = param.hasLineManagerApproved;
+        if (hasLineManagerApproved == "true") {
+          this.hasLineManagerApproved = true;
+        } else {
+          this.hasLineManagerApproved = false;
+        }
       } else {
         this.jwtService.getHrmUserDetails().then((user) => {
           if (user) {
@@ -163,6 +169,7 @@ export class AppraisalObjectivesComponent implements OnInit {
     //       });
     //   },
     // };
+    this.getComment(this.objectiveId);
   }
   initializeForm() {
     this.appraisalObjectivesForm = this.formbuilder.group({
@@ -178,7 +185,15 @@ export class AppraisalObjectivesComponent implements OnInit {
       KpiIndicatorName: [""],
     });
   }
-
+  getComment(id: number) {
+    return this.performanceManagementService
+      .getComment(id)
+      .subscribe((data) => {
+        if (data) {
+          this.comment = data;
+        }
+      });
+  }
   getAppraisalObjectives(id) {
     // this.loadingService.show();
     return this.performanceManagementService

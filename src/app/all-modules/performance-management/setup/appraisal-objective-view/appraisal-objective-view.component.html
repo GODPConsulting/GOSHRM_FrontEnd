@@ -95,6 +95,12 @@
     <p-tabPanel header="Self Assessment">
       <div class="df fd-column">
         <div class="ml-auto df center-align">
+          <button
+            class="btn btn-primary text-capitalize"
+            (click)="openPortal()"
+          >
+            copy objectives to new period
+          </button>
           <div class="mr-1">
             <select
               class="appraisal-select"
@@ -363,6 +369,102 @@
             >
               <span>Save</span>
             </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="copy_modal" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Copy Objectives</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closePortal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row" style="padding: 15px">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="source">Source</label>
+                <select
+                  name="reviewYear"
+                  id="source"
+                  class="form-control"
+                  [(ngModel)]="reviewYear"
+                  (change)="getAppraisalPeriods($event.target.value)"
+                >
+                  <option value="" disabled>--Select--</option>
+                  <option
+                    *ngFor="let row of reviewYears$ | async"
+                    [value]="row.reviewYear"
+                  >
+                    {{ row.reviewYear }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="source">Target</label>
+                <select
+                  name="period"
+                  id="target"
+                  class="form-control"
+                  [(ngModel)]="period"
+                >
+                  <option value="" disabled>--Select--</option>
+                  <option
+                    *ngFor="let row of reviewPeriods"
+                    value="{{ row.period }}"
+                  >
+                    {{ row.period }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div
+              style="margin-top: 20px; display: flex; justify-content: center"
+            >
+              <button
+                style="
+                  background: #f88f09;
+                  color: #fff;
+                  border: 1px solid #f88f09;
+                  height: 40px;
+                  padding: 10px;
+                  width: 120px;
+                  margin-right: 10px;
+                  border-radius: 4px;
+                "
+                (click)="copyObjectives()"
+              >
+                Copy
+              </button>
+              <button
+                style="
+                  background: tomato;
+                  color: #fff;
+                  border: 1px solid tomato;
+                  height: 40px;
+                  padding: 10px;
+                  width: 120px;
+                  border-radius: 4px;
+                "
+                (click)="closePortal()"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </form>
       </div>

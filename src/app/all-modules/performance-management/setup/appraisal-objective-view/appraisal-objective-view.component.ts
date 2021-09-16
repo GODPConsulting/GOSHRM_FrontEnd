@@ -31,6 +31,10 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   objectives: any[] = [];
   departmentId: number;
   companyId: number;
+  showPortal = false;
+  reviewPeriods: any[];
+  reviewYear: string = "";
+  period: string = "";
   constructor(
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
@@ -65,6 +69,14 @@ export class AppraisalObjectiveViewComponent implements OnInit {
             id: item.objectiveId,
           };
         });
+      });
+  }
+  getAppraisalPeriods(value: any) {
+    // this.reviewPeriods$ =
+    this.performanceManagementService
+      .getAppraisalPeriods(value)
+      .subscribe((res) => {
+        this.reviewPeriods = res;
       });
   }
   initialiseScheduleForm() {
@@ -165,6 +177,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
             queryParams: {
               employeePerformId: item.employeePerformId,
               appraisalCycleId: item.appraisalCycleId,
+              objectiveId: item.id,
             },
           });
         } else {
@@ -245,4 +258,14 @@ export class AppraisalObjectiveViewComponent implements OnInit {
       },
     });
   }
+
+  openPortal() {
+    $("#copy_modal").modal("show");
+  }
+
+  closePortal() {
+    $("#copy_modal").modal("hide");
+  }
+
+  copyObjectives() {}
 }

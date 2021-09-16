@@ -225,16 +225,40 @@
 
 
       </form>-->
+      <!--    <div class="btns-flex flex-end">
+        <a class="btn hint" pTooltip="Back" (click)="_location.back()"
+          ><i class="fa fa-backward"></i
+        ></a>
+        <a class="btn hint" (click)="showScheduleForm()"
+          ><span class="hint-text">Schedule Coaching </span
+          ><i class="fa fa-calendar"></i
+        ></a>
+        <a class="btn hint" (click)="viewSchedule()"
+          ><span class="hint-text">Coaching Schedules</span
+          ><i class="fa fa-calendar-o"></i
+        ></a>
+      </div>-->
       <form *ngIf="reviewer !== 'employee'">
         <div class="row">
           <div class="col-md-12 df flex-end">
-            <button
-              type="button"
-              class="btn btn-danger"
-              (click)="_location.back()"
-            >
-              Back
-            </button>
+            <!--            <button-->
+            <!--              type="button"-->
+            <!--              class="btn btn-danger"-->
+            <!--              (click)="_location.back()"-->
+            <!--            >-->
+            <!--              Back-->
+            <!--            </button>-->
+            <a class="btn hint" pTooltip="Back" (click)="_location.back()"
+              ><i class="fa fa-backward"></i
+            ></a>
+            <a class="btn hint" (click)="showScheduleForm()"
+              ><span class="hint-text">Schedule Coaching </span
+              ><i class="fa fa-calendar"></i
+            ></a>
+            <a class="btn hint" (click)="viewSchedule()"
+              ><span class="hint-text">Coaching Schedules</span
+              ><i class="fa fa-calendar-o"></i
+            ></a>
             <button class="btn btn-primary" (click)="submitFeedback(reviewer)">
               Submit
             </button>

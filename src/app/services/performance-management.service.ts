@@ -1421,4 +1421,16 @@ export class PerformanceManagementService {
         })
       );
   }
+
+  deleteEmployeeAppraisal(payload: number[]): Observable<any> {
+    return this.apiService
+      .post(`/performance/delete/employee/appraisals`, payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
 }

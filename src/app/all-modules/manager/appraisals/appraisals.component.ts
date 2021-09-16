@@ -77,6 +77,7 @@ export class AppraisalsComponent implements OnInit {
         departmentId: row.departmentId,
         jobGradeId: row.jobGradeId,
         employeePerformId: row.employeePerformId,
+        hasLineManagerApproved: row.hasLineManagerApproved,
       },
     });
   }

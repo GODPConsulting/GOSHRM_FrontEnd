@@ -14,7 +14,8 @@ import { HttpTokenInterceptor } from "./services/http.interceptor.service";
 import { EmployeeAppraisalsComponent } from "./all-modules/manager/employee-appraisals/employee-appraisals.component";
 import { AuthWrapperComponent } from "./components/auth-wrapper/auth-wrapper.component";
 import { SentenceCasePipe } from "./pipes/sentence-case.pipe";
-import { ToFixedPipe } from './pipes/to-fixed.pipe';
+import { ToFixedPipe } from "./pipes/to-fixed.pipe";
+import { PortalModule } from "@angular/cdk/portal";
 
 @NgModule({
   declarations: [AppComponent, AuthWrapperComponent, ToFixedPipe],
@@ -30,6 +31,7 @@ import { ToFixedPipe } from './pipes/to-fixed.pipe';
       positionClass: "toast-bottom-right",
       preventDuplicates: true,
     }),
+    // PortalModule,
   ],
   providers: [
     {

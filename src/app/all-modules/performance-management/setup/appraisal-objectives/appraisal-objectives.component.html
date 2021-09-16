@@ -5,13 +5,14 @@
       <h5><b>Appraisal Objectives</b></h5>
     </div>
     <div class="card-body" style="padding: 2rem">
-      <div *ngIf="fromLineManager" class="mb20">
+      <div class="mb20">
         <label>Comments <span class="text-danger">*</span></label>
         <textarea
           class="form-control resize"
           [(ngModel)]="comment"
           type="text"
           rows="5"
+          [disabled]="!fromLineManager"
         ></textarea>
       </div>
       <div class="row">

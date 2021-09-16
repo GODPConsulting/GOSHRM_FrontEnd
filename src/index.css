@@ -1111,3 +1111,6 @@ ul .tab-item:active a {
 .ellipsis-dropdown {
   cursor: pointer;
 }
+.btn-primary:focus {
+  color: var(--color-primary) !important;
+}
