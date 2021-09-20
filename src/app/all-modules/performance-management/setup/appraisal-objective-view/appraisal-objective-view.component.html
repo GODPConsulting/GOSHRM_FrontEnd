@@ -161,9 +161,9 @@
                     (click)="viewSchedule()"
                     >View Coaching Schedule</a
                   >
-                  <a class="dropdown-item p10 dropdown__link" href="#"
+                  <!--<a class="dropdown-item p10 dropdown__link" href="#"
                     >End Cycle</a
-                  >
+                  >-->
                 </div>
               </div>
               <!--            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>-->
@@ -400,20 +400,19 @@
                   name="reviewYear"
                   id="source"
                   class="form-control"
-                  [(ngModel)]="reviewYear"
-                  (change)="getAppraisalPeriods($event.target.value)"
+                  [(ngModel)]="appraisalcycleId"
                 >
                   <option value="" disabled>--Select--</option>
                   <option
-                    *ngFor="let row of reviewYears$ | async"
-                    [value]="row.reviewYear"
+                    *ngFor="let row of periods$ | async"
+                    [value]="row.appraisalCycleId"
                   >
-                    {{ row.reviewYear }}
+                    {{ row.period }}
                   </option>
                 </select>
               </div>
             </div>
-            <div class="col-md-12">
+          <!--  <div class="col-md-12">
               <div class="form-group">
                 <label for="source">Target</label>
                 <select
@@ -422,16 +421,16 @@
                   class="form-control"
                   [(ngModel)]="period"
                 >
-                  <option value="" disabled>--Select--</option>
+                  <option value="" disabled>&#45;&#45;Select&#45;&#45;</option>
                   <option
-                    *ngFor="let row of reviewPeriods"
+                    *ngFor="let row of openPeriod"
                     value="{{ row.period }}"
                   >
                     {{ row.period }}
                   </option>
                 </select>
               </div>
-            </div>
+            </div>-->
             <div
               style="margin-top: 20px; display: flex; justify-content: center"
             >

@@ -4,6 +4,7 @@ import { PerformanceManagementService } from "../../../../services/performance-m
 import { JwtService } from "../../../../services/jwt.service";
 import {
   Appraisal,
+  AppraisalCycle,
   CoachingSchedule,
   IAppraisalCycle,
 } from "../../../../interface/interfaces";
@@ -35,6 +36,9 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   reviewPeriods: any[];
   reviewYear: string = "";
   period: string = "";
+  openPeriod: any;
+  periods$: Observable<AppraisalCycle[]>;
+  appraisalcycleId: string = "";
   constructor(
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
@@ -56,6 +60,11 @@ export class AppraisalObjectiveViewComponent implements OnInit {
       this.reviewers$ = this.performanceManagementService.getReviewers(
         this.employeeId
       );
+      this.periods$ = this.performanceManagementService.getEmployeeCycles(
+        this.deptId,
+        this.employeeId
+      );
+      this.getOpenPeriods(this.deptId);
     });
     this.initialiseScheduleForm();
   }
@@ -88,6 +97,21 @@ export class AppraisalObjectiveViewComponent implements OnInit {
       objectiveId: [[]],
       comment: [""],
     });
+  }
+  /* getEmployeeCycles(companyId: number, employeeId: number) {
+    this.performanceManagementService
+      .getEmployeeCycles(companyId, employeeId)
+      .subscribe((data) => {
+        this.periods = data;
+      });
+  }*/
+
+  getOpenPeriods(companyId: number) {
+    this.performanceManagementService
+      .getOpenCycle(companyId)
+      .subscribe((periods) => {
+        this.openPeriod = periods;
+      });
   }
   getEmployeeAppraisalCycle() {
     // this.loadingService.show();
@@ -267,5 +291,29 @@ export class AppraisalObjectiveViewComponent implements OnInit {
     $("#copy_modal").modal("hide");
   }
 
-  copyObjectives() {}
+  copyObjectives() {
+    if (!this.appraisalcycleId) {
+      return this.utilitiesService.showError("Select a period");
+    }
+    const payload = {
+      appraisalcycleId: +this.appraisalcycleId,
+      employeeid: +this.employeeId,
+    };
+    this.performanceManagementService.copyNewObjectives(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          this.utilitiesService.showMessage(res, "success").then(() => {
+            this.appraisalcycleId = "";
+            this.closePortal();
+            this.getEmployeeAppraisalCycle();
+          });
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
 }

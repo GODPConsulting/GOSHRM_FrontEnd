@@ -1,4 +1,3 @@
-import { id } from "./../../assets/all-modules-data/id";
 import { ApiService } from "./api.service";
 import { Injectable } from "@angular/core";
 import { Observable, throwError, timer } from "rxjs";
@@ -6,6 +5,7 @@ import { catchError, delayWhen, map, retryWhen, tap } from "rxjs/operators";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import {
   Appraisal,
+  AppraisalCycle,
   AppraisalObjective,
   AppraisalPreference,
   CoachingSchedule,
@@ -1431,6 +1431,50 @@ export class PerformanceManagementService {
           return res;
         }),
         catchError(this.handleError)
+      );
+  }
+
+  getScheduledEvents(id: number): Observable<any> {
+    return this.apiService
+      .get(
+        `/performance/performancesetup/get/scheduled/calender/objectives?RevieweeId=${id}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.calenderLists;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  getEmployeeCycles(
+    companyId: number,
+    employeeId: number
+  ): Observable<AppraisalCycle[]> {
+    return this.apiService
+      .get(
+        `/performance/performance-appraisal/get/all/appraisal-period/by/employee?CompanyId=${companyId}&EmployeeId=${employeeId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.openperiodList;
+        })
+      );
+  }
+
+  copyNewObjectives(payload): Observable<any> {
+    return this.apiService
+      .post(
+        `/performance/performance-appraisal/copy/previous/to/new/period/appraisal-objectives`,
+        payload
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        })
       );
   }
 }

@@ -1,4 +1,3 @@
-
 import {
   Component,
   ChangeDetectionStrategy,
@@ -24,6 +23,8 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarView,
 } from "angular-calendar";
+import { PerformanceManagementService } from "../../services/performance-management.service";
+import { JwtService } from "../../services/jwt.service";
 const colors: any = {
   red: {
     primary: "#ad2121",
@@ -39,12 +40,11 @@ const colors: any = {
   },
 };
 @Component({
-  selector: 'app-events',
-  templateUrl: './events.component.html',
-  styleUrls: ['./events.component.css']
+  selector: "app-events",
+  templateUrl: "./events.component.html",
+  styleUrls: ["./events.component.css"],
 })
 export class EventsComponent implements OnInit {
-
   @ViewChild("modalContent", { static: true }) modalContent: TemplateRef<any>;
 
   view: CalendarView = CalendarView.Month;
@@ -119,9 +119,13 @@ export class EventsComponent implements OnInit {
     },
   ];
 
-  activeDayIsOpen: boolean = true;
-
-  constructor(private modal: NgbModal) {}
+  activeDayIsOpen: boolean = false;
+  employeeId: number;
+  constructor(
+    private modal: NgbModal,
+    private performanceManagementService: PerformanceManagementService,
+    private jwtService: JwtService
+  ) {}
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -138,10 +142,10 @@ export class EventsComponent implements OnInit {
   }
 
   eventTimesChanged({
-                      event,
-                      newStart,
-                      newEnd,
-                    }: CalendarEventTimesChangedEvent): void {
+    event,
+    newStart,
+    newEnd,
+  }: CalendarEventTimesChangedEvent): void {
     this.events = this.events.map((iEvent) => {
       if (iEvent === event) {
         return {
@@ -189,8 +193,25 @@ export class EventsComponent implements OnInit {
     this.activeDayIsOpen = false;
   }
 
-
   ngOnInit(): void {
+    this.jwtService.getHrmUserDetails().then((user) => {
+      // this.employeeId = user.employeeId;
+      this.getEvents(user.employeeId);
+    });
   }
 
+  getEvents(employeeId: number) {
+    this.performanceManagementService
+      .getScheduledEvents(employeeId)
+      .subscribe((events) => {
+        this.events = events.map((event) => {
+          return {
+            start: startOfDay(event.date),
+            title: event.title,
+            color: colors.yellow,
+            allDay: true,
+          };
+        });
+      });
+  }
 }

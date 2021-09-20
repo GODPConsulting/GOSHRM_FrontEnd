@@ -410,6 +410,89 @@
       </div>
     </div>
   </div>
+  <div *ngFor="let table of objectives; let i = index" class="card">
+    <h5 style="font-weight: bold" class="category">
+      {{ table.kpiCategoryName | titlecase }}
+    </h5>
+    <p-table
+      class="table table-striped custom-table datatable table-hover"
+      #dt
+      [columns]="cols"
+      [(selection)]="selectedObjectives"
+      [scrollable]="true"
+      [value]="table.employeeObjectiveIdicators"
+      scrollHeight="600px"
+    >
+      <!--           s-->
+      <ng-template pTemplate="header">
+        <tr>
+          <!--              <th>-->
+          <!--                <input type="checkbox" />-->
+          <!--              </th>-->
+          <th class="table-checkbox">
+            <!--                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
+            <input type="checkbox" (change)="checkAll($event)" />
+          </th>
+          <th class="sn_width">S/N</th>
+          <th>KPI Type</th>
+          <th>Objectives</th>
+          <th>Success targets</th>
+          <th>Key Action</th>
+          <th>Targets date</th>
+          <th>weights(%)</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row let-i="rowIndex">
+        <tr
+          (click)="editItem(table, row)"
+          style="cursor: pointer"
+          [ngClass]="{ disabled: !table.canEmplyeeAddObjective }"
+        >
+          <!--              <td>-->
+          <!--                <input-->
+          <!--                  type="checkbox"-->
+          <!--                  [checked]="selectedId.includes(row.id)"-->
+          <!--                  (change)="addItemId($event, row.id)"-->
+          <!--                />-->
+          <!--              </td>-->
+          <td class="table-checkbox">
+            <!--                  <p-tableCheckbox-->
+            <!--                    (click)="stopParentEvent($event)"-->
+            <!--                    [value]="row"-->
+            <!--                  ></p-tableCheckbox>-->
+            <input
+              [disabled]="!table.canEmplyeeAddObjective"
+              type="checkbox"
+              [checked]="
+                      selectedId.includes(row.employeeObjectiveIdicatorId)
+                    "
+              (change)="
+                      checkItem($event, row.employeeObjectiveIdicatorId)
+                    "
+              (click)="stopParentEvent($event)"
+            />
+          </td>
+          <td class="sn_width">{{ i + 1 }}</td>
+          <td>{{ row.kpiName | titlecase }}</td>
+          <td>{{ row.objective | titlecase }}</td>
+          <td>{{ row.successMeasure | titlecase }}</td>
+          <td>{{ row.keyActions | titlecase }}</td>
+          <td>{{ row.targetDate | date }}</td>
+          <td>{{ row.weightmodel }}</td>
+          <!--                <td>{{ kpiWeight }}</td>-->
+        </tr>
+        <tr *ngFor="let item of empPermittedList">
+          <ng-container class="title">
+            <div>
+              {{ item.kpiCategoryName }}
+            </div>
+          </ng-container>
+          <br />
+          <td *ngFor="let row of item.kpIsNameList">{{ row }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </div>
 <div id="feedback_modal" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

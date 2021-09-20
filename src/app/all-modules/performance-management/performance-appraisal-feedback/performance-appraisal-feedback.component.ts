@@ -25,6 +25,9 @@ export class PerformanceAppraisalFeedbackComponent implements OnInit {
   appraisalCycleId: number;
   employeeName: string;
   appraisalFeedbackForm: any;
+  objectives: any[] = [];
+  cols: any;
+  selectedObjectives: any;
   constructor(
     private formBuilder: FormBuilder,
     private utilitiesService: UtilitiesService,
@@ -177,4 +180,6 @@ export class PerformanceAppraisalFeedbackComponent implements OnInit {
         }
       );
   }
+
+  checkAll($event: Event) {}
 }

@@ -220,3 +220,8 @@ export interface ThreeSixtyReviewer {
   completion?: string;
   submittedOn?: Date;
 }
+export interface AppraisalCycle {
+  appraisalCycleId: number;
+  period: string;
+  companyId: number;
+}

@@ -258,19 +258,18 @@ export class AppraisalCycleComponent implements OnInit {
             .subscribe(
               (res) => {
                 // this.loadingService.hide();
-                const message = res.status.message.friendlyMessage;
+                // const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
+                  this.utilitiesService.showMessage(res, "success").then(() => {
                     this.getAppraisalCycles();
                   });
                 } else {
-                  swal.fire("GOSHRM", message, "error");
+                  this.utilitiesService.showMessage(res, "success");
                 }
               },
               (err) => {
                 // this.loadingService.hide();
-                const message = err.status.message.friendlyMessage;
-                swal.fire("GOSHRM", message, "error");
+                this.utilitiesService.showMessage(err, "error");
               }
             );
         }

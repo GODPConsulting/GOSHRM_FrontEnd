@@ -861,7 +861,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
               endDate: data.endDate,
               overallRemark: data.overallRemark,
             });
-            this.revieweeId = data.employeeId;
+            // this.revieweeId = data.employeeId;
             // this.initialiseFeedbackForm();
           }
         },
@@ -905,7 +905,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
   submitSchedule(form: FormGroup) {
     const payload: CoachingSchedule = form.value;
-    payload.revieweeId = +this.revieweeId;
+    payload.revieweeId = +this.employeeId;
     payload.reviewerId = +payload.reviewerId;
     payload.date = new Date(payload.date);
     // console.log(payload);
