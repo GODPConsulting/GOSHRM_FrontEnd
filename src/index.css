@@ -321,6 +321,7 @@
 
 .gos-icon-span {
   margin-bottom: 2.5rem;
+  cursor: pointer;
 }
 
 .gos-user-wrapper {

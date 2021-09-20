@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AllModulesComponent } from "./all-modules.component";
 import { AuthGuard } from "../guards/auth.guard";
+import {EventsComponent} from "../shared/events/events.component";
 
 const routes: Routes = [
   {
@@ -43,6 +44,10 @@ const routes: Routes = [
         loadChildren: () =>
           import("./manager/manager.module").then((m) => m.ManagerModule),
       },
+      {
+        path: 'events',
+        component: EventsComponent
+      }
     ],
   },
 ];

@@ -16,6 +16,8 @@ import { AuthWrapperComponent } from "./components/auth-wrapper/auth-wrapper.com
 import { SentenceCasePipe } from "./pipes/sentence-case.pipe";
 import { ToFixedPipe } from "./pipes/to-fixed.pipe";
 import { PortalModule } from "@angular/cdk/portal";
+import {CalendarModule, DateAdapter} from "angular-calendar";
+import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
 
 @NgModule({
   declarations: [AppComponent, AuthWrapperComponent, ToFixedPipe],
@@ -31,6 +33,11 @@ import { PortalModule } from "@angular/cdk/portal";
       positionClass: "toast-bottom-right",
       preventDuplicates: true,
     }),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
+
     // PortalModule,
   ],
   providers: [
