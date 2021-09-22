@@ -205,7 +205,7 @@ export interface AppraisalPreference {
 }
 export interface Appraisal {
   id: number;
-  employee: number;
+  employee: string;
   jobGradeId: number;
   comment?: string;
   appraisalCycleId: number;
@@ -224,4 +224,7 @@ export interface AppraisalCycle {
   appraisalCycleId: number;
   period: string;
   companyId: number;
+}
+export interface CopyObjectivesPayload {
+  comapanyId: number;
 }

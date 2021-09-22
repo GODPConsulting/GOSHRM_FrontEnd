@@ -6,6 +6,7 @@ import { Subject } from "rxjs";
 import { LoadingService } from "../../../services/loading.service";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
 import { Router } from "@angular/router";
+import { UtilitiesService } from "../../../services/utilities.service";
 
 @Component({
   selector: "app-direct-report-appraisals",
@@ -27,7 +28,8 @@ export class DirectReportAppraisalsComponent implements OnInit {
     private jwtService: JwtService,
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
-    private router: Router
+    private router: Router,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -108,6 +110,11 @@ export class DirectReportAppraisalsComponent implements OnInit {
     });
   }
   viewAppraisal(row) {
+    if (!row.hasLineManagerApproved) {
+      return this.utilitiesService.showError(
+        "Objectives not yet discussed and agreed"
+      );
+    }
     this.router.navigate(["/performance/appraisal-feedback-page"], {
       queryParams: {
         id: row.employeeId,

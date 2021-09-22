@@ -106,6 +106,10 @@
                   (click)="viewAppraisal(item)"
                   >Feedback</a
                 >
+                <a
+                  class="dropdown-item p10 dropdown__link"
+                >End Cycle</a
+                >
               </div>
             </div>
           </div>
@@ -171,7 +175,7 @@
             </div>
             <div class="fb-half pt10 pb10">
               <div class="g-card-label">review period(end)</div>
-              <div class="g-card-title">{{ item.endDate | date }}</div>
+              <div class="g-card-title">{{ item.endDate }}</div>
             </div>
           </div>
           <div class="g-card-mid df sb">

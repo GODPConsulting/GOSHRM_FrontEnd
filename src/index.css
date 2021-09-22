@@ -1115,3 +1115,6 @@ ul .tab-item:active a {
 .btn-primary:focus {
   color: var(--color-primary) !important;
 }
+.small_font {
+  font-size: 1.12rem;
+}

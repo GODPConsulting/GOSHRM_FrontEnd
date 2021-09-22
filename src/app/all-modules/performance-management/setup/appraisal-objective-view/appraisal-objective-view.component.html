@@ -179,7 +179,7 @@
               </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">reviewer 1</div>
-                <div class="g-card-title">etim essang</div>
+                <div class="g-card-title">{{item.firstReviewerName}}</div>
               </div>
             </div>
             <div class="g-card-mid df sb">
@@ -193,7 +193,7 @@
               </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">reviewer 2</div>
-                <div class="g-card-title">samuel yekini</div>
+                <div class="g-card-title">{{item.secondReviewerName}}</div>
               </div>
             </div>
             <div class="g-card-mid df sb">
@@ -217,7 +217,7 @@
             <div class="g-card-mid df flex-end">
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">review period(end)</div>
-                <div class="g-card-title">{{ item.endDate | date }}</div>
+                <div class="g-card-title">{{ item.endDate }}</div>
               </div>
             </div>
           </div>

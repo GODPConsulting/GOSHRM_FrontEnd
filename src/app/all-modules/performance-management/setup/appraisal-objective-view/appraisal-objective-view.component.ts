@@ -12,6 +12,7 @@ import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { UtilitiesService } from "../../../../services/utilities.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { HttpParams } from "@angular/common/http";
 declare const $: any;
 @Component({
   selector: "app-appraisal-objective-view",
@@ -19,7 +20,7 @@ declare const $: any;
   styleUrls: ["./appraisal-objective-view.component.css"],
 })
 export class AppraisalObjectiveViewComponent implements OnInit {
-  employeeId: number;
+  employeeId: string;
   deptId: number;
   jobGradeId: number;
   employeeAppraisalCycle: IAppraisalCycle[] = [];
@@ -68,9 +69,9 @@ export class AppraisalObjectiveViewComponent implements OnInit {
     });
     this.initialiseScheduleForm();
   }
-  async getObjectives(id: number, emplooyeePerformId) {
+  async getObjectives(id: string, emplooyeePerformId) {
     await this.performanceManagementService
-      .getObjectives(id, emplooyeePerformId)
+      .getEmployeeObjectivesForSchedule(id, emplooyeePerformId)
       .subscribe((data) => {
         this.objectives = data.map((item) => {
           return {
@@ -78,6 +79,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
             id: item.objectiveId,
           };
         });
+        console.log(this.objectives);
       });
   }
   getAppraisalPeriods(value: any) {
@@ -215,6 +217,11 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   }
 
   viewFeedback(item) {
+    if (!item.hasLineManagerApproved) {
+      return this.utilitiesService.showError(
+        "Objectives not yet discussed and agreed"
+      );
+    }
     this.router.navigate(["/performance/appraisal-feedback-page"], {
       queryParams: {
         id: item.employeeId,
@@ -298,6 +305,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
     const payload = {
       appraisalcycleId: +this.appraisalcycleId,
       employeeid: +this.employeeId,
+      id: 0,
     };
     this.performanceManagementService.copyNewObjectives(payload).subscribe(
       (res) => {
@@ -315,5 +323,16 @@ export class AppraisalObjectiveViewComponent implements OnInit {
         return this.utilitiesService.showMessage(err, "error");
       }
     );
+  }
+
+  getAppraisalStatus(item) {
+    this.performanceManagementService
+      .getAppraisalStatus(item.employeePerformId)
+      .subscribe((res) => {
+        if (res) {
+          this.viewFeedback(item);
+        } else {
+        }
+      });
   }
 }

@@ -2,13 +2,18 @@ import { ApiService } from "./api.service";
 import { Injectable } from "@angular/core";
 import { Observable, throwError, timer } from "rxjs";
 import { catchError, delayWhen, map, retryWhen, tap } from "rxjs/operators";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from "@angular/common/http";
 import {
   Appraisal,
   AppraisalCycle,
   AppraisalObjective,
   AppraisalPreference,
   CoachingSchedule,
+  CopyObjectivesPayload,
   EmployeeKPI,
   IAppraisalCycle,
   IKpis,
@@ -477,7 +482,7 @@ export class PerformanceManagementService {
       );
   }
   getEmployeeAppraisalCycle(
-    employeeId: number,
+    employeeId: string,
     deptId: number,
     jobGradeId: number,
     appraisalCycleId: number = 0
@@ -632,7 +637,7 @@ export class PerformanceManagementService {
       );
   }
   getSingleEmployeeObjective(
-    employeeId: number,
+    employeeId: string,
     employeePerformId: number
   ): Observable<AppraisalObjective> {
     return this.apiService
@@ -914,7 +919,7 @@ export class PerformanceManagementService {
   }
   filterObjectves(
     year: string,
-    employeeId: number,
+    employeeId: string,
     deptId: number
   ): Observable<any> {
     return this.apiService
@@ -1259,11 +1264,11 @@ export class PerformanceManagementService {
     );
   }
 
-  copyObjectives(): Observable<any> {
+  copyObjectives(payload: CopyObjectivesPayload): Observable<any> {
     return this.apiService
       .post(
         `/performance/performance-appraisal/copy/previous/appraisal-objectives`,
-        {}
+        payload
       )
       .pipe(
         tap(),
@@ -1357,7 +1362,7 @@ export class PerformanceManagementService {
     );
   }
 
-  getReviewers(employeeId: number): Observable<any> {
+  getReviewers(employeeId: string): Observable<any> {
     return this.apiService
       .get(
         `/performance/get/employee/names/byemployeeId?EmployeeId=${employeeId}`
@@ -1379,6 +1384,25 @@ export class PerformanceManagementService {
         tap(),
         map((res) => {
           return res.setupLists;
+        })
+      );
+  }
+  getEmployeeObjectivesForSchedule(
+    id: string,
+    employeePermformId: string
+  ): Observable<any> {
+    let params = new HttpParams();
+    params = params.append("emperformId", employeePermformId);
+    params = params.append("employeeId", id);
+    return this.apiService
+      .get(
+        `/performance/performancesetup/get/scheduled/performance/objectives`,
+        params
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
         })
       );
   }
@@ -1450,7 +1474,7 @@ export class PerformanceManagementService {
 
   getEmployeeCycles(
     companyId: number,
-    employeeId: number
+    employeeId: string
   ): Observable<AppraisalCycle[]> {
     return this.apiService
       .get(
@@ -1475,6 +1499,20 @@ export class PerformanceManagementService {
         map((res) => {
           return res;
         })
+      );
+  }
+
+  getAppraisalStatus(employeePerformId: number): Observable<boolean> {
+    return this.apiService
+      .get(
+        `/performance/get/appraisal-objectives/status?EmperformId=${employeePerformId}`
+      )
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list[0].status;
+        }),
+        catchError(this.handleError)
       );
   }
 }

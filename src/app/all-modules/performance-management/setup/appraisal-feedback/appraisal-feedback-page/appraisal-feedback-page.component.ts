@@ -548,7 +548,9 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       (res) => {
         // this.loadingService.hide();
         if (res.status.isSuccessful) {
-          this.utilitiesService.showMessage(res, "success");
+          this.utilitiesService.showMessage(res, "success").then(() => {
+            this.router.navigateByUrl("/performance/appraisals");
+          });
         } else {
           this.utilitiesService.showMessage(res, "error");
         }
@@ -576,7 +578,9 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         (res) => {
           // this.loadingService.hide();
           if (res.status.isSuccessful) {
-            this.utilitiesService.showMessage(res, "success");
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.router.navigateByUrl("/manager/direct-report-appraisals");
+            });
           } else {
             this.utilitiesService.showMessage(res, "error");
           }
@@ -601,7 +605,9 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         (res) => {
           // this.loadingService.hide();
           if (res.status.isSuccessful) {
-            this.utilitiesService.showMessage(res, "success");
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              // this.router.navigateByUrl("/performance/appraisals");
+            });
           } else {
             this.utilitiesService.showMessage(res, "error");
           }
@@ -626,7 +632,9 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         (res) => {
           // this.loadingService.hide();
           if (res.status.isSuccessful) {
-            this.utilitiesService.showMessage(res, "success");
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              // this.router.navigateByUrl("/performance/appraisals");
+            });
           } else {
             this.utilitiesService.showMessage(res, "error");
           }

@@ -485,7 +485,9 @@ export class AppraisalObjectivesComponent implements OnInit {
             const message = res.status.message.friendlyMessage;
             this.dataService.setPageStatus.emit(1);
             if (res.status.isSuccessful) {
-              return this.utilitiesService.showMessage(res, "success");
+              this.utilitiesService.showMessage(res, "success").then(() => {
+                this.router.navigateByUrl("/performance/appraisals");
+              });
             } else {
               this.utilitiesService.showMessage(res, "error");
             }
@@ -569,7 +571,9 @@ export class AppraisalObjectivesComponent implements OnInit {
         (res) => {
           // this.loadingService.hide();
           if (res.status.isSuccessful) {
-            return this.utilitiesService.showMessage(res, "success");
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.location.back();
+            });
           } else {
             return this.utilitiesService.showMessage(res, "error");
           }

@@ -69,3 +69,10 @@ th, td {
   border-radius: 4px;
   cursor: pointer
 }
+
+.td_special {
+  width: 15rem;
+}
+.td_category {
+  width: 10rem;
+}

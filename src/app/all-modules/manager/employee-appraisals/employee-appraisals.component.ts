@@ -25,7 +25,7 @@ export class EmployeeAppraisalsComponent implements OnInit {
   appraisalCycles: any[] = [];
   objectiveId: number;
   lineManagerId: number;
-  employeeId: number;
+  employeeId: string;
   employeePerformId: number;
   constructor(
     private formbuilder: FormBuilder,
