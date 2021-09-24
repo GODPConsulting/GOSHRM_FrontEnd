@@ -143,9 +143,10 @@ export class AppraisalsComponent implements OnInit {
               return this.utilitiesService
                 .showMessage(res, "success")
                 .then(() => {
-                  this.appraisals$ = this.performanceService.getAppraisalsByCycleId(
-                    this.appraisalCycleId
-                  );
+                  this.appraisals$ =
+                    this.performanceService.getAppraisalsByCycleId(
+                      this.appraisalCycleId
+                    );
                 });
             } else {
               return this.utilitiesService.showMessage(res, "error");
@@ -171,6 +172,9 @@ export class AppraisalsComponent implements OnInit {
       queryParams: {
         emp: row.empId,
         appraisalCycleId: row.appraisalCycleId,
+        deptId: row.companyId,
+        employeePerformId: row.employeePerformId,
+        jobGrade: row.jobGrade,
       },
     });
   }

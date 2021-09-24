@@ -1515,4 +1515,29 @@ export class PerformanceManagementService {
         catchError(this.handleError)
       );
   }
+
+  getFeedbackDetails(
+    jobGradeId: number,
+    employeeId: number,
+    deptId: number,
+    appraisalCycleId: number,
+    employeePerformId: number
+  ): Observable<any> {
+    console.dir(jobGradeId);
+    let params = new HttpParams();
+    params = params.append("jobGarde", jobGradeId.toString());
+    params = params.append("employeeId", employeeId.toString());
+    params = params.append("department", deptId.toString());
+    params = params.append("appraisalCycleId", appraisalCycleId.toString());
+    params = params.append("employeePerformId", employeePerformId.toString());
+    return this.apiService
+      .get(`/performance/get/employee_feedback/details`, params)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res.list;
+        }),
+        catchError(this.handleError)
+      );
+  }
 }

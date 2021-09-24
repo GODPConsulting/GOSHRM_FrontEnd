@@ -410,7 +410,16 @@
       </div>
     </div>
   </div>
-  <div *ngFor="let table of objectives; let i = index" class="card">
+  <div
+    *ngFor="let table of objectives; let i = index"
+    class="card"
+    style="
+      margin-bottom: 0;
+      border: none;
+      box-shadow: none;
+      padding: 1rem 1.5rem;
+    "
+  >
     <h5 style="font-weight: bold" class="category">
       {{ table.kpiCategoryName | titlecase }}
     </h5>
@@ -419,9 +428,7 @@
       #dt
       [columns]="cols"
       [(selection)]="selectedObjectives"
-      [scrollable]="true"
       [value]="table.employeeObjectiveIdicators"
-      scrollHeight="600px"
     >
       <!--           s-->
       <ng-template pTemplate="header">
@@ -429,17 +436,24 @@
           <!--              <th>-->
           <!--                <input type="checkbox" />-->
           <!--              </th>-->
-          <th class="table-checkbox">
-            <!--                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
+          <!-- <th class="table-checkbox">
+           
             <input type="checkbox" (change)="checkAll($event)" />
-          </th>
-          <th class="sn_width">S/N</th>
-          <th>KPI Type</th>
-          <th>Objectives</th>
-          <th>Success targets</th>
-          <th>Key Action</th>
-          <th>Targets date</th>
-          <th>weights(%)</th>
+          </th> -->
+          <!-- <th class="sn_width small_font">S/N</th> -->
+          <th class="small_font">KPI Type</th>
+          <th class="small_font">Reviewee Comment</th>
+          <th class="small_font">Rating</th>
+          <th class="small_font">Points</th>
+          <th class="small_font">Reviewer Comment</th>
+          <th class="small_font">Rating</th>
+          <th class="small_font">Points</th>
+          <th class="small_font">Reviewer II Comment</th>
+          <th class="small_font">Rating</th>
+          <th class="small_font">Points</th>
+          <th class="small_font">Reviewer III Comment</th>
+          <th class="small_font">Rating</th>
+          <th class="small_font">Points</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-row let-i="rowIndex">
@@ -455,33 +469,38 @@
           <!--                  (change)="addItemId($event, row.id)"-->
           <!--                />-->
           <!--              </td>-->
-          <td class="table-checkbox">
-            <!--                  <p-tableCheckbox-->
-            <!--                    (click)="stopParentEvent($event)"-->
-            <!--                    [value]="row"-->
-            <!--                  ></p-tableCheckbox>-->
+          <!-- <td class="table-checkbox">
             <input
               [disabled]="!table.canEmplyeeAddObjective"
               type="checkbox"
-              [checked]="
-                      selectedId.includes(row.employeeObjectiveIdicatorId)
-                    "
-              (change)="
-                      checkItem($event, row.employeeObjectiveIdicatorId)
-                    "
+              [checked]="selectedId.includes(row.employeeObjectiveIdicatorId)"
+              (change)="checkItem($event, row.employeeObjectiveIdicatorId)"
               (click)="stopParentEvent($event)"
             />
+          </td> -->
+          <!-- <td class="sn_width">{{ i + 1 }}</td> -->
+          <td class="small_font">{{ row.kpiName }}</td>
+          <td class="small_font">{{ row.revieweeComment }}</td>
+          <td class="small_font">{{ row.revieweeRating }}</td>
+          <td class="small_font">{{ row.revieweePoint | number: "1.2-2" }}</td>
+          <td class="small_font">{{ row.reviewerOneComment }}</td>
+          <td class="small_font">{{ row.reviewerOneRating }}</td>
+          <td class="small_font">
+            {{ row.reviewerOnePoint | number: "1.2-2" }}
           </td>
-          <td class="sn_width">{{ i + 1 }}</td>
-          <td>{{ row.kpiName | titlecase }}</td>
-          <td>{{ row.objective | titlecase }}</td>
-          <td>{{ row.successMeasure | titlecase }}</td>
-          <td>{{ row.keyActions | titlecase }}</td>
-          <td>{{ row.targetDate | date }}</td>
-          <td>{{ row.weightmodel }}</td>
+          <td class="small_font">{{ row.reviewerTwoComment }}</td>
+          <td class="small_font">{{ row.reviewerTwoRating }}</td>
+          <td class="small_font">
+            {{ row.reviewerTwoPoint | number: "1.2-2" }}
+          </td>
+          <td class="small_font">{{ row.reviewerThreeComment }}</td>
+          <td class="small_font">{{ row.reviewerThreeRating }}</td>
+          <td class="small_font">
+            {{ row.reviewerThreePoint | number: "1.2-2" }}
+          </td>
           <!--                <td>{{ kpiWeight }}</td>-->
         </tr>
-        <tr *ngFor="let item of empPermittedList">
+        <!-- <tr *ngFor="let item of empPermittedList">
           <ng-container class="title">
             <div>
               {{ item.kpiCategoryName }}
@@ -489,7 +508,7 @@
           </ng-container>
           <br />
           <td *ngFor="let row of item.kpIsNameList">{{ row }}</td>
-        </tr>
+        </tr> -->
       </ng-template>
     </p-table>
   </div>

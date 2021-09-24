@@ -23,5 +23,8 @@
         "../node_modules/@angular/*"
       ]
     }
-  }
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true
+  },
 }
