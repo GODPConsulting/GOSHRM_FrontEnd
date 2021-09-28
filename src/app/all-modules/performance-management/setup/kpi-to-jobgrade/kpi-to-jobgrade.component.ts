@@ -29,9 +29,10 @@ export class KpiToJobgradeComponent implements OnInit {
   public kpiToJobGradeForm: FormGroup;
   public selectedId: number[] = [];
   public jobGrades$: Observable<any> = this.setupService.getJobGrades();
-  public kpiCategories$: Observable<any> = this.performanceService.getKpiCategory();
+  public kpiCategories$: Observable<any> =
+    this.performanceService.getKpiCategory();
   public source = [];
-  public confirmed = [];
+  public confirmed: any = [];
   weightSummary: any = [];
   dtTrigger: Subject<any> = new Subject();
   dtWeightTrigger: Subject<any> = new Subject();
@@ -43,6 +44,7 @@ export class KpiToJobgradeComponent implements OnInit {
   tempArr: any[] = [];
   totalWeight: number = 100;
   file: File;
+  kpis: any[] = [];
   constructor(
     private setupService: SetupService,
     private performanceService: PerformanceManagementService,
@@ -98,7 +100,7 @@ export class KpiToJobgradeComponent implements OnInit {
   }
   edit(row) {
     console.log(row);
-    this.getKpiByKpiCategoryId(row.kpiCategoryId, "edit");
+    // this.getKpiByKpiCategoryId(row.kpiCategoryId, "edit");
     this.formTitle = "Edit KPI To Job Grade";
     this.kpiToJobGradeForm.patchValue({
       id: row.id,
@@ -107,13 +109,29 @@ export class KpiToJobgradeComponent implements OnInit {
       weight: row.weight,
       //kpIs: row.kpIs
     });
+    // this.getConfirmed();
     $("#add_kpi_to_job_grade").modal("show");
-    /* this.confirmed = row.kpIs.filter(id=>{
-      id === source.id
-    }) */
-    this.confirmed = this.source.filter((source) => {
-      row.kpIs.includes(source.id);
-    });
+    //  this.confirmed = row.kpIs.filter(id=>{
+    //   id === source.id
+    // })
+    const kpis = row.kpi.map((item) =>
+      item.map((kpi) => {
+        return {
+          id: kpi.kpiId,
+          kpi: kpi.kpiName,
+        };
+      })
+    );
+    this.source = kpis[0];
+    this.confirmed = this.source;
+    // console.log(this.kpis);
+
+    // this.confirmed = this.source.filter((source) => {
+    //   row.kpIs.includes(source.id);
+    // });
+    // console.log(this.source);
+
+    console.log(this.confirmed);
   }
   calculateSum(arr): number {
     return arr.reduce((total, item) => item.weight + total, 0);
@@ -198,7 +216,7 @@ export class KpiToJobgradeComponent implements OnInit {
   }
 
   getKpiByKpiCategoryId(id: number, source: string) {
-    // this.confirmed = [];
+    this.confirmed = [];
     console.log(source);
     this.kpiToJobGradeForm.patchValue({
       weight: "",
@@ -206,6 +224,13 @@ export class KpiToJobgradeComponent implements OnInit {
     this.performanceService.getKpiByKpiCategoryId(id).subscribe(
       (data) => {
         this.source = data.setupList;
+        // if (source === "edit") {
+        //   this.confirmed = this.source.filter((item) => {
+        //     return this.kpis.includes((el) => el.kpiId === item.kpiId);
+        //   });
+        // } else {
+        //   this.confirmed = [];
+        // }
       },
       (err) => {}
     );

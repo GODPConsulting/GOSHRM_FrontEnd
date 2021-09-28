@@ -23,7 +23,8 @@ declare const $: any;
   styleUrls: ["./key-performance-indicators.component.css"],
 })
 export class KeyPerformanceIndicatorsComponent
-  implements OnInit, AfterViewInit {
+  implements OnInit, AfterViewInit
+{
   keyPerformanceIndicatorForm: FormGroup;
   loading: boolean;
   categories: any[] = [];
@@ -208,13 +209,13 @@ export class KeyPerformanceIndicatorsComponent
     $("#kp_indicator_modal").modal("show");
   }
 
-  delete() {
+  deleteKPI() {
     let payload: object;
     if (this.selectedKpis.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
     }
-    this.selectedKpis.map((item) => {
-      this.selectedId.push(item.id);
+    this.selectedId = this.selectedKpis.map((item) => {
+      return item.id;
     });
     payload = {
       itemIds: this.selectedId,
@@ -236,6 +237,7 @@ export class KeyPerformanceIndicatorsComponent
               (res) => {
                 // this.loadingService.hide();
                 const message = res.status.message.friendlyMessage;
+                this.selectedId = [];
                 if (res.status.isSuccessful) {
                   swal.fire("GOSHRM", message, "success").then(() => {
                     this.getSavedKPIndicators();

@@ -24,7 +24,8 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   deptId: number;
   jobGradeId: number;
   employeeAppraisalCycle: IAppraisalCycle[] = [];
-  reviewYears$: Observable<any> = this.performanceManagementService.getReviewYears();
+  reviewYears$: Observable<any> =
+    this.performanceManagementService.getReviewYears();
   activeIndex: number;
   scheduleForm: FormGroup;
   reviewers$: Observable<any>;
@@ -40,6 +41,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   openPeriod: any;
   periods$: Observable<AppraisalCycle[]>;
   appraisalcycleId: string = "";
+  selectedId: number[] = [];
   constructor(
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
@@ -334,5 +336,34 @@ export class AppraisalObjectiveViewComponent implements OnInit {
         } else {
         }
       });
+  }
+
+  addItemId(event, id: number) {
+    if (event.target.checked) {
+      if (!this.selectedId.includes(id)) {
+        this.selectedId.push(id);
+      }
+    } else {
+      this.selectedId = this.selectedId.filter((_id) => {
+        return _id !== id;
+      });
+    }
+  }
+
+  checkAll(event) {
+    if (event.target.checked) {
+      this.selectedId = this.employeeAppraisalCycle.map((item) => {
+        return item.appraisalCycleId;
+      });
+    } else {
+      this.selectedId = [];
+    }
+  }
+
+  deleteObjective() {
+    console.log(this.selectedId);
+    if (this.selectedId.length === 0) {
+      return this.utilitiesService.showError("Select objectives to delete");
+    }
   }
 }

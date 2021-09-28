@@ -235,18 +235,24 @@ export class AppraisalCycleComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
-  delete() {
-    let payload: object;
+  deleteCycle() {
+    let payload;
     if (this.selectedCycles.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
     }
-    this.selectedCycles.map((item) => {
-      this.selectedId.push(item.appraisalCycleId);
+    this.selectedId = this.selectedCycles.map((item) => {
+      return item.appraisalCycleId;
     });
-    payload = {
-      itemIds: this.selectedId,
-    };
+    // this.selectedCycles.map((item) => {
+    //   this.selectedId.push(item.appraisalCycleId);
+    // });
+    // payload = {
+    //   itemIds: this.selectedId,
+    // };
+    // console.log(payload);
+    // return;
+    // console.log(this.selectedId);
+    // return;
     swal
       .fire({
         title: "Are you sure you want to delete this record?",

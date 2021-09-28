@@ -289,6 +289,9 @@ export class PerformanceManagementService {
                 .map((item) => item.kpis)
                 .map((kpi) => kpi.map((row) => row.kpiName))
                 .toString(),
+              kpi: item.payloads
+                .map((item) => item.kpis)
+                .map((kpi) => kpi.map((row) => row)),
             };
           });
         }),

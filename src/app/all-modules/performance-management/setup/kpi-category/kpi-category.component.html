@@ -2,7 +2,7 @@
   <div class="card profile-box flex-fill">
     <div class="card-body">
       <h3 class="card-title">
-        KPI Category<a class="edit-icon hint" (click)="delete()"
+        KPI Category<a class="edit-icon hint" (click)="deleteKPICategory()"
           ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
         ></a>
         <a class="edit-icon hint mr-1" (click)="downloadFile()" download
@@ -48,7 +48,7 @@
                 <!--                />-->
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
               </th>
-              <th>S/N</th>
+              <th class="sn_width">S/N</th>
               <th pSortableColumn="name">Name</th>
               <th pSortableColumn="employeePermittedName">
                 Employee Set Objectives
@@ -67,11 +67,13 @@
                 <!--                />-->
                 <p-tableCheckbox [value]="row"></p-tableCheckbox>
               </td>
-              <td>{{ i + 1 }}</td>
-              <td (click)="edit(row)">{{ row.name | titlecase }}</td>
-
+              <td class="sn_width">{{ i + 1 }}</td>
               <td (click)="edit(row)">
-                {{ row.employeePermittedName | titlecase }}
+                {{ row.name }}
+              </td>
+
+              <td (click)="edit(row)" class="text-center">
+                {{ row.employeePermittedName }}
               </td>
               <td (click)="edit(row)">{{ row.weightModelName }}</td>
               <td (click)="edit(row)">{{ row.hrSelectReviewerName }}</td>
@@ -166,7 +168,7 @@
               </div>
             </div>
             <div
-              *ngIf="employeePermitted == 2 && selectReview == 3"
+              *ngIf="employeePermitted == '2' && selectReview == 3"
               class="col-md-6"
             >
               <div class="form-group">

@@ -183,13 +183,13 @@ export class KpiCategoryComponent implements OnInit {
     event.stopPropagation();
   }
 
-  delete() {
+  deleteKPICategory() {
     let payload: object;
     if (this.selectedKpi.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
     }
-    this.selectedKpi.map((item) => {
-      this.selectedId.push(item.id);
+    this.selectedId = this.selectedKpi.map((item) => {
+      return item.id;
     });
     payload = {
       itemIds: this.selectedId,

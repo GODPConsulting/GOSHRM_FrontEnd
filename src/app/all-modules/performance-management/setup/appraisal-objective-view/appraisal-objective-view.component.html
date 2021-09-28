@@ -122,14 +122,18 @@
             data-target="#add_appraisal_objectives"
             ><span class="hint-text">Add</span><i class="fa fa-plus"></i>
           </a>
-          <a class="btn delete-btn hint"
+          <a class="btn delete-btn hint" (click)="deleteObjective()"
             ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
           ></a>
         </div>
         <div class="dg gtc3">
           <div class="g-card p10" *ngFor="let item of employeeAppraisalCycle">
             <div class="g-card-top df sb mb10">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                [checked]="selectedId.includes(item.id)"
+                (change)="addItemId($event, item.id)"
+              />
               <div class="dropdown">
                 <i
                   class="fa fa-ellipsis-v ellipsis-dropdown"
@@ -148,7 +152,7 @@
                   >
                   <a
                     class="dropdown-item p10 dropdown__link"
-                    (click)="viewFeedback(item)"
+                    (click)="getAppraisalStatus(item)"
                     >Feedback</a
                   >
                   <a
@@ -179,7 +183,7 @@
               </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">reviewer 1</div>
-                <div class="g-card-title">{{item.firstReviewerName}}</div>
+                <div class="g-card-title">{{ item.firstReviewerName }}</div>
               </div>
             </div>
             <div class="g-card-mid df sb">
@@ -193,7 +197,7 @@
               </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">reviewer 2</div>
-                <div class="g-card-title">{{item.secondReviewerName}}</div>
+                <div class="g-card-title">{{ item.secondReviewerName }}</div>
               </div>
             </div>
             <div class="g-card-mid df sb">
@@ -412,7 +416,7 @@
                 </select>
               </div>
             </div>
-          <!--  <div class="col-md-12">
+            <!--  <div class="col-md-12">
               <div class="form-group">
                 <label for="source">Target</label>
                 <select
