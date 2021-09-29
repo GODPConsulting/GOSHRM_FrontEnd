@@ -130,18 +130,21 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.employees$ = this.employeeService.getEmployees();
     // this.initialiseFeedbackForm();
     this.route.queryParams.subscribe((param) => {
       this.employeeId = param.id;
       this.appraisalCycleId = param.appraisalCycleId;
       this.employeePerformId = +param.employeePerformId;
       this.getEmployeeAppraisalDetails(this.employeeId);
+      // this.employees$ = this.employeeService.getEmployees();
     });
     this.jwtService.getHrmUserDetails().then((user) => {
       this.staffId = user.employeeId;
       this.companyId = user.companyId;
       this.getAppraisalFeedbacks();
+      this.employees$ = this.performanceManagementService.getReviewers(
+        this.staffId.toString()
+      );
       this.initialiseEmployeeScore();
       this.initialiseEmployeeComment();
       // this.initialiseEmployeeComment();

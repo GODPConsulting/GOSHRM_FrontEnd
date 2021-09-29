@@ -180,6 +180,7 @@ export class AppraisalObjectivesComponent implements OnInit {
       keyActions: [""],
       targetDate: [""],
       weightmodel: [0],
+      weight: [0],
       kpi: [0],
       employeePerformId: [0],
       KpiIndicatorName: [""],
@@ -248,7 +249,8 @@ export class AppraisalObjectivesComponent implements OnInit {
     // debugger;
     const payload = appraisalObjectivesForm.value;
     payload.kpiCategoryId = +this.kpiCategoryId;
-    payload.weightmodel = +payload.weightmodel;
+    payload.weightmodel = +this.weightModel;
+    payload.weight = +payload.weight;
     payload.employee = +this.staffId;
     payload.KpiIndicatorName = this.KpiIndicatorName;
     payload.appraisalCycleId = +this.appraisalCyleId;
@@ -256,11 +258,10 @@ export class AppraisalObjectivesComponent implements OnInit {
     payload.jobGrade = +this.jobGradeId;
     payload.employeePerformId = +this.employeePerformId;
     payload.otherSelected = this.otherSelected;
-    if (!payload.weightmodel) {
-      payload.weightmodel = 0;
+    if (!payload.weight) {
+      payload.weight = 0;
     }
     if (this.otherSelected) {
-      console.log(this.others);
       payload.KpiIndicatorName = this.others;
     }
     // console.log(payload);
@@ -336,9 +337,9 @@ export class AppraisalObjectivesComponent implements OnInit {
       this.totalWeight = item.totalWeight;
       this.weightModel = item.weightModel;
       if (this.weightModel === 2) {
-        this.appraisalObjectivesForm.get("weightmodel").disable();
+        this.appraisalObjectivesForm.get("weight").disable();
       } else {
-        this.appraisalObjectivesForm.get("weightmodel").enable();
+        this.appraisalObjectivesForm.get("weight").enable();
       }
       $("#appraisal_Objectives_modal").modal("show");
     }
@@ -413,6 +414,7 @@ export class AppraisalObjectivesComponent implements OnInit {
         keyActions: row.keyActions,
         targetDate: new Date(row.targetDate).toLocaleDateString("en-CA"),
         weightmodel: row.weightmodel,
+        weight: row.weight,
         kpi: row.kpi,
         employeePerformId: row.employeePerformId,
       });
@@ -477,6 +479,9 @@ export class AppraisalObjectivesComponent implements OnInit {
 
   sendToLineManager() {
     // console.log(this.checkWeightValue(this.addAbleOjectives));
+    if (this.hasLineManagerApproved) {
+      return;
+    }
     const totalWeightFromAppriasal = this.checkWeightValue(
       this.addAbleOjectives
     );
