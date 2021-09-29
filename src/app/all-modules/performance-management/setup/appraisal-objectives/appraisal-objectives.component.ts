@@ -319,10 +319,18 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   addObjective(item: any) {
+    console.log(item);
+    // const ind = item.kpiIndicators.filter((item) => {
+    //   return item.isOtherKpiIndicator === true;
+    // });
+
+    // console.log(ind);
     if (this.hasLineManagerApproved) {
       return;
     } else {
-      this.kpiCategories = item.kpiIndicators;
+      this.kpiCategories = item.kpiIndicators.filter((item) => {
+        return item.isOtherKpiIndicator === false;
+      });
       this.kpiCategoryId = item.id;
       this.totalWeight = item.totalWeight;
       this.weightModel = item.weightModel;
