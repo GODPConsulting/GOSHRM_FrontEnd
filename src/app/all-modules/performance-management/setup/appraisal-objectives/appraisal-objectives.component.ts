@@ -227,6 +227,7 @@ export class AppraisalObjectivesComponent implements OnInit {
     this.KpiIndicatorName = "";
     this.isEditing = false;
     this.otherSelected = false;
+    this.others = "";
     this.initializeForm();
   }
 
