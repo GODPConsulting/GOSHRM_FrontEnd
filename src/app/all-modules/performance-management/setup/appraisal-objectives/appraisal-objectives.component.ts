@@ -622,14 +622,14 @@ export class AppraisalObjectivesComponent implements OnInit {
   revokeAndDisagree() {
     // this.loadingService.show();
     const payload = {
-      id: this.objectiveId,
+      employeePerformId: this.objectiveId,
       comment: this.comment,
     };
     if (!payload.comment) {
       return this.utilitiesService.showError("Comment is required");
     }
     return this.performanceManagementService
-      .revokeAndDisagree(+this.objectiveId)
+      .revokeAndDisagree(payload)
       .subscribe(
         (res) => {
           // // this.loadingService.hide();

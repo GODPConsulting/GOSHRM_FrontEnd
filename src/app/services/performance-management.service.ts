@@ -885,11 +885,11 @@ export class PerformanceManagementService {
         })
       );
   }
-  revokeAndDisagree(employeeObjectiveId: number): Observable<any> {
+  revokeAndDisagree(payload): Observable<any> {
     return this.apiService
       .post(
         `/performance/linemanager/revoke_and_disagree/objectives/by_objectivesId`,
-        { employeeObjectiveId }
+        payload
       )
       .pipe(
         tap(),
