@@ -442,6 +442,11 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   deleteObjective() {
+    if (this.hasLineManagerApproved) {
+      return this.utilitiesService.showError(
+        "Cannot delete approved objectives"
+      );
+    }
     if (this.selectedId.length === 0) {
       return this.utilitiesService.showError("Select an item to delete");
     }
@@ -480,7 +485,7 @@ export class AppraisalObjectivesComponent implements OnInit {
   sendToLineManager() {
     // console.log(this.checkWeightValue(this.addAbleOjectives));
     if (this.hasLineManagerApproved) {
-      return;
+      return this.utilitiesService.showError("Objectives already approved");
     }
     const totalWeightFromAppriasal = this.checkWeightValue(
       this.addAbleOjectives
@@ -572,6 +577,9 @@ export class AppraisalObjectivesComponent implements OnInit {
   // }
   confirm() {
     // this.loadingService.show();
+    if (this.hasLineManagerApproved) {
+      return this.utilitiesService.showError("Objectives already approved");
+    }
     const payload = {
       employeePerformId: this.employeePerformId,
       comment: this.comment,
@@ -626,6 +634,9 @@ export class AppraisalObjectivesComponent implements OnInit {
 
   revokeAndDisagree() {
     // this.loadingService.show();
+    if (this.hasLineManagerApproved) {
+      return this.utilitiesService.showError("Objectives already approved");
+    }
     const payload = {
       employeePerformId: this.objectiveId,
       comment: this.comment,
