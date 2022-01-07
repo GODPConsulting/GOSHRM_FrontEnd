@@ -33,6 +33,11 @@ const routes: Routes = [
           ),
       },
       {
+        path: "rms",
+        loadChildren: () =>
+          import("./job-setup/job-setup.module").then((m) => m.JobSetupModule),
+      },
+      {
         path: "notifications",
         loadChildren: () =>
           import("./notifications/notifications.module").then(

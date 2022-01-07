@@ -522,6 +522,147 @@
                   </li>
                 </ul>
               </li>
+              <li
+                class="submenu"
+                [ngClass]="{
+                  active:
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'kpi-category') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'kpi-indicators') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'grade-setting') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'point-settings') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'kpi-to-jobgrade') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'appraisal-preference') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'appraisal-cycle') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.childUrl === 'appraisal-feedback') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.subUrl === 'appraisal-objective-view') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.subUrl === 'appraisal-objective-form') ||
+                    (urlComplete.mainUrl === 'performance' &&
+                      urlComplete.subUrl === 'appraisal-objectives')
+                }"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    subdrop:
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'kpi-category') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'kpi-indicators') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'grade-setting') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'point-settings') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'kpi-to-jobgrade') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-preference') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-cycle') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-feedback') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.subUrl === 'appraisal-objective-view') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.subUrl === 'appraisal-objective-form') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.subUrl === 'appraisal-objectives')
+                  }"
+                  class="noti-dot"
+                  ><span> RMS</span> <span class="menu-arrow"></span
+                ></a>
+                <ul
+                  style="display: none"
+                  [ngStyle]="{
+                    display:
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'kpi-category') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'kpi-indicators') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'grade-setting') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'point-settings') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'kpi-to-jobgrade') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-preference') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-cycle') ||
+                      (urlComplete.mainUrl === 'performance' &&
+                        urlComplete.childUrl === 'appraisal-feedback')
+                  }"
+                >
+                  <li routerLink="/rms">
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active:
+                          urlComplete.childUrl === 'appraisal-preference'
+                      }"
+                      >Dashboard</a
+                    >
+                  </li>
+                  <li routerLink="/rms/admin">
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active:
+                          urlComplete.childUrl === 'appraisal-preference'
+                      }"
+                      >Admin</a
+                    >
+                  </li><li routerLink="/rms/setup">
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active:
+                          urlComplete.childUrl === 'appraisal-preference'
+                      }"
+                      >Setup</a
+                    >
+                  </li>
+                  <li routerLink="/rms/template">
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active:
+                          urlComplete.childUrl === 'appraisal-preference'
+                      }"
+                      >Page Template</a
+                    >
+                  </li>
+                  <li routerLink="/rms/report">
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active:
+                          urlComplete.childUrl === 'appraisal-preference'
+                      }"
+                      >Report</a
+                    >
+                  </li>
+                  <li routerLink="/rms/social-media">
+                    <a
+                      href="javascript:"
+                      [ngClass]="{
+                        active:
+                          urlComplete.childUrl === 'appraisal-preference'
+                      }"
+                      >Social Media</a
+                    >
+                  </li>
+                </ul>
+              </li>
             </ul>
           </li>
           <!-- /HR Admin -->
