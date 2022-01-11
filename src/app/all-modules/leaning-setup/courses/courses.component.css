@@ -1,0 +1,37 @@
+.courses_wrapper {
+    padding: 3rem 5rem;
+}
+
+h3 {
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 150%;
+}
+
+.table td, .table th {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: none;
+    text-align: center;
+}
+
+.table th {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 150%;
+}
+
+.table td {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 150%;
+    padding: 12px;
+}
+
+.table tr {
+    border-bottom: .1rem solid #C4C4C4;
+}
+
+.table tr:last-child {
+    border: none;
+}

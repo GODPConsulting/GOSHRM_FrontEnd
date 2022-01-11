@@ -23,6 +23,7 @@ export class LearningSetupComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+  
   onResize(event) {
     this.innerHeight = event.target.innerHeight + "px";
   }

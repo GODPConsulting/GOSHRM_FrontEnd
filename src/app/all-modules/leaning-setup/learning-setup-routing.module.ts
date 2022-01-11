@@ -1,17 +1,18 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { CompanyInformationComponent } from "./company-information/company-information.component";
+import { CoursesComponent } from "./courses/courses.component";
 import { EmailSetupComponent } from "./email-setup/email.component";
 import { LearningSetupComponent } from "./learning-setup.component";
 import { PayoutComponent } from "./payout/payout.component";
 import { PolicyComponent } from "./policy/policy.component";
 import { SecurityComponent } from "./security/security.component";
+import { TrainingProviderComponent } from "./training-provider/training-provider.component";
 
 const routes: Routes = [
   {
     path: "",
-    component: EmailSetupComponent,
-    // component: LearningSetupComponent,
+    component: LearningSetupComponent,
     children: [
       {
         path: "information",
@@ -27,7 +28,7 @@ const routes: Routes = [
       },
       {
         path: "courses",
-        // component: SocialMediaComponent,
+        component: CoursesComponent,
       },
       {
         path: "policy",
@@ -40,6 +41,10 @@ const routes: Routes = [
       {
         path: "email-setup",
         component: EmailSetupComponent,
+      },
+      {
+        path: "training-provider",
+        component: TrainingProviderComponent,
       },
     ],
   },
