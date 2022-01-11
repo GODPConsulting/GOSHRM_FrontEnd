@@ -1,0 +1,87 @@
+<div class="email-setup_wrapper">
+    <div class="d-flex justify-content-between">
+      <h3>Email Setup</h3>
+      <button class="btn btn-orange btn-lg">
+        Create Email
+      </button>
+    </div>
+    <div class="bg-white p-5 my-4">
+        <form action="">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                      <label for="currentPassword" class="form-label"
+                        >Company Name
+                        <span class="text-danger">● </span>
+                      </label>
+                      <input
+                          class="form-control pr-2"
+                          type="text"
+                          formControlName="currentPassword"
+                          placeholder="Enter current password"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                      <label for="currentPassword" class="form-label"
+                        >Email Address
+                        <span class="text-danger">● </span>
+                      </label>
+                      <input
+                          class="form-control pr-2"
+                          type="text"
+                          formControlName="currentPassword"
+                          placeholder="Enter current password"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                      <label for="currentPassword" class="form-label"
+                        >Password
+                        <span class="text-danger">● </span>
+                      </label>
+                      <div class="position-relative">
+                        <input
+                          class="form-control pr-2"
+                          [type]="showCurrentPassword ? 'text' : 'password'"
+                          formControlName="currentPassword"
+                          placeholder="Enter current password"
+                        />
+                        <i
+                          class="fa fa-eye-slash click"
+                          *ngIf="showCurrentPassword; else hideCurrentPassword"
+                          (click)="showCurrentPassword = !showCurrentPassword"
+                        ></i>
+                        <ng-template #hideCurrentPassword>
+                          <i
+                            class="fa fa-eye click"
+                            (click)="showCurrentPassword = !showCurrentPassword"
+                          ></i>
+                        </ng-template>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                      <label for="currentPassword" class="form-label"
+                        >Restrictions
+                        <span class="text-danger">● </span>
+                      </label>
+                      <select name="" id="" class="form-control">
+                          <option value=""></option>
+                      </select>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end pt-4">
+                <button class="btn btn-orange btn-lg">
+                  Create
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

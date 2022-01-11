@@ -38,6 +38,11 @@ const routes: Routes = [
           import("./job-setup/job-setup.module").then((m) => m.JobSetupModule),
       },
       {
+        path: "lms",
+        loadChildren: () =>
+          import("./leaning-setup/learning-setup.module").then((m) => m.LearningSetupModule),
+      },
+      {
         path: "notifications",
         loadChildren: () =>
           import("./notifications/notifications.module").then(
