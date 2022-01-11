@@ -10,7 +10,6 @@ import { DataTablesModule } from "angular-datatables";
 import { SharedModule } from "src/app/shared/shared.module";
 import { TemplateComponent } from "./template/template.component";
 import { ReactiveFormsModule } from "@angular/forms";
-import { PerformanceManagementModule } from "../performance-management/performance-management.module";
 import { AdminComponent } from './admin/admin.component';
 import { SocialMediaComponent } from './social-media/social-media.component';
 
@@ -30,7 +29,6 @@ import { SocialMediaComponent } from './social-media/social-media.component';
     DataTablesModule,
     SharedModule,
     ReactiveFormsModule,
-    PerformanceManagementModule,
   ],
 })
 export class JobSetupModule {}
