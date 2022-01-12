@@ -1,6 +1,6 @@
+import { PageSetupComponent } from './page-setup/page-setup.component';
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { RouterModule } from '@angular/router';
 
 import { LearningSetupRoutingModule } from "./learning-setup-routing.module";
 import { DataTablesModule } from "angular-datatables";
@@ -18,7 +18,14 @@ import { LearningSetupComponent } from "./learning-setup.component";
 @NgModule({
   declarations: [
     LearningSetupComponent,
-   
+    // CompanyInformationComponent,
+    // SecurityComponent,
+    // PayoutComponent,
+    // PolicyComponent,
+    // CoursesComponent,
+    // EmailSetupComponent,
+    // TrainingProviderComponent,
+    // PageSetupComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +33,6 @@ import { LearningSetupComponent } from "./learning-setup.component";
     DataTablesModule,
     SharedModule,
     ReactiveFormsModule,
-    RouterModule
   ],
 })
 export class LearningSetupModule {}

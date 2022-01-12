@@ -2,8 +2,9 @@
     padding: 3rem 5rem;
 }
 
-.password_wrapper {
-    min-height: 80vh;
+h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
 }
 
 .fa {

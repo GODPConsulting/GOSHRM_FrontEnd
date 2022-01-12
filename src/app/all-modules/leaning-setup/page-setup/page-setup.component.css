@@ -1,0 +1,45 @@
+.email-setup_wrapper {
+  padding: 3rem 5rem;
+}
+
+h3 {
+font-size: 2.8rem;
+font-weight: bold;
+}
+
+h4 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.attachment_wrapper {
+  padding: 1rem 1.5rem 2rem 1rem ;
+  background: #F9FAFB;
+  box-sizing: border-box;
+  border-radius: 0.6rem;
+  min-height: 20vh;
+}
+
+p {
+  font-size: 1.2rem;
+  line-height: 2.1rem;
+  text-align: left;
+  color: rgba(#333, 0.5);
+}
+
+.btn {
+  padding: 10px 50px;
+}
+
+.btn-orange {
+  background: #F88F09;
+  border: .1rem solid #F88F09;
+  color: #fff;
+  padding: 10px 15px;
+  font-size: 1.5rem;
+}
+
+.click {
+  cursor: pointer;
+}
+

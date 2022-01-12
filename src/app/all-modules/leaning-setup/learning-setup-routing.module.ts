@@ -1,3 +1,5 @@
+import { PageSetupComponent } from './page-setup/page-setup.component';
+import { AppSetupComponent } from './app-setup/app-setup.component';
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { CompanyInformationComponent } from "./company-information/company-information.component";
@@ -24,7 +26,7 @@ const routes: Routes = [
       },
       {
         path: "setup",
-        // component: AdminComponent,
+        component: AppSetupComponent,
       },
       {
         path: "courses",
@@ -39,12 +41,16 @@ const routes: Routes = [
         component: PayoutComponent,
       },
       {
-        path: "email-setup",
+        path: "application/email-setup",
         component: EmailSetupComponent,
       },
       {
         path: "training-provider",
         component: TrainingProviderComponent,
+      },
+      {
+        path: "application/page-setup",
+        component: PageSetupComponent,
       },
     ],
   },
