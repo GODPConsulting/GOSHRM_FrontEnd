@@ -113,19 +113,6 @@ export class SetupComponent implements OnInit {
 
   initializeForm(current_tab) {
     this.current_tab = current_tab;
-
-    this.jobGradeForm = this.formBuilder.group({
-      id: [0],
-      job_grade: ["", Validators.required],
-      job_grade_reporting_to: ["", Validators.required],
-      rank: ["", Validators.required],
-      probation_period_in_months: ["", Validators.required],
-      description: [""],
-    });
-    //initialize upload form
-    this.jobGradeUploadForm = this.formBuilder.group({
-      uploadInput: [""],
-    });
   }
 
   openUploadModal() {

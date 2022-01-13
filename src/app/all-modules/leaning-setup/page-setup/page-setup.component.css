@@ -14,6 +14,7 @@ h4 {
 
 .attachment_wrapper {
   padding: 1rem 1.5rem 2rem 1rem ;
+  position: relative;
   background: #F9FAFB;
   box-sizing: border-box;
   border-radius: 0.6rem;
@@ -41,5 +42,12 @@ p {
 
 .click {
   cursor: pointer;
+}
+
+input[type="file"] {
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
 }
 

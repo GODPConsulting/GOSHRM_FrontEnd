@@ -1,4 +1,6 @@
+import { FormGroup } from '@angular/forms';
 import { Component, OnInit } from "@angular/core";
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 declare const $: any;
 
 @Component({
@@ -10,15 +12,18 @@ declare const $: any;
 export class PageSetupComponent implements OnInit {
   public enableForm: boolean = false;
   public spinner: boolean = false;
+  public pageSetupForm = FormGroup;
 
   constructor() {
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // this.pageSetupForm.disable();
+  }
 
   editForm() {
     this.enableForm = !this.enableForm;
-    console.log(this.enableForm)
+    // this.pageSetupForm.disable() = !this.pageSetupForm.disable()
   }
 
 }

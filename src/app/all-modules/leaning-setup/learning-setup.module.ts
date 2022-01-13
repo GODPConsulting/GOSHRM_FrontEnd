@@ -5,7 +5,7 @@ import { CommonModule } from "@angular/common";
 import { LearningSetupRoutingModule } from "./learning-setup-routing.module";
 import { DataTablesModule } from "angular-datatables";
 import { SharedModule } from "src/app/shared/shared.module";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CompanyInformationComponent } from "./company-information/company-information.component";
 import { SecurityComponent } from "./security/security.component";
 import { PayoutComponent } from "./payout/payout.component";
@@ -28,11 +28,13 @@ import { LearningSetupComponent } from "./learning-setup.component";
     // PageSetupComponent
   ],
   imports: [
+    // BrowserModule,
     CommonModule,
     LearningSetupRoutingModule,
     DataTablesModule,
     SharedModule,
     ReactiveFormsModule,
+    FormsModule
   ],
 })
 export class LearningSetupModule {}

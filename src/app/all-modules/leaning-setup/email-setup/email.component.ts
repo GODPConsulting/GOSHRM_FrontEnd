@@ -14,6 +14,13 @@ export class EmailSetupComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit(): void {}
-  
+  ngOnInit(): void {
+    $(function(){
+        var $select = $(".restricton");
+        for (let i=1;i<=100;i++){
+            $select.append($('<option></option>').val(i).html(i))
+        }
+    });​
+  }
+
 }
