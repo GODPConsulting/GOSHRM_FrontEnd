@@ -1,15 +1,15 @@
 import { Injectable } from "@angular/core";
 import { data } from "jquery";
-import { Observable, throwError } from "rxjs";
+import { Observable, ObservableInput, throwError } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { ApiService } from "./api.service";
-import { HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
 })
 export class EmployeeService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private http: HttpClient) {}
   handleError(error: HttpErrorResponse) {
     return throwError(error);
   }
@@ -64,9 +64,9 @@ export class EmployeeService {
       );
   }
 
-  getEmployee(id: number) {
-    return this.apiService
-      .get(`/employee/hrm/get/single/staff/by_staffId?StaffId=${id}`)
+  getEmployee(id: number): Observable<any> {
+    return this.http.get(`http://107.180.93.38:5050/employee/hrm/get/single/staff/by_staffId?StaffId=${id}`)
+    //return this.apiService.get(`/employee/hrm/get/single/staff/by_staffId?StaffId=${id}`)
       .pipe(
         tap(),
         map((res) => {
