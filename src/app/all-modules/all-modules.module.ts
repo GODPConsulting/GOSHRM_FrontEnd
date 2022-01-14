@@ -23,6 +23,7 @@ import { AllModulesService } from "./all-modules.service";
 // Api All Modules Database
 import { AllModulesData } from "src/assets/all-modules-data/all-modules-data";
 import { SharedModule } from "../shared/shared.module";
+import {CalendarModule} from "angular-calendar";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
 
@@ -36,6 +37,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {};
     PerfectScrollbarModule,
     AllModulesRoutingModule,
     SharedModule,
+    CalendarModule
   ],
   providers: [
     AllModulesService,

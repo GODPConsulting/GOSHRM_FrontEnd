@@ -15,6 +15,11 @@ import { CKEditorModule } from "@ckeditor/ckeditor5-angular";
 import { TabPanel, TabViewModule } from "primeng/tabview";
 import { TooltipModule } from "primeng/tooltip";
 import { SentenceCasePipe } from "../pipes/sentence-case.pipe";
+import { WindowsComponent } from "./windows/windows.component";
+import { PortalModule } from "@angular/cdk/portal";
+import { RightNavComponent } from './right-nav/right-nav.component';
+import { EventsComponent } from './events/events.component';
+import {CalendarCommonModule, CalendarModule} from "angular-calendar";
 
 @NgModule({
   declarations: [
@@ -23,6 +28,9 @@ import { SentenceCasePipe } from "../pipes/sentence-case.pipe";
     AppSubMenuComponent,
     CustomDatePipe,
     SentenceCasePipe,
+    WindowsComponent,
+    RightNavComponent,
+    EventsComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +44,8 @@ import { SentenceCasePipe } from "../pipes/sentence-case.pipe";
     CKEditorModule,
     TabViewModule,
     TooltipModule,
+    PortalModule,
+    CalendarModule,
   ],
   exports: [
     LoadingComponent,
@@ -52,6 +62,9 @@ import { SentenceCasePipe } from "../pipes/sentence-case.pipe";
     TabViewModule,
     TooltipModule,
     SentenceCasePipe,
+    PortalModule,
+    WindowsComponent,
+    RightNavComponent,
   ],
 })
 export class SharedModule {}

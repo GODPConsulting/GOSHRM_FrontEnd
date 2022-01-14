@@ -1,13 +1,20 @@
 import { SetupService } from "src/app/services/setup.service";
 import { Validators } from "@angular/forms";
-import { Component, OnInit, ElementRef, Input, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  Input,
+  ViewChild,
+  OnDestroy,
+} from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { PerformanceManagementService } from "src/app/services/performance-management.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../services/loading.service";
-import { Observable, Subject } from "rxjs";
+import { Observable, Subject, Subscription } from "rxjs";
 
 import { ISearchColumn } from "../../../../interface/interfaces";
 import { CommonService } from "../../../../services/common.service";
@@ -21,7 +28,7 @@ declare const $: any;
   templateUrl: "./appraisal-cycle.component.html",
   styleUrls: ["./appraisal-cycle.component.css"],
 })
-export class AppraisalCycleComponent implements OnInit {
+export class AppraisalCycleComponent implements OnInit, OnDestroy {
   public dtOptions: DataTables.Settings = {};
   cardFormTitle: string;
   spinner: boolean = false;
@@ -180,17 +187,15 @@ export class AppraisalCycleComponent implements OnInit {
       );
   }
 
-  getAppraisalCycles() {
+  getAppraisalCycles(): Subscription {
     // this.loadingService.show();
-    this.performanceManagementService.getAppraisalCycles().subscribe(
+    return this.performanceManagementService.getAppraisalCycles().subscribe(
       (data) => {
         // this.loadingService.hide();
         this.filteredArray = data;
         this.appraisalCycles = data;
       },
-      (err) => {
-        // this.loadingService.hide();
-      }
+      (err) => {}
     );
   }
 
@@ -230,18 +235,24 @@ export class AppraisalCycleComponent implements OnInit {
     event.stopPropagation();
   }
 
-  delete() {
-    let payload: object;
+  deleteCycle() {
+    let payload;
     if (this.selectedCycles.length === 0) {
       return swal.fire("Error", "Select items to delete", "error");
-    } else {
     }
-    this.selectedCycles.map((item) => {
-      this.selectedId.push(item.appraisalCycleId);
+    this.selectedId = this.selectedCycles.map((item) => {
+      return item.appraisalCycleId;
     });
-    payload = {
-      itemIds: this.selectedId,
-    };
+    // this.selectedCycles.map((item) => {
+    //   this.selectedId.push(item.appraisalCycleId);
+    // });
+    // payload = {
+    //   itemIds: this.selectedId,
+    // };
+    // console.log(payload);
+    // return;
+    // console.log(this.selectedId);
+    // return;
     swal
       .fire({
         title: "Are you sure you want to delete this record?",
@@ -258,19 +269,18 @@ export class AppraisalCycleComponent implements OnInit {
             .subscribe(
               (res) => {
                 // this.loadingService.hide();
-                const message = res.status.message.friendlyMessage;
+                // const message = res.status.message.friendlyMessage;
                 if (res.status.isSuccessful) {
-                  swal.fire("GOSHRM", message, "success").then(() => {
+                  this.utilitiesService.showMessage(res, "success").then(() => {
                     this.getAppraisalCycles();
                   });
                 } else {
-                  swal.fire("GOSHRM", message, "error");
+                  this.utilitiesService.showMessage(res, "success");
                 }
               },
               (err) => {
                 // this.loadingService.hide();
-                const message = err.status.message.friendlyMessage;
-                swal.fire("GOSHRM", message, "error");
+                this.utilitiesService.showMessage(err, "error");
               }
             );
         }
@@ -363,5 +373,9 @@ export class AppraisalCycleComponent implements OnInit {
 
   handleFileChange(event) {
     this.file = event.target.files[0];
+  }
+
+  ngOnDestroy(): void {
+    this.getAppraisalCycles().unsubscribe();
   }
 }

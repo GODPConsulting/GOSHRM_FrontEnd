@@ -59,7 +59,7 @@
             data-target="#appraisal_cycle_modal"
             ><span class="hint-text">Add </span><i class="fa fa-plus"></i
           ></a>
-          <a class="btn delete-btn hint" (click)="delete()"
+          <a class="btn delete-btn hint" (click)="deleteCycle()"
             ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
           ></a>
         </div>
@@ -70,6 +70,7 @@
           #dt
           [value]="filteredArray"
           [columns]="cols"
+          dataKey="appraisalCycleId"
           [(selection)]="selectedCycles"
           [scrollable]="true"
           scrollHeight="100%"

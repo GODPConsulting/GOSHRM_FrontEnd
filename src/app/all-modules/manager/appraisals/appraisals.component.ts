@@ -46,7 +46,7 @@ export class AppraisalsComponent implements OnInit {
   getAppraisalObjByManagerId() {
     this.loadingService.show();
     this.performanceManagementService
-      .getEmployeeObjectivesByLineManager(this.employeeId)
+      .getReviewersAppraisals(this.employeeId)
       .subscribe(
         (data) => {
           // this.loadingService.hide();
@@ -77,6 +77,7 @@ export class AppraisalsComponent implements OnInit {
         departmentId: row.departmentId,
         jobGradeId: row.jobGradeId,
         employeePerformId: row.employeePerformId,
+        hasLineManagerApproved: row.hasLineManagerApproved,
       },
     });
   }

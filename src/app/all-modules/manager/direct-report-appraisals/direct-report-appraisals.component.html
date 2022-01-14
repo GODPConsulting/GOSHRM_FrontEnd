@@ -101,7 +101,15 @@
                   (click)="viewObjectives(item)"
                   >Objective</a
                 >
-                <a class="dropdown-item p10 dropdown__link">Feedback</a>
+                <a
+                  class="dropdown-item p10 dropdown__link"
+                  (click)="viewAppraisal(item)"
+                  >Feedback</a
+                >
+                <a
+                  class="dropdown-item p10 dropdown__link"
+                >End Cycle</a
+                >
               </div>
             </div>
           </div>
@@ -156,8 +164,8 @@
               <div class="g-card-title">{{ item.thirdReviewerName }}</div>
             </div>
             <div class="fb-half pt10 pb10">
-              <div class="g-card-label">status</div>
-              <div class="g-card-title">{{ item.reviewStatusName }}</div>
+              <div class="g-card-label">line manager</div>
+              <div class="g-card-title">{{ item.lineManagerName }}</div>
             </div>
           </div>
           <div class="g-card-mid df sb">
@@ -167,7 +175,17 @@
             </div>
             <div class="fb-half pt10 pb10">
               <div class="g-card-label">review period(end)</div>
-              <div class="g-card-title">{{ item.endDate | date }}</div>
+              <div class="g-card-title">{{ item.endDate }}</div>
+            </div>
+          </div>
+          <div class="g-card-mid df sb">
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">objective status</div>
+              <div class="g-card-title">{{ item.reviewStatusName }}</div>
+            </div>
+            <div class="fb-half pt10 pb10">
+              <div class="g-card-label">feedback status</div>
+              <div class="g-card-title"></div>
             </div>
           </div>
         </div>

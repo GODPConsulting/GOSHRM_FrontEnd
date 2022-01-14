@@ -4,6 +4,7 @@ import { PerformanceManagementService } from "../../../../services/performance-m
 import { JwtService } from "../../../../services/jwt.service";
 import {
   Appraisal,
+  AppraisalCycle,
   CoachingSchedule,
   IAppraisalCycle,
 } from "../../../../interface/interfaces";
@@ -11,6 +12,7 @@ import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { UtilitiesService } from "../../../../services/utilities.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { HttpParams } from "@angular/common/http";
 declare const $: any;
 @Component({
   selector: "app-appraisal-objective-view",
@@ -18,11 +20,12 @@ declare const $: any;
   styleUrls: ["./appraisal-objective-view.component.css"],
 })
 export class AppraisalObjectiveViewComponent implements OnInit {
-  employeeId: number;
+  employeeId: string;
   deptId: number;
   jobGradeId: number;
   employeeAppraisalCycle: IAppraisalCycle[] = [];
-  reviewYears$: Observable<any> = this.performanceManagementService.getReviewYears();
+  reviewYears$: Observable<any> =
+    this.performanceManagementService.getReviewYears();
   activeIndex: number;
   scheduleForm: FormGroup;
   reviewers$: Observable<any>;
@@ -31,6 +34,14 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   objectives: any[] = [];
   departmentId: number;
   companyId: number;
+  showPortal = false;
+  reviewPeriods: any[];
+  reviewYear: string = "";
+  period: string = "";
+  openPeriod: any;
+  periods$: Observable<AppraisalCycle[]>;
+  appraisalcycleId: string = "";
+  selectedId: number[] = [];
   constructor(
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
@@ -52,12 +63,17 @@ export class AppraisalObjectiveViewComponent implements OnInit {
       this.reviewers$ = this.performanceManagementService.getReviewers(
         this.employeeId
       );
+      this.periods$ = this.performanceManagementService.getEmployeeCycles(
+        this.deptId,
+        this.employeeId
+      );
+      this.getOpenPeriods(this.deptId);
     });
     this.initialiseScheduleForm();
   }
-  async getObjectives(id: number, emplooyeePerformId) {
+  async getObjectives(id: string, emplooyeePerformId) {
     await this.performanceManagementService
-      .getObjectives(id, emplooyeePerformId)
+      .getEmployeeObjectivesForSchedule(id, emplooyeePerformId)
       .subscribe((data) => {
         this.objectives = data.map((item) => {
           return {
@@ -65,6 +81,15 @@ export class AppraisalObjectiveViewComponent implements OnInit {
             id: item.objectiveId,
           };
         });
+        console.log(this.objectives);
+      });
+  }
+  getAppraisalPeriods(value: any) {
+    // this.reviewPeriods$ =
+    this.performanceManagementService
+      .getAppraisalPeriods(value)
+      .subscribe((res) => {
+        this.reviewPeriods = res;
       });
   }
   initialiseScheduleForm() {
@@ -76,6 +101,21 @@ export class AppraisalObjectiveViewComponent implements OnInit {
       objectiveId: [[]],
       comment: [""],
     });
+  }
+  /* getEmployeeCycles(companyId: number, employeeId: number) {
+    this.performanceManagementService
+      .getEmployeeCycles(companyId, employeeId)
+      .subscribe((data) => {
+        this.periods = data;
+      });
+  }*/
+
+  getOpenPeriods(companyId: number) {
+    this.performanceManagementService
+      .getOpenCycle(companyId)
+      .subscribe((periods) => {
+        this.openPeriod = periods;
+      });
   }
   getEmployeeAppraisalCycle() {
     // this.loadingService.show();
@@ -165,6 +205,7 @@ export class AppraisalObjectiveViewComponent implements OnInit {
             queryParams: {
               employeePerformId: item.employeePerformId,
               appraisalCycleId: item.appraisalCycleId,
+              objectiveId: item.id,
             },
           });
         } else {
@@ -178,6 +219,11 @@ export class AppraisalObjectiveViewComponent implements OnInit {
   }
 
   viewFeedback(item) {
+    if (!item.hasLineManagerApproved) {
+      return this.utilitiesService.showError(
+        "Objectives not yet discussed and agreed"
+      );
+    }
     this.router.navigate(["/performance/appraisal-feedback-page"], {
       queryParams: {
         id: item.employeeId,
@@ -244,5 +290,80 @@ export class AppraisalObjectiveViewComponent implements OnInit {
         companyId: this.deptId,
       },
     });
+  }
+
+  openPortal() {
+    $("#copy_modal").modal("show");
+  }
+
+  closePortal() {
+    $("#copy_modal").modal("hide");
+  }
+
+  copyObjectives() {
+    if (!this.appraisalcycleId) {
+      return this.utilitiesService.showError("Select a period");
+    }
+    const payload = {
+      appraisalcycleId: +this.appraisalcycleId,
+      employeeid: +this.employeeId,
+      id: 0,
+    };
+    this.performanceManagementService.copyNewObjectives(payload).subscribe(
+      (res) => {
+        if (res.status.isSuccessful) {
+          this.utilitiesService.showMessage(res, "success").then(() => {
+            this.appraisalcycleId = "";
+            this.closePortal();
+            this.getEmployeeAppraisalCycle();
+          });
+        } else {
+          return this.utilitiesService.showMessage(res, "error");
+        }
+      },
+      (err) => {
+        return this.utilitiesService.showMessage(err, "error");
+      }
+    );
+  }
+
+  getAppraisalStatus(item) {
+    this.performanceManagementService
+      .getAppraisalStatus(item.employeePerformId)
+      .subscribe((res) => {
+        if (res) {
+          this.viewFeedback(item);
+        } else {
+        }
+      });
+  }
+
+  addItemId(event, id: number) {
+    if (event.target.checked) {
+      if (!this.selectedId.includes(id)) {
+        this.selectedId.push(id);
+      }
+    } else {
+      this.selectedId = this.selectedId.filter((_id) => {
+        return _id !== id;
+      });
+    }
+  }
+
+  checkAll(event) {
+    if (event.target.checked) {
+      this.selectedId = this.employeeAppraisalCycle.map((item) => {
+        return item.appraisalCycleId;
+      });
+    } else {
+      this.selectedId = [];
+    }
+  }
+
+  deleteObjective() {
+    console.log(this.selectedId);
+    if (this.selectedId.length === 0) {
+      return this.utilitiesService.showError("Select objectives to delete");
+    }
   }
 }

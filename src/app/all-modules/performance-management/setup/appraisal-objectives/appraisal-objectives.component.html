@@ -5,13 +5,14 @@
       <h5><b>Appraisal Objectives</b></h5>
     </div>
     <div class="card-body" style="padding: 2rem">
-      <div *ngIf="fromLineManager" class="mb20">
+      <div class="mb20">
         <label>Comments <span class="text-danger">*</span></label>
         <textarea
           class="form-control resize"
           [(ngModel)]="comment"
           type="text"
           rows="5"
+          [disabled]="!fromLineManager"
         ></textarea>
       </div>
       <div class="row">
@@ -28,12 +29,8 @@
             (click)="addObjective(item)"
           >
             <span class="objective-name">{{ item.name | titlecase }}</span>
-            <span>Weight: {{ item.totalWeightFromAppriasal }}</span>
-            <span
-              class="objective-icon"
-              *ngIf="item.totalWeightFromAppriasal !== 100"
-              ><i class="fa fa-plus"></i
-            ></span>
+            <span>Weight: {{ item.totalWeightFromAppriasal | number: 0 }}</span>
+            <span class="objective-icon"><i class="fa fa-plus"></i></span>
           </div>
         </div>
         <div class="col-auto float-right ml-auto mb_10">
@@ -295,7 +292,7 @@
                   id="weight"
                   type="text"
                   class="form-control"
-                  formControlName="weightmodel"
+                  formControlName="weight"
                 />
               </div>
             </div>

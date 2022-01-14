@@ -1,6 +1,6 @@
 <!-- Appraisal Feedback Page -->
 
-<div class="content container-fluid">
+<div class="content">
   <!-- Page Header -->
   <div class="card">
     <div class="card-header header-bg-color">
@@ -225,21 +225,45 @@
 
 
       </form>-->
-      <form *ngIf="reviewer !== 'employee'">
+      <!--    <div class="btns-flex flex-end">
+        <a class="btn hint" pTooltip="Back" (click)="_location.back()"
+          ><i class="fa fa-backward"></i
+        ></a>
+        <a class="btn hint" (click)="showScheduleForm()"
+          ><span class="hint-text">Schedule Coaching </span
+          ><i class="fa fa-calendar"></i
+        ></a>
+        <a class="btn hint" (click)="viewSchedule()"
+          ><span class="hint-text">Coaching Schedules</span
+          ><i class="fa fa-calendar-o"></i
+        ></a>
+      </div>-->
+      <form>
         <div class="row">
-          <div class="col-md-12 df flex-end">
-            <button
-              type="button"
-              class="btn btn-danger"
-              (click)="_location.back()"
-            >
-              Back
-            </button>
+          <div class="col-md-12 mb20 df flex-end">
+            <!--            <button-->
+            <!--              type="button"-->
+            <!--              class="btn btn-danger"-->
+            <!--              (click)="_location.back()"-->
+            <!--            >-->
+            <!--              Back-->
+            <!--            </button>-->
+            <a class="btn hint" pTooltip="Back" (click)="_location.back()"
+              ><i class="fa fa-backward"></i
+            ></a>
+            <a class="btn hint" (click)="showScheduleForm()"
+              ><span class="hint-text">Schedule Coaching </span
+              ><i class="fa fa-calendar"></i
+            ></a>
+            <a class="btn hint" (click)="viewSchedule()"
+              ><span class="hint-text">Coaching Schedules</span
+              ><i class="fa fa-calendar-o"></i
+            ></a>
             <button class="btn btn-primary" (click)="submitFeedback(reviewer)">
               Submit
             </button>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6" *ngIf="reviewer !== 'employee'">
             <div class="form-group">
               <label for="recommendation">Recommendation</label>
               <select
@@ -265,7 +289,7 @@
               />-->
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6" *ngIf="reviewer !== 'employee'">
             <div class="form-group">
               <label for="recommendationComment">Recommendation Comments</label>
 
@@ -280,45 +304,66 @@
           </div>
         </div>
       </form>
+      <!--[style]="{ width: '150rem' }"-->
       <div class="table-responsive">
-        <p-table
-          [value]="appraisalFeedbacks"
-          [scrollable]="true"
-          [style]="{ width: '150rem' }"
-        >
+        <p-table [value]="appraisalFeedbacks" [scrollable]="true">
           <ng-template pTemplate="header" let-row let-i="rowIndex">
             <tr>
-              <th>KPI</th>
-              <th>Objectives</th>
-              <th>Success Target</th>
-              <th>Reviewee Comments</th>
-              <th>Reviewee Score</th>
-              <th *ngIf="preference?.isReviewerOneInvloved">
+              <th class="td_category small_font">KPI</th>
+              <th class="td_special small_font">Objectives</th>
+              <th class="td_special small_font">Success Target</th>
+              <th class="text-center small_font">Reviewee Comments</th>
+              <th class="text-center small_font">Reviewee Score</th>
+              <th
+                class="text-center small_font"
+                *ngIf="preference?.isReviewerOneInvloved"
+              >
                 Reviewer I Comment
               </th>
-              <th *ngIf="preference?.isReviewerOneInvloved">
+              <th
+                class="text-center small_font"
+                *ngIf="preference?.isReviewerOneInvloved"
+              >
                 Reviewer I Score
               </th>
-              <th *ngIf="preference?.isReviewertwoInvloved">
+              <th
+                class="text-center small_font"
+                *ngIf="preference?.isReviewertwoInvloved"
+              >
                 Reviewer II Comment
               </th>
-              <th *ngIf="preference?.isReviewertwoInvloved">
+              <th
+                class="text-center small_font"
+                *ngIf="preference?.isReviewertwoInvloved"
+              >
                 Reviewer II Score
               </th>
-              <th *ngIf="preference?.isReviewerThreeInvloved">
+              <th
+                class="text-center small_font"
+                *ngIf="preference?.isReviewerThreeInvloved"
+              >
                 Reviewer III Comment
               </th>
-              <th *ngIf="preference?.isReviewerThreeInvloved">
+              <th
+                class="text-center small_font"
+                *ngIf="preference?.isReviewerThreeInvloved"
+              >
                 Reviewer III Score
               </th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-row let-i="rowIndex">
             <tr>
-              <td>{{ row.kpiCategory | titlecase }}</td>
-              <td>{{ row.kpiObjectives | titlecase }}</td>
-              <td>{{ row.successTarget | titlecase }}</td>
-              <td>
+              <td class="td_category small_font">
+                {{ row.kpiCategory | titlecase }}
+              </td>
+              <td class="td_special small_font">
+                {{ row.kpiObjectives | titlecase }}
+              </td>
+              <td class="td_special small_font">
+                {{ row.successTarget | titlecase }}
+              </td>
+              <td class="text-center">
                 <a
                   *ngIf="reviewer === 'employee'"
                   class="mr_20"
@@ -337,8 +382,8 @@
                   ><i class="fa fa-eye"></i
                 ></a>
               </td>
-              <td>
-                <span style="margin-right: 20px">{{
+              <td class="text-center">
+                <span style="margin-right: 20px" class="small_font">{{
                   row.revieweeScore | number: "1.2-2"
                 }}</span>
                 <a
@@ -355,7 +400,7 @@
                   ><i class="fa fa-edit"></i
                 ></a>
               </td>
-              <td *ngIf="preference.isReviewerOneInvloved">
+              <td *ngIf="preference.isReviewerOneInvloved" class="text-center">
                 <a
                   *ngIf="reviewer === 'reviewer1'"
                   class="mr_20"
@@ -375,8 +420,8 @@
                   ><i class="fa fa-eye"></i
                 ></a>
               </td>
-              <td *ngIf="preference.isReviewerOneInvloved">
-                <span class="mr_20">{{
+              <td *ngIf="preference.isReviewerOneInvloved" class="text-center">
+                <span class="mr_20 small_font">{{
                   row.reviewerOneScore | number: "1.2-2"
                 }}</span>
                 <a
@@ -393,7 +438,7 @@
                   ><i class="fa fa-edit"></i
                 ></a>
               </td>
-              <td *ngIf="preference.isReviewertwoInvloved">
+              <td *ngIf="preference.isReviewertwoInvloved" class="text-center">
                 <a
                   *ngIf="reviewer === 'reviewer2'"
                   class="mr_20"
@@ -413,8 +458,8 @@
                   ><i class="fa fa-eye"></i
                 ></a>
               </td>
-              <td *ngIf="preference.isReviewertwoInvloved">
-                <span class="mr_20">{{
+              <td *ngIf="preference.isReviewertwoInvloved" class="text-center">
+                <span class="mr_20 small_font">{{
                   row.reviewerTwoScore | number: "1.2-2"
                 }}</span>
                 <a
@@ -438,7 +483,10 @@
                 <!--                    ><i class="fa fa-eye"></i-->
                 <!--                  ></a>-->
               </td>
-              <td *ngIf="preference.isReviewerThreeInvloved">
+              <td
+                *ngIf="preference.isReviewerThreeInvloved"
+                class="text-center"
+              >
                 <a
                   *ngIf="reviewer === 'reviewer3'"
                   class="mr_20"
@@ -458,7 +506,10 @@
                   ><i class="fa fa-eye"></i
                 ></a>
               </td>
-              <td *ngIf="preference.isReviewerThreeInvloved">
+              <td
+                *ngIf="preference.isReviewerThreeInvloved"
+                class="text-center"
+              >
                 <span class="mr_20">{{
                   row.rewviewerThreeScore | number: "1.2-2"
                 }}</span>
@@ -553,6 +604,7 @@
               <div class="form-group">
                 <label>Comment</label>
                 <textarea
+                  rows="5"
                   name="comment"
                   formControlName="revieweeComment"
                   class="form-control"
@@ -733,10 +785,9 @@
                   <option value="" disabled>Select Reviewer</option>
                   <option
                     *ngFor="let emp of employees$ | async"
-                    [value]="emp.employeeId"
+                    [value]="emp.reviewerId"
                   >
-                    {{ emp.firstName | titlecase }}
-                    {{ emp.lastName | titlecase }}
+                    {{ emp.reviewerName }}
                   </option>
                 </select>
               </div>

@@ -22,7 +22,7 @@
           data-target="#kp_indicator_modal"
           ><span class="hint-text">Add</span><i class="fa fa-plus"></i
         ></a>
-        <a class="btn delete-btn hint" (click)="delete()"
+        <a class="btn delete-btn hint" (click)="deleteKPI()"
           ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
         ></a>
       </div>
@@ -75,11 +75,11 @@
               </td>
               <td>{{ i + 1 }}</td>
               <td (click)="editKPIndicator(row)">
-                {{ row.kpiCategoryName | titlecase }}
+                {{ row.kpiCategoryName }}
               </td>
-              <td (click)="editKPIndicator(row)">{{ row.kpi | titlecase }}</td>
+              <td (click)="editKPIndicator(row)">{{ row.kpi }}</td>
               <td (click)="editKPIndicator(row)">
-                {{ row.description | titlecase }}
+                {{ row.description }}
               </td>
               <td (click)="editKPIndicator(row)">
                 {{ row.upload_of_Actual_Result_Name }}

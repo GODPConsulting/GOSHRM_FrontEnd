@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { UtilitiesService } from "../../../services/utilities.service";
 import { EmployeeService } from "../../../services/employee.service";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
-import { Observable } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { ThreeSixtyReviewer } from "../../../interface/interfaces";
 import { JwtService } from "../../../services/jwt.service";
 import { ActivatedRoute } from "@angular/router";
@@ -25,6 +25,13 @@ export class PerformanceAppraisalFeedbackComponent implements OnInit {
   appraisalCycleId: number;
   employeeName: string;
   appraisalFeedbackForm: any;
+  objectives: any[] = [];
+  cols: any;
+  selectedObjectives: any;
+  deptId: number;
+  jobGradeId: number;
+  employeePerformId: number;
+  selectedId: any[] = [];
   constructor(
     private formBuilder: FormBuilder,
     private utilitiesService: UtilitiesService,
@@ -46,10 +53,21 @@ export class PerformanceAppraisalFeedbackComponent implements OnInit {
     this.route.queryParams.subscribe((param) => {
       this.revieweeId = param.emp;
       this.appraisalCycleId = param.appraisalCycleId;
+      this.deptId = param.deptId;
+      this.jobGradeId = param.jobGrade;
+      this.employeePerformId = param.employeePerformId;
       this.getAppraisal(this.revieweeId, this.appraisalCycleId);
-      this.reviewers$ = this.performanceManagementService.getThreeSixtyReviewers(
-        this.revieweeId
+      this.getFeedbackDetails(
+        this.jobGradeId,
+        this.revieweeId,
+        this.deptId,
+        this.appraisalCycleId,
+        this.employeePerformId
       );
+      this.reviewers$ =
+        this.performanceManagementService.getThreeSixtyReviewers(
+          this.revieweeId
+        );
       this.getReviewers();
     });
     this.initialiseForm();
@@ -101,6 +119,26 @@ export class PerformanceAppraisalFeedbackComponent implements OnInit {
   closeScheduleModal() {
     $("#feedback_modal").modal("hide");
     this.initialiseForm();
+  }
+
+  getFeedbackDetails(
+    jobGradeId,
+    employeeId,
+    deptId,
+    appraisalCycleId,
+    employeePerformId
+  ) {
+    return this.performanceManagementService
+      .getFeedbackDetails(
+        jobGradeId,
+        employeeId,
+        deptId,
+        appraisalCycleId,
+        employeePerformId
+      )
+      .subscribe((data) => {
+        this.objectives = data;
+      });
   }
   getAppraisal(empId: number, appraisalCycleId: number) {
     this.performanceManagementService
@@ -177,4 +215,10 @@ export class PerformanceAppraisalFeedbackComponent implements OnInit {
         }
       );
   }
+
+  checkAll(event: Event) {}
+  editItem(table, row) {}
+
+  checkItem(event, id) {}
+  stopParentEvent(event) {}
 }

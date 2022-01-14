@@ -1,4 +1,4 @@
-<div class="content container-fluid mb10">
+<div class="content mb10">
   <!-- Page Header -->
   <div class="content-wrapper">
     <div class="page-header">
@@ -334,7 +334,7 @@
     </div>
   </div>
 </div>
-<div class="row" style="padding: 0 1.5rem">
+<div class="row">
   <div class="col-md-12">
     <div class="table-responsive">
       <p-table
@@ -364,7 +364,7 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-row let-i="rowIndex">
-          <tr (click)="edit(row)">
+          <tr (click)="edit(row)" style="cursor: pointer">
             <td>{{ row.companyName }}</td>
             <td>{{ row.appraisalCycleName }}</td>
             <td>{{ row.reviewerOneCommentVisibilityName }}</td>

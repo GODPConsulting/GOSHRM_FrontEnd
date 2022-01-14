@@ -130,18 +130,21 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.employees$ = this.employeeService.getEmployees();
     // this.initialiseFeedbackForm();
     this.route.queryParams.subscribe((param) => {
       this.employeeId = param.id;
       this.appraisalCycleId = param.appraisalCycleId;
       this.employeePerformId = +param.employeePerformId;
       this.getEmployeeAppraisalDetails(this.employeeId);
+      // this.employees$ = this.employeeService.getEmployees();
     });
     this.jwtService.getHrmUserDetails().then((user) => {
       this.staffId = user.employeeId;
       this.companyId = user.companyId;
       this.getAppraisalFeedbacks();
+      this.employees$ = this.performanceManagementService.getReviewers(
+        this.staffId.toString()
+      );
       this.initialiseEmployeeScore();
       this.initialiseEmployeeComment();
       // this.initialiseEmployeeComment();
@@ -548,7 +551,9 @@ export class AppraisalFeedbackPageComponent implements OnInit {
       (res) => {
         // this.loadingService.hide();
         if (res.status.isSuccessful) {
-          this.utilitiesService.showMessage(res, "success");
+          this.utilitiesService.showMessage(res, "success").then(() => {
+            this.router.navigateByUrl("/performance/appraisals");
+          });
         } else {
           this.utilitiesService.showMessage(res, "error");
         }
@@ -576,7 +581,9 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         (res) => {
           // this.loadingService.hide();
           if (res.status.isSuccessful) {
-            this.utilitiesService.showMessage(res, "success");
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.router.navigateByUrl("/manager/direct-report-appraisals");
+            });
           } else {
             this.utilitiesService.showMessage(res, "error");
           }
@@ -601,7 +608,9 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         (res) => {
           // this.loadingService.hide();
           if (res.status.isSuccessful) {
-            this.utilitiesService.showMessage(res, "success");
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              // this.router.navigateByUrl("/performance/appraisals");
+            });
           } else {
             this.utilitiesService.showMessage(res, "error");
           }
@@ -626,7 +635,9 @@ export class AppraisalFeedbackPageComponent implements OnInit {
         (res) => {
           // this.loadingService.hide();
           if (res.status.isSuccessful) {
-            this.utilitiesService.showMessage(res, "success");
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              // this.router.navigateByUrl("/performance/appraisals");
+            });
           } else {
             this.utilitiesService.showMessage(res, "error");
           }
@@ -861,7 +872,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
               endDate: data.endDate,
               overallRemark: data.overallRemark,
             });
-            this.revieweeId = data.employeeId;
+            // this.revieweeId = data.employeeId;
             // this.initialiseFeedbackForm();
           }
         },
@@ -905,7 +916,7 @@ export class AppraisalFeedbackPageComponent implements OnInit {
   }
   submitSchedule(form: FormGroup) {
     const payload: CoachingSchedule = form.value;
-    payload.revieweeId = +this.revieweeId;
+    payload.revieweeId = +this.employeeId;
     payload.reviewerId = +payload.reviewerId;
     payload.date = new Date(payload.date);
     // console.log(payload);

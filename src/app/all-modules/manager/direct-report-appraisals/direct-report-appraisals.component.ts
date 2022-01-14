@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { JwtService } from "src/app/services/jwt.service";
 import { ManagerService } from "src/app/services/manager.service";
 import swal from "sweetalert2";
@@ -6,6 +6,7 @@ import { Subject } from "rxjs";
 import { LoadingService } from "../../../services/loading.service";
 import { PerformanceManagementService } from "../../../services/performance-management.service";
 import { Router } from "@angular/router";
+import { UtilitiesService } from "../../../services/utilities.service";
 
 @Component({
   selector: "app-direct-report-appraisals",
@@ -15,7 +16,7 @@ import { Router } from "@angular/router";
 export class DirectReportAppraisalsComponent implements OnInit {
   public dtOptions: DataTables.Settings = {};
   public selectedId: number[] = [];
-  public reportAppraisals: any[] = [];
+  reportAppraisals: any[] = [];
   user: any;
   dtTrigger: Subject<any> = new Subject<any>();
   activities: any;
@@ -27,7 +28,8 @@ export class DirectReportAppraisalsComponent implements OnInit {
     private jwtService: JwtService,
     private loadingService: LoadingService,
     private performanceManagementService: PerformanceManagementService,
-    private router: Router
+    private router: Router,
+    private utilitiesService: UtilitiesService
   ) {}
 
   ngOnInit(): void {
@@ -103,10 +105,16 @@ export class DirectReportAppraisalsComponent implements OnInit {
         departmentId: row.departmentId,
         jobGradeId: row.jobGradeId,
         employeePerformId: row.employeePerformId,
+        hasLineManagerApproved: row.hasLineManagerApproved,
       },
     });
   }
   viewAppraisal(row) {
+    if (!row.hasLineManagerApproved) {
+      return this.utilitiesService.showError(
+        "Objectives not yet discussed and agreed"
+      );
+    }
     this.router.navigate(["/performance/appraisal-feedback-page"], {
       queryParams: {
         id: row.employeeId,

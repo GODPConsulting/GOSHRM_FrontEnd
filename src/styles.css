@@ -80,7 +80,7 @@ Version      : 3.6
   /*#3f51b5 from the theme*/
   --color-dark: #333333;
   --color-light: #FFFFFF;
-  --color-primary: #F88F09;
+  --color-primary: #f88f09;
   --color-primary-light: #FDF4E7;
   --color-light-secondary: #f9fafb;
   --color-secondary: #fbe8d0;
@@ -8726,7 +8726,7 @@ rating span {
   -webkit-animation: spin 2.5s infinite linear;
   animation: spin 2.5s infinite linear;
   border: 3px solid transparent;
-  border-top-color: #8000ff;
+  border-top-color: var(--color-primary);
   border-radius: 50%;
 }
 #page-preloader .spinner:before,
@@ -8744,7 +8744,7 @@ rating span {
   -webkit-animation: spin 2s infinite linear;
   animation: spin 2s infinite linear;
   border: 3px solid transparent;
-  border-top-color: #bf00ff;
+  border-top-color: var(--color-primary);
 }
 
 #page-preloader .spinner:after {
@@ -8755,7 +8755,7 @@ rating span {
   -webkit-animation: spin 1s infinite linear;
   animation: spin 1s infinite linear;
   border: 3px solid transparent;
-  border-top-color: #ff00ff;
+  border-top-color: var(--color-primary);
 }
 
 @-webkit-keyframes spin {

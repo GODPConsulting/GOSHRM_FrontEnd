@@ -113,6 +113,12 @@ export class AppraisalObjectivesComponent implements OnInit {
         this.employeePerformId = param.employeePerformId;
         this.getAddableObjectives(param.jobGradeId);
         this.getEmployeeObjectiveDetails(this.staffId);
+        const hasLineManagerApproved = param.hasLineManagerApproved;
+        if (hasLineManagerApproved == "true") {
+          this.hasLineManagerApproved = true;
+        } else {
+          this.hasLineManagerApproved = false;
+        }
       } else {
         this.jwtService.getHrmUserDetails().then((user) => {
           if (user) {
@@ -163,6 +169,7 @@ export class AppraisalObjectivesComponent implements OnInit {
     //       });
     //   },
     // };
+    this.getComment(this.objectiveId);
   }
   initializeForm() {
     this.appraisalObjectivesForm = this.formbuilder.group({
@@ -173,12 +180,21 @@ export class AppraisalObjectivesComponent implements OnInit {
       keyActions: [""],
       targetDate: [""],
       weightmodel: [0],
+      weight: [0],
       kpi: [0],
       employeePerformId: [0],
       KpiIndicatorName: [""],
     });
   }
-
+  getComment(id: number) {
+    return this.performanceManagementService
+      .getComment(id)
+      .subscribe((data) => {
+        if (data) {
+          this.comment = data;
+        }
+      });
+  }
   getAppraisalObjectives(id) {
     // this.loadingService.show();
     return this.performanceManagementService
@@ -212,6 +228,7 @@ export class AppraisalObjectivesComponent implements OnInit {
     this.KpiIndicatorName = "";
     this.isEditing = false;
     this.otherSelected = false;
+    this.others = "";
     this.initializeForm();
   }
 
@@ -232,7 +249,8 @@ export class AppraisalObjectivesComponent implements OnInit {
     // debugger;
     const payload = appraisalObjectivesForm.value;
     payload.kpiCategoryId = +this.kpiCategoryId;
-    payload.weightmodel = +payload.weightmodel;
+    payload.weightmodel = +this.weightModel;
+    payload.weight = +payload.weight;
     payload.employee = +this.staffId;
     payload.KpiIndicatorName = this.KpiIndicatorName;
     payload.appraisalCycleId = +this.appraisalCyleId;
@@ -240,11 +258,10 @@ export class AppraisalObjectivesComponent implements OnInit {
     payload.jobGrade = +this.jobGradeId;
     payload.employeePerformId = +this.employeePerformId;
     payload.otherSelected = this.otherSelected;
-    if (!payload.weightmodel) {
-      payload.weightmodel = 0;
+    if (!payload.weight) {
+      payload.weight = 0;
     }
     if (this.otherSelected) {
-      console.log(this.others);
       payload.KpiIndicatorName = this.others;
     }
     // console.log(payload);
@@ -304,17 +321,25 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   addObjective(item: any) {
+    console.log(item);
+    // const ind = item.kpiIndicators.filter((item) => {
+    //   return item.isOtherKpiIndicator === true;
+    // });
+
+    // console.log(ind);
     if (this.hasLineManagerApproved) {
       return;
     } else {
-      this.kpiCategories = item.kpiIndicators;
+      this.kpiCategories = item.kpiIndicators.filter((item) => {
+        return item.isOtherKpiIndicator === false;
+      });
       this.kpiCategoryId = item.id;
       this.totalWeight = item.totalWeight;
       this.weightModel = item.weightModel;
       if (this.weightModel === 2) {
-        this.appraisalObjectivesForm.get("weightmodel").disable();
+        this.appraisalObjectivesForm.get("weight").disable();
       } else {
-        this.appraisalObjectivesForm.get("weightmodel").enable();
+        this.appraisalObjectivesForm.get("weight").enable();
       }
       $("#appraisal_Objectives_modal").modal("show");
     }
@@ -374,6 +399,13 @@ export class AppraisalObjectivesComponent implements OnInit {
       // this.appraisalObjectivesForm.get("kpi").disable();
       this.kpiCategoryId = table.kpiCategoryId;
       // this.appraisalObjectivesForm.get("kpi").disable();
+      console.log({ row }, { table });
+      if (row.weightmodel === 2) {
+        console.log("hi");
+        this.appraisalObjectivesForm.get("weightmodel").disable();
+      } else {
+        this.appraisalObjectivesForm.get("weightmodel").enable();
+      }
       this.appraisalObjectivesForm.patchValue({
         employeeObjectiveIdicatorId: row.employeeObjectiveIdicatorId,
         kpiCategoryId: table.kpiCategoryId,
@@ -382,6 +414,7 @@ export class AppraisalObjectivesComponent implements OnInit {
         keyActions: row.keyActions,
         targetDate: new Date(row.targetDate).toLocaleDateString("en-CA"),
         weightmodel: row.weightmodel,
+        weight: row.weight,
         kpi: row.kpi,
         employeePerformId: row.employeePerformId,
       });
@@ -409,6 +442,11 @@ export class AppraisalObjectivesComponent implements OnInit {
   }
 
   deleteObjective() {
+    if (this.hasLineManagerApproved) {
+      return this.utilitiesService.showError(
+        "Cannot delete approved objectives"
+      );
+    }
     if (this.selectedId.length === 0) {
       return this.utilitiesService.showError("Select an item to delete");
     }
@@ -446,6 +484,9 @@ export class AppraisalObjectivesComponent implements OnInit {
 
   sendToLineManager() {
     // console.log(this.checkWeightValue(this.addAbleOjectives));
+    if (this.hasLineManagerApproved) {
+      return this.utilitiesService.showError("Objectives already approved");
+    }
     const totalWeightFromAppriasal = this.checkWeightValue(
       this.addAbleOjectives
     );
@@ -463,7 +504,9 @@ export class AppraisalObjectivesComponent implements OnInit {
             const message = res.status.message.friendlyMessage;
             this.dataService.setPageStatus.emit(1);
             if (res.status.isSuccessful) {
-              return this.utilitiesService.showMessage(res, "success");
+              this.utilitiesService.showMessage(res, "success").then(() => {
+                this.router.navigateByUrl("/performance/appraisals");
+              });
             } else {
               this.utilitiesService.showMessage(res, "error");
             }
@@ -534,6 +577,9 @@ export class AppraisalObjectivesComponent implements OnInit {
   // }
   confirm() {
     // this.loadingService.show();
+    if (this.hasLineManagerApproved) {
+      return this.utilitiesService.showError("Objectives already approved");
+    }
     const payload = {
       employeePerformId: this.employeePerformId,
       comment: this.comment,
@@ -547,7 +593,9 @@ export class AppraisalObjectivesComponent implements OnInit {
         (res) => {
           // this.loadingService.hide();
           if (res.status.isSuccessful) {
-            return this.utilitiesService.showMessage(res, "success");
+            this.utilitiesService.showMessage(res, "success").then(() => {
+              this.location.back();
+            });
           } else {
             return this.utilitiesService.showMessage(res, "error");
           }
@@ -586,15 +634,18 @@ export class AppraisalObjectivesComponent implements OnInit {
 
   revokeAndDisagree() {
     // this.loadingService.show();
+    if (this.hasLineManagerApproved) {
+      return this.utilitiesService.showError("Objectives already approved");
+    }
     const payload = {
-      id: this.objectiveId,
+      employeePerformId: this.objectiveId,
       comment: this.comment,
     };
     if (!payload.comment) {
       return this.utilitiesService.showError("Comment is required");
     }
     return this.performanceManagementService
-      .revokeAndDisagree(+this.objectiveId)
+      .revokeAndDisagree(payload)
       .subscribe(
         (res) => {
           // // this.loadingService.hide();

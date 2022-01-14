@@ -95,6 +95,12 @@
     <p-tabPanel header="Self Assessment">
       <div class="df fd-column">
         <div class="ml-auto df center-align">
+          <button
+            class="btn btn-primary text-capitalize"
+            (click)="openPortal()"
+          >
+            copy objectives to new period
+          </button>
           <div class="mr-1">
             <select
               class="appraisal-select"
@@ -116,14 +122,18 @@
             data-target="#add_appraisal_objectives"
             ><span class="hint-text">Add</span><i class="fa fa-plus"></i>
           </a>
-          <a class="btn delete-btn hint"
+          <a class="btn delete-btn hint" (click)="deleteObjective()"
             ><span class="hint-text">Delete</span><i class="fa fa-trash"></i
           ></a>
         </div>
         <div class="dg gtc3">
           <div class="g-card p10" *ngFor="let item of employeeAppraisalCycle">
             <div class="g-card-top df sb mb10">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                [checked]="selectedId.includes(item.id)"
+                (change)="addItemId($event, item.id)"
+              />
               <div class="dropdown">
                 <i
                   class="fa fa-ellipsis-v ellipsis-dropdown"
@@ -142,7 +152,7 @@
                   >
                   <a
                     class="dropdown-item p10 dropdown__link"
-                    (click)="viewFeedback(item)"
+                    (click)="getAppraisalStatus(item)"
                     >Feedback</a
                   >
                   <a
@@ -155,9 +165,9 @@
                     (click)="viewSchedule()"
                     >View Coaching Schedule</a
                   >
-                  <a class="dropdown-item p10 dropdown__link" href="#"
+                  <!--<a class="dropdown-item p10 dropdown__link" href="#"
                     >End Cycle</a
-                  >
+                  >-->
                 </div>
               </div>
               <!--            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>-->
@@ -173,7 +183,7 @@
               </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">reviewer 1</div>
-                <div class="g-card-title">etim essang</div>
+                <div class="g-card-title">{{ item.firstReviewerName }}</div>
               </div>
             </div>
             <div class="g-card-mid df sb">
@@ -187,7 +197,7 @@
               </div>
               <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">reviewer 2</div>
-                <div class="g-card-title">samuel yekini</div>
+                <div class="g-card-title">{{ item.secondReviewerName }}</div>
               </div>
             </div>
             <div class="g-card-mid df sb">
@@ -210,8 +220,12 @@
             </div>
             <div class="g-card-mid df flex-end">
               <div class="card-mid-item pt10 pb10">
+                <div class="g-card-label">feedback status</div>
+                <div class="g-card-title"></div>
+              </div>
+              <div class="card-mid-item pt10 pb10">
                 <div class="g-card-label">review period(end)</div>
-                <div class="g-card-title">{{ item.endDate | date }}</div>
+                <div class="g-card-title">{{ item.endDate }}</div>
               </div>
             </div>
           </div>
@@ -363,6 +377,101 @@
             >
               <span>Save</span>
             </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="copy_modal" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Copy Objectives</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closePortal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row" style="padding: 15px">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="source">Source</label>
+                <select
+                  name="reviewYear"
+                  id="source"
+                  class="form-control"
+                  [(ngModel)]="appraisalcycleId"
+                >
+                  <option value="" disabled>--Select--</option>
+                  <option
+                    *ngFor="let row of periods$ | async"
+                    [value]="row.appraisalCycleId"
+                  >
+                    {{ row.period }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <!--  <div class="col-md-12">
+              <div class="form-group">
+                <label for="source">Target</label>
+                <select
+                  name="period"
+                  id="target"
+                  class="form-control"
+                  [(ngModel)]="period"
+                >
+                  <option value="" disabled>&#45;&#45;Select&#45;&#45;</option>
+                  <option
+                    *ngFor="let row of openPeriod"
+                    value="{{ row.period }}"
+                  >
+                    {{ row.period }}
+                  </option>
+                </select>
+              </div>
+            </div>-->
+            <div
+              style="margin-top: 20px; display: flex; justify-content: center"
+            >
+              <button
+                style="
+                  background: #f88f09;
+                  color: #fff;
+                  border: 1px solid #f88f09;
+                  height: 40px;
+                  padding: 10px;
+                  width: 120px;
+                  margin-right: 10px;
+                  border-radius: 4px;
+                "
+                (click)="copyObjectives()"
+              >
+                Copy
+              </button>
+              <button
+                style="
+                  background: tomato;
+                  color: #fff;
+                  border: 1px solid tomato;
+                  height: 40px;
+                  padding: 10px;
+                  width: 120px;
+                  border-radius: 4px;
+                "
+                (click)="closePortal()"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </form>
       </div>

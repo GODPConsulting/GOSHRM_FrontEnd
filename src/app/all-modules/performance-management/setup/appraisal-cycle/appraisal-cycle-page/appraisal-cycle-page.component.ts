@@ -7,7 +7,10 @@ import { Location } from "@angular/common";
 import swal from "sweetalert2";
 import { LoadingService } from "../../../../../services/loading.service";
 import { CommonService } from "../../../../../services/common.service";
-import { IAppraisalCycle } from "../../../../../interface/interfaces";
+import {
+  CopyObjectivesPayload,
+  IAppraisalCycle,
+} from "../../../../../interface/interfaces";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { JwtService } from "../../../../../services/jwt.service";
@@ -52,6 +55,7 @@ export class AppraisalCyclePageComponent implements OnInit {
   offices$: Observable<any>;
   appraisalCycleUploadForm: any;
   dateObj: any;
+  companyId: number;
   constructor(
     private formBuilder: FormBuilder,
     private performanceManagementService: PerformanceManagementService,
@@ -79,6 +83,7 @@ export class AppraisalCyclePageComponent implements OnInit {
     this.createYears(2000, 2050);
     this.jwtService.getHrmUserDetails().then((user) => {
       this.offices$ = this.commonService.getCompanies(user.staffId);
+      this.companyId = user.companyId;
     });
     // this.getStaffDepartments();
     this.initialiseForm();
@@ -251,12 +256,15 @@ export class AppraisalCyclePageComponent implements OnInit {
   }
 
   copyObjectives() {
-    this.performanceManagementService.copyObjectives().subscribe(
+    const payload: CopyObjectivesPayload = {
+      comapanyId: this.companyId,
+    };
+    this.performanceManagementService.copyObjectives(payload).subscribe(
       (res) => {
         if (res.status.isSuccessful) {
-          return this.utilitiesService.showMessage(res, "success");
+          return this.utilitiesService.showMessage(res.result, "success");
         } else {
-          return this.utilitiesService.showMessage(res, "error");
+          return this.utilitiesService.showMessage(res.result, "error");
         }
       },
       (err) => {

@@ -20,6 +20,7 @@ export class AppraisalsComponent implements OnInit {
   appraisals$: Observable<any>;
   cols: ISearchColumn[];
   file: File;
+  selectedItems: any[] = [];
   constructor(
     private route: ActivatedRoute,
     private performanceService: PerformanceManagementService,
@@ -129,7 +130,35 @@ export class AppraisalsComponent implements OnInit {
     );
   }
 
-  delete() {}
+  delete() {
+    if (this.selectedItems.length === 0) {
+      return this.utilitiesService.showError("Select item(s) to delete");
+    }
+    this.utilitiesService.confirmDelete().then((response) => {
+      if (response.isConfirmed) {
+        const ids = this.selectedItems.map((item) => item.empId);
+        this.performanceService.deleteEmployeeAppraisal(ids).subscribe(
+          (res) => {
+            if (res.status.isSuccessful) {
+              return this.utilitiesService
+                .showMessage(res, "success")
+                .then(() => {
+                  this.appraisals$ =
+                    this.performanceService.getAppraisalsByCycleId(
+                      this.appraisalCycleId
+                    );
+                });
+            } else {
+              return this.utilitiesService.showMessage(res, "error");
+            }
+          },
+          (err) => {
+            return this.utilitiesService.showMessage(err, "error");
+          }
+        );
+      }
+    });
+  }
 
   checkAll($event: Event) {}
 
@@ -143,6 +172,9 @@ export class AppraisalsComponent implements OnInit {
       queryParams: {
         emp: row.empId,
         appraisalCycleId: row.appraisalCycleId,
+        deptId: row.companyId,
+        employeePerformId: row.employeePerformId,
+        jobGrade: row.jobGrade,
       },
     });
   }
@@ -166,4 +198,6 @@ export class AppraisalsComponent implements OnInit {
   }
 
   uploadAppraisalSummary() {}
+
+  reOpenObjective() {}
 }

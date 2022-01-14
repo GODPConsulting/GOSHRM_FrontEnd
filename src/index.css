@@ -270,7 +270,7 @@
   overflow-x: hidden;
   height: 100vh;
   background: #e5e5e5;
-  padding: 2rem;
+  padding: 1rem;
   padding-bottom: 10rem;
 }
 
@@ -321,6 +321,7 @@
 
 .gos-icon-span {
   margin-bottom: 2.5rem;
+  cursor: pointer;
 }
 
 .gos-user-wrapper {
@@ -506,7 +507,7 @@ ul.gos-breadcrumb li a:hover {
   margin-top: 1rem;
 }
 .mr3 {
-  margin-right: .3rem;
+  margin-right: 0.3rem;
 }
 
 .mr10 {
@@ -522,7 +523,7 @@ ul.gos-breadcrumb li a:hover {
 }
 
 .mb5 {
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 .mb10 {
@@ -635,10 +636,10 @@ ul .tab-item:active a {
   text-align: left;
 }
 .text-center {
-  text-align: center
+  text-align: center;
 }
 .p5 {
-  padding: .5rem !important;
+  padding: 0.5rem !important;
 }
 .pl0 {
   padding-left: 0 !important;
@@ -755,7 +756,6 @@ ul .tab-item:active a {
   flex-basis: 20%;
 }
 
-
 /* .img-container:after {
   position: relative;
   content: "";
@@ -783,6 +783,9 @@ ul .tab-item:active a {
 }
 
 @media screen and (max-width: 600px) {
+  .layout__wrapper {
+    grid-template-columns: 10rem 1fr 2rem;
+  }
   .login-wrapper {
     flex-direction: column;
   }
@@ -954,7 +957,7 @@ ul .tab-item:active a {
 }
 .g-table-row {
   text-transform: capitalize;
-  padding: .5rem;
+  padding: 0.5rem;
   text-align: left;
   /* border-right: 1px solid #eee; */
 }
@@ -970,7 +973,6 @@ ul .tab-item:active a {
   border: 1px solid var(--color-primary);
   border-radius: 50px;
   /*padding: 1rem;*/
-
 }
 
 .img-wrapper img {
@@ -990,7 +992,7 @@ ul .tab-item:active a {
   text-transform: capitalize;
   color: var(--color-grey-light);
   font-size: 1.2rem;
-  margin-left: .5rem;
+  margin-left: 0.5rem;
 }
 
 .emp-comp {
@@ -998,8 +1000,6 @@ ul .tab-item:active a {
   color: var(--color-grey-light);
   font-size: 1.4rem;
 }
-
-
 
 /* project management starts */
 
@@ -1020,7 +1020,7 @@ ul .tab-item:active a {
   flex-direction: column;
   justify-content: center;
   font-size: 1.4rem;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
 }
 
 .dash-card:hover {
@@ -1033,7 +1033,7 @@ ul .tab-item:active a {
 
 .emp-dash-card {
   background-color: var(--color-light-secondary);
-  border-radius: .4rem;
+  border-radius: 0.4rem;
 }
 .perf-wrapper {
   height: 30rem;
@@ -1058,11 +1058,11 @@ ul .tab-item:active a {
 
 .reward-btn {
   width: 7rem;
-  padding: .5rem;
+  padding: 0.5rem;
   background-color: var(--color-primary);
   color: var(--color-light);
   border: 1px solid var(--color-primary);
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   text-transform: capitalize;
 }
 
@@ -1083,7 +1083,7 @@ ul .tab-item:active a {
 
 /*special styles*/
 .p-tabview .p-tabview-panels {
-  background: none!important;
+  background: none !important;
 }
 .p-tabview .p-tabview-nav {
   background: none !important;
@@ -1099,15 +1099,22 @@ ul .tab-item:active a {
   color: var(--color-primary);
   /*border-bottom: 1px solid var(--color-primary);*/
 }
-.p-tooltip>.p-tooltip-text {
-  font-size: 1.3rem!important;
+.p-tooltip > .p-tooltip-text {
+  font-size: 1.3rem !important;
 }
 /* dashboard ends */
-.see-more, .see-more:hover {
+.see-more,
+.see-more:hover {
   color: var(--color-primary);
   cursor: pointer;
 }
 
 .ellipsis-dropdown {
   cursor: pointer;
+}
+.btn-primary:focus {
+  color: var(--color-primary) !important;
+}
+.small_font {
+  font-size: 1.12rem;
 }
