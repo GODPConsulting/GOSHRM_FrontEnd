@@ -8,7 +8,7 @@
                     <span class="edit-pen px-3">Edit</span>
                 </div>
             </div>
-            <form action="">
+            <form [formGroup]="payoutForm">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form_group mb-4">
@@ -16,7 +16,7 @@
                             >Account Type
                             <span class="text-danger">● </span>
                           </label>
-                           <select name="" id="" class="form-control">
+                           <select name="" id="" class="form-control" formControlName="account_Type">
                                <option value=""></option>
                            </select>
                         </div>
@@ -32,8 +32,8 @@
                             <input
                               class="form-control pr-2"
                               type="email"
-                              formControlName="currentPassword"
-                              placeholder="Enter current password"
+                              formControlName="account_Email"
+                              placeholder="|"
                             />
                         </div>
                     </div>
@@ -46,8 +46,8 @@
                             <input
                               class="form-control pr-2"
                               type="text"
-                              formControlName="currentPassword"
-                              placeholder="Enter current password"
+                              formControlName="account_Name"
+                              placeholder="|"
                             />
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                     <span class="edit-pen px-3">Edit</span>
                 </div>
             </div>
-            <form action="">
+            <form [formGroup]="payoutForm">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form_group mb-4">
@@ -151,7 +151,7 @@
                             >Account Type
                             <span class="text-danger">● </span>
                           </label>
-                           <select name="" id="" class="form-control">
+                           <select name="" id="" class="form-control" formControlName="account_Type">
                                <option value=""></option>
                            </select>
                         </div>
@@ -167,8 +167,8 @@
                             <input
                               class="form-control pr-2"
                               type="email"
-                              formControlName="currentPassword"
-                              placeholder="Enter current password"
+                              formControlName="account_Name"
+                              placeholder="|"
                             />
                         </div>
                     </div>
@@ -181,8 +181,8 @@
                             <input
                               class="form-control pr-2"
                               type="text"
-                              formControlName="currentPassword"
-                              placeholder="Enter current password"
+                              formControlName="account_Name"
+                              placeholder="|"
                             />
                         </div>
                     </div>
@@ -197,8 +197,8 @@
                             <input
                               class="form-control pr-2"
                               type="email"
-                              formControlName="currentPassword"
-                              placeholder="Enter current password"
+                              formControlName="account_Number"
+                              placeholder="|"
                             />
                         </div>
                     </div>
@@ -294,12 +294,12 @@
     </div>
 </div>
 
-<!-- Edit Information Modal -->
+<!-- Edit payout Modal -->
 <div id="account-modal" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-left modal-lg">
       <div class="modal-content">
         <div class="modal-body">
-            <form action="">
+            <form [formGroup]="payoutForm">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form_group mb-4">
@@ -307,7 +307,7 @@
                             >Account Type
                             <span class="text-danger">● </span>
                           </label>
-                           <select name="" id="" class="form-control">
+                           <select name="" id="" class="form-control" formControlName="account_Type">
                                <option value=""></option>
                            </select>
                         </div>
@@ -323,8 +323,8 @@
                             <input
                               class="form-control pr-2"
                               type="email"
-                              formControlName="currentPassword"
-                              placeholder="Enter current password"
+                              formControlName="account_Email"
+                              placeholder="|"
                             />
                         </div>
                     </div>
@@ -337,8 +337,8 @@
                             <input
                               class="form-control pr-2"
                               type="text"
-                              formControlName="currentPassword"
-                              placeholder="Enter current password"
+                              formControlName="account_Name"
+                              placeholder="|"
                             />
                         </div>
                     </div>
@@ -348,12 +348,17 @@
                 <button class="btn btn-outline-orange btn-lg mr-3">
                   Delete
                 </button>
-                <button class="btn btn-orange btn-lg">
-                  Save
-                </button>
+                <button
+                class="btn btn-orange submit-btn"
+                type="submit"
+                (click)="updatePayoutSetup()"
+              >
+                <span>Save</span>
+                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
             </div>
         </div>
       </div>
     </div>
 </div>
-  <!-- Edit Information Modal -->
+  <!-- Edit payout Modal -->

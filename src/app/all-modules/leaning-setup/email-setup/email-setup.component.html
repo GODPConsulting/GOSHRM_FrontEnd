@@ -6,7 +6,7 @@
       </button>
     </div>
     <div class="bg-white p-5 my-4">
-        <form action="">
+        <form [FormGroup]="emailSetupForm">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form_group mb-4">
@@ -17,7 +17,7 @@
                       <input
                           class="form-control pr-2"
                           type="text"
-                          formControlName="currentPassword"
+                          formControlName="full_Name"
                           placeholder="Enter current password"
                         />
                     </div>
@@ -31,7 +31,7 @@
                       <input
                           class="form-control pr-2"
                           type="text"
-                          formControlName="currentPassword"
+                          formControlName="email_Address"
                           placeholder="Enter current password"
                         />
                     </div>
@@ -48,7 +48,7 @@
                         <input
                           class="form-control pr-2"
                           [type]="showCurrentPassword ? 'text' : 'password'"
-                          formControlName="currentPassword"
+                          formControlName="password"
                           placeholder="Enter current password"
                         />
                         <i
@@ -71,16 +71,21 @@
                         >Restrictions
                         <span class="text-danger">● </span>
                       </label>
-                      <select name="" id="" class="form-control restricton">
+                      <select name="" id="" class="form-control restricton" formControlName="emailRestrictionList">
                           <option value=""></option>
                       </select>
                     </div>
                 </div>
             </div>
             <div class="d-flex justify-content-end pt-4">
-                <button class="btn btn-orange btn-lg">
-                  Create
-                </button>
+              <button
+                class="btn btn-orange submit-btn"
+                type="submit"
+                (click)="updateEmailSetup()"
+              >
+                <span>Create</span>
+                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
             </div>
         </form>
     </div>

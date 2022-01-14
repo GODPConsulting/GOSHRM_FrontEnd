@@ -17,110 +17,11 @@
               <tbody>
                
                 <ng-container>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Apr 11, 2018</td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
+                  <tr *ngFor="let item of traineeProviderList">
+                    <td>{{ item?.upload_Date }}</td>
+                    <td>{{ item?.training_Provider }}</td>
+                    <td>{{ item?.course_Title }}</td>
+                    <td>{{ item?.no_Of_Views }}</td>
                     <td>
                       View
                     </td>

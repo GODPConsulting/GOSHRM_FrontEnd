@@ -18,14 +18,14 @@ import { LearningSetupComponent } from "./learning-setup.component";
 @NgModule({
   declarations: [
     LearningSetupComponent,
-    // CompanyInformationComponent,
-    // SecurityComponent,
-    // PayoutComponent,
-    // PolicyComponent,
-    // CoursesComponent,
-    // EmailSetupComponent,
-    // TrainingProviderComponent,
-    // PageSetupComponent
+    CompanyInformationComponent,
+    SecurityComponent,
+    PayoutComponent,
+    PolicyComponent,
+    CoursesComponent,
+    EmailSetupComponent,
+    TrainingProviderComponent,
+    PageSetupComponent
   ],
   imports: [
     // BrowserModule,
