@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { LmsService } from "src/app/services/lms.service";
+import { LoadingService } from "src/app/services/loading.service";
 declare const $: any;
 
 @Component({
@@ -44,7 +45,8 @@ export class CompanyInformationComponent implements OnInit {
     
   constructor(
     private fb: FormBuilder,
-    private _lmsService: LmsService
+    private _lmsService: LmsService,
+    private _loading: LoadingService
   ) {
   }
 
@@ -86,10 +88,12 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   getCompanyInfo() {
+    this._loading.show();
     this.sub.add(
       this._lmsService.getCompanyProfile(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
+          this._loading.hide();
           this.companyInfo = res;
           console.log(res);
         },
