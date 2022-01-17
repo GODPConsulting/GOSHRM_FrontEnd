@@ -1,0 +1,364 @@
+<div class="payout_wrapper">
+    <h3 class="pt-3">Payout</h3>
+    <div class="password_wrapper my-4">
+        <div class="p-4 bg-white">
+            <div class="d-flex justify-content-end">
+                <div class="click" (click)="openAccountModal()">
+                    <img src="assets/img/edit-pen.svg" alt="">
+                    <span class="edit-pen px-3">Edit</span>
+                </div>
+            </div>
+            <form [formGroup]="payoutForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Type
+                            <span class="text-danger">● </span>
+                          </label>
+                           <select name="" id="" class="form-control" formControlName="account_Type">
+                               <option value=""></option>
+                           </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Paypay Email Address
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="email"
+                              formControlName="account_Email"
+                              placeholder="|"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Paypal Name
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              formControlName="account_Name"
+                              placeholder="|"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="password_wrapper my-4">
+        <div class="p-4 bg-white">
+            <div class="d-flex justify-content-end">
+                <div class="click">
+                    <img src="assets/img/edit-pen.svg" alt="">
+                    <span class="edit-pen px-3">Edit</span>
+                </div>
+            </div>
+            <form action="">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Type
+                            <span class="text-danger">● </span>
+                          </label>
+                           <select name="" id="" class="form-control">
+                               <option value=""></option>
+                           </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Bank Name
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="email"
+                              formControlName="currentPassword"
+                              placeholder="Enter current password"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Name
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              formControlName="currentPassword"
+                              placeholder="Enter current password"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Number
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="email"
+                              formControlName="currentPassword"
+                              placeholder="Enter current password"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-end pt-4">
+                            <button class="btn btn-orange btn-lg">
+                              Set as Default
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="password_wrapper my-4">
+        <div class="p-4 bg-white">
+            <div class="d-flex justify-content-end">
+                <div class="click">
+                    <img src="assets/img/edit-pen.svg" alt="">
+                    <span class="edit-pen px-3">Edit</span>
+                </div>
+            </div>
+            <form [formGroup]="payoutForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Type
+                            <span class="text-danger">● </span>
+                          </label>
+                           <select name="" id="" class="form-control" formControlName="account_Type">
+                               <option value=""></option>
+                           </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Bank Name
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="email"
+                              formControlName="account_Name"
+                              placeholder="|"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Name
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              formControlName="account_Name"
+                              placeholder="|"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Number
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="email"
+                              formControlName="account_Number"
+                              placeholder="|"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-end pt-4">
+                            <button class="btn btn-orange btn-lg">
+                              Set as Default
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="password_wrapper my-4">
+        <div class="p-4 bg-white">
+            <div class="d-flex justify-content-end">
+                <div class="click">
+                    <img src="assets/img/edit-pen.svg" alt="">
+                    <span class="edit-pen px-3">Edit</span>
+                </div>
+            </div>
+            <form action="">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Type
+                            <span class="text-danger">● </span>
+                          </label>
+                           <select name="" id="" class="form-control">
+                               <option value=""></option>
+                           </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Bank Name
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="email"
+                              formControlName="currentPassword"
+                              placeholder="Enter current password"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Name
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              formControlName="currentPassword"
+                              placeholder="Enter current password"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Number
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="email"
+                              formControlName="currentPassword"
+                              placeholder="Enter current password"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-end pt-4">
+                            <button class="btn btn-default btn-lg">
+                              Set as Default
+                            </button>
+                      </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit payout Modal -->
+<div id="account-modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-left modal-lg">
+      <div class="modal-content">
+        <div class="modal-body">
+            <form [formGroup]="payoutForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Type
+                            <span class="text-danger">● </span>
+                          </label>
+                           <select name="" id="" class="form-control" formControlName="account_Type">
+                               <option value=""></option>
+                           </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Paypay Email Address
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="email"
+                              formControlName="account_Email"
+                              placeholder="|"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Paypal Name
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              formControlName="account_Name"
+                              placeholder="|"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="d-flex justify-content-end pt-4">
+                <button class="btn btn-outline-orange btn-lg mr-3">
+                  Delete
+                </button>
+                <button
+                class="btn btn-orange submit-btn"
+                type="submit"
+                (click)="updatePayoutSetup()"
+              >
+                <span>Save</span>
+                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+  <!-- Edit payout Modal -->

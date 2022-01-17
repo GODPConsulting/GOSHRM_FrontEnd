@@ -1,0 +1,35 @@
+<div class="courses_wrapper">
+    <h3>Running Courses</h3>
+    <div class="bg-white p-5 my-4">
+        <section class="table-responsive">
+            <table class="table caption-top text-nowrap">
+              <ng-container>
+                <thead>
+                  <tr>
+                    <th>Upload Date</th>
+                    <th>Training Provider</th>
+                    <th>Course Title</th>
+                    <th>No. of Views</th>
+                    <th>Ratings</th>
+                  </tr>
+                </thead>
+              </ng-container>
+              <tbody>
+               
+                <ng-container>
+                  <tr *ngFor="let item of traineeProviderList">
+                    <td>{{ item?.upload_Date }}</td>
+                    <td>{{ item?.training_Provider }}</td>
+                    <td>{{ item?.course_Title }}</td>
+                    <td>{{ item?.no_Of_Views }}</td>
+                    <td>
+                      View
+                    </td>
+                  </tr>
+                  
+                </ng-container>
+              </tbody>
+            </table>
+          </section>
+    </div>
+</div>

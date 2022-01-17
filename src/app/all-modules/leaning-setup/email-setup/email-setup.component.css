@@ -1,0 +1,28 @@
+.email-setup_wrapper {
+    padding: 3rem 5rem;
+}
+
+h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.fa {
+    position: absolute;
+    font-size: 1.5rem;
+    top: 1.8rem;
+    right: 1.5rem;
+    color: #333;
+}
+
+.btn {
+    padding: 10px 25px;
+}
+
+.btn-orange {
+    background: #F88F09;
+    border: .1rem solid #F88F09;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 1.5rem;
+}

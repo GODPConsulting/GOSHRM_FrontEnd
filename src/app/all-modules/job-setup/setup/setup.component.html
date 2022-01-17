@@ -1,0 +1,779 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">Job Setup</h3>
+      </div>
+      <div class="col-auto float-right ml-auto d-inline-block">
+        <app-searchbar class="d-inline-block px-3"></app-searchbar>
+        <a class="btn download-btn hint" (click)="downloadFile()"
+          ><span class="hint-text">Download</span><img src="assets/img/download.svg">
+        </a>
+        <a class="btn upload-btn hint" (click)="openUploadModal()"
+          ><span class="hint-text">Upload</span><img src="assets/img/upload.svg">
+        </a>
+        <a class="btn upload-btn hint" data-toggle="modal" (click)="delete()"
+          ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
+        </a>
+        <a class="btn upload-btn hint" (click)="openModal(false)"
+          ><span class="hint-text">Add</span><img src="assets/img/add.svg">
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+
+  <!--Page tabs-->
+  <div class="">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link active"
+          id="pills-jobCategory-tab"
+          data-toggle="pill"
+          href="#pills-jobCategory"
+          role="tab"
+          aria-controls="pills-jobCategory-tab"
+          aria-selected="true"
+          (click)="getCurrentTab('Job Category')"
+          >Job Category</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="pills-jobType-tab"
+          data-toggle="pill"
+          href="#pills-jobType"
+          role="tab"
+          aria-controls="pills-jobType-tab"
+          aria-selected="false"
+          (click)="getCurrentTab('Job Type')"
+          >Job Type
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="pills-specialization-tab"
+          data-toggle="pill"
+          href="#pills-specialization"
+          role="tab"
+          aria-controls="pills-specialization-tab"
+          aria-selected="false"
+          (click)="getCurrentTab('Specialization')"
+          >Specialization</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="pills-location-tab"
+          data-toggle="pill"
+          href="#pills-location"
+          role="tab"
+          aria-controls="pills-location-tab"
+          aria-selected="false"
+          (click)="getCurrentTab('Location')"
+          >Location</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="pills-industry-tab"
+          data-toggle="pill"
+          href="#pills-industry"
+          role="tab"
+          aria-controls="pills-industry-tab"
+          aria-selected="false"
+          (click)="getCurrentTab('Industry')"
+          >Industry</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link px-3"
+          id="pills-experience-tab"
+          data-toggle="pill"
+          href="#pills-experience"
+          role="tab"
+          aria-controls="pills-experience-tab"
+          aria-selected="false"
+          (click)="getCurrentTab('Experience Level')"
+          >Experience Level</a
+        >
+      </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+      <div
+        class="tab-pane fade show active"
+        id="pills-jobCategory"
+        role="tabpanel"
+        aria-labelledby="pills-jobCategory"
+      >
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="dashboard table-responsive p-3">
+              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th>
+                      <input type="checkbox"> Cateory
+                    </th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let asset of [1,2,3,4]">
+                    <th scope="row">
+                      <input type="checkbox">
+                      <span> Design, Art and Multimedia</span>
+                    </th>
+                    <td class="d-flex justufy-content-between">E
+                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="tab-pane fade"
+        id="pills-jobType"
+        role="tabpanel"
+        aria-labelledby="pills-jobType"
+      >
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="dashboard table-responsive p-3">
+              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th> <input type="checkbox"> Job Type</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let asset of [1,2,3,4]">
+                    <th scope="row">
+                      <input type="checkbox">
+                      <span> Design, Art and Multimedia</span>
+                    </th>
+                    <td class="d-flex justufy-content-between">E
+                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="tab-pane fade"
+        id="pills-specialization"
+        role="tabpanel"
+        aria-labelledby="pills-specialization"
+      >
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="dashboard table-responsive p-3">
+              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th> <input type="checkbox"> Specialization</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let asset of [1,2,3,4]">
+                    <th scope="row">
+                      <input type="checkbox">
+                      <span> Aviation/Airline</span>
+                    </th>
+                    <td class="d-flex justufy-content-between">E
+                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="tab-pane fade"
+        id="pills-location"
+        role="tabpanel"
+        aria-labelledby="pills-location"
+      >
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="dashboard table-responsive p-3">
+              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th> <input type="checkbox"> States</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let asset of [1,2,3,4]">
+                    <th scope="row">
+                      <input type="checkbox">
+                      <span> Lagos</span>
+                    </th>
+                    <td class="d-flex justufy-content-between">E
+                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="tab-pane fade"
+        id="pills-industry"
+        role="tabpanel"
+        aria-labelledby="pills-industry"
+      >
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="dashboard table-responsive p-3">
+              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th> <input type="checkbox"> Industry</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let asset of [1,2,3,4]">
+                    <th scope="row">
+                      <input type="checkbox">
+                      <span> Engineering</span>
+                    </th>
+                    <td class="d-flex justufy-content-between">E
+                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="tab-pane fade"
+        id="pills-experience"
+        role="tabpanel"
+        aria-labelledby="pills-experience"
+      >
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="dashboard table-responsive p-3">
+              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th> <input type="checkbox"> Level</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let asset of [1,2,3,4]">
+                    <th scope="row">
+                      <input type="checkbox">
+                      <span> Design, Art and Multimedia</span>
+                    </th>
+                    <td class="d-flex justufy-content-between">E
+                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- Add Modal -->
+<div id="add_job_grade" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-left modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ modalData.isEditing ? 'Edit ' +  current_tab : 'Add ' +  current_tab }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="current_tab == 'Job Category'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label class="col-form-label"
+                  >Category <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                  formControlName="job_grade"
+                />
+                <div
+                  *ngIf="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      jobGradeForm.get('job_grade').invalid &&
+                      jobGradeForm.get('job_grade').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label class="col-form-label">Description </label>
+                <textarea
+                  rows="5"
+                  class="form-control"
+                  formControlName="description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button
+              class="btn btn-primary submit-btn cancel-btn"
+              type="submit"
+              (click)="closeModal()"
+            >
+              <span>Back</span>
+            </button>
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+
+        <form *ngIf="current_tab == 'Job Type'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label class="col-form-label"
+                  >Job Type <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                  formControlName="job_grade"
+                />
+                <div
+                  *ngIf="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      jobGradeForm.get('job_grade').invalid &&
+                      jobGradeForm.get('job_grade').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label class="col-form-label">Description </label>
+                <textarea
+                  rows="5"
+                  class="form-control"
+                  formControlName="description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button
+              class="btn btn-primary submit-btn cancel-btn"
+              type="submit"
+              (click)="closeModal()"
+            >
+              <span>Back</span>
+            </button>
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+
+        <form *ngIf="current_tab == 'Specialization'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label class="col-form-label"
+                  >Specialization <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                  formControlName="job_grade"
+                />
+                <div
+                  *ngIf="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      jobGradeForm.get('job_grade').invalid &&
+                      jobGradeForm.get('job_grade').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label class="col-form-label">Description </label>
+                <textarea
+                  rows="5"
+                  class="form-control"
+                  formControlName="description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button
+              class="btn btn-primary submit-btn cancel-btn"
+              type="submit"
+              (click)="closeModal()"
+            >
+              <span>Back</span>
+            </button>
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+
+        <form *ngIf="current_tab == 'Location'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label class="col-form-label"
+                  >Location <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                  formControlName="job_grade"
+                />
+                <div
+                  *ngIf="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      jobGradeForm.get('job_grade').invalid &&
+                      jobGradeForm.get('job_grade').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label class="col-form-label">Description </label>
+                <textarea
+                  rows="5"
+                  class="form-control"
+                  formControlName="description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button
+              class="btn btn-primary submit-btn cancel-btn"
+              type="submit"
+              (click)="closeModal()"
+            >
+              <span>Back</span>
+            </button>
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+
+        <form *ngIf="current_tab == 'Industry'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label class="col-form-label"
+                  >Industry <span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                  formControlName="job_grade"
+                />
+                <div
+                  *ngIf="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      jobGradeForm.get('job_grade').invalid &&
+                      jobGradeForm.get('job_grade').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label class="col-form-label">Description </label>
+                <textarea
+                  rows="5"
+                  class="form-control"
+                  formControlName="description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button
+              class="btn btn-primary submit-btn cancel-btn"
+              type="submit"
+              (click)="closeModal()"
+            >
+              <span>Back</span>
+            </button>
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+
+        <form *ngIf="current_tab == 'Experience Level'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label class="col-form-label"
+                  >Experience  Level<span class="text-danger">*</span></label
+                >
+                <input
+                  class="form-control"
+                  type="text"
+                  [class.invalid]="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                  formControlName="job_grade"
+                />
+                <div
+                  *ngIf="
+                    jobGradeForm.get('job_grade').invalid &&
+                    jobGradeForm.get('job_grade').touched
+                  "
+                >
+                  <small
+                    *ngIf="
+                      jobGradeForm.get('job_grade').invalid &&
+                      jobGradeForm.get('job_grade').touched
+                    "
+                    class="text-danger"
+                  >
+                    *Field is required</small
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label class="col-form-label">Description </label>
+                <textarea
+                  rows="5"
+                  class="form-control"
+                  formControlName="description"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button
+              class="btn btn-primary submit-btn cancel-btn"
+              type="submit"
+              (click)="closeModal()"
+            >
+              <span>Back</span>
+            </button>
+            <button
+              class="btn btn-primary submit-btn"
+              type="submit"
+              [disabled]="spinner"
+            >
+              <span *ngIf="!spinner">Submit</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Add Modal -->
+
+<!-- Delete Modal -->
+<div id="delete_item" class="modal custom-modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content">
+      <!-- <div class="modal-header">
+        <h5 class="modal-title">{{ 'Delete ' +  current_tab }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="closeDeleteModal()"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+      <div class="modal-body">
+        <form (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+          <div class="alert alert-danger" role="alert">
+            <img src="assets/img/Error.svg" alt="">
+            <span class="px-3">Warning: You are about to delete a section of this course outline!</span>
+          </div>
+        </form>
+        <div class="d-flex justify-content-center">
+          <button
+            class="btn btn-primary submit-btn confirm-btn"
+            type="submit"
+            [disabled]="spinner"
+          >
+            <span *ngIf="!spinner">Confirm</span>
+            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+          </button>
+          <button
+            class="btn btn-primary submit-btn"
+            type="submit"
+            (click)="closeDeleteModal()"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Delete Modal -->
+

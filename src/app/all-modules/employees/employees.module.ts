@@ -48,7 +48,7 @@ import {NgbRatingModule} from '@ng-bootstrap/ng-bootstrap';
     DependentContactComponent,
     CareerComponent,
     HospitalComponent,
-    EmployeeGymComponent,
+    EmployeeGymComponent
   ],
   imports: [
     CommonModule,

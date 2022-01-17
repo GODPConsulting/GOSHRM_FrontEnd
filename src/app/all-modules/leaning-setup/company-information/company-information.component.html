@@ -1,0 +1,480 @@
+<section class="profile__wrapper">
+    <div class="profile_title">
+      <h2>Personal Details</h2>
+    </div>
+    <div class="profile__card">
+      <div class="">
+        <div class="d-flex">
+          <div class="profile_img">
+            <img class="profile__pix" src="assets/img/profile-img.svg" alt="profile image">
+          </div>
+          <div class="profile_detail d-flex">
+            <div class="upload-btn">
+              <button
+                class=" btn btn-orange btn-lg"
+              >
+                Upload Photo
+              </button>
+              <input
+                  type="file"
+                  name="file-1"
+                  id="file-1"
+                  accept="image/png,image/jpeg,image/jpg"
+              />
+            </div>
+            <div>
+                <button
+                class=" btn btn-danger btn-lg"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="company-information">
+        <hr>
+        <div class="py-3">
+            <div class="d-flex justify-content-between">
+                <h3>Company Information</h3>
+                <div class="click" (click)="openCompanyInfoModal()">
+                    <img src="assets/img/edit-pen.svg" alt="">
+                    <span class="edit-pen px-3">Edit</span>
+                </div>
+            </div>
+            <form class="pt-4">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form_group mb-5">
+                      <label for="firstName" class="form-label"
+                        >Company Name
+                      </label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        class="form-control"
+                        placeholder="!"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form_group mb-5">
+                      <label for="middleName" class="form-label"
+                        >Phone Number
+                      </label>
+                      <input
+                        type="text"
+                        id="middleName"
+                        class="form-control"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form_group mb-5">
+                      <label for="firstName" class="form-label"
+                        >Email Address
+                      </label>
+                      <input
+                        type="email"
+                        id="firstName"
+                        class="form-control"
+                        placeholder="Enter First Name"
+                        formControlName="firstName"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form_group mb-5">
+                      <label for="firstName" class="form-label"
+                        >Physical Address
+                      </label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        class="form-control"
+                        placeholder="Enter First Name"
+                        formControlName="firstName"
+                      />
+                    </div>
+                  </div>
+                </div>
+            </form>
+        </div>
+
+        <hr>
+        <div class="py-3">
+            <div class="d-flex justify-content-between">
+                <h3>Social Media Accounts</h3>
+                <div class="click" (click)="openSocialMediaModal()">
+                    <img src="assets/img/edit-pen.svg" alt="">
+                    <span class="edit-pen px-3">Edit</span>
+                </div>
+            </div>
+            <div class="d-flex py-3">
+                <img class="click pr-4" src="assets/img/linkedIn-icon.svg" alt="">
+                <img class="click pr-4" src="assets/img/facebook-icon.svg" alt="">
+                <img class="click pr-4" src="assets/img/twitter-icon.svg" alt="">
+                <img class="click pr-4" src="assets/img/youtube-icon.svg" alt="">
+            </div>
+        </div>
+
+        <hr>
+        <div class="py-3">
+            <div class="d-flex justify-content-between">
+                <h3>Websites</h3>
+                <div class="click" (click)="openWebsiteModal()">
+                    <img src="assets/img/edit-pen.svg" alt="">
+                    <span class="edit-pen px-3">Edit</span>
+                </div>
+            </div>
+            <div class="py-3">
+               <ul>
+                    <li>Cowrywise</li>
+                    <li>Cowrywise</li>
+                    <li>Cowrywise</li>
+               </ul>
+            </div>
+        </div>
+
+        <hr>
+        <div class="py-3">
+            <div class="d-flex justify-content-between pb-3">
+                <h3>No. of Trainin Providers - 36 Trainers</h3>
+                <div>
+                    <span class="edit-pen click px-3">View All</span>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between">
+               <div>
+                   <p>Foundations  of User Experience (UX) Design</p>
+               </div>
+            </div>
+            <div class="d-flex justify-content-between">
+               <div>
+                   <p>Foundations  of User Experience (UX) Design</p>
+               </div>
+            </div>
+            <div class="d-flex justify-content-between">
+               <div>
+                   <p>Foundations  of User Experience (UX) Design</p>
+               </div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="py-3">
+            <div class="d-flex justify-content-between pb-3">
+                <h3>Payout</h3>
+                <div class="click" routerLink="/lms/payout">
+                    <img src="assets/img/edit-pen.svg" alt="">
+                    <span class="edit-pen px-3">Edit</span>
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="pr-4 border-right">
+                    <p class="text-grey">Paypal Email: <span class="font-bold">I.Sample673@paypal.com</span></p>
+                    <p class="text-grey">Paypal Name: <span class="font-bold">Innocent Sample</span></p>
+                </div>
+                <div class="pl-4">
+                    <p class="text-grey">Bank Name: <span class="font-bold">First Bank of Nigeria</span></p>
+                    <p class="text-grey">Account Name: <span class="font-bold">Innocent Sample</span></p>
+                    <p class="text-grey">Account Number: <span class="font-bold">3076542719</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Edit Information Modal -->
+<div id="edit-company-info" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-left modal-lg">
+      <div class="modal-content">
+        <div class="modal-body">
+          <form [formGroup]="companyForm">
+            <div class="py-4">
+                <h3>Company information</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Full Name</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName="full_Name"
+                        />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Phone Number</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName="phone_Number"
+                        />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Email Address</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName="email_Address"
+                        />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Physical Address</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName="physical_Address"
+                        />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <h3>Other Information</h3>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >About</label
+                        >
+                        <textarea
+                            class="form-control"
+                            placeholder="Tell us about yourself and achievements"
+                            formControlName="aboutInfo"
+                        ></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                            >Industry</label
+                            >
+                            <select name="" id="" class="form-control" formControlName="industryTypes">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-form-label"
+                                >Specialization</label
+                            >
+                            <select name="" id="" class="form-control" formControlName="specializationTypes">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end pt-4">
+              <button
+                class="btn btn-orange submit-btn"
+                type="submit"
+                (click)="updateCompanyInfo()"
+
+              >
+                <span>Save</span>
+                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+  <!-- Edit Information Modal -->
+
+  <!--Add social media link-->
+<div id="social-media" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-left modal-md">
+      <div class="modal-content">
+        <div class="modal-body">
+          <form [formGroup]="socialMediaForm">
+            <div class="py-4">
+                <h3>Social Media Accounts</h3>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >LinkedIn</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName="linkedInType"
+                        />
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Facebook</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName="facebookType"
+                        />
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Twitter</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName="twitterType"
+                        />
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Youtube</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName="youtubeType"
+                        />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end pt-4">
+              <button
+                class="btn btn-orange submit-btn"
+                type="submit"
+                (click)="updateSocialmediaUrls()"
+              >
+                <span>Done</span>
+                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+  <!--Add social media link-->
+
+  <!--Add website link-->
+  <div id="website" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-left modal-md">
+      <div class="modal-content">
+        <div class="modal-body">
+          <form [formGroup]="websiteForm">
+            <div class="py-4">
+                <h3>Websites</h3>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Website Name</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName=""
+                        />
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Website Link</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName="website_Link"
+                        />
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Website Name</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName=""
+                        />
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Website Link</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName="website_Link_2"
+                        />
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Website Name</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                        />
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                        <label class="col-form-label"
+                            >Website Link</label
+                        >
+                        <input
+                            class="form-control"
+                            type="text"
+                            formControlName="website_Link_3"
+                        />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end pt-4">
+              <button
+                class="btn btn-orange submit-btn"
+                type="submit"
+                (click)="updateWebsiteUrls()"
+              >
+                <span>Done</span>
+                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+  <!--Add social media link-->
