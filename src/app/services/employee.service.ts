@@ -65,8 +65,8 @@ export class EmployeeService {
   }
 
   getEmployee(id: number): Observable<any> {
-    return this.http.get(`http://107.180.93.38:5050/employee/hrm/get/single/staff/by_staffId?StaffId=${id}`)
-    //return this.apiService.get(`/employee/hrm/get/single/staff/by_staffId?StaffId=${id}`)
+    //return this.http.get(`http://107.180.93.38:5050/employee/hrm/get/single/staff/by_staffId?StaffId=${id}`)
+    return this.apiService.get(`/employee/hrm/get/single/staff/by_staffId?StaffId=${id}`)
       .pipe(
         tap(),
         map((res) => {
