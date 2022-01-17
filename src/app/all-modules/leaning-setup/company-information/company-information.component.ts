@@ -15,6 +15,7 @@ export class CompanyInformationComponent implements OnInit {
     sub: Subscription = new Subscription();
     spinner: boolean = false;
     isFetchingCompanyInfo: boolean = false;
+    profile: any;
     companyId: number;
     companyForm: FormGroup;
     socialMediaForm: FormGroup;
@@ -51,6 +52,8 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.profile = JSON.parse(localStorage.getItem('userDetails'));
+    this.companyId = this.profile.companyId;
     this.initCompanyInfoForm();
     this.initSocialMediaForm();
     this.getCompanyInfo();
@@ -107,7 +110,7 @@ export class CompanyInformationComponent implements OnInit {
 
   getSocialMediaLinks() {
     this.sub.add(
-      this._lmsService.getSocialMediaUrls().subscribe({
+      this._lmsService.getSocialMediaUrls(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
           this.socialMediaInfo = res;
@@ -123,7 +126,7 @@ export class CompanyInformationComponent implements OnInit {
 
   getwebsiteURLS() {
     this.sub.add(
-      this._lmsService.getWebsiteUrls().subscribe({
+      this._lmsService.getWebsiteUrls(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
           this.websiteUrls = res;
@@ -139,6 +142,7 @@ export class CompanyInformationComponent implements OnInit {
 
   openCompanyInfoModal() {
     $("#edit-company-info").modal("show");
+    this.initCompanyInfoForm();
   }
 
   closeCompanyInfoModal() {
@@ -147,6 +151,7 @@ export class CompanyInformationComponent implements OnInit {
 
   openSocialMediaModal() {
     $("#social-media").modal("show");
+    this.initSocialMediaForm();
   }
 
   closeSocialMediaModal() {
@@ -155,6 +160,7 @@ export class CompanyInformationComponent implements OnInit {
 
   openWebsiteModal() {
     $("#website").modal("show");
+    this.initWebsiteForm();
   }
 
   closeWebsiteModal() {
@@ -162,8 +168,10 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   updateCompanyInfo() {
+    const payload = this.companyForm.value;
+    payload.companyId = this.companyId;
     this.sub.add(
-      this._lmsService.updateCompanyProfile(this.companyForm.value).subscribe({
+      this._lmsService.updateCompanyProfile(payload).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
           this.socialMediaInfo = res;
@@ -178,8 +186,10 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   updateSocialmediaUrls() {
+    const payload = this.socialMediaForm.value;
+    payload.companyid = this.companyId
     this.sub.add(
-      this._lmsService.updateSocialMediaUrls(this.socialMediaForm.value).subscribe({
+      this._lmsService.updateSocialMediaUrls(payload).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
           this.socialMediaInfo = res;
@@ -194,8 +204,10 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   updateWebsiteUrls() {
+    const payload = this.websiteForm.value;
+    payload.companyId = this.companyId
     this.sub.add(
-      this._lmsService.updateWebsiteUrls(this.websiteForm.value).subscribe({
+      this._lmsService.updateWebsiteUrls(payload).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
           this.socialMediaInfo = res;

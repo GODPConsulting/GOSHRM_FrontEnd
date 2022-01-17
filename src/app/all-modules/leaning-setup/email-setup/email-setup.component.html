@@ -1,12 +1,12 @@
 <div class="email-setup_wrapper">
     <div class="d-flex justify-content-between">
       <h3>Email Setup</h3>
-      <button class="btn btn-orange btn-lg">
+      <!-- <button class="btn btn-orange btn-lg">
         Create Email
-      </button>
+      </button> -->
     </div>
     <div class="bg-white p-5 my-4">
-        <form [FormGroup]="emailSetupForm">
+        <form [formGroup]="emailSetupForm">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form_group mb-4">
@@ -18,8 +18,20 @@
                           class="form-control pr-2"
                           type="text"
                           formControlName="full_Name"
-                          placeholder="Enter current password"
+                          placeholder="Enter Company Name"
+                          [ngClass]="{
+                            'is-invalid':
+                              (emailSetupForm.get('full_Name')?.errors &&
+                              emailSetupForm.get('full_Name')?.touched) ||
+                              (emailSetupForm.get('full_Name')?.hasError('required') &&
+                              emailSetupFormSubmitted)
+                          }"
                         />
+                        <div
+                          class="invalid-feedback"
+                        >
+                          Required
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -32,8 +44,20 @@
                           class="form-control pr-2"
                           type="text"
                           formControlName="email_Address"
-                          placeholder="Enter current password"
-                        />
+                          placeholder="Enter email address"
+                          [ngClass]="{
+                            'is-invalid':
+                              (emailSetupForm.get('email_Address')?.errors &&
+                              emailSetupForm.get('email_Address')?.touched) ||
+                              (emailSetupForm.get('email_Address')?.hasError('required') &&
+                              emailSetupFormSubmitted)
+                          }"
+                      />
+                      <div
+                        class="invalid-feedback"
+                      >
+                        valid email address required
+                      </div>
                     </div>
                 </div>
             </div>
@@ -49,7 +73,14 @@
                           class="form-control pr-2"
                           [type]="showCurrentPassword ? 'text' : 'password'"
                           formControlName="password"
-                          placeholder="Enter current password"
+                          placeholder="Enter password"
+                          [ngClass]="{
+                            'is-invalid':
+                              (emailSetupForm.get('password')?.errors &&
+                              emailSetupForm.get('password')?.touched) ||
+                              (emailSetupForm.get('password')?.hasError('required') &&
+                              emailSetupFormSubmitted)
+                          }"
                         />
                         <i
                           class="fa fa-eye-slash click"
@@ -62,6 +93,11 @@
                             (click)="showCurrentPassword = !showCurrentPassword"
                           ></i>
                         </ng-template>
+                        <div
+                          class="invalid-feedback"
+                        >
+                          Required
+                        </div>
                       </div>
                     </div>
                 </div>
@@ -71,9 +107,26 @@
                         >Restrictions
                         <span class="text-danger">● </span>
                       </label>
-                      <select name="" id="" class="form-control restricton" formControlName="emailRestrictionList">
-                          <option value=""></option>
+                      <select 
+                        class="form-control restricton" 
+                        formControlName="emailRestrictionList"
+                        [ngClass]="{
+                          'is-invalid':
+                            (emailSetupForm.get('emailRestrictionList')?.errors &&
+                            emailSetupForm.get('emailRestrictionList')?.touched) ||
+                            (emailSetupForm.get('emailRestrictionList')?.hasError('required') &&
+                            emailSetupFormSubmitted)
+                        }"
+                      >
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
                       </select>
+                      <div
+                          class="invalid-feedback"
+                        >
+                          Required
+                        </div>
                     </div>
                 </div>
             </div>
@@ -81,6 +134,7 @@
               <button
                 class="btn btn-orange submit-btn"
                 type="submit"
+                [disabled]="!emailSetupForm.valid"
                 (click)="updateEmailSetup()"
               >
                 <span>Create</span>

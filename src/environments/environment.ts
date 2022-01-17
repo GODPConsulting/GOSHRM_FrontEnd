@@ -7,7 +7,7 @@ export const environment = {
   //api_url: "http://192.168.1.100:90",
   api_url: "http://107.180.93.38:5050",
   //api_url: "http://localhost:9022",
-  //api_url: "http://gossoftware.co.uk:5090",
+  // Api_url: "http://gossoftware.co.uk:5090",
   
 };
 

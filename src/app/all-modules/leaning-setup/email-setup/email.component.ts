@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { LmsService } from "src/app/services/lms.service";
+import swal from 'sweetalert2';
 declare const $: any;
 
 @Component({
@@ -15,10 +16,10 @@ export class EmailSetupComponent implements OnInit {
    public spinner: boolean = false;
    public showCurrentPassword: boolean = false;
    public isFetchingEmailSetup: boolean = false;
+   public emailSetupFormSubmitted: boolean = false;
    public emailSetupForm: FormGroup;
-   public emailId: number;
+   public companyId: number;
    public emailSetupInfo: any = {
-    "emailId": 0,
     "email_Address": "",
     "full_Name": "",
     "password": "",
@@ -32,28 +33,23 @@ export class EmailSetupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // $(function(){
-    //     var $select = $(".restricton");
-    //     for (let i=1;i<=100;i++){
-    //         $select.append($('<option></option>').val(i).html(i))
-    //     }
-    // });​
+    this.companyId = JSON.parse(localStorage.getItem('userDetails')).companyId;
     this.initEmailSetupForm();
     this.getEmailSetupInfo();
   }
 
   initEmailSetupForm() {
     this.emailSetupForm = this.fb.group({
-      email_Address: [this.emailSetupInfo?.email_Address ? this.emailSetupInfo?.email_Address  : '' ],
-      full_Name: [this.emailSetupInfo?.full_Name ? this.emailSetupInfo?.full_Name  : '' ],
-      password: [this.emailSetupInfo?.password ? this.emailSetupInfo?.password  : '' ],
-      emailRestrictionList: [this.emailSetupInfo?.emailRestrictionList ? this.emailSetupInfo?.emailRestrictionList  : '' ],
+      email_Address: [this.emailSetupInfo?.email_Address ? this.emailSetupInfo?.email_Address  : '', Validators.required],
+      full_Name: [this.emailSetupInfo?.full_Name ? this.emailSetupInfo?.full_Name  : '', Validators.required ],
+      password: [this.emailSetupInfo?.password ? this.emailSetupInfo?.password  : '', Validators.required ],
+      emailRestrictionList: [this.emailSetupInfo?.emailRestrictionList ? this.emailSetupInfo?.emailRestrictionList  : '', Validators.required ],
     })
   }
 
   getEmailSetupInfo() {
     this.sub.add(
-      this._lmsService.getAllEmailSetup(this.emailId).subscribe({
+      this._lmsService.getAllEmailSetup(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingEmailSetup = false;
           this.emailSetupInfo = res;
@@ -68,15 +64,24 @@ export class EmailSetupComponent implements OnInit {
   }
 
   updateEmailSetup() {
+    this.emailSetupFormSubmitted = true;
     this.sub.add(
       this._lmsService.updateEmailSetup(this.emailSetupForm.value).subscribe({
         next: (res) => {
-          this.isFetchingEmailSetup = false;
+          this.emailSetupFormSubmitted = false;
           console.log(res);
+          if (res.status.isSuccessful) {
+            swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
+              
+            });
+          } else {
+            swal.fire("GOSHRM", "error");
+          }
         },
         error: (error) => {
-          this.isFetchingEmailSetup = false;
+          this.emailSetupFormSubmitted = false;
           console.log(error);
+          swal.fire("GOSHRM", "error");
         },
       })
     );

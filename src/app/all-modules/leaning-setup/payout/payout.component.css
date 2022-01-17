@@ -28,6 +28,18 @@
     border: 1px solid #F88F09;
 }
 
+.btn-orange:hover {
+    background: transparent;
+    color: #F88F09;
+    border: 1px solid #F88F09;
+}
+
+.btn-outline-orange:hover {
+    background: #F88F09;
+    color: #fff;
+    border: 1px solid #F88F09;
+}
+
 .click {
     cursor: pointer;
 }

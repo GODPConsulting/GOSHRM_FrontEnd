@@ -43,7 +43,7 @@
                     <span class="edit-pen px-3">Edit</span>
                 </div>
             </div>
-            <form class="pt-4">
+            <form class="pt-4" [formGroup]="companyForm">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form_group mb-5">
@@ -55,6 +55,7 @@
                         id="firstName"
                         class="form-control"
                         placeholder="|"
+                        formControlName="full_Name"
                       />
                     </div>
                   </div>
@@ -67,6 +68,8 @@
                         type="text"
                         id="middleName"
                         class="form-control"
+                        formControlName="phone_Number"
+                        placeholder="|"
                       />
                     </div>
                   </div>
@@ -81,8 +84,8 @@
                         type="email"
                         id="firstName"
                         class="form-control"
-                        placeholder="Enter First Name"
-                        formControlName="firstName"
+                        placeholder="!"
+                        formControlName="email_Address"
                       />
                     </div>
                   </div>
@@ -95,8 +98,8 @@
                         type="text"
                         id="firstName"
                         class="form-control"
-                        placeholder="Enter First Name"
-                        formControlName="firstName"
+                        placeholder="!"
+                        formControlName="physical_Address"
                       />
                     </div>
                   </div>
@@ -270,7 +273,8 @@
                             >Industry</label
                             >
                             <select name="" id="" class="form-control" formControlName="industryTypes">
-                                <option value=""></option>
+                                <option value="banking and Finance">Banking and Finance</option>
+                                <option value="IT & Software">IT & Software</option>
                             </select>
                         </div>
                     </div>
@@ -280,7 +284,8 @@
                                 >Specialization</label
                             >
                             <select name="" id="" class="form-control" formControlName="specializationTypes">
-                                <option value=""></option>
+                              <option value="banking and Finance">Banking and Finance</option>
+                              <option value="IT & Software">IT & Software</option>
                             </select>
                         </div>
                     </div>
