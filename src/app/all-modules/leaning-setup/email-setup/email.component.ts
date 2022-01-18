@@ -72,7 +72,7 @@ export class EmailSetupComponent implements OnInit {
           console.log(res);
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
-              
+              this.initEmailSetupForm();
             });
           } else {
             swal.fire("GOSHRM", "error");
