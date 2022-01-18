@@ -1,0 +1,37 @@
+@import "partials/abstract/variables";
+@import "partials/abstract/mixins";
+@import "partials/components/forms";
+
+$side_padding: 6.4rem 15rem 2.4rem 9.2rem;
+$mobile_side_padding: 12rem 3rem;
+
+.wrapper {
+  height: 100%;
+  padding: $side_padding;
+  color: $black-100;
+  &__logo {
+    margin-bottom: 5.6rem;
+    display: flex;
+    justify-content: center;
+  }
+  .confirmation_wrapper {
+      text-align: center;
+      p {
+        font-weight: normal;
+        font-size: 1.8rem;
+        line-height: 2rem;
+        text-align: center;
+      }
+      span {
+          color: $orange-400;
+          cursor: pointer;
+      }
+  }
+
+}
+
+@include maxSize($canvas: M) {
+  .wrapper {
+    padding: $mobile_side_padding;
+  }
+}

@@ -1,0 +1,68 @@
+<div class="wrapper">
+  <div class="wrapper__logo">
+    <embed
+      src="assets/images/GOSHRM-logo.svg"
+      alt="GOS HRM Logo"
+    />
+  </div>
+  <div class="wrapper__form">
+    <form [formGroup]="loginForm">
+      <div class="form_group mb-4">
+        <label for="email" class="form-label"
+          >Email Address
+          <span>● </span>
+        </label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          placeholder="i.sample@example.com"
+          formControlName="email"
+        />
+      </div>
+      <div class="form_group mb-3">
+        <label for="password" class="form-label"
+          >Password
+          <span>● </span>
+        </label>
+        <div class="position-relative">
+          <input
+            class="form-control pr-2"
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Enter password"
+            formControlName="password"
+          />
+          <i
+            class="fa fa-eye-slash click"
+            *ngIf="showPassword; else hidePassword"
+            (click)="showPassword = !showPassword"
+          ></i>
+          <ng-template #hidePassword>
+            <i
+              class="fa fa-eye click"
+              (click)="showPassword = !showPassword"
+            ></i>
+          </ng-template>
+        </div>
+      </div>
+      <div class="wrapper__forgot">
+        <a routerLink="/authentication/forgot-password"> Forgot Password?</a>
+      </div>
+      <button class="btn wrapper__login_btn mt-5" (click)="login()">
+        <app-loading-button
+          [text]="'Login'"
+          [condition]="isLoggingIn"
+        ></app-loading-button>
+      </button>
+      <div class="wrapper__sign_up text-center mt-4">
+        <p>Dont have an account? <a routerLink="/authentication/register"><span>Register</span></a></p>
+        <h3>OR</h3>
+        <div class="d-flex justify-content-center">
+          <p class="mt-4">Sign Up With</p>
+          <img class="px-3" src="assets/images/linkedIn.svg" alt="">
+          <img class="pe-3" src="assets/images/google.svg" alt="">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div
+  class="loader"
+  [ngClass]="{ spin: loading }"
+  [ngStyle]="{ 'width.px': width }"
+>
+  <!-- <mat-spinner [diameter]="diameter" color="red"></mat-spinner> -->
+  <svg
+    version="1.1"
+    id="Layer_1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    x="0px"
+    y="0px"
+    viewBox="0 0 512 512"
+    [attr.fill]="color"
+    xml:space="preserve"
+  >
+    <g id="XMLID_1_">
+      <path
+        id="XMLID_5_"
+        d="M256,0C116.4,0,3.7,111.7,0,250.4c2.8-121,95-217.8,207.6-217.8c114.5,0,207.6,100.5,207.6,224.3
+		c0,26.1,21.4,48.4,48.4,48.4s48.4-21.4,48.4-48.4C512,114.5,397.5,0,256,0z M256,512c139.6,0,252.3-111.7,256-250.4
+		c-2.8,121-95,217.8-207.6,217.8c-114.5,0-207.6-100.5-207.6-224.3c0-26.1-21.4-48.4-48.4-48.4S0,228.1,0,255.1
+		C0,397.5,114.5,512,256,512z"
+      />
+    </g>
+  </svg>
+</div>

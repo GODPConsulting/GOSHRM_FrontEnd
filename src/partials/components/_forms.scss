@@ -1,0 +1,111 @@
+@import "partials/abstract/variables";
+
+.form_group {
+  font-family: $docstream_font !important;
+  label {
+    color: $black-100;
+    font-weight: 600;
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    span {
+      color: $error;
+      margin-left: 0.4rem;
+    }
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    margin-top: 0.4rem;
+    height: 4.8rem;
+    border-radius: 0.8rem;
+    font-size: 1.4rem;
+    color: $blue-700;
+    padding: 1.35rem 1.6rem;
+    background: rgba($blue-700, 0.07);
+
+    &.is-invalid {
+      border: 0.1rem solid $error !important;
+      background: $white-100;
+    }
+    &:focus {
+      background: $white-100;
+      color: $blue-700;
+      border: 0.1rem solid rgba($blue-700, 0.4);
+      box-shadow: none;
+    }
+  }
+  textarea {
+    height: 13.4rem;
+  }
+
+  input[type="date"] {
+    background: rgba($blue-700, 0.07) url("../../assets/icons/Calendar.svg")
+      no-repeat 97% 50%;
+    &:focus {
+      background: $white-100 url("../../assets/icons/Calendar.svg") no-repeat
+        97% 50%;
+    }
+  }
+  input[type="date"]::-webkit-inner-spin-button,
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    -webkit-appearance: none;
+  }
+
+  select {
+    background: rgba($blue-700, 0.07) url("../../assets/icons/arrow-down.svg")
+      no-repeat 97% 50%;
+    &:focus {
+      background: $white-100 url("../../assets/icons/arrow-down.svg") no-repeat
+        97% 50%;
+    }
+  }
+  .ng-select {
+    width: 100%;
+    input {
+      height: 3rem;
+    }
+  }
+
+  .ng-select.ng-select-single .ng-select-container {
+    border: none;
+    margin-top: 0.4rem;
+    box-sizing: border-box;
+    outline: none;
+    width: 100%;
+    height: 4.8rem;
+    border-radius: 0.8rem;
+    font-size: 1.4rem;
+    color: $blue-700;
+    padding: 1.35rem 1.6rem;
+    background: rgba($blue-700, 0.07);
+    display: flex;
+    align-items: center;
+  }
+  .ng-select.ng-select-focused.ng-select-opened > .ng-select-container {
+    background: $white-100 !important;
+    color: $blue-700;
+    border: 0.1rem solid rgba($blue-700, 0.4);
+    box-shadow: none;
+  }
+  .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+    border-color: rgba($blue-700, 0.4);
+    box-shadow: none;
+  }
+  /* Border Color */
+  .ng-select.ng-invalid.ng-touched .ng-select-container {
+    border: 0.1rem solid $error !important;
+    background: $white-100;
+  }
+
+  /* Arrow Color */
+  .ng-select.ng-invalid.ng-touched .ng-arrow-wrapper .ng-arrow {
+    border-color: $error transparent transparent;
+  }
+  /* Placeholder Color */
+  .ng-select.ng-invalid.ng-touched .ng-select-container {
+    color: $error;
+  }
+}

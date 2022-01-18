@@ -1,0 +1,28 @@
+@import "partials/abstract/mixins.scss";
+@import "partials/abstract/variables.scss";
+
+.bg-grey {
+  background: $white-300;
+  min-height: 85vh;
+}
+
+.wrapper {
+  &__layout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0;
+    transition: 0.2s ease-in-out;
+    padding: 0 1rem;
+    background: #fff;
+    @include minSize($canvas: L) {
+      width: calc(100% - 23.6rem);
+      margin-left: 23.6rem;
+      padding: 0 2rem;
+      &.showMinimized {
+        width: calc(100% - 6.8rem);
+        margin-left: 6.8rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,53 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  line-height: unset;
+  outline: none;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+hr {
+  background-color: $blue-700;
+  opacity: 0.1;
+}
+.click {
+  cursor: pointer;
+}
+.text-red {
+  color: $error !important;
+}
+.text-body {
+  color: $text-body !important;
+}
+.text-light-blue {
+  color: $blue-300 !important;
+}
+
+.br-8 {
+  border-radius: 0.8rem;
+}
+
+.w-30 {
+  width: 30%;
+}
+
+.w-70 {
+  width: 70%;
+}
+
+.border {
+  border: 0.1rem solid rgba($blue-700, 0.15) !important;
+}

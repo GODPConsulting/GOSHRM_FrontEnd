@@ -1,0 +1,33 @@
+<div
+  class="card d-flex justify-content-between align-items-center px-3 py-4"
+  routerLink="../{{ route }}"
+  *ngIf="!loading && count"
+>
+  <div>
+    <p class="name">{{ name }}</p>
+    <h3>{{ count }}</h3>
+    <p>{{ dayCount }}</p>
+  </div>
+  <div>
+    <img class="px-4 py-3" src="assets/icons/file.svg" alt="" />
+  </div>
+  <div class="side-color bg-{{color}}"></div>
+</div>
+
+<div class="card d-flex justify-content-between px-3 py-4" *ngIf="loading">
+  <div>
+    <p class="name">{{ name }}</p>
+    <h3>
+      <app-docstream-skeleton-loader
+        height="2rem"
+        width="5rem"
+        background_color="#464e75"
+        margin_bottom="0rem"
+      ></app-docstream-skeleton-loader>
+    </h3>
+    <p>{{ dayCount }}</p>
+  </div>
+  <div>
+    <img class="px-4 py-3" src="assets/icons/file.svg" alt="" />
+  </div>
+</div>

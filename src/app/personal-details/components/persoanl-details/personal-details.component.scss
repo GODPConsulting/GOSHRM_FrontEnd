@@ -1,0 +1,115 @@
+@import 'partials/abstract/variables';
+@import "partials/abstract/mixins";
+@import "partials/components/forms";
+
+$side_padding: 3rem 5rem 3rem 5rem;
+$mobile_side_padding: 1.5rem;
+
+.profile__wrapper {
+    padding: $side_padding;
+    .profile_title {
+        font-size: 2rem;
+        color: $black-100;
+        font-weight: bold;
+    }
+    .profile__card {
+        // border-radius: 1rem;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        margin-top: 2.5rem;
+        color: $white-100;
+        background: $white-100;
+        padding: 2rem 2.5rem;
+        .profile_img {
+            position: relative;
+            .profile__pix{
+                height: 10rem;
+                width: 10rem;
+                border-radius: 50%;
+            }
+        }
+        .profile_detail {
+            padding: 3.5rem 1rem 1.5rem 1.7rem;
+            .upload-btn {
+              position: relative;
+              overflow: hidden;
+              display: inline-block;
+            }
+              input[type="file"] {
+                font-size: 10rem;
+                position: absolute;
+                left: 0;
+                top: 0;
+                opacity: 0;
+              }
+        }
+    }
+    .profile__form {
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
+        padding: 2rem 3rem;
+        background: $white-100;
+        color: $black-100;
+    }
+}
+
+@include maxSize($canvas: L) {
+    .profile__wrapper {
+        padding: $mobile_side_padding;
+      .wrapper__login_btn, .change_password_btn {
+        width: 30%;
+      }
+      .change_password_btn {
+        //   margin-top: 1rem;
+      }
+    }
+}
+
+@include maxSize($canvas: M) {
+    .profile__wrapper {
+        padding: $mobile_side_padding;
+      .wrapper__login_btn, .change_password_btn {
+        width: 100%;
+      }
+      .change_password_btn {
+          margin-top: 2rem;
+      }
+      .profile__card {
+        padding: 1.5rem;
+        .profile_img {
+            .profile__pix{
+                height: 7rem;
+                width: 7rem;
+                border-radius: 50%;
+            }
+            .position-relative {
+                font-size: .5rem;
+                bottom: 2.5rem;
+                left: 4rem;
+                padding: 1.2rem;
+                height: 1.2rem;
+                width: 1.5rem;
+                .fas {
+                    position: absolute;
+                    bottom: .5rem;
+                    right: .4rem;
+                    font-size: 1.3rem;
+                    color: $blue-700;
+                }
+                input[type="file"] {
+                    font-size: 5rem;
+                }
+          }
+        }
+        .profile_detail {
+            padding: 2.5rem 1rem 1.5rem 1.7rem;
+            h3 {
+                font-size: 1.5rem;
+            }
+            p {
+                font-size: 1.15rem;
+            }
+        }
+    }
+    }
+}

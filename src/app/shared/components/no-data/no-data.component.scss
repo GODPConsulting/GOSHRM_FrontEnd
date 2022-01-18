@@ -1,0 +1,47 @@
+@import "partials/abstract/variables";
+@import "partials/abstract/mixins";
+
+h4 {
+  font-family: $docstream_font_bold;
+  font-size: 1.8rem;
+  line-height: 2.7rem;
+  color: $blue-700;
+  margin-bottom: 1rem;
+  margin-top: -4rem;
+  text-transform: capitalize;
+}
+.wrapper {
+  background: $white-100;
+  box-shadow: 0rem 0rem 0.8rem rgba($blue-700, 0.15);
+  border-radius: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 10rem 0;
+  @include screenSize($canvas: S) {
+    padding: 5rem 0;
+  }
+  &_image {
+    margin-bottom: 4.8rem;
+  }
+  &_header {
+    margin-bottom: 2.4rem;
+    h4 {
+      margin-bottom: 0;
+      margin-top: 0rem !important;
+    }
+  }
+  &_info {
+    margin-bottom: 3.2rem;
+    p {
+      font-size: 1.4rem;
+      line-height: 2.1rem;
+      color: $text-body;
+    }
+  }
+  &_action {
+    display: flex;
+    justify-content: center;
+  }
+}

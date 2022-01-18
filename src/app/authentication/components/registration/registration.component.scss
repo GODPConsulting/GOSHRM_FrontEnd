@@ -1,0 +1,77 @@
+@import "partials/abstract/variables";
+@import "partials/abstract/mixins";
+@import "partials/components/forms";
+
+$side_padding: 6.4rem 20rem 2.4rem 12.2rem;
+$mobile_side_padding: 12rem 3rem;
+
+.wrapper {
+  height: 100%;
+  padding: $side_padding;
+  &__logo {
+    margin-bottom: 5.6rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__header {
+    h1 {
+      font-family: $docstream_font_bold !important;
+      font-size: 3.2rem;
+      line-height: 4.8rem;
+    }
+    p {
+      font-size: 1.4rem;
+      line-height: 2.1rem;
+      color: $black-100;
+      margin-bottom: 5.6rem;
+    }
+  }
+  .position-relative {
+    .fa {
+      position: absolute;
+      font-size: 1.5rem;
+      top: 1.8rem;
+      right: 1.5rem;
+    }
+  }
+  &__forgot, &__sign_up {
+    margin-bottom: 3.4rem;
+    a, p {
+      color: $black-100;
+      font-weight: 600;
+      font-size: 1.4rem;
+      line-height: 1.8rem;
+      text-decoration: none;
+    }
+    span {
+      color: $orange-400;
+      text-decoration: underline;
+    }
+  }
+  &__login_btn {
+    width: 100%;
+    background: $orange-400;
+    box-shadow: 0rem 0.4rem 0.8rem -0.1rem rgba(0, 74, 77, 0.15);
+    border-radius: 0.8rem;
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 2.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: $white-100;
+    padding: 1.35rem 0;
+    transition: 0.6s all ease;
+    &:hover {
+      background: $orange-400;
+    }
+  }
+}
+
+@include maxSize($canvas: M) {
+  .wrapper {
+    padding: $mobile_side_padding;
+  }
+}

@@ -1,0 +1,46 @@
+@import "partials/abstract/variables";
+.card {
+  margin-bottom: 2rem;
+  border: none;
+  background: $blue-100;
+  color: $blue-700;
+  padding: 1rem !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 0.85rem;
+  color: $text-body;
+  position: relative;
+  h3 {
+    font-weight: bold;
+    font-size: 3.5rem;
+  }
+  p {
+    font-size: 1.4rem;
+    text-transform: capitalize !important;
+  }
+  .name {
+    font-weight: 600;
+  }
+  .side-color {
+    width: 0.8rem;
+    height: 8.3rem;
+    position: absolute;
+    top: 20%;
+    right: 0;
+    border-radius: 0.8rem 0 0 0.8rem;
+    &.bg-info {
+      background-color: $info;
+    }
+
+    &.bg-success {
+      background-color: $success;
+    }
+
+    &.bg-warning {
+      background-color: $warning;
+    }
+  }
+}

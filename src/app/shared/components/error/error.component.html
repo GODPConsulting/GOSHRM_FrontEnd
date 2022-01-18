@@ -1,0 +1,11 @@
+<div
+  class="wrapper_form"
+  *ngIf="error_message != '' && error_message != null && !loading"
+>
+  <div class="d-flex align-items-center">
+    <div class="wrapper_form-icon">
+      <img src="assets/icons/error.svg" type="" class="me-2" />
+    </div>
+    {{ error_message }}
+  </div>
+</div>

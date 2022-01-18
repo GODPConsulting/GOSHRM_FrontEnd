@@ -1,0 +1,55 @@
+@import "partials/abstract/variables";
+@import "partials/abstract/mixins";
+
+$side_bar_width: 59rem;
+$medium_side_bar_width: 35rem;
+
+// $side_padding: 12.4rem 14.5rem 12.4rem 9rem;
+// $mobile_side_padding: 3rem;
+
+.wrapper {
+  height: 100vh;
+  width: 100vw;
+
+  &__side {
+    width: $side_bar_width;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+  }
+  &__layout {
+    position: absolute;
+    width: calc(100% - #{$side_bar_width});
+    left: 0;
+
+    &--content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+    }
+  }
+}
+@include maxSize($canvas: M) {
+  .wrapper {
+    &__side {
+      width: 0;
+      display: none;
+    }
+    &__layout {
+      width: 100%;
+    }
+  }
+}
+@include screenSize($canvas: L) {
+  .wrapper {
+    &__side {
+      width: $medium_side_bar_width;
+      // display: none;
+    }
+    &__layout {
+      width: calc(100% - #{$medium_side_bar_width});
+    }
+  }
+}

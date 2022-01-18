@@ -1,0 +1,94 @@
+@import "partials/abstract/variables";
+@import "partials/abstract/mixins";
+@import "partials/components/forms";
+.search-wrapper {
+  display: flex;
+  &-input {
+    position: relative;
+    flex-grow: 3;
+    ._icon {
+      position: absolute;
+      left: 1.5rem;
+      top: 1.5rem;
+    }
+    .form-control {
+      padding-left: 4.5rem;
+      border-radius: 10rem;
+      border: none;
+      background: $white-100;
+    }
+  }
+  .btn-wrapper {
+    img,
+    svg {
+      transition: all ease-in 0.2s;
+    }
+    .text {
+      transition: all ease-out 0.3s;
+      margin-left: 1rem;
+    }
+    .btn:hover {
+      background: $orange-400;
+      svg {
+        fill: $white-100;
+      }
+      .text {
+        margin-left: 0rem;
+      }
+    }
+    @include maxSize(M) {
+      margin-bottom: 1rem;
+      .btn:hover {
+        img,
+        svg {
+          visibility: visible;
+        }
+      }
+      .text {
+        display: none;
+      }
+    }
+  }
+  @include maxSize(M) {
+    flex-wrap: wrap;
+  }
+  .dropdown {
+    &-toggle {
+      &::after {
+        border: none;
+        background: url("https://api.iconify.design/dashicons/arrow-down-alt2.svg?color=%2300a5ab");
+        background-position-y: 0.3rem;
+        height: 1.3rem;
+        width: 1.6rem;
+        background-repeat: no-repeat;
+      }
+    }
+    &-menu {
+      min-width: 100%;
+      top: 1rem !important;
+      .dropdown-item {
+        color: $text-body;
+        padding: 1.2rem 1rem;
+        border-bottom: solid 0.1rem $grey-300;
+        font-size: 1.2rem;
+        &:active {
+          background: transparent;
+          color: $text-body;
+        }
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        top: -1.5rem;
+        right: 0.2rem;
+        z-index: -1;
+        width: 0;
+        height: 0;
+        border-top: 1.3rem solid transparent;
+        border-right: 2.6rem solid white;
+        border-bottom: 1.3rem solid transparent;
+        transform: rotate(89deg);
+      }
+    }
+  }
+}

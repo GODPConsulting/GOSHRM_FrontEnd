@@ -1,0 +1,24 @@
+<div class="snack-container d-flex justify-content-between">
+  <div class="d-flex">
+    <div class="icon">
+      <img
+        [src]="
+          data?.type == snackType.success
+            ? 'assets/icons/success.svg'
+            : 'assets/icons/error.svg'
+        "
+        type=""
+      />
+    </div>
+    <div>
+      <span>{{ data.message }}</span>
+    </div>
+  </div>
+  <div (click)="dismiss()" class="click">
+    <img
+      src="assets/icons/close.svg
+      "
+      type=""
+    />
+  </div>
+</div>

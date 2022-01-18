@@ -1,0 +1,14 @@
+@import "partials/abstract/variables";
+
+.wrapper_form {
+  font-size: 1.2rem;
+  background-color: rgba($error, 0.1);
+  width: 100%;
+  padding: 1.2rem 1.6rem;
+  border-radius: 0.8rem;
+  color: $error;
+  margin-bottom: 1rem;
+  &-icon {
+    margin-right: 1.6rem;
+  }
+}

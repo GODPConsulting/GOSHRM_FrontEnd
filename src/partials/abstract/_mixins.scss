@@ -1,0 +1,111 @@
+// Responsive breakpoints
+$S: 576px;
+$M: 768px; // Phablets
+$L: 992px; // 10" Tablets and desktops
+$XL: 1200px; // desktops..
+
+@mixin screenSize($canvas) {
+  @if $canvas==XS {
+    /* Smaller Mobile devices */
+    @media only screen and(max-width: calc(#{$S - 1px}) ) {
+      @content;
+    }
+  } @else if $canvas==S {
+    /* Mobile devices */
+    @media only screen and (max-width: calc(#{$M - 1px}) ) {
+      @content;
+    }
+  } @else if $canvas==M {
+    /* Tablets and phablets */
+    @media only screen and (min-width: $M) and (max-width: calc(#{$L - 1px}) ) {
+      @content;
+    }
+  } @else if $canvas==L {
+    /* Landscape tablets and desktop or laptops */
+    @media only screen and (min-width: $L) and (max-width: calc(#{$XL - 1px}) ) {
+      @content;
+    }
+  } @else if $canvas==XL {
+    /* Landscape tablets and desktop or laptops */
+    @media only screen and (min-width: $XL) {
+      @content;
+    }
+  }
+}
+// how to use
+/*
+  
+  import screenSize mixin via *@import "abstracts/mixins.scss";*
+  
+  
+  @include screenSize(S) {
+    your style goes here...
+  }
+  
+  where S is the size which can be
+  S, M, L or XL.
+  
+  */
+
+@mixin minSize($canvas) {
+  @if $canvas==S {
+    /* Mobile devices */
+    @media only screen and (min-width: $S) {
+      @content;
+    }
+  } @else if $canvas==M {
+    /* Tablets and phablets */
+    @media only screen and (min-width: $M) {
+      @content;
+    }
+  } @else if $canvas==L {
+    /* Landscape tablets and desktop or laptops */
+    @media only screen and (min-width: $L) {
+      @content;
+    }
+  } @else if $canvas==XL {
+    /* Landscape tablets and desktop or laptops */
+    @media only screen and (min-width: $XL) {
+      @content;
+    }
+  }
+}
+
+@mixin maxSize($canvas) {
+  @if $canvas==S {
+    /* Mobile devices */
+    @media only screen and (max-width: $S) {
+      @content;
+    }
+  } @else if $canvas==M {
+    /* Tablets and phablets */
+    @media only screen and (max-width: $M) {
+      @content;
+    }
+  } @else if $canvas==L {
+    /* Landscape tablets and desktop or laptops */
+    @media only screen and (max-width: $L) {
+      @content;
+    }
+  } @else if $canvas==XL {
+    /* Landscape tablets and desktop or laptops */
+    @media only screen and (max-width: $XL) {
+      @content;
+    }
+  }
+}
+
+@mixin text_truncate($line_number) {
+  @if $line_number >= 1 {
+    display: -webkit-box;
+    -webkit-line-clamp: $line_number;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } @else {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+}

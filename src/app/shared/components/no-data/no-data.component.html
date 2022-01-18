@@ -1,0 +1,41 @@
+<ng-container *ngIf="!is_loading">
+  <div class="d-flex justify-content-between" *ngIf="!is_initial">
+    <h4>{{ name + "s" }}</h4>
+  </div>
+  <div class="wrapper">
+    <div class="text-center">
+      <div class="wrapper_image">
+        <img
+          [src]="
+            is_initial
+              ? 'assets/icons/empty_table.svg'
+              : 'assets/icons/empty_search_table.svg'
+          "
+          alt=""
+        />
+      </div>
+      <div class="wrapper_header">
+        <h4>{{ is_initial ? "No " + name : name + " not found" }}</h4>
+      </div>
+      <div class="wrapper_info">
+        <p>
+          {{
+            is_initial
+              ? "All " +
+                name +
+                "s added will appear here. You haven’t added any yet. "
+              : "The " + name + " you tried searching has not been added yet."
+          }}
+        </p>
+      </div>
+      <div class="wrapper_action">
+        <button class="btn btn-green btn-lg">
+          <span class="text-white me-2">
+            <img src="assets/icons/add.svg" />
+          </span>
+          <div class="text" (click)="openAddDialog()">Add {{ name }}</div>
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>

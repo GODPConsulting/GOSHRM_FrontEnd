@@ -1,0 +1,182 @@
+@import "partials/abstract/mixins.scss";
+@import "partials/abstract/variables.scss";
+
+// .menu-icon {
+//   position: absolute;
+//   right: 2.2rem;
+//   top: 0.9rem;
+//   width: 2rem;
+//   font-size: 2.8rem;
+//   display: none;
+//   z-index: 1;
+//   @include maxSize($canvas: L) {
+//     display: block;
+//   }
+// }
+
+// .closeMenu {
+//   display: none;
+//   padding: 0.5rem 1rem;
+//   color: $white-100;
+//   cursor: pointer;
+//   font-size: 3rem;
+//   position: absolute;
+//   right: 0;
+//   opacity: 0.5;
+// }
+// .minimizeMenu_container {
+//   padding: 0rem 1rem 4rem 2rem;
+//   display: none;
+//   span {
+//     color: $white-100;
+//     font-size: 4rem;
+//     cursor: pointer;
+//   }
+//   @include minSize($canvas: L) {
+//     display: block !important;
+//   }
+// }
+
+.sidebar {
+  transition: 0.3s all ease-in-out;
+  overflow-y: scroll;
+  z-index: 3;
+  position: fixed;
+  min-height: 100vh;
+  width: 0% !important;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  .sidebar-wrapper {
+    background: $white-100;
+  }
+  @include minSize($canvas: L) {
+    width: 23.6rem !important;
+    display: block !important;
+    &_minimized {
+      width: 6.8rem !important;
+    }
+  }
+  @include maxSize($canvas: L) {
+    &-overlay {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 0;
+      background-color: rgba($black-100, 0.8);
+      &.overlay-isOpen {
+        width: 100%;
+        z-index: 3;
+        .closeMenu {
+          display: block;
+        }
+      }
+    }
+    &-isOpen {
+      width: 40% !important;
+    }
+  }
+  @media (max-width: 600px) {
+    &-isOpen {
+      width: 80% !important;
+    }
+  }
+  &-wrapper {
+    padding: 2rem 0;
+    min-height: 100vh;
+    position: absolute;
+    background-color: $white-300;
+    // border-right: solid 0.1rem #f4efe3;
+    width: 100%;
+    @include minSize($canvas: L) {
+      padding: 1rem 0rem 2rem 0rem;
+    }
+    .top-list {
+      min-height: calc(100vh - 10rem);
+    }
+    @include maxSize(L) {
+      padding: 7rem 0;
+      .top-list {
+        min-height: calc(100vh - 15rem);
+      }
+    }
+    ul {
+      padding-left: 0;
+      li {
+        list-style: none;
+        .side-link {
+          font-size: 1.4rem;
+          padding: 1.3rem 2.3rem;
+          margin: 0.5rem 0;
+          display: flex;
+          color: $black-100;
+          opacity: 0.6;
+          align-items: center;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          span {
+            line-height: 0;
+          }
+          .side-icon {
+            margin-right: 2.7rem !important;
+            svg path {
+              fill: $black-100;
+            }
+          }
+          &:hover {
+            opacity: 1;
+          }
+          &.active {
+            opacity: 1;
+            background-color: rgba($orange-400, 0.1);
+            border-right: solid 0.4rem $orange-400;
+            .side-icon {
+              svg path {
+                fill: $orange-400;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.sidenav {
+    height: 100%;
+    width: 6rem;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #fff;
+    overflow-x: hidden;
+    padding-top: 20px;
+    .nav-items {
+        margin-top: 5rem;
+    }
+  }
+
+  .sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #333;
+    display: block;
+  }
+
+  .sidenav a:hover {
+    color: $white-100;
+  }
+
+  .main {
+    margin-left: 160px; /* Same as the width of the sidenav */
+    font-size: 28px; /* Increased text to enable scrolling */
+    padding: 0px 10px;
+  }
+
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }

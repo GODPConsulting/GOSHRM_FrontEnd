@@ -1,0 +1,41 @@
+@import "partials/abstract/variables";
+@import "partials/abstract/mixins.scss";
+
+nav {
+  min-height: 6.4rem;
+  align-items: center;
+  display: flex;
+  border-bottom: 0.1rem solid $blue-100;
+  padding: 2rem 1rem 1rem 1rem;
+  img {
+    max-width: 10rem;
+    object-fit: contain;
+    @include maxSize($canvas: L) {
+      max-width: 8rem;
+    }
+  }
+  .line {
+    color: #000000;
+    opacity: 0.3;
+    font-size: 2.5rem;
+  }
+}
+
+.gif {
+  display: flex;
+  justify-content: center;
+  .wrapper {
+    text-align: center;
+    justify-content: center;
+    img {
+      max-width: 49.1rem;
+    }
+    p {
+      font-size: 1.4rem;
+      line-height: 2.1rem;
+      text-align: center;
+      color: $text-body;
+      margin-bottom: 2.2rem;
+    }
+  }
+}
