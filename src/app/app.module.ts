@@ -9,9 +9,10 @@ import { CoreModule } from './core/core.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { JwtModule } from '@auth0/angular-jwt';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TraningProviderComponent } from './training-provider/traning-provider.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, TraningProviderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

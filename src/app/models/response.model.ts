@@ -25,4 +25,19 @@ export const InitialSearchDTO = {
   pageSize: 5,
 };
 
+export const users = [
+  {
+    username: "alabimuhydeen@gmail.com",
+    password: "123456",
+    userId: 1,
+    userRole: 'provider'
+  },
+  {
+    username: "alabimuhydeen@yahoo.com",
+    password: "123456",
+    userId: 1,
+    userRole: 'instructor'
+  },
+]
+
 export const pageSizeOptionsDTO = [5, 10, 25, 100];

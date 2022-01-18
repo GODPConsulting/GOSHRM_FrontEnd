@@ -23,10 +23,17 @@ const routes: Routes = [
     // canActivate: [RouteGuard],
     children: [
       {
-        path: 'profile',
+        path: 'training-provider',
         loadChildren: () =>
-          import('./personal-details/profile.module').then(
-            (m) => m.PersonalDetailsModule
+          import('./training-provider/traning-provider.module').then(
+            (m) => m.TraningProviderModule
+          ),
+      },
+      {
+        path: 'training-instructor',
+        loadChildren: () =>
+          import('./traning-instructor/traning-instructor.module').then(
+            (m) => m.TraningInstructorModule
           ),
       },
     ],

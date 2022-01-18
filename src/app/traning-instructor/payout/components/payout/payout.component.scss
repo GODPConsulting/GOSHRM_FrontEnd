@@ -1,0 +1,15 @@
+@import 'partials/abstract/variables';
+@import "partials/abstract/mixins";
+@import "partials/components/forms";
+
+.payout__wrapper {
+    .payout-form {
+        span {
+            color: $orange-400;
+            font-weight: 600;
+            font-size: 1.8rem;
+            line-height: 2.1rem;
+            padding: 1.5rem;
+        }
+    }
+}

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,11 +9,18 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class SidebarComponent implements OnInit {
   public isOpen: boolean = false;
   public showMinimizedMenu: boolean = false;
+  public loggedInUser: any;
 
   @Output() showMinimized = new EventEmitter();
-  constructor() {}
+  constructor(
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loggedInUser = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log(this.loggedInUser);
+    
+  }
 
   public toggleSidebar(): void {
     this.isOpen = !this.isOpen;
@@ -27,5 +35,7 @@ export class SidebarComponent implements OnInit {
 
   public logout(): void {
     // this._currentUser.logOut();
+    localStorage.removeItem('user');
+    this.router.navigate(['/authentication'])
   }
 }

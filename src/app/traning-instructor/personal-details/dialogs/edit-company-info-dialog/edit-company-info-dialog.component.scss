@@ -1,0 +1,33 @@
+@import 'partials/abstract/variables';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
+.mat-typography {
+    font-family: 'Poppins', sans-serif;
+    .modal-title {
+        font-size: 3.15rem;
+        font-weight: bold;
+        color: $blue-700;
+    }
+    .upload-btn {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      input[type="file"] {
+        font-size: 10rem;
+        position: absolute;
+        left: 0;
+        top: 1rem;
+        opacity: 0;
+      }
+    }
+
+    .cropper-img-container {
+      // height: 50rem;
+      // width: 50rem;
+    }
+
+    .cropped-img {
+      height: 20rem;
+      width: 20rem;
+    }
+}

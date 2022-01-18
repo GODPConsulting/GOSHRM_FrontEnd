@@ -1,0 +1,73 @@
+<div class="d-flex justify-content-between" mat-dialog-title>
+    <h2 mat-dialog-title>Social Media Accounts </h2>
+    <div class="click" mat-dialog-close>
+      <img src="assets/icons/x.svg" alt="" />
+    </div>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    <div>
+        <form [formGroup]="payoutForm">
+            <div class="row">
+                <div class="col-12">
+                  <div class="form_group mb-5">
+                    <label for="firstName" class="form-label"
+                      >Account Type
+                    </label>
+                   <select name="" id="" class="form-control">
+                       <option value="individual">Individual</option>
+                       <option value="cooperate">Cooperate</option>
+                   </select>
+                  </div>
+                </div>
+                <div class="col-12">
+                    <div class="form_group mb-5">
+                      <label for="middleName" class="form-label"
+                        >Paypay Email Address
+                      </label>
+                      <input
+                        type="email"
+                        id="middleName"
+                        class="form-control"
+                        placeholder="Enter Middle Name"
+                        formControlName="middleName"
+                      />
+                    </div>
+                </div>
+                <div class="col-12">
+                        <div class="form_group mb-5">
+                        <label for="lastName" class="form-label"
+                            >Paypal Name
+                        </label>
+                        <input
+                            type="text"
+                            id="email"
+                            class="form-control"
+                            placeholder="Enter Last Name"
+                            formControlName="lastName"
+                        />
+                        </div>
+                </div>
+              </div>
+        </form>
+    </div>
+   
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button
+      [mat-dialog-close]="false"
+      class="btn btn-outline-green btn-md me-4 px-4 d-none"
+      #close
+    >
+      No, cancel
+    </button>
+    <button
+      class="btn btn-green btn-md px-4"
+      (click)="submit()"
+    >
+        <app-loading-button
+          [text]="'Save'"
+          [condition]="isLoading"
+        ></app-loading-button>
+    </button>
+  </mat-dialog-actions>
+  

@@ -201,6 +201,7 @@ button {
 }
 
 table.table {
+  text-align: center;
   caption {
     color: $black-100;
     font-size: 1.8rem;
@@ -209,7 +210,7 @@ table.table {
   tbody {
     border-top: none !important;
     tr {
-      border: 0.05rem solid $white-200;
+      border-bottom: 0.2rem solid #C4C4C4;
       td {
         color: $text-body;
         font-size: 1.4rem;
@@ -236,7 +237,7 @@ table.table {
   thead {
     background-color: $white-300;
     border-top: none !important;
-    border-bottom: solid 0.1rem $white-200 !important;
+    border-bottom: solid 0.2rem #C4C4C4 !important;
     th {
       border-bottom: 0;
       font-weight: bold;
