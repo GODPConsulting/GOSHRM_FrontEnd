@@ -6,6 +6,11 @@ import { LayoutComponent } from '@shared/components/layout/layout.component';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'authentication',
+    pathMatch: 'full',
+  },
+  {
     path: 'authentication',
     loadChildren: () =>
       import('./authentication/authentication.module').then(
@@ -17,11 +22,6 @@ const routes: Routes = [
     component: LayoutComponent,
     // canActivate: [RouteGuard],
     children: [
-      {
-        path: '',
-        redirectTo: 'authentication',
-        pathMatch: 'full',
-      },
       {
         path: 'profile',
         loadChildren: () =>
