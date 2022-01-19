@@ -146,8 +146,46 @@ export class LmsService {
       );
   }
 
+  getPolicySetup(companyId) {
+    const params = new HttpParams()
+    .set('companyId', companyId);
+    return this.apiService
+      .get(`/lms/policysetup/get/all/policysetup`, params)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   updateCompanyPolicy(payload) {
     return this.apiService.post("/lms/policysetup/add/update/policysetup", payload).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getSecuritySetup(companyId) {
+    const params = new HttpParams()
+    .set('companyId', companyId);
+    return this.apiService
+      .get(`/lms/securitysetup/get/all/securitysetup`, params)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  updateSecuritySetup(payload) {
+    return this.apiService.post("/lms/securitysetup/add/update/securitysetup", payload).pipe(
       tap(),
       map((res) => {
         return res;

@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Subscription } from "rxjs";
 import { LmsService } from "src/app/services/lms.service";
+import { LoadingService } from "src/app/services/loading.service";
 import swal from 'sweetalert2';
 declare const $: any;
 
@@ -15,6 +16,7 @@ export class PolicyComponent implements OnInit {
   public sub: Subscription = new Subscription();
    public spinner: boolean = false;
    public canEditPolicy:  boolean = false;
+   public policyInfo: any;
    public profile: any;
    public companyId: number;
    public htmlContent = ``;
@@ -48,12 +50,32 @@ export class PolicyComponent implements OnInit {
   };
 
   constructor(
-    private _lmsService: LmsService
+    private _lmsService: LmsService,
+    private _loading: LoadingService
    ) {}
 
   ngOnInit(): void {
     this.profile = JSON.parse(localStorage.getItem('userDetails'));
     this.companyId = this.profile.companyId;
+    this.getPolicyInfo();
+  }
+
+  getPolicyInfo() {
+    this._loading.show();
+    this.sub.add(
+      this._lmsService.getPolicySetup(this.companyId).subscribe({
+        next: (res) => {
+          // this.isFetchingCompanyInfo = false;
+          this._loading.hide();
+          this.policyInfo = res['policySetupTypes'][0];
+          console.log(res);
+        },
+        error: (error) => {
+          // this.isFetchingCompanyInfo = false;
+          console.log(error);
+        },
+      })
+    );
   }
 
   openPolicyModal() {
@@ -70,12 +92,10 @@ export class PolicyComponent implements OnInit {
 
   updatePolicySetup() {
     const payload = {
-      companyId: 0,
-      policy_Content: ''
+      companyId: this.companyId,
+      policy_Content: this.htmlContent
     }
-    payload.companyId = this.companyId;
-    payload.policy_Content = this.htmlContent;
-    console.log(payload, this.htmlContent);
+    console.log(payload);
     this.sub.add(
       this._lmsService.updateCompanyPolicy(payload).subscribe({
         next: (res) => {

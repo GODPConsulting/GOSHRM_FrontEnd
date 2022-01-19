@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { LmsService } from "src/app/services/lms.service";
 import { LoadingService } from "src/app/services/loading.service";
@@ -89,11 +89,11 @@ export class CompanyInformationComponent implements OnInit {
   initWebsiteForm() {
     this.websiteForm = this.fb.group({
       website_Name_First: [this.websiteUrls?.website_Name_First ? this.websiteUrls?.website_Name_First  : '' ],
-      website_Link_First: [this.websiteUrls?.website_Link_First ? this.websiteUrls?.website_Link_First  : '' ],
+      website_Link_First: [this.websiteUrls?.website_Link_First ? this.websiteUrls?.website_Link_First  : 'hhtps://' ],
       website_Name_Second: [this.websiteUrls?.website_Name_Second ? this.websiteUrls?.website_Name_Second  : '' ],
-      website_Link_Second: [this.websiteUrls?.website_Link_Second ? this.websiteUrls?.website_Link_Second  : '' ],
+      website_Link_Second: [this.websiteUrls?.website_Link_Second ? this.websiteUrls?.website_Link_Second  : 'https://' ],
       website_Name_Third: [this.websiteUrls?.website_Name_Third ? this.websiteUrls?.website_Name_Third  : '' ],
-      website_Link_Third: [this.websiteUrls?.website_Link_Third ? this.websiteUrls?.website_Link_Third  : '' ],
+      website_Link_Third: [this.websiteUrls?.website_Link_Third ? this.websiteUrls?.website_Link_Third  : 'https://' ],
     })
   }
 
@@ -105,7 +105,7 @@ export class CompanyInformationComponent implements OnInit {
           this.isFetchingCompanyInfo = false;
           this._loading.hide();
           this.companyInfo = res['companySetupTypes'][0];
-          console.log(res, this.companyInfo);
+          // console.log(res);
         },
         error: (error) => {
           this.isFetchingCompanyInfo = false;
@@ -120,8 +120,8 @@ export class CompanyInformationComponent implements OnInit {
       this._lmsService.getSocialMediaUrls(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
-          this.socialMediaInfo = res;
-          console.log(res);
+          this.socialMediaInfo = res['socialMediaSetupTypes'][0];
+          // console.log(res);
         },
         error: (error) => {
           this.isFetchingCompanyInfo = false;
@@ -136,8 +136,8 @@ export class CompanyInformationComponent implements OnInit {
       this._lmsService.getWebsiteUrls(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
-          this.websiteUrls = res;
-          console.log(res);
+          this.websiteUrls = res['websiteSetupTypes'][0];
+          // console.log(res);
         },
         error: (error) => {
           this.isFetchingCompanyInfo = false;
@@ -167,6 +167,7 @@ export class CompanyInformationComponent implements OnInit {
 
   openWebsiteModal() {
     $("#website").modal("show");
+    this.initWebsiteForm();
   }
 
   closeWebsiteModal() {
@@ -212,6 +213,7 @@ export class CompanyInformationComponent implements OnInit {
           console.log(res);
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
+              this.socialMediaInfo = payload
               this.initSocialMediaForm();
               this.closeSocialMediaModal();
             });
@@ -239,6 +241,7 @@ export class CompanyInformationComponent implements OnInit {
           console.log(res);
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
+              this.websiteUrls = payload
               this.initWebsiteForm();
               this.closeWebsiteModal();
             });
