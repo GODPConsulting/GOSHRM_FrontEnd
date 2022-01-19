@@ -73,7 +73,7 @@ export class LmsService {
   }
 
   updateWebsiteUrls(payload) {
-    return this.apiService.post(`​​/lms​/website​/add​/update​/website`, payload)
+    return this.apiService.post("/lms/website/add/update/website", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -144,6 +144,16 @@ export class LmsService {
         }),
         catchError(this.handleError)
       );
+  }
+
+  updateCompanyPolicy(payload) {
+    return this.apiService.post("/lms/policysetup/add/update/policysetup", payload).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
   }
 
 }

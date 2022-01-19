@@ -28,14 +28,16 @@ export class CoursesComponent implements OnInit {
   ) {
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getTrainingProviders();
+  }
 
   getTrainingProviders() {
     this.sub.add(
       this._lmsService.getAllTraineeSetup().subscribe({
         next: (res) => {
-          this.isProviderListReady = false;
-          this.traineeProviderList = res;
+          // this.isProviderListReady = false;
+          // this.traineeProviderList = res;
           console.log(res);
         },
         error: (error) => {

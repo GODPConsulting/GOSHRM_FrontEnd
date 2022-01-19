@@ -104,8 +104,8 @@ export class CompanyInformationComponent implements OnInit {
         next: (res) => {
           this.isFetchingCompanyInfo = false;
           this._loading.hide();
-          this.companyInfo = res;
-          console.log(res);
+          this.companyInfo = res['companySetupTypes'][0];
+          console.log(res, this.companyInfo);
         },
         error: (error) => {
           this.isFetchingCompanyInfo = false;
@@ -174,6 +174,7 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   updateCompanyInfo() {
+    this.isFetchingCompanyInfo = true;
     const payload = this.companyForm.value;
     payload.companyId = this.companyId;
     this.sub.add(
@@ -183,11 +184,12 @@ export class CompanyInformationComponent implements OnInit {
           console.log(res);
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
+              this.companyInfo = payload
               this.initCompanyInfoForm();
               this.closeCompanyInfoModal();
             });
           } else {
-            swal.fire("GOSHRM", "error");
+            swal.fire("GOSHRM", res.status.message.friendlyMessage);
           }
         },
         error: (error) => {
@@ -200,6 +202,7 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   updateSocialmediaUrls() {
+    this.isFetchingCompanyInfo = true;
     const payload = this.socialMediaForm.value;
     payload.companyid = this.companyId
     this.sub.add(
@@ -213,7 +216,7 @@ export class CompanyInformationComponent implements OnInit {
               this.closeSocialMediaModal();
             });
           } else {
-            swal.fire("GOSHRM", "error");
+            swal.fire("GOSHRM", res.status.message.friendlyMessage);
           }
         },
         error: (error) => {
@@ -228,7 +231,7 @@ export class CompanyInformationComponent implements OnInit {
   updateWebsiteUrls() {
     this.isFetchingCompanyInfo = true;
     const payload = this.websiteForm.value;
-    payload.companyId = this.companyId;
+    payload.companyid = this.companyId
     this.sub.add(
       this._lmsService.updateWebsiteUrls(payload).subscribe({
         next: (res) => {
@@ -240,7 +243,7 @@ export class CompanyInformationComponent implements OnInit {
               this.closeWebsiteModal();
             });
           } else {
-            swal.fire("GOSHRM", "error");
+            swal.fire("GOSHRM", res.status.message.friendlyMessage);
           }
         },
         error: (error) => {
@@ -251,5 +254,6 @@ export class CompanyInformationComponent implements OnInit {
       })
     );
   }
+
  
 }

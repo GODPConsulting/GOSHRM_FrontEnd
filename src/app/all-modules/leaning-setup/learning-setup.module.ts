@@ -1,6 +1,7 @@
 import { PageSetupComponent } from './page-setup/page-setup.component';
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 import { LearningSetupRoutingModule } from "./learning-setup-routing.module";
 import { DataTablesModule } from "angular-datatables";
@@ -34,7 +35,8 @@ import { LearningSetupComponent } from "./learning-setup.component";
     DataTablesModule,
     SharedModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    AngularEditorModule
   ],
 })
 export class LearningSetupModule {}
