@@ -11,7 +11,7 @@ h3 {
     position: absolute;
     font-size: 1.5rem;
     top: 1.8rem;
-    right: 1.5rem;
+    right: 2.5rem;
     color: #333;
 }
 
@@ -23,6 +23,14 @@ h3 {
     background: #F88F09;
     border: .1rem solid #F88F09;
     color: #fff;
+    padding: 10px 15px;
+    font-size: 1.5rem;
+}
+
+.btn-orange:hover {
+    background: transparent;
+    border: .1rem solid #F88F09;
+    color: #F88F09;
     padding: 10px 15px;
     font-size: 1.5rem;
 }

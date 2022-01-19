@@ -1,7 +1,9 @@
 import { Component, HostListener, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { LmsService } from "src/app/services/lms.service";
+import { LoadingService } from "src/app/services/loading.service";
+import swal from 'sweetalert2';
 declare const $: any;
 
 @Component({
@@ -14,6 +16,7 @@ export class CompanyInformationComponent implements OnInit {
     sub: Subscription = new Subscription();
     spinner: boolean = false;
     isFetchingCompanyInfo: boolean = false;
+    profile: any;
     companyId: number;
     companyForm: FormGroup;
     socialMediaForm: FormGroup;
@@ -36,21 +39,27 @@ export class CompanyInformationComponent implements OnInit {
       "youtubeType": "",
     };
     websiteUrls: any = {
-      "websiteId": 0,
-      "website_Link": "",
-      "website_Link_2": "",
-      "website_Link_3": "",
+      "website_Name_First": "",
+      "website_Link_First": "",
+      "website_Name_Second": "",
+      "website_Link_Second": "",
+      "website_Name_Third": "",
+      "website_Link_Third": "",
     };
     
   constructor(
     private fb: FormBuilder,
-    private _lmsService: LmsService
+    private _lmsService: LmsService,
+    private _loading: LoadingService
   ) {
   }
 
   ngOnInit(): void {
+    this.profile = JSON.parse(localStorage.getItem('userDetails'));
+    this.companyId = this.profile.companyId;
     this.initCompanyInfoForm();
     this.initSocialMediaForm();
+    this.initWebsiteForm();
     this.getCompanyInfo();
     this.getSocialMediaLinks();
     this.getwebsiteURLS();
@@ -79,19 +88,24 @@ export class CompanyInformationComponent implements OnInit {
 
   initWebsiteForm() {
     this.websiteForm = this.fb.group({
-      website_Link: [this.websiteUrls?.website_Link ? this.websiteUrls?.website_Link  : '' ],
-      website_Link_2: [this.websiteUrls?.website_Link_2 ? this.websiteUrls?.website_Link_2  : '' ],
-      website_Link_3: [this.websiteUrls?.website_Link_3 ? this.websiteUrls?.website_Link_3  : '' ],
+      website_Name_First: [this.websiteUrls?.website_Name_First ? this.websiteUrls?.website_Name_First  : '' ],
+      website_Link_First: [this.websiteUrls?.website_Link_First ? this.websiteUrls?.website_Link_First  : 'hhtps://' ],
+      website_Name_Second: [this.websiteUrls?.website_Name_Second ? this.websiteUrls?.website_Name_Second  : '' ],
+      website_Link_Second: [this.websiteUrls?.website_Link_Second ? this.websiteUrls?.website_Link_Second  : 'https://' ],
+      website_Name_Third: [this.websiteUrls?.website_Name_Third ? this.websiteUrls?.website_Name_Third  : '' ],
+      website_Link_Third: [this.websiteUrls?.website_Link_Third ? this.websiteUrls?.website_Link_Third  : 'https://' ],
     })
   }
 
   getCompanyInfo() {
+    this._loading.show();
     this.sub.add(
       this._lmsService.getCompanyProfile(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
-          this.companyInfo = res;
-          console.log(res);
+          this._loading.hide();
+          this.companyInfo = res['companySetupTypes'][0];
+          // console.log(res);
         },
         error: (error) => {
           this.isFetchingCompanyInfo = false;
@@ -103,11 +117,11 @@ export class CompanyInformationComponent implements OnInit {
 
   getSocialMediaLinks() {
     this.sub.add(
-      this._lmsService.getSocialMediaUrls().subscribe({
+      this._lmsService.getSocialMediaUrls(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
-          this.socialMediaInfo = res;
-          console.log(res);
+          this.socialMediaInfo = res['socialMediaSetupTypes'][0];
+          // console.log(res);
         },
         error: (error) => {
           this.isFetchingCompanyInfo = false;
@@ -119,11 +133,11 @@ export class CompanyInformationComponent implements OnInit {
 
   getwebsiteURLS() {
     this.sub.add(
-      this._lmsService.getWebsiteUrls().subscribe({
+      this._lmsService.getWebsiteUrls(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
-          this.websiteUrls = res;
-          console.log(res);
+          this.websiteUrls = res['websiteSetupTypes'][0];
+          // console.log(res);
         },
         error: (error) => {
           this.isFetchingCompanyInfo = false;
@@ -135,6 +149,7 @@ export class CompanyInformationComponent implements OnInit {
 
   openCompanyInfoModal() {
     $("#edit-company-info").modal("show");
+    this.initCompanyInfoForm();
   }
 
   closeCompanyInfoModal() {
@@ -143,6 +158,7 @@ export class CompanyInformationComponent implements OnInit {
 
   openSocialMediaModal() {
     $("#social-media").modal("show");
+    this.initSocialMediaForm();
   }
 
   closeSocialMediaModal() {
@@ -151,6 +167,7 @@ export class CompanyInformationComponent implements OnInit {
 
   openWebsiteModal() {
     $("#website").modal("show");
+    this.initWebsiteForm();
   }
 
   closeWebsiteModal() {
@@ -158,51 +175,88 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   updateCompanyInfo() {
+    this.isFetchingCompanyInfo = true;
+    const payload = this.companyForm.value;
+    payload.companyId = this.companyId;
     this.sub.add(
-      this._lmsService.updateCompanyProfile(this.companyForm.value).subscribe({
+      this._lmsService.updateCompanyProfile(payload).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
-          this.socialMediaInfo = res;
           console.log(res);
+          if (res.status.isSuccessful) {
+            swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
+              this.companyInfo = payload
+              this.initCompanyInfoForm();
+              this.closeCompanyInfoModal();
+            });
+          } else {
+            swal.fire("GOSHRM", res.status.message.friendlyMessage);
+          }
         },
         error: (error) => {
           this.isFetchingCompanyInfo = false;
           console.log(error);
+          swal.fire("GOSHRM", "error");
         },
       })
     );
   }
 
   updateSocialmediaUrls() {
+    this.isFetchingCompanyInfo = true;
+    const payload = this.socialMediaForm.value;
+    payload.companyid = this.companyId
     this.sub.add(
-      this._lmsService.updateSocialMediaUrls(this.socialMediaForm.value).subscribe({
+      this._lmsService.updateSocialMediaUrls(payload).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
-          this.socialMediaInfo = res;
           console.log(res);
+          if (res.status.isSuccessful) {
+            swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
+              this.socialMediaInfo = payload
+              this.initSocialMediaForm();
+              this.closeSocialMediaModal();
+            });
+          } else {
+            swal.fire("GOSHRM", res.status.message.friendlyMessage);
+          }
         },
         error: (error) => {
           this.isFetchingCompanyInfo = false;
           console.log(error);
+          swal.fire("GOSHRM", "error");
         },
       })
     );
   }
 
   updateWebsiteUrls() {
+    this.isFetchingCompanyInfo = true;
+    const payload = this.websiteForm.value;
+    payload.companyid = this.companyId
     this.sub.add(
-      this._lmsService.updateWebsiteUrls(this.websiteForm.value).subscribe({
+      this._lmsService.updateWebsiteUrls(payload).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
-          this.socialMediaInfo = res;
           console.log(res);
+          if (res.status.isSuccessful) {
+            swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
+              this.websiteUrls = payload
+              this.initWebsiteForm();
+              this.closeWebsiteModal();
+            });
+          } else {
+            swal.fire("GOSHRM", res.status.message.friendlyMessage);
+          }
         },
         error: (error) => {
           this.isFetchingCompanyInfo = false;
           console.log(error);
+          swal.fire("GOSHRM", "error");
         },
       })
     );
   }
+
  
 }

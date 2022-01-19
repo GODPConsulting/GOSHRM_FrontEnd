@@ -54,7 +54,7 @@
                         type="text"
                         id="firstName"
                         class="form-control"
-                        placeholder="!"
+                        placeholder="{{ companyInfo?.full_Name }}"
                       />
                     </div>
                   </div>
@@ -67,6 +67,7 @@
                         type="text"
                         id="middleName"
                         class="form-control"
+                        placeholder="{{ companyInfo?.phone_Number }}"
                       />
                     </div>
                   </div>
@@ -81,8 +82,7 @@
                         type="email"
                         id="firstName"
                         class="form-control"
-                        placeholder="Enter First Name"
-                        formControlName="firstName"
+                        placeholder="{{ companyInfo?.email_Address }}"
                       />
                     </div>
                   </div>
@@ -95,8 +95,7 @@
                         type="text"
                         id="firstName"
                         class="form-control"
-                        placeholder="Enter First Name"
-                        formControlName="firstName"
+                        placeholder="{{ companyInfo.physical_Address}}"
                       />
                     </div>
                   </div>
@@ -132,9 +131,24 @@
             </div>
             <div class="py-3">
                <ul>
-                    <li>Cowrywise</li>
-                    <li>Cowrywise</li>
-                    <li>Cowrywise</li>
+                    <li>
+                      <a 
+                        [href]="websiteUrls?.website_Link_First" target="_blank"
+                      >{{ websiteUrls?.website_Name_First }}
+                      </a>
+                    </li>
+                    <li>
+                      <a 
+                        [href]="websiteUrls?.website_Link_Second" target="_blank"
+                      >{{ websiteUrls?.website_Name_Second }}
+                      </a>
+                    </li>
+                    <li>
+                      <a 
+                        [href]="websiteUrls?.website_Link_Third" target="_blank"
+                      >{{ websiteUrls?.website_NameThird }}
+                      </a>
+                    </li>
                </ul>
             </div>
         </div>
@@ -270,7 +284,8 @@
                             >Industry</label
                             >
                             <select name="" id="" class="form-control" formControlName="industryTypes">
-                                <option value=""></option>
+                                <option value="banking and Finance">Banking and Finance</option>
+                                <option value="IT & Software">IT & Software</option>
                             </select>
                         </div>
                     </div>
@@ -280,7 +295,8 @@
                                 >Specialization</label
                             >
                             <select name="" id="" class="form-control" formControlName="specializationTypes">
-                                <option value=""></option>
+                              <option value="banking and Finance">Banking and Finance</option>
+                              <option value="IT & Software">IT & Software</option>
                             </select>
                         </div>
                     </div>
@@ -397,7 +413,7 @@
                         <input
                             class="form-control"
                             type="text"
-                            formControlName=""
+                            formControlName="website_Name_First"
                         />
                         </div>
                     </div>
@@ -409,7 +425,7 @@
                         <input
                             class="form-control"
                             type="text"
-                            formControlName="website_Link"
+                            formControlName="website_Link_First"
                         />
                         </div>
                     </div>
@@ -421,7 +437,7 @@
                         <input
                             class="form-control"
                             type="text"
-                            formControlName=""
+                            formControlName="website_Name_Second"
                         />
                         </div>
                     </div>
@@ -433,7 +449,7 @@
                         <input
                             class="form-control"
                             type="text"
-                            formControlName="website_Link_2"
+                            formControlName="website_Link_Second"
                         />
                         </div>
                     </div>
@@ -445,6 +461,7 @@
                         <input
                             class="form-control"
                             type="text"
+                            formControlName="website_Name_Third"
                         />
                         </div>
                     </div>
@@ -456,7 +473,7 @@
                         <input
                             class="form-control"
                             type="text"
-                            formControlName="website_Link_3"
+                            formControlName="website_Link_Third"
                         />
                         </div>
                     </div>
