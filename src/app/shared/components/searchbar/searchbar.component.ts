@@ -22,7 +22,8 @@ export class SearchbarComponent implements OnInit {
   @Input() filterList: Array<string> = [];
   @Input() sortList: Array<string> = [];
   @Output() btnAction = new EventEmitter();
-  @Output() filterAction = new EventEmitter();
+  @Output() deleteAction = new EventEmitter();
+  @Output() downloadAction = new EventEmitter();
   @Output() searchAction = new EventEmitter();
   @Output() sortAction = new EventEmitter();
   @Output() searchQuery: EventEmitter<string> = new EventEmitter<string>();
@@ -38,9 +39,13 @@ export class SearchbarComponent implements OnInit {
   public btnPressed(): void {
     this.btnAction.emit();
   }
+
+  public downloadPressed(): void {
+    this.downloadAction.emit();
+  }
   
-  public filterPressed(): void {
-    this.filterAction.emit();
+  public deletePressed(): void {
+    this.deleteAction.emit();
   }
   public searchPressed(): void {
     this.searchAction.emit(true);
