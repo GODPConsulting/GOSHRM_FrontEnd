@@ -5,7 +5,9 @@ import { TrainingProviderRoutingModule } from './traning-provider-routing.module
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    
+  ],
   imports: [
     CommonModule,
     TrainingProviderRoutingModule

@@ -27,6 +27,34 @@ const routes: Routes = [
                   (m) => m.PayoutModule
                 ),
             },
+            {
+              path: 'settings',
+              loadChildren: () =>
+                import('./account-settings/account-settings.module').then(
+                  (m) => m.AccountSettingsModule
+                ),
+            },
+            {
+              path: 'security',
+              loadChildren: () =>
+                import('./security/security.module').then(
+                  (m) => m.SecurityModule
+                ),
+            },
+            {
+              path: 'setup',
+              loadChildren: () =>
+                import('./instructor-facilitator-setup/instructor-facilitator-setup.module').then(
+                  (m) => m.InstructorFacilitatorSetupModule
+                ),
+            },
+            {
+              path: 'instructor-information',
+              loadChildren: () =>
+                import('./instructor-information/instructor-information.module').then(
+                  (m) => m.InstructorInformationModule
+                ),
+            },
         ],
     }
 ];

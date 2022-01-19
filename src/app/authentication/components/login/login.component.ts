@@ -13,6 +13,8 @@ export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
   public isLoggingIn: boolean = false;
   public showPassword: boolean = false;
+  public err_message: string = '';
+  public isError: boolean = false;
   public User= users;
   constructor(
     private _base: BaseComponent,
@@ -35,6 +37,7 @@ export class LoginComponent implements OnInit {
     const payload = this.loginForm.value;
     
     this.User.find(m => {
+      this.isLoggingIn = true;
        m.username == payload.email;
       if(m.username == payload.email && m.password == payload.password) {
         if(m.userRole == 'provider') {
@@ -45,7 +48,7 @@ export class LoginComponent implements OnInit {
             }, 3000);
             this.router.navigate(['training-provider/profile'])
         } else {
-          this.isLoggingIn = true;
+          this.isLoggingIn = false;
             setTimeout(() => {
               this.isLoggingIn = false;
               this._base.openSnackBar('Logged in successfully', 'success');
@@ -56,7 +59,8 @@ export class LoginComponent implements OnInit {
       } else {
         setTimeout(() => {
           this.isLoggingIn = false;
-          this._base.openSnackBar('wrong credentials', 'success');
+          this.isError = true;
+          this.err_message = 'wrong credentials';
         }, 3000);
       }
     })

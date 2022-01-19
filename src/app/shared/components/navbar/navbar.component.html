@@ -1,7 +1,7 @@
-<nav class="">
+<!-- <nav class="">
   <div class="search-wrapper ms-auto ">
     <div
-      class="search-wrapper-input me-4 mb-3 form_group"
+      class="search-wrapper-input mb-3 form_group"
     >
       <span class="_icon">
         <img src="assets/icons/search.svg" />
@@ -14,5 +14,56 @@
       />
     </div>
   </div>
+
+  <ul class="nav justify-content-end">
+    <li class="nav-item">
+      <a class="nav-link ">
+        Admin|
+      </a>
+    </li>
+  </ul>
   
+</nav> -->
+
+
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <div class="search-wrapper ms-auto ">
+            <div
+              class="search-wrapper-input mb-3 form_group"
+            >
+              <span class="_icon">
+                <img src="assets/icons/search.svg" />
+              </span>
+              <input
+                #searchQuery
+                type="search"
+                class="form-control mt-0"
+                placeholder="Search"
+              />
+            </div>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span>Admin |</span>
+            <img class="nav-img mx-3" src="assets/images/profile-img.svg" alt="">
+            <span>Innocent Sample</span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>

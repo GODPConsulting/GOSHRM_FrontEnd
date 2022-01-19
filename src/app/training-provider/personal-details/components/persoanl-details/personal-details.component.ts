@@ -148,8 +148,6 @@ export class PersonalDetailsComponent implements OnInit {
     );
   }
 
-
-
   public submit() {
     this.isLoading = true;
   }

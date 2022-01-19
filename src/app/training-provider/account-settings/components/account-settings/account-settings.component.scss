@@ -1,0 +1,8 @@
+@import 'partials/abstract/variables';
+@import "partials/abstract/mixins";
+@import "partials/components/forms";
+
+.acoount-settings-wrapper {
+    padding: 3rem;
+    color: $black-100;
+}

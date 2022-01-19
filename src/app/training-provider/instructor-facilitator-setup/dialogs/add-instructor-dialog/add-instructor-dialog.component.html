@@ -1,0 +1,165 @@
+<div class="d-flex justify-content-between" mat-dialog-title>
+    <h2 mat-dialog-title>Add New Instructor/Facilitator </h2>
+    <div class="click" mat-dialog-close>
+      <img src="assets/icons/x.svg" alt="" />
+    </div>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    <div>
+      <form [formGroup]="addFacilitatorForm">
+        <div class="row">
+            <div class="row col-md-6">
+             <div class="col-12">
+                 <div class="form_group mb-4">
+                     <label for="" class="form-label"
+                     >User Name
+                     </label>
+                     <input
+                         class="form-control pr-2"
+                         type="text"
+                         formControlName="username"
+                         placeholder="Enter username"
+                     />
+                 </div>
+             </div>
+             <div class="col-12">
+                 <div class="form_group mb-4">
+                     <label for="" class="form-label"
+                     >LinkedIn link
+                     </label>
+                     <input
+                         class="form-control pr-2"
+                         type="text"
+                         formControlName="linkedIn_Link"
+                         placeholder="Enter linkedIn link"
+                     />
+                 </div>
+             </div>
+             <div class="col-12">
+                 <div class="form_group mb-4">
+                     <label for="" class="form-label"
+                     >Twitter link
+                     </label>
+                     <input
+                         class="form-control pr-2"
+                         type="text"
+                         formControlName="twitter_Link"
+                         placeholder="Enter twitter link"
+                     />
+                 </div>
+             </div>
+            </div>
+            <div class="row col-md-6">
+                <div class="form_group mb-4">
+                    <div class="col-12">
+                        <div class="form_group mb-4">
+                            <label for="" class="form-label"
+                            >Bio
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                name="" id="" cols="30" rows="10"
+                                formControlName="bio"
+                            ></textarea>
+                       </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form_group mb-4">
+                            <label for="" class="form-label"
+                            >Upload Image
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                name="" id="" cols="30" rows="10"
+                                formControlName="image"
+                            ></textarea>
+                       </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        <div class="">
+            <h2 mat-dialog-title>Courses Facilitated </h2>
+           <div #childform formArrayName="addCourseIndex">
+            <div class="row courses-form" *ngFor="let item of facilitatorItems.controls let child = index" [formGroupName]="child">
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                        <label for="" class="form-label"
+                        >Course Name
+                        </label>
+                        <input
+                            class="form-control pr-2"
+                            type="text"
+                            formControlName="course_Name"
+                            placeholder="Enter username"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                        <label for="" class="form-label"
+                        >Difficulty Level
+                        </label>
+                        <input
+                            class="form-control pr-2"
+                            type="text"
+                            formControlName="difficulty_Level"
+                            placeholder="Enter linkedIn link"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                        <label for="" class="form-label"
+                        >Duration
+                        </label>
+                        <input
+                            class="form-control pr-2"
+                            type="text"
+                            formControlName="duration"
+                            placeholder="Enter twitter link"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                        <label for="" class="form-label"
+                        >Date
+                        </label>
+                        <input
+                            class="form-control pr-2"
+                            type="text"
+                            formControlName="date"
+                            placeholder="Enter twitter link"
+                        />
+                    </div>
+                </div>
+                <div class="remove-course">
+                    <i class="far fa-trash-alt text-danger click" [class.d-none]="child == 0" (click)="removeCourse(child)"></i>
+                    <!-- <span [class.d-none]="child == 0" (click)="removeCourse(child)">Remove</span> -->
+                </div>
+            </div>
+           </div>
+        </div>
+      </form>
+    </div>
+   
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button
+      class="btn btn-outline-green btn-md me-4 px-4"
+      (click)="addNewCourse()"
+    >
+        Add more Courses
+    </button>
+    <button
+      class="btn btn-green btn-md px-4"
+      (click)="submit()"
+    >
+        <app-loading-button
+          [text]="'Save'"
+          [condition]="isLoading"
+        ></app-loading-button>
+    </button>
+  </mat-dialog-actions>
+  

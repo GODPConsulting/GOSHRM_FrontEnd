@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="">
+        <div class="py-3">
+            <h3>Innocent Sample</h3>
+        </div>
+      <ul class="nav nav-pills vertical-nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item p-0" role="presentation">
+          <a
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link px-0 py-3"
+            id="information-tab"
+            data-bs-toggle="tab"
+            routerLink="information"
+            role="tab"
+            aria-controls="information"
+            aria-selected="true"
+            >Personal Information</a
+          >
+        </li>
+        <li class="nav-item p-0 ms-5" role="presentation">
+          <a
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link px-0 py-3"
+            id="courses-tab"
+            data-bs-toggle="tab"
+            routerLink="courses"
+            role="tab"
+            aria-controls="courses"
+            aria-selected="false"
+            >Facilitated Courses</a
+          >
+        </li>
+      </ul>
+    </div>
+  
+    <div class="tab-content" id="myTabContent">
+      <div
+        class="tab-pane fade show active"
+        id="regions"
+        role="tabpanel"
+        aria-labelledby="archive-tab"
+      >
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>

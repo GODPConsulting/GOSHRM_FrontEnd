@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+// import { CurrentUserService } from '@core/services/current-user.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,12 +14,12 @@ export class SidebarComponent implements OnInit {
 
   @Output() showMinimized = new EventEmitter();
   constructor(
+    // private _currentUser: CurrentUserService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loggedInUser = JSON.parse(localStorage.getItem('user') || '{}');
-    console.log(this.loggedInUser);
     
   }
 

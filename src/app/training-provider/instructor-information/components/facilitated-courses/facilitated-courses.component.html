@@ -1,0 +1,42 @@
+<div class="running_courses-wrapper my-4">
+    <div class="table-responsive bg-white">
+      <table class="table caption-top text-nowrap" datatable>
+        <ng-container>
+          <thead class="bg-white">
+            <tr>
+              <th>Date</th>
+              <th>Course Title</th>
+              <th>Delivery Type</th>
+              <th>Difficulty level</th>
+              <th>Duration</th>
+              <th>No. of Views</th>
+              <th>Ratings</th>
+            </tr>
+          </thead></ng-container
+        >
+        <tbody>
+          <ng-container>
+            <tr class="text-capitalize" *ngFor="let leave of [1,2,3,4,5,6,7]">
+              <td>Apr 11, 2018</td>
+              <td>Excel Ms Advanced</td>
+              <td>Online</td>
+              <td>Beginner</td>
+              <td>02:45:12</td>
+              <td>180</td>
+              <td>
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="ratings"> 
+                      <i class="fa fa-star rating-color"></i> 
+                      <i class="fa fa-star rating-color"></i> 
+                      <i class="fa fa-star rating-color"></i> 
+                      <i class="fa fa-star rating-color"></i> 
+                      <i class="fa fa-star"></i> 
+                    </div>
+                  </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>

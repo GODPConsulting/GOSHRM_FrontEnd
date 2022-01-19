@@ -12,7 +12,13 @@ import { SocialMediaDialogComponent } from './dialogs/social-media-dialog/social
 import { WebsiteDialogComponent } from './dialogs/website-dialog/website-dialog.component';
 
 @NgModule({
-  declarations: [PersonalDetailsComponent, EditCompanyInfoDialogComponent, UploadProfileComponent, SocialMediaDialogComponent, WebsiteDialogComponent],
+  declarations: [
+    PersonalDetailsComponent, 
+    EditCompanyInfoDialogComponent, 
+    UploadProfileComponent, 
+    SocialMediaDialogComponent, 
+    WebsiteDialogComponent
+  ],
   imports: [
     CommonModule,
     PersonalDetailsRoutingModule,
