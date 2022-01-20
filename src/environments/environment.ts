@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  api_url: 'http://localhost:3000',
+  // api_url: "http://107.180.93.38:5050/api/v1",
+  api_url: "http://gossoftware.co.uk:5090/api/v1",
 };
 
 /*

@@ -64,10 +64,8 @@ export class CurrentUserService {
 
   public storeUserDetails(userDetails: any) {
     const user_data_to_store = {
-      firstName: userDetails.firstName,
-      lastName: userDetails.firstName,
-      email: userDetails.email,
-      phoneNumber: userDetails.phoneNumber,
+      full_Name: userDetails.full_Name,
+      email_Address: userDetails.email_Address,
     };
     this.localStorageAS.set('docstream_user_details', user_data_to_store);
   }

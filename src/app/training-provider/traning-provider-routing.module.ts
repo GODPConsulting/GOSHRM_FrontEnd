@@ -7,6 +7,11 @@ const routes: Routes = [
         component: TraningProviderComponent,
         children: [
             {
+                path: '',
+                redirectTo: 'profile',
+                pathMatch: 'full',
+            },
+            {
               path: 'profile',
               loadChildren: () =>
                 import('./personal-details/profile.module').then(

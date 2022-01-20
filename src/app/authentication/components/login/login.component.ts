@@ -1,8 +1,12 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BaseComponent } from '@core/base/base/base.component';
-import { users } from './../../../models/response.model'
+import { LoginResponseDTO } from '@auth/models/auth.model';
+import { AuthService } from '@auth/services/auth.service';
+// import { CurrentUserService } from '@core/services/current-user.service';
+// import { BaseComponent } from '@core/base/base/base.component';
+import { ResponseModel } from 'app/models/response.model';
 
 @Component({
   selector: 'app-login',
@@ -12,14 +16,16 @@ import { users } from './../../../models/response.model'
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
   public isLoggingIn: boolean = false;
+  public loginFormSubmitted: boolean = false;
   public showPassword: boolean = false;
   public err_message: string = '';
   public isError: boolean = false;
-  public User= users;
   constructor(
-    private _base: BaseComponent,
+    // private _base: BaseComponent,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private _auth: AuthService,
+    // private _current: CurrentUserService
   ) {}
 
   ngOnInit(): void {
@@ -28,41 +34,33 @@ export class LoginComponent implements OnInit {
 
   initLoginForm() {
     this.loginForm = this.fb.group({
-      email: ['', Validators.required],
+      email_Address: ["", Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required],
     })
   }
 
+
   public login(): void {
-    const payload = this.loginForm.value;
-    
-    this.User.find(m => {
-      this.isLoggingIn = true;
-       m.username == payload.email;
-      if(m.username == payload.email && m.password == payload.password) {
-        if(m.userRole == 'provider') {
-          this.isLoggingIn = true;
-            setTimeout(() => {
-              this.isLoggingIn = false;
-              this._base.openSnackBar('Logged in successfully', 'success');
-            }, 3000);
-            this.router.navigate(['training-provider/profile'])
-        } else {
+    this.isLoggingIn = true;
+    this.loginFormSubmitted = true;
+    if (this.loginForm.valid) {
+      this._auth.login(this.loginForm.value).subscribe({
+        next: (res: ResponseModel<LoginResponseDTO>) => {
           this.isLoggingIn = false;
-            setTimeout(() => {
-              this.isLoggingIn = false;
-              this._base.openSnackBar('Logged in successfully', 'success');
-            }, 3000);
-            this.router.navigate(['training-instructor/profile'])
-        }
-        localStorage.setItem('user', JSON.stringify(m));
-      } else {
-        setTimeout(() => {
+          this.loginFormSubmitted = true;
+          // this._current.storeUserCredentials(res?.response);
+          this.router.navigate(['training-provider']);
+        },
+        error: (error: HttpErrorResponse) => {
           this.isLoggingIn = false;
-          this.isError = true;
-          this.err_message = 'wrong credentials';
-        }, 3000);
-      }
-    })
+          this.loginFormSubmitted = true;
+          this.err_message = error?.error?.message;
+        },
+      });
+    } else {
+      this.isLoggingIn = false;
+      this.isError = true;
+      this.err_message = "Kindly fill the form correctly"
+    }
   }
 }

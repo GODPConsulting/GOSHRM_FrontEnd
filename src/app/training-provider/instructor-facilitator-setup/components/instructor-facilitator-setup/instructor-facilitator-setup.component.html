@@ -1,13 +1,13 @@
 <div class="setup__wrapper">
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-5" (click)="openDialog({ isEditing: false })">
             <h3 class="">Instructor/ Facilitator Setup</h3>
         </div>
         <div class="col-md-7 d-flex justify-content-end">
             <app-searchbar
                 [canAdd]="true"
                 [canDelete]="true"
-                (btnAction)="openDialog(true)"
+                (btnAction)="openDialog({ isEditing: false })"
             ></app-searchbar>
         </div>
     </div>

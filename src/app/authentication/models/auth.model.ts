@@ -1,5 +1,5 @@
 export interface LoginRequestDTO {
-  email: string;
+  email_Address: string;
   password: string;
 }
 
@@ -8,24 +8,21 @@ export interface LoginResponseDTO {
 }
 
 export interface RegisterRequestDTO {
-  firstName: string,
-  middleName: string,
-  lastName: string,
-  phoneNumber1: string,
-  phoneNumber2: string,
-  email: string,
-  altEmail: string,
-  organizationName: string,
+  full_Name: string,
+  email_Address: string,
   password: string,
-  confirmPassword: string,
+}
+
+export interface RegisterResponseDTO {
+  token: string;
 }
 
 export interface ForgotPassswordDTO {
-  email: string
+  email_Address: string
 }
 
 export interface ResetPasswordDTO {
-  currentPassword: string,
-  newPassword: string,
-  confirmNewPassword: string,
+  old_Password: string,
+  new_Password: string,
+  confirm_Password: string,
 }

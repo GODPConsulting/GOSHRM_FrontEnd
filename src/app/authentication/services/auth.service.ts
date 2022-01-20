@@ -1,4 +1,4 @@
-import { ForgotPassswordDTO, LoginRequestDTO, LoginResponseDTO, RegisterRequestDTO, ResetPasswordDTO } from './../models/auth.model';
+import { ForgotPassswordDTO, LoginRequestDTO, LoginResponseDTO, RegisterRequestDTO, RegisterResponseDTO, ResetPasswordDTO } from './../models/auth.model';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
 import { ResponseModel } from 'app/models/response.model';
@@ -14,20 +14,20 @@ export class AuthService {
   public login(
     loginRequestDTO: LoginRequestDTO
   ): Observable<ResponseModel<LoginResponseDTO>> {
-    const endpoint = 'auth/int/company-admin/login';
+    const endpoint = '/lms/loginsetup/add/update/loginsetup';
     return this.http.makeRequestWithData('post', endpoint, {}, loginRequestDTO);
   }
 
   public register(
     registerRequestDTO: RegisterRequestDTO
-  ): Observable<ResponseModel<RegisterRequestDTO>> {
-    const endpoint = 'auth/int/company-admin/register';
+  ): Observable<ResponseModel<RegisterResponseDTO>> {
+    const endpoint = '/lms/signupsetup/add/update/signupsetup';
     return this.http.makeRequestWithData('post', endpoint, {}, registerRequestDTO);
   }
   public forgotPassword(
     forgotPasswordRequestDTO: ForgotPassswordDTO
   ): Observable<ResponseModel<ForgotPassswordDTO>> {
-    const endpoint = 'auth/int/company-admin/login';
+    const endpoint = '/lms/forgetpasswordsetup/add/update/forgetpasswordsetup';
     return this.http.makeRequestWithData('post', endpoint, {}, forgotPasswordRequestDTO);
   }
   public resetPassword(
