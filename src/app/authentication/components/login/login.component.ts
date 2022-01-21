@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginResponseDTO } from '@auth/models/auth.model';
 import { AuthService } from '@auth/services/auth.service';
-// import { CurrentUserService } from '@core/services/current-user.service';
+import { CurrentUserService } from '@core/services/current-user.service';
 // import { BaseComponent } from '@core/base/base/base.component';
 import { ResponseModel } from 'app/models/response.model';
 
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private _auth: AuthService,
-    // private _current: CurrentUserService
+    private _current: CurrentUserService
   ) {}
 
   ngOnInit(): void {
@@ -46,9 +46,10 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this._auth.login(this.loginForm.value).subscribe({
         next: (res: ResponseModel<LoginResponseDTO>) => {
+          console.log(res);
           this.isLoggingIn = false;
           this.loginFormSubmitted = true;
-          // this._current.storeUserCredentials(res?.response);
+          this._current.storeUserCredentials(res?.response?.token);
           this.router.navigate(['training-provider']);
         },
         error: (error: HttpErrorResponse) => {
