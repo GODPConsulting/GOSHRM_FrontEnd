@@ -52,7 +52,7 @@ export class LmsService {
     return this.apiService.post("/lms/socialmedia/add/update/socialmedia", payload).pipe(
       tap(),
       map((res) => {
-        return res.employeeList;
+        return res;
       }),
       catchError(this.handleError)
     );
@@ -185,6 +185,40 @@ export class LmsService {
   }
 
   updateSecuritySetup(payload) {
+    return this.apiService.post("/lms/securitysetup/add/update/securitysetup", payload).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  updatePageContent(payload) {
+    return this.apiService.post("/lms/pagecontentsetup/add/update/pagecontentsetup", payload).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getPageContent(companyId) {
+    const params = new HttpParams()
+    .set('companyId', companyId);
+    return this.apiService
+      .get(`/lms/pagecontentsetup/get/all/pagecontentsetup`, params)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  updatePageBanner(payload) {
     return this.apiService.post("/lms/securitysetup/add/update/securitysetup", payload).pipe(
       tap(),
       map((res) => {

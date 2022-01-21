@@ -15,6 +15,8 @@ import { CoursesComponent } from "./courses/courses.component";
 import { EmailSetupComponent } from "./email-setup/email.component";
 import { TrainingProviderComponent } from "./training-provider/training-provider.component";
 import { LearningSetupComponent } from "./learning-setup.component";
+import { PageSetupDetailComponent } from './page-setup-detail/page-setup-detail.component';
+import { SearchbarComponent } from '../job-setup/searchbar/searchbar.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { LearningSetupComponent } from "./learning-setup.component";
     CoursesComponent,
     EmailSetupComponent,
     TrainingProviderComponent,
-    PageSetupComponent
+    PageSetupComponent,
+    PageSetupDetailComponent,
+    SearchbarComponent
   ],
   imports: [
     // BrowserModule,

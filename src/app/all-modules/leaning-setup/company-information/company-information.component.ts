@@ -79,10 +79,10 @@ export class CompanyInformationComponent implements OnInit {
 
   initSocialMediaForm() {
     this.socialMediaForm = this.fb.group({
-      linkedInType: [this.socialMediaInfo?.linkedInType ? this.socialMediaInfo?.linkedInType  : '' ],
-      facebookType: [this.socialMediaInfo?.facebookType ? this.socialMediaInfo?.facebookType  : '' ],
-      twitterType: [this.socialMediaInfo?.twitterType ? this.socialMediaInfo?.twitterType  : '' ],
-      youtubeType: [this.socialMediaInfo?.youtubeType ? this.socialMediaInfo?.youtubeType  : '' ],
+      linkedInType: [this.socialMediaInfo?.linkedInType ? this.socialMediaInfo?.linkedInType  : 'https://' ],
+      facebookType: [this.socialMediaInfo?.facebookType ? this.socialMediaInfo?.facebookType  : 'https://' ],
+      twitterType: [this.socialMediaInfo?.twitterType ? this.socialMediaInfo?.twitterType  : 'https://' ],
+      youtubeType: [this.socialMediaInfo?.youtubeType ? this.socialMediaInfo?.youtubeType  : 'https://' ],
     })
   }
 
@@ -209,16 +209,16 @@ export class CompanyInformationComponent implements OnInit {
     this.sub.add(
       this._lmsService.updateSocialMediaUrls(payload).subscribe({
         next: (res) => {
-          this.isFetchingCompanyInfo = false;
           console.log(res);
-          if (res.status.isSuccessful) {
-            swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
+          this.isFetchingCompanyInfo = false;
+          if (res?.status?.isSuccessful) {
+            swal.fire("GOSHRM", res?.status?.message?.friendlyMessage).then(() => {
               this.socialMediaInfo = payload
               this.initSocialMediaForm();
               this.closeSocialMediaModal();
             });
           } else {
-            swal.fire("GOSHRM", res.status.message.friendlyMessage);
+            swal.fire("GOSHRM", res?.status?.message?.friendlyMessage);
           }
         },
         error: (error) => {
