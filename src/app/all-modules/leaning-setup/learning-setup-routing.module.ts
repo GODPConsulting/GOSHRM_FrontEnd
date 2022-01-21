@@ -10,6 +10,7 @@ import { PayoutComponent } from "./payout/payout.component";
 import { PolicyComponent } from "./policy/policy.component";
 import { SecurityComponent } from "./security/security.component";
 import { TrainingProviderComponent } from "./training-provider/training-provider.component";
+import { PageSetupDetailComponent } from './page-setup-detail/page-setup-detail.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,10 @@ const routes: Routes = [
       {
         path: "application/page-setup",
         component: PageSetupComponent,
+      },
+      {
+        path: "application/page-setup-detail",
+        component: PageSetupDetailComponent,
       },
     ],
   },

@@ -113,10 +113,30 @@
                 </div>
             </div>
             <div class="d-flex py-3">
-                <img class="click pr-4" src="assets/img/linkedIn-icon.svg" alt="">
-                <img class="click pr-4" src="assets/img/facebook-icon.svg" alt="">
-                <img class="click pr-4" src="assets/img/twitter-icon.svg" alt="">
-                <img class="click pr-4" src="assets/img/youtube-icon.svg" alt="">
+                <a 
+                  [href]="socialMediaInfo?.linkedInType"
+                  target="_blank"
+                  *ngIf="socialMediaInfo?.linkedInType"
+                ><img class="click pr-4" src="assets/img/linkedIn-icon.svg" alt="">
+                </a>
+                <a 
+                  [href]="socialMediaInfo?.facebookType"
+                  target="_blank"
+                  *ngIf="socialMediaInfo?.facebookType"
+                ><img class="click pr-4" src="assets/img/facebook-icon.svg" alt="">
+                </a>
+                <a 
+                  [href]="socialMediaInfo?.twitterType"
+                  target="_blank"
+                  *ngIf="socialMediaInfo?.twitterType"
+                ><img class="click pr-4" src="assets/img/twitter-icon.svg" alt="">
+                </a>
+                <a 
+                  [href]="socialMediaInfo?.youtubeType"
+                  target="_blank"
+                  *ngIf="socialMediaInfo?.youtubeType"
+                ><img class="click pr-4" src="assets/img/youtube-icon.svg" alt="">
+                </a>
             </div>
         </div>
 
@@ -146,7 +166,7 @@
                     <li>
                       <a 
                         [href]="websiteUrls?.website_Link_Third" target="_blank"
-                      >{{ websiteUrls?.website_NameThird }}
+                      >{{ websiteUrls?.website_Name_Third }}
                       </a>
                     </li>
                </ul>

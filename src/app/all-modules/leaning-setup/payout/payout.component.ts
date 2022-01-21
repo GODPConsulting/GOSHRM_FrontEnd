@@ -17,12 +17,23 @@ export class PayoutComponent implements OnInit {
    public isPayoutReady: boolean = false;
    public payoutSetupFormSubmitted: boolean = false;
    public payoutForm: FormGroup;
-   public payoutId: number;
-   public payoutList: any =  {
-    "account_Type": "",
-    "account_Email": "",
+   public accountType: string = '1';
+   public payoutId: number = 0;
+   public profile: any;
+   public companyId: number;
+   public payoutList: any;
+   public payoutListItem: any = {
+    "payoutId": 0,
+    "account_TypeId": 1,
+    "paypal_Email": "",
+    "paypal_Name": "",
+    "bank_Name": "",
     "account_Name": "",
-  }
+    "account_Number": "",
+    "account_Type_Name": "",
+    "companyId": 0,
+    "account_Default": false
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -31,36 +42,64 @@ export class PayoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.profile = JSON.parse(localStorage.getItem('userDetails'));
+    this.companyId = this.profile.companyId;
     this.initPayoutSetupForm();
-    this.payoutForm.disable();
     this.getPayoutSetupInfo();
   }
 
-  openAccountModal() {
+  openAccountModal(payoutDetail) {
+    this.payoutListItem = payoutDetail;
+    this.accountType = this.payoutListItem.account_TypeId;
+    console.log(this.payoutListItem)
+    this.initPayoutSetupForm();
     $("#account-modal").modal("show");
-    this.payoutForm.enable();
   }
 
   closeAccountModal() {
     $("#account-modal").modal("hide");
-    this.payoutForm.disable();
   }
 
   initPayoutSetupForm() {
     this.payoutForm = this.fb.group({
-      account_Type: [this.payoutList?.account_Type ? this.payoutList?.account_Type  : '', Validators.required ],
-      account_Email: [this.payoutList?.account_Email ? this.payoutList?.account_Email  : '', Validators.required ],
-      account_Name: [this.payoutList?.account_Name ? this.payoutList?.account_Name  : '', Validators.required ],
+      account_TypeId: [this.payoutListItem?.account_TypeId ? this.payoutListItem?.account_TypeId  : '', Validators.required ],
+      paypal_Email: [this.payoutListItem?.paypal_Email ? this.payoutListItem?.paypal_Email  : '' ],
+      paypal_Name: [this.payoutListItem?.paypal_Name ? this.payoutListItem?.paypal_Name  : '' ],
+      bank_Name: [this.payoutListItem?.bank_Name ? this.payoutListItem?.bank_Name  : '' ],
+      account_Name: [this.payoutListItem?.account_Name ? this.payoutListItem?.account_Name  : '' ],
+      account_Number: [this.payoutListItem?.account_Number ? this.payoutListItem?.account_Number  : '' ],
     })
+  }
+
+  changeForm() {
+    let accountType = (<HTMLInputElement>document.getElementById('accountType')).value;
+    if(accountType == '2') {
+      this.accountType = '2';
+    } else {
+      this.accountType = '1';
+    }
+  }
+
+  setDefault() {
+    let checkDefault = (<HTMLInputElement>document.getElementById('checkDefault')).checked;
+    console.log(checkDefault)
+    this.payoutListItem.account_Default = checkDefault;
+  }
+
+  changeDefaultAccount(payoutId) {
+    this.payoutListItem.account_Default = !this.payoutListItem.account_Default;
+    console.log(this.payoutListItem.account_Default);
+    this.updatePayoutSetup(payoutId);
   }
 
   getPayoutSetupInfo() {
     this.sub.add(
-      this._lmsService.getAllEmailSetup(this.payoutId).subscribe({
+      this._lmsService.getAllPayoutSetup(this.companyId).subscribe({
         next: (res) => {
-          this.isPayoutReady = false;
-          this.payoutList = res;
           console.log(res);
+          this.isPayoutReady = false;
+          this.payoutList = res.payoutSetupTypes;
+          console.log(this.payoutList, typeof(res.payoutSetupTypes));
         },
         error: (error) => {
           this.isPayoutReady = false;
@@ -70,15 +109,30 @@ export class PayoutComponent implements OnInit {
     );
   }
 
-  updatePayoutSetup() {
+  updatePayoutSetup(payoutId) {
     this.payoutSetupFormSubmitted = true;
+    const payload = this.payoutForm.value;
+    payload.account_TypeId = parseInt(payload.account_TypeId);
+    payload.companyid = this.companyId;
+    payload.payoutId = payoutId;
+    payload.account_Default = this.payoutListItem.account_Default;
+    console.log(payload);
     this.sub.add(
-      this._lmsService.updatePayoutSetup(this.payoutForm.value).subscribe({
+      this._lmsService.updatePayoutSetup(payload).subscribe({
         next: (res) => {
           this.payoutSetupFormSubmitted = false;
           console.log(res);
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
+              if (payload.payoutId != 0) {
+                const index = this.payoutList.findIndex((payout) => {
+                  return payout.payoutId == payload?.payoutId;
+                });
+                this.payoutList[index] = payload;
+              } else {
+                payload.payoutId = res.payoutId;
+                this.payoutList = [payload, ...this.payoutList];
+              }
               this.initPayoutSetupForm();
               this.closeAccountModal();
             });

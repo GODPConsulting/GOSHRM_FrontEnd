@@ -72,3 +72,7 @@ h3 {
     background: #E0E0E0;
     color: #333;
 }
+
+input[type="email"] {
+    text-transform: lowercase;
+}

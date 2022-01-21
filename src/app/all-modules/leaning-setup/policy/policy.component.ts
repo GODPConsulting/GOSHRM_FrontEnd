@@ -19,6 +19,7 @@ export class PolicyComponent implements OnInit {
    public policyInfo: any;
    public profile: any;
    public companyId: number;
+   public policyId: number = 0;
    public htmlContent = ``;
    public config: AngularEditorConfig = {
     editable: true,
@@ -68,6 +69,7 @@ export class PolicyComponent implements OnInit {
           // this.isFetchingCompanyInfo = false;
           this._loading.hide();
           this.policyInfo = res['policySetupTypes'][0];
+          this.policyId = this.policyInfo?.policyId;
           console.log(res);
         },
         error: (error) => {
@@ -93,7 +95,8 @@ export class PolicyComponent implements OnInit {
   updatePolicySetup() {
     const payload = {
       companyId: this.companyId,
-      policy_Content: this.htmlContent
+      policy_Content: this.htmlContent,
+      policyId: this.policyId
     }
     console.log(payload);
     this.sub.add(

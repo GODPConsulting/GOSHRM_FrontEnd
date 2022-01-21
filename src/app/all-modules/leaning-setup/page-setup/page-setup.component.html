@@ -1,129 +1,137 @@
-<div class="email-setup_wrapper">
-  <div class="d-flex justify-content-between">
-    <h3>Page Setup</h3>
+<!-- Page Content -->
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">{{ current_tab }}</h3>
+      </div>
+      <div class="col-auto float-right ml-auto d-inline-block">
+        <app-searchbar class="d-inline-block px-3"></app-searchbar>
+        <a class="btn upload-btn hint" data-toggle="modal" (click)="delete()"
+          ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
+        </a>
+        <a *ngIf="current_tab =='Page Content'" class="btn upload-btn hint" data-toggle="modal" (click)="delete()"
+          ><span class="hint-text">Add</span><img src="assets/img/add.svg">
+        </a>
+      </div>
+    </div>
   </div>
+  <!-- /Page Header -->
 
-  <div class="bg-white p-5 my-4">
-      <div>
-        <div class="form-title d-flex justify-content-between pb-4">
-          <h4>Landing Page</h4>
-          <div>
-            <img (click)="editForm()" class="click" src="assets/img/edit-pen.svg" alt="">
+  <!--Page tabs-->
+  <div class="">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link active"
+          id="pills-pageBanner-tab"
+          data-toggle="pill"
+          href="#pills-pageBanner"
+          role="tab"
+          aria-controls="pills-pageBanner-tab"
+          aria-selected="true"
+          (click)="getCurrentTab('Page Banner')"
+          >Page Banner</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="pills-pageContent-tab"
+          data-toggle="pill"
+          href="#pills-pageContent"
+          role="tab"
+          aria-controls="pills-pageContent-tab"
+          aria-selected="false"
+          (click)="getCurrentTab('Page Content')"
+          >Page Content
+        </a>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="pills-tabContent">
+      <div
+        class="tab-pane fade show active"
+        id="pills-pageBanner"
+        role="tabpanel"
+        aria-labelledby="pills-pageBanner"
+      >
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="dashboard table-responsive p-3">
+              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th>
+                      <input type="checkbox">
+                      <span class="px-3">Page</span>
+                    </th>
+                    <th>Banner Title</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let asset of [1,2,3,4]">
+                    <th scope="row">
+                      <input type="checkbox">
+                      <span class="px-3"> Design, Art and Multimedia</span>
+                    </th>
+                    <td class="d-flex justufy-content-between">E
+                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
+                      <img class="click px-5 ml-auto" src="assets/img/edit.svg" routerLink="/lms/application/page-setup-detail">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-        <form action="" readonly>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form_group mb-4">
-                      <label for="currentPassword" class="form-label"
-                        >Page Title
-                      </label>
-                      <input
-                          class="form-control pr-2"
-                          type="text"
-                          formControlName="currentPassword"
-                          placeholder="Enter current password"
-                          [disabled]="!enableForm"
-                        />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form_group mb-4">
-                      <label for="currentPassword" class="form-label"
-                        >Page Subtitle
-                      </label>
-                      <input
-                          class="form-control pr-2"
-                          type="text"
-                          formControlName="currentPassword"
-                          placeholder="Enter current password"
-                          [disabled]="!enableForm"
-                        />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form_group mb-4">
-                    <label for="currentPassword" class="form-label"
-                      >Cover Image
-                    </label>
-                    <div class="attachment_wrapper">
-                      <p>Click here to edit image</p>
-                      <div class="d-flex justify-content-center">
-                        <img src="assets/img/img-icon.svg" alt="">
-                        <input type="file"
-                          name="file-1"
-                          id="file-1"
-                          accept="image/png,image/jpeg,image/jpg"
-                          [disabled]="!enableForm"
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-        </form>
       </div>
-      <hr>
-      <div class="py-3">
-        <div class="form-title d-flex justify-content-between pb-4">
-          <h4>My Learning Page</h4>
+
+      <div
+        class="tab-pane fade"
+        id="pills-pageContent"
+        role="tabpanel"
+        aria-labelledby="pills-pageContent"
+      >
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="dashboard table-responsive p-3">
+              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+                <thead>
+                  <tr>
+                    <th> 
+                      <input type="checkbox">
+                      <span class="px-3">Page</span>
+                    </th>
+                    <th>Section Title</th>
+                    <th>Section Content</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let asset of [1,2,3,4]">
+                    <th scope="row">
+                      <input type="checkbox">
+                      <span class="px-3"> Design, Art and Multimedia</span>
+                    </th>
+                    <td>
+                      Trusted companies
+                    </td>
+                    <td class="d-flex justufy-content-between">E
+                      <span class="pr-5">GOS Recruitment Management Soft ...</span>
+                      <div class="ml-auto">
+                        <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
+                        <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        <form action="">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form_group mb-4">
-                      <label for="currentPassword" class="form-label"
-                        >Page Title
-                      </label>
-                      <input
-                          class="form-control pr-2"
-                          type="text"
-                          formControlName="currentPassword"
-                          placeholder="Enter current password"
-                          [disabled]="!enableForm"
-                        />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form_group mb-4">
-                      <label for="currentPassword" class="form-label"
-                        >Page Subtitle
-                      </label>
-                      <input
-                          class="form-control pr-2"
-                          type="text"
-                          formControlName="currentPassword"
-                          placeholder="Enter current password"
-                          [disabled]="!enableForm"
-                        />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form_group mb-4">
-                    <label for="currentPassword" class="form-label"
-                      >Cover Image
-                    </label>
-                    <div class="attachment_wrapper">
-                      <p>Click here to edit image</p>
-                      <div class="d-flex justify-content-center">
-                        <img src="assets/img/img-icon.svg" alt="">
-                        <input type="file"
-                          name="file-1"
-                          id="file-1"
-                          accept="image/png,image/jpeg,image/jpg"
-                          [disabled]="!enableForm"
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-        </form>
       </div>
-      <div class="d-flex justify-content-end">
-        <button class="btn btn-orange" [hidden]="!enableForm">
-          Save
-        </button>
-      </div>
-  </div>
+
+    </div>
 </div>
+<!-- /Page Content -->
