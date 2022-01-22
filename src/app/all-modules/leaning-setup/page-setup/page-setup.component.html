@@ -64,16 +64,33 @@
                 <thead>
                   <tr>
                     <th>
-                      <input type="checkbox">
+                      <input
+                        type="checkbox"
+                        (change)="checkUncheckAll()"
+                        [(ngModel)]="isCheck"
+                        class=""
+                      />
                       <span class="px-3">Page</span>
                     </th>
                     <th>Banner Title</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
+                  <tr *ngFor="let asset of pageBanners, index as i">
                     <th scope="row">
-                      <input type="checkbox">
+                      <label
+                        class="check-container mb-4"
+                        for="checkbox{{ i }}"
+                      >
+                        <input
+                          (click)="selectDeselectCourses(asset)"
+                          type="checkbox"
+                          id="checkbox{{ i }}"
+                          [(ngModel)]="asset.isSelected"
+                          class="checkbox"
+                        />
+                        <span class="checkmark"></span>
+                      </label>
                       <span class="px-3"> Design, Art and Multimedia</span>
                     </th>
                     <td class="d-flex justufy-content-between">E

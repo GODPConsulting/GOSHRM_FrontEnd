@@ -20,12 +20,19 @@ export class PageSetupComponent implements OnInit {
   @ViewChild("fileInput") fileInput: ElementRef;
   public jobGradeForm: FormGroup;
   public selectedId: number[] = [];
+  public isCheck: boolean = false;
   public spinner: boolean = false;
   public jobGradeUploadForm: FormGroup;
   public profile: any;
   public companyId: number;
   public pageContents: any;
-  public pageBanners: any;
+  public pageBanners: any[] = [
+    {id: 1, page: 'Hello', title: 'am i number 1'},
+    {id: 2, page: 'Hi', title: 'am i number 2'},
+    {id: 3, page: 'Hey', title: 'am i number 3'},
+    {id: 4, page: 'Xup', title: 'am i number 4'},
+  ];
+  public selectedBanner: any[] = [];
   dtTrigger: Subject<any> = new Subject();
   selectJobGrades: any[];
   cols: ISearchColumn[];
@@ -69,6 +76,39 @@ export class PageSetupComponent implements OnInit {
         },
       })
     );
+  }
+
+  checkUncheckAll() {
+    for (var i = 0; i < this.pageBanners.length; i++) {
+      this.pageBanners[i].isSelected = this.isCheck;
+    }
+    this.getCheckedItemList();
+  }
+
+  isAllSelected() {
+    this.isCheck = this.pageBanners.every(function(item:any) {
+        return item.isSelected == true;
+      })
+    this.getCheckedItemList();
+  }
+  
+  getCheckedItemList(){
+    this.selectedBanner = [];
+    for (let i = 0; i < this.pageBanners.length; i++) {
+      if(this.pageBanners[i].isSelected)
+      this.selectedBanner.push(this.pageBanners[i]);
+    }
+    console.log(this.selectedBanner);
+    // this.selectedCourses = JSON.stringify(this.checkedCategoryList);
+  }
+
+  selectDeselectCourses(id) {
+    this.selectedBanner.includes(id)
+      ? (this.selectedBanner = this.selectedBanner.filter(
+          code => code != id
+        ))
+      : this.selectedBanner.push(id);
+    console.log(this.selectedBanner);
   }
 
   openUploadModal() {

@@ -65,3 +65,9 @@ div.dataTables_wrapper div.dataTables_filter label {
   background: rgba( #EB5757, 0.1 );
 }
 
+.check-container .checkmark {
+  position: absolute;
+  top: 2px;
+  left: 9px;
+}
+
