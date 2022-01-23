@@ -102,7 +102,7 @@ export class PageSetupComponent implements OnInit {
     // this.selectedCourses = JSON.stringify(this.checkedCategoryList);
   }
 
-  selectDeselectCourses(id) {
+  selectDeselectBanner(id) {
     this.selectedBanner.includes(id)
       ? (this.selectedBanner = this.selectedBanner.filter(
           code => code != id

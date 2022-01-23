@@ -18,133 +18,50 @@
       </div>
     </div>
     <div class="bg-white p-5 my-4">
-        <section class="table-responsive">
-            <table class="table caption-top text-nowrap">
-              <ng-container>
-                <thead>
-                  <tr>
-                    <th class="pl-5">Date</th>
-                    <th>Full Name</th>
-                    <th>Email Address</th>
-                    <th>Description</th>
-                    <th>Phone Number</th>
-                  </tr>
-                </thead>
-              </ng-container>
-              <tbody>
-               
-                <ng-container>
-                  <tr>
-                    <td>
-                      <input type="checkbox">
-                      <span class="pl-3"> Apr 11, 2018</span>
-                    </td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="checkbox">
-                      <span class="pl-3"> Apr 11, 2018</span>
-                    </td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="checkbox">
-                      <span class="pl-3"> Apr 11, 2018</span>
-                    </td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="checkbox">
-                      <span class="pl-3"> Apr 11, 2018</span>
-                    </td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="checkbox">
-                      <span class="pl-3"> Apr 11, 2018</span>
-                    </td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="checkbox">
-                      <span class="pl-3"> Apr 11, 2018</span>
-                    </td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="checkbox">
-                      <span class="pl-3"> Apr 11, 2018</span>
-                    </td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="checkbox">
-                      <span class="pl-3"> Apr 11, 2018</span>
-                    </td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <input type="checkbox">
-                      <span class="pl-3"> Apr 11, 2018</span>
-                    </td>
-                    <td>Innocent Sample</td>
-                    <td>Excel Ms Advanced</td>
-                    <td>180</td>
-                    <td>
-                      View
-                    </td>
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
-          </section>
+      <div class="dashboard table-responsive p-3">
+        <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  (change)="checkUncheckAll()"
+                  [(ngModel)]="isCheck"
+                  class=""
+                />
+                <span class="px-3">Date</span>
+              </th>
+              <th>Full Name</th>
+              <th>Email Address</th>
+              <th>Description</th>
+              <th>Phone Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let trainee of [1,2,3,4,5], index as i">
+              <th scope="row">
+                <label
+                  class="check-container mb-4"
+                  for="checkbox{{ i }}"
+                >
+                  <input
+                    (click)="selectDeselectTrainee(trainee)"
+                    type="checkbox"
+                    id="checkbox{{ i }}"
+                    [(ngModel)]="asset.isSelected"
+                    class="checkbox"
+                  />
+                  <span class="checkmark"></span>
+                </label>
+                <span class="px-3">Apr 11, 2018</span>
+              </th>
+              <td> Innocent Sample </td>
+              <td> Excel Ms Advanced </td>
+              <td> 180 </td>
+              <td> View </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 </div>

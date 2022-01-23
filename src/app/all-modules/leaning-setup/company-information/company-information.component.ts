@@ -16,6 +16,9 @@ export class CompanyInformationComponent implements OnInit {
     sub: Subscription = new Subscription();
     spinner: boolean = false;
     isFetchingCompanyInfo: boolean = false;
+    companyInfoFormFormSubmitted: boolean = false;
+    socialMediaFormSubmitted: boolean = false;
+    websiteFormSubmitted: boolean = false;
     profile: any;
     companyId: number;
     companyForm: FormGroup;
@@ -79,21 +82,42 @@ export class CompanyInformationComponent implements OnInit {
 
   initSocialMediaForm() {
     this.socialMediaForm = this.fb.group({
-      linkedInType: [this.socialMediaInfo?.linkedInType ? this.socialMediaInfo?.linkedInType  : 'https://' ],
-      facebookType: [this.socialMediaInfo?.facebookType ? this.socialMediaInfo?.facebookType  : 'https://' ],
-      twitterType: [this.socialMediaInfo?.twitterType ? this.socialMediaInfo?.twitterType  : 'https://' ],
-      youtubeType: [this.socialMediaInfo?.youtubeType ? this.socialMediaInfo?.youtubeType  : 'https://' ],
+      linkedInType: [
+        this.socialMediaInfo?.linkedInType ? this.socialMediaInfo?.linkedInType  : 'https://',
+        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
+       ],
+      facebookType: [
+        this.socialMediaInfo?.facebookType ? this.socialMediaInfo?.facebookType  : 'https://',
+        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
+      ],
+      twitterType: [
+        this.socialMediaInfo?.twitterType ? this.socialMediaInfo?.twitterType  : 'https://' ,
+        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
+      ],
+      youtubeType: [
+        this.socialMediaInfo?.youtubeType ? this.socialMediaInfo?.youtubeType  : 'https://',
+        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
+      ],
     })
   }
 
   initWebsiteForm() {
     this.websiteForm = this.fb.group({
       website_Name_First: [this.websiteUrls?.website_Name_First ? this.websiteUrls?.website_Name_First  : '' ],
-      website_Link_First: [this.websiteUrls?.website_Link_First ? this.websiteUrls?.website_Link_First  : 'hhtps://' ],
+      website_Link_First: [
+        this.websiteUrls?.website_Link_First ? this.websiteUrls?.website_Link_First  : 'hhtps://',
+        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
+      ],
       website_Name_Second: [this.websiteUrls?.website_Name_Second ? this.websiteUrls?.website_Name_Second  : '' ],
-      website_Link_Second: [this.websiteUrls?.website_Link_Second ? this.websiteUrls?.website_Link_Second  : 'https://' ],
+      website_Link_Second: [
+        this.websiteUrls?.website_Link_Second ? this.websiteUrls?.website_Link_Second  : 'https://',
+        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
+      ],
       website_Name_Third: [this.websiteUrls?.website_Name_Third ? this.websiteUrls?.website_Name_Third  : '' ],
-      website_Link_Third: [this.websiteUrls?.website_Link_Third ? this.websiteUrls?.website_Link_Third  : 'https://' ],
+      website_Link_Third: [
+        this.websiteUrls?.website_Link_Third ? this.websiteUrls?.website_Link_Third  : 'https://',
+        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
+      ],
     })
   }
 
@@ -206,38 +230,41 @@ export class CompanyInformationComponent implements OnInit {
     this.isFetchingCompanyInfo = true;
     const payload = this.socialMediaForm.value;
     payload.companyid = this.companyId
-    this.sub.add(
-      this._lmsService.updateSocialMediaUrls(payload).subscribe({
-        next: (res) => {
-          console.log(res);
-          this.isFetchingCompanyInfo = false;
-          if (res?.status?.isSuccessful) {
-            swal.fire("GOSHRM", res?.status?.message?.friendlyMessage).then(() => {
-              this.socialMediaInfo = payload
-              this.initSocialMediaForm();
-              this.closeSocialMediaModal();
-            });
-          } else {
-            swal.fire("GOSHRM", res?.status?.message?.friendlyMessage);
-          }
-        },
-        error: (error) => {
-          this.isFetchingCompanyInfo = false;
-          console.log(error);
-          swal.fire("GOSHRM", "error");
-        },
-      })
-    );
+    if(this.socialMediaForm.valid) {
+      this.sub.add(
+        this._lmsService.updateSocialMediaUrls(payload).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.isFetchingCompanyInfo = false;
+            if (res?.status?.isSuccessful) {
+              swal.fire("GOSHRM", res?.status?.message?.friendlyMessage).then(() => {
+                this.socialMediaInfo = payload
+                this.initSocialMediaForm();
+                this.closeSocialMediaModal();
+              });
+            } else {
+              swal.fire("GOSHRM", res?.status?.message?.friendlyMessage);
+            }
+          },
+          error: (error) => {
+            this.isFetchingCompanyInfo = false;
+            console.log(error);
+            swal.fire("GOSHRM", "error");
+          },
+        })
+      );
+    }
   }
 
   updateWebsiteUrls() {
-    this.isFetchingCompanyInfo = true;
+    this.socialMediaFormSubmitted = true;
     const payload = this.websiteForm.value;
     payload.companyid = this.companyId
+   if(this.websiteForm.valid) {
     this.sub.add(
       this._lmsService.updateWebsiteUrls(payload).subscribe({
         next: (res) => {
-          this.isFetchingCompanyInfo = false;
+          this.socialMediaFormSubmitted = false;
           console.log(res);
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
@@ -250,12 +277,13 @@ export class CompanyInformationComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.isFetchingCompanyInfo = false;
+          this.socialMediaFormSubmitted = false;
           console.log(error);
           swal.fire("GOSHRM", "error");
         },
       })
     );
+   }
   }
 
  

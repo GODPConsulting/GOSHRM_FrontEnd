@@ -25,10 +25,10 @@ const routes: Routes = [
         path: "security",
         component: SecurityComponent,
       },
-      {
-        path: "setup",
-        component: AppSetupComponent,
-      },
+      // {
+      //   path: "setup",
+      //   component: AppSetupComponent,
+      // },
       {
         path: "courses",
         component: CoursesComponent,

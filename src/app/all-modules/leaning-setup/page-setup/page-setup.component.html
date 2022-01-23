@@ -11,7 +11,7 @@
         <a class="btn upload-btn hint" data-toggle="modal" (click)="delete()"
           ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
         </a>
-        <a *ngIf="current_tab =='Page Content'" class="btn upload-btn hint" data-toggle="modal" (click)="delete()"
+        <a *ngIf="current_tab =='Page Content'" class="btn upload-btn hint" data-toggle="modal" routerLink="/lms/application/page-setup-detail"
           ><span class="hint-text">Add</span><img src="assets/img/add.svg">
         </a>
       </div>
@@ -76,14 +76,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let asset of pageBanners, index as i">
+                  <tr *ngFor="let banner of pageBanners, index as i">
                     <th scope="row">
                       <label
                         class="check-container mb-4"
                         for="checkbox{{ i }}"
                       >
                         <input
-                          (click)="selectDeselectCourses(asset)"
+                          (click)="selectDeselectBanner(banner)"
                           type="checkbox"
                           id="checkbox{{ i }}"
                           [(ngModel)]="asset.isSelected"
