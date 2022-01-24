@@ -12,6 +12,8 @@ import { CompetenceAssessmentComponent } from './components/competence-assessmen
 import { LearningAssessmentComponent } from './components/learning-assessment/learning-assessment.component';
 import { CreateLearningAssessmentComponent } from './components/create-learning-assessment/create-learning-assessment.component';
 import { CompetenceAssessmentDialogComponent } from './dialogs/competence-assessment-dialog/competence-assessment-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -31,6 +33,8 @@ import { CompetenceAssessmentDialogComponent } from './dialogs/competence-assess
   imports: [
     CommonModule,
     CourseCreationRoutingModule,
+    MatDialogModule,
+    ReactiveFormsModule,
     SharedModule
   ]
 })

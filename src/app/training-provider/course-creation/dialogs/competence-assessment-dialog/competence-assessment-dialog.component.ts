@@ -19,7 +19,8 @@ import { DialogModel } from '@shared/components/models/dialog.model';
 
 export class CompetenceAssessmentDialogComponent implements OnInit {
   @ViewChild('close') close!: ElementRef;
-  public payoutForm!: FormGroup;
+  public reviewerForm!: FormGroup;
+  public ratingForm!: FormGroup;
   public isLoading: boolean =false;
   
   @Output() event: EventEmitter<{
@@ -35,23 +36,28 @@ export class CompetenceAssessmentDialogComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.initPayoutForm();
+    this.initRatingForm();
+    this.initReviewerForm();
   }
 
-  public initPayoutForm() {
-    this.payoutForm = this.fb.group({
-      payoutIndex: this.fb.array([
-        this.fb.group({
-          account_Type: ['', [Validators.required]],
-          account_Email: ['', [Validators.required]],
-          account_Type_Name: ['', [Validators.required]],
-        })
-      ])
+  public initReviewerForm() {
+    this.reviewerForm = this.fb.group({
+      reviewers: ['', Validators.required]
+    })
+  }
+
+  public initRatingForm() {
+    this.ratingForm = this.fb.group({
+      rating: ['', Validators.required]
     })
   }
 
 
-  public submit(): void {
+  public submitReview(): void {
+    this.isLoading = true;
+  }
+
+  public submitRating() {
     this.isLoading = true;
   }
 
