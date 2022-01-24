@@ -11,17 +11,12 @@ declare const $: any;
 
 export class CoursesComponent implements OnInit {
   public sub: Subscription = new Subscription();
+  public dtOptions: DataTables.Settings = {};
    public spinner: boolean = false;
    public isProviderListReady: boolean = false;
-   public traineeProviderList: any = {
-    "courseId": 0,
-    "upload_Date": "",
-    "training_Provider": "",
-    "course_Title": "",
-    "no_Of_Views": 0,
-    "ratings": "",
-    "createdOn": "2022-01-14T22:09:34.474Z",
-  }
+   profile: any;
+  companyId: number;
+   public runningCourses: any[] =[];
 
   constructor(
     private _lmsService: LmsService
@@ -29,15 +24,17 @@ export class CoursesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.profile = JSON.parse(localStorage.getItem('userDetails'));
+    this.companyId = this.profile.companyId;
     this.getTrainingProviders();
   }
 
   getTrainingProviders() {
     this.sub.add(
-      this._lmsService.getAllTraineeSetup().subscribe({
+      this._lmsService.getAllRunningCourses(this.companyId).subscribe({
         next: (res) => {
-          // this.isProviderListReady = false;
-          // this.traineeProviderList = res;
+          this.isProviderListReady = false;
+          this.runningCourses = res['coursesSetupTypes'];
           console.log(res);
         },
         error: (error) => {

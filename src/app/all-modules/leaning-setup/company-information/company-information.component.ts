@@ -105,7 +105,7 @@ export class CompanyInformationComponent implements OnInit {
     this.websiteForm = this.fb.group({
       website_Name_First: [this.websiteUrls?.website_Name_First ? this.websiteUrls?.website_Name_First  : '' ],
       website_Link_First: [
-        this.websiteUrls?.website_Link_First ? this.websiteUrls?.website_Link_First  : 'hhtps://',
+        this.websiteUrls?.website_Link_First ? this.websiteUrls?.website_Link_First  : 'https://',
         [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
       ],
       website_Name_Second: [this.websiteUrls?.website_Name_Second ? this.websiteUrls?.website_Name_Second  : '' ],

@@ -19,7 +19,11 @@
     </div>
     <div class="bg-white p-5 my-4">
       <div class="dashboard table-responsive p-3">
-        <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+        <table
+          class="table table-striped text-nowrap" 
+          datatable [dtOptions]="dtOptions" 
+          data-searching="false"
+        >
           <thead>
             <tr>
               <th>

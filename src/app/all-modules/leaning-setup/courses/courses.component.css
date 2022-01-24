@@ -17,13 +17,13 @@ h3 {
 
 .table th {
     font-weight: bold;
-    font-size: 20px;
+    /* font-size: 20px; */
     line-height: 150%;
 }
 
 .table td {
     font-weight: normal;
-    font-size: 14px;
+    /* font-size: 14px; */
     line-height: 150%;
     padding: 12px;
 }
@@ -34,4 +34,13 @@ h3 {
 
 .table tr:last-child {
     border: none;
+}
+
+div.dataTables_wrapper div.dataTables_length label {
+    display: none !important;
+}
+
+label {
+    display: none;
+    color: aquamarine;
 }
