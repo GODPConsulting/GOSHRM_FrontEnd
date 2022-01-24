@@ -1,0 +1,12 @@
+.learning-assessment__wrapper {
+    padding: 3rem 5rem;
+    .border-grey {
+        border: .1rem solid #BDBDBD;
+        border-radius: .6rem;
+    }
+    input[type="radio"] {
+        height: 3rem;
+        width: 3rem;
+        margin-top: 1.3rem;
+    }
+}
