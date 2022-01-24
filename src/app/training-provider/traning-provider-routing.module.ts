@@ -60,6 +60,13 @@ const routes: Routes = [
                   (m) => m.InstructorInformationModule
                 ),
             },
+            {
+              path: 'course-creation',
+              loadChildren: () =>
+                import('./course-creation/course-creation.module').then(
+                  (m) => m.CourseCreationModule
+                ),
+            },
         ],
     }
 ];

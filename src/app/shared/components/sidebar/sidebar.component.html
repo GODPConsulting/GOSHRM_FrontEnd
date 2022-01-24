@@ -35,7 +35,7 @@
       isOpen ? 'sidebar-isOpen' : ''
     ]"
   >
-    <div class="sidebar-wrapper" *ngIf="loggedInUser.userRole == 'provider'">
+    <div class="sidebar-wrapper">
       <ul class="top-list">
         <li class="minimizeMenu_container">
           <span (click)="minimizeMenu()">
@@ -66,7 +66,7 @@
             class="side-link"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: false }"
-            routerLink="/candidates/saved-jobs"
+            routerLink="/training-provider/setup"
             (click)="toggleSidebar()"
           >
             <span class="side-icon">
@@ -82,7 +82,7 @@
             class="side-link"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: false }"
-            routerLink="/candidates/applications"
+            routerLink="/training-provider/course-creation"
             (click)="toggleSidebar()"
           >
             <span class="side-icon">

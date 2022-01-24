@@ -13,12 +13,12 @@
     width: 100%;
     margin-left: 0;
     transition: 0.2s ease-in-out;
-    padding: 0 1rem;
-    background: #fff;
+    // padding: 0 1rem;
+    background: $white-200;
     @include minSize($canvas: L) {
       width: calc(100% - 23.6rem);
       margin-left: 23.6rem;
-      padding: 0 2rem;
+      // padding: 0 2rem;
       &.showMinimized {
         width: calc(100% - 6.8rem);
         margin-left: 6.8rem;

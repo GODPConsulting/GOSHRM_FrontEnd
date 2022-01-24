@@ -49,7 +49,7 @@
     display: none;
   }
   .sidebar-wrapper {
-    background: $white-100;
+    background: $white-200;
   }
   @include minSize($canvas: L) {
     width: 23.6rem !important;
@@ -162,6 +162,7 @@
             color: $orange-400;
             opacity: 1;
             background: rgba($orange-400, 0.2);
+            border-right: .5rem solid $orange-400;
             .side-icon {
               svg path {
                 fill: $orange-400;
