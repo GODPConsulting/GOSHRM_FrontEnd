@@ -128,6 +128,7 @@ export class EditCompanyInfoDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.initUpdateProfileForm();
+    console.log(this.data)
   }
 
   initUpdateProfileForm() {
@@ -154,17 +155,18 @@ export class EditCompanyInfoDialogComponent implements OnInit {
     if (this.updateProfileForm.valid) {
       this.isLoading = true;
       const payload = this.updateProfileForm.value;
-      payload.id = this.data?.editObject?.trainingProviderId;
-      this._profile.updateProfile(payload, payload.id).subscribe({
+      payload.trainingProviderId = 2;
+      // payload.trainingProviderId = this.data?.editObject?.trainingProviderId;
+      this._profile.updateProfile(payload, '2').subscribe({
         next: (res: ResponseModel<Profile>) => {
           this.isLoading = false;
           console.log(res)
           if (this.data?.isEditing) {
-            payload.id = payload?.id;
+            payload.trainingProviderId = payload?.trainingProviderId;
             payload.active = true;
             payload.deleted = false;
           } else {
-            payload.id = res?.response?.trainingProviderId;
+            payload.id = res;
           }
           // delete payload?.id;
           this.event.emit({

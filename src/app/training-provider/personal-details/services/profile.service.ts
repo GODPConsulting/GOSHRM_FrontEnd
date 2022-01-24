@@ -41,7 +41,7 @@ constructor(private http: HttpService) { }
 
 public updateSocialmedia(
    getSocialMedia: SocialMedia, trainingProviderId: string
- ): Observable<ResponseModel<Profile>> {
+ ): Observable<ResponseModel<SocialMedia>> {
    const endpoint = '/trainingprovidersocialmedia/add/update/trainingprovidersocialmedia';
    const params = new HttpParams()
    .set('trainingProviderId', trainingProviderId)
@@ -59,7 +59,7 @@ public getWebsites(
 
   public updateWebsites(
   getWebsite: Website, trainingProviderId: string
-  ): Observable<ResponseModel<Profile>> {
+  ): Observable<ResponseModel<Website>> {
   const endpoint = '/trainingproviderwebsite/add/update/trainingproviderwebsite';
   const params = new HttpParams()
   .set('trainingProviderId', trainingProviderId)

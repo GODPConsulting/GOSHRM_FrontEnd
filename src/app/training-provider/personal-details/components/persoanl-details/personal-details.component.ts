@@ -23,7 +23,7 @@ export class PersonalDetailsComponent implements OnInit {
   public isFetchingWebsiteUrl: boolean = false;
   public profile!: Profile;
   public profileImg: string = "assets/images/profile-img.svg";
-  public socialmedia!: SocialMedia;
+  public socialMediaInfo!: SocialMedia;
   public websites!: Website
 
   constructor(
@@ -40,10 +40,11 @@ export class PersonalDetailsComponent implements OnInit {
   public getUserProfile(): void {
     this.isFetchingProfile = true;
     this.sub.add(
-      this._profile.getProfile('2').subscribe({
+      this._profile.getProfile('1').subscribe({
         next: (res: any) => {
           this.isFetchingProfile = false;
-          this.profile = res?.response;
+          this.profile = res['companySetupTypes'][0];
+          // console.log(res, this.profile)
         },
         error: (error: ResponseModel<null>) => {
           this.isFetchingProfile = false;
@@ -56,10 +57,11 @@ export class PersonalDetailsComponent implements OnInit {
   public getSocialmedia(): void {
     this.isFetchingSocialMedia = true;
     this.sub.add(
-      this._profile.getSocialMedia('2').subscribe({
+      this._profile.getSocialMedia('1').subscribe({
         next: (res: any) => {
           this.isFetchingSocialMedia = false;
-          this.socialmedia = res?.response;
+          this.socialMediaInfo = res['socialMediaSetupTypes'][0];
+          // console.log(res, this.socialMediaInfo)
         },
         error: (error: ResponseModel<null>) => {
           this.isFetchingSocialMedia = false;
@@ -72,10 +74,11 @@ export class PersonalDetailsComponent implements OnInit {
   public getWebsiteUrls(): void {
     this.isFetchingWebsiteUrl = true;
     this.sub.add(
-      this._profile.getWebsites('2').subscribe({
+      this._profile.getWebsites('1').subscribe({
         next: (res: any) => {
           this.isFetchingProfile = false;
-          this.websites = res?.response;
+          this.websites = res['websiteSetupTypes'][0];
+          console.log(res, this.websites)
         },
         error: (error: ResponseModel<null>) => {
           this.isFetchingWebsiteUrl = false;
@@ -102,14 +105,14 @@ export class PersonalDetailsComponent implements OnInit {
   public openEditProfileDialog(
     payload: { isEditing?: boolean; editObject?: any } | any
   ): void {
-    let object: DialogModel<any> = payload;
+    let object: DialogModel<Profile> = payload;
     const dialogRef = this.dialog.open(EditCompanyInfoDialogComponent, {
       data: object,
     });
     console.log(payload);
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-          this.profileImg = event?.editObject;
+          this.profile = event?.editObject;
       }
     );
   }
@@ -124,7 +127,7 @@ export class PersonalDetailsComponent implements OnInit {
 
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-          this.profileImg = event?.editObject;
+          this.socialMediaInfo = event?.editObject;
       }
     );
   }
@@ -139,7 +142,7 @@ export class PersonalDetailsComponent implements OnInit {
 
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-          this.profileImg = event?.editObject;
+          this.websites = event?.editObject;
       }
     );
   }

@@ -47,7 +47,7 @@
     <div class="basic_info">
       <div class="d-flex justify-content-between">
         <h4 class="py-3">Company Information</h4>
-        <div class="click" (click)="openEditProfileDialog({isEditing: true})">
+        <div class="click" (click)="openEditProfileDialog({isEditing: true, editObject: profile})">
           <img src="assets/images/edit-pen.svg" alt="">
         </div>
       </div>
@@ -114,23 +114,35 @@
     <div class="social_info">
       <div class="d-flex justify-content-between">
         <h4 class="py-3">Social Media Accounts</h4>
-        <div class="click" (click)="openEditSocialMediaDialog({ isEditing: false })">
+        <div class="click" (click)="openEditSocialMediaDialog({ isEditing: true, editObject: socialMediaInfo })">
           <img src="assets/images/edit-pen.svg" alt="">
         </div>
       </div>
       <div class="d-flex click">
-        <div class="pe-3">
-          <img src="assets/images/linkedIn-icon.svg" alt="">
-        </div>
-        <div class="pe-3 click">
-          <img src="assets/images/facebook-icon.svg" alt="">
-        </div>
-        <div class="pe-3 click">
-          <img src="assets/images/twitter-icon.svg" alt="">
-        </div>
-        <div class="pe-3 click">
-          <img src="assets/images/youtube-icon.svg" alt="">
-        </div>
+        <a 
+          [href]="socialMediaInfo?.linkedInType"
+          target="_blank"
+          *ngIf="socialMediaInfo?.linkedInType"
+        ><img class="click pe-4" src="assets/images/linkedIn-icon.svg" alt="">
+        </a>
+        <a 
+          [href]="socialMediaInfo?.facebookType"
+          target="_blank"
+          *ngIf="socialMediaInfo?.facebookType"
+        ><img class="click pe-4" src="assets/images/facebook-icon.svg" alt="">
+        </a>
+        <a 
+          [href]="socialMediaInfo?.twitterType"
+          target="_blank"
+          *ngIf="socialMediaInfo?.twitterType"
+        ><img class="click pe-4" src="assets/images/twitter-icon.svg" alt="">
+        </a>
+        <a 
+          [href]="socialMediaInfo?.youtubeType"
+          target="_blank"
+          *ngIf="socialMediaInfo?.youtubeType"
+        ><img class="click pe-4" src="assets/images/youtube-icon.svg" alt="">
+        </a>
       </div>
      
     </div>
@@ -140,13 +152,32 @@
     <div class="website_info">
       <div class="d-flex justify-content-between">
         <h4 class="py-3">Websites</h4>
-        <div class="click" (click)="openWebsiteDialog({ isEditing: false })">
+        <div class="click" (click)="openWebsiteDialog({ isEditing: true, editObject: websites })">
           <img src="assets/images/edit-pen.svg" alt="">
         </div>
       </div>
-      <div class="">
-        <a class="d-block website-link" href="#" *ngFor="let item of [1,2,3]">Cowrywise</a>
-      </div>
+      <div class="py-3">
+        <ul>
+             <li>
+               <a 
+                 [href]="websites?.website_Link_First" target="_blank"
+               >{{ websites?.website_Name_First }}
+               </a>
+             </li>
+             <li>
+               <a 
+                 [href]="websites?.website_Link_Second" target="_blank"
+               >{{ websites?.website_Name_Second }}
+               </a>
+             </li>
+             <li>
+               <a 
+                 [href]="websites?.website_Link_Third" target="_blank"
+               >{{ websites?.website_Name_Third }}
+               </a>
+             </li>
+        </ul>
+     </div>
      
     </div>
 
