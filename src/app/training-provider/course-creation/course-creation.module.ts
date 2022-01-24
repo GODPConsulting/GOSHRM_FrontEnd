@@ -14,6 +14,7 @@ import { CreateLearningAssessmentComponent } from './components/create-learning-
 import { CompetenceAssessmentDialogComponent } from './dialogs/competence-assessment-dialog/competence-assessment-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CourseOutlineDialogComponent } from './dialogs/course-outline-dialog/course-outline-dialog.component';
 
 
 
@@ -28,7 +29,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CompetenceAssessmentComponent,
     LearningAssessmentComponent,
     CreateLearningAssessmentComponent,
-    CompetenceAssessmentDialogComponent
+    CompetenceAssessmentDialogComponent,
+    CourseOutlineDialogComponent
   ],
   imports: [
     CommonModule,
