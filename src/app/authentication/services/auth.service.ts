@@ -14,20 +14,20 @@ export class AuthService {
   public login(
     loginRequestDTO: LoginRequestDTO
   ): Observable<ResponseModel<LoginResponseDTO>> {
-    const endpoint = '/lms/login/add/update/login';
+    const endpoint = '/login/add/update/login';
     return this.http.makeRequestWithData('post', endpoint, {}, loginRequestDTO);
   }
 
   public register(
     registerRequestDTO: RegisterRequestDTO
   ): Observable<ResponseModel<RegisterResponseDTO>> {
-    const endpoint = '/lms/signup/add/update/signup';
+    const endpoint = '/signup/add/update/signup';
     return this.http.makeRequestWithData('post', endpoint, {}, registerRequestDTO);
   }
   public forgotPassword(
     forgotPasswordRequestDTO: ForgotPassswordDTO
   ): Observable<ResponseModel<ForgotPassswordDTO>> {
-    const endpoint = '/lms/forgetpassword/add/update/forgetpassword';
+    const endpoint = '/forgetpassword/add/update/forgetpassword';
     return this.http.makeRequestWithData('post', endpoint, {}, forgotPasswordRequestDTO);
   }
   public resetPassword(

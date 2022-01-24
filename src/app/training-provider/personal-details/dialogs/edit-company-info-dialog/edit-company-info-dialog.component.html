@@ -15,10 +15,10 @@
             </label>
             <input
               type="text"
-              id="firstName"
+              id="full_Name"
               class="form-control"
-              placeholder="Enter First Name"
-              formControlName="firstName"
+              placeholder="Enter Full Name"
+              formControlName="full_Name"
             />
           </div>
         </div>
@@ -29,10 +29,10 @@
             </label>
             <input
               type="text"
-              id="middleName"
+              id="phone_Number"
               class="form-control"
-              placeholder="Enter Middle Name"
-              formControlName="middleName"
+              placeholder="Enter Phone Name"
+              formControlName="phone_Number"
             />
           </div>
         </div>
@@ -43,10 +43,10 @@
             </label>
             <input
               type="email"
-              id="email"
+              id="email_Address"
               class="form-control"
-              placeholder="Enter Last Name"
-              formControlName="lastName"
+              placeholder="Enter Email Address"
+              formControlName="email_Address"
             />
           </div>
         </div>
@@ -58,9 +58,9 @@
             <input
               type="text"
               id="phoneNo"
-              class="form-control"
-              placeholder="Enter phone number"
-              formControlName="phoneNumber1"
+              class="physical_Address"
+              placeholder="Enter Physical Address"
+              formControlName="physical_Address"
             />
           </div>
         </div>
@@ -74,6 +74,7 @@
            <textarea 
             class="form-control" 
             cols="30" rows="10"
+            formControlName="aboutInfo"
           ></textarea>
           </div>
         </div>
@@ -82,7 +83,7 @@
             <label for="middleName" class="form-label"
               >Industry
             </label>
-            <select name="" id="" class="form-control">
+            <select name="" id="" class="form-control" formControlName="industryTypes">
               <option value=""></option>
               <option value="banking & finance">Banking & Finance</option>
               <option value="it & technology">IT & Technology</option>
@@ -94,7 +95,7 @@
             <label for="lastName" class="form-label"
               >Specialization
             </label>
-            <select name="" id="" class="form-control">
+            <select name="" id="" class="form-control" formControlName="specializationTypes">
               <option value=""></option>
               <option value="banking & finance">Banking & Finance</option>
               <option value="it & technology">IT & Technology</option>

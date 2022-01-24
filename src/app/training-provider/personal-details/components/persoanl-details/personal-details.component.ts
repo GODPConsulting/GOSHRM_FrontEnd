@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
@@ -8,8 +7,8 @@ import { EditCompanyInfoDialogComponent } from '../../dialogs/edit-company-info-
 import { SocialMediaDialogComponent } from '../../dialogs/social-media-dialog/social-media-dialog.component';
 import { UploadProfileComponent } from '../../dialogs/upload-profile/upload-profile.component';
 import { WebsiteDialogComponent } from '../../dialogs/website-dialog/website-dialog.component';
-import { Profile } from '../../models/user-profile.model';
 import { ProfileService } from '../../services/profile.service';
+import { Profile, SocialMedia, Website } from './../../models/user-profile.model'
 
 @Component({
   selector: 'app-personal-details',
@@ -19,50 +18,29 @@ import { ProfileService } from '../../services/profile.service';
 export class PersonalDetailsComponent implements OnInit {
   private sub: Subscription = new Subscription();
   public isLoading: boolean = false;
-  public canEditProfile: boolean = false;
   public isFetchingProfile: boolean = false;
-  public updateProfileForm!: FormGroup;
+  public isFetchingSocialMedia: boolean = false;
+  public isFetchingWebsiteUrl: boolean = false;
   public profile!: Profile;
   public profileImg: string = "assets/images/profile-img.svg";
+  public socialmedia!: SocialMedia;
+  public websites!: Website
 
   constructor(
     public dialog: MatDialog,
-    private fb: FormBuilder,
     private _profile: ProfileService
   ) { }
 
   ngOnInit() {
-    this.initUpdateProfileForm();
-    this.updateProfileForm.disable();
-  }
-
-  initUpdateProfileForm() {
-    this.updateProfileForm = this.fb.group({
-        firstName: [this.profile?.firstName ? this.profile?.firstName  : '' ],
-        middleName: [this.profile?.middleName ? this.profile?.middleName  : ''],
-        lastName: [this.profile?.lastName ? this.profile?.lastName  : ''],
-        phoneNumber1: [this.profile?.phoneNumber1 ? this.profile?.phoneNumber1  : ''],
-        phoneNumber2: [this.profile?.phoneNumber2 ? this.profile?.phoneNumber2  : ''],
-        email: [this.profile?.email ? this.profile?.email  : ''],
-        altEmail: [this.profile?.altEmail ? this.profile?.altEmail  : ''],
-        organizationName: [this.profile?.organizationName ? this.profile?.organizationName  : '']
-    })
-  }
-
-  editUserProfile() {
-    this.canEditProfile = !this.canEditProfile;
-    if(this.canEditProfile) {
-      this.updateProfileForm.enable();
-      this.openEditProfileDialog(true);
-    } else {
-      this.updateProfileForm.disable();
-    }
+    this.getUserProfile();
+    this.getSocialmedia();
+    this.getWebsiteUrls();
   }
 
   public getUserProfile(): void {
     this.isFetchingProfile = true;
     this.sub.add(
-      this._profile.getProfile(this.profile).subscribe({
+      this._profile.getProfile('2').subscribe({
         next: (res: any) => {
           this.isFetchingProfile = false;
           this.profile = res?.response;
@@ -75,17 +53,36 @@ export class PersonalDetailsComponent implements OnInit {
     );
   }
 
-  public openModal(): void {
-    const dialogConfig = new MatDialogConfig();
-    // dialogConfig.height = '500px';
-    // dialogConfig.width = '600px';
-    const dialogRef = this.dialog.open(
-      EditCompanyInfoDialogComponent,
-      dialogConfig
+  public getSocialmedia(): void {
+    this.isFetchingSocialMedia = true;
+    this.sub.add(
+      this._profile.getSocialMedia('2').subscribe({
+        next: (res: any) => {
+          this.isFetchingSocialMedia = false;
+          this.socialmedia = res?.response;
+        },
+        error: (error: ResponseModel<null>) => {
+          this.isFetchingSocialMedia = false;
+          console.log(error);
+        },
+      })
     );
-    dialogRef.afterClosed().subscribe((result) => {
+  }
 
-    });
+  public getWebsiteUrls(): void {
+    this.isFetchingWebsiteUrl = true;
+    this.sub.add(
+      this._profile.getWebsites('2').subscribe({
+        next: (res: any) => {
+          this.isFetchingProfile = false;
+          this.websites = res?.response;
+        },
+        error: (error: ResponseModel<null>) => {
+          this.isFetchingWebsiteUrl = false;
+          console.log(error);
+        },
+      })
+    );
   }
 
   public openProfileUploadDialog(
@@ -95,7 +92,6 @@ export class PersonalDetailsComponent implements OnInit {
     const dialogRef = this.dialog.open(UploadProfileComponent, {
       data: object,
     });
-
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
           this.profileImg = event?.editObject;
@@ -110,7 +106,7 @@ export class PersonalDetailsComponent implements OnInit {
     const dialogRef = this.dialog.open(EditCompanyInfoDialogComponent, {
       data: object,
     });
-
+    console.log(payload);
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
           this.profileImg = event?.editObject;
@@ -146,10 +142,6 @@ export class PersonalDetailsComponent implements OnInit {
           this.profileImg = event?.editObject;
       }
     );
-  }
-
-  public submit() {
-    this.isLoading = true;
   }
 
 }
