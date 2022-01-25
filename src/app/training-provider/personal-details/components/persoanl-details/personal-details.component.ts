@@ -57,7 +57,7 @@ export class PersonalDetailsComponent implements OnInit {
   public getSocialmedia(): void {
     this.isFetchingSocialMedia = true;
     this.sub.add(
-      this._profile.getSocialMedia('1').subscribe({
+      this._profile.getSocialMedia('3').subscribe({
         next: (res: any) => {
           this.isFetchingSocialMedia = false;
           this.socialMediaInfo = res['socialMediaSetupTypes'][0];
