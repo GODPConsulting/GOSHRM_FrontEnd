@@ -15,6 +15,7 @@
     transition: 0.2s ease-in-out;
     // padding: 0 1rem;
     background: $white-200;
+    color: $black-100;
     @include minSize($canvas: L) {
       width: calc(100% - 23.6rem);
       margin-left: 23.6rem;

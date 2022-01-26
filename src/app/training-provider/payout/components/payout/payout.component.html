@@ -12,12 +12,12 @@
         </div>
     </div>
     <div class="payout_detail">
-      <div class="password_wrapper my-4" *ngFor="let account of payouts">
+      <div class="payout-form my-4" *ngFor="let account of payouts">
         <div class="p-4 bg-white">
             <div class="d-flex justify-content-end">
                 <div class="click" (click)="openPayoutDialog({ isEditing: true, editObject: account })">
                     <img src="assets/images/edit-pen.svg" alt="">
-                    <span class="edit-pen px-3">Edit</span>
+                    <span class="edit-pen p-4">Edit</span>
                 </div>
             </div>
             <form>
@@ -116,7 +116,7 @@
                 class="btn btn-lg"
                 [disabled]="account?.account_Default"
                 [ngClass]="!account?.account_Default 
-                  ? 'btn-green' : 'btn-default'"
+                  ? 'btn-green' : 'btn-light'"
                 (click)="setAsDefault(account)"
               >
                 Set as Default
