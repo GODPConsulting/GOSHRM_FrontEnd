@@ -1,4 +1,3 @@
-import { Router } from '@angular/router';
 import {
   Component,
   ElementRef,
@@ -30,9 +29,8 @@ export class SearchbarComponent implements OnInit {
   @Input() canDownload: boolean = false;
   @Input() canDelete: boolean = false;
   @Input() canAdd: boolean = false;
-  constructor(
-    private router: Router
-  ) { }
+
+  constructor() { }
 
   ngOnInit(): void {}
 
@@ -49,10 +47,6 @@ export class SearchbarComponent implements OnInit {
   }
   public searchPressed(): void {
     this.searchAction.emit(true);
-  }
-
-  public gotToCreateJob() {
-    this.router.navigate(['/employers/create-job'])
   }
 
   public getSearchQuery(

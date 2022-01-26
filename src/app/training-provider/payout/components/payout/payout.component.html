@@ -1,10 +1,14 @@
 <div class="payout__wrapper">
     <div class="row d-flex justify-content-between py-4">
         <div class="col-md-3">
-            <h3 (click)="openPayoutDialog({ isEditing: false, editObject: {account_TypeId: 1}})">Payout</h3>
+            <h3>Payout</h3>
         </div>
         <div class="col-md-7 d-flex justify-content-end">
-            <app-searchbar [canAdd]="true" [canDelete]="true"></app-searchbar>
+            <app-searchbar 
+              [canAdd]="true" 
+              [canDelete]="true"
+              (btnAction)="openPayoutDialog({ isEditing: false, editObject: {account_TypeId: 1}})"
+            ></app-searchbar>
         </div>
     </div>
     <div class="payout_detail">
