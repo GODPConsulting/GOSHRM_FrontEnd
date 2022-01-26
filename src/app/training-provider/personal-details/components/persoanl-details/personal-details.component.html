@@ -186,12 +186,12 @@
     <div class="courses_info">
       <div class="d-flex justify-content-between">
         <h4 class="d-flex py-3">
-          <span>No. of running courses - 36 courses</span>
+          <span class="pe-3">No. of running courses - 36 courses</span>
           <ng-rating-bar
                   [value]="4"
                   [ratingCount]="5"
                   [disabled]="true"
-                  [styles]="{ margin: '0px', fontSize: '16px'}"
+                  [styles]="{ margin: '0px', fontSize: '25px'}"
                   colorActive="#F88F09" 
                   colorDefault="#cecece"
           ></ng-rating-bar>
@@ -203,15 +203,14 @@
       <div class="">
         <div class="d-flex justify-content-between" *ngFor="let item of [1,2,3]">
           <p>Foundations  of User Experience (UX) Design</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="ratings"> 
-              <i class="fa fa-star rating-color"></i> 
-              <i class="fa fa-star rating-color"></i> 
-              <i class="fa fa-star rating-color"></i> 
-              <i class="fa fa-star rating-color"></i> 
-              <i class="fa fa-star"></i> 
-            </div>
-          </div>
+          <ng-rating-bar
+              [value]="4"
+              [ratingCount]="5"
+              [disabled]="true"
+              [styles]="{ margin: '0px', fontSize: '20px'}"
+              colorActive="#F88F09" 
+              colorDefault="#cecece"
+          ></ng-rating-bar>
         </div>
       </div>
      
