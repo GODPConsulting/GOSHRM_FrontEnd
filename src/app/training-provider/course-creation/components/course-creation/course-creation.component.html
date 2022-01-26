@@ -26,16 +26,14 @@
                     <div class="img-wrapper">
                         <img src="" alt="">
                     </div>
-                    <div class="d-flex justify-content-center align-items-center pt-3 pb-2">
-                        <div class="ratings"> 
-                          <i class="fa fa-star rating-color"></i> 
-                          <i class="fa fa-star rating-color"></i> 
-                          <i class="fa fa-star rating-color"></i> 
-                          <i class="fa fa-star rating-color"></i> 
-                          <i class="fa fa-star"></i> 
-                        </div>
-                    </div>
-                    <!-- <p class="text-center">(4.8 ratings)</p> -->
+                    <ng-rating-bar
+                        [value]="4"
+                        [ratingCount]="5"
+                        [disabled]="true"
+                        [styles]="{ margin: '0px', fontSize: '16px'}"
+                        colorActive="#F88F09" 
+                        colorDefault="#cecece"
+                    ></ng-rating-bar>
                 </div>
                 <div class="card-right ps-5">
                     <div class="d-flex">

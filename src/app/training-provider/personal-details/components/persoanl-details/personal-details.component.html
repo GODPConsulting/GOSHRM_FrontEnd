@@ -187,9 +187,14 @@
       <div class="d-flex justify-content-between">
         <h4 class="d-flex py-3">
           <span>No. of running courses - 36 courses</span>
-          <div class="d-flex justify-content-between align-items-center px-3">
-            <div class="ratings"> <i class="fa fa-star rating-color"></i> <i class="fa fa-star rating-color"></i> <i class="fa fa-star rating-color"></i> <i class="fa fa-star rating-color"></i> <i class="fa fa-star"></i> </div>
-          </div>
+          <ng-rating-bar
+                  [value]="4"
+                  [ratingCount]="5"
+                  [disabled]="true"
+                  [styles]="{ margin: '0px', fontSize: '16px'}"
+                  colorActive="#F88F09" 
+                  colorDefault="#cecece"
+          ></ng-rating-bar>
         </h4>
         <div class="click">
           <img src="assets/images/edit-pen.svg" alt="">

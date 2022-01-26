@@ -24,15 +24,14 @@
               <td>02:45:12</td>
               <td>180</td>
               <td>
-                <div class="d-flex justify-content-center align-items-center">
-                    <div class="ratings"> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star"></i> 
-                    </div>
-                  </div>
+                <ng-rating-bar
+                  [value]="4"
+                  [ratingCount]="5"
+                  [disabled]="true"
+                  [styles]="{ margin: '0px', fontSize: '16px'}"
+                  colorActive="#F88F09" 
+                  colorDefault="#cecece"
+                ></ng-rating-bar>
               </td>
             </tr>
           </ng-container>

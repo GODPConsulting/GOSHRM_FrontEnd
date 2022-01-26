@@ -5,7 +5,7 @@ import { InstructorInformationRoutingModule } from './instructor-information-rou
 import { SharedModule } from '@shared/shared.module';
 import { LayoutComponent } from './layout/layout.component';
 import { FacilitatedCoursesComponent } from './components/facilitated-courses/facilitated-courses.component';
-
+import { NgRatingBarModule } from 'ng-rating-bar';
 
 
 @NgModule({
@@ -17,7 +17,8 @@ import { FacilitatedCoursesComponent } from './components/facilitated-courses/fa
   imports: [
     CommonModule,
     InstructorInformationRoutingModule,
-    SharedModule
+    SharedModule,
+    NgRatingBarModule
   ]
 })
 export class InstructorInformationModule { }

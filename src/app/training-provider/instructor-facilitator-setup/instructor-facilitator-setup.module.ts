@@ -6,7 +6,7 @@ import { SharedModule } from '@shared/shared.module';
 import { AddInstructorDialogComponent } from './dialogs/add-instructor-dialog/add-instructor-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { NgRatingBarModule } from 'ng-rating-bar';
 
 
 @NgModule({
@@ -19,7 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     InstructorFacilitatorSetupRoutingModule,
     MatDialogModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    NgRatingBarModule
   ]
 })
 export class InstructorFacilitatorSetupModule { }

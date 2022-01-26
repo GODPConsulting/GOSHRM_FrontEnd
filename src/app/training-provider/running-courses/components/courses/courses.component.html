@@ -25,14 +25,7 @@
               <td>{{ course?.no_Of_Views }}</td>
               <td>
                 <div class="d-flex justify-content-center align-items-center">
-                    <!-- <div class="ratings"> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star"></i> 
-                    </div> -->
-                    <ng-rating-bar
+                   <ng-rating-bar
                     [value]="course?.ratings || 0"
                     [ratingCount]="5"
                     [disabled]="true"

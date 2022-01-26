@@ -15,7 +15,7 @@ import { CompetenceAssessmentDialogComponent } from './dialogs/competence-assess
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CourseOutlineDialogComponent } from './dialogs/course-outline-dialog/course-outline-dialog.component';
-
+import { NgRatingBarModule } from 'ng-rating-bar';
 
 
 @NgModule({
@@ -38,7 +38,8 @@ import { CourseOutlineDialogComponent } from './dialogs/course-outline-dialog/co
     MatDialogModule,
     ReactiveFormsModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    NgRatingBarModule
   ]
 })
 export class CourseCreationModule { }

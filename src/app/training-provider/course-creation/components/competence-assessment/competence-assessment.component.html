@@ -6,7 +6,7 @@
                 [canAdd]="true"
                 [canDelete]="true"
                 [canDownload]="true"
-                (btnAction)="openDialog({isEditing: false  })"
+                (btnAction)="openDialog({isEditing: true  })"
             ></app-searchbar>
        </div>
     </div>
@@ -30,15 +30,14 @@
               <td>Industrial Analytics</td>
               <td>PR_Sales_45342...</td>
               <td>
-                <div class="d-flex justify-content-center align-items-center">
-                    <div class="ratings"> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star rating-color"></i> 
-                      <i class="fa fa-star"></i> 
-                    </div>
-                  </div>
+                <ng-rating-bar
+                  [value]="4"
+                  [ratingCount]="5"
+                  [disabled]="true"
+                  [styles]="{ margin: '0px', fontSize: '16px'}"
+                  colorActive="#F88F09" 
+                  colorDefault="#cecece"
+                ></ng-rating-bar>
               </td>
               <td class="click d-flex justify-content-around">
                 <span (click)="openDialog({isEditing: true  })">
