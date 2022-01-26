@@ -5,6 +5,7 @@ import { RunningCoursesRoutingModule } from './running-courses-routing.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
+import { NgRatingBarModule } from 'ng-rating-bar';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { SharedModule } from '@shared/shared.module';
     RunningCoursesRoutingModule,
     MatDialogModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    NgRatingBarModule
   ],
 })
 export class RunningCoursesModule { }

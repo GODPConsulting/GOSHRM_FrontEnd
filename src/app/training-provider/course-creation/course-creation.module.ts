@@ -13,7 +13,7 @@ import { LearningAssessmentComponent } from './components/learning-assessment/le
 import { CreateLearningAssessmentComponent } from './components/create-learning-assessment/create-learning-assessment.component';
 import { CompetenceAssessmentDialogComponent } from './dialogs/competence-assessment-dialog/competence-assessment-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CourseOutlineDialogComponent } from './dialogs/course-outline-dialog/course-outline-dialog.component';
 
 
@@ -37,7 +37,8 @@ import { CourseOutlineDialogComponent } from './dialogs/course-outline-dialog/co
     CourseCreationRoutingModule,
     MatDialogModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class CourseCreationModule { }

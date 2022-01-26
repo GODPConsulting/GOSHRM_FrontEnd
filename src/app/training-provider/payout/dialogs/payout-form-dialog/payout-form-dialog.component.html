@@ -1,54 +1,160 @@
 <div class="d-flex justify-content-between" mat-dialog-title>
-    <h2 mat-dialog-title>Social Media Accounts </h2>
+    <h2 mat-dialog-title>Payout </h2>
     <div class="click" mat-dialog-close>
       <img src="assets/icons/x.svg" alt="" />
     </div>
   </div>
   <mat-dialog-content class="mat-typography">
     <div>
-        <form [formGroup]="payoutForm">
-            <div class="row">
-                <div class="col-12">
-                  <div class="form_group mb-5">
-                    <label for="firstName" class="form-label"
-                      >Account Type
-                    </label>
-                   <select name="" id="" class="form-control">
-                       <option value="individual">Individual</option>
-                       <option value="cooperate">Cooperate</option>
-                   </select>
-                  </div>
-                </div>
-                <div class="col-12">
-                    <div class="form_group mb-5">
-                      <label for="middleName" class="form-label"
-                        >Paypay Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="middleName"
-                        class="form-control"
-                        placeholder="Enter Middle Name"
-                        formControlName="middleName"
-                      />
-                    </div>
-                </div>
-                <div class="col-12">
-                        <div class="form_group mb-5">
-                        <label for="lastName" class="form-label"
-                            >Paypal Name
-                        </label>
-                        <input
-                            type="text"
-                            id="email"
-                            class="form-control"
-                            placeholder="Enter Last Name"
-                            formControlName="lastName"
-                        />
-                        </div>
+      <form [formGroup]="payoutForm">
+        <div class="row">
+          <div class="col-md-6">
+              <div class="form_group mb-4">
+                <label for="currentPassword" class="form-label"
+                  >Account Type
+                  <span class="text-danger">● </span>
+                </label>
+                <select
+                  id="accountType"
+                  class="form-control" 
+                  formControlName="account_TypeId"
+                  (change)="changeForm()"
+                  [ngClass]="{
+                    'is-invalid':
+                      (payoutForm.get('account_TypeId')?.errors &&
+                      payoutForm.get('account_TypeId')?.touched) ||
+                      (payoutForm.get('account_TypeId')?.hasError('required') &&
+                      payoutSetupFormSubmitted)
+                  }"
+                >
+                     <option value="1">Paypal</option>
+                     <option value="2">Bank</option>
+                </select>
+                <div
+                  class="invalid-feedback"
+                >
+                  Required
                 </div>
               </div>
-        </form>
+          </div>
+        </div>
+        <div *ngIf="data.editObject?.account_TypeId == 1">
+          <div class="row">
+              <div class="col-md-6">
+                  <div class="form_group mb-4">
+                    <label for="currentPassword" class="form-label"
+                      >Paypay Email Address
+                      <span class="text-danger">● </span>
+                    </label>
+                      <input
+                        class="form-control pr-2"
+                        type="email"
+                        formControlName="paypal_Email"
+                        placeholder="|"
+                        [ngClass]="{
+                          'is-invalid':
+                            (payoutForm.get('paypal_Email')?.errors &&
+                            payoutForm.get('paypal_Email')?.touched) ||
+                            (payoutForm.get('paypal_Email')?.hasError('required') &&
+                            payoutSetupFormSubmitted)
+                        }"
+                      />
+                      <div
+                        class="invalid-feedback"
+                      >
+                        valid email address required
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form_group mb-4">
+                    <label for="currentPassword" class="form-label"
+                      >Paypal Name
+                      <span class="text-danger">● </span>
+                    </label>
+                      <input
+                        class="form-control pr-2"
+                        type="text"
+                        formControlName="paypal_Name"
+                        placeholder="|"
+                        [ngClass]="{
+                          'is-invalid':
+                            (payoutForm.get('paypal_Name')?.errors &&
+                            payoutForm.get('paypal_Name')?.touched) ||
+                            (payoutForm.get('paypal_Name')?.hasError('required') &&
+                            payoutSetupFormSubmitted)
+                        }"
+                      />
+                      <div
+                        class="invalid-feedback"
+                      >
+                        Required
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+
+        <div *ngIf="data.editObject?.account_TypeId == 2">
+          <div class="row">
+              <div class="col-md-6">
+                  <div class="form_group mb-4">
+                    <label for="currentPassword" class="form-label"
+                      >Bank Name
+                      <span class="text-danger">● </span>
+                    </label>
+                      <input
+                        class="form-control pr-2"
+                        type="text"
+                        placeholder="|"
+                        formControlName="bank_Name"
+                      />
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="form_group mb-4">
+                    <label for="currentPassword" class="form-label"
+                      >Account Name
+                      <span class="text-danger">● </span>
+                    </label>
+                      <input
+                        class="form-control pr-2"
+                        type="text"
+                        placeholder="|"
+                        formControlName="account_Name"
+                      />
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6">
+                  <div class="form_group mb-4">
+                    <label for="currentPassword" class="form-label"
+                      >Account Number
+                      <span class="text-danger">● </span>
+                    </label>
+                      <input
+                        class="form-control pr-2"
+                        type="text"
+                        placeholder="|"
+                        formControlName="account_Number"
+                      />
+                  </div>
+              </div>
+          </div>
+        </div>
+
+        <div>
+          <input 
+            id="checkDefault"
+            type="checkbox" name=""
+            [checked]="data?.editObject?.account_Default"
+            (change)="setDefault()"
+          >
+          <span class="px-3">Set as default</span>
+        </div>
+         
+      </form>
     </div>
    
   </mat-dialog-content>

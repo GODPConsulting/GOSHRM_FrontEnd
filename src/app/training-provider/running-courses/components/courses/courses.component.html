@@ -18,20 +18,28 @@
         >
         <tbody>
           <ng-container>
-            <tr class="text-capitalize" *ngFor="let leave of [1,2,3,4,5,6,7]">
-              <td>Apr 11, 2018</td>
-              <td>Innocent Sample</td>
-              <td>Excel Ms Advanced</td>
-              <td>180</td>
+            <tr class="text-capitalize" *ngFor="let course of runningCourses">
+              <td>{{ course?.upload_Date | date }}</td>
+              <td>{{ course?.training_Provider }}</td>
+              <td>{{ course?.course_Title }}</td>
+              <td>{{ course?.no_Of_Views }}</td>
               <td>
                 <div class="d-flex justify-content-center align-items-center">
-                    <div class="ratings"> 
+                    <!-- <div class="ratings"> 
                       <i class="fa fa-star rating-color"></i> 
                       <i class="fa fa-star rating-color"></i> 
                       <i class="fa fa-star rating-color"></i> 
                       <i class="fa fa-star rating-color"></i> 
                       <i class="fa fa-star"></i> 
-                    </div>
+                    </div> -->
+                    <ng-rating-bar
+                    [value]="course?.ratings || 0"
+                    [ratingCount]="5"
+                    [disabled]="true"
+                    [styles]="{ margin: '0px', fontSize: '16px'}"
+                    colorActive="#F88F09" 
+                    colorDefault="#cecece"
+                  ></ng-rating-bar>
                   </div>
               </td>
               <td class="click">Update</td>
