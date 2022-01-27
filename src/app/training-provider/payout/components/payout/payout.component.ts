@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CurrentUserService } from '@core/services/current-user.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
@@ -18,20 +19,24 @@ export class PayoutComponent implements OnInit {
   public payouts: Payout[] = [];
   public isFetchingPayout: boolean = false;
   public payoutSetupFormSubmitted: boolean = false;
+  public loggedInUser: any;
+
   constructor(
     public dialog: MatDialog,
     private _payout: PayoutService,
-    private _base: BaseComponent
+    private _base: BaseComponent,
+    private _currentService: CurrentUserService
   ) { }
 
   ngOnInit(): void {
+    this.loggedInUser = this._currentService.getUser();
     this.getUserPayouts();
   }
 
   public getUserPayouts(): void {
     this.isFetchingPayout = true;
     this.sub.add(
-      this._payout.getPayout('1').subscribe({
+      this._payout.getPayout(this.loggedInUser?.trainingProviderId).subscribe({
         next: (res: any) => {
           this.isFetchingPayout = false;
           this.payouts = res['payoutSetupTypes'];
@@ -73,12 +78,12 @@ export class PayoutComponent implements OnInit {
 
   setAsDefault(payout: Payout) {
     this.payoutSetupFormSubmitted = true;
-    payout.trainingProviderId = 1;
-    // payload.trainingProviderId = this.data?.editObject?.trainingProviderId;
+    payout.trainingProviderId = this.loggedInUser.trainingProviderId;
+    payout.payoutId = payout?.payoutId;
     payout.account_Default = !payout.account_Default;
     console.log(payout);
     this.sub.add(
-      this._payout.updatePayoutSetup(payout).subscribe({
+      this._payout.updatePayoutSetup(payout, this.loggedInUser.trainingProviderId).subscribe({
         next: (res: ResponseModel<Payout>) => {
           this.payoutSetupFormSubmitted = false;
           console.log(res);

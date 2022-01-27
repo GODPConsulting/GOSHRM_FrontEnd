@@ -11,6 +11,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CurrentUserService } from '@core/services/current-user.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Profile } from '../../models/user-profile.model';
@@ -27,6 +28,7 @@ export class EditCompanyInfoDialogComponent implements OnInit {
   public isLoading: boolean = false;
   public profileFormSubmitted: boolean = false;
   public error_message: string = '';
+  public loggedInUser!: any;
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -39,12 +41,13 @@ export class EditCompanyInfoDialogComponent implements OnInit {
     private fb: FormBuilder,
     private _profile: ProfileService,
     public dialog: MatDialog,
-    public _base: BaseComponent
+    public _base: BaseComponent,
+    private _currentService: CurrentUserService
   ) {}
 
   ngOnInit(): void {
+    this.loggedInUser = this._currentService.getUser();
     this.initUpdateProfileForm();
-    console.log(this.data)
   }
 
   initUpdateProfileForm() {
@@ -71,9 +74,9 @@ export class EditCompanyInfoDialogComponent implements OnInit {
     if (this.updateProfileForm.valid) {
       this.isLoading = true;
       const payload = this.updateProfileForm.value;
-      payload.trainingProviderId = 2;
+      payload.trainingProviderId = this.loggedInUser.trainingProviderId;
       // payload.trainingProviderId = this.data?.editObject?.trainingProviderId;
-      this._profile.updateProfile(payload, '2').subscribe({
+      this._profile.updateProfile(payload, this.loggedInUser.trainingProviderId).subscribe({
         next: (res: ResponseModel<Profile>) => {
           this.isLoading = false;
           console.log(res)

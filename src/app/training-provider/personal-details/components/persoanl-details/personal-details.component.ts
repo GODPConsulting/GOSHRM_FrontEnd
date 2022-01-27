@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { CurrentUserService } from '@core/services/current-user.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
+import { Payout } from 'app/training-provider/payout/models/payout.model';
+import { PayoutService } from 'app/training-provider/payout/services/payout.service';
+import { RunningCourses } from 'app/training-provider/running-courses/models/running-course.model';
+import { RunningCoursesService } from 'app/training-provider/running-courses/services/running-courses.service';
 import { Subscription } from 'rxjs';
 import { EditCompanyInfoDialogComponent } from '../../dialogs/edit-company-info-dialog/edit-company-info-dialog.component';
 import { SocialMediaDialogComponent } from '../../dialogs/social-media-dialog/social-media-dialog.component';
@@ -22,28 +27,37 @@ export class PersonalDetailsComponent implements OnInit {
   public isFetchingSocialMedia: boolean = false;
   public isFetchingWebsiteUrl: boolean = false;
   public profile!: Profile;
-  public profileImg: string = "assets/images/profile-img.svg";
+  public profileImg: string = "assets/images/profile.png";
   public socialMediaInfo!: SocialMedia;
-  public websites!: Website
+  public websites!: Website;
+  public payouts: Payout[] = [];
+  public runningCourses: RunningCourses[] = [];
+  public loggedInUser: any;
 
   constructor(
     public dialog: MatDialog,
-    private _profile: ProfileService
+    private _profile: ProfileService,
+    private _payout: PayoutService,
+    private _runningCourseService: RunningCoursesService,
+    private _currentService: CurrentUserService
   ) { }
 
   ngOnInit() {
+    this.loggedInUser = this._currentService.getUser();
     this.getUserProfile();
     this.getSocialmedia();
     this.getWebsiteUrls();
+    this.getPayouts();
+    this.getRunningCourses();
   }
 
   public getUserProfile(): void {
     this.isFetchingProfile = true;
     this.sub.add(
-      this._profile.getProfile('1').subscribe({
+      this._profile.getProfile(this.loggedInUser?.trainingProviderId).subscribe({
         next: (res: any) => {
           this.isFetchingProfile = false;
-          this.profile = res['companySetupTypes'][0];
+          this.profile = res['companySetupTypes'];
           // console.log(res, this.profile)
         },
         error: (error: ResponseModel<null>) => {
@@ -57,7 +71,7 @@ export class PersonalDetailsComponent implements OnInit {
   public getSocialmedia(): void {
     this.isFetchingSocialMedia = true;
     this.sub.add(
-      this._profile.getSocialMedia('3').subscribe({
+      this._profile.getSocialMedia(this.loggedInUser?.trainingProviderId).subscribe({
         next: (res: any) => {
           this.isFetchingSocialMedia = false;
           this.socialMediaInfo = res['socialMediaSetupTypes'][0];
@@ -74,11 +88,45 @@ export class PersonalDetailsComponent implements OnInit {
   public getWebsiteUrls(): void {
     this.isFetchingWebsiteUrl = true;
     this.sub.add(
-      this._profile.getWebsites('1').subscribe({
+      this._profile.getWebsites(this.loggedInUser?.trainingProviderId).subscribe({
         next: (res: any) => {
           this.isFetchingProfile = false;
           this.websites = res['websiteSetupTypes'][0];
-          console.log(res, this.websites)
+          // console.log(res, this.websites)
+        },
+        error: (error: ResponseModel<null>) => {
+          this.isFetchingWebsiteUrl = false;
+          console.log(error);
+        },
+      })
+    );
+  }
+
+  public getPayouts(): void {
+    this.isFetchingWebsiteUrl = true;
+    this.sub.add(
+      this._payout.getPayout(this.loggedInUser?.trainingProviderId).subscribe({
+        next: (res: any) => {
+          this.isFetchingProfile = false;
+          this.payouts = res['payoutSetupTypes'];
+          // console.log(res, this.payouts)
+        },
+        error: (error: ResponseModel<null>) => {
+          this.isFetchingWebsiteUrl = false;
+          console.log(error);
+        },
+      })
+    );
+  }
+
+  public getRunningCourses(): void {
+    this.isFetchingWebsiteUrl = true;
+    this.sub.add(
+      this._runningCourseService.getRunningCourses('1').subscribe({
+        next: (res: any) => {
+          this.isFetchingProfile = false;
+          this.runningCourses = res['coursesSetupTypes'];
+          // console.log(res, this.runningCourses);
         },
         error: (error: ResponseModel<null>) => {
           this.isFetchingWebsiteUrl = false;

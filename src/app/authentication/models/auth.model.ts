@@ -1,9 +1,10 @@
 export interface LoginRequestDTO {
-  email_Address: string;
+  username: string;
   password: string;
 }
 
 export interface LoginResponseDTO {
+  // status: any;
   token: string;
 }
 
@@ -11,6 +12,7 @@ export interface RegisterRequestDTO {
   full_Name: string,
   email_Address: string,
   password: string,
+  companyId: number;
 }
 
 export interface RegisterResponseDTO {

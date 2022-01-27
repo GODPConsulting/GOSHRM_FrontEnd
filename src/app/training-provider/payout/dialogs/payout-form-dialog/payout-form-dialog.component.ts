@@ -10,6 +10,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CurrentUserService } from '@core/services/current-user.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
@@ -28,6 +29,7 @@ export class PayoutFormDialogComponent implements OnInit {
   public payoutForm!: FormGroup;
   public isLoading: boolean =false;
   public payoutSetupFormSubmitted: boolean = false;
+  public loggedInUser: any;
   
   @Output() event: EventEmitter<{
     editObject?: Payout;
@@ -40,10 +42,12 @@ export class PayoutFormDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<Payout>,
     public fb: FormBuilder,
     private _payoutService: PayoutService,
-    public _base: BaseComponent
+    public _base: BaseComponent,
+    private _currentService: CurrentUserService
   ) { }
 
   ngOnInit() {
+    this.loggedInUser = this._currentService.getUser();
     this.initPayoutSetupForm();
   }
 
@@ -78,13 +82,12 @@ export class PayoutFormDialogComponent implements OnInit {
     this.payoutSetupFormSubmitted = true;
     const payload = this.payoutForm.value;
     payload.account_TypeId = parseInt(payload.account_TypeId);
-    payload.trainingProviderId = 1;
-    // payload.trainingProviderId = this.data?.editObject?.trainingProviderId;
+    payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
     payload.payoutId = this.data?.editObject?.payoutId;
     payload.account_Default = this.data?.editObject?.account_Default;
     console.log(payload);
     this.sub.add(
-      this._payoutService.updatePayoutSetup(payload).subscribe({
+      this._payoutService.updatePayoutSetup(payload, this.loggedInUser?.trainingProviderId).subscribe({
         next: (res: ResponseModel<Payout>) => {
           this.payoutSetupFormSubmitted = false;
           console.log(res);

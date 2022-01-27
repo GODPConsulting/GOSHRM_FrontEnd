@@ -22,9 +22,11 @@ export class PayoutService {
   }
 
   public updatePayoutSetup(
-    payout: Payout
+    payout: Payout, trainingProviderId: number
   ): Observable<ResponseModel<Payout>> {
     const endpoint = '/trainingproviderpayout/add/update/trainingproviderpayout';
-    return this.http.makeRequestWithData('post', endpoint, {}, payout);
+    const params = new HttpParams()
+      .set('trainingProviderId', trainingProviderId)
+    return this.http.makeRequestWithData('post', endpoint, params, payout);
   }
 }

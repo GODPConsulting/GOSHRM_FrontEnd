@@ -11,6 +11,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CurrentUserService } from '@core/services/current-user.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Website } from '../../models/user-profile.model';
@@ -27,6 +28,7 @@ export class WebsiteDialogComponent implements OnInit {
   public isLoading: boolean = false;
   public websiteFormSubmitted: boolean = false;
   public error_message: string = '';
+  public loggedInUser!: any;
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -39,10 +41,12 @@ export class WebsiteDialogComponent implements OnInit {
     private fb: FormBuilder,
     private _profile: ProfileService,
     public dialog: MatDialog,
-    public _base: BaseComponent
+    public _base: BaseComponent,
+    private _currentservice: CurrentUserService
   ) {}
 
   ngOnInit(): void {
+    this.loggedInUser = this._currentservice.getUser();
     this.initWebsiteForm();
   }
 
@@ -80,9 +84,9 @@ export class WebsiteDialogComponent implements OnInit {
     if (this.websiteForm.valid) {
       this.isLoading = true;
       const payload = this.websiteForm.value;
-      payload.trainingProviderId = this.data?.editObject?.trainingProviderId;
+      payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
       console.log(payload)
-      this._profile.updateWebsites(payload, payload.trainingProviderId).subscribe({
+      this._profile.updateWebsites(payload, this.loggedInUser?.trainingProviderId).subscribe({
         next: (res: ResponseModel<Website>) => {
           this.isLoading = false;
           console.log(res)

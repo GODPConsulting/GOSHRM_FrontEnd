@@ -2,11 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginResponseDTO } from '@auth/models/auth.model';
+// import { LoginResponseDTO } from '@auth/models/auth.model';
 import { AuthService } from '@auth/services/auth.service';
-// import { CurrentUserService } from '@core/services/current-user.service';
+import { CurrentUserService } from '@core/services/current-user.service';
 // import { BaseComponent } from '@core/base/base/base.component';
-import { ResponseModel } from 'app/models/response.model';
+// import { ResponseModel } from 'app/models/response.model';
 
 @Component({
   selector: 'app-login',
@@ -20,12 +20,13 @@ export class LoginComponent implements OnInit {
   public showPassword: boolean = false;
   public err_message: string = '';
   public isError: boolean = false;
+  public profile: any;
   constructor(
     // private _base: BaseComponent,
     private fb: FormBuilder,
     private router: Router,
     private _auth: AuthService,
-    // private _current: CurrentUserService
+    private _current: CurrentUserService
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +35,7 @@ export class LoginComponent implements OnInit {
 
   initLoginForm() {
     this.loginForm = this.fb.group({
-      email_Address: ["", Validators.compose([Validators.required, Validators.email])],
+      username: ["", Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required],
     })
   }
@@ -43,14 +44,21 @@ export class LoginComponent implements OnInit {
   public login(): void {
     this.isLoggingIn = true;
     this.loginFormSubmitted = true;
+    const payload = this.loginForm.value;
+    console.log(payload);
     if (this.loginForm.valid) {
-      this._auth.login(this.loginForm.value).subscribe({
-        next: (res: ResponseModel<LoginResponseDTO>) => {
+      this._auth.login(payload).subscribe({
+        next: (res: any) => {
           console.log(res);
           this.isLoggingIn = false;
-          this.loginFormSubmitted = true;
-          // this._current.storeUserCredentials(res?.response?.token);
-          this.router.navigate(['training-provider']);
+          if(res?.status.isSuccessful) {
+            this.loginFormSubmitted = true;
+            this._current.storeUserCredentials(res?.token);
+            this.getProfile();
+          } else {
+            this.isError = true;
+            this.err_message = res?.status?.message?.friendlyMessage
+          }
         },
         error: (error: HttpErrorResponse) => {
           this.isLoggingIn = false;
@@ -63,5 +71,33 @@ export class LoginComponent implements OnInit {
       this.isError = true;
       this.err_message = "Kindly fill the form correctly"
     }
+  }
+
+  getProfile() {
+    this._auth.getProfile().subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.isLoggingIn = false;
+        // localStorage.setItem('GOS_User', JSON.stringify(res))
+        this._current.storeUserDetails(res);
+        if(res?.status.isSuccessful) {
+          this.loginFormSubmitted = true;
+          this.profile = res;
+          if(this.profile.customerTypeId == 1) {
+            this.router.navigate(['training-provider']);
+          } else {
+            this.router.navigate(['training-instructor']);
+          }
+        } else {
+          this.isError = true;
+          this.err_message = res?.status?.message?.friendlyMessage
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isLoggingIn = false;
+        this.loginFormSubmitted = true;
+        this.err_message = error?.error?.message;
+      },
+    });
   }
 }

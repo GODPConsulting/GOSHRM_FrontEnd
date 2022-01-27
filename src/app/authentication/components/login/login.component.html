@@ -22,18 +22,18 @@
           id="email_Address"
           class="form-control"
           placeholder="i.sample@example.com"
-          formControlName="email_Address"
+          formControlName="username"
           [ngClass]="{
             'is-invalid':
-              (loginForm.get('email_Address')?.errors && 
-              loginForm.get('email_Address')?.touched) || 
-              (loginForm.get('email_Address')?.hasError('required') &&
+              (loginForm.get('username')?.errors && 
+              loginForm.get('username')?.touched) || 
+              (loginForm.get('username')?.hasError('required') &&
               loginFormSubmitted)
           }"
         />
         <div 
           class="invalid-feedback"
-          *ngIf="loginForm.get('email_Address')?.hasError('required') &&
+          *ngIf="loginForm.get('username')?.hasError('required') &&
           loginFormSubmitted"
         >
           Enter a valid email address

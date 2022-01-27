@@ -3,9 +3,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RegisterResponseDTO } from '@auth/models/auth.model';
+// import { RegisterResponseDTO } from '@auth/models/auth.model';
 import { AuthService } from '@auth/services/auth.service';
-import { ResponseModel } from 'app/models/response.model';
+// import { ResponseModel } from 'app/models/response.model';
 // import { CurrentUserService  } from '@core/services/current-user.service'
 
 @Component({
@@ -37,6 +37,7 @@ export class RegistrationComponent implements OnInit {
     this.registrationForm = this.fb.group({
         full_Name: ['', Validators.required],
         email_Address: ["", Validators.compose([Validators.required, Validators.email])],
+        physical_Address: [''],
         password: ['', Validators.required],
     })
   }
@@ -44,14 +45,21 @@ export class RegistrationComponent implements OnInit {
   public register(): void {
     this.isRegistering = true;
     this.isRegisteringFormSubmitted = true;
+    const payload = this.registrationForm.value;
+    payload.companyId = 2;
     if(this.registrationForm.valid) {
-      this.auth.register(this.registrationForm.value).subscribe({
-        next: (res: ResponseModel<RegisterResponseDTO>) => {
+      this.auth.register(payload).subscribe({
+        next: (res: any) => {
           console.log(res);
           this.isRegistering = false;
-          this.isRegisteringFormSubmitted = true;
-          // this._current.storeUserCredentials(res)
-          this.router.navigate(['/authentication/confirmation']);
+          if(res.status.isSuccessful) {
+            this.isRegisteringFormSubmitted = true;
+            // this._current.storeUserCredentials(res)
+            this.router.navigate(['/authentication/confirmation']);
+          } else {
+            this.isError = true;
+            this.error_message = res?.status?.message?.friendlyMessage
+          }
         },
         error: (error: HttpErrorResponse) => {
           console.log(error);

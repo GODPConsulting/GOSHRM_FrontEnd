@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { RouteGuard } from '@core/guards/route.guard';
+import { RouteGuard } from '@core/guards/route.guard';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 // import { NotFoundComponent } from './not-found/not-found.component';
 // import { OfflineComponent } from './offline/offline.component';
@@ -21,7 +21,7 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    // canActivate: [RouteGuard],
+    canActivate: [RouteGuard],
     children: [
       {
         path: 'training-provider',

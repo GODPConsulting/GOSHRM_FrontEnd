@@ -11,6 +11,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CurrentUserService } from '@core/services/current-user.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { SocialMedia } from '../../models/user-profile.model';
@@ -27,6 +28,7 @@ export class SocialMediaDialogComponent implements OnInit {
   public isLoading: boolean = false;
   public profileFormSubmitted: boolean = false;
   public error_message: string = '';
+  public loggedInUser!: any;
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -39,10 +41,12 @@ export class SocialMediaDialogComponent implements OnInit {
     private fb: FormBuilder,
     private _profile: ProfileService,
     public dialog: MatDialog,
-    public _base: BaseComponent
+    public _base: BaseComponent,
+    private _currentService: CurrentUserService
   ) {}
 
   ngOnInit(): void {
+    this.loggedInUser = this._currentService.getUser();
     this.initSocialMediaForm();
   }
 
@@ -81,9 +85,9 @@ export class SocialMediaDialogComponent implements OnInit {
     if (this.socialMediaForm.valid) {
       this.isLoading = true;
       const payload = this.socialMediaForm.value;
-      payload.trainingProviderId = 3;
+      payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
       payload.socialMediaId = 2;
-      this._profile.updateSocialmedia(payload, payload.trainingProviderId).subscribe({
+      this._profile.updateSocialmedia(payload, this.loggedInUser?.trainingProviderId).subscribe({
         next: (res: ResponseModel<SocialMedia>) => {
           this.isLoading = false;
           console.log(res)
