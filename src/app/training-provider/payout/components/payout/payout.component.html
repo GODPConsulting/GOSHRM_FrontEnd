@@ -28,7 +28,8 @@
                         >Account Type
                       </label>
                       <select
-                        class="form-control" 
+                        class="form-control"
+                        disabled
                       >
                            <option value="">{{ account?.account_TypeId == 1 ? 'Paypal' : 'Bank' }}</option>
                       </select>
@@ -46,6 +47,7 @@
                           <input
                           class="form-control pr-2"
                           type="email"
+                          readonly
                           placeholder="{{ account?.paypal_Email }}"
                         />
                         </div>
@@ -58,6 +60,7 @@
                             <input
                               class="form-control pr-2"
                               type="text"
+                              readonly
                               placeholder="{{ account?.paypal_Name }}"
                             />
                         </div>
@@ -75,6 +78,7 @@
                             <input
                               class="form-control pr-2"
                               type="text"
+                              readonly
                               placeholder="{{ account?.bank_Name }}"
                             />
                         </div>
@@ -87,6 +91,7 @@
                             <input
                               class="form-control pr-2"
                               type="text"
+                              readonly
                               placeholder="{{ account?.account_Name }}"
                             />
                         </div>
@@ -101,6 +106,7 @@
                             <input
                               class="form-control pr-2"
                               type="text"
+                              readonly
                               placeholder="{{ account?.account_Number }}"
                             />
                         </div>

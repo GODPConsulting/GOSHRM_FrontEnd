@@ -59,6 +59,7 @@ export class PayoutFormDialogComponent implements OnInit {
       bank_Name: [this.data?.editObject?.bank_Name ? this.data?.editObject?.bank_Name  : '' ],
       account_Name: [this.data?.editObject?.account_Name ? this.data?.editObject?.account_Name  : '' ],
       account_Number: [this.data?.editObject?.account_Number ? this.data?.editObject?.account_Number  : '' ],
+      account_Default: [this.data?.editObject?.account_Default ? this.data?.editObject?.account_Default  : false ],
     })
   }
 
@@ -84,7 +85,6 @@ export class PayoutFormDialogComponent implements OnInit {
     payload.account_TypeId = parseInt(payload.account_TypeId);
     payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
     payload.payoutId = this.data?.editObject?.payoutId;
-    payload.account_Default = this.data?.editObject?.account_Default;
     console.log(payload);
     this.sub.add(
       this._payoutService.updatePayoutSetup(payload, this.loggedInUser?.trainingProviderId).subscribe({

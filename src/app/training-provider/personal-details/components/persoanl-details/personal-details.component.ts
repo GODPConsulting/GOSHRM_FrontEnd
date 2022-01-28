@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+// import { ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
@@ -39,17 +40,33 @@ export class PersonalDetailsComponent implements OnInit {
     private _profile: ProfileService,
     private _payout: PayoutService,
     private _runningCourseService: RunningCoursesService,
-    private _currentService: CurrentUserService
+    private _currentService: CurrentUserService,
+    // private activateRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.loggedInUser = this._currentService.getUser();
+    // this.getResolvedData();
     this.getUserProfile();
-    this.getSocialmedia();
     this.getWebsiteUrls();
-    this.getPayouts();
+    this.getSocialmedia();
     this.getRunningCourses();
+    this.getPayouts();
   }
+
+  // getResolvedData() {
+  //   this.sub.add(
+  //     this.activateRoute.data.subscribe((data: any) => {
+  //       console.log(data);
+  //       this.profile = data?.resolveData?.profile?.trainingProviderObjs;
+  //       this.websites = data?.resolveData?.website?.websiteSetupTypes[0];
+  //       this.socialMediaInfo = data?.resolveData?.socialMedia?.socialMediaSetupTypes[0];
+  //       this.payouts = data?.resolveData?.payout?.payoutSetupTypes;
+  //       this.runningCourses = data?.resolveData?.runningCourse?.coursesSetupTypes;
+  //       console.log(this.runningCourses)
+  //     })
+  //   );
+  // }
 
   public getUserProfile(): void {
     this.isFetchingProfile = true;
@@ -122,7 +139,7 @@ export class PersonalDetailsComponent implements OnInit {
   public getRunningCourses(): void {
     this.isFetchingWebsiteUrl = true;
     this.sub.add(
-      this._runningCourseService.getRunningCourses('1').subscribe({
+      this._runningCourseService.getRunningCourses(this.loggedInUser.trainingProviderId).subscribe({
         next: (res: any) => {
           this.isFetchingProfile = false;
           this.runningCourses = res['coursesSetupTypes'];

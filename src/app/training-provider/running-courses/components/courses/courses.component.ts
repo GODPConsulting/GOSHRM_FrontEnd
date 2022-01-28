@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CurrentUserService } from '@core/services/current-user.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { RunningCourses } from '../../models/running-course.model';
@@ -13,19 +14,22 @@ export class CoursesComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public runningCourses: RunningCourses[] = [];
   public isfetchingCourses: boolean = false;
+  public loggedInUser: any;
 
   constructor(
-    private _runningCourses: RunningCoursesService
+    private _runningCourses: RunningCoursesService,
+    private _currentService: CurrentUserService
   ) { }
 
   ngOnInit(): void {
+    this.loggedInUser = this._currentService.getUser();
     this.getRunningCourses();
   }
 
   public getRunningCourses(): void {
     this.isfetchingCourses = true;
     this.sub.add(
-      this._runningCourses.getRunningCourses('1').subscribe({
+      this._runningCourses.getRunningCourses(this.loggedInUser.trainingProviderId).subscribe({
         next: (res: any) => {
           this.isfetchingCourses = false;
           this.runningCourses = res['coursesSetupTypes'];

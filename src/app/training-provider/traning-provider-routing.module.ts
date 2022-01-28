@@ -67,6 +67,20 @@ const routes: Routes = [
                   (m) => m.CourseCreationModule
                 ),
             },
+            {
+              path: 'communication',
+              loadChildren: () =>
+                import('./communication/communication.module').then(
+                  (m) => m.CommunicationModule
+                ),
+            },
+            {
+              path: 'instructor-community',
+              loadChildren: () =>
+                import('./instructor-community/instructor-community.module').then(
+                  (m) => m.InstructorCommunityModule
+                ),
+            },
         ],
     }
 ];

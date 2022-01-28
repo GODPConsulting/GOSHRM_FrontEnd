@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CurrentUserService } from '@core/services/current-user.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { Security } from '../../models/security.model';
@@ -20,14 +21,17 @@ export class SecurityComponent implements OnInit {
   public isLoading: boolean = false;
   public spinner: boolean = false;
   public securityFormSubmitted: boolean = false;
+  public loggedInUser: any;
 
   constructor(
     private _security: SecurityService,
     private _base: BaseComponent,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _currentService: CurrentUserService
   ) { }
 
   ngOnInit(): void {
+    this.loggedInUser = this._currentService.getUser();
     this.initPasswordForm();
   }
 
@@ -42,7 +46,7 @@ export class SecurityComponent implements OnInit {
   submit(securitySetupTypeId: any) {
     this.securityFormSubmitted = true;
     const payload = this.changePasswordForm.value;
-    payload.trainingProviderId = 1;
+    payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
     payload.securitySetupTypeId = securitySetupTypeId;
     console.log(payload);
     this.sub.add(
