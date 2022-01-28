@@ -272,3 +272,50 @@ table.table {
     }
   }
 }
+
+#formAccordion {
+  .accordion-item {
+    box-shadow: none;
+    border: none;
+    .accordion-button {
+      box-shadow: none;
+      color: $text-body;
+      font-weight: bold;
+      font-size: 1.4rem;
+      cursor: pointer;
+      width: fit-content;
+      white-space: nowrap;
+      &::after {
+        margin-left: 1rem;
+      }
+      &:not(.collapsed) {
+        background: transparent;
+        border: none;
+        color: $black-100;
+        box-shadow: none;
+        &::after {
+          margin-left: 1rem;
+        }
+      }
+    }
+    .w-fill-available {
+      width: -webkit-fill-available;
+      height: 0.2rem;
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        border-bottom: solid 0.1rem $blue-100;
+        width: 100%;
+      }
+    }
+    .accordion-collapse {
+      background: transparent;
+      .accordion-body {
+        font-size: 1.4rem;
+        color: $black-100;
+      }
+    }
+  }
+}
