@@ -81,6 +81,13 @@ const routes: Routes = [
                   (m) => m.InstructorCommunityModule
                 ),
             },
+            {
+              path: 'course-approval',
+              loadChildren: () =>
+                import('./course-approval/course-approval.module').then(
+                  (m) => m.CourseApprovalModule
+                ),
+            },
         ],
     }
 ];
