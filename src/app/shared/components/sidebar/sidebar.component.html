@@ -304,14 +304,14 @@
 
 
       <ul class="mt-auto mb-5">
-        <li>
+        <li (click)="logout()">
           <a class="side-link click">
             <span class="side-icon">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9.16602 1.70825V9.99992H10.8327V1.70825C15.0435 2.12575 18.3327 5.67909 18.3327 9.99992C18.3327 14.6024 14.6018 18.3333 9.99935 18.3333C5.39685 18.3333 1.66602 14.6024 1.66602 9.99992C1.66602 5.67909 4.95518 2.12575 9.16602 1.70825Z" fill="#4F4F4F"/>
               </svg>
             </span>
-            <span (click)="logout()">Logout</span>
+            <span>Logout</span>
           </a>
         </li>
       </ul>

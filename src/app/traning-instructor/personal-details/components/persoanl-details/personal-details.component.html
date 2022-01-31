@@ -12,7 +12,7 @@
           <div class="upload-btn">
             <button
               class=" btn btn-green btn-lg"
-              (click)="openProfileUploadDialog(true)"
+              (click)="openProfileUploadDialog({ isEditing: false })"
             >
               Upload Photo
             </button>
@@ -46,12 +46,12 @@
   <div class="profile__form">
     <div class="basic_info">
       <div class="d-flex justify-content-between">
-        <h4 class="py-3">Company Information</h4>
-        <div class="click" (click)="editUserProfile()">
+        <h4 class="py-3">Personal Information</h4>
+        <div class="click" (click)="openEditProfileDialog({isEditing: true, editObject: profile})">
           <img src="assets/images/edit-pen.svg" alt="">
         </div>
       </div>
-      <form [formGroup]="updateProfileForm">
+      <form>
         <div class="row">
           <div class="col-lg-6">
             <div class="form_group mb-5">
@@ -60,10 +60,9 @@
               </label>
               <input
                 type="text"
-                id="firstName"
                 class="form-control"
-                placeholder="Enter First Name"
-                formControlName="firstName"
+                readonly
+                [placeholder]="profile?.full_Name ? profile?.full_Name : ''"
               />
             </div>
           </div>
@@ -74,10 +73,9 @@
               </label>
               <input
                 type="text"
-                id="middleName"
                 class="form-control"
-                placeholder="Enter Middle Name"
-                formControlName="middleName"
+                readonly
+                [placeholder]="profile?.phone_Number ? profile?.phone_Number : ''"
               />
             </div>
           </div>
@@ -88,10 +86,9 @@
               </label>
               <input
                 type="email"
-                id="email"
                 class="form-control"
-                placeholder="Enter Last Name"
-                formControlName="lastName"
+                readonly
+                [placeholder]="profile?.email_Address ? profile?.email_Address : ''"
               />
             </div>
           </div>
@@ -102,10 +99,9 @@
               </label>
               <input
                 type="text"
-                id="phoneNo"
                 class="form-control"
-                placeholder="Enter phone number"
-                formControlName="phoneNumber1"
+                readonly
+                [placeholder]="profile?.physical_Address ? profile?.physical_Address : ''"
               />
             </div>
           </div>
@@ -118,38 +114,35 @@
     <div class="social_info">
       <div class="d-flex justify-content-between">
         <h4 class="py-3">Social Media Accounts</h4>
-        <div class="click" (click)="openEditSocialMediaDialog(true)">
+        <div class="click" (click)="openEditSocialMediaDialog({ isEditing: true, editObject: socialMediaInfo })">
           <img src="assets/images/edit-pen.svg" alt="">
         </div>
       </div>
       <div class="d-flex click">
-        <div class="pe-3">
-          <img src="assets/images/linkedIn-icon.svg" alt="">
-        </div>
-        <div class="pe-3 click">
-          <img src="assets/images/facebook-icon.svg" alt="">
-        </div>
-        <div class="pe-3 click">
-          <img src="assets/images/twitter-icon.svg" alt="">
-        </div>
-        <div class="pe-3 click">
-          <img src="assets/images/youtube-icon.svg" alt="">
-        </div>
-      </div>
-     
-    </div>
-
-    <hr class="mt-3 mb-4">
-
-    <div class="website_info">
-      <div class="d-flex justify-content-between">
-        <h4 class="py-3">Websites</h4>
-        <div class="click" (click)="openWebsiteDialog(true)">
-          <img src="assets/images/edit-pen.svg" alt="">
-        </div>
-      </div>
-      <div class="">
-        <a class="d-block website-link" href="#" *ngFor="let item of [1,2,3]">Cowrywise</a>
+        <a 
+          [href]="socialMediaInfo?.linkedInType"
+          target="_blank"
+          *ngIf="socialMediaInfo?.linkedInType"
+        ><img class="click pe-4" src="assets/images/linkedIn-icon.svg" alt="">
+        </a>
+        <a 
+          [href]="socialMediaInfo?.facebookType"
+          target="_blank"
+          *ngIf="socialMediaInfo?.facebookType"
+        ><img class="click pe-4" src="assets/images/facebook-icon.svg" alt="">
+        </a>
+        <a 
+          [href]="socialMediaInfo?.twitterType"
+          target="_blank"
+          *ngIf="socialMediaInfo?.twitterType"
+        ><img class="click pe-4" src="assets/images/twitter-icon.svg" alt="">
+        </a>
+        <a 
+          [href]="socialMediaInfo?.youtubeType"
+          target="_blank"
+          *ngIf="socialMediaInfo?.youtubeType"
+        ><img class="click pe-4" src="assets/images/youtube-icon.svg" alt="">
+        </a>
       </div>
      
     </div>
@@ -159,58 +152,31 @@
     <div class="courses_info">
       <div class="d-flex justify-content-between">
         <h4 class="d-flex py-3">
-          <span>No. of running courses - 36 courses</span>
+          <span class="pe-3">No. of running courses - 36 courses</span>
           <ng-rating-bar
                   [value]="4"
                   [ratingCount]="5"
                   [disabled]="true"
-                  [styles]="{ margin: '0px', fontSize: '16px'}"
+                  [styles]="{ margin: '0px', fontSize: '25px'}"
                   colorActive="#F88F09" 
                   colorDefault="#cecece"
           ></ng-rating-bar>
         </h4>
-        <div class="click" (click)="openEditSocialMediaDialog(true)">
+        <div class="click" routerLink="/training-provider/running-courses">
           <img src="assets/images/edit-pen.svg" alt="">
         </div>
       </div>
       <div class="">
-        <div class="d-flex justify-content-between" *ngFor="let item of [1,2,3]">
-          <p>Foundations  of User Experience (UX) Design</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="ratings"> 
-              <i class="fa fa-star rating-color"></i> 
-              <i class="fa fa-star rating-color"></i> 
-              <i class="fa fa-star rating-color"></i> 
-              <i class="fa fa-star rating-color"></i> 
-              <i class="fa fa-star"></i> 
-            </div>
-          </div>
-        </div>
-      </div>
-     
-    </div>
-
-    <hr class="mt-3 mb-4">
-
-    <div class="payout_info">
-      <div class="d-flex justify-content-between">
-        <h4 class="d-flex py-3">Payout</h4>
-        <div class="click" (click)="openEditSocialMediaDialog(true)">
-          <img src="assets/images/edit-pen.svg" alt="">
-        </div>
-      </div>
-      <div class="">
-        <div class="d-flex">
-          <div class="pr-4 border-right">
-              <p class="text-grey">Paypal Email: <span class="font-bold">I.Sample673@paypal.com</span></p>
-              <p class="text-grey">Paypal Name: <span class="font-bold">Innocent Sample</span></p>
-          </div>
-          <div class="border mx-3"></div>
-          <div class="pl-4">
-              <p class="text-grey">Bank Name: <span class="font-bold">First Bank of Nigeria</span></p>
-              <p class="text-grey">Account Name: <span class="font-bold">Innocent Sample</span></p>
-              <p class="text-grey">Account Number: <span class="font-bold">3076542719</span></p>
-          </div>
+        <div class="d-flex justify-content-between" *ngFor="let course of runningCourses | slice:0:3">
+          <p>{{ course?.course_Title }}</p>
+          <ng-rating-bar
+              [value]="course?.ratings || 0"
+              [ratingCount]="5"
+              [disabled]="true"
+              [styles]="{ margin: '0px', fontSize: '20px'}"
+              colorActive="#F88F09" 
+              colorDefault="#cecece"
+          ></ng-rating-bar>
         </div>
       </div>
      

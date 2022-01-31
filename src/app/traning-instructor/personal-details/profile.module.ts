@@ -9,17 +9,23 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { UploadProfileComponent } from './dialogs/upload-profile/upload-profile.component';
 import { SocialMediaDialogComponent } from './dialogs/social-media-dialog/social-media-dialog.component';
-import { WebsiteDialogComponent } from './dialogs/website-dialog/website-dialog.component';
+import { NgRatingBarModule } from 'ng-rating-bar';
 
 @NgModule({
-  declarations: [PersonalDetailsComponent, EditCompanyInfoDialogComponent, UploadProfileComponent, SocialMediaDialogComponent, WebsiteDialogComponent],
+  declarations: [
+    PersonalDetailsComponent, 
+    EditCompanyInfoDialogComponent, 
+    UploadProfileComponent, 
+    SocialMediaDialogComponent
+  ],
   imports: [
     CommonModule,
     PersonalDetailsRoutingModule,
     MatDialogModule,
     ReactiveFormsModule,
     ImageCropperModule,
-    SharedModule
+    SharedModule,
+    NgRatingBarModule
   ],
 })
 export class PersonalDetailsModule {}

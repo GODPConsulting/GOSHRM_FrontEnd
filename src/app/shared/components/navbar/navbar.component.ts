@@ -8,6 +8,7 @@ import { CurrentUserService } from '@core/services/current-user.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  public loggedInUser: any;
 
   constructor(
     private router: Router,
@@ -15,6 +16,7 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loggedInUser = this._currentService.getUser();
   }
 
   public logout(): void {

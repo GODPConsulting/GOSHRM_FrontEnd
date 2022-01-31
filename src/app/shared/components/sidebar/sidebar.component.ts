@@ -19,7 +19,7 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loggedInUser = JSON.parse(localStorage.getItem('GOS_user_details') || '{}');
+    this.loggedInUser = this._currentUser.getUser();
   }
 
   public toggleSidebar(): void {

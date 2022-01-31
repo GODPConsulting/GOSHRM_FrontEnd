@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { CurrentUserService } from '@core/services/current-user.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
-import { ResponseModel } from 'app/models/response.model';
+// import { ResponseModel } from 'app/models/response.model';
+import { Payout } from 'app/training-provider/payout/models/payout.model';
+// import { PayoutService } from 'app/training-provider/payout/services/payout.service';
+import { RunningCourses } from 'app/training-provider/running-courses/models/running-course.model';
+// import { RunningCoursesService } from 'app/training-provider/running-courses/services/running-courses.service';
 import { Subscription } from 'rxjs';
 import { EditCompanyInfoDialogComponent } from '../../dialogs/edit-company-info-dialog/edit-company-info-dialog.component';
 import { SocialMediaDialogComponent } from '../../dialogs/social-media-dialog/social-media-dialog.component';
 import { UploadProfileComponent } from '../../dialogs/upload-profile/upload-profile.component';
-import { WebsiteDialogComponent } from '../../dialogs/website-dialog/website-dialog.component';
-import { Profile } from '../../models/user-profile.model';
-import { ProfileService } from '../../services/profile.service';
+// import { ProfileService } from '../../services/profile.service';
+import { Profile, SocialMedia, Website } from './../../models/user-profile.model'
 
 @Component({
   selector: 'app-personal-details',
@@ -19,74 +23,132 @@ import { ProfileService } from '../../services/profile.service';
 export class PersonalDetailsComponent implements OnInit {
   private sub: Subscription = new Subscription();
   public isLoading: boolean = false;
-  public canEditProfile: boolean = false;
   public isFetchingProfile: boolean = false;
-  public updateProfileForm!: FormGroup;
+  public isFetchingSocialMedia: boolean = false;
+  public isFetchingWebsiteUrl: boolean = false;
   public profile!: Profile;
-  public profileImg: string = "assets/images/profile-img.svg";
+  public profileImg: string = "assets/images/profile.png";
+  public socialMediaInfo!: SocialMedia;
+  public websites!: Website;
+  public payouts: Payout[] = [];
+  public runningCourses: RunningCourses[] = [];
+  public loggedInUser: any;
 
   constructor(
     public dialog: MatDialog,
-    private fb: FormBuilder,
-    private _profile: ProfileService
+    // private _profile: ProfileService,
+    // private _payout: PayoutService,
+    // private _runningCourseService: RunningCoursesService,
+    private _currentService: CurrentUserService,
+    private activateRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.initUpdateProfileForm();
-    this.updateProfileForm.disable();
+    this.loggedInUser = this._currentService.getUser();
+    this.getResolvedData();
+    // this.getUserProfile();
+    // this.getWebsiteUrls();
+    // this.getSocialmedia();
+    // this.getRunningCourses();
+    // this.getPayouts();
   }
 
-  initUpdateProfileForm() {
-    this.updateProfileForm = this.fb.group({
-        firstName: [this.profile?.firstName ? this.profile?.firstName  : '' ],
-        middleName: [this.profile?.middleName ? this.profile?.middleName  : ''],
-        lastName: [this.profile?.lastName ? this.profile?.lastName  : ''],
-        phoneNumber1: [this.profile?.phoneNumber1 ? this.profile?.phoneNumber1  : ''],
-        phoneNumber2: [this.profile?.phoneNumber2 ? this.profile?.phoneNumber2  : ''],
-        email: [this.profile?.email ? this.profile?.email  : ''],
-        altEmail: [this.profile?.altEmail ? this.profile?.altEmail  : ''],
-        organizationName: [this.profile?.organizationName ? this.profile?.organizationName  : '']
-    })
-  }
-
-  editUserProfile() {
-    this.canEditProfile = !this.canEditProfile;
-    if(this.canEditProfile) {
-      this.updateProfileForm.enable();
-      this.openEditProfileDialog(true);
-    } else {
-      this.updateProfileForm.disable();
-    }
-  }
-
-  public getUserProfile(): void {
-    this.isFetchingProfile = true;
+  getResolvedData() {
     this.sub.add(
-      this._profile.getProfile(this.profile).subscribe({
-        next: (res: any) => {
-          this.isFetchingProfile = false;
-          this.profile = res?.response;
-        },
-        error: (error: ResponseModel<null>) => {
-          this.isFetchingProfile = false;
-          console.log(error);
-        },
+      this.activateRoute.data.subscribe((data: any) => {
+        // console.log(data);
+        this.profile = data?.resolveData?.profile?.trainingProviderObjs[0];
+        this.socialMediaInfo = data?.resolveData?.socialMedia?.socialMediaSetupTypes[0];
+        this.runningCourses = data?.resolveData?.runningCourse?.coursesSetupTypes;
+        // console.log(this.runningCourses)
       })
     );
   }
 
-  public openModal(): void {
-    const dialogConfig = new MatDialogConfig();
-    // dialogConfig.height = '500px';
-    // dialogConfig.width = '600px';
-    const dialogRef = this.dialog.open(
-      EditCompanyInfoDialogComponent,
-      dialogConfig
-    );
-    dialogRef.afterClosed().subscribe((result) => {
+  // public getUserProfile(): void {
+  //   this.isFetchingProfile = true;
+  //   this.sub.add(
+  //     this._profile.getProfile(this.loggedInUser?.trainingProviderId).subscribe({
+  //       next: (res: any) => {
+  //         this.isFetchingProfile = false;
+  //         this.profile = res['trainingProviderObjs'][0];
+  //         // console.log(res, this.profile)
+  //       },
+  //       error: (error: ResponseModel<null>) => {
+  //         this.isFetchingProfile = false;
+  //         console.log(error);
+  //       },
+  //     })
+  //   );
+  // }
 
-    });
-  }
+  // public getSocialmedia(): void {
+  //   this.isFetchingSocialMedia = true;
+  //   this.sub.add(
+  //     this._profile.getSocialMedia(this.loggedInUser?.trainingProviderId).subscribe({
+  //       next: (res: any) => {
+  //         this.isFetchingSocialMedia = false;
+  //         this.socialMediaInfo = res['socialMediaSetupTypes'][0];
+  //         // console.log(res, this.socialMediaInfo)
+  //       },
+  //       error: (error: ResponseModel<null>) => {
+  //         this.isFetchingSocialMedia = false;
+  //         console.log(error);
+  //       },
+  //     })
+  //   );
+  // }
+
+  // public getWebsiteUrls(): void {
+  //   this.isFetchingWebsiteUrl = true;
+  //   this.sub.add(
+  //     this._profile.getWebsites(this.loggedInUser?.trainingProviderId).subscribe({
+  //       next: (res: any) => {
+  //         this.isFetchingProfile = false;
+  //         this.websites = res['websiteSetupTypes'][0];
+  //         // console.log(res, this.websites)
+  //       },
+  //       error: (error: ResponseModel<null>) => {
+  //         this.isFetchingWebsiteUrl = false;
+  //         console.log(error);
+  //       },
+  //     })
+  //   );
+  // }
+
+  // public getPayouts(): void {
+  //   this.isFetchingWebsiteUrl = true;
+  //   this.sub.add(
+  //     this._payout.getPayout(this.loggedInUser?.trainingProviderId).subscribe({
+  //       next: (res: any) => {
+  //         this.isFetchingProfile = false;
+  //         this.payouts = res['payoutSetupTypes'];
+  //         // console.log(res, this.payouts)
+  //       },
+  //       error: (error: ResponseModel<null>) => {
+  //         this.isFetchingWebsiteUrl = false;
+  //         console.log(error);
+  //       },
+  //     })
+  //   );
+  // }
+
+  // public getRunningCourses(): void {
+  //   this.isFetchingWebsiteUrl = true;
+  //   this.sub.add(
+  //     this._runningCourseService.getRunningCourses(this.loggedInUser.trainingProviderId).subscribe({
+  //       next: (res: any) => {
+  //         this.isFetchingProfile = false;
+  //         this.runningCourses = res['coursesSetupTypes'];
+  //         console.log(res, this.runningCourses);
+  //       },
+  //       error: (error: ResponseModel<null>) => {
+  //         this.isFetchingWebsiteUrl = false;
+  //         console.log(error);
+  //       },
+  //     })
+  //   );
+  // }
 
   public openProfileUploadDialog(
     payload: { isEditing?: boolean; editObject?: any } | any
@@ -95,7 +157,6 @@ export class PersonalDetailsComponent implements OnInit {
     const dialogRef = this.dialog.open(UploadProfileComponent, {
       data: object,
     });
-
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
           this.profileImg = event?.editObject;
@@ -106,14 +167,14 @@ export class PersonalDetailsComponent implements OnInit {
   public openEditProfileDialog(
     payload: { isEditing?: boolean; editObject?: any } | any
   ): void {
-    let object: DialogModel<any> = payload;
+    let object: DialogModel<Profile> = payload;
     const dialogRef = this.dialog.open(EditCompanyInfoDialogComponent, {
       data: object,
     });
-
+    console.log(payload);
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-          this.profileImg = event?.editObject;
+          this.profile = event?.editObject;
       }
     );
   }
@@ -128,30 +189,9 @@ export class PersonalDetailsComponent implements OnInit {
 
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-          this.profileImg = event?.editObject;
+          this.socialMediaInfo = event?.editObject;
       }
     );
-  }
-
-  public openWebsiteDialog(
-    payload: { isEditing?: boolean; editObject?: any } | any
-  ): void {
-    let object: DialogModel<any> = payload;
-    const dialogRef = this.dialog.open(WebsiteDialogComponent, {
-      data: object,
-    });
-
-    dialogRef.componentInstance.event.subscribe(
-      (event: DialogModel<any>) => {
-          this.profileImg = event?.editObject;
-      }
-    );
-  }
-
-
-
-  public submit() {
-    this.isLoading = true;
   }
 
 }
