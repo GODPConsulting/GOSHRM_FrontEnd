@@ -12,13 +12,26 @@
              <div class="col-12">
                  <div class="form_group mb-4">
                      <label for="" class="form-label"
-                     >User Name
+                     >Instructor Name
                      </label>
                      <input
                          class="form-control pr-2"
                          type="text"
-                         formControlName="username"
-                         placeholder="Enter username"
+                         formControlName="instructor_Name"
+                         placeholder="Enter Full name"
+                     />
+                 </div>
+             </div>
+             <div class="col-12">
+                 <div class="form_group mb-4">
+                     <label for="" class="form-label"
+                     >Instructor Email
+                     </label>
+                     <input
+                         class="form-control pr-2"
+                         type="text"
+                         formControlName="trainingInstructorEmail"
+                         placeholder="Enter email"
                      />
                  </div>
              </div>
@@ -59,7 +72,7 @@
                             <textarea 
                                 class="form-control"
                                 cols="30" rows="10"
-                                formControlName="bio"
+                                formControlName="bios"
                             ></textarea>
                        </div>
                     </div>
@@ -71,14 +84,14 @@
                             <textarea 
                                 class="form-control" 
                                 cols="30" rows="10"
-                                formControlName="image"
+                                formControlName="instructor_Image"
                             ></textarea>
                        </div>
                     </div>
                  </div>
             </div>
         </div>
-        <div class="">
+        <!-- <div class="">
             <h2 mat-dialog-title>Courses Facilitated </h2>
            <div #childform formArrayName="addCourseIndex">
             <div class="row courses-form" *ngFor="let item of facilitatorItems.controls let child = index" [formGroupName]="child">
@@ -136,22 +149,21 @@
                 </div>
                 <div class="remove-course">
                     <i class="far fa-trash-alt text-danger click" [class.d-none]="child == 0" (click)="removeCourse(child)"></i>
-                    <!-- <span [class.d-none]="child == 0" (click)="removeCourse(child)">Remove</span> -->
                 </div>
             </div>
            </div>
-        </div>
+        </div> -->
       </form>
     </div>
    
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button
+    <!-- <button
       class="btn btn-outline-green btn-md me-4 px-4"
       (click)="addNewCourse()"
     >
         Add more Courses
-    </button>
+    </button> -->
     <button
       class="btn btn-green btn-md px-4"
       (click)="submit()"

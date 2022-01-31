@@ -1,5 +1,11 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { BaseComponent } from '@core/base/base/base.component';
+import { CurrentUserService } from '@core/services/current-user.service';
+import { ResponseModel } from 'app/models/response.model';
+import { Courses } from '../../models/course-creation.model';
+import { CourseCreationService } from '../../services/course-creation.service';
 
 @Component({
   selector: 'app-add-course',
@@ -8,12 +14,19 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class AddCourseComponent implements OnInit {
   public addCourseForm!: FormGroup;
+  public courseFormSubmitted: boolean = false;
+  public loggedInUser: any;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _currentService: CurrentUserService,
+    private _courses: CourseCreationService,
+    private _base: BaseComponent
   ) { }
 
   ngOnInit(): void {
+    // alert (new Date (new Date().toDateString() + ' ' + '10:55'))
+    this.loggedInUser = this._currentService.getUser();
     this.initAddCourseForm();
   }
 
@@ -27,7 +40,7 @@ export class AddCourseComponent implements OnInit {
       difficulty_Level: [''],
       expected_Competence: [''],
       category: [''],
-      segremented_Participants: [''],
+      suggested_Participant: [''],
       delivery_Type: [''],
       duration: [''],
       cost: [''],
@@ -36,10 +49,40 @@ export class AddCourseComponent implements OnInit {
       currency: [''],
       welcome_message: [''],
       competence_assessment: [''],
-      congration_message: [''],
-      images: [''],
+      congratulation_message: [''],
+      addCover_Image: [0],
       other_Comments: [''],
     })
+  }
+
+  public submit(): void {
+    this.courseFormSubmitted = true;
+    if (this.addCourseForm.valid) {
+      // this.isLoading = true;
+      const payload = this.addCourseForm.value;
+      payload.trainingProviderId = this.loggedInUser.trainingProviderId;
+      payload.faciliator  = 1;
+      let duration = this.addCourseForm.get('duration')?.value;
+      payload.cost = parseInt(payload.cost);
+      payload.duration = new Date (new Date().toDateString() + ' ' + duration);
+      this._courses.UpdateCourse(payload).subscribe({
+        next: (res: ResponseModel<Courses>) => {
+          // this.isLoading = false;
+          console.log(res)
+          
+          this._base.openSnackBar(
+            'Great...!!!, Your action was successful',
+            'success'
+          );
+        },
+        error: (error: HttpErrorResponse) => {
+          console.log(error);
+          // this.isLoading = false;
+          this.courseFormSubmitted = false;
+          // this.error_message = error?.error?.Id[0];
+        },
+      });
+    }
   }
 
 }

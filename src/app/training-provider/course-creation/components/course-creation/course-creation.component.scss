@@ -48,4 +48,8 @@
     .font-bold {
         font-weight: 600;
     }
+    .btn-secondary {
+        background: $orange-400;
+        border: .1rem solid $orange-400;
+    }
 }

@@ -116,7 +116,7 @@
                                 class="form-control pr-2"
                                 type="text"
                                 placeholder=""
-                                formControlName="segremented_Participants"
+                                formControlName="suggested_Participant"
                               />
                           </div>
                     </div>
@@ -139,7 +139,7 @@
                             </label>
                               <input
                                 class="form-control pr-2"
-                                type="text"
+                                type="time"
                                 placeholder=""
                                 formControlName="duration"
                               />
@@ -239,7 +239,7 @@
                             <textarea 
                                 class="form-control" 
                                 cols="30" rows="10"
-                                formControlName="congration_message"
+                                formControlName="congratulation_message"
                             ></textarea>
                        </div>
                     </div>
@@ -270,7 +270,10 @@
                 </div>
 
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-green btn-lg">
+                    <button 
+                      class="btn btn-green btn-lg"
+                      (click)="submit()"
+                    >
                         Add Course
                     </button>
                 </div>

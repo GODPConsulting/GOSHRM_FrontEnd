@@ -78,7 +78,6 @@ export class LoginComponent implements OnInit {
       next: (res: any) => {
         console.log(res);
         this.isLoggingIn = false;
-        // localStorage.setItem('GOS_User', JSON.stringify(res))
         this._current.storeUserDetails(res);
         if(res?.status.isSuccessful) {
           this.loginFormSubmitted = true;

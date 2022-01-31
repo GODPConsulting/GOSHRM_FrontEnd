@@ -1,4 +1,3 @@
-
 import { Output, EventEmitter } from '@angular/core';
 // import { HttpErrorResponse } from '@angular/common/http';
 import {
@@ -13,14 +12,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogModel } from '@shared/components/models/dialog.model';
 
 @Component({
-  selector: 'app-course-outline-dialog',
-  templateUrl: './course-outline-dialog.component.html',
-  styleUrls: ['./course-outline-dialog.component.scss']
+  selector: 'app-participant-dialog',
+  templateUrl: './participant-dialog.component.html',
+  styleUrls: ['./participant-dialog.component.scss']
 })
 
-export class CourseOutlineDialogComponent implements OnInit {
+export class ParticipantDialogComponent implements OnInit {
   @ViewChild('close') close!: ElementRef;
-  public reviewerForm!: FormGroup;
+  public courseOutlineForm!: FormGroup;
   public isLoading: boolean =false;
   
   @Output() event: EventEmitter<{
@@ -29,22 +28,19 @@ export class CourseOutlineDialogComponent implements OnInit {
   }> = new EventEmitter<{ editObject?: any; isEditing: boolean }>();
 
   constructor(
-    public dialogRef: MatDialogRef<CourseOutlineDialogComponent>,
+    public dialogRef: MatDialogRef<ParticipantDialogComponent>,
     // @Inject(MAT_DIALOG_DATA) public modalData: any,
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<string>,
     public fb: FormBuilder
   ) { }
 
   ngOnInit() {
-    this.initCourseOutlineForm();
+    // this.initReviewerForm();
   }
 
-  public initCourseOutlineForm() {
-    this.reviewerForm = this.fb.group({
-      section_Name: ['', Validators.required],
-      outline_Name: ['', Validators.required],
-      outline_Description: ['', Validators.required],
-      sectionId: ['', Validators.required],
+  public initReviewerForm() {
+    this.courseOutlineForm = this.fb.group({
+      reviewers: ['', Validators.required]
     })
   }
 
@@ -53,4 +49,5 @@ export class CourseOutlineDialogComponent implements OnInit {
   }
 
 }
+
 

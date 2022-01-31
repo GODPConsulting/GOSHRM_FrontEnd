@@ -10,7 +10,7 @@
     </div>
 
     <div class="setup_content my-4">
-        <div class="setup-card bg-white p-4 my-4" *ngFor="let item of [1]">
+        <div class="setup-card bg-white p-5 my-4" *ngFor="let item of [1]">
             <div class="d-flex justify-content-between">
                 <div>
                     <input type="checkbox" name="" id="">
@@ -72,6 +72,28 @@
                         <span class="font-bold ps-3">Pending</span>
                     </div>
                 </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Create Experience
+                    </button>
+                    <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" routerLink="/training-provider/course-creation/course-outline">
+                          Course Outline</a>
+                    </li>
+                      <li (click)="openDialog( {isEditing: false} )"><a class="dropdown-item"
+                        >Participants</a></li>
+                      <li><a class="dropdown-item" routerLink="/training-provider/course-creation/course-assessment"
+                        >Course Assessment</a></li>
+                      <li><a class="dropdown-item" routerLink="/training-provider/course-creation/competence-assessment"
+                        >Competence Assessment</a></li>
+                      <li><a class="dropdown-item" routerLink="/training-provider/course-creation/learning-assessment"
+                        >Learning Assessment </a></li>
+                      <li><a class="dropdown-item" href="#">Schedule Class</a></li>
+                      <li><a class="dropdown-item" href="#">Submit</a></li>
+                    </ul>
+                  </div>
             </div>
         </div>
     </div>

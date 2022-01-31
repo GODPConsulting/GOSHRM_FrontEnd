@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Observable } from 'rxjs';
-import { PageBanner, PageContent } from '../models/instructor-information.model';
+import { Facilitator, FacilitatorCourses } from '../models/instructor-information.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,35 +12,35 @@ import { PageBanner, PageContent } from '../models/instructor-information.model'
 export class InstructorInformationService {
   constructor(private http: HttpService) {}
 
-  public getPageBanner(
+  public getFaciltator(
     trainingProviderId: string
-  ): Observable<ResponseModel<PageBanner>> {
-   const endpoint = '/trainingproviderpagebanner/get/all/trainingproviderpagebanner';
+  ): Observable<ResponseModel<Facilitator>> {
+   const endpoint = '/traininginstructor/get/all/traininginstructor';
    const params = new HttpParams()
    .set('trainingProviderId', trainingProviderId)
    return this.http.getRequestWithParams(endpoint, params);
   }
 
-  public updatePageBanner(
-    payout: PageBanner
-  ): Observable<ResponseModel<PageBanner>> {
-    const endpoint = '/trainingproviderpagebanner/add/update/trainingproviderpagebanner';
+  public UpdateFaciltator(
+    payout: Facilitator
+  ): Observable<ResponseModel<Facilitator>> {
+    const endpoint = '/traininginstructor/add/update/traininginstructor';
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
   }
 
-  public getPageContent(
+  public getFacilitatorCourses(
     trainingProviderId: string
-  ): Observable<ResponseModel<PageContent>> {
-   const endpoint = '/trainingproviderpagecontent/get/all/trainingproviderpagecontent';
+  ): Observable<ResponseModel<FacilitatorCourses>> {
+   const endpoint = '/coursefacilitated/get/all/coursefacilitated';
    const params = new HttpParams()
    .set('trainingProviderId', trainingProviderId)
    return this.http.getRequestWithParams(endpoint, params);
   }
 
-  public updatePagecontent(
-    payout: PageContent
-  ): Observable<ResponseModel<PageContent>> {
-    const endpoint = '/trainingproviderpagecontent/add/update/trainingproviderpagecontent';
+  public updateFacilitatorCourses(
+    payout: FacilitatorCourses
+  ): Observable<ResponseModel<FacilitatorCourses>> {
+    const endpoint = '/coursefacilitated/add/update/coursefacilitated';
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
   }
 }

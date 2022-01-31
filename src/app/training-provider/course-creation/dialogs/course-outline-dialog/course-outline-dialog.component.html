@@ -6,19 +6,61 @@
 </div>
   <mat-dialog-content class="mat-typography">
     <div>
-        <form [formGroup]="reviewerForm" *ngIf="data.isEditing">
+        <form [formGroup]="reviewerForm">
             <div class="row">
                 <div class="col-12">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
-                        >Reviewers
+                        >Section Number
+                      </label>
+                      <input
+                        type="text"
+                        id="sectionId"
+                        class="form-control"
+                        placeholder=""
+                        formControlName="sectionId"
+                      />
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form_group mb-5">
+                      <label for="" class="form-label"
+                        >Section Name
                       </label>
                       <input
                         type="text"
                         id="reviewers"
                         class="form-control"
                         placeholder=""
-                        formControlName="reviewers"
+                        formControlName="outline_Name"
+                      />
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form_group mb-5">
+                      <label for="" class="form-label"
+                        >Outline Name
+                      </label>
+                      <input
+                        type="text"
+                        id="reviewers"
+                        class="form-control"
+                        placeholder=""
+                        formControlName="outline_Name"
+                      />
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form_group mb-5">
+                      <label for="" class="form-label"
+                        >Outline Description
+                      </label>
+                      <input
+                        type="text"
+                        id="reviewers"
+                        class="form-control"
+                        placeholder=""
+                        formControlName="outline_Description"
                       />
                     </div>
                 </div>
@@ -29,9 +71,7 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button
-      [mat-dialog-close]="false"
-      class="btn btn-outline-green btn-md me-4 px-4 d-none"
-      #close
+      class="btn btn-outline-green btn-md me-4 px-4"
     >
       Done
     </button>
