@@ -2,6 +2,7 @@ export interface Facilitator {
     instructorId: number,
     instructor_Image: number,
     instructor_Name: string,
+    trainingInstructorEmail: string,
     bios: string,
     courses_Facilitator: number,
     linkedin_Link: string,

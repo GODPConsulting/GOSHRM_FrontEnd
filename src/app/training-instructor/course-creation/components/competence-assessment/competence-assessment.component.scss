@@ -1,0 +1,11 @@
+@import 'partials/abstract/variables';
+@import "partials/abstract/mixins";
+@import "partials/components/forms";
+
+.running_courses-wrapper {
+    padding: 3rem;
+    color: $black-100;
+    table.table {
+        text-align: center;
+    }
+}

@@ -1,22 +1,33 @@
 <div class="bg-white p-4 my-4">
     <form>
         <div class="row">
-           <div class="row col-md-6">
-            <div class="col-12">
+            <div class="col-md-6">
                 <div class="form_group mb-4">
                     <label for="" class="form-label"
-                    >User Name
-                        <span class="text-danger">● </span>
+                    >Instructor Name
                     </label>
                     <input
                         class="form-control pr-2"
                         type="text"
-                        formControlName="currentPassword"
+                        formControlName="instructor_Name"
                         placeholder="Enter username"
                     />
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-md-6">
+                <div class="form_group mb-4">
+                    <label for="" class="form-label"
+                    >Instructor Email
+                    </label>
+                        <input
+                            class="form-control pr-2"
+                            type="text"
+                            formControlName="trainingInstructorEmail"
+                            placeholder="Enter username"
+                        />
+                    </div>
+               </div>
+            <div class="col-md-6">
                 <div class="form_group mb-4">
                     <label for="" class="form-label"
                     >LinkedIn link
@@ -24,12 +35,12 @@
                     <input
                         class="form-control pr-2"
                         type="text"
-                        formControlName="currentPassword"
+                        formControlName="linkedIn_Link"
                         placeholder="Enter linkedIn link"
                     />
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-md-6">
                 <div class="form_group mb-4">
                     <label for="" class="form-label"
                     >Twitter link
@@ -37,31 +48,22 @@
                     <input
                         class="form-control pr-2"
                         type="text"
-                        formControlName="currentPassword"
+                        formControlName="twitter_Link"
                         placeholder="Enter twitter link"
                     />
                 </div>
             </div>
-           </div>
-           <div class="col-md-6">
-            <div class="form_group mb-4">
-                <label for="" class="form-label"
-                >User Name
-                </label>
-                    <input
-                        class="form-control pr-2"
-                        type="text"
-                        formControlName="currentPassword"
-                        placeholder="Enter username"
-                    />
-                </div>
-           </div>
            <div class="col-12">
             <div class="form_group mb-4">
                 <label for="" class="form-label"
                 >Bio
                 </label>
-                   <textarea class="form-control" name="" id="" cols="30" rows="10"></textarea>
+                   <textarea 
+                    class="form-control" 
+                    name="" id="" cols="30" 
+                    rows="10"
+                    formControlName="bios"
+                ></textarea>
                 </div>
            </div>
         </div>

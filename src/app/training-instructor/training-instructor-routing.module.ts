@@ -18,6 +18,13 @@ const routes: Routes = [
                   (m) => m.ProfileModule
                 ),
             },
+            {
+              path: 'course-creation',
+              loadChildren: () =>
+                import('./course-creation/course-creation.module').then(
+                  (m) => m.CourseCreationModule
+                ),
+            },
           
         ],
     }

@@ -1,0 +1,283 @@
+<div class="add-course__wrapper">
+    <div class="header">
+        <h3>Add Course</h3>
+    </div>
+    <div class="add-course-form">
+        <div class="bg-white p-4 my-5">
+            <form [formGroup]="addCourseForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Training Name:
+                            </label>
+                              <input
+                                class="form-control pr-2"
+                                type="text"
+                                placeholder=""
+                                formControlName="training_Name"
+                              />
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Training Requirements <span class="text-orange">(+)</span>:
+                            </label>
+                              <input
+                                class="form-control pr-2"
+                                type="text"
+                                placeholder=""
+                                formControlName="training_Requirements"
+                              />
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="" class="form-label"
+                            >Training Objective:
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                cols="30" rows="10"
+                                formControlName="training_Objective"
+                            ></textarea>
+                       </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="" class="form-label"
+                            >Training Transcript:
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                cols="30" rows="10"
+                                formControlName="training_Transcript"
+                            ></textarea>
+                       </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="" class="form-label"
+                            >Training Details:
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                cols="30" rows="10"
+                                formControlName="training_Details"
+                            ></textarea>
+                       </div>
+                    </div>
+                    <div class="col-md-6 row">
+                        <div class="col-12">
+                            <div class="form_group mb-4">
+                                <label for="currentPassword" class="form-label"
+                                  >Difficulty Level:
+                                </label>
+                                  <select name="" id="" class="form-select" formControlName="difficulty_Level">
+                                      <option value="Beginner ">Beginner </option>
+                                      <option value="Intermidiate">Intermidiate</option>
+                                      <option value="Advance">Advance</option>
+                                  </select>
+                              </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form_group mb-4">
+                                <label for="currentPassword" class="form-label"
+                                  >Expected Competence <span class="text-orange">(+)</span>:
+                                </label>
+                                  <input
+                                    class="form-control pr-2"
+                                    type="text"
+                                    placeholder=""
+                                    formControlName="training_Requirements"
+                                  />
+                              </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Category:
+                            </label>
+                              <select name="" id="" class="form-select" formControlName="difficulty_Level">
+                                  <option value="Beginner ">Beginner </option>
+                                  <option value="Intermidiate">Intermidiate</option>
+                                  <option value="Advance">Advance</option>
+                              </select>
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Sugestted Participants<span class="text-orange">(+)</span>:
+                            </label>
+                              <input
+                                class="form-control pr-2"
+                                type="text"
+                                placeholder=""
+                                formControlName="suggested_Participant"
+                              />
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Delivery Type:
+                            </label>
+                              <select name="" id="" class="form-select" formControlName="delivery_Type">
+                                  <option value="classroom ">Classroom </option>
+                                  <option value="online">Online (Video)</option>
+                                  <option value="virtual">Virtual</option>
+                              </select>
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Duration:
+                            </label>
+                              <input
+                                class="form-control pr-2"
+                                type="time"
+                                placeholder=""
+                                formControlName="duration"
+                              />
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Cost:
+                            </label>
+                              <input
+                                class="form-control pr-2"
+                                type="text"
+                                placeholder=""
+                                formControlName="cost"
+                              />
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Facilitator:
+                            </label>
+                              <select name="" id="" class="form-select" formControlName="facilitator">
+                                  <option value="classroom ">Classroom </option>
+                                  <option value="online">Online (Video)</option>
+                                  <option value="virtual">Virtual</option>
+                              </select>
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Apply Discount:
+                            </label>
+                              <select name="" id="" class="form-select" formControlName="facilitator">
+                                  <option value="true ">Yes </option>
+                                  <option value="false">No</option>
+                              </select>
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Currency:
+                            </label>
+                              <select name="" id="" class="form-select" formControlName="facilitator">
+                                  <option value="Naira">₦ Naira </option>
+                                  <option value="Dollar">$ Dollar</option>
+                                  <option value="Pounds Sterling">₤ Pounds Sterling</option>
+                                  <option value="Euro">€ Euro</option>
+                              </select>
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="" class="form-label"
+                            >Welcome Message:
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                cols="30" rows="10"
+                                formControlName="welcome_message"
+                            ></textarea>
+                       </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Discount Rate:
+                            </label>
+                              <input
+                                class="form-control pr-2"
+                                type="text"
+                                placeholder=""
+                                formControlName="discount_Rate"
+                              />
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="currentPassword" class="form-label"
+                              >Completence Assessment
+                            </label>
+                              <select name="" id="" class="form-select" formControlName="competence_assessment">
+                                  <option value="3 ">3 months </option>
+                                  <option value="6 ">6 months </option>
+                                  <option value="12 ">12 months </option>
+                              </select>
+                          </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="" class="form-label"
+                            >Congratulations Message:
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                cols="30" rows="10"
+                                formControlName="congratulation_message"
+                            ></textarea>
+                       </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="" class="form-label"
+                            >Add Cover Image:
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                cols="30" rows="10"
+                                formControlName="images"
+                            ></textarea>
+                       </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                            <label for="" class="form-label"
+                            >Other Comments:
+                            </label>
+                            <textarea 
+                                class="form-control" 
+                                cols="30" rows="10"
+                                formControlName="other_Comments"
+                            ></textarea>
+                       </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button 
+                      class="btn btn-green btn-lg"
+                      (click)="submit()"
+                    >
+                        Add Course
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

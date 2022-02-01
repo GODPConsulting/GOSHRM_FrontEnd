@@ -1,0 +1,24 @@
+<div class="course-assessment__wrapper">
+    <div class="course-assessment-header">
+        <div class="d-flex justify-content-between">
+            <h3>Learning Assessment</h3>
+            <app-searchbar></app-searchbar>
+        </div>
+
+        <div class="assessment_wrapper bg-white p-4 my-5">
+            <div class="assessment-title px-3 pb-4">
+                <h4>Advance Excel Ms</h4>
+            </div>
+            <div class="assessment-question p-3" *ngFor="let item of [1,2,3,4,5], index as i">
+                <div class="question pb-2">
+                    <span class="pe-2">{{  i + 1}}</span>
+                    <span>What is the major highlight between advanced calculus and minor calculus in excel?</span>
+                </div>
+                <div class="options" *ngFor="let item of [1,2,3,4]">
+                    <span class="pe-2"><input type="radio" name="" id=""></span>
+                    <span>Poor</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
