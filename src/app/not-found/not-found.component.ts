@@ -1,15 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CurrentUserService } from '@core/services/current-user.service';
 
 @Component({
   templateUrl: './not-found.component.html',
   styleUrls: ['./not-found.component.scss'],
 })
 export class NotFoundComponent implements OnInit {
-  constructor(private router: Router) {}
+  public profile: any;
 
-  ngOnInit(): void {}
+  constructor(
+    private router: Router,
+    private _current: CurrentUserService
+  ) {}
+
+  ngOnInit(): void {
+    this.profile = this._current.getUser();
+  }
+
   public goHome(): void {
-    this.router.navigate(['dashboard']);
+    if(this.profile.customerTypeId == 1) {
+      this.router.navigate(['/training-provider']);
+    } else {
+      this.router.navigate(['/training-instructor']);
+    }
   }
 }

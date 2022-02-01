@@ -57,7 +57,7 @@ export class PersonalDetailsComponent implements OnInit {
     this.sub.add(
       this.activateRoute.data.subscribe((data: any) => {
         console.log(data);
-        this.profile = data?.resolveData?.profile?.trainingProviderObjs;
+        this.profile = data?.resolveData?.profile?.training_InstructorSetupTypes[0];
         this.websites = data?.resolveData?.website?.websiteSetupTypes[0];
         this.socialMediaInfo = data?.resolveData?.socialMedia?.socialMediaSetupTypes[0];
         this.payouts = data?.resolveData?.payout?.payoutSetupTypes;

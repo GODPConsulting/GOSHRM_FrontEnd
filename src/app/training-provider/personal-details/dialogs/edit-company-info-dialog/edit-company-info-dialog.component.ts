@@ -14,7 +14,7 @@ import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
-import { ResponseModel } from 'app/models/response.model';
+// import { ResponseModel } from 'app/models/response.model';
 import { Profile } from '../../models/user-profile.model';
 import { ProfileService } from '../../services/profile.service';
 
@@ -80,28 +80,33 @@ export class EditCompanyInfoDialogComponent implements OnInit {
       payload.trainingProviderId = this.loggedInUser.trainingProviderId;
       // payload.trainingProviderId = this.data?.editObject?.trainingProviderId;
       this._profile.updateProfile(payload, this.loggedInUser.trainingProviderId).subscribe({
-        next: (res: ResponseModel<Profile>) => {
-          this._helper.stopSpinner();
-          this.isLoading = false;
-          console.log(res)
-          if (this.data?.isEditing) {
-            payload.trainingProviderId = payload?.trainingProviderId;
-            payload.active = true;
-            payload.deleted = false;
+        next: (res: any) => {
+          if(res.status.isSuccessful) {
+            this._helper.stopSpinner();
+            this.isLoading = false;
+            console.log(res)
+            if (this.data?.isEditing) {
+              payload.trainingProviderId = payload?.trainingProviderId;
+              payload.active = true;
+              payload.deleted = false;
+            } else {
+              payload.id = res;
+            }
+            // delete payload?.id;
+            this.event.emit({
+              isEditing: this.data?.isEditing,
+              editObject: payload,
+            });
+            this.profileFormSubmitted = false;
+            this.close.nativeElement.click();
+            this._base.openSnackBar(
+              'Great...!!!, Your action was successful',
+              'success'
+            );
           } else {
-            payload.id = res;
+            this._helper.stopSpinner();
+            this._helper.triggerErrorAlert(res.status?.message?.friendlyMessage)
           }
-          // delete payload?.id;
-          this.event.emit({
-            isEditing: this.data?.isEditing,
-            editObject: payload,
-          });
-          this.profileFormSubmitted = false;
-          this.close.nativeElement.click();
-          this._base.openSnackBar(
-            'Great...!!!, Your action was successful',
-            'success'
-          );
         },
         error: (error: HttpErrorResponse) => {
           this._helper.stopSpinner();

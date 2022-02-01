@@ -2,7 +2,7 @@
   <div class="profile_title">
     <h2>Personal Details</h2>
   </div>
-  <div *ngIf="!isFetchingProfile" class="profile__card">
+  <div class="profile__card">
     <div class="wrapper__sign_in">
       <div class="d-flex">
         <div class="profile_img">
@@ -17,27 +17,6 @@
               Upload Photo
             </button>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="isFetchingProfile" class="row profile__card d-flex justify-content-between">
-    <div class="col-lg-6 wrapper__sign_in">
-      <div class="d-flex">
-        <div class="profile_img">
-          <app-docstream-skeleton-loader
-            width="10rem"
-            height="10rem"
-            [appearance]="'circle'"
-          ></app-docstream-skeleton-loader>
-        </div>
-        <div class="profile_detail">
-          <app-docstream-skeleton-loader
-            class="pt-4"
-            width="15rem"
-            height="4rem"
-          ></app-docstream-skeleton-loader>
         </div>
       </div>
     </div>
@@ -119,6 +98,9 @@
         </div>
       </div>
       <div class="d-flex click">
+        <div *ngIf="socialMediaInfo == null">
+          <p>You do not have any social media acoount available</p>
+        </div>
         <a 
           [href]="socialMediaInfo?.linkedInType"
           target="_blank"
@@ -157,6 +139,9 @@
         </div>
       </div>
       <div class="py-3">
+        <div *ngIf="websites == null">
+          <p>You do not have any website available</p>
+        </div>
         <ul>
              <li>
                <a 
@@ -191,7 +176,7 @@
                   [value]="4"
                   [ratingCount]="5"
                   [disabled]="true"
-                  [styles]="{ margin: '0px', fontSize: '25px'}"
+                  [styles]="{ margin: '0px', fontSize: '18px'}"
                   colorActive="#F88F09" 
                   colorDefault="#cecece"
           ></ng-rating-bar>
@@ -201,6 +186,9 @@
         </div>
       </div>
       <div class="">
+        <div class="" *ngIf="runningCourses.length == 0">
+          <p>You do not any running course available</p>
+        </div>
         <div class="d-flex justify-content-between" *ngFor="let course of runningCourses | slice:0:3">
           <p>{{ course?.course_Title }}</p>
           <ng-rating-bar
@@ -226,6 +214,9 @@
         </div>
       </div>
       <div class="">
+        <div class="" *ngIf="payouts.length == 0">
+          <p>You do not any running course available</p>
+        </div>
         <div class="d-md-flex">
           <div class="pr-4 border-right mb-4">
             <div *ngIf="payouts[0]?.account_TypeId == 1">

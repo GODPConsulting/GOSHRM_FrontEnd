@@ -13,11 +13,11 @@ export class ProfileService {
 constructor(private http: HttpService) { }
 
   public getProfile(
-    trainingProviderId: string
+    instructorId: string
     ): Observable<ResponseModel<Profile>> {
       const endpoint = '/traininginstructor/get/all/traininginstructor';
       const params = new HttpParams()
-      .set('trainingProviderId', trainingProviderId)
+      .set('trainingProviderId', instructorId)
       return this.http.getRequestWithParams(endpoint, params);
   }
 

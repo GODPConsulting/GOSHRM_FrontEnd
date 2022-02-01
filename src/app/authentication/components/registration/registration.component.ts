@@ -59,7 +59,8 @@ export class RegistrationComponent implements OnInit {
             this._helper.stopSpinner();
             this.isRegisteringFormSubmitted = true;
             // this._current.storeUserCredentials(res)
-            this.router.navigate(['/authentication/confirmation']);
+            this.router.navigate(['/authentication/login']);
+            // this.router.navigate(['/authentication/confirmation']);
           } else {
             this._helper.stopSpinner();
             this.isError = true;

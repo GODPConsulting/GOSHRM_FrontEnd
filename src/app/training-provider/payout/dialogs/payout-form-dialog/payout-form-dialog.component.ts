@@ -11,8 +11,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
-import { ResponseModel } from 'app/models/response.model';
+// import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { Payout } from '../../models/payout.model';
 import { PayoutService } from '../../services/payout.service';
@@ -43,7 +44,8 @@ export class PayoutFormDialogComponent implements OnInit {
     public fb: FormBuilder,
     private _payoutService: PayoutService,
     public _base: BaseComponent,
-    private _currentService: CurrentUserService
+    private _currentService: CurrentUserService,
+    public _helper: HelperService
   ) { }
 
   ngOnInit() {
@@ -80,6 +82,7 @@ export class PayoutFormDialogComponent implements OnInit {
 
 
   submit() {
+    this._helper.startSpinner();
     this.payoutSetupFormSubmitted = true;
     const payload = this.payoutForm.value;
     payload.account_TypeId = parseInt(payload.account_TypeId);
@@ -88,28 +91,34 @@ export class PayoutFormDialogComponent implements OnInit {
     console.log(payload);
     this.sub.add(
       this._payoutService.updatePayoutSetup(payload, this.loggedInUser?.trainingProviderId).subscribe({
-        next: (res: ResponseModel<Payout>) => {
+        next: (res: any) => {
           this.payoutSetupFormSubmitted = false;
           console.log(res);
-          if (this.data?.isEditing) {
-            payload.payoutId = payload?.payoutId;
-            payload.deleted = false;
+          if(res.status.isSuccessful) {
+            this._helper.stopSpinner();
+            if (this.data?.isEditing) {
+              payload.payoutId = payload?.payoutId;
+              payload.deleted = false;
+            } else {
+              payload.payoutId = res;
+            }
+            this.event.emit({
+              isEditing: this.data?.isEditing,
+              editObject: payload,
+            });
+            this.payoutSetupFormSubmitted = false;
+            this.close.nativeElement.click();
+            this._base.openSnackBar(
+              'Great...!!!, Your action was successful',
+              'success'
+            );
           } else {
-            payload.payoutId = res;
+            this._helper.stopSpinner();
+            this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
           }
-          // delete payload?.id;
-          this.event.emit({
-            isEditing: this.data?.isEditing,
-            editObject: payload,
-          });
-          this.payoutSetupFormSubmitted = false;
-          this.close.nativeElement.click();
-          this._base.openSnackBar(
-            'Great...!!!, Your action was successful',
-            'success'
-          );
         },
         error: (error: any) => {
+          this._helper.stopSpinner();
           this.payoutSetupFormSubmitted = false;
           console.log(error);
         },

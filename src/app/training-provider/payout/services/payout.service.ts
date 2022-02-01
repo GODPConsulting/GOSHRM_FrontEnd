@@ -15,7 +15,7 @@ export class PayoutService {
   public getPayout(
     trainingProviderId: string
   ): Observable<ResponseModel<Payout>> {
-   const endpoint = '/trainingproviderpayout/get/all/trainingproviderpayout';
+   const endpoint = '/trainingproviderpayout/get/byId/trainingproviderpayout';
    const params = new HttpParams()
    .set('trainingProviderId', trainingProviderId)
    return this.http.getRequestWithParams(endpoint, params);

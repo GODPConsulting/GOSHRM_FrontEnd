@@ -14,7 +14,7 @@ import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
-import { ResponseModel } from 'app/models/response.model';
+// import { ResponseModel } from 'app/models/response.model';
 import { SocialMedia } from '../../models/user-profile.model';
 import { ProfileService } from '../../services/profile.service';
 
@@ -91,28 +91,33 @@ export class SocialMediaDialogComponent implements OnInit {
       payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
       payload.socialMediaId = this.data?.editObject?.socialMediaId;
       this._profile.updateSocialmedia(payload, this.loggedInUser?.trainingProviderId).subscribe({
-        next: (res: ResponseModel<SocialMedia>) => {
-          this._healper.stopSpinner();
-          this.isLoading = false;
-          console.log(res)
-          if (this.data?.isEditing) {
-            payload.id = payload?.id;
-            payload.active = true;
-            payload.deleted = false;
+        next: (res: any) => {
+          if(res.status.isSuccessful) {
+            this._healper.stopSpinner();
+            this.isLoading = false;
+            console.log(res)
+            if (this.data?.isEditing) {
+              payload.id = payload?.id;
+              payload.active = true;
+              payload.deleted = false;
+            } else {
+              payload.id = res?.response?.trainingProviderId;
+            }
+            // delete payload?.id;
+            this.event.emit({
+              isEditing: this.data?.isEditing,
+              editObject: payload,
+            });
+            this.profileFormSubmitted = false;
+            this.close.nativeElement.click();
+            this._base.openSnackBar(
+              'Great...!!!, Your action was successful',
+              'success'
+            );
           } else {
-            payload.id = res?.response?.trainingProviderId;
+            this._healper.stopSpinner();
+            this._healper.triggerErrorAlert(res.status?.message?.friendlyMessage)
           }
-          // delete payload?.id;
-          this.event.emit({
-            isEditing: this.data?.isEditing,
-            editObject: payload,
-          });
-          this.profileFormSubmitted = false;
-          this.close.nativeElement.click();
-          this._base.openSnackBar(
-            'Great...!!!, Your action was successful',
-            'success'
-          );
         },
         error: (error: HttpErrorResponse) => {
           this._healper.stopSpinner();

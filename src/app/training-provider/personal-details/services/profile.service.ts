@@ -15,7 +15,7 @@ constructor(private http: HttpService) { }
   public getProfile(
        trainingProviderId: string
     ): Observable<ResponseModel<Profile>> {
-      const endpoint = '/trainingprovidercompanyInfo/get/all/trainingprovidercompanyInfo';
+      const endpoint = '/trainingprovidercompanyInfo/get/ById/trainingprovidercompanyInfo';
       const params = new HttpParams()
       .set('trainingProviderId', trainingProviderId)
       return this.http.getRequestWithParams(endpoint, params);
@@ -33,7 +33,7 @@ constructor(private http: HttpService) { }
   public getSocialMedia(
     trainingProviderId: string
  ): Observable<ResponseModel<Profile>> {
-   const endpoint = '/trainingprovidersocialmedia/get/all/trainingprovidersocialmedia';
+   const endpoint = '/trainingprovidersocialmedia/get/ById/trainingprovidersocialmedia';
    const params = new HttpParams()
    .set('trainingProviderId', trainingProviderId)
    return this.http.getRequestWithParams(endpoint, params);

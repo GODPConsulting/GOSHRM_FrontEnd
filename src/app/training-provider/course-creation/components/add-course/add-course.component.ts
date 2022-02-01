@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
-import { ResponseModel } from 'app/models/response.model';
-import { Courses } from '../../models/course-creation.model';
+// import { ResponseModel } from 'app/models/response.model';
+// import { Courses } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class AddCourseComponent implements OnInit {
 
   initAddCourseForm() {
     this.addCourseForm = this.fb.group({
-      training_Name: [''],
+      training_Name: ['', Validators.required],
       training_Objective: [''],
       training_Requirements: [''],
       training_Transcript: [''],
@@ -67,13 +67,18 @@ export class AddCourseComponent implements OnInit {
       payload.cost = parseInt(payload.cost);
       payload.duration = new Date (new Date().toDateString() + ' ' + duration);
       this._courses.UpdateCourse(payload).subscribe({
-        next: (res: ResponseModel<Courses>) => {
-         this._helper.stopSpinner();
+        next: (res: any) => {
+         if(res.status.isSuccessful) {
+          this._helper.stopSpinner();
           console.log(res)
           this._base.openSnackBar(
             'Great...!!!, Your action was successful',
             'success'
           );
+         } else {
+           this._helper.stopSpinner();
+           this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
+         }
         },
         error: (error: HttpErrorResponse) => {
           this._helper.stopSpinner();

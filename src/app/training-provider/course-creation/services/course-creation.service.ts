@@ -15,7 +15,7 @@ export class CourseCreationService {
   public getAllCourses(
     trainingProviderId: string
   ): Observable<ResponseModel<Courses>> {
-   const endpoint = '/trainingproviderpagebanner/get/all/trainingproviderpagebanner';
+   const endpoint = '/coursecreation/get/all/coursecreation';
    const params = new HttpParams()
    .set('trainingProviderId', trainingProviderId)
    return this.http.getRequestWithParams(endpoint, params);
@@ -27,20 +27,4 @@ export class CourseCreationService {
     const endpoint = '/coursecreation/add/update/coursecreation';
     return this.http.makeRequestWithData('post', endpoint, {}, course);
   }
-
-  // public getFacilitatorCourses(
-  //   trainingProviderId: string
-  // ): Observable<ResponseModel<FacilitatorCourses>> {
-  //  const endpoint = '/coursefacilitated/get/all/coursefacilitated';
-  //  const params = new HttpParams()
-  //  .set('trainingProviderId', trainingProviderId)
-  //  return this.http.getRequestWithParams(endpoint, params);
-  // }
-
-  // public updateFacilitatorCourses(
-  //   payout: FacilitatorCourses
-  // ): Observable<ResponseModel<FacilitatorCourses>> {
-  //   const endpoint = '/coursefacilitated/add/update/coursefacilitated';
-  //   return this.http.makeRequestWithData('post', endpoint, {}, payout);
-  // }
 }
