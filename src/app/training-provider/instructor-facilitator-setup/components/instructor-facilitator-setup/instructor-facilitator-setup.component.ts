@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
@@ -22,7 +23,8 @@ export class InstructorFacilitatorSetupComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private _currentService: CurrentUserService,
-    private _instructor: InstructorService
+    private _instructor: InstructorService,
+    private _helper: HelperService
   ) { }
 
   ngOnInit(): void {
@@ -31,15 +33,18 @@ export class InstructorFacilitatorSetupComponent implements OnInit {
   }
 
   public getFacilitators(): void {
+    this._helper.startSpinner();
     this.isFetchngFacilitatorDetail = true;
     this.sub.add(
       this._instructor.getAllFaciltator(this.loggedInUser.trainingProviderId).subscribe({
         next: (res: any) => {
+          this._helper.stopSpinner();
           this.isFetchngFacilitatorDetail = false;
           this.instructors = res['training_InstructorSetupTypes'];
           console.log(res, this.instructors)
         },
         error: (error: ResponseModel<null>) => {
+          this._helper.stopSpinner();
           this.isFetchngFacilitatorDetail = false;
           console.log(error);
         },

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { Facilitator } from '../../models/instructor-information.model';
@@ -24,7 +25,8 @@ export class InstructorInformationComponent implements OnInit {
   constructor(
     private _instructor: InstructorInformationService,
     private _currenService: CurrentUserService,
-    private _base: BaseComponent
+    private _base: BaseComponent,
+    private _helper: HelperService
   ) { }
 
   ngOnInit(): void {
@@ -33,15 +35,18 @@ export class InstructorInformationComponent implements OnInit {
   }
 
   public getFacilitator(): void {
+    this._helper.startSpinner();
     this.isFetchngFacilitatorDetail = true;
     this.sub.add(
-      this._instructor.getFaciltator('1').subscribe({
+      this._instructor.getFaciltator(this.loggedInUser.trainingProviderId).subscribe({
         next: (res: any) => {
+          this._helper.stopSpinner();
           this.isFetchngFacilitatorDetail = false;
           this.instructor = res['training_InstructorSetupTypes'];
           console.log(res, this.instructor)
         },
         error: (error: ResponseModel<null>) => {
+          this._helper.stopSpinner();
           this.isFetchngFacilitatorDetail = false;
           console.log(error);
         },
@@ -50,15 +55,14 @@ export class InstructorInformationComponent implements OnInit {
   }
 
   public submit(): void {
+    this._helper.startSpinner();
     this.facilitatorFormSubmitted = true;
     if (this.FacilitatorForm.valid) {
-      // this.isLoading = true;
       const payload = this.FacilitatorForm.value;
       payload.trainingProviderId = this.loggedInUser.trainingProviderId;
-      // payload.trainingProviderId = this.data?.editObject?.trainingProviderId;
       this._instructor.UpdateFaciltator(payload).subscribe({
         next: (res: ResponseModel<Facilitator>) => {
-          // this.isLoading = false;
+          this._helper.stopSpinner();
           console.log(res)
           
           this._base.openSnackBar(
@@ -68,9 +72,8 @@ export class InstructorInformationComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           console.log(error);
-          // this.isLoading = false;
+          this._helper.stopSpinner();
           this.facilitatorFormSubmitted = false;
-          // this.error_message = error?.error?.Id[0];
         },
       });
     }

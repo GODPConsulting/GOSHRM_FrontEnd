@@ -4,6 +4,7 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { RunningCoursesService } from 'app/training-provider/running-courses/services/running-courses.service';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,7 +17,8 @@ export class ProfileResolver implements Resolve<boolean> {
   constructor(
     private _profile: ProfileService,
     private _runningCourse: RunningCoursesService,
-    private _current: CurrentUserService
+    private _current: CurrentUserService,
+    private _helper: HelperService
   ) {}
  public loggedInUser: any;
   resolve(route: ActivatedRouteSnapshot): Observable<any> | Promise<any> | any {
@@ -25,10 +27,10 @@ export class ProfileResolver implements Resolve<boolean> {
     const profile = this._profile.getProfile(trainingProviderId);
     const socialMedia = this._profile.getSocialMedia(trainingProviderId);
    const runningCourse = this._runningCourse.getRunningCourses(trainingProviderId);
-    // this.helper.startSpinner();
+    this._helper.startSpinner();
     return forkJoin([profile, socialMedia, runningCourse]).pipe(
       map(response => {
-        // this.helper.stopSpinner();
+        this._helper.stopSpinner();
         return {
           profile: response[0],
           socialMedia: response[1],

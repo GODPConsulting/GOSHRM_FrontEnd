@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { SocialMedia } from '../../models/user-profile.model';
@@ -42,7 +43,8 @@ export class SocialMediaDialogComponent implements OnInit {
     private _profile: ProfileService,
     public dialog: MatDialog,
     public _base: BaseComponent,
-    private _currentService: CurrentUserService
+    private _currentService: CurrentUserService,
+    private _healper: HelperService
   ) {}
 
   ngOnInit(): void {
@@ -83,12 +85,14 @@ export class SocialMediaDialogComponent implements OnInit {
   public submit(): void {
     this.profileFormSubmitted = true;
     if (this.socialMediaForm.valid) {
+      this._healper.startSpinner();
       this.isLoading = true;
       const payload = this.socialMediaForm.value;
       payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
       payload.socialMediaId = this.data?.editObject?.socialMediaId;
       this._profile.updateSocialmedia(payload, this.loggedInUser?.trainingProviderId).subscribe({
         next: (res: ResponseModel<SocialMedia>) => {
+          this._healper.stopSpinner();
           this.isLoading = false;
           console.log(res)
           if (this.data?.isEditing) {
@@ -111,6 +115,7 @@ export class SocialMediaDialogComponent implements OnInit {
           );
         },
         error: (error: HttpErrorResponse) => {
+          this._healper.stopSpinner();
           console.log(error);
           this.isLoading = false;
           this.profileFormSubmitted = false;

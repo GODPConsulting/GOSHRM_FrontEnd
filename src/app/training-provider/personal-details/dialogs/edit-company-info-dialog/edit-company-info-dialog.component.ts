@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Profile } from '../../models/user-profile.model';
@@ -42,7 +43,8 @@ export class EditCompanyInfoDialogComponent implements OnInit {
     private _profile: ProfileService,
     public dialog: MatDialog,
     public _base: BaseComponent,
-    private _currentService: CurrentUserService
+    private _currentService: CurrentUserService,
+    private _helper: HelperService
   ) {}
 
   ngOnInit(): void {
@@ -72,12 +74,14 @@ export class EditCompanyInfoDialogComponent implements OnInit {
   public submit(): void {
     this.profileFormSubmitted = true;
     if (this.updateProfileForm.valid) {
+      this._helper.startSpinner();
       this.isLoading = true;
       const payload = this.updateProfileForm.value;
       payload.trainingProviderId = this.loggedInUser.trainingProviderId;
       // payload.trainingProviderId = this.data?.editObject?.trainingProviderId;
       this._profile.updateProfile(payload, this.loggedInUser.trainingProviderId).subscribe({
         next: (res: ResponseModel<Profile>) => {
+          this._helper.stopSpinner();
           this.isLoading = false;
           console.log(res)
           if (this.data?.isEditing) {
@@ -100,6 +104,7 @@ export class EditCompanyInfoDialogComponent implements OnInit {
           );
         },
         error: (error: HttpErrorResponse) => {
+          this._helper.stopSpinner();
           console.log(error);
           this.isLoading = false;
           this.profileFormSubmitted = false;

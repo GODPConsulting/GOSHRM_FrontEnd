@@ -5,17 +5,23 @@ export const SwalConfig = Swal.mixin({
     cancelButtonText: 'Cancel',
     confirmButtonText: 'Continue',
     reverseButtons: true,
-    allowOutsideClick: false
+    allowOutsideClick: false,
+    width: '500px',
+    confirmButtonColor: '#F88F09',
 })
 
 export const SwalConfig2 = Swal.mixin({
     showCancelButton: false,
-    confirmButtonText: 'Continue',
-    allowOutsideClick: false
+    confirmButtonText: 'Done',
+    allowOutsideClick: false,
+    width: '500px',
+    confirmButtonColor: '#F88F09',
 })
 
 export const SwalConfirmation = Swal.mixin({
     showCancelButton: false,
     confirmButtonText: 'Close',
-    allowOutsideClick: false
+    allowOutsideClick: false,
+    width: '500px',
+    confirmButtonColor: '#F88F09',
 })

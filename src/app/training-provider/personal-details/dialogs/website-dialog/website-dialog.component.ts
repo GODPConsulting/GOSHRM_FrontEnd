@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Website } from '../../models/user-profile.model';
@@ -42,7 +43,8 @@ export class WebsiteDialogComponent implements OnInit {
     private _profile: ProfileService,
     public dialog: MatDialog,
     public _base: BaseComponent,
-    private _currentservice: CurrentUserService
+    private _currentservice: CurrentUserService,
+    private _helper: HelperService
   ) {}
 
   ngOnInit(): void {
@@ -82,12 +84,14 @@ export class WebsiteDialogComponent implements OnInit {
   public submit(): void {
     this.websiteFormSubmitted = true;
     if (this.websiteForm.valid) {
+      this._helper.startSpinner();
       this.isLoading = true;
       const payload = this.websiteForm.value;
       payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
       console.log(payload)
       this._profile.updateWebsites(payload, this.loggedInUser?.trainingProviderId).subscribe({
         next: (res: ResponseModel<Website>) => {
+          this._helper.stopSpinner();
           this.isLoading = false;
           console.log(res)
           if (this.data?.isEditing) {
@@ -110,6 +114,7 @@ export class WebsiteDialogComponent implements OnInit {
           );
         },
         error: (error: HttpErrorResponse) => {
+          this._helper.stopSpinner();
           console.log(error);
           this.isLoading = false;
           this.websiteFormSubmitted = false;

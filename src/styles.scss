@@ -319,3 +319,23 @@ table.table {
     }
   }
 }
+
+.swal2-styled.swal2-confirm {
+  border: .2rem solid #F88F09 !important;
+  border-radius: 0.25em;
+  background: #F88F09;
+  color: #fff;
+  font-size: 1.5rem;
+  padding: 1rem 1.5rem;
+  min-width: 10rem;
+}
+
+.swal2-styled.swal2-cancel {
+  border: .2rem solid #F88F09 !important;
+  border-radius: 0.25em;
+  background: #fff !important;
+  padding: 1rem 1.5rem;
+  font-size: 1.5rem;
+  color: #F88F09 !important;
+  min-width: 10rem;
+}

@@ -8,9 +8,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { InstructorService } from '../../services/instructor.service';
 
@@ -41,7 +42,8 @@ export class AddInstructorDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<string>,
     private fb: FormBuilder,
     private _instructor: InstructorService,
-    private _currentService: CurrentUserService
+    private _currentService: CurrentUserService,
+    private _helper: HelperService
   ) { }
 
   ngOnInit() {
@@ -51,41 +53,15 @@ export class AddInstructorDialogComponent implements OnInit {
 
   public addNewFacilitatorForm() {
     this.addFacilitatorForm = this.fb.group({
-      trainingInstructorEmail: [''],
+      trainingInstructorEmail: ['', Validators.required],
       instructor_Name: [''],
       bios: [''],
       linkedIn_Link: [''],
       twitter_Link: [''],
       instructor_Image: [0],
       password: ['Password@1']
-      // addCourseIndex: this.fb.array([
-      //   this.fb.group({
-      //       course_Name: [''],
-      //       difficulty_Level: [''],
-      //       duration: [''],
-      //       date: [''],
-      //   })
-      // ])
     })
   }
-
-  // get facilitatorItems() {
-  //   return this.addFacilitatorForm.get('addCourseIndex') as FormArray;
-  // }
-
-  // public addNewCourse() {
-  //   this.facilitatorItems.push(this.fb.group({
-  //       course_Name: [''],
-  //       difficulty_Level: [''],
-  //       duration: [''],
-  //       date: [''],
-  //   }))
-  // }
-
-  // public removeCourse(i: number) {
-  //   if(i === 0) {return;}
-  //   this.facilitatorItems.removeAt(i);
-  // }
 
 
   public submit(): void {
@@ -94,18 +70,22 @@ export class AddInstructorDialogComponent implements OnInit {
     const payload = this.addFacilitatorForm.value;
     payload.trainingProviderId = this.loggedInUser.trainingProviderId;
     if(this.addFacilitatorForm.valid) {
+      this._helper.startSpinner();
       this._instructor.AddNewFacilitator(payload).subscribe({
         next: (res: any) => {
           console.log(res);
           this.isRegistering = false;
           if(res.status.isSuccessful) {
+            this._helper.stopSpinner();
             this.isRegisteringFormSubmitted = true;
           } else {
+            this._helper.stopSpinner();
             this.isError = true;
             this.error_message = res?.status?.message?.friendlyMessage
           }
         },
         error: (error: HttpErrorResponse) => {
+          this._helper.stopSpinner();
           console.log(error);
           this.isRegistering = false;
           this.isRegisteringFormSubmitted = true;
