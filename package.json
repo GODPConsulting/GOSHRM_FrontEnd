@@ -30,6 +30,7 @@
     "ngx-image-cropper": "^6.0.1",
     "ngx-signaturepad2": "^1.0.2",
     "ngx-skeleton-loader": "^4.0.0",
+    "ngx-spinner": "^12.0.0",
     "rxjs": "~6.6.0",
     "sweetalert2": "^11.3.4",
     "tslib": "^2.3.0",

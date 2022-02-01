@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 // import { LoginResponseDTO } from '@auth/models/auth.model';
 import { AuthService } from '@auth/services/auth.service';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 // import { BaseComponent } from '@core/base/base/base.component';
 // import { ResponseModel } from 'app/models/response.model';
 
@@ -26,7 +27,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private _auth: AuthService,
-    private _current: CurrentUserService
+    private _current: CurrentUserService,
+    private _helper: HelperService
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class LoginComponent implements OnInit {
 
 
   public login(): void {
+    this._helper.startSpinner();
     this.isLoggingIn = true;
     this.loginFormSubmitted = true;
     const payload = this.loginForm.value;
@@ -50,17 +53,20 @@ export class LoginComponent implements OnInit {
       this._auth.login(payload).subscribe({
         next: (res: any) => {
           console.log(res);
+          this._helper.stopSpinner();
           this.isLoggingIn = false;
           if(res?.status.isSuccessful) {
             this.loginFormSubmitted = true;
             this._current.storeUserCredentials(res?.token);
             this.getProfile();
           } else {
+            this._helper.stopSpinner();
             this.isError = true;
             this.err_message = res?.status?.message?.friendlyMessage
           }
         },
         error: (error: HttpErrorResponse) => {
+          this._helper.stopSpinner();
           this.isLoggingIn = false;
           this.loginFormSubmitted = true;
           this.err_message = error?.error?.message;

@@ -15,6 +15,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { OfflineComponent } from './offline/offline.component';
 import { TraningProviderComponent } from './training-provider/traning-provider.component';
 import { TrainingInstructorComponent } from './training-instructor/training-instructor.component';
+import { NgxSpinnerModule } from "ngx-spinner";
+
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { TrainingInstructorComponent } from './training-instructor/training-inst
     HttpClientModule,
     CoreModule,
     MatSnackBarModule,
+    NgxSpinnerModule,
     JwtModule.forRoot({
       config: {},
     }),

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 // import { RegisterResponseDTO } from '@auth/models/auth.model';
 import { AuthService } from '@auth/services/auth.service';
+import { HelperService } from '@core/services/healper.service';
 // import { ResponseModel } from 'app/models/response.model';
 // import { CurrentUserService  } from '@core/services/current-user.service'
 
@@ -27,6 +28,7 @@ export class RegistrationComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     // private _current: CurrentUserService
+    private _helper: HelperService
   ) { }
 
   ngOnInit() {
@@ -43,6 +45,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   public register(): void {
+    this._helper.startSpinner();
     this.isRegistering = true;
     this.isRegisteringFormSubmitted = true;
     const payload = this.registrationForm.value;
@@ -53,15 +56,18 @@ export class RegistrationComponent implements OnInit {
           console.log(res);
           this.isRegistering = false;
           if(res.status.isSuccessful) {
+            this._helper.stopSpinner();
             this.isRegisteringFormSubmitted = true;
             // this._current.storeUserCredentials(res)
             this.router.navigate(['/authentication/confirmation']);
           } else {
+            this._helper.stopSpinner();
             this.isError = true;
             this.error_message = res?.status?.message?.friendlyMessage
           }
         },
         error: (error: HttpErrorResponse) => {
+          this._helper.stopSpinner();
           console.log(error);
           this.isRegistering = false;
           this.isRegisteringFormSubmitted = true;
@@ -69,6 +75,7 @@ export class RegistrationComponent implements OnInit {
         }
       })
     }  else {
+      this._helper.stopSpinner();
       this.isRegistering = false;
       this.isError = true;
       this.error_message = "Kindly fill the form correctly"

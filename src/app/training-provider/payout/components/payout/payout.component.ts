@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
@@ -25,7 +26,8 @@ export class PayoutComponent implements OnInit {
     public dialog: MatDialog,
     private _payout: PayoutService,
     private _base: BaseComponent,
-    private _currentService: CurrentUserService
+    private _currentService: CurrentUserService,
+    private _helper: HelperService
   ) { }
 
   ngOnInit(): void {
@@ -34,15 +36,18 @@ export class PayoutComponent implements OnInit {
   }
 
   public getUserPayouts(): void {
+    this._helper.startSpinner();
     this.isFetchingPayout = true;
     this.sub.add(
       this._payout.getPayout(this.loggedInUser?.trainingProviderId).subscribe({
         next: (res: any) => {
+          this._helper.stopSpinner();
           this.isFetchingPayout = false;
           this.payouts = res['payoutSetupTypes'];
           console.log(res, this.payouts)
         },
         error: (error: ResponseModel<null>) => {
+          this._helper.stopSpinner();
           this.isFetchingPayout = false;
           console.log(error);
         },
@@ -77,6 +82,7 @@ export class PayoutComponent implements OnInit {
   }
 
   setAsDefault(payout: Payout) {
+    this._helper.startSpinner();
     this.payoutSetupFormSubmitted = true;
     payout.trainingProviderId = this.loggedInUser.trainingProviderId;
     payout.payoutId = payout?.payoutId;
@@ -85,6 +91,7 @@ export class PayoutComponent implements OnInit {
     this.sub.add(
       this._payout.updatePayoutSetup(payout, this.loggedInUser.trainingProviderId).subscribe({
         next: (res: ResponseModel<Payout>) => {
+          this._helper.stopSpinner();
           this.payoutSetupFormSubmitted = false;
           console.log(res);
           this.payoutSetupFormSubmitted = false;
@@ -94,6 +101,7 @@ export class PayoutComponent implements OnInit {
           );
         },
         error: (error: any) => {
+          this._helper.stopSpinner();
           this.payoutSetupFormSubmitted = false;
           console.log(error);
         },

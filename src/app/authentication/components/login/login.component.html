@@ -82,10 +82,11 @@
         <a routerLink="/authentication/forgot-password"> Forgot Password?</a>
       </div>
       <button class="btn wrapper__login_btn mt-5" (click)="login()">
-        <app-loading-button
+        <!-- <app-loading-button
           [text]="'Login'"
           [condition]="isLoggingIn"
-        ></app-loading-button>
+        ></app-loading-button> -->
+        Login
       </button>
       <div class="wrapper__sign_up text-center mt-4">
         <p>Dont have an account? <a routerLink="/authentication/register"><span>Register</span></a></p>

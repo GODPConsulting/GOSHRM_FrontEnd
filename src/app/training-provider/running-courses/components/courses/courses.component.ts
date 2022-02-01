@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { RunningCourses } from '../../models/running-course.model';
@@ -18,7 +19,8 @@ export class CoursesComponent implements OnInit {
 
   constructor(
     private _runningCourses: RunningCoursesService,
-    private _currentService: CurrentUserService
+    private _currentService: CurrentUserService,
+    private _helper: HelperService
   ) { }
 
   ngOnInit(): void {
@@ -27,15 +29,18 @@ export class CoursesComponent implements OnInit {
   }
 
   public getRunningCourses(): void {
+    this._helper.startSpinner();
     this.isfetchingCourses = true;
     this.sub.add(
       this._runningCourses.getRunningCourses(this.loggedInUser.trainingProviderId).subscribe({
         next: (res: any) => {
+          this._helper.stopSpinner();
           this.isfetchingCourses = false;
           this.runningCourses = res['coursesSetupTypes'];
           console.log(res, this.runningCourses)
         },
         error: (error: ResponseModel<null>) => {
+          this._helper.stopSpinner();
           this.isfetchingCourses = false;
           console.log(error);
         },
