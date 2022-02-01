@@ -86,7 +86,8 @@ export class SocialMediaDialogComponent implements OnInit {
       this.isLoading = true;
       const payload = this.socialMediaForm.value;
       payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
-      payload.socialMediaId = this.data?.editObject?.socialMediaId;
+      payload.socialMediaId = 2;
+      // payload.instructorId = this.data?.editObject?.instructorId;
       this._profile.updateSocialmedia(payload, this.loggedInUser?.trainingProviderId).subscribe({
         next: (res: ResponseModel<SocialMedia>) => {
           this.isLoading = false;

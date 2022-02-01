@@ -8,23 +8,23 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
-import { SocialMedia } from '../../models/user-profile.model';
+import { Profile } from '../../models/user-profile.model';
 import { ProfileService } from '../../services/profile.service';
 
 @Component({
-  selector: 'app-social-media-dialog',
-  templateUrl: './social-media-dialog.component.html',
-  styleUrls: ['./social-media-dialog.component.scss']
+  selector: 'app-edit-company-info-dialog',
+  templateUrl: './edit-company-info-dialog.component.html',
+  styleUrls: ['./edit-company-info-dialog.component.scss'],
 })
-export class SocialMediaDialogComponent implements OnInit {
+export class EditCompanyInfoDialogComponent implements OnInit {
   @ViewChild('close') close!: ElementRef;
-  public socialMediaForm!: FormGroup;
+  public updateProfileForm!: FormGroup;
   public isLoading: boolean = false;
   public profileFormSubmitted: boolean = false;
   public error_message: string = '';
@@ -32,12 +32,12 @@ export class SocialMediaDialogComponent implements OnInit {
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
-    editObject?: SocialMedia;
+    editObject?: Profile;
     isEditing: boolean;
-  }> = new EventEmitter<{ editObject?: SocialMedia; isEditing: boolean }>();
+  }> = new EventEmitter<{ editObject?: Profile; isEditing: boolean }>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: DialogModel<SocialMedia>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogModel<Profile>,
     private fb: FormBuilder,
     private _profile: ProfileService,
     public dialog: MatDialog,
@@ -47,31 +47,20 @@ export class SocialMediaDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this._currentService.getUser();
-    this.initSocialMediaForm();
+    this.initUpdateProfileForm();
   }
 
-  
-  initSocialMediaForm() {
-    this.socialMediaForm = this.fb.group({
-      linkedInType: [
-        this.data?.editObject?.linkedInType ? this.data?.editObject?.linkedInType  : 'https://',
-        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
-       ],
-      facebookType: [
-        this.data?.editObject?.facebookType ? this.data?.editObject?.facebookType  : 'https://',
-        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
-      ],
-      twitterType: [
-        this.data?.editObject?.twitterType ? this.data?.editObject?.twitterType  : 'https://' ,
-        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
-      ],
-      youtubeType: [
-        this.data?.editObject?.youtubeType ? this.data?.editObject?.youtubeType  : 'https://',
-        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
-      ],
+  initUpdateProfileForm() {
+    this.updateProfileForm = this.fb.group({
+      instructor_Name: [this.data?.editObject?.instructor_Name ? this.data?.editObject?.instructor_Name  : '' ],
+      trainingInstructorEmail: [this.data?.editObject?.trainingInstructorEmail ? this.data?.editObject?.trainingInstructorEmail  : ''],
+      trainingInstructorPhoneNumber: [this.data?.editObject?.trainingInstructorPhoneNumber ? this.data?.editObject?.trainingInstructorPhoneNumber  : ''],
+      physical_Address: [this.data?.editObject?.physical_Address ? this.data?.editObject?.physical_Address  : ''],
+      bios: [this.data?.editObject?.bios ? this.data?.editObject?.bios  : ''],
+      linkedin_Link: [this.data?.editObject?.linkedin_Link ? this.data?.editObject?.linkedin_Link  : ''],
+      twitter_Link: [this.data?.editObject?.twitter_Link ? this.data?.editObject?.twitter_Link  : ''],
     })
   }
-
 
   public checkForKeyEnter(event: KeyboardEvent): void {
     var key = event.key || event.keyCode;
@@ -82,21 +71,21 @@ export class SocialMediaDialogComponent implements OnInit {
 
   public submit(): void {
     this.profileFormSubmitted = true;
-    if (this.socialMediaForm.valid) {
+    if (this.updateProfileForm.valid) {
       this.isLoading = true;
-      const payload = this.socialMediaForm.value;
-      payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
-      payload.socialMediaId = this.data?.editObject?.socialMediaId;
-      this._profile.updateSocialmedia(payload, this.loggedInUser?.trainingProviderId).subscribe({
-        next: (res: ResponseModel<SocialMedia>) => {
+      const payload = this.updateProfileForm.value;
+      payload.trainingProviderId = this.loggedInUser.trainingProviderId;
+      payload.instructorId = this.data?.editObject?.instructorId;
+      this._profile.updateProfile(payload, this.loggedInUser.trainingProviderId).subscribe({
+        next: (res: ResponseModel<Profile>) => {
           this.isLoading = false;
           console.log(res)
           if (this.data?.isEditing) {
-            payload.id = payload?.id;
+            payload.trainingProviderId = payload?.trainingProviderId;
             payload.active = true;
             payload.deleted = false;
           } else {
-            payload.id = res?.response?.trainingProviderId;
+            payload.id = res;
           }
           // delete payload?.id;
           this.event.emit({

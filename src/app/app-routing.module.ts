@@ -34,7 +34,7 @@ const routes: Routes = [
       {
         path: 'training-instructor',
         loadChildren: () =>
-          import('./traning-instructor/traning-instructor.module').then(
+          import('./training-instructor/training-instructor.module').then(
             (m) => m.TraningInstructorModule
           ),
       },

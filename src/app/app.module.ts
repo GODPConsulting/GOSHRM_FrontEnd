@@ -14,9 +14,16 @@ import { LocalStorageService } from '@shared/services/local-storage.service';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { OfflineComponent } from './offline/offline.component';
 import { TraningProviderComponent } from './training-provider/traning-provider.component';
+import { TrainingInstructorComponent } from './training-instructor/training-instructor.component';
 
 @NgModule({
-  declarations: [AppComponent, NotFoundComponent, OfflineComponent, TraningProviderComponent],
+  declarations: [
+    AppComponent, 
+    NotFoundComponent, 
+    OfflineComponent, 
+    TraningProviderComponent, 
+    TrainingInstructorComponent
+  ],
   imports: [
     BrowserModule,
     FormsModule,

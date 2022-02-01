@@ -20,14 +20,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5 d-flex justify-content-center">
+            <div class="col-md-5 d-none d-md-block d-flex justify-content-center">
                 <img src="assets/images/carousel.svg">
             </div>
         </div>
     </div>
     <div class="community-activities">
-        <div class="click" (click)="openDialog({isEditing: false})">
-            <h3>Community Activity</h3>
+        <div class="d-md-flex justify-content-between">
+            <div class="">
+                <h3>Community Activity</h3>
+            </div>
+            <div>
+                <app-searchbar
+                    [canAdd]="true"
+                    (btnAction)="openDialog({isEditing: false})"
+                ></app-searchbar>
+            </div>
         </div>
         <div class="activities bg-white p-4 my-3">
             <div class="d-flex justify-content around">
