@@ -36,7 +36,7 @@ export class InstructorFacilitatorSetupComponent implements OnInit {
     this._helper.startSpinner();
     this.isFetchngFacilitatorDetail = true;
     this.sub.add(
-      this._instructor.getAllFaciltator(this.loggedInUser.trainingProviderId).subscribe({
+      this._instructor.getAllFaciltator().subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchngFacilitatorDetail = false;

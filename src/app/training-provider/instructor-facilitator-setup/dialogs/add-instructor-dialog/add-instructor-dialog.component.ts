@@ -58,9 +58,16 @@ export class AddInstructorDialogComponent implements OnInit {
       bios: [''],
       linkedIn_Link: [''],
       twitter_Link: [''],
-      instructor_Image: [0],
-      password: ['Password@1']
+      addCover_Image: [''],
+      password: ['Password@1'],
+      physical_Address: ['']
     })
+  }
+
+  public addDocument(event: any): void {
+    // let image = event;
+    // console.log(image);
+    
   }
 
 
@@ -69,6 +76,7 @@ export class AddInstructorDialogComponent implements OnInit {
     this.isRegisteringFormSubmitted = true;
     const payload = this.addFacilitatorForm.value;
     payload.trainingProviderId = this.loggedInUser.trainingProviderId;
+    payload.addCover_Image = 0;
     if(this.addFacilitatorForm.valid) {
       this._helper.startSpinner();
       this._instructor.AddNewFacilitator(payload).subscribe({
@@ -78,6 +86,7 @@ export class AddInstructorDialogComponent implements OnInit {
           if(res.status.isSuccessful) {
             this._helper.stopSpinner();
             this.isRegisteringFormSubmitted = true;
+            this._helper.triggerSucessAlert('Instructor added successfully')
           } else {
             this._helper.stopSpinner();
             this.isError = true;

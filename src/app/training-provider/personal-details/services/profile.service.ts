@@ -15,7 +15,7 @@ constructor(private http: HttpService) { }
   public getProfile(
        trainingProviderId: string
     ): Observable<ResponseModel<Profile>> {
-      const endpoint = '/trainingprovidercompanyInfo/get/ById/trainingprovidercompanyInfo';
+      const endpoint = '/lms/trainingprovidercompanyInfo/get/ById/trainingprovidercompanyInfo';
       const params = new HttpParams()
       .set('trainingProviderId', trainingProviderId)
       return this.http.getRequestWithParams(endpoint, params);
@@ -24,7 +24,7 @@ constructor(private http: HttpService) { }
   public updateProfile(
       getProfile: Profile, trainingProviderId: string
     ): Observable<ResponseModel<Profile>> {
-      const endpoint = '/trainingprovidercompanyInfo/add/update/trainingprovidercompanyInfo';
+      const endpoint = '/lms/trainingprovidercompanyInfo/add/update/trainingprovidercompanyInfo';
       const params = new HttpParams()
       .set('trainingProviderId', trainingProviderId)
       return this.http.makeRequestWithData('post', endpoint, params, getProfile);
@@ -33,7 +33,7 @@ constructor(private http: HttpService) { }
   public getSocialMedia(
     trainingProviderId: string
  ): Observable<ResponseModel<Profile>> {
-   const endpoint = '/trainingprovidersocialmedia/get/ById/trainingprovidersocialmedia';
+   const endpoint = '/lms/trainingprovidersocialmedia/get/ById/trainingprovidersocialmedia';
    const params = new HttpParams()
    .set('trainingProviderId', trainingProviderId)
    return this.http.getRequestWithParams(endpoint, params);
@@ -42,7 +42,7 @@ constructor(private http: HttpService) { }
 public updateSocialmedia(
    getSocialMedia: SocialMedia, trainingProviderId: string
  ): Observable<ResponseModel<SocialMedia>> {
-   const endpoint = '/trainingprovidersocialmedia/add/update/trainingprovidersocialmedia';
+   const endpoint = '/lms/trainingprovidersocialmedia/add/update/trainingprovidersocialmedia';
    const params = new HttpParams()
    .set('trainingProviderId', trainingProviderId)
    return this.http.makeRequestWithData('post', endpoint, params, getSocialMedia);
@@ -51,7 +51,7 @@ public updateSocialmedia(
 public getWebsites(
   trainingProviderId: string
 ): Observable<ResponseModel<Profile>> {
- const endpoint = '/trainingproviderwebsite/get/all/trainingproviderwebsite';
+ const endpoint = '/lms/trainingproviderwebsite/get/byId/trainingproviderwebsite';
  const params = new HttpParams()
  .set('trainingProviderId', trainingProviderId)
  return this.http.getRequestWithParams(endpoint, params);
@@ -60,7 +60,7 @@ public getWebsites(
   public updateWebsites(
   getWebsite: Website, trainingProviderId: string
   ): Observable<ResponseModel<Website>> {
-  const endpoint = '/trainingproviderwebsite/add/update/trainingproviderwebsite';
+  const endpoint = '/lms/trainingproviderwebsite/add/update/trainingproviderwebsite';
   const params = new HttpParams()
   .set('trainingProviderId', trainingProviderId)
   return this.http.makeRequestWithData('post', endpoint, params, getWebsite);

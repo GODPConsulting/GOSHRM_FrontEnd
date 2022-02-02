@@ -15,7 +15,7 @@ export class SecurityService {
   public getSecurity(
     trainingProviderId: string
   ): Observable<ResponseModel<Security>> {
-   const endpoint = '/trainingprovidersecuritysetup/get/all/trainingprovidersecuritysetup';
+   const endpoint = '/lms/trainingprovidersecuritysetup/get/all/trainingprovidersecuritysetup';
    const params = new HttpParams()
    .set('trainingProviderId', trainingProviderId)
    return this.http.getRequestWithParams(endpoint, params);
@@ -24,7 +24,7 @@ export class SecurityService {
   public updateSecuritySetup(
     payout: Security
   ): Observable<ResponseModel<Security>> {
-    const endpoint = '/trainingprovidersecuritysetup/add/update/trainingprovidersecuritysetup';
+    const endpoint = '/lms/trainingprovidersecuritysetup/add/update/trainingprovidersecuritysetup';
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
   }
 }

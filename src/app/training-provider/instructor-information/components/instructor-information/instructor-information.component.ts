@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
@@ -21,17 +22,20 @@ export class InstructorInformationComponent implements OnInit {
   public isFetchngFacilitatorDetail: boolean = false;
   public facilitatorFormSubmitted: boolean = false;
   public loggedInUser: any;
+  public instructorId: any;
   
   constructor(
     private _instructor: InstructorInformationService,
     private _currenService: CurrentUserService,
     private _base: BaseComponent,
     private _helper: HelperService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.loggedInUser = this._currenService.getUser();
+    this.instructorId = this._route.snapshot.paramMap.get('instructorId');
     this.getFacilitator();
     this.initFacilitatorForm();
   }
@@ -40,12 +44,13 @@ export class InstructorInformationComponent implements OnInit {
     this._helper.startSpinner();
     this.isFetchngFacilitatorDetail = true;
     this.sub.add(
-      this._instructor.getFaciltator(this.loggedInUser.trainingProviderId).subscribe({
+      this._instructor.getFaciltator(this.instructorId).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchngFacilitatorDetail = false;
-          this.instructor = res['training_InstructorSetupTypes'];
-          console.log(res, this.instructor)
+          this.instructor = res['training_InstructorSetupTypes'][0];
+          // console.log(res, this.instructor)
+          this.initFacilitatorForm();
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();
@@ -62,7 +67,7 @@ export class InstructorInformationComponent implements OnInit {
       linkedin_Link: [this.instructor?.linkedin_Link ? this.instructor?.linkedin_Link : ''],
       twitter_Link: [this.instructor?.instructor_Name ? this.instructor?.twitter_Link : ''],
       trainingInstructorEmail: [this.instructor?.trainingInstructorEmail ? this.instructor?.trainingInstructorEmail : ''],
-      bios: [this.instructor?.instructor_Name ? this.instructor?.instructor_Name : ''],
+      bios: [this.instructor?.bios ? this.instructor?.bios : ''],
     })
   }
 
@@ -72,6 +77,7 @@ export class InstructorInformationComponent implements OnInit {
     if (this.FacilitatorForm.valid) {
       const payload = this.FacilitatorForm.value;
       payload.trainingProviderId = this.loggedInUser.trainingProviderId;
+      payload.instructorId = this.instructor.instructorId;
       this._instructor.UpdateFaciltator(payload).subscribe({
         next: (res: ResponseModel<Facilitator>) => {
           this._helper.stopSpinner();

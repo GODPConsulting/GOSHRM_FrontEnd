@@ -84,97 +84,44 @@
                             <label for="" class="form-label"
                             >Upload Image
                             </label>
-                            <textarea 
-                                class="form-control" 
-                                cols="30" rows="10"
-                                formControlName="instructor_Image"
-                            ></textarea>
+                            <div class="upload-document-wrapper text-center click py-5">
+                                <p class="pt-3 font14 text-left">
+                                    Click or drag picture here to upload
+                                </p>
+                                <label for="file">
+                                  <input
+                                    id="file"
+                                    (change)="addDocument($event)"
+                                    type="file"
+                                    accept="image/png,image/jpeg,image/jpg"
+                                    class="d-none uploader"
+                                    formControlName="addCover_Image"
+                                  />
+                                  <div class="icon-wrapper">
+                                    <div>
+                                        <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8.66634 10.8333H36.833V26H41.1663V10.8333C41.1663 8.4435 39.2228 6.5 36.833 6.5H8.66634C6.27651 6.5 4.33301 8.4435 4.33301 10.8333V36.8333C4.33301 39.2232 6.27651 41.1667 8.66634 41.1667H25.9997V36.8333H8.66634V10.8333Z" fill="#BDBDBD"/>
+                                            <path d="M17.333 23.8333L10.833 32.5H34.6663L25.9997 19.5L19.4997 28.1667L17.333 23.8333Z" fill="#BDBDBD"/>
+                                            <path d="M41.1663 30.3333H36.833V36.8333H30.333V41.1666H36.833V47.6666H41.1663V41.1666H47.6663V36.8333H41.1663V30.3333Z" fill="#BDBDBD"/>
+                                        </svg>                                                                                
+                                    </div>
+                                  </div>
+                                 </label>
+                              </div>
                        </div>
                     </div>
                  </div>
             </div>
         </div>
-        <!-- <div class="">
-            <h2 mat-dialog-title>Courses Facilitated </h2>
-           <div #childform formArrayName="addCourseIndex">
-            <div class="row courses-form" *ngFor="let item of facilitatorItems.controls let child = index" [formGroupName]="child">
-                <div class="col-md-6">
-                    <div class="form_group mb-4">
-                        <label for="" class="form-label"
-                        >Course Name
-                        </label>
-                        <input
-                            class="form-control pr-2"
-                            type="text"
-                            formControlName="course_Name"
-                            placeholder="Enter username"
-                        />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form_group mb-4">
-                        <label for="" class="form-label"
-                        >Difficulty Level
-                        </label>
-                        <input
-                            class="form-control pr-2"
-                            type="text"
-                            formControlName="difficulty_Level"
-                            placeholder="Enter linkedIn link"
-                        />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form_group mb-4">
-                        <label for="" class="form-label"
-                        >Duration
-                        </label>
-                        <input
-                            class="form-control pr-2"
-                            type="text"
-                            formControlName="duration"
-                            placeholder="Enter twitter link"
-                        />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form_group mb-4">
-                        <label for="" class="form-label"
-                        >Date
-                        </label>
-                        <input
-                            class="form-control pr-2"
-                            type="text"
-                            formControlName="date"
-                            placeholder="Enter twitter link"
-                        />
-                    </div>
-                </div>
-                <div class="remove-course">
-                    <i class="far fa-trash-alt text-danger click" [class.d-none]="child == 0" (click)="removeCourse(child)"></i>
-                </div>
-            </div>
-           </div>
-        </div> -->
       </form>
     </div>
    
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <!-- <button
-      class="btn btn-outline-green btn-md me-4 px-4"
-      (click)="addNewCourse()"
-    >
-        Add more Courses
-    </button> -->
     <button
       class="btn btn-green btn-md px-4"
       (click)="submit()"
     >
-        <!-- <app-loading-button
-          [text]="'Save'"
-          [condition]="isLoading"
-        ></app-loading-button> -->
         Save
     </button>
   </mat-dialog-actions>

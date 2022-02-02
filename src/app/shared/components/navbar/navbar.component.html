@@ -29,13 +29,13 @@
             <span>Innocent Sample</span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li *ngIf="loggedInUser.customerTypeId == 1">
+            <li *ngIf="loggedInUser.customerTypeId === 1">
               <a class="dropdown-item" 
                 routerLink="training-provider/profile" 
                 routerLinkActive="router-link-active" 
               >Profile</a>
             </li>
-            <li *ngIf="loggedInUser.customerTypeId == 2">
+            <li *ngIf="loggedInUser.customerTypeId === 2">
               <a class="dropdown-item" 
                 routerLink="training-instructor/profile" 
                 routerLinkActive="router-link-active" 

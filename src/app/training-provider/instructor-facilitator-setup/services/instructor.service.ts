@@ -13,18 +13,24 @@ export class InstructorService {
   constructor(private http: HttpService) { }
 
   public getAllFaciltator(
-    trainingProviderId: string
   ): Observable<ResponseModel<Facilitator>> {
-   const endpoint = '/traininginstructor/get/all/traininginstructor';
+   const endpoint = '/lms/traininginstructor/get/all/traininginstructor';
+   return this.http.getRequest(endpoint);
+  }
+
+  public getOneFaciltator(
+    trainingInstructorId: string
+  ): Observable<ResponseModel<Facilitator>> {
+   const endpoint = '/lms/traininginstructor/get/byId/traininginstructor';
    const params = new HttpParams()
-   .set('trainingProviderId', trainingProviderId)
+   .set('trainingInstructorId', trainingInstructorId)
    return this.http.getRequestWithParams(endpoint, params);
   }
 
   public AddNewFacilitator(
     faciliator: Facilitator
   ): Observable<ResponseModel<any>> {
-    const endpoint = '/instructorsignup';
+    const endpoint = '/lms/instructorsignup';
     return this.http.makeRequestWithData('post', endpoint, {}, faciliator);
   }
 }

@@ -10,18 +10,18 @@ const routes: Routes = [
         component:  LayoutComponent,
         children: [
             {
-                path: 'information',
+                path: 'information/:instructorId',
                 component: InstructorInformationComponent
             },
             {
-                path: 'courses',
+                path: 'courses/:instructorId',
                 component: FacilitatedCoursesComponent
             },
-            {
-                path: '',
-                redirectTo: 'information',
-                pathMatch: 'full',
-            },
+            // {
+            //     path: '',
+            //     redirectTo: 'information',
+            //     pathMatch: 'full',
+            // },
         ]
     }
 ];

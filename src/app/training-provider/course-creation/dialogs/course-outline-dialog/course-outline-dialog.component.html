@@ -6,8 +6,8 @@
 </div>
   <mat-dialog-content class="mat-typography">
     <div>
-        <form [formGroup]="reviewerForm">
-            <div class="row text-center">
+        <form [formGroup]="courseOutlineForm">
+            <div class="row">
                 <div class="col-12">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
@@ -72,6 +72,8 @@
   <mat-dialog-actions align="end">
     <button
       class="btn btn-outline-green btn-md me-4 px-4"
+      [mat-dialog-close]="false"
+      #close
     >
       Done
     </button>
@@ -79,10 +81,7 @@
       class="btn btn-green btn-md px-4"
       (click)="submit()"
     >
-        <app-loading-button
-          [text]="'Continue'"
-          [condition]="isLoading"
-        ></app-loading-button>
+        Continue
     </button>
   </mat-dialog-actions>
   

@@ -186,7 +186,7 @@
         </div>
       </div>
       <div class="">
-        <div class="" *ngIf="runningCourses.length == 0">
+        <div class="" *ngIf="runningCourses?.length == 0">
           <p>You do not any running course available</p>
         </div>
         <div class="d-flex justify-content-between" *ngFor="let course of runningCourses | slice:0:3">
@@ -214,7 +214,7 @@
         </div>
       </div>
       <div class="">
-        <div class="" *ngIf="payouts.length == 0">
+        <div class="" *ngIf="payouts?.length == 0">
           <p>You do not any running course available</p>
         </div>
         <div class="d-md-flex">

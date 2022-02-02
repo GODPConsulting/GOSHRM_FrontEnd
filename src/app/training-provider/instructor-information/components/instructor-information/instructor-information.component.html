@@ -1,5 +1,5 @@
 <div class="bg-white p-4 my-4">
-    <form>
+    <form [formGroup]="FacilitatorForm">
         <div class="row">
             <div class="col-md-6">
                 <div class="form_group mb-4">
@@ -10,7 +10,6 @@
                         class="form-control pr-2"
                         type="text"
                         formControlName="instructor_Name"
-                        placeholder="Enter username"
                     />
                 </div>
             </div>
@@ -35,7 +34,7 @@
                     <input
                         class="form-control pr-2"
                         type="text"
-                        formControlName="linkedIn_Link"
+                        formControlName="linkedin_Link"
                         placeholder="Enter linkedIn link"
                     />
                 </div>
@@ -66,6 +65,14 @@
                 ></textarea>
                 </div>
            </div>
+        </div>
+        <div class="d-flex justify-content-end py-5">
+            <button 
+                class="btn btn-green btn-lg"
+                (click)="submit()"
+            >
+                Save
+            </button>
         </div>
     </form>
 </div>

@@ -15,7 +15,7 @@ export class PayoutService {
   public getPayout(
     trainingProviderId: string
   ): Observable<ResponseModel<Payout>> {
-   const endpoint = '/trainingproviderpayout/get/byId/trainingproviderpayout';
+   const endpoint = '/lms/trainingproviderpayout/get/byId/trainingproviderpayout';
    const params = new HttpParams()
    .set('trainingProviderId', trainingProviderId)
    return this.http.getRequestWithParams(endpoint, params);
@@ -24,7 +24,7 @@ export class PayoutService {
   public updatePayoutSetup(
     payout: Payout, trainingProviderId: number
   ): Observable<ResponseModel<Payout>> {
-    const endpoint = '/trainingproviderpayout/add/update/trainingproviderpayout';
+    const endpoint = '/lms/trainingproviderpayout/add/update/trainingproviderpayout';
     const params = new HttpParams()
       .set('trainingProviderId', trainingProviderId)
     return this.http.makeRequestWithData('post', endpoint, params, payout);

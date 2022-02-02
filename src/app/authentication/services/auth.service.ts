@@ -15,14 +15,14 @@ export class AuthService {
   public login(
     loginRequestDTO: LoginRequestDTO
   ): Observable<ResponseModel<LoginResponseDTO>> {
-    const endpoint = '/login';
+    const endpoint = '/lms/login';
     return this.http.makeRequestWithData('post', endpoint, {}, loginRequestDTO);
   }
 
   public register(
     registerRequestDTO: RegisterRequestDTO
   ): Observable<ResponseModel<RegisterResponseDTO>> {
-    const endpoint = '/signup';
+    const endpoint = '/lms/signup';
     return this.http.makeRequestWithData('post', endpoint, {}, registerRequestDTO);
   }
   public forgotPassword(
@@ -43,7 +43,7 @@ export class AuthService {
     // const headers: HttpHeaders = new HttpHeaders({
     //   // headers['Authorization'] = `Bearer `;
     // })
-    const endpoint = '/fetch/profile';
+    const endpoint = '/lms/fetch/profile';
     return this.http.makeRequestWithData('get', endpoint, {});
   }
 }

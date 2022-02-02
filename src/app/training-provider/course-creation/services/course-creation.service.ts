@@ -15,7 +15,7 @@ export class CourseCreationService {
   public getAllCourses(
     trainingProviderId: string
   ): Observable<ResponseModel<Courses>> {
-   const endpoint = '/coursecreation/get/all/coursecreation';
+   const endpoint = '/lms/coursecreation/get/all/coursecreation';
    const params = new HttpParams()
    .set('trainingProviderId', trainingProviderId)
    return this.http.getRequestWithParams(endpoint, params);
@@ -24,7 +24,25 @@ export class CourseCreationService {
   public UpdateCourse(
     course: Courses
   ): Observable<ResponseModel<Courses>> {
-    const endpoint = '/coursecreation/add/update/coursecreation';
+    const endpoint = '/lms/coursecreation/add/update/coursecreation';
     return this.http.makeRequestWithData('post', endpoint, {}, course);
+  }
+
+  public getAllCourseOutline(
+    trainingProviderId: string
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/coursecreationcourseoutline/get/byId/coursecreationcourseoutline';
+   const params = new HttpParams()
+   .set('trainingProviderId', trainingProviderId)
+   return this.http.getRequestWithParams(endpoint, params);
+  }
+
+  public UpdateCourseOutline(
+    course: Courses, trainingProviderId: string
+  ): Observable<ResponseModel<Courses>> {
+    const endpoint = '/lms/coursecreationcourseoutline/add/update/coursecreationcourseoutline';
+    const params = new HttpParams()
+    .set('trainingProviderId', trainingProviderId)
+    return this.http.makeRequestWithData('post', endpoint, params, course);
   }
 }
