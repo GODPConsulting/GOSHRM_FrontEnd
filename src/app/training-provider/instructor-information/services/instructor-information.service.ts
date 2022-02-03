@@ -29,18 +29,18 @@ export class InstructorInformationService {
   }
 
   public getFacilitatorCourses(
-    trainingProviderId: string
+    trainingInstructorId: string
   ): Observable<ResponseModel<FacilitatorCourses>> {
-   const endpoint = '/lms/coursefacilitated/get/all/coursefacilitated';
+   const endpoint = '/lms/coursecreationfacilitatedcourse/get/byId/coursecreationfacilitatedcourse';
    const params = new HttpParams()
-   .set('trainingProviderId', trainingProviderId)
+   .set('trainingInstructorId', trainingInstructorId)
    return this.http.getRequestWithParams(endpoint, params);
   }
 
   public updateFacilitatorCourses(
     payout: FacilitatorCourses
   ): Observable<ResponseModel<FacilitatorCourses>> {
-    const endpoint = '/lms/coursefacilitated/add/update/coursefacilitated';
+    const endpoint = '/lms/coursecreationfacilitatedcourse/add/update/coursecreationfacilitatedcourse';
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
   }
 }

@@ -10,7 +10,7 @@
     </div>
 
     <div class="setup_content my-4">
-        <div class="setup-card bg-white p-5 my-4" *ngFor="let item of [1]">
+        <div class="setup-card bg-white p-5 my-4" *ngFor="let course of [1]">
             <div class="d-flex justify-content-between">
                 <div>
                     <input type="checkbox" name="" id="">
@@ -79,10 +79,10 @@
                         Create Experience
                     </button>
                     <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" routerLink="/training-provider/course-creation/course-outline">
+                      <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/course-outline', course]">
                           Course Outline</a>
                     </li>
-                      <li (click)="openDialog( {isEditing: false} )"><a class="dropdown-item"
+                      <li (click)="openDialog( {isEditing: true, editObject: course } )"><a class="dropdown-item"
                         >Participants</a></li>
                       <li><a class="dropdown-item" routerLink="/training-provider/course-creation/course-assessment"
                         >Course Assessment</a></li>

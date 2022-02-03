@@ -25,7 +25,7 @@ const routes: Routes = [
         component: CompetenceAssessmentComponent
     },
     {
-        path: 'course-outline',
+        path: 'course-outline/:courseId',
         component: CourseOutlineComponent
     },
     {

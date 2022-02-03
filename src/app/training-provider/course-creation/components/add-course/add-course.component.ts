@@ -20,6 +20,7 @@ export class AddCourseComponent implements OnInit {
   public loggedInUser: any;
   public file: any;
   public currencies: Currency[]= [];
+  public instructorId: any;
   public participant: any[] = [
     {id: 1, name: 'Muhydeen Alabi'},
     {id: 2, name: 'Etim Essang'},
@@ -36,11 +37,15 @@ export class AddCourseComponent implements OnInit {
     private _currentService: CurrentUserService,
     private _courses: CourseCreationService,
     private _helper: HelperService,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private _route:ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.loggedInUser = this._currentService.getUser();
+    if (this._route.snapshot.paramMap.get('instructorId')) {
+      this.instructorId = this._route.snapshot.paramMap.get('instructorId');
+    }
     this.getResolvedData();
     this.initAddCourseForm();
   }

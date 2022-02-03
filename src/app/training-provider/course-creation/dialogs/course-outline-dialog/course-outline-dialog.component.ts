@@ -55,7 +55,13 @@ export class CourseOutlineDialogComponent implements OnInit {
       outline_Name: ['', Validators.required],
       outline_Description: ['', Validators.required],
       sectionId: ['', Validators.required],
+      material_Name: [''],
     })
+  }
+
+  public addDocument(event: any): void {
+    let image = event;
+    console.log(image); 
   }
 
   submit() {

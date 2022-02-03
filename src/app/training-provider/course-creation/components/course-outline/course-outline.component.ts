@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
@@ -20,16 +21,19 @@ export class CourseOutlineComponent implements OnInit {
   public courseOtlines: CourseOutline[] = [];
   public isFetchingCourseOutlines: boolean = false;
   public loggedInUser: any;
+  public courseid: any;
 
   constructor(
     public dialog: MatDialog,
     private _course: CourseCreationService,
     public _helper: HelperService,
-    public _current: CurrentUserService
+    public _current: CurrentUserService,
+    public _route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
+    this.courseid = this._route.snapshot.paramMap.get('courseid');
     this.getAllCourseOutlines();
   }
 
@@ -37,7 +41,7 @@ export class CourseOutlineComponent implements OnInit {
     this._helper.startSpinner();
     this.isFetchingCourseOutlines = true;
     this.sub.add(
-      this._course.getAllCourseOutline(this.loggedInUser?.trainingProviderId).subscribe({
+      this._course.getAllCourseOutline(this.courseid).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingCourseOutlines = false;
