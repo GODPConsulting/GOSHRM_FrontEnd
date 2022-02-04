@@ -11,7 +11,7 @@
         <a class="btn upload-btn hint" data-toggle="modal" (click)="delete()"
           ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
         </a>
-        <a *ngIf="current_tab =='Page Content'" class="btn upload-btn hint" data-toggle="modal" (click)="delete()"
+        <a *ngIf="current_tab =='Page Content'" class="btn upload-btn hint" data-toggle="modal" routerLink="/lms/application/page-setup-detail"
           ><span class="hint-text">Add</span><img src="assets/img/add.svg">
         </a>
       </div>
@@ -60,20 +60,41 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+              <table
+                class="table table-striped text-nowrap" 
+                datatable [dtOptions]="dtOptions" 
+                data-searching="false"
+              >
                 <thead>
                   <tr>
                     <th>
-                      <input type="checkbox">
+                      <input
+                        type="checkbox"
+                        (change)="checkUncheckAll()"
+                        [(ngModel)]="isCheck"
+                        class=""
+                      />
                       <span class="px-3">Page</span>
                     </th>
                     <th>Banner Title</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
+                  <tr *ngFor="let banner of pageBanners, index as i">
                     <th scope="row">
-                      <input type="checkbox">
+                      <label
+                        class="check-container mb-4"
+                        for="checkbox{{ i }}"
+                      >
+                        <input
+                          (click)="selectDeselectBanner(banner)"
+                          type="checkbox"
+                          id="checkbox{{ i }}"
+                          [(ngModel)]="asset.isSelected"
+                          class="checkbox"
+                        />
+                        <span class="checkmark"></span>
+                      </label>
                       <span class="px-3"> Design, Art and Multimedia</span>
                     </th>
                     <td class="d-flex justufy-content-between">E
@@ -97,7 +118,11 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
+              <table
+                class="table table-striped text-nowrap" 
+                datatable [dtOptions]="dtOptions" 
+                data-searching="false"
+              >
                 <thead>
                   <tr>
                     <th> 

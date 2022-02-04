@@ -83,8 +83,10 @@ export class LmsService {
       );
   }
 
-  getAllTraineeSetup() {
-    return this.apiService.get("/lms/traineesetup/get/all/traineesetup").pipe(
+  getAllRunningCourses(companyId) {
+    const params = new HttpParams()
+    .set('companyId', companyId);
+    return this.apiService.get("/lms/runningcourse/get/all/runningcourse", params).pipe(
       tap(),
       map((res) => {
         return res;
