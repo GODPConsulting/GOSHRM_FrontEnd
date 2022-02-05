@@ -163,12 +163,12 @@
           ></ng-rating-bar>
         </h4>
         <div class="click" routerLink="/training-provider/running-courses">
-          <img src="assets/images/edit-pen.svg" alt="">
+          <p>View all</p>
         </div>
       </div>
       <div class="">
         <div class="d-flex justify-content-between" *ngFor="let course of runningCourses | slice:0:3">
-          <p>{{ course?.course_Title }}</p>
+          <p>{{ course?.training_Name }}</p>
           <ng-rating-bar
               [value]="course?.ratings || 0"
               [ratingCount]="5"

@@ -30,7 +30,7 @@ export class ProfileResolver implements Resolve<boolean> {
     const socialMedia = this._profile.getSocialMedia(trainingProviderId);
     const website = this._profile.getWebsites(trainingProviderId);
     const payout = this._payout.getPayout(trainingProviderId);
-    const runningCourse = this._runningCourse.getRunningCourses();
+    const runningCourse = this._runningCourse.getRunningCourses(trainingProviderId);
     this._helper.startSpinner();
     return forkJoin([profile, socialMedia, website, payout, runningCourse]).pipe(
       map(response => {

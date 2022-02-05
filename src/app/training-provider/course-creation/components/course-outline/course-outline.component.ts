@@ -18,10 +18,10 @@ import { CourseCreationService } from '../../services/course-creation.service';
 
 export class CourseOutlineComponent implements OnInit {
   public sub: Subscription = new Subscription();
-  public courseOtlines: CourseOutline[] = [];
+  public courseOutlines: CourseOutline[] = [];
   public isFetchingCourseOutlines: boolean = false;
   public loggedInUser: any;
-  public courseid: any;
+  public courseId: any;
 
   constructor(
     public dialog: MatDialog,
@@ -33,7 +33,8 @@ export class CourseOutlineComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
-    this.courseid = this._route.snapshot.paramMap.get('courseid');
+    this.courseId = this._route.snapshot.paramMap.get('courseId');
+    console.log(this.courseId)
     this.getAllCourseOutlines();
   }
 
@@ -41,12 +42,12 @@ export class CourseOutlineComponent implements OnInit {
     this._helper.startSpinner();
     this.isFetchingCourseOutlines = true;
     this.sub.add(
-      this._course.getAllCourseOutline(this.courseid).subscribe({
+      this._course.getAllCourseOutline(this.courseId).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingCourseOutlines = false;
-          this.courseOtlines = res['course_CreationSetupTypes'];
-          console.log(res, this.courseOtlines)
+          this.courseOutlines = res['course_OutlineSetupTypes'];
+          console.log(res, this.courseOutlines)
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();
@@ -58,16 +59,23 @@ export class CourseOutlineComponent implements OnInit {
   }
 
   public openDialog(
-    payload: { isEditing?: boolean; editObject?: any } | any
+    payload: { isEditing?: boolean; editObject?: CourseOutline } | any
   ): void {
     let object: DialogModel<any> = payload;
     const dialogRef = this.dialog.open(CourseOutlineDialogComponent, {
       data: object,
     });
-
+    console.log(payload)
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-          
+        if (event?.isEditing) {
+          const index = this.courseOutlines.findIndex((courseOutline: CourseOutline) => {
+            return courseOutline.sectionId == event?.editObject?.sectionId;
+          });
+          this.courseOutlines[index] = event?.editObject;
+        } else {
+          this.courseOutlines = [event?.editObject, ...this.courseOutlines];
+        }
       }
     );
   }

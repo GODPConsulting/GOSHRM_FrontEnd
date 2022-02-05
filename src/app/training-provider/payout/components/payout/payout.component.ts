@@ -21,6 +21,7 @@ export class PayoutComponent implements OnInit {
   public isFetchingPayout: boolean = false;
   public payoutSetupFormSubmitted: boolean = false;
   public loggedInUser: any;
+  public defaultAccout!: Payout;
 
   constructor(
     public dialog: MatDialog,
@@ -81,13 +82,17 @@ export class PayoutComponent implements OnInit {
     );
   }
 
+  getDefaultAccount(payout: any) {
+   
+  }
+
   setAsDefault(payout: Payout) {
     this._helper.startSpinner();
     this.payoutSetupFormSubmitted = true;
     payout.trainingProviderId = this.loggedInUser.trainingProviderId;
     payout.payoutId = payout?.payoutId;
     payout.account_Default = !payout.account_Default;
-    console.log(payout);
+    // console.log(payout);
     this.sub.add(
       this._payout.updatePayoutSetup(payout, this.loggedInUser.trainingProviderId).subscribe({
         next: (res: ResponseModel<Payout>) => {

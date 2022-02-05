@@ -20,9 +20,9 @@
           <ng-container>
             <tr class="text-capitalize" *ngFor="let course of runningCourses">
               <td>{{ course?.upload_Date | date }}</td>
-              <td>{{ course?.training_Provider }}</td>
-              <td>{{ course?.course_Title }}</td>
-              <td>{{ course?.no_Of_Views }}</td>
+              <td>{{ course?.facilitator }}</td>
+              <td>{{ course?.training_Name }}</td>
+              <td>{{ course?.noOfViews }}</td>
               <td>
                 <div class="d-flex justify-content-center align-items-center">
                    <ng-rating-bar

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create-course-assessment',
@@ -7,7 +7,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./create-course-assessment.component.scss']
 })
 export class CreateCourseAssessmentComponent implements OnInit {
-  public addCoiurseAssessmentForm!: FormGroup;
+  public addCourseAssessmentForm!: FormGroup;
   constructor(
     private fb: FormBuilder
   ) { }
@@ -17,36 +17,47 @@ export class CreateCourseAssessmentComponent implements OnInit {
   }
 
   public createCourseAssessmentForm() {
-    this.addCoiurseAssessmentForm = this.fb.group({
-      addQuestionIndex: this.fb.array([
-        this.fb.group({
-            question_Title: [''],
-            option1: [''],
-            option2: [''],
-            // option3: [''],
-            // option4: [''],
-        })
-      ])
+    this.addCourseAssessmentForm = this.fb.group({
+      questionsIndex: this.fb.array([this.addNewQuestion])
     })
   }
 
-  get facilitatorItems() {
-    return this.addCoiurseAssessmentForm.get('addQuestionIndex') as FormArray;
+  get addNewQuestion() {
+    return this.fb.group({
+        question: ['', Validators.required],
+        answers: this.fb.array([
+          this.fb.group({
+              answer: ['', Validators.required],
+              isAnswer: [false]
+          }),
+          this.fb.group({
+              answer: ['', Validators.required],
+              isAnswer: [false]
+          }),
+          this.fb.group({
+              answer: ['', Validators.required],
+              isAnswer: [false]
+          }),
+          this.fb.group({
+              answer: ['', Validators.required],
+              isAnswer: [false]
+          }),
+        ]),
+    })
   }
 
-  public addNewQuestion() {
-    this.facilitatorItems.push(this.fb.group({
-        question_Title: [''],
-        option1: [''],
-        option2: [''],
-        // option3: [''],
-        // option4: [''],
-    }))
+  get QuestionItems(): FormArray {
+    return this.addCourseAssessmentForm.get('questionsIndex') as FormArray;
   }
+
+  getQuestionAnswers(index: any): FormArray {
+    return this.QuestionItems.get('answers') as FormArray;
+  }
+
 
   public removeQuestion(i: number) {
     if(i === 0) {return;}
-    this.facilitatorItems.removeAt(i);
+    this.QuestionItems.removeAt(i);
   }
 
 

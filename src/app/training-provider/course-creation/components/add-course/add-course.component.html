@@ -28,7 +28,7 @@
                                   [items]="requirement" 
                                   bindLabel="name" 
                                   bindValue="id" 
-                                  [multiple]="false"
+                                  [multiple]="true"
                                   formControlName="training_Requirements"
                               >
                               </ng-select>
@@ -145,7 +145,7 @@
                                 class="form-control pr-2"
                                 type="time"
                                 placeholder=""
-                                formControlName="duration"
+                                formControlName="{{'duration'}}"
                               />
                           </div>
                     </div>
@@ -167,11 +167,14 @@
                             <label for="currentPassword" class="form-label"
                               >Facilitator:
                             </label>
-                              <select name="" id="" class="form-select" formControlName="facilitator">
-                                  <option value="classroom ">Classroom </option>
-                                  <option value="online">Online (Video)</option>
-                                  <option value="virtual">Virtual</option>
-                              </select>
+                            <ng-select 
+                              [items]="instructors" 
+                              bindLabel="instructor_Name" 
+                              bindValue="instructorId" 
+                              [multiple]="true"
+                              formControlName="currencyId"
+                            >
+                            </ng-select>
                           </div>
                     </div>
                     <div class="col-md-6">
@@ -215,11 +218,11 @@
                     <div class="col-md-6">
                         <div class="form_group mb-4">
                             <label for="currentPassword" class="form-label"
-                              >Discount Rate:
+                              >Discount Rate(%):
                             </label>
                               <input
                                 class="form-control pr-2"
-                                type="text"
+                                type="number"
                                 placeholder=""
                                 formControlName="discount_Rate"
                               />

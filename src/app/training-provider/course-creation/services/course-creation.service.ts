@@ -21,6 +21,15 @@ export class CourseCreationService {
    return this.http.getRequestWithParams(endpoint, params);
   }
 
+  public getOneCoursesById(
+    courseId: string
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/coursecreation/get/courseid/coursecreation';
+   const params = new HttpParams()
+   .set('courseId', courseId)
+   return this.http.getRequestWithParams(endpoint, params);
+  }
+
   public UpdateCourse(
     course: Courses
   ): Observable<ResponseModel<Courses>> {
@@ -33,7 +42,7 @@ export class CourseCreationService {
   ): Observable<ResponseModel<CourseOutline>> {
    const endpoint = '/lms/coursecreationcourseoutline/get/byId/coursecreationcourseoutline';
    const params = new HttpParams()
-   .set('courseid', courseid)
+   .set('courseId', courseid)
    return this.http.getRequestWithParams(endpoint, params);
   }
 

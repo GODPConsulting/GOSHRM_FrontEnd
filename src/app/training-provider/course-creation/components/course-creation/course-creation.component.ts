@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
@@ -23,7 +24,8 @@ export class CourseCreationComponent implements OnInit {
     public dialog: MatDialog,
     private _course: CourseCreationService,
     public _helper: HelperService,
-    private _current: CurrentUserService
+    private _current: CurrentUserService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -39,7 +41,7 @@ export class CourseCreationComponent implements OnInit {
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingCourses = false;
-          this.courses = res['payoutSetupTypes'];
+          this.courses = res['course_CreationSetupTypes'];
           console.log(res, this.courses)
         },
         error: (error: ResponseModel<null>) => {
@@ -49,6 +51,10 @@ export class CourseCreationComponent implements OnInit {
         },
       })
     );
+  }
+
+  goTo() {
+    this.router.navigate(['/training-provider/course-creation/add-course'])
   }
 
   public openDialog(

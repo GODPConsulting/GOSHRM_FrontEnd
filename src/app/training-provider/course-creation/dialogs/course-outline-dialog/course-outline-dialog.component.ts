@@ -46,16 +46,18 @@ export class CourseOutlineDialogComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUser = this._current.getUser();
+    console.log(this.data)
     this.initCourseOutlineForm();
   }
 
   public initCourseOutlineForm() {
     this.courseOutlineForm = this.fb.group({
-      section_Name: ['', Validators.required],
-      outline_Name: ['', Validators.required],
-      outline_Description: ['', Validators.required],
-      sectionId: ['', Validators.required],
-      material_Name: [''],
+      section_Number: [this.data.editObject.section_Number ? this.data.editObject.section_Number : '', Validators.required],
+      section_Name: [this.data.editObject.section_Name ? this.data.editObject.section_Name : '', Validators.required],
+      outline_Name: [this.data.editObject.outline_Name ? this.data.editObject.outline_Name : '', Validators.required],
+      outline_Description: [this.data.editObject.outline_Description ? this.data.editObject.outline_Description : '', Validators.required],
+      material_Name: [this.data.editObject.material_Name ? this.data.editObject.material_Name : 'Complete web developemnt'],
+      material_Type: [this.data.editObject.material_Type ? this.data.editObject.material_Type : 'Doc'],
     })
   }
 
@@ -70,6 +72,9 @@ export class CourseOutlineDialogComponent implements OnInit {
     payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
     payload.trainingInstructorId = this.loggedInUser?.trainingInstructorId;
     payload.sectionId = this.data?.editObject?.sectionId ? this.data?.editObject?.sectionId : 0 ;
+    // payload.courseId = this.data?.editObject?.courseId;
+    this.data.isEditing ? payload.courseId = this.data.editObject.courseId : payload.courseId = this.data.editObject
+    payload.courseId = parseInt(payload.courseId);
     console.log(payload);
     this.sub.add(
       this._course.UpdateCourseOutline(payload, payload.trainingProviderId).subscribe({

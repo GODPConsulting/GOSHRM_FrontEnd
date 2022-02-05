@@ -62,7 +62,7 @@ export class PersonalDetailsComponent implements OnInit {
         this.websites = data?.resolveData?.website?.websiteSetupTypes[0];
         this.socialMediaInfo = data?.resolveData?.socialMedia?.socialMediaSetupTypes[0];
         this.payouts = data?.resolveData?.payout?.payoutSetupTypes;
-        this.runningCourses = data?.resolveData?.runningCourse?.coursesSetupTypes;
+        this.runningCourses = data?.resolveData?.runningCourse?.facilated_CoursesSetupTypes;
         // console.log(this.runningCourses)
       })
     );

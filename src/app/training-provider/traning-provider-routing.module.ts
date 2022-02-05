@@ -54,7 +54,7 @@ const routes: Routes = [
                 ),
             },
             {
-              path: 'instructor-information',
+              path: 'instructor-information/:instructorId',
               loadChildren: () =>
                 import('./instructor-information/instructor-information.module').then(
                   (m) => m.InstructorInformationModule

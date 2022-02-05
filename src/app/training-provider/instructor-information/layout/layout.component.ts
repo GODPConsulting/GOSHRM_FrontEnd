@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -8,12 +8,26 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class LayoutComponent implements OnInit {
   public instructorId: any;
+  public current_tab:string = 'information';
+
   constructor(
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.instructorId = this._route.snapshot.paramMap.get('instructorId');
+    console.log(this.instructorId)
+  }
+
+  public getInformation(): void {
+    this.current_tab = 'information';
+    this.router.navigate(['training-provider/instructor-information', this.instructorId], { queryParams: { q: 'information' } });
+  }
+
+  public getCourses(): void {
+    this.current_tab = 'courses';
+    this.router.navigate(['training-provider/instructor-information', this.instructorId], { queryParams: { q: 'courses' } });
   }
 
 }

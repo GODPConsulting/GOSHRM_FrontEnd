@@ -12,38 +12,42 @@
           </div>
        </div>
       <ul class="nav nav-pills vertical-nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item p-0" role="presentation">
-          <a
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            class="nav-link px-0 py-3"
-            id="information-tab"
-            data-bs-toggle="tab"
-            [routerLink]="['information', instructorId]"
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            [ngClass]="{ active: current_tab == 'information' }"
+            id="pills-info-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-info"
+            type="button"
             role="tab"
-            aria-controls="information"
+            aria-controls="pills-info"
             aria-selected="true"
-            >Personal Information</a
+            (click)="getInformation()"
           >
+            Personal Information
+          </button>
         </li>
-        <li class="nav-item p-0 ms-5" role="presentation">
-          <a
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            class="nav-link px-0 py-3"
-            id="courses-tab"
-            data-bs-toggle="tab"
-            [routerLink]="['courses', instructorId]"
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            [ngClass]="{ active: current_tab == 'courses' }"
+            id="pills-identity-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-identity"
+            type="button"
             role="tab"
-            aria-controls="courses"
+            aria-controls="pills-identity"
             aria-selected="false"
-            >Facilitated Courses</a
+            (click)="getCourses()"
           >
+            Facilitated Ccourses
+          </button>
         </li>
       </ul>
     </div>
   
-    <div class="tab-content" id="myTabContent">
+    <!-- <div class="tab-content" id="myTabContent">
       <div
         class="tab-pane fade show active"
         id="regions"
@@ -52,5 +56,9 @@
       >
         <router-outlet></router-outlet>
       </div>
-    </div>
+    </div> -->
+    <section class="tab-content mt-4" id="pills-tabContent">
+      <app-facilitated-courses *ngIf="current_tab == 'courses'"></app-facilitated-courses>
+      <app-instructor-information *ngIf="current_tab == 'information'"></app-instructor-information>
+    </section>
 </div>

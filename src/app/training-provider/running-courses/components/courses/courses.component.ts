@@ -32,7 +32,7 @@ export class CoursesComponent implements OnInit {
     this._helper.startSpinner();
     this.isfetchingCourses = true;
     this.sub.add(
-      this._runningCourses.getRunningCourses().subscribe({
+      this._runningCourses.getRunningCourses(this.loggedInUser.trainingProviderId).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isfetchingCourses = false;

@@ -171,7 +171,7 @@
     <div class="courses_info">
       <div class="d-flex justify-content-between">
         <h4 class="d-flex py-3">
-          <span class="pe-3">No. of running courses - 36 courses</span>
+          <span class="pe-3">No. of running courses - {{ runningCourses?.length }} course(s)</span>
           <ng-rating-bar
                   [value]="4"
                   [ratingCount]="5"
@@ -182,7 +182,7 @@
           ></ng-rating-bar>
         </h4>
         <div class="click" routerLink="/training-provider/running-courses">
-          <img src="assets/images/edit-pen.svg" alt="">
+          <p>View all</p>
         </div>
       </div>
       <div class="">
@@ -190,7 +190,7 @@
           <p>You do not any running course available</p>
         </div>
         <div class="d-flex justify-content-between" *ngFor="let course of runningCourses | slice:0:3">
-          <p>{{ course?.course_Title }}</p>
+          <p>{{ course }}</p>
           <ng-rating-bar
               [value]="course?.ratings || 0"
               [ratingCount]="5"
