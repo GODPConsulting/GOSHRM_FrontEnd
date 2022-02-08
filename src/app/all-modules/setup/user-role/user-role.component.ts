@@ -12,6 +12,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
   styleUrls: ['./user-role.component.css']
 })
 export class UserRoleComponent implements OnInit {
+  public dtOptions: DataTables.Settings = {};
   userRoleList: any[] = [];
   selectedUserRole: any[] = [];
   viewHeight: any = "500px";

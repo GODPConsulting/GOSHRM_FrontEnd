@@ -1,13 +1,33 @@
-<div class="ui-g">
+<div class="coutry-list_wrapper ui-g">
     <div class="ui-g-12 no-padding">
       <div style="margin-bottom:0" class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading my-5">
           <div class="row">
             <div class="col-md-12">
               <h2 class="panel-title pull-left">
                 Country Information
               </h2>
-              <div
+              <div class="pull-right">
+                <a class="btn upload-btn hint"  (click)="showAddNew()"
+                ><span class="hint-text">Add</span><img src="assets/img/add.svg">
+                </a>
+              </div>
+              <div class="pull-right">
+                  <a class="btn upload-btn hint"  (click)="multipleDelete()"
+                  ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
+                  </a>
+              </div>
+              <div class="pull-right">
+                <a class="btn upload-btn hint"  (click)="exportCountryList()"
+                ><span class="hint-text">Export</span><img src="assets/img/add.svg">
+                </a>
+              </div>
+              <div class="pull-right">
+                  <a class="btn upload-btn hint"  (click)="uploadCountryList()"
+                  ><span class="hint-text">Upload</span><img src="assets/img/upload.svg">
+                  </a>
+              </div>
+              <!-- <div
                 style="padding-right: 5px;padding-left: 5px;width: 45px;"
                 class="col-md-1 pull-right"
               >
@@ -74,7 +94,7 @@
                   tooltipPosition="top"
                   label=""
                 ></button>
-              </div>
+              </div> -->
               <div class="col-md-3 col-sm-6 col-xs-12 pull-right">
                 <input
                   style="height:35px;"

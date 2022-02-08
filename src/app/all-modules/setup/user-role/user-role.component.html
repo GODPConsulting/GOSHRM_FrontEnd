@@ -1,13 +1,13 @@
 <div class="user-role_wrapper ui-g">
     <div class="ui-g-12 no-padding">
         <div style="margin-bottom:0" class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading mb-4">
                 <div class="row">
                     <div class="col-md-12">
                         <h2 class="panel-title pull-left">
                             User Role
                         </h2>
-                        <div  style="padding-right: 5px;padding-left: 5px;width: 45px;" class="col-md-1 pull-right">
+                            <!-- <div  style="padding-right: 5px;padding-left: 5px;width: 45px;" class="col-md-1 pull-right">
                                 <button
                                 pButton
                                 style="padding:0.5em 0"
@@ -34,7 +34,17 @@
                                     tooltipPosition="top"
                                     label=""
                                 ></button>
-                              </div>
+                            </div> -->
+                            <div class="pull-right">
+                                <a class="btn upload-btn hint"  (click)="showAddNew()"
+                                ><span class="hint-text">Add</span><img src="assets/img/add.svg">
+                                </a>
+                            </div>
+                            <div class="pull-right">
+                                <a class="btn upload-btn hint"  (click)="multipleDelete()"
+                                ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
+                                </a>
+                            </div>
                     </div>
                 </div>
             </div>
