@@ -33,6 +33,8 @@ import { CityComponent } from "./city/city.component";
 import { CurrencyListComponent } from "./currency-list/currency-list.component";
 import { CurrencyComponent } from "./currency/currency.component";
 import { DucumentTypeComponent } from "./ducument-type/ducument-type.component";
+import { EmailconfigListComponent } from "./emailconfig-list/emailconfig-list.component";
+import { EmailconfigComponent } from "./emailconfig/emailconfig.component";
 
 const routes: Routes = [
   {
@@ -166,6 +168,14 @@ const routes: Routes = [
       {
         path: "document-type",
         component: DucumentTypeComponent,
+      },
+      {
+        path: "emailconfig-list",
+        component: EmailconfigListComponent,
+      },
+      {
+        path: "email-config",
+        component: EmailconfigComponent,
       },
     ],
   },
