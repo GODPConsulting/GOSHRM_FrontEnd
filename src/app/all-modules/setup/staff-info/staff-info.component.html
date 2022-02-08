@@ -1,6 +1,6 @@
-<div class="ui-g">
-    <div class="ui-g-12 no-padding">
-      <div class="card no-padding">
+<div class="staff-info_wrapper ui-g">
+    <div class="ui-g-12">
+      <div class="card p-5">
         <div style="margin-bottom:0" class="panel panel-default">
           <div class="panel-heading">
             <div class="row">
@@ -11,349 +11,340 @@
               </div>
             </div>
           </div>
-  
-          <div class="panel-body">
-            <div class="form-horizontal">
-              <form novalidate [formGroup]="form">
-                <div class="form-group">
-                  <label for="" class="control-label col-md-2">
-                    First Name
-                  </label>
-                  <div class="col-md-4">
-                    <input
-                      type="text"
-                      formControlName="firstName"
-                      name="firstName"
-                      class="form-control"
-                    />
-                  </div>
-  
-                  <label for="" class="control-label col-md-2">
-                    Last Name
-                  </label>
-                  <div class="col-md-4">
-                    <input
-                      type="text"
-                      formControlName="lastName"
-                      name="lastName"
-                      class="form-control"
-                    />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="" class="control-label col-md-2">
-                    Middle Name
-                  </label>
-                  <div class="col-md-4">
-                    <input
-                      type="text"
-                      formControlName="middleName"
-                      name="middleName"
-                      class="form-control"
-                    />
-                  </div>
-  
-                  <label for="" class="control-label col-md-2">
-                    Staff Code
-                  </label>
-                  <div class="col-md-4">
-                    <input
-                      type="text"
-                      formControlName="staffCode"
-                      name="staffCode"
-                      class="form-control"
-                      readonly
-                    />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="" class="control-label col-md-2">
-                    Date Of Birth
-                  </label>
-                  <div class="col-md-4">
-                    <p-calendar
-                      id="dateOfBirth"
-                      class="form-control"
-                      formControlName="dateOfBirth"
-                      [monthNavigator]="true"
-                      [yearNavigator]="true"
-                      yearRange="1900:2030"
-                      [showIcon]="true"
-                      [inputStyle]="{ width: '100%' }"
-                      [style]="{ width: '100%', 'z-index': '10' }"
-                    ></p-calendar>
-                  </div>
-  
-                  <label for="" class="control-label col-md-2">
-                    Gender
-                  </label>
-                  <div class="col-md-4">
-                    <select
-                      type="text"
-                      name="gender"
-                      formControlName="gender"
-                      id="gender"
-                      class="form-control"
-                    >
-                      <option value="">-- Select Gender --</option>
-                      <option value="1">Male</option>
-                      <option value="2">Female</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="jobTitle" class="control-label col-md-2">
-                    Job Title
-                  </label>
-                  <div class="col-md-4">
-                    <select
-                      type="text"
-                      name="jobTitle"
-                      formControlName="jobTitle"
-                      id="jobTitle"
-                      class="form-control"
-                      (change)="parseValueToInt($event.target.value, 1)"
-                    >
-                      <option value="">-- Select Job Title --</option>
-                      <option
-                        *ngFor="let type of jobTitles"
-                        [value]="type.lookupId"
-                      >
-                        {{ type.lookupName }}
-                      </option>
-                    </select>
-                  </div>
-  
-                  <label for="" class="control-label col-md-2">
-                    Email
-                  </label>
-                  <div class="col-md-4">
-                    <input
-                      type="text"
-                      formControlName="email"
-                      name="email"
-                      class="form-control"
-                    />
-                  </div>
-                </div>
-  
-                <div class="form-group">
-                  <label for="" class="control-label col-md-2">
-                    Country
-                  </label>
-                  <div class="col-md-4">
-                    <select
-                      type="text"
-                      name="countryId"
-                      formControlName="countryId"
-                      id="countryId"
-                      class="form-control"
-                      (change)="getStateByCountry($event.target.value)"
-                    >
-                      <option value="">-- Select Country --</option>
-                      <option
-                        *ngFor="let type of countries"
-                        [value]="type.lookupId"
-                      >
-                        {{ type.lookupName }}
-                      </option>
-                    </select>
-                  </div>
-  
-                  <label for="" class="control-label col-md-2">
-                    State
-                  </label>
-  
-                  <div class="col-md-4">
-                    <select
-                      type="text"
-                      name="stateId"
-                      formControlName="stateId"
-                      id="stateId"
-                      class="form-control"
-                      (change)="parseValueToInt($event.target.value, 3)"
-                    >
-                      <option value="">-- Select State --</option>
-                      <option *ngFor="let type of states" [value]="type.lookupId">
-                        {{ type.lookupName }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-  
-                <div class="form-group">
-                  <label for="" class="control-label col-md-2">
-                    Office/Department
-                  </label>
-                  <div class="col-md-4">
-                    <select
-                      type="text"
-                      name="staffOfficeId"
-                      formControlName="staffOfficeId"
-                      id="staffOfficeId"
-                      class="form-control"
-                      (change)="parseValueToInt($event.target.value, 4)"
-                    >
-                      <option value="">-- Select Office/Department --</option>
-                      <option
-                        *ngFor="let type of companyStructureList"
-                        [value]="type.companyStructureId"
-                      >
-                        {{ type.name }}
-                      </option>
-                    </select>
-                  </div>
-  
-                  <label for="" class="control-label col-md-2">
-                    Staff Limit
-                  </label>
-                  <div class="col-md-4">
-                    <input
-                      type="number"
-                      formControlName="staffLimit"
-                      name="staffLimit"
-                      class="form-control"
-                    />
-                  </div>
-                </div>
-  
-                <div class="form-group">
-                  <label for="" class="control-label col-md-2">
-                    Address
-                  </label>
-                  <div class="col-md-4">
-                    <textarea
-                      type="text"
-                      formControlName="address"
-                      rows="4"
-                      name="address"
-                      class="form-control"
-                    ></textarea>
-                  </div>
-                  <label for="" class="control-label col-md-2">
-                    Phone Number
-                  </label>
-                  <div class="col-md-4">
-                    <input
-                      type="text"
-                      formControlName="phoneNumber"
-                      name="phoneNumber"
-                      class="form-control"
-                    />
-                  </div>
-                </div>
-                <fieldset>
-                  <legend>
-                    User Credentials
-                  </legend>
-                  <div class="form-group">
-                    <label for="" class="control-label col-md-2">
-                      User Name*
-                    </label>
-                    <div class="col-md-4">
-                      <input
-                        type="text"
-                        formControlName="username"
-                        name="username"
-                        class="form-control"
-                      />
+
+          <div class="py-5">
+            <form novalidate [formGroup]="form">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="firstName" class="form-label"
+                          >First Name
+                        </label>
+                          <input
+                            class="form-control"
+                            type="text"
+                            formControlName="firstName"
+                            placeholder=""
+                          />
+                      </div>
                     </div>
-  
-                    <label for="" class="control-label col-md-2">
-                      Password*
-                    </label>
-                    <div class="col-md-4">
-                      <input
-                        type="password"
-                        formControlName="password"
-                        name="password"
-                        class="form-control"
-                      />
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="lastName" class="form-label"
+                          >Last Name
+                        </label>
+                          <input
+                            class="form-control"
+                            type="text"
+                            formControlName="lastName"
+                            placeholder=""
+                          />
+                      </div>
                     </div>
-                  </div>
-  
-                  <div class="form-group">
-                    <label for="" class="control-label col-md-2">
-                      User Role*
-                    </label>
-                    <div class="col-md-4">
-                      <p-multiSelect
-                        [options]="userRoles"
-                        formControlName="userRoleNames"
-                        styleClass="form-control"
-                        [panelStyle]="{ minWidth: '25em' }"
-                      ></p-multiSelect>
-  
-                      <!-- <select type="text" name="userRoleId" formControlName="userRoleId" id="userRoleId" class="form-control">
-                              <option value="">-- Select User Role --</option>
-                              <option *ngFor="let type of userRoleList" [value]="type.userRoleId">
-                                {{ type.roleName }}
-                            </option>
-                             </select> -->
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="middleName" class="form-label"
+                          >Middle Name
+                        </label>
+                          <input
+                            class="form-control"
+                            type="text"
+                            formControlName="middleName"
+                            placeholder=""
+                          />
+                      </div>
                     </div>
-                    <label for="" class="control-label col-md-2">
-                      Status*
-                    </label>
-                    <div class="col-md-4">
-                      <select
-                        type="text"
-                        name="userStatus"
-                        formControlName="userStatus"
-                        id="userStatus"
-                        class="form-control"
-                      >
-                        <option value="">-- Select User Status --</option>
-                        <option value="true">Enabled</option>
-                        <option value="false">Disabled</option>
-                      </select>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="staffCode" class="form-label"
+                          >Staff Code
+                        </label>
+                        <input
+                          type="text"
+                          formControlName="staffCode"
+                          name="staffCode"
+                          class="form-control"
+                          readonly
+                        />
+                      </div>
                     </div>
-                  </div>
-  
-                  <div class="form-group">
-                    <label for="" class="control-label col-md-2">
-                      Access
-                    </label>
-                    <div class="col-md-4">
-                      <select
-                        type="text"
-                        name="accessLevel"
-                        formControlName="accessLevel"
-                        (change)="onAccessLevelChanged($event.target.value, true)"
-                        id="accessLevel"
-                        class="form-control"
-                      >
-                        <option value="">-- Select Access --</option>
-                        <option
-                          *ngFor="let type of accessList"
-                          [value]="type.structureDefinitionId"
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="middleName" class="form-label"
+                          >Date of Birth
+                        </label>
+                        <p-calendar
+                          id="dateOfBirth"
+                          class="form-control"
+                          formControlName="dateOfBirth"
+                          [monthNavigator]="true"
+                          [yearNavigator]="true"
+                          yearRange="1900:2030"
+                          [showIcon]="true"
+                          [inputStyle]="{ width: '100%' }"
+                          [style]="{ width: '100%', 'z-index': '10', height: '44px'}"
+                        ></p-calendar>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="gender" class="form-label"
+                          >Gender
+                        </label>
+                          <select
+                            type="text"
+                            name="gender"
+                            formControlName="gender"
+                            id="gender"
+                            class="form-control"
+                          >
+                            <option value="">-- Select Gender --</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="jobTitle" class="form-label"
+                          >Job Title
+                        </label>
+                        <select
+                          type="text"
+                          name="jobTitle"
+                          formControlName="jobTitle"
+                          id="jobTitle"
+                          class="form-control"
+                          (change)="parseValueToInt($event.target.value, 1)"
                         >
-                          {{ type.definition }}
-                        </option>
-                      </select>
+                          <option value="">-- Select Job Title --</option>
+                          <option
+                            *ngFor="let type of jobTitles"
+                            [value]="type.lookupId"
+                          >
+                            {{ type.lookupName }}
+                          </option>
+                        </select>
+                      </div>
                     </div>
-                    <label for="" class="control-label col-md-2">
-                      Access Level
-                    </label>
-                    <div class="col-md-4">
-                      <p-multiSelect
-                        [options]="accessLevels"
-                        formControlName="userAccessLevels"
-                        styleClass="form-control"
-                        [panelStyle]="{ minWidth: '25em' }"
-                      ></p-multiSelect>
-  
-                      <!-- <select type="text" name="stateId" formControlName="stateId" id="stateId" class="form-control">
-                                <option value="">-- Select Access Level --</option>
-                                <option *ngFor="let type of accessLevelList" [value]="type.companyStructureId">
-                                    {{ type.name }}
-                                </option>
-                              </select> -->
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="email" class="form-label"
+                          >Email
+                        </label>
+                        <input type="email" formControlName="email" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="country" class="form-label"
+                          >Country
+                        </label>
+                        <select
+                          type="text"
+                          name="countryId"
+                          formControlName="countryId"
+                          id="countryId"
+                          class="form-control"
+                          (change)="getStateByCountry($event.target.value)"
+                        >
+                          <option value="">-- Select Country --</option>
+                          <option
+                            *ngFor="let type of countries"
+                            [value]="type.lookupId"
+                          >
+                            {{ type.lookupName }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="stateCode" class="form-label"
+                          >State
+                        </label>
+                        <select
+                          type="text"
+                          name="stateId"
+                          formControlName="stateId"
+                          id="stateId"
+                          class="form-control"
+                          (change)="parseValueToInt($event.target.value, 3)"
+                        >
+                          <option value="">-- Select State --</option>
+                          <option *ngFor="let type of states" [value]="type.lookupId">
+                            {{ type.lookupName }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="stateCode" class="form-label"
+                          >Office/Department
+                        </label>
+                        <select
+                          type="text"
+                          name="staffOfficeId"
+                          formControlName="staffOfficeId"
+                          id="staffOfficeId"
+                          class="form-control"
+                          (change)="parseValueToInt($event.target.value, 4)"
+                        >
+                          <option value="">-- Select Office/Department --</option>
+                          <option
+                            *ngFor="let type of companyStructureList"
+                            [value]="type.companyStructureId"
+                          >
+                            {{ type.name }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="stateCode" class="form-label"
+                          >staff Limit
+                        </label>
+                        <input type="number" class="form-control" formControlName="staffLimit">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="stateCode" class="form-label"
+                          >Address
+                        </label>
+                        <textarea 
+                          name="" id="" cols="30" 
+                          rows="4"
+                          class="form-control"
+                          formControlName="address"
+                          >
+
+                        </textarea>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="stateCode" class="form-label"
+                          >Phone Numer
+                        </label>
+                        <input type="tel" class="form-control" formControlName="phoneNumber">
+                      </div>
                     </div>
                   </div>
-                </fieldset>
-              </form>
-            </div>
-          </div>
+                  <h2>User Credentials</h2>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="firstName" class="form-label"
+                          >User Name <span class="text-danger"></span>
+                        </label>
+                          <input
+                            class="form-control"
+                            type="text"
+                            formControlName="userName"
+                            placeholder=""
+                          />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="firstName" class="form-label"
+                          >Password <span class="text-danger"></span>
+                        </label>
+                          <input
+                            class="form-control"
+                            type="password"
+                            formControlName="password"
+                            placeholder=""
+                          />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="firstName" class="form-label"
+                          >User Role <span class="text-danger"></span>
+                        </label>
+                        <p-multiSelect
+                          [options]="userRoles"
+                          formControlName="userRoleNames"
+                          styleClass="form-control"
+                          [panelStyle]="{ minWidth: '25em' }"
+                        ></p-multiSelect>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="firstName" class="form-label"
+                          >Status <span class="text-danger"></span>
+                        </label>
+                        <select
+                          type="text"
+                          name="userStatus"
+                          formControlName="userStatus"
+                          id="userStatus"
+                          class="form-control"
+                        >
+                          <option value="">-- Select User Status --</option>
+                          <option value="true">Enabled</option>
+                          <option value="false">Disabled</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="firstName" class="form-label"
+                          >Access
+                        </label>
+                        <select
+                            type="text"
+                            name="accessLevel"
+                            formControlName="accessLevel"
+                            (change)="onAccessLevelChanged($event.target.value, true)"
+                            id="accessLevel"
+                            class="form-control"
+                          >
+                            <option value="">-- Select Access --</option>
+                            <option
+                              *ngFor="let type of accessList"
+                              [value]="type.structureDefinitionId"
+                            >
+                              {{ type.definition }}
+                            </option>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="firstName" class="form-label"
+                          >Access Level
+                        </label>
+                        <p-multiSelect
+                          [options]="accessLevels"
+                          formControlName="userAccessLevels"
+                          styleClass="form-control"
+                          [panelStyle]="{ minWidth: '25em' }"
+                        ></p-multiSelect>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="firstName" class="form-label"
+                          >HR Admin
+                        </label>
+                          <input
+                            class=""
+                            type="checkbox"
+                            formControlName="userName"
+                            placeholder=""
+                          />
+                      </div>
+                    </div>
+                  </div>
+            </form>
+        </div>
   
           <div class="panel-footer">
             <div class="row">

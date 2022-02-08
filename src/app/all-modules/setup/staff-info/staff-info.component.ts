@@ -15,6 +15,9 @@ import { StaffInfoService } from "src/app/services/staff-info.service";
   templateUrl: "./staff-info.component.html",
   styles: [
     `
+      .staff-info_wrapper {
+          padding: 3rem;
+      }
       .multiselect-radius {
         border-radius: 4px !important;
       },
