@@ -35,6 +35,10 @@ import { CurrencyComponent } from "./currency/currency.component";
 import { DucumentTypeComponent } from "./ducument-type/ducument-type.component";
 import { EmailconfigListComponent } from "./emailconfig-list/emailconfig-list.component";
 import { EmailconfigComponent } from "./emailconfig/emailconfig.component";
+import { CompanyStructureDefinitionListComponent } from "./company-structure-definition-list/company-structure-definition-list.component";
+import { CompanyStructureDefinitionComponent } from "./company-structure-definition/company-structure-definition.component";
+import { CompanyStructureListComponent } from "./company-structure-list/company-structure-list.component";
+import { CompanyStructureComponent } from "./company-structure/company-structure.component";
 
 const routes: Routes = [
   {
@@ -177,6 +181,22 @@ const routes: Routes = [
         path: "email-config",
         component: EmailconfigComponent,
       },
+      {
+        path: "company-structure",
+        component: CompanyStructureComponent,
+      },
+      {
+        path: "company-structure-list",
+        component: CompanyStructureListComponent,
+      },
+      {
+        path: "company-structure-definition",
+        component: CompanyStructureDefinitionComponent,
+      },
+      {
+        path: "company-structure-definition-list",
+        component: CompanyStructureDefinitionListComponent,
+      }
     ],
   },
 ];

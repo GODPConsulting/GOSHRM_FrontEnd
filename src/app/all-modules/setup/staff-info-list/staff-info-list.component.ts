@@ -3,7 +3,7 @@ import swal from "sweetalert2";
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { LoadingService } from "src/app/services/loading.service";
-import { UtilitiesService } from "src/app/services/utilities.service";
+import { StaffInfoService } from "src/app/services/staff-info.service";
 
 @Component({
   selector: 'app-staff-info-list',
@@ -20,7 +20,7 @@ export class StaffInfoListComponent implements OnInit {
   viewHeight: any = "600px";
   constructor(
     private loadingService: LoadingService,
-    private staffInfoService: UtilitiesService,
+    private staffInfoService: StaffInfoService,
     private router: Router
   ) {}
 

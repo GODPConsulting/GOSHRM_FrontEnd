@@ -3,6 +3,7 @@ import { ProfMembershipComponent } from "./prof-membership/prof-membership.compo
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { DialogModule } from "primeng/dialog";
+import { ToastModule } from "primeng/toast";
 
 import { SetupRoutingModule } from "./setup-routing.module";
 import { SetupComponent } from "./setup.component";
@@ -48,6 +49,10 @@ import { CurrencyListComponent } from './currency-list/currency-list.component';
 import { DucumentTypeComponent } from './ducument-type/ducument-type.component';
 import { EmailconfigListComponent } from './emailconfig-list/emailconfig-list.component';
 import { EmailconfigComponent } from './emailconfig/emailconfig.component';
+import { CompanyStructureComponent } from './company-structure/company-structure.component';
+import { CompanyStructureDefinitionComponent } from './company-structure-definition/company-structure-definition.component';
+import { CompanyStructureDefinitionListComponent } from './company-structure-definition-list/company-structure-definition-list.component';
+import { CompanyStructureListComponent } from './company-structure-list/company-structure-list.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +91,10 @@ import { EmailconfigComponent } from './emailconfig/emailconfig.component';
     DucumentTypeComponent,
     EmailconfigListComponent,
     EmailconfigComponent,
+    CompanyStructureComponent,
+    CompanyStructureDefinitionComponent,
+    CompanyStructureDefinitionListComponent,
+    CompanyStructureListComponent,
   ],
   imports: [
     CommonModule,
@@ -97,7 +106,8 @@ import { EmailconfigComponent } from './emailconfig/emailconfig.component';
     Ng2SearchPipeModule,
     MultiSelectModule,
     CalendarModule,
-    DialogModule
+    DialogModule,
+    ToastModule
   ],
   providers: [
     {

@@ -8,6 +8,7 @@ import { LoadingService } from "src/app/services/loading.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { CompanyService } from "src/app/services/company.service";
 import { CountriesService } from "src/app/services/countries.service";
+import { StaffInfoService } from "src/app/services/staff-info.service";
 
 @Component({
   selector: "app-staff-info",
@@ -37,7 +38,7 @@ export class StaffInfoComponent implements OnInit {
     public fb: FormBuilder,
     private commonService: CommonService,
     private loadingService: LoadingService,
-    private staffInfoService: UtilitiesService,
+    private staffInfoService: StaffInfoService,
     private countryService: CountriesService,
     private companyService: CompanyService,
     private userRoleService: UtilitiesService,
