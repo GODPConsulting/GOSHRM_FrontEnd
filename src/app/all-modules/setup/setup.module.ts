@@ -2,6 +2,7 @@ import { ProfMembershipComponent } from "./prof-membership/prof-membership.compo
 
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { DialogModule } from "primeng/dialog";
 
 import { SetupRoutingModule } from "./setup-routing.module";
 import { SetupComponent } from "./setup.component";
@@ -40,6 +41,13 @@ import { CountryListComponent } from './country-list/country-list.component';
 import { CountryComponent } from './country/country.component';
 import { StateListComponent } from './state-list/state-list.component';
 import { StateComponent } from './state/state.component';
+import { CityListComponent } from './city-list/city-list.component';
+import { CityComponent } from './city/city.component';
+import { CurrencyComponent } from './currency/currency.component';
+import { CurrencyListComponent } from './currency-list/currency-list.component';
+import { DucumentTypeComponent } from './ducument-type/ducument-type.component';
+import { EmailconfigListComponent } from './emailconfig-list/emailconfig-list.component';
+import { EmailconfigComponent } from './emailconfig/emailconfig.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +79,13 @@ import { StateComponent } from './state/state.component';
     CountryComponent,
     StateListComponent,
     StateComponent,
+    CityListComponent,
+    CityComponent,
+    CurrencyComponent,
+    CurrencyListComponent,
+    DucumentTypeComponent,
+    EmailconfigListComponent,
+    EmailconfigComponent,
   ],
   imports: [
     CommonModule,
@@ -81,7 +96,8 @@ import { StateComponent } from './state/state.component';
     FormsModule,
     Ng2SearchPipeModule,
     MultiSelectModule,
-    CalendarModule
+    CalendarModule,
+    DialogModule
   ],
   providers: [
     {

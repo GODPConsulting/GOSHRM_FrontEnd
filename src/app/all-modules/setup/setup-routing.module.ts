@@ -28,6 +28,11 @@ import { CountryListComponent } from "./country-list/country-list.component";
 import { CountryComponent } from "./country/country.component";
 import { StateListComponent } from "./state-list/state-list.component";
 import { StateComponent } from "./state/state.component";
+import { CityListComponent } from "./city-list/city-list.component";
+import { CityComponent } from "./city/city.component";
+import { CurrencyListComponent } from "./currency-list/currency-list.component";
+import { CurrencyComponent } from "./currency/currency.component";
+import { DucumentTypeComponent } from "./ducument-type/ducument-type.component";
 
 const routes: Routes = [
   {
@@ -141,6 +146,26 @@ const routes: Routes = [
       {
         path: "state",
         component: StateComponent,
+      },
+      {
+        path: "city-list",
+        component: CityListComponent,
+      },
+      {
+        path: "city",
+        component: CityComponent,
+      },
+      {
+        path: "currency-list",
+        component: CurrencyListComponent,
+      },
+      {
+        path: "currency",
+        component: CurrencyComponent,
+      },
+      {
+        path: "document-type",
+        component: DucumentTypeComponent,
       },
     ],
   },

@@ -233,4 +233,124 @@ export class CommonService {
         return data;
       });
   }
+
+  getAllCity(): Observable<any> {
+    return this.apiService.get("/common/cities").pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+
+  // update city
+  updateCity(payload: Object): Observable<any> {
+    return this.apiService.post(`/common/add/update/city`, payload).pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+  getCity(cityId) {
+    return this.apiService
+      .get(`/common/get/get/single/cityById?CityId=${cityId}`)
+      .pipe(
+        map(data => {
+          return data;
+        })
+      );
+  }
+  getCityByStateId(id): Observable<any> {
+    return this.apiService.get(`/common/get/cities/stateId?StateId=${id}`).pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+  getCitiesByState(id: number): Observable<any> {
+    return this.apiService.get(``).pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+  getAllDirectorType() {
+    return this.apiService.get("/common/directorTypes").pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+
+  // update document type
+  updateDocumenttype(payload: Object): Observable<any> {
+    return this.apiService
+      .post(`/common/add/update/documentType`, payload)
+      .pipe(
+        tap(data => {
+          return data;
+        })
+      );
+  }
+  getAllDocumentType() {
+    return this.apiService.get("/common/documentypes").pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+  exportDocumentType(): Observable<any> {
+    return this.apiService.get(`/common/download/documenttype`).pipe(tap(data => {
+      return data;
+    }))
+  }
+  uploadDocumentType(file: File): Promise<any> {
+    return this.apiService.uploadExcel(`/common/upload/documenttype`, file).then(data => {
+      return data;
+    })
+  }
+  multiDeleteDocumentType(payload: Object): Observable<any> {
+    return this.apiService.post(`/common/delete/documentTypeById`, payload).pipe(tap(data => {
+      return data;
+    }))
+  }
+  getAllCurrency(): Observable<any> {
+    //return this.http.get(`http://107.180.93.38:90/common/currencies`).pipe(
+    return this.apiService.get(`/common/currencies`).pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+  getCurrency(currencyId) {
+    return this.apiService
+      .get(`/common/get/single/currencyById?CurrencyId=${currencyId}`)
+      .pipe(
+        tap(data => {
+          return data;
+        })
+      );
+  }
+  getCurrencyRate(currencyId) {
+    return this.apiService
+      .get(`/common/currencyRates/currencyId?CurrencyId=${currencyId}`)
+      .pipe(
+        map(data => {
+          return data;
+        })
+      );
+  }
+  updateCurrency(payload: any): Observable<any> {
+    return this.apiService.post(`/common/add/update/currency`, payload).pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+  multipleDeleteCurrency(payload: Object): Observable<any> {
+    return this.apiService.post(`/common/delete/currencyById`, payload).pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
 }

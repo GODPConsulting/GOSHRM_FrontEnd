@@ -1,0 +1,95 @@
+<div class="currency_wrapper ui-g">
+    <div class="ui-g-12">
+      <div class="card">
+        <div style="margin-bottom:0" class="panel panel-default">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="panel-title pull-left">
+                  {{formTitle}}
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          <div class="py-5">
+            <form novalidate [formGroup]="form">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="currencyCode" class="form-label"
+                          >Currency Code
+                        </label>
+                          <input
+                            class="form-control"
+                            type="text"
+                            formControlName="currencyCode"
+                            placeholder="E.g NGN"
+                          />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="currencyName" class="form-label"
+                          >Currency Name
+                        </label>
+                          <input
+                            class="form-control"
+                            type="text"
+                            formControlName="currencyName"
+                            placeholder="Enter Country Name"
+                          />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="stateName" class="form-label"
+                          >Base Currency
+                        </label>
+                        <div>
+                            <input 
+                                type="checkbox"  
+                                binary="true" 
+                                formControlName="baseCurrency" 
+                                name="baseCurrency"
+                            />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="stateName" class="form-label"
+                          >In Use
+                        </label>
+                        <div>
+                            <input 
+                                type="checkbox"  
+                                binary="true" 
+                                formControlName="inuse" 
+                                name="inuse"
+                            />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </form>
+        </div>
+  
+          <div class="panel-footer">
+            <div class="row">
+              <div class="col-md-12">
+                <button style="margin-right:5px" type="button" [disabled]="!form.valid" class="btn btn-primary pull-right"
+                  (click)="submitCurrencyInfo(form)">
+                  Save
+                </button>
+                <button type="button" style="margin-right:5px" class="btn btn-danger pull-right" (click)="goBack()">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
