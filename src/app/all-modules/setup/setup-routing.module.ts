@@ -26,6 +26,8 @@ import { StaffInfoListComponent } from "./staff-info-list/staff-info-list.compon
 import { StaffInfoComponent } from "./staff-info/staff-info.component";
 import { CountryListComponent } from "./country-list/country-list.component";
 import { CountryComponent } from "./country/country.component";
+import { StateListComponent } from "./state-list/state-list.component";
+import { StateComponent } from "./state/state.component";
 
 const routes: Routes = [
   {
@@ -131,6 +133,14 @@ const routes: Routes = [
       {
         path: "country",
         component: CountryComponent,
+      },
+      {
+        path: "state-list",
+        component: StateListComponent,
+      },
+      {
+        path: "state",
+        component: StateComponent,
       },
     ],
   },

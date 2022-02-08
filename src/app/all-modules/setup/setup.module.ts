@@ -38,6 +38,8 @@ import { MultiSelectModule } from "primeng/multiselect";
 import { CalendarModule } from "primeng/calendar";
 import { CountryListComponent } from './country-list/country-list.component';
 import { CountryComponent } from './country/country.component';
+import { StateListComponent } from './state-list/state-list.component';
+import { StateComponent } from './state/state.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,8 @@ import { CountryComponent } from './country/country.component';
     StaffInfoListComponent,
     CountryListComponent,
     CountryComponent,
+    StateListComponent,
+    StateComponent,
   ],
   imports: [
     CommonModule,

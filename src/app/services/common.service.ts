@@ -201,4 +201,36 @@ export class CommonService {
         return data;
       });
   }
+
+  getAllState() {
+    return this.apiService.get("/common/states").pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+  getState(stateId) {
+    return this.apiService
+      .get(`/common/get/single/stateById?StateId=${stateId}`)
+      .pipe(
+        tap(data => {
+          return data;
+        })
+      );
+  }
+  // update state
+  updateState(payload: Object): Observable<any> {
+    return this.apiService.post(`/common/add/update/state`, payload).pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+  uploadStatesList(File: File): Promise<any> {
+    return this.apiService
+      .uploadExcel("/common/upload/states", File)
+      .then(data => {
+        return data;
+      });
+  }
 }
