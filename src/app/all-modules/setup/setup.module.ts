@@ -30,6 +30,14 @@ import { LocationComponent } from "./location/location.component";
 import { HospitalManagementComponent } from "./hospital-management/hospital-management.component";
 import { EmployeeIdFormatComponent } from "./employee-id-format/employee-id-format.component";
 import { TableModule } from "primeng/table";
+import { UserRoleComponent } from './user-role/user-role.component';
+import { UserRoleActivitiesComponent } from './user-role-activities/user-role-activities.component';
+import { StaffInfoComponent } from './staff-info/staff-info.component';
+import { StaffInfoListComponent } from './staff-info-list/staff-info-list.component';
+import { MultiSelectModule } from "primeng/multiselect";
+import { CalendarModule } from "primeng/calendar";
+import { CountryListComponent } from './country-list/country-list.component';
+import { CountryComponent } from './country/country.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +61,12 @@ import { TableModule } from "primeng/table";
     LocationComponent,
     HospitalManagementComponent,
     EmployeeIdFormatComponent,
+    UserRoleComponent,
+    UserRoleActivitiesComponent,
+    StaffInfoComponent,
+    StaffInfoListComponent,
+    CountryListComponent,
+    CountryComponent,
   ],
   imports: [
     CommonModule,
@@ -62,6 +76,8 @@ import { TableModule } from "primeng/table";
     SharedModule,
     FormsModule,
     Ng2SearchPipeModule,
+    MultiSelectModule,
+    CalendarModule
   ],
   providers: [
     {

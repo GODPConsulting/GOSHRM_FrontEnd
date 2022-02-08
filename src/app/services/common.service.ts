@@ -114,4 +114,91 @@ export class CommonService {
         })
       );
   }
+
+  getAllModules() {
+    return this.apiService.get("/common/modules").pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+
+  getJobTitles(): Observable<any> {
+    return this.apiService.get(`/common/jobTitles`).pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+
+  getJobTitleById(jobTitleId: any): Observable<any> {
+    return this.apiService
+      .get(`/common/get/get/single/jobTitleById?JobTitleId=${jobTitleId}`)
+      .pipe(
+        tap(data => {
+          return data;
+        })
+      );
+  }
+
+  getAllCountry (): Observable<any> {
+    return this.apiService.get("/common/countries").pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+
+  getStateByCountry(id: number): Observable<any> {
+    return this.apiService
+      .get(`/common/get/states/countryId?CountryId=${id}`)
+      .pipe(
+        tap(data => {
+          return data;
+        })
+      );
+  }
+
+  getCountry(countryId) {
+    return this.apiService
+      .get(`/common/get/single/countryById?CountryId=${countryId}`)
+      .pipe(
+        tap(data => {
+          return data;
+        })
+      );
+  }
+
+  updateCountry(payload: Object): Observable<any> {
+    return this.apiService.post(`/common/add/update/country`, payload).pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
+
+  deleteMultipleCountry(body): Observable<any> {
+    return this.apiService.post(`/common/delete/countryById`, body).pipe(
+      tap(data => {
+        return data;
+        // console.log("tttt", data);
+      })
+    );
+  }
+
+  exportCountryList() {
+    return this.apiService.getExcel("/common/download/countries").pipe(
+      map(data => {
+        return data;
+      })
+    );
+  }
+
+  uploadCountryList(File: File): Promise<any> {
+    return this.apiService
+      .uploadExcel("/common/upload/countries", File)
+      .then(data => {
+        return data;
+      });
+  }
 }

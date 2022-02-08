@@ -1,0 +1,140 @@
+<div class="user-role_wrapper ui-g">
+    <div class="ui-g-12 no-padding">
+        <div style="margin-bottom:0" class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="panel-title pull-left">
+                            User Role
+                        </h2>
+                        <div  style="padding-right: 5px;padding-left: 5px;width: 45px;" class="col-md-1 pull-right">
+                                <button
+                                pButton
+                                style="padding:0.5em 0"
+                                type="button"
+                                class="ui-button-raised ui-button-danger"
+                                (click)="multipleDelete()"
+                                icon="ui-icon-delete"
+                                iconPos="center"
+                                pTooltip="Delete"
+                                tooltipPosition="top"
+                                label=""
+                            ></button>
+                            </div>
+                            <div style="padding-right: 5px;padding-left: 5px;width: 45px;" class="col-md-1 pull-right">
+                                <button
+                                    pButton
+                                    style="padding:0.5em 0"
+                                    type="button"
+                                    class="ui-button-raised"
+                                    (click)="showAddNew()"
+                                    icon="ui-icon-plus"
+                                    iconPos="center"
+                                    pTooltip="Add"
+                                    tooltipPosition="top"
+                                    label=""
+                                ></button>
+                              </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <div class="form-horizontal">
+
+                    <p-table
+                        #dt
+                        [value]="userRoleList"
+                        dataKey="roleId"
+                        [(selection)]="selectedUserRole"
+                        [paginator]="false"
+                        [rows]="10"
+                        [responsive]="true"
+                        [scrollable]="true"
+                        [scrollHeight]="viewHeight"
+                        class="test-data"
+                    >
+                        <ng-template pTemplate="caption">
+                            <div style="text-align: right">
+                                <input
+                                    type="text"
+                                    pInputText
+                                    size="50"
+                                    class="form-control"
+                                    placeholder="Search..."
+                                    (keyup)="
+                                        dt.filterGlobal(
+                                            $event.target.value,
+                                            'contains'
+                                        )
+                                    "
+                                    style="width:auto"
+                                />
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th class="checkbox_head">
+                                    <p-tableHeaderCheckbox>
+                                    </p-tableHeaderCheckbox>
+                                </th>
+                                <th >S/N</th>
+                                <th [pSortableColumn]="'roleName'">Role
+
+                                </th>
+                                <th [pSortableColumn]="'createdBy'">Created By
+
+                                </th>
+                                <th [pSortableColumn]="'dateCreated'">Date Created
+
+                                </th>
+                                <th [pSortableColumn]="'users'">User(Count)
+
+                                </th>
+<!--                                <th style="width:5em"></th>-->
+<!--                                <th style="width:5em"></th>-->
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-x let-i="rowIndex">
+                            <tr [pSelectableRow]="x">
+                                 <td class="checkbox_row">
+                                    <p-tableCheckbox
+                                        [value]="x"
+                                    ></p-tableCheckbox>
+                                </td>
+                                <td>
+                                    <a style="color: #3b3b3b; text-decoration: none" (click)="editUserRole(x)">{{ i + 1 }}</a>
+                                    </td>
+                                <td >
+                                    <a style="color: #3b3b3b; text-decoration: none" (click)="editUserRole(x)">{{ x.roleName }}</a>
+                                </td>
+                                <td>
+                                    <a style="color: #3b3b3b; text-decoration: none" (click)="editUserRole(x)">{{x.createdBy}}</a>
+                                </td>
+                                <td>
+                                    <a style="color: #3b3b3b; text-decoration: none" (click)="editUserRole(x)">{{x.createdOn | date}}</a>
+                                </td>
+                                <td>
+                                    <a style="color: #3b3b3b; text-decoration: none" (click)="editUserRole(x)">{{x.userCount}}</a>
+                                </td>
+<!--                                <td>-->
+<!--                                    <a (click)="editUserRole(x)">Edit</a>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <a (click)="deleteUserRole(x)">Delete</a>-->
+<!--                                </td>-->
+                            </tr>
+
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

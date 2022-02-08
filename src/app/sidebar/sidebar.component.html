@@ -1413,6 +1413,30 @@
                   >Job Title</a
                 >
               </li>
+              <li
+                *ngIf="userRights?.includes('user role')"
+                routerLink="/setup/user-role"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'user-role'
+                  }"
+                  >User Role</a
+                >
+              </li>
+              <li
+                *ngIf="userRights?.includes('staff info list')"
+                routerLink="/setup/staff-info-list"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'staff-info-list'
+                  }"
+                  >Staff Information</a
+                >
+              </li>
             </ul>
           </li>
           <!-- /Setup sidebar -->

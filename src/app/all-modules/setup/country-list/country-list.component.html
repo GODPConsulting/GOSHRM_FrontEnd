@@ -1,0 +1,191 @@
+<div class="ui-g">
+    <div class="ui-g-12 no-padding">
+      <div style="margin-bottom:0" class="panel panel-default">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-md-12">
+              <h2 class="panel-title pull-left">
+                Country Information
+              </h2>
+              <div
+                style="padding-right: 5px;padding-left: 5px;width: 45px;"
+                class="col-md-1 pull-right"
+              >
+                <button
+                  pButton
+                  style="padding:0.5em 0"
+                  type="button"
+                  class="ui-button-raised ui-button-danger"
+                  (click)="multipleDelete()"
+                  icon="ui-icon-delete"
+                  iconPos="center"
+                  pTooltip="Delete"
+                  tooltipPosition="top"
+                  label=""
+                ></button>
+              </div>
+              <div
+                style="padding-right: 5px;padding-left: 5px;width: 45px;"
+                class="col-md-1 pull-right"
+              >
+                <button
+                  pButton
+                  style="padding:0.5em 0"
+                  type="button"
+                  class="ui-button-raised"
+                  (click)="showAddNew()"
+                  icon="ui-icon-plus"
+                  iconPos="center"
+                  pTooltip="Add"
+                  tooltipPosition="top"
+                  label=""
+                ></button>
+              </div>
+              <div
+                style="padding-right: 5px;padding-left: 5px;width: 45px;"
+                class="col-md-1 pull-right"
+              >
+                <button
+                  pButton
+                  style="padding:0.5em 0"
+                  type="button"
+                  class="ui-button-raised ui-button-secondary"
+                  (click)="exportCountryList()"
+                  icon="ui-icon-file-download"
+                  pTooltip="Download"
+                  tooltipPosition="top"
+                  iconPos="center"
+                  label=""
+                ></button>
+              </div>
+              <div
+                style="padding-right: 5px;padding-left: 5px;width: 45px;"
+                class="col-md-1 pull-right"
+              >
+                <button
+                  pButton
+                  type="button"
+                  style="padding:0.5em 0"
+                  class="ui-button-raised ui-button-secondary"
+                  (click)="uploadCountryList()"
+                  icon="ui-icon-file-upload"
+                  iconPos="center"
+                  pTooltip="Excel file: Country Name, Country Code"
+                  tooltipPosition="top"
+                  label=""
+                ></button>
+              </div>
+              <div class="col-md-3 col-sm-6 col-xs-12 pull-right">
+                <input
+                  style="height:35px;"
+                  class="form-control"
+                  type="file"
+                  (change)="handleFileInput($event.target.files)"
+                  id="file1"
+                  accept=".xls,.xlsx"
+                  #fileInput
+                  name="fileInput"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="panel-body">
+          <div class="form-horizontal">
+            <p-table
+              #dt
+              [value]="countryInformation"
+              dataKey="lookupId"
+              [columns]="cols"
+              [(selection)]="selectedcountryInformation"
+              [paginator]="false"
+              [rows]="countryInformation.length"
+              [responsive]="true"
+              [scrollable]="true"
+              [scrollHeight]="viewHeight"
+            >
+              <ng-template pTemplate="caption">
+                <div style="text-align: right">
+                  <input
+                    type="text"
+                    pInputText
+                    size="50"
+                    class="form-control"
+                    placeholder="Search..."
+                    (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                    style="width:auto"
+                  />
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th class="checkbox_row">
+                    <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
+                  </th>
+                  <th class="sn_width">S/N</th>
+                  <th>Country Code</th>
+                  <th>Country Name</th>
+                  <!--                                <th ></th>-->
+                  <!--                                <th ></th>-->
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-x let-i="rowIndex">
+                <tr [pSelectableRow]="x" (click)="rowClicked(x)">
+                  <td class="checkbox_row">
+                    <p-tableCheckbox [value]="x"></p-tableCheckbox>
+                  </td>
+                  <td class="sn_width">
+                    <a
+                      style="color: #3b3b3b; text-decoration:
+                                      none;"
+                      (click)="editCountry(x)"
+                      >{{ i + 1 }}
+                    </a>
+                  </td>
+                  <td>
+                    <a
+                      style="color: #3b3b3b; text-decoration:
+                                      none;"
+                      (click)="editCountry(x)"
+                    >
+                      {{ x.code }}
+                    </a>
+                  </td>
+                  <td>
+                    <a
+                      style="color: #3b3b3b; text-decoration:
+                                      none;"
+                      (click)="editCountry(x)"
+                    >
+                      {{ x.lookupName }}
+                    </a>
+                  </td>
+                  <!--                                <td>-->
+                  <!--                                    <a (click)="editCountry(x)">Edit</a>-->
+                  <!--                                </td>-->
+                  <!--                                <td>-->
+                  <!--                                    <a (click)="deleteCountry(x)">Delete</a>-->
+                  <!--                                </td>-->
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- <button style="margin-right:5px" type="button" [disabled]="!form.valid" class="btn btn-primary pull-right"
+                  (click)="submitUserAccount(form)">
+                  Save
+                </button>
+                <button type="button" style="margin-right:5px" class="btn btn-danger pull-right">
+                  Close
+                </button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  

@@ -20,6 +20,12 @@ import { JobSkillComponent } from "./job-skill/job-skill.component";
 import { LocationComponent } from "./location/location.component";
 import { HospitalManagementComponent } from "./hospital-management/hospital-management.component";
 import { EmployeeIdFormatComponent } from "./employee-id-format/employee-id-format.component";
+import { UserRoleComponent } from "./user-role/user-role.component";
+import { UserRoleActivitiesComponent } from "./user-role-activities/user-role-activities.component";
+import { StaffInfoListComponent } from "./staff-info-list/staff-info-list.component";
+import { StaffInfoComponent } from "./staff-info/staff-info.component";
+import { CountryListComponent } from "./country-list/country-list.component";
+import { CountryComponent } from "./country/country.component";
 
 const routes: Routes = [
   {
@@ -101,6 +107,30 @@ const routes: Routes = [
       {
         path: "hospital-management",
         component: HospitalManagementComponent,
+      },
+      {
+        path: "user-role",
+        component: UserRoleComponent,
+      },
+      {
+        path: "user-role-activity",
+        component: UserRoleActivitiesComponent,
+      },
+      {
+        path: "staff-info-list",
+        component: StaffInfoListComponent,
+      },
+      {
+        path: "staff-info",
+        component: StaffInfoComponent,
+      },
+      {
+        path: "country-list",
+        component: CountryListComponent,
+      },
+      {
+        path: "country",
+        component: CountryComponent,
       },
     ],
   },
