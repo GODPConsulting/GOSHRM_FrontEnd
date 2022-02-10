@@ -46,13 +46,13 @@ import { CityListComponent } from './city-list/city-list.component';
 import { CityComponent } from './city/city.component';
 import { CurrencyComponent } from './currency/currency.component';
 import { CurrencyListComponent } from './currency-list/currency-list.component';
-import { DucumentTypeComponent } from './ducument-type/ducument-type.component';
 import { EmailconfigListComponent } from './emailconfig-list/emailconfig-list.component';
 import { EmailconfigComponent } from './emailconfig/emailconfig.component';
 import { CompanyStructureComponent } from './company-structure/company-structure.component';
 import { CompanyStructureDefinitionComponent } from './company-structure-definition/company-structure-definition.component';
 import { CompanyStructureDefinitionListComponent } from './company-structure-definition-list/company-structure-definition-list.component';
 import { CompanyStructureListComponent } from './company-structure-list/company-structure-list.component';
+import { DocumentTypeComponent } from './document-type/document-type.component';
 
 @NgModule({
   declarations: [
@@ -88,13 +88,14 @@ import { CompanyStructureListComponent } from './company-structure-list/company-
     CityComponent,
     CurrencyComponent,
     CurrencyListComponent,
-    DucumentTypeComponent,
+    DocumentTypeComponent,
     EmailconfigListComponent,
     EmailconfigComponent,
     CompanyStructureComponent,
     CompanyStructureDefinitionComponent,
     CompanyStructureDefinitionListComponent,
     CompanyStructureListComponent,
+    DocumentTypeComponent,
   ],
   imports: [
     CommonModule,

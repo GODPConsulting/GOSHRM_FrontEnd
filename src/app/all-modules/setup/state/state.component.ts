@@ -1,20 +1,20 @@
-import swal from "sweetalert2";
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router, ActivatedRoute } from "@angular/router";
-import { LoadingService } from "src/app/services/loading.service";
-import { StateService } from "src/app/services/state.service";
-import { CountriesService } from "src/app/services/countries.service";
-import { CommonService } from "src/app/services/common.service";
+import swal from 'sweetalert2';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { LoadingService } from 'src/app/services/loading.service';
+import { StateService } from 'src/app/services/state.service';
+import { CountriesService } from 'src/app/services/countries.service';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
-  selector: "app-state",
-  templateUrl: "./state.component.html",
+  selector: 'app-state',
+  templateUrl: './state.component.html',
   styleUrls: ['./state.component.css']
 })
 export class StateComponent implements OnInit {
   form: FormGroup;
-  formTitle: string = "Add State Information";
+  formTitle: string = 'Add State Information';
   countryList: any[];
   constructor(
     public fb: FormBuilder,
@@ -27,15 +27,15 @@ export class StateComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       stateId: [0],
-      code: ["", Validators.required],
-      name: ["", Validators.required],
-      countryId: ["", Validators.required]
+      code: ['', Validators.required],
+      name: ['', Validators.required],
+      countryId: ['', Validators.required],
     });
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      let stateId = params["editstate"];
+    this.route.queryParams.subscribe((params) => {
+      let stateId = params['editstate'];
       if (stateId != null || stateId != undefined) {
         this.editState(stateId);
       }
@@ -44,57 +44,48 @@ export class StateComponent implements OnInit {
   }
 
   getAllCountry() {
-    this.loadingService.show();
     this.commonService.getAllCountry().subscribe(
-      data => {
-        this.loadingService.hide();
+      (data) => {
         this.countryList = data.commonLookups;
-
-        // console.log("Staffs", this.countryInformation);
       },
-      err => {
-        this.loadingService.hide();
-      }
+      (err) => {}
     );
   }
 
   editState(stateId) {
-    this.formTitle = "Edit State Information";
-    this.loadingService.show();
-    this.commonService.getState(stateId).subscribe(data => {
-      this.loadingService.hide();
+    this.formTitle = 'Edit State Information';
+
+    this.commonService.getState(stateId).subscribe((data) => {
       let row = data.commonLookups[0];
       this.form = this.fb.group({
         stateId: row.lookupId,
         code: row.code,
         name: row.lookupName,
-        countryId: row.parentId
+        countryId: row.parentId,
       });
     });
   }
 
   goBack() {
-    this.router.navigate(["/setup/state-list"]);
+    this.router.navigate(['/setup/state-list']);
   }
   submitStateInfo(formObj) {
     const payload = formObj.value;
-    payload.countryId = parseInt(payload.countryId)
-    this.loadingService.show();
+    payload.countryId = parseInt(payload.countryId);
+
     this.commonService.updateState(payload).subscribe(
-      data => {
-        this.loadingService.hide();
+      (data) => {
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
-          swal.fire("Success", message, "success");
-          this.router.navigate(["/setup/state-list"]);
+          swal.fire('GOS FINANCIAL', message, 'success');
+          this.router.navigate(['/setup/state-list']);
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire('GOS FINANCIAL', message, 'error');
         }
       },
-      err => {
-        this.loadingService.hide();
+      (err) => {
         const message = err.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire('GOS FINANCIAL', message, 'error');
       }
     );
   }

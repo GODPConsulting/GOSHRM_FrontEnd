@@ -8,6 +8,7 @@ import swal from 'sweetalert2';
 @Component({
   selector: 'app-company-structure-definition',
   templateUrl: './company-structure-definition.component.html',
+  styleUrls: ['./company-structure-definition.component.css'],
 })
 export class CompanyStructureDefinitionComponent implements OnInit {
   form: FormGroup;
@@ -40,11 +41,11 @@ export class CompanyStructureDefinitionComponent implements OnInit {
 
   editCompanyStructureDefinition(structureDefinitionId) {
       this.formTitle = "Edit Organisation Structure Definition";
-      this.loadingService.show();
+
       this.companyService
           .getCompanyStructureDefinition(structureDefinitionId)
           .subscribe(data => {
-              this.loadingService.hide();
+
               let row = data["companyStructureDefinitions"][0];
               this.form = this.fb.group({
                 structureDefinitionId: [row.structureDefinitionId],
@@ -53,12 +54,12 @@ export class CompanyStructureDefinitionComponent implements OnInit {
                 structureLevel: [row.structureLevel],
               });
           }, err => {
-            this.loadingService.hide()
+
           });
   }
 
   goBack() {
-      this.router.navigate(["/setup/company-structure-definition-list"]);
+      this.router.navigate(["/organization/company-structure-definition-list"]);
   }
   submitCompanyStructureDefinition(formObj) {
     const payload = formObj.value;
@@ -66,16 +67,16 @@ export class CompanyStructureDefinitionComponent implements OnInit {
     // payload.isMultiCompany = false;
     // payload.operatingLevel = 0;
     // payload.structureLevel = 0;
-      this.loadingService.show();
+
       this.companyService.addUpdateCompanyStructureDefinition(payload).subscribe(
           data => {
-              this.loadingService.hide();
+
               let message = data.status.message.friendlyMessage;
                   swal.fire("GOS FINANCIAL", message, "success");
                   this.router.navigate(["/organization/company-structure-definition-list"]);
           },
           err => {
-              this.loadingService.hide();
+
               let error = err.status.message.friendlyMessage;
               swal.fire("GOS FINANCIAL", error, "error");
           }

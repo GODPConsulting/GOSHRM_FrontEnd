@@ -8,8 +8,7 @@ import { CommonService } from "src/app/services/common.service";
 
 @Component({
   selector: "app-currency-list",
-  templateUrl: "./currency-list.component.html",
-  styleUrls: ['./currency-list.component.css']
+  templateUrl: "./currency-list.component.html"
 })
 export class CurrencyListComponent implements OnInit {
   @ViewChild("fileInput") fileInput: any;
@@ -44,16 +43,15 @@ export class CurrencyListComponent implements OnInit {
   }
 
   getAllCurrency() {
-    this.loadingService.show();
+
     this.commonService.getAllCurrency().subscribe(
       data => {
-        this.loadingService.hide();
+
         this.currencyInformation = data.commonLookups;
 
-        // console.log("Staffs", this.currencyInformation);
       },
       err => {
-        this.loadingService.hide();
+
       }
     );
   }
@@ -64,27 +62,21 @@ export class CurrencyListComponent implements OnInit {
   }
   deleteCurrency(row) {
     const __this = this;
-    swal.fire({
-        // title: "Are you sure you want to delete user?",
-        // text: "You won't be able to revert this!",
-        // type: "question",
-        // showCancelButton: true,
-        // confirmButtonColor: "#3085d6",
-        // cancelButtonColor: "#d33",
-        // confirmButtonText: "Yes, delete it!",
-        // cancelButtonText: "No, cancel!",
-        // confirmButtonClass: "btn btn-success btn-move",
-        // cancelButtonClass: "btn btn-danger",
-        // buttonsStyling: true
+    swal
+      .fire({
+        title: "Are you sure you want to delete record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!"
       })
       .then(result => {
         if (result.value) {
-          __this.loadingService.show();
 
           __this.currencyService
             .deleteCurrency(row.currencyId)
             .subscribe(data => {
-              __this.loadingService.hide();
+
               if (data["result"] == true) {
                 swal.fire(
                   "GOS FINANCIAL",
@@ -102,10 +94,10 @@ export class CurrencyListComponent implements OnInit {
       });
   }
   exportCurrencies() {
-    this.loadingService.show();
+
     this.currencyService.exportCurrencies().subscribe(
       response => {
-        this.loadingService.hide();
+
         const data = response;
         if (data != undefined) {
           const byteString = atob(data);
@@ -129,9 +121,9 @@ export class CurrencyListComponent implements OnInit {
         }
       },
       err => {
-        this.loadingService.hide();
+
         const message = err.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire("GOS FINANCIAL", message, "error");
       }
     );
   }
@@ -142,41 +134,41 @@ export class CurrencyListComponent implements OnInit {
 
   async uploadCurrencies() {
     if (this.fileToUpload == null) {
-      return swal.fire("Error", "Please select upload document to continue", "error");
+      return swal.fire("GOS FINANCIAL", "Please select upload document to continue", "error");
     }
     if (
       this.fileToUpload.type !=
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
-      return swal.fire("Error", "Only excel files allowed", "error");
+      return swal.fire("GOS FINANCIAL", "Only excel files allowed", "error");
     }
-    this.loadingService.show();
+
     await this.currencyService
       .uploadCurrencies(this.fileToUpload)
       .then(data => {
-        this.loadingService.hide();
+
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
           this.fileToUpload = null;
           this.getAllCurrency();
           this.fileInput.nativeElement.value = "";
-          swal.fire("Success", message, "success");
+          swal.fire("GOS FINANCIAL", message, "success");
         } else {
           this.fileInput.nativeElement.value = "";
-          swal.fire("Error", message, "error");
+          swal.fire("GOS FINANCIAL", message, "error");
         }
       })
       .catch(err => {
         let error = JSON.parse(err);
         const message = error.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
-        this.loadingService.hide();
+        swal.fire("GOS FINANCIAL", message, "error");
+
       });
   }
   multipleDelete() {
     if (this.selectedcurrencyInformation.length == 0) {
       return swal.fire(
-        "Error",
+        "GOS FINANCIAL",
         "Please select records you want to delete",
         "error"
       );
@@ -190,43 +182,38 @@ export class CurrencyListComponent implements OnInit {
     }
     const body = { itemsId: ids };
     // const __this = this;
-    swal.fire({
-        // title: "Are you sure you want to delete record?",
-        // text: "You won't be able to revert this!",
-        // type: "question",
-        // showCancelButton: true,
-        // confirmButtonColor: "#3085d6",
-        // cancelButtonColor: "#d33",
-        // confirmButtonText: "Yes, delete it!",
-        // cancelButtonText: "No, cancel!",
-        // confirmButtonClass: "btn btn-success btn-move",
-        // cancelButtonClass: "btn btn-danger",
-        // buttonsStyling: true
+    swal
+      .fire({
+        title: "Are you sure you want to delete record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!"
       })
       .then(
         result => {
           if (result.value) {
-            this.loadingService.show();
+
 
             this.commonService.multipleDeleteCurrency(body).subscribe(data => {
-              this.loadingService.hide();
+
               const message = data.status.message.friendlyMessage;
               if (data.status.isSuccessful) {
-                swal.fire("Success", message, "success");
+                swal.fire("GOS FINANCIAL", message, "success");
                 this.selectedcurrencyInformation = [];
                 this.getAllCurrency();
               } else {
-                swal.fire("Error", message, "error");
+                swal.fire("GOS FINANCIAL", message, "error");
               }
             });
           } else {
-            swal.fire("Error", "Cancelled", "error");
+            swal.fire("GOS FINANCIAL", "Cancelled", "error");
           }
         },
         err => {
-          this.loadingService.hide();
+
           const message = err.status.message.friendlyMessage;
-          swal.fire("Error", message, "error");
+          swal.fire("GOS FINANCIAL", message, "error");
         }
       );
   }

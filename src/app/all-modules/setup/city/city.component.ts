@@ -10,11 +10,11 @@ import { CommonService } from "src/app/services/common.service";
 @Component({
     selector: "app-city",
     templateUrl: "./city.component.html",
-    styleUrls: ['./city.component.css']
+    styleUrls:['./city.component.css']
 })
 export class CityComponent implements OnInit {
     form: FormGroup;
-    formTitle: string = "Add City Information";
+    formTitle = "Add City Information";
     stateList: any[];
     constructor(
         public fb: FormBuilder,
@@ -29,13 +29,13 @@ export class CityComponent implements OnInit {
             cityId: [0],
             cityCode: ["", Validators.required],
             cityName: ["", Validators.required],
-            stateId: ["" ,Validators.required],
+            stateId: ["" , Validators.required],
         });
     }
 
     ngOnInit() {
         this.route.queryParams.subscribe(params => {
-            let cityId = params.id;
+            const cityId = params.id;
             if (cityId != null || cityId != undefined) {
                 this.editCity(cityId);
             }
@@ -45,21 +45,20 @@ export class CityComponent implements OnInit {
 
 
     getAllState() {
-        this.loadingService.show();
+
         this.commonService.getAllState().subscribe(data => {
-            this.loadingService.hide();
+
             this.stateList = data.commonLookups;
 
-            // console.log("Staffs", this.stateInformation);
         });
     }
 
     editCity(cityId) {
         this.formTitle = "Edit City Information";
-        this.loadingService.show();
+
         this.commonService.getCity(cityId).subscribe(data => {
-            this.loadingService.hide();
-            let row = data.commonLookups[0];
+
+            const row = data.commonLookups[0];
             this.form = this.fb.group({
                 cityId: row.lookupId,
                 cityCode: row.code,
@@ -67,7 +66,7 @@ export class CityComponent implements OnInit {
                 stateId: row.parentId
             });
         }, err => {
-          this.loadingService.hide()
+
         });
     }
 
@@ -75,11 +74,11 @@ export class CityComponent implements OnInit {
         this.router.navigate(["/setup/city-list"]);
     }
     submitCityInfo(formObj) {
-        this.loadingService.show();
+
         this.commonService.updateCity(formObj.value).subscribe(
             data => {
-                this.loadingService.hide();
-              let message = data.status.message.friendlyMessage;
+
+              const message = data.status.message.friendlyMessage;
               swal.fire("GOS FINANCIAL", message, "success");
               this.router.navigate(["/setup/city-list"]);
                 // if (data["result"] == true) {
@@ -90,16 +89,16 @@ export class CityComponent implements OnInit {
                 // }
             },
             err => {
-              this.loadingService.hide();
-              let message = err.status.message.friendlyMessage;
+
+              const message = err.status.message.friendlyMessage;
               swal.fire("GOS FINANCIAL", message, "error");
             }
         );
     }
     parseValueToInt(value: string) {
-      let parsedValue = parseInt(value)
+      const parsedValue = parseInt(value);
       this.form.patchValue({
         stateId: parsedValue
-      })
+      });
     }
 }

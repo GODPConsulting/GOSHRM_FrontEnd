@@ -1,4 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
+import { subscribeOn } from "rxjs/operators";
+import { LmsService } from "src/app/services/lms.service";
 declare const $: any;
 
 @Component({
@@ -8,17 +11,42 @@ declare const $: any;
 })
 
 export class TrainingProviderComponent implements OnInit {
+    public sub: Subscription = new Subscription();
    public spinner: boolean = false;
-   public showCurrentPassword: boolean = false;
+   companyId: number;
+   public isFetchingTrainers: boolean = false;
    public dtOptions: DataTables.Settings = {};
    public isCheck: boolean = false;
    public trainingProviderS: any[] = [];
    public SelectedTrainingProvider: any[] = [];
+   public profile: any;
 
-  constructor() {
+  constructor(
+    private _lmsService: LmsService
+  ) {
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.profile = JSON.parse(localStorage.getItem('userDetails'));
+    this.companyId = this.profile.companyId;
+    this.getAllTrainers();
+  }
+
+  getAllTrainers() {
+    this.sub.add(
+      this._lmsService.getAllTrainers(this.companyId).subscribe({
+        next: (res) => {
+          this.isFetchingTrainers = false;
+          this.trainingProviderS = res['traineeSetupTypes'];
+          // console.log(res);
+        },
+        error: (error) => {
+          this.isFetchingTrainers = false;
+          console.log(error);
+        },
+      })
+    );
+  }
 
   checkUncheckAll() {
     for (var i = 0; i < this.trainingProviderS.length; i++) {

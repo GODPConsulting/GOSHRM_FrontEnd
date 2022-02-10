@@ -11,14 +11,64 @@ import { Router } from "@angular/router";
 import swal from "sweetalert2";
 import { TreeNode } from "primeng/api";
 import { Location } from "@angular/common";
-import { LoadingService } from "src/app/services/loading.service";
 import { CompanyService } from "src/app/services/company.service";
+import { LoadingService } from "src/app/services/loading.service";
 
 @Component({
   selector: "app-company-structure-list",
   templateUrl: "./company-structure-list.component.html",
   providers: [MessageService],
-  styleUrls: ['./company-structure-list.component.css'],
+  styles: [
+    `
+      .company.ui-organizationchart
+        .ui-organizationchart-node-content.ui-person {
+        padding: 0;
+        border: 0 none;
+      }
+
+      .node-header,
+      .node-content {
+        padding: 0.5em 0.7em;
+      }
+
+      .node-header {
+        background-color: #495ebb;
+        color: #ffffff;
+      }
+
+      .node-content {
+        text-align: center;
+        border: 1px solid #495ebb;
+      }
+
+      .node-content img {
+        border-radius: 50%;
+      }
+
+      .department-cfo {
+        background-color: #7247bc;
+        color: #ffffff;
+      }
+
+      .department-coo {
+        background-color: #a534b6;
+        color: #ffffff;
+      }
+
+      .department-cto {
+        background-color: #e9286f;
+        color: #ffffff;
+      }
+
+      .ui-person .ui-node-toggler {
+        color: #495ebb !important;
+      }
+
+      .department-cto .ui-node-toggler {
+        color: #8a0a39 !important;
+      }
+    `
+  ],
   encapsulation: ViewEncapsulation.None
 })
 export class CompanyStructureListComponent implements OnInit {
@@ -129,18 +179,18 @@ export class CompanyStructureListComponent implements OnInit {
   }
 
   showAddNew() {
-    this.router.navigate(["/setup/company-structure"]);
+    this.router.navigate(["/organization/company-structure"]);
   }
 
   getAllCompanyStructure() {
-    this.loadingService.show();
+
     this.companyService.getAllCompanyStructure().subscribe(
       data => {
-        this.loadingService.hide();
+
         this.companyStructureList = data["companyStructures"];
       },
       err => {
-        this.loadingService.hide();
+
       }
     );
   }
@@ -155,12 +205,12 @@ export class CompanyStructureListComponent implements OnInit {
     });
   }
   rowClicked(row: any): void {
-    console.log("TEst", row);
+
   }
   exportCompanyStructure() {
-    this.loadingService.show();
+
     this.companyService.exportCompanyStructure().subscribe(response => {
-      this.loadingService.hide();
+
       let data = response;
       if (data != undefined) {
         var byteString = atob(data);
@@ -183,7 +233,7 @@ export class CompanyStructureListComponent implements OnInit {
         }
       }
     }, err => {
-      this.loadingService.hide()
+
     });
   }
 
@@ -194,7 +244,7 @@ export class CompanyStructureListComponent implements OnInit {
  async uploadCompanyStructure() {
     if (this.fileToUpload == null) {
       return swal.fire(
-        "Error",
+        "GOS FINANCIAL",
         "Please select upload document to continue",
         "error"
       );
@@ -203,58 +253,53 @@ export class CompanyStructureListComponent implements OnInit {
       this.fileToUpload.type !=
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     ) {
-      return swal.fire("Error", "Only excel files allowed", "error");
+      return swal.fire("GOS FINANCIAL", "Only excel files allowed", "error");
     }
-    this.loadingService.show();
+
     await this.companyService
       .uploadCompanyStructure(this.fileToUpload)
       .then(data => {
-        this.loadingService.hide();
+
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
           this.fileToUpload = null;
           this.getAllCompanyStructure();
           this.fileInputVariable.nativeElement.value = "";
-          swal.fire("Success", message, "success");
+          swal.fire("GOS FINANCIAL", message, "success");
         } else {
-          this.loadingService.hide();
+
           this.fileToUpload = null;
           this.getAllCompanyStructure();
           this.fileInputVariable.nativeElement.value = "";
-          swal.fire("Error", message, "error");
+          swal.fire("GOS FINANCIAL", message, "error");
         }
       })
       .catch(err => {
-        this.loadingService.hide();
+
         const error = JSON.parse(err);
-        const message = error.message.friendlyMessage;
+        const message = error.status.message.friendlyMessage;
         this.fileInputVariable.nativeElement.value = "";
-        swal.fire("Error", message, "error");
+        swal.fire("GOS FINANCIAL", message, "error");
       });
   }
   deleteCompanyStructure(row) {
     const __this = this;
-    swal.fire({
-        // title: "Are you sure you want to delete record?",
-        // text: "You won't be able to revert this!",
-        // type: "question",
-        // showCancelButton: true,
-        // confirmButtonColor: "#3085d6",
-        // cancelButtonColor: "#d33",
-        // confirmButtonText: "Yes, delete it!",
-        // cancelButtonText: "No, cancel!",
-        // confirmButtonClass: "btn btn-success btn-move",
-        // cancelButtonClass: "btn btn-danger",
-        // buttonsStyling: true
+    swal
+      .fire({
+        title: "Are you sure you want to delete record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!"
       })
       .then(result => {
         if (result.value) {
-          __this.loadingService.show();
+
 
           __this.companyService
             .deleteCompanyStructure(row.companyStructureId)
             .subscribe(data => {
-              __this.loadingService.hide();
+
               if (data["result"] == true) {
                 swal.fire(
                   "GOS FINANCIAL",
@@ -292,26 +337,21 @@ export class CompanyStructureListComponent implements OnInit {
       companyStructureIds: targetIds
     };
     const __this = this;
-    swal.fire({
-        // title: "Are you sure you want to delete record?",
-        // text: "You won't be able to revert this!",
-        // type: "question",
-        // showCancelButton: true,
-        // confirmButtonColor: "#3085d6",
-        // cancelButtonColor: "#d33",
-        // confirmButtonText: "Yes, delete it!",
-        // cancelButtonText: "No, cancel!",
-        // confirmButtonClass: "btn btn-success btn-move",
-        // cancelButtonClass: "btn btn-danger",
-        // buttonsStyling: true
+    swal
+      .fire({
+        title: "Are you sure you want to delete record?",
+        text: "You won't be able to revert this",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!"
       })
       .then(result => {
         if (result.value) {
-          __this.loadingService.show();
+
 
           __this.companyService.deleteMultipleCompanyStructure(body).subscribe(
             data => {
-              __this.loadingService.hide();
+
               let message = data.status.message.friendlyMessage;
               if (data.status.isSuccessful) {
                 swal.fire("GOS FINANCIAL", message, "success");
@@ -321,7 +361,7 @@ export class CompanyStructureListComponent implements OnInit {
               }
             },
             err => {
-              this.loadingService.hide();
+
               let message = err.status.message.friendlyMessage;
               swal.fire("GOS FINANCIAL", message, "error");
             }
@@ -332,16 +372,16 @@ export class CompanyStructureListComponent implements OnInit {
       });
   }
   viewOrganizationChart() {
-    this.loadingService.show();
+
     this.companyService.getCompanyStructureChart().subscribe(
       data => {
-        this.loadingService.hide();
+
         this.displayChart = true;
         this.data = data["result"];
-        // console.log(this.data1, this.data)
+
       },
       err => {
-        this.loadingService.hide();
+
       }
     );
   }

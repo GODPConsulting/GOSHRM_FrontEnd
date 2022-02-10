@@ -1,19 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { Router, ActivatedRoute } from "@angular/router";
-import { CommonService } from "src/app/services/common.service";
-import { CompanyService } from "src/app/services/company.service";
-import { LoadingService } from "src/app/services/loading.service";
-import { StaffInfoService } from "src/app/services/staff-info.service";
-import swal from "sweetalert2";
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { CommonService } from 'src/app/services/common.service';
+import { CompanyService } from 'src/app/services/company.service';
+import { LoadingService } from 'src/app/services/loading.service';
+import { StaffInfoService } from 'src/app/services/staff-info.service';
+import swal from 'sweetalert2';
 
 @Component({
-  selector: "app-company-structure",
-  templateUrl: "./company-structure.component.html"
+  selector: 'app-company-structure',
+  templateUrl: './company-structure.component.html',
+  styleUrls: ['./company-structure.component.css']
 })
 export class CompanyStructureComponent implements OnInit {
   form: FormGroup;
-  formTitle: string = "Add Company Structure";
+  formTitle = 'Add Company Structure';
   companyStructureList: any[] = [];
   companyStructureDefinitionList: any[] = [];
   filteredCompanyStructure: any[] = [];
@@ -31,38 +32,37 @@ export class CompanyStructureComponent implements OnInit {
   ) {
     this.form = this.fb.group({
       companyStructureId: [0],
-      name: [""],
-      structureTypeId: [""],
-      countryId: [""],
-      address: [""],
+      name: [''],
+      structureTypeId: [''],
+      countryId: [''],
+      address: [''],
       headStaffId: [0],
       parentCompanyID: [0],
       companyId: [0],
-      code: [""],
-      address1: [""],
-      address2: [""],
-      telephone: [""],
-      fax: [""],
-      email: [""],
-      registrationNumber: [""],
-      taxId: [""],
+      code: [''],
+      address1: [''],
+      address2: [''],
+      telephone: [''],
+      fax: [''],
+      email: [''],
+      registrationNumber: [''],
+      taxId: [''],
       noOfEmployees: [0],
-      webSite: [""],
-      logo: [""],
+      webSite: [''],
+      logo: [''],
       // logoType: [""],
       city: [0],
       state: [0],
 
       currencyId: [0],
       reportCurrencyId: [0],
-      applyRegistryTemplate: [""],
-      postalCode: [""],
+      applyRegistryTemplate: [''],
+      postalCode: [''],
       isMultiCompany: [false],
-      description: [""],
+      description: [''],
       subsidairy_Level: [0],
-      registryTemplate: [""],
-      fsTemplateName: [""],
-
+      registryTemplate: [''],
+      fsTemplateName: [''],
     });
   }
 
@@ -71,8 +71,8 @@ export class CompanyStructureComponent implements OnInit {
     this.getAllStaff();
     this.getAllCompanyStructure();
     this.getAllCompanyStructureDefinition();
-    this.route.queryParams.subscribe(params => {
-      let companyStructureId = params["editcompanyStructure"];
+    this.route.queryParams.subscribe((params) => {
+      const companyStructureId = params['editcompanyStructure'];
       if (companyStructureId != null || companyStructureId != undefined) {
         this.editCompanyStructure(companyStructureId);
       }
@@ -80,79 +80,78 @@ export class CompanyStructureComponent implements OnInit {
   }
 
   getAllCountry() {
-    this.loadingService.show();
+
     this.commonService.getAllCountry().subscribe(
-      data => {
-        this.loadingService.hide();
+      (data) => {
+
         this.countries = data.commonLookups;
       },
-      err => {
-        console.log(err);
-        this.loadingService.hide();
+      (err) => {
+
       }
     );
   }
   getAllStaff() {
-    this.loadingService.show();
-    this.staffInfoService.getAllStaff().subscribe(data => {
-      this.loadingService.hide();
-      this.staffs = data["staff"];
-    }, err => {
-      this.loadingService.hide()
-    });
+
+    this.staffInfoService.getAllStaff().subscribe(
+      (data) => {
+
+        this.staffs = data['staff'];
+      },
+      (err) => {
+
+      }
+    );
   }
   getAllCompanyStructureDefinition() {
-    this.loadingService.show();
+
     this.companyService.getAllCompanyStructureDefinition().subscribe(
-      data => {
-        this.loadingService.hide();
+      (data) => {
+
         this.companyStructureDefinitionList =
-          data["companyStructureDefinitions"];
+          data['companyStructureDefinitions'];
       },
-      err => {
-        this.loadingService.hide();
-        console.log(err);
+      (err) => {
+
       }
     );
   }
 
   getAllCompanyStructure() {
-    this.loadingService.show();
+
     this.companyService.getAllCompanyStructure().subscribe(
-      data => {
-        this.loadingService.hide();
+      (data) => {
+
         this.companyStructureList = data.companyStructures;
       },
-      err => {
-        console.log(err);
-        this.loadingService.hide();
+      (err) => {
+
       }
     );
   }
 
   onStructureDefinitionChanged(value) {
-    this.loadingService.show();
+
     this.companyService.getCompanyStructureByDefinition(value).subscribe(
-      data => {
-        this.loadingService.hide();
-        this.filteredCompanyStructure = data["companyStructures"];
+      (data) => {
+
+        this.filteredCompanyStructure = data['companyStructures'];
       },
-      err => {
-        console.log(err);
-        this.loadingService.hide();
+      (err) => {
+
       }
     );
     this.parseValueToInt(value, 1);
   }
 
   editCompanyStructure(companyStructureId) {
-    this.formTitle = "Edit Company Structure";
-    this.loadingService.show();
+    this.formTitle = 'Edit Company Structure';
+
     this.companyService
       .getCompanyStructure(companyStructureId)
-      .subscribe(data => {
-        this.loadingService.hide();
-        let row = data.companyStructures[0];
+      .subscribe((data) => {
+
+        const row = data.companyStructures[0];
         this.form = this.fb.group({
           companyStructureId: [row.companyStructureId],
           name: [row.name],
@@ -189,21 +188,46 @@ export class CompanyStructureComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(["/setup/company-structure-list"]);
+    this.router.navigate(['/organization/company-structure-list']);
   }
   submitCompanyStructure(formObj) {
     const payload = formObj.value;
     payload.isMultiCompany = false;
-    this.loadingService.show();
-    this.companyService.addUpdateCompanyStructure(this.file, payload, this.file).then(
-      data => {
-        this.loadingService.hide();
-        let message = data.status.message.friendlyMessage;
+    if (payload.city == null) {
+      payload.city = 0;
+    }
+    if (payload.state == null) {
+      payload.state = 0;
+    }
+    if (payload.country == null) {
+      payload.country = 0;
+    }
+    if (payload.companyId == null) {
+      payload.companyId = 0;
+    }
+    if (payload.currencyId == null) {
+      payload.currencyId = 0;
+    }
+    if (payload.reportCurrencyId == null) {
+      payload.reportCurrencyId = 0;
+    }
+    if (payload.headStaffId == null) {
+      payload.headStaffId = 0;
+    }
+    if (payload.noOfEmployees == null) {
+      payload.noOfEmployees = 0;
+    }
+
+    this.companyService
+      .addUpdateCompanyStructure(this.file, payload, this.file)
+      .then((data) => {
+
+        const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
-          swal.fire("Success", message, "success");
-          this.router.navigate(["/organization/company-structure-list"]);
+          swal.fire('GOS FINANCIAL', message, 'success');
+          this.router.navigate(['/organization/company-structure-list']);
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire('GOS FINANCIAL', message, 'error');
         }
         // if (data["result"] == true) {
         //     swal.fire("GOS FINANCIAL", data["message"], "success");
@@ -211,35 +235,35 @@ export class CompanyStructureComponent implements OnInit {
         // } else {
         //     swal.fire("GOS FINANCIAL", data["message"], "error");
         // }
-      },
-    ).catch(err => {
-      this.loadingService.hide();
-      console.log(err);
-      let error = JSON.parse(err);
-      const message = error.status.message.friendlyMessage;
-      swal.fire("Error", message, "error");
-    });
+      })
+      .catch((err) => {
+
+
+        const error = JSON.parse(err);
+        const message = error.status.message.friendlyMessage;
+        swal.fire('GOS FINANCIAL', message, 'error');
+      });
   }
   parseValueToInt(value: string, num) {
-    let parsedValue = parseInt(value);
+    const parsedValue = parseInt(value);
     if (num == 1) {
       this.form.patchValue({
-        structureTypeId: parsedValue
+        structureTypeId: parsedValue,
       });
     }
     if (num == 2) {
       this.form.patchValue({
-        countryId: parsedValue
+        countryId: parsedValue,
       });
     }
     if (num == 3) {
       this.form.patchValue({
-        parentCompanyID: parsedValue
+        parentCompanyID: parsedValue,
       });
     }
     if (num == 4) {
       this.form.patchValue({
-        headStaffId: parsedValue
+        headStaffId: parsedValue,
       });
     }
   }

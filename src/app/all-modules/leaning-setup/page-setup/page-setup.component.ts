@@ -26,12 +26,7 @@ export class PageSetupComponent implements OnInit {
   public profile: any;
   public companyId: number;
   public pageContents: any;
-  public pageBanners: any[] = [
-    {id: 1, page: 'Hello', title: 'am i number 1'},
-    {id: 2, page: 'Hi', title: 'am i number 2'},
-    {id: 3, page: 'Hey', title: 'am i number 3'},
-    {id: 4, page: 'Xup', title: 'am i number 4'},
-  ];
+  public pageBanners: any[] = [];
   public selectedBanner: any[] = [];
   dtTrigger: Subject<any> = new Subject();
   selectJobGrades: any[];
@@ -67,7 +62,7 @@ export class PageSetupComponent implements OnInit {
         next: (res) => {
           // this.isFetchingCompanyInfo = false;
           this.loadingService.hide();
-          // this.pageContents = res['pageBannerSetupTypes'][0];
+          this.pageContents = res['pageBannerSetupTypes'];
           console.log(res);
         },
         error: (error) => {

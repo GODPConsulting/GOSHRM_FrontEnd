@@ -39,14 +39,14 @@ export class EmailconfigListComponent implements OnInit {
     this.getAllMailConfigs();
   }
   getAllMailConfigs() {
-    this.loadingService.show();
+
     return this.mailConfigService.getMailConfigs().subscribe(
       data => {
-        this.loadingService.hide();
+
         this.emailConfigs = data.emailConfigs;
       },
       err => {
-        this.loadingService.hide();
+
       }
     );
   }
@@ -57,7 +57,7 @@ export class EmailconfigListComponent implements OnInit {
       this.selectedMailConfig.length == 0
     ) {
       return swal.fire(
-        "Error",
+        "GOS FINANCIAL",
         "Please select records you want to delete",
         "error"
       );
@@ -70,40 +70,35 @@ export class EmailconfigListComponent implements OnInit {
     const payload = {
       targetIds: ids
     }
-    swal.fire({
-        // title: "Are you sure you want to delete record?",
-        // text: "You won't be able to revert this!",
-        // type: "question",
-        // showCancelButton: true,
-        // confirmButtonColor: "#3085d6",
-        // cancelButtonColor: "#d33",
-        // confirmButtonText: "Yes, delete it!",
-        // cancelButtonText: "No, cancel!",
-        // confirmButtonClass: "btn btn-success btn-move",
-        // cancelButtonClass: "btn btn-danger",
-        // buttonsStyling: true
+    swal
+      .fire({
+        title: "Are you sure you want to delete record?",
+        text: "Delete this Item?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes!"
       })
       .then(result => {
         if (result.value) {
-          this.loadingService.show();
+
           this.mailConfigService.deleteMailConfig(payload).subscribe(data => {
-            this.loadingService.hide();
+
             const message = data.status.message.friendlyMessage;
             if (data.status.isSuccessful) {
               swal.fire(
-                "Success",
+                "GOS FINANCIAL",
                 message,
                 "success"
               );
               this.getAllMailConfigs();
             } else {
-              swal.fire("Error", message, "error");
+              swal.fire("GOS FINANCIAL", message, "error");
             }
             this.selectedMailConfig = [];
           }, err => {
-            this.loadingService.hide();
+
             const message = err.status.message.friendlyMessage;
-            swal.fire("Error", message, "error");
+            swal.fire("GOS FINANCIAL", message, "error");
           });
         } else {
           swal.fire("GOS FINANCIAL", "Cancelled", "error");
@@ -129,11 +124,11 @@ export class EmailconfigListComponent implements OnInit {
   //     })
   //     .then(result => {
   //       if (result.value) {
-  //         this.loadingService.show();
+
   //         this.mailConfigService
   //           .deleteMailConfig(row.mailConfigurationId)
   //           .subscribe(data => {
-  //             this.loadingService.hide();
+
   //             if (data["result"] == true) {
   //               swal.fire(
   //                 "GOS FINANCIAL",
@@ -149,7 +144,7 @@ export class EmailconfigListComponent implements OnInit {
   //         swal.fire("GOS FINANCIALS", "Cancelled", "error");
   //       }
   //     }, err => {
-  //       this.loadingService.hide()
+
   //     });
   // }
 
@@ -161,5 +156,9 @@ export class EmailconfigListComponent implements OnInit {
   }
   addMailConfig(): void {
     this.router.navigate(["/setup/email-config"]);
+  }
+
+  deleteMailConfig(x) {
+
   }
 }

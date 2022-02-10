@@ -5,22 +5,19 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { SelectItem } from "primeng/api";
 import { CommonService } from "src/app/services/common.service";
 import { LoadingService } from "src/app/services/loading.service";
-import { UtilitiesService } from "src/app/services/utilities.service";
-import { CompanyService } from "src/app/services/company.service";
-import { CountriesService } from "src/app/services/countries.service";
 import { StaffInfoService } from "src/app/services/staff-info.service";
+import { CountriesService } from "src/app/services/countries.service";
+import { CompanyService } from "src/app/services/company.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 @Component({
   selector: "app-staff-info",
   templateUrl: "./staff-info.component.html",
   styles: [
     `
-      .staff-info_wrapper {
-          padding: 3rem;
-      }
       .multiselect-radius {
         border-radius: 4px !important;
-      },
+      }
     `
   ]
 })
@@ -34,9 +31,11 @@ export class StaffInfoComponent implements OnInit {
   accessList: any[];
   accessLevelList: any[];
   accessLevels: SelectItem[];
-  userRoles: SelectItem[];
+  userRoles: Array<object> = [];
   selectedAccessLevel: string[] = [];
   companyStructureList: any[] = [];
+  dropdownSettings: any = {};
+  selectedItems: Array<string> = [];
   constructor(
     public fb: FormBuilder,
     private commonService: CommonService,
@@ -70,7 +69,16 @@ export class StaffInfoComponent implements OnInit {
       userStatus: ["", Validators.required],
       userAccountId: [0],
       userRoleNames: [[], Validators.required],
-      userAccessLevels: [[]]
+      userAccessLevels: [[]],
+      isHRAdmin: [false],
+      ppeAdmin: [false],
+      isPandPAdmin: [false],
+      isCreditAdmin: [false],
+      isInvestorFundAdmin: [false],
+      isDepositAdmin: [false],
+      isTreasuryAdmin: [false],
+      isExpenseManagementAdmin: [false],
+      isFinanceAdmin: [false]
     });
   }
 
@@ -90,7 +98,7 @@ export class StaffInfoComponent implements OnInit {
         this.jobTitles = data["commonLookups"];
       },
       err => {
-        this.loadingService.hide();
+
       }
     );
 
@@ -99,7 +107,7 @@ export class StaffInfoComponent implements OnInit {
         this.countries = data["commonLookups"];
       },
       err => {
-        this.loadingService.hide();
+
       }
     );
 
@@ -108,7 +116,7 @@ export class StaffInfoComponent implements OnInit {
       this.userRoles = [];
       if (this.userRoleList !== undefined) {
         this.userRoleList.forEach(el => {
-          this.userRoles.push({ label: el.roleName, value: el.roleName });
+          this.userRoles.push({ itemName: el.roleName, id: el.roleName });
         });
       }
     });
@@ -118,22 +126,22 @@ export class StaffInfoComponent implements OnInit {
         this.accessList = data["companyStructureDefinitions"];
       },
       err => {
-        console.log(err);
+
       }
     );
 
     this.companyService.getAllCompanyStructure().subscribe(data => {
       this.companyStructureList = data["companyStructures"];
-      console.log("flave", this.companyStructureList);
+
     });
   }
 
   onAccessLevelChanged(value, clear: boolean = false) {
     if (value != null) {
-      this.loadingService.show();
+
       this.companyService.getCompanyStructureByAccessId(value).subscribe(
         data => {
-          this.loadingService.hide();
+
           this.accessLevelList = data["companyStructures"];
           this.accessLevels = [];
           if (this.accessLevelList !== undefined) {
@@ -146,8 +154,8 @@ export class StaffInfoComponent implements OnInit {
           }
         },
         err => {
-          this.loadingService.hide();
-          console.log(err);
+
+
         }
       );
       if (clear == true) {
@@ -158,10 +166,10 @@ export class StaffInfoComponent implements OnInit {
   }
   editStaff(staffId) {
     this.formTitle = "Edit Staff Information";
-    this.loadingService.show();
+
     this.staffInfoService.getSingleStaff(staffId).subscribe(
       data => {
-        this.loadingService.hide();
+
         let row = data.staff[0];
         this.form = this.fb.group({
           staffId: row.staffId,
@@ -185,13 +193,22 @@ export class StaffInfoComponent implements OnInit {
           userStatus: [row.userStatus],
           userAccountId: [row.userAccountId],
           userRoleNames: [row.userRoleNames],
-          userAccessLevels: [row.userAccessLevels]
+          userAccessLevels: [row.userAccessLevels],
+          isHRAdmin: [row.isHRAdmin],
+          ppeAdmin: [row.ppeAdmin],
+          isPandPAdmin: [row.isPandPAdmin],
+          isCreditAdmin: [row.isCreditAdmin],
+          isInvestorFundAdmin: [row.isInvestorFundAdmin],
+          isDepositAdmin: [row.isDepositAdmin],
+          isTreasuryAdmin: [row.isTreasuryAdmin],
+          isExpenseManagementAdmin: [row.isExpenseManagementAdmin],
+          isFinanceAdmin: [row.isFinanceAdmin]
         });
         this.onAccessLevelChanged(row.accessLevel);
         this.getStateByCountry(row.countryId);
       },
       err => {
-        this.loadingService.hide();
+
       }
     );
   }
@@ -202,16 +219,17 @@ export class StaffInfoComponent implements OnInit {
   submitStaffInfo(formObj) {
     const payload = formObj.value;
     payload.userStatus = payload.userStatus.toString();
-    this.loadingService.show();
+    payload.dateOfBirth = this.formatDate(payload.dateOfBirth);
+
     this.staffInfoService.addStaffInfo(payload).subscribe(
       data => {
-        this.loadingService.hide();
+
         let message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
-          swal.fire("Success", message, "success");
+          swal.fire("GOS FINANCIAL", message, "success");
           this.router.navigate(["/admin/staff-info-list"]);
         } else {
-          swal.fire("Error", message, "error");
+          swal.fire("GOS FINANCIAL", message, "error");
         }
         // if (data["result"] == true) {
         //   swal.fire("GOS FINANCIAL", data["message"], "success");
@@ -221,7 +239,7 @@ export class StaffInfoComponent implements OnInit {
         // }
       },
       err => {
-        this.loadingService.hide();
+
         let message = err.status.message.friendlyMessage;
         swal.fire("GOS FINANCIAL", message, "error");
       }
@@ -256,17 +274,36 @@ export class StaffInfoComponent implements OnInit {
     }
   }
   getStateByCountry(id: any) {
-    this.loadingService.show();
+
     this.commonService.getStateByCountry(id).subscribe(
       data => {
-        this.loadingService.hide();
+
         this.states = data["commonLookups"];
       },
       err => {
-        this.loadingService.hide();
+
       }
     );
     this.parseValueToInt(id, 2);
   }
-}
 
+  onItemSelect(id: any) {
+    this.selectedItems.push(id)
+  }
+
+  formatDate(date) {
+    let d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = '' + d.getFullYear();
+
+    if (month.length < 2) {
+      month = '0' + month
+    }
+    if (day.length < 2) {
+      day = '0' + day
+    }
+
+    return [year, month, day].join('-')
+  }
+}

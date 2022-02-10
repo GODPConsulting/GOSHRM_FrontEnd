@@ -49,30 +49,30 @@ export class EmailconfigComponent implements OnInit {
   addEmailConfig(form: FormGroup) {
     let payload = form.value;
     payload.smtpPort = +payload.smtpPort;
-    this.loadingService.show();
+
     return this.mailConfigService.updateMailConfig(payload).subscribe(
       data => {
-        this.loadingService.hide();
+
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
-          swal.fire("Success", message, "success");
+          swal.fire("GOS FINANCIAL", message, "success");
           this.router.navigateByUrl('/setup/emailconfig-list')
         } else {
-          return swal.fire("Error", message, "error");
+          return swal.fire("GOS FINANCIAL", message, "error");
         }
       },
       err => {
-        this.loadingService.hide();
+
         const message = err.status.message.friendlyMessage;
-        return swal.fire("Error", message, "error");
+        return swal.fire("GOS FINANCIAL", message, "error");
       }
     );
   }
   editMailConfig(mailConfigurationId) {
-    this.loadingService.show();
+
     return this.mailConfigService.getMailConfig(mailConfigurationId).subscribe(
       data => {
-        this.loadingService.hide();
+
           let row = data.emailConfigs[0];
           this.form = this.fb.group({
             emailConfigId: [row.emailConfigId],
@@ -89,7 +89,7 @@ export class EmailconfigComponent implements OnInit {
 
       },
       err => {
-        this.loadingService.hide();
+
       }
     );
   }

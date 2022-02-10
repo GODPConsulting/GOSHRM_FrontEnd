@@ -17,7 +17,7 @@ export class LmsService {
   getCompanyProfile(companyId): Observable<any> {
     const params = new HttpParams()
     .set('companyId', companyId);
-    return this.apiService.get(`/lms/companyInfo/get/all/companyId`, params).pipe(
+    return this.apiService.get(`/lms/companyInfo/get/By/companyId`, params).pipe(
       tap(),
       map((res) => {
         return res;
@@ -222,6 +222,18 @@ export class LmsService {
 
   updatePageBanner(payload) {
     return this.apiService.post("/lms/securitysetup/add/update/securitysetup", payload).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getAllTrainers(companyId) {
+    const params = new HttpParams()
+    .set('companyId', companyId);
+    return this.apiService.get("/lms/trainingsetup/get/all/trainingsetup", params).pipe(
       tap(),
       map((res) => {
         return res;

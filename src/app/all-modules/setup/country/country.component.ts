@@ -9,7 +9,7 @@ import { CommonService } from "src/app/services/common.service";
 @Component({
     selector: "app-country",
     templateUrl: "./country.component.html",
-    styleUrls: ['./country.component.css']
+    styleUrls: ["./country.component.css"],
 })
 export class CountryComponent implements OnInit {
     form: FormGroup;
@@ -40,9 +40,9 @@ export class CountryComponent implements OnInit {
 
     editCountry(countryId) {
         this.formTitle = "Edit Country Information";
-        this.loadingService.show();
+
         this.commonService.getCountry(countryId).subscribe(data => {
-            this.loadingService.hide();
+
             let row = data.commonLookups[0];
             this.form = this.fb.group({
                 countryId: row.lookupId,
@@ -58,10 +58,10 @@ export class CountryComponent implements OnInit {
         this.router.navigate(["/setup/country-list"]);
     }
     submitCountryInfo(formObj) {
-        this.loadingService.show();
+
         this.commonService.updateCountry(formObj.value).subscribe(
             data => {
-                this.loadingService.hide();
+
                 let message = data.status.message.friendlyMessage;
                 swal.fire("GOS FINANCIAL", message, "success");
                 this.router.navigate(["/setup/country-list"]);
@@ -73,7 +73,7 @@ export class CountryComponent implements OnInit {
                 // }
             },
             err => {
-                this.loadingService.hide();
+
                 let message = err.status.message.friendlyMessage;
                 swal.fire("GOS FINANCIAL", message, "error");
             }

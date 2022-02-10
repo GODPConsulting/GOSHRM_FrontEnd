@@ -43,7 +43,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let trainee of [1,2,3,4,5], index as i">
+            <tr *ngFor="let trainee of trainingProviderS, index as i">
               <th scope="row">
                 <label
                   class="check-container mb-4"
@@ -53,17 +53,19 @@
                     (click)="selectDeselectTrainee(trainee)"
                     type="checkbox"
                     id="checkbox{{ i }}"
-                    [(ngModel)]="asset.isSelected"
+                    [(ngModel)]="trainee.isSelected"
                     class="checkbox"
                   />
                   <span class="checkmark"></span>
                 </label>
-                <span class="px-3">Apr 11, 2018</span>
+                <span class="px-3">{{ trainee?.training_Date | date }}</span>
               </th>
-              <td> Innocent Sample </td>
-              <td> Excel Ms Advanced </td>
+              <td> {{ trainee?.full_Name }} </td>
+              <td> {{ trainee?.email_Address }} </td>
               <td> www.godp.co.uk </td>
-              <td> 08123456798 </td>
+              <td> 
+                <a [href]="'tel:' + trainee?.phone_Number">{{ trainee?.phone_Number }} </a>
+              </td>
               <td> View </td>
             </tr>
           </tbody>

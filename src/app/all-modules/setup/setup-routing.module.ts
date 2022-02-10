@@ -32,13 +32,13 @@ import { CityListComponent } from "./city-list/city-list.component";
 import { CityComponent } from "./city/city.component";
 import { CurrencyListComponent } from "./currency-list/currency-list.component";
 import { CurrencyComponent } from "./currency/currency.component";
-import { DucumentTypeComponent } from "./ducument-type/ducument-type.component";
 import { EmailconfigListComponent } from "./emailconfig-list/emailconfig-list.component";
 import { EmailconfigComponent } from "./emailconfig/emailconfig.component";
 import { CompanyStructureDefinitionListComponent } from "./company-structure-definition-list/company-structure-definition-list.component";
 import { CompanyStructureDefinitionComponent } from "./company-structure-definition/company-structure-definition.component";
 import { CompanyStructureListComponent } from "./company-structure-list/company-structure-list.component";
 import { CompanyStructureComponent } from "./company-structure/company-structure.component";
+import { DocumentTypeComponent } from "./document-type/document-type.component";
 
 const routes: Routes = [
   {
@@ -171,7 +171,7 @@ const routes: Routes = [
       },
       {
         path: "document-type",
-        component: DucumentTypeComponent,
+        component: DocumentTypeComponent,
       },
       {
         path: "emailconfig-list",

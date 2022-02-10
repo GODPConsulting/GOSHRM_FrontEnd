@@ -1,21 +1,20 @@
-import swal from "sweetalert2";
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { Router } from "@angular/router";
-import { saveAs } from "file-saver";
-import { LoadingService } from "src/app/services/loading.service";
-import { CommonService } from "src/app/services/common.service";
-import { CountriesService } from "src/app/services/countries.service";
+import swal from 'sweetalert2';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { saveAs } from 'file-saver';
+import { LoadingService } from 'src/app/services/loading.service';
+import { CountriesService } from 'src/app/services/countries.service';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
-  selector: "app-country-list",
-  templateUrl: "./country-list.component.html",
-  styleUrls: ['./country-list.component.css']
+  selector: 'app-country-list',
+  templateUrl: './country-list.component.html',
 })
 export class CountryListComponent implements OnInit {
-  @ViewChild("fileInput") fileInput: ElementRef;
+  @ViewChild('fileInput') fileInput: ElementRef;
   countryInformation: any[] = [];
   selectedcountryInformation: any[];
-  viewHeight: any = "600px";
+  viewHeight: any = '600px';
   fileToUpload: File;
   cols: any[] = [];
   constructor(
@@ -29,13 +28,13 @@ export class CountryListComponent implements OnInit {
     this.cols = [
       {
         header: 'code',
-        field: 'code'
+        field: 'code',
       },
       {
         header: 'lookupName',
-        field: 'lookupName'
-      }
-    ]
+        field: 'lookupName',
+      },
+    ];
     this.getAllCountry();
   }
 
@@ -43,124 +42,100 @@ export class CountryListComponent implements OnInit {
 
   multipleDelete() {
     if (this.selectedcountryInformation.length == 0) {
-      return swal.fire("Error", "Select item to delete", "error");
+      return swal.fire('GOS FINANCIAL', 'Select item to delete', 'error');
     }
     const tempData = this.selectedcountryInformation;
     let targetIds = [];
     // this.countryInformation = [];
     if (tempData !== undefined) {
-      tempData.forEach(el => {
+      tempData.forEach((el) => {
         let data = el.lookupId;
-       targetIds.push(el.lookupId);
+        targetIds.push(el.lookupId);
       });
-      swal.fire({
-          // title: "Are you sure you want to delete record?",
-          // text: "You won't be able to revert this!",
-          // type: "question",
-          // showCancelButton: true,
-          // confirmButtonColor: "#3085d6",
-          // cancelButtonColor: "#d33",
-          // confirmButtonText: "Yes, delete it!",
-          // cancelButtonText: "No, cancel!",
-          // confirmButtonClass: "btn btn-success btn-move",
-          // cancelButtonClass: "btn btn-danger",
-          // buttonsStyling: true
+      swal
+        .fire({
+          title: 'Are you sure you want to delete record?',
+          text: "You won't be able to revert this",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes!',
+          buttonsStyling: true,
         })
-        .then(result => {
+        .then((result) => {
           if (result.value) {
             const body = { itemsId: targetIds };
-            this.loadingService.show();
+
             this.commonService.deleteMultipleCountry(body).subscribe(
-              data => {
-                this.loadingService.hide();
+              (data) => {
                 const message = data.status.message.friendlyMessage;
                 if (data.status.isSuccessful) {
-                  swal.fire("Success", message, "success");
+                  swal.fire('GOS FINANCIAL', message, 'success');
                   this.selectedcountryInformation = [];
                   this.getAllCountry();
                 } else {
-                  swal.fire("Error", message, "error");
+                  swal.fire('GOS FINANCIAL', message, 'error');
                 }
               },
-              err => {
-                this.loadingService.hide();
+              (err) => {
                 const message = err.status.message.friendlyMessage;
-                swal.fire("Error", message, "error");
+                swal.fire('GOS FINANCIAL', message, 'error');
               }
             );
           } else {
-            swal.fire("Error", "Cancelled", "error");
+            swal.fire('GOS FINANCIAL', 'Cancelled', 'error');
           }
         });
     }
   }
 
   showAddNew() {
-    this.router.navigate(["/setup/country"]);
+    this.router.navigate(['/setup/country']);
   }
 
   getAllCountry() {
-    this.loadingService.show();
     this.commonService.getAllCountry().subscribe(
-      data => {
-        this.loadingService.hide();
+      (data) => {
         this.countryInformation = data.commonLookups;
-
-        // console.log("Staffs", this.countryInformation);
       },
-      err => {
-        this.loadingService.hide();
-      }
+      (err) => {}
     );
   }
   editCountry(row) {
-    this.router.navigate(["/setup/country"], {
-      queryParams: { id: row.lookupId }
+    this.router.navigate(['/setup/country'], {
+      queryParams: { id: row.lookupId },
     });
   }
 
-  rowClicked(row: any): void {
-    console.log("TEst", row);
-  }
+  rowClicked(row: any): void {}
 
   deleteCountry(row) {
-    const __this = this;
-    swal.fire({
-        // title: "Are you sure you want to delete user?",
-        // text: "You won't be able to revert this!",
-        // type: "question",
-        // showCancelButton: true,
-        // confirmButtonColor: "#3085d6",
-        // cancelButtonColor: "#d33",
-        // confirmButtonText: "Yes, delete it!",
-        // cancelButtonText: "No, cancel!",
-        // confirmButtonClass: "btn btn-success btn-move",
-        // cancelButtonClass: "btn btn-danger",
-        // buttonsStyling: true
+    // constthis = this;
+    swal
+      .fire({
+        title: 'Are you sure you want to delete record?',
+        text: "You won't be able to revert this",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes!',
       })
-      .then(result => {
+      .then((result) => {
         if (result.value) {
-          __this.loadingService.show();
-
-          __this.countryService.deleteCountry(row.countryId).subscribe(data => {
-            __this.loadingService.hide();
-            if (data["result"] == true) {
-              swal.fire("GOS FINANCIAL", "User deleted successful.", "success");
-              __this.getAllCountry();
+          this.countryService.deleteCountry(row.countryId).subscribe((data) => {
+            if (data['result'] == true) {
+              swal.fire('GOS FINANCIAL', 'User deleted successful.', 'success');
+              this.getAllCountry();
             } else {
-              swal.fire("GOS FINANCIAL", "Record not deleted", "error");
+              swal.fire('GOS FINANCIAL', 'Record not deleted', 'error');
             }
           });
         } else {
-          swal.fire("GOS FINANCIAL", "Cancelled", "error");
+          swal.fire('GOS FINANCIAL', 'Cancelled', 'error');
         }
       });
   }
   exportCountryList() {
-    this.loadingService.show();
     this.commonService.exportCountryList().subscribe(
-      response => {
-        this.loadingService.hide();
+      (response) => {
         const data = response;
         if (data != undefined) {
           const byteString = atob(data);
@@ -171,22 +146,21 @@ export class CountryListComponent implements OnInit {
           }
           const bb = new Blob([ab]);
           try {
-            const file = new File([bb], "Countries.xlsx", {
-              type: "application/vnd.ms-excel"
+            const file = new File([bb], 'Countries.xlsx', {
+              type: 'application/vnd.ms-excel',
             });
             saveAs(file);
           } catch (err) {
             const textFileAsBlob = new Blob([bb], {
-              type: "application/vnd.ms-excel"
+              type: 'application/vnd.ms-excel',
             });
-            window.navigator.msSaveBlob(textFileAsBlob, "Countries.xlsx");
+            window.navigator.msSaveBlob(textFileAsBlob, 'Countries.xlsx');
           }
         }
       },
-      err => {
-        this.loadingService.hide();
+      (err) => {
         const message = err.status.message.friendlyMessage;
-        swal.fire('Error', message, 'error')
+        swal.fire('GOS FINANCIAL', message, 'error');
       }
     );
   }
@@ -195,40 +169,42 @@ export class CountryListComponent implements OnInit {
     this.fileToUpload = file.item(0);
   }
 
- async uploadCountryList() {
+  async uploadCountryList() {
     if (this.fileToUpload == null) {
-      swal.fire("Error", "Please select upload document to continue", "error");
+      swal.fire(
+        'GOS FINANCIAL',
+        'Please select upload document to continue',
+        'error'
+      );
       return;
     }
     if (
       this.fileToUpload.type !=
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     ) {
-      return swal.fire("Error", "Only excel files allowed", "error");
+      return swal.fire('GOS FINANCIAL', 'Only excel files allowed', 'error');
     }
-    this.loadingService.show();
+
     await this.commonService
       .uploadCountryList(this.fileToUpload)
-      .then(data => {
-        this.loadingService.hide();
+      .then((data) => {
         const message = data.status.message.friendlyMessage;
         if (data.status.isSuccessful) {
           this.fileToUpload = null;
           this.getAllCountry();
-          this.fileInput.nativeElement.value = "";
-          swal.fire("Success", message, "success");
+          this.fileInput.nativeElement.value = '';
+          swal.fire('GOS FINANCIAL', message, 'success');
         } else {
           this.fileToUpload = null;
           this.getAllCountry();
-          this.fileInput.nativeElement.value = "";
-          swal.fire("Error", message, "error");
+          this.fileInput.nativeElement.value = '';
+          swal.fire('GOS FINANCIAL', message, 'error');
         }
       })
-      .catch(err => {
-        this.loadingService.hide();
+      .catch((err) => {
         let error = JSON.parse(err);
         const message = error.status.message.friendlyMessage;
-        swal.fire("Error", message, "error");
+        swal.fire('GOS FINANCIAL', message, 'error');
       });
   }
 }

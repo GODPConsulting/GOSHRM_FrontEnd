@@ -90,15 +90,15 @@
                           (click)="selectDeselectBanner(banner)"
                           type="checkbox"
                           id="checkbox{{ i }}"
-                          [(ngModel)]="asset.isSelected"
+                          [(ngModel)]="banner.isSelected"
                           class="checkbox"
                         />
                         <span class="checkmark"></span>
                       </label>
-                      <span class="px-3"> Design, Art and Multimedia</span>
+                      <span class="px-3"> {{ banner?.pageBannerName }}</span>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
+                    <td class="d-flex justufy-content-between">
+                      <span class="pr-5">{{ banner?.pageBannerTitle }}</span>
                       <img class="click px-5 ml-auto" src="assets/img/edit.svg" routerLink="/lms/application/page-setup-detail">
                     </td>
                   </tr>
@@ -134,13 +134,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
+                  <tr *ngFor="let content of pageContents">
                     <th scope="row">
                       <input type="checkbox">
-                      <span class="px-3"> Design, Art and Multimedia</span>
+                      <span class="px-3"> {{ content?.pageBannerName }}</span>
                     </th>
                     <td>
-                      Trusted companies
+                     {{ content?.pageBannerTitle }}
                     </td>
                     <td class="d-flex justufy-content-between">E
                       <span class="pr-5">GOS Recruitment Management Soft ...</span>

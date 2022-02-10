@@ -26,7 +26,7 @@ export class CompanyInformationComponent implements OnInit {
     websiteForm: FormGroup;
     companyInfo: any = {
       "comapanyId": 0,
-      "full_Name": "",
+      "company_Name": "",
       "email_Address": "",
       "phone_Number": "",
       "physical_Address": "",
@@ -49,6 +49,8 @@ export class CompanyInformationComponent implements OnInit {
       "website_Name_Third": "",
       "website_Link_Third": "",
     };
+    payouts: any[] = [];
+    allTrainers: any[] = [];
     
   constructor(
     private fb: FormBuilder,
@@ -66,11 +68,13 @@ export class CompanyInformationComponent implements OnInit {
     this.getCompanyInfo();
     this.getSocialMediaLinks();
     this.getwebsiteURLS();
+    this.getAllTrainers();
+    this.getPayouts();
   }
 
   initCompanyInfoForm() {
     this.companyForm = this.fb.group({
-      full_Name: [this.companyInfo?.full_Name ? this.companyInfo?.full_Name  : '' ],
+      company_Name: [this.companyInfo?.company_Name ? this.companyInfo?.company_Name  : '' ],
       email_Address: [this.companyInfo?.email_Address ? this.companyInfo?.email_Address  : '' ],
       phone_Number: [this.companyInfo?.phone_Number ? this.companyInfo?.phone_Number  : '' ],
       physical_Address: [this.companyInfo?.physical_Address ? this.companyInfo?.physical_Address  : '' ],
@@ -161,6 +165,38 @@ export class CompanyInformationComponent implements OnInit {
         next: (res) => {
           this.isFetchingCompanyInfo = false;
           this.websiteUrls = res['websiteSetupTypes'][0];
+          // console.log(res);
+        },
+        error: (error) => {
+          this.isFetchingCompanyInfo = false;
+          console.log(error);
+        },
+      })
+    );
+  }
+
+  getPayouts() {
+    this.sub.add(
+      this._lmsService.getAllPayoutSetup(this.companyId).subscribe({
+        next: (res) => {
+          this.isFetchingCompanyInfo = false;
+          this.payouts = res['payoutSetupTypes'];
+          // console.log(res);
+        },
+        error: (error) => {
+          this.isFetchingCompanyInfo = false;
+          console.log(error);
+        },
+      })
+    );
+  }
+
+  getAllTrainers() {
+    this.sub.add(
+      this._lmsService.getAllTrainers(this.companyId).subscribe({
+        next: (res) => {
+          this.isFetchingCompanyInfo = false;
+          this.allTrainers = res['traineeSetupTypes'];
           // console.log(res);
         },
         error: (error) => {
