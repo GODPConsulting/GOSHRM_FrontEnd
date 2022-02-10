@@ -47,10 +47,15 @@ export interface CourseOutline  {
 
 export interface CourseAssessment {
     course_AssessmentId: number,
-    course_Title: string,
     course: string,
     courseId: number,
     trainingInstructorId: number,
+    question: string,
+    answers: [{
+        answerId: number,
+        answer: string,
+        isAnswer: boolean
+    }],
     active: boolean,
     deleted: boolean,
     companyId: number

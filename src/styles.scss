@@ -215,21 +215,6 @@ table.table {
         font-size: 1.4rem;
         padding: 1.6rem;
         border: transparent;
-        &:last-child {
-          color: $blue-300;
-        }
-        .dot {
-          width: 0.8rem;
-          height: 0.8rem;
-          border-radius: 50%;
-          display: block;
-          &-success {
-            background-color: $success;
-          }
-          &-error {
-            background-color: $error;
-          }
-        }
       }
     }
   }

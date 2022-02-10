@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CourseCreationComponent } from './components/course-creation/course-creation.component';
 import { CourseCreationRoutingModule } from './course-creation-routing.module';
 import { SharedModule } from '@shared/shared.module';
@@ -42,6 +42,9 @@ import { ParticipantDialogComponent } from './dialogs/participant-dialog/partici
     SharedModule,
     FormsModule,
     NgRatingBarModule
+  ],
+  providers: [
+    DatePipe
   ]
 })
 export class CourseCreationModule { }

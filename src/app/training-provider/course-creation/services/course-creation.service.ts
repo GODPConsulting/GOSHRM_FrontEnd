@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Observable } from 'rxjs';
-import { CourseOutline, Courses } from '../models/course-creation.model';
+import { CourseAssessment, CourseOutline, Courses } from '../models/course-creation.model';
 
 @Injectable({
   providedIn: 'root',
@@ -53,5 +53,13 @@ export class CourseCreationService {
     const params = new HttpParams()
     .set('trainingProviderId', trainingProviderId)
     return this.http.makeRequestWithData('post', endpoint, params, course);
+  }
+
+  public AddUpdateCourseAssessment(
+    course: CourseAssessment
+  ): Observable<ResponseModel<CourseAssessment>> {
+    console.log(course)
+    const endpoint = '/lms/coursecreationcourseassessment/add/update/coursecreationcourseassessment';
+    return this.http.makeRequestWithData('post', endpoint, course);
   }
 }

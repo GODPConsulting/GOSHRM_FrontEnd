@@ -9,6 +9,7 @@ import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { Courses } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
+import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-add-course',
@@ -49,12 +50,13 @@ export class AddCourseComponent implements OnInit {
     private _courses: CourseCreationService,
     private _helper: HelperService,
     private activateRoute: ActivatedRoute,
-    private _route:ActivatedRoute
+    private _route:ActivatedRoute,
+    public datepipe: DatePipe
   ) { }
 
   ngOnInit(): void {
-    this.sp = this.getTimeSpan(this.endDate - this.beginDate);
-    console.log(this.sp)
+    // this.sp = this.getTimeSpan(this.endDate - this.beginDate);
+    // console.log(this.sp)
     this.loggedInUser = this._currentService.getUser();
     if (this._route.snapshot.paramMap.get('instructorId')) {
       this.instructorId = this._route.snapshot.paramMap.get('instructorId');
@@ -156,10 +158,11 @@ getTimeSpan(ticks: any ) {
       payload.faciliator  = 1;
       payload.suggested_Participant  = 'Muhydeen Alabi';
       payload.addCover_Image  = 0;
-      // let duration = this.addCourseForm.get('duration')?.value;
+      let duration = this.addCourseForm.get('duration')?.value;
       payload.cost = parseInt(payload.cost);
-      // payload.duration = new Date (new Date().toDateString() + ' ' + duration);
-      payload.duration = this.sp;
+      let new_duration = new Date (new Date().toDateString() + ' ' + duration);
+      // payload.duration = this.sp;
+      payload.duration =this.datepipe.transform(new_duration, 'h:mm:ss');
       this._courses.UpdateCourse(payload).subscribe({
         next: (res: any) => {
          if(res.status.isSuccessful) {
