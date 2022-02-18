@@ -6,6 +6,7 @@ import swal from "sweetalert2";
 import { LoadingService } from "../../../services/loading.service";
 import { Subject } from "rxjs";
 import { ISearchColumn } from "../../../interface/interfaces";
+import { RmsSetupService } from "src/app/services/rms-setup.service";
 
 declare const $: any;
 @Component({
@@ -17,11 +18,15 @@ export class SetupComponent implements OnInit {
   // public formTitle: string = "Add Job Grade";
   public dtOptions: DataTables.Settings = {};
   @ViewChild("fileInput") fileInput: ElementRef;
-  public jobGradeForm: FormGroup;
-  public jobGrades: any[] = [];
+  jobGradeForm: FormGroup;
+  public industries: any[] = [];
+  public jobTypes: any[] = [];
+  public jobCategories: any[] = [];
+  public locations: any[] = [];
+  public specializations: any[] = [];
+  public experienceLevels: any[] = [];
   public selectedId: number[] = [];
   public spinner: boolean = false;
-  public jobGradeUploadForm: FormGroup;
   dtTrigger: Subject<any> = new Subject();
   selectJobGrades: any[];
   cols: ISearchColumn[];
@@ -34,14 +39,20 @@ export class SetupComponent implements OnInit {
     private formBuilder: FormBuilder,
     private setupService: SetupService,
     private utilitiesService: UtilitiesService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private rmsService: RmsSetupService
   ) {}
 
   ngOnInit(): void {
     // $('table').dataTable({searching: false, paging: true, info: true, bFilter: false});
 
     this.current_tab = 'Job Category',
-    // this.getJobGrade();
+    this.getAllIndustries();
+    this.getAllJobCategories();
+    this.getAllJobTypes();
+    this.getAllLocations();
+    this.getAllSpecializations();
+    this.getExperiencelevels();
     this.initializeForm(this.current_tab);
     this.cols = [
       {
@@ -63,6 +74,61 @@ export class SetupComponent implements OnInit {
     ];
   }
 
+  getAllIndustries() {
+    this.rmsService.getAllIndustry().subscribe(
+      (data) => {
+        console.log(data)
+        this.industries = data.industries;
+      },
+      (err) => {}
+    );
+  }
+  getAllJobTypes() {
+    this.rmsService.getAllJobType().subscribe(
+      (data) => {
+        console.log(data)
+        this.jobTypes = data.jobTypes;
+      },
+      (err) => {}
+    );
+  }
+  getAllJobCategories() {
+    this.rmsService.getAllJobcategory().subscribe(
+      (data) => {
+        console.log(data)
+        this.jobCategories = data.jobCategories;
+      },
+      (err) => {}
+    );
+  }
+  getAllLocations() {
+    this.rmsService.getAllLocation().subscribe(
+      (data) => {
+        console.log(data)
+        this.locations = data.locations;
+      },
+      (err) => {}
+    );
+  }
+  getAllSpecializations() {
+    this.rmsService.getAllSpecialization().subscribe(
+      (data) => {
+        console.log(data)
+        this.specializations = data.specializations;
+      },
+      (err) => {}
+    );
+  }
+  getExperiencelevels() {
+    this.rmsService.getExperiencelevel().subscribe(
+      (data) => {
+        console.log(data)
+        this.experienceLevels = data.experienceLevels;
+      },
+      (err) => {}
+    );
+  }
+
   downloadFile() {
     // this.loadingService.show();
     this.setupService.exportExcelFile("/hrmsetup/download/jobgrade").subscribe(
@@ -74,39 +140,6 @@ export class SetupComponent implements OnInit {
       },
       (err) => {
         // this.loadingService.hide();
-      }
-    );
-  }
-
-  uploadJobGrade() {
-    if (!this.jobGradeUploadForm.get("uploadInput").value) {
-      return swal.fire("Error", "Select a file", "error");
-    }
-    const formData = new FormData();
-    formData.append(
-      "uploadInput",
-      this.jobGradeUploadForm.get("uploadInput").value
-    );
-    this.spinner = true;
-    return this.setupService.uploadJobGrade(formData).subscribe(
-      (res) => {
-        this.spinner = false;
-        const message = res.status.message.friendlyMessage;
-
-        if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          this.initializeForm(this.current_tab);
-          this.fileInput.nativeElement.value = "";
-          $("#upload_job_grade").modal("hide");
-        } else {
-          swal.fire("GOSHRM", message, "error");
-        }
-        this.getJobGrade();
-      },
-      (err) => {
-        this.spinner = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("GOSHRM", message, "error");
       }
     );
   }
@@ -141,107 +174,6 @@ export class SetupComponent implements OnInit {
     $("#delete_item").modal("hide");
   }
 
-  getJobGrade() {
-    // this.loadingService.show();
-    return this.setupService.getJobGrades().subscribe(
-      (data) => {
-        // this.loadingService.hide();
-        this.jobGrades = data.setuplist;
-        this.dtTrigger.next();
-      },
-      (err) => {
-        // this.loadingService.hide();
-      }
-    );
-  }
-
-  // Add Job Grade Modal Api Call
-  addJobGrade(form: FormGroup) {
-    if (!form.valid) {
-      swal.fire("Error", "please fill all mandatory fields", "error");
-      return;
-    }
-    const payload = form.value;
-
-    this.spinner = true;
-    return this.setupService.addJobGrade(payload).subscribe(
-      (res) => {
-        this.spinner = false;
-        const message = res.status.message.friendlyMessage;
-        if (res.status.isSuccessful) {
-          swal.fire("GOSHRM", message, "success");
-          this.initializeForm(this.current_tab);
-          $("#add_job_grade").modal("hide");
-        } else {
-          swal.fire("GOSHRM", message, "error");
-        }
-        this.getJobGrade();
-      },
-      (err) => {
-        this.spinner = false;
-        const message = err.status.message.friendlyMessage;
-        swal.fire("GOSHRM", message, "error");
-      }
-    );
-  }
-
-  delete() {
-    let payload: object;
-    if (this.selectJobGrades.length === 0) {
-      return swal.fire("Error", "Select items to delete", "error");
-    }
-    this.selectJobGrades.map((item) => {
-      this.selectedId.push(item.id);
-    });
-    payload = {
-      itemIds: this.selectedId,
-    };
-    swal
-      .fire({
-        title: "Are you sure you want to delete this record?",
-        text: "You won't be able to revert this",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes!",
-      })
-      .then((result) => {
-        if (result.value) {
-          // this.loadingService.show();
-          return this.setupService.deleteJobGrade(payload).subscribe(
-            (res) => {
-              // this.loadingService.hide();
-              const message = res.status.message.friendlyMessage;
-              if (res.status.isSuccessful) {
-                swal.fire("GOSHRM", message, "success").then(() => {
-                  this.getJobGrade();
-                });
-              } else {
-                swal.fire("GOSHRM", message, "error");
-              }
-            },
-            (err) => {
-              // this.loadingService.hide();
-              this.utilitiesService.showMessage(err, "error");
-            }
-          );
-        }
-      });
-    this.selectedId = [];
-  }
-
-  // Set Values To Edit Modal Form
-  edit(row) {
-    // this.formTitle = "Edit Job Grade";
-    this.jobGradeForm.patchValue({
-      id: row.id,
-      job_grade: row.job_grade,
-      job_grade_reporting_to: row.job_grade_reporting_to,
-      rank: row.rank,
-      probation_period_in_months: row.probation_period_in_months,
-      description: row.description,
-    });
-    $("#add_job_grade").modal("show");
-  }
 
   addItemId(event: Event, id: number) {
     this.utilitiesService.deleteArray(event, id, this.selectedId);
@@ -250,14 +182,11 @@ export class SetupComponent implements OnInit {
   checkAll(event: Event) {
     this.selectedId = this.utilitiesService.checkAllBoxes(
       event,
-      this.jobGrades
+      this.industries
     );
   }
 
-  // Appends a selected file to "uploadInput"
-  onSelectedFile(event: Event, form: FormGroup) {
-    this.utilitiesService.uploadFileValidator(event, form, "hr");
-  }
+
 
   getCurrentTab(tabName) {
     this.current_tab = tabName;
