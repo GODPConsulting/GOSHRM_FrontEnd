@@ -18,7 +18,12 @@ export class SetupComponent implements OnInit {
   // public formTitle: string = "Add Job Grade";
   public dtOptions: DataTables.Settings = {};
   @ViewChild("fileInput") fileInput: ElementRef;
-  jobGradeForm: FormGroup;
+  industryForm: FormGroup;
+  jobTypeForm: FormGroup;
+  jobCategoryForm: FormGroup;
+  levelForm: FormGroup;
+  specializationForm: FormGroup;
+  locationForm: FormGroup;
   public industries: any[] = [];
   public jobTypes: any[] = [];
   public jobCategories: any[] = [];
@@ -28,7 +33,7 @@ export class SetupComponent implements OnInit {
   public selectedId: number[] = [];
   public spinner: boolean = false;
   dtTrigger: Subject<any> = new Subject();
-  selectJobGrades: any[];
+  selectDeleteitems: any[];
   cols: ISearchColumn[];
   modalData = {
     isEditing: false,
@@ -36,12 +41,43 @@ export class SetupComponent implements OnInit {
   };
   current_tab: string;
   constructor(
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private setupService: SetupService,
     private utilitiesService: UtilitiesService,
     private loadingService: LoadingService,
     private rmsService: RmsSetupService
-  ) {}
+  ) {
+    this.jobCategoryForm = this.fb.group({
+      jobCategoryId: [0],
+      jobCategoryName: ["", Validators.required],
+      jobCategoryDescription: ["", Validators.required],
+    });
+    this.jobTypeForm = this.fb.group({
+      jobTypeId: [0],
+      jobTypeName: ["", Validators.required],
+      jobTypeDescription: ["", Validators.required],
+    });
+    this.levelForm = this.fb.group({
+      experienceLevelId: [0],
+      experienceLevelName: ["", Validators.required],
+      experienceLevelDescription: ["", Validators.required],
+    });
+    this.locationForm = this.fb.group({
+      locationId: [0],
+      locationName: ["", Validators.required],
+      locationDescription: ["", Validators.required],
+    });
+    this.industryForm = this.fb.group({
+      industryId: [0],
+      industryName: ["", Validators.required],
+      industryDescription: ["", Validators.required],
+    });
+    this.specializationForm = this.fb.group({
+      specializationId: [0],
+      specializationName: ["", Validators.required],
+      specializationDescription: ["", Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     // $('table').dataTable({searching: false, paging: true, info: true, bFilter: false});
@@ -154,10 +190,49 @@ export class SetupComponent implements OnInit {
     $("#upload_job_grade").modal("show");
   }
 
-  openModal(isEdit) {
+  openModal(isEdit: boolean, data?: any) {
     this.initializeForm(this.current_tab);
     $("#add_job_grade").modal("show");
     this.modalData.isEditing = isEdit;
+    if (isEdit == true) {
+      if(this.current_tab == 'Job Category') {
+        this.jobCategoryForm = this.fb.group({
+          jobCategoryId: [data?.jobCategoryId],
+          jobCategoryName: [data?.jobCategoryName],
+          jobCategoryDescription: [data?.jobCategoryDescription],
+        });
+      } else if(this.current_tab == 'Job Type') {
+        this.jobTypeForm = this.fb.group({
+          jobTypeId: [data?.jobTypeId],
+          jobTypeName: [data?.jobTypeName],
+          jobTypeDescription: [data?.jobTypeDescription],
+        });
+      } else if(this.current_tab == 'Specialization') {
+        this.specializationForm = this.fb.group({
+          specializationId: [data?.specializationId],
+          specializationName: [data?.specializationName],
+          specializationDescription: [data?.specializationDescription],
+        });
+      } else if(this.current_tab == 'Location') {
+        this.locationForm = this.fb.group({
+          locationId: [data?.locationId],
+          locationName: [data?.locationName],
+          locationDescription: [data?.locationDescription],
+        });
+      } else if(this.current_tab == 'Industry') {
+        this.industryForm = this.fb.group({
+          industryId: [data?.industryId],
+          industryName: [data?.industryName],
+          industryDescription: [data?.industryDescription],
+        });
+      } else {
+        this.levelForm = this.fb.group({
+          experienceLevelId: [data?.experienceLevelId],
+          experienceLevelName: [data?.experienceLevelName],
+          experienceLevelDescription: [data?.experienceLevelDescription],
+        });
+      }
+    }
   }
 
   openDeleteModal() {
@@ -190,6 +265,180 @@ export class SetupComponent implements OnInit {
 
   getCurrentTab(tabName) {
     this.current_tab = tabName;
+  }
+
+  submitIndustry(form: FormGroup) {
+
+    this.rmsService.addupdateIndustry(form.value).subscribe(
+        data => {
+          console.log(data);
+          let message = data.status.message.friendlyMessage;
+          swal.fire("GOS FINANCIAL", message, "success");
+          // const index = this.industries.findIndex((industry) => {
+          //   return industry.industryId == data.industry.industryId;
+          // })
+          // console.log(index)
+          // if(index) {
+          //   this.industries[index] = form.value;
+          // } else {
+             this.industries.push(data.industry);
+          // }
+          this.closeModal();
+         
+        },
+        err => {
+            let message = err.status.message.friendlyMessage;
+            swal.fire("GOS FINANCIAL", message, "error");
+        }
+    );
+  }
+
+  submitJobType(form: FormGroup) {
+
+    this.rmsService.addupdatejobtype(form.value).subscribe(
+        data => {
+          console.log(data);
+          let message = data.status.message.friendlyMessage;
+          swal.fire("GOS FINANCIAL", message, "success");
+          this.jobTypes.push(data.jobType);
+          this.closeModal();
+        },
+        err => {
+            let message = err.status.message.friendlyMessage;
+            swal.fire("GOS FINANCIAL", message, "error");
+        }
+    );
+  }
+
+  submitJobCategory(form: FormGroup) {
+
+    this.rmsService.addupdateJobcategory(form.value).subscribe(
+        data => {
+          console.log(data);
+          let message = data.status.message.friendlyMessage;
+          swal.fire("GOS FINANCIAL", message, "success");
+          this.jobCategories.push(data.jobCategory);
+          this.closeModal();
+        },
+        err => {
+            let message = err.status.message.friendlyMessage;
+            swal.fire("GOS FINANCIAL", message, "error");
+        }
+    );
+  }
+
+  submitLocation(form: FormGroup) {
+
+    this.rmsService.addupdateLocation(form.value).subscribe(
+        data => {
+          console.log(data);
+          let message = data.status.message.friendlyMessage;
+          swal.fire("GOS FINANCIAL", message, "success");
+          this.locations.push(data.location);
+          this.closeModal();
+        },
+        err => {
+            let message = err.status.message.friendlyMessage;
+            swal.fire("GOS FINANCIAL", message, "error");
+        }
+    );
+  }
+
+  submitLevel(form: FormGroup) {
+
+    this.rmsService.addupdateExperienceLevel(form.value).subscribe(
+        data => {
+          console.log(data);
+          let message = data.status.message.friendlyMessage;
+          swal.fire("GOS FINANCIAL", message, "success");
+          this.experienceLevels.push(data.experienceLevel);
+          this.closeModal();
+        },
+        err => {
+            let message = err.status.message.friendlyMessage;
+            swal.fire("GOS FINANCIAL", message, "error");
+        }
+    );
+  }
+
+  submitSpecialization(form: FormGroup) {
+
+    this.rmsService.addupdateSpecialization(form.value).subscribe(
+        data => {
+          console.log(data);
+          let message = data.status.message.friendlyMessage;
+          swal.fire("GOS FINANCIAL", message, "success");
+          this.specializations.push(data.specialization);
+          this.closeModal();
+        },
+        err => {
+            let message = err.status.message.friendlyMessage;
+            swal.fire("GOS FINANCIAL", message, "error");
+        }
+    );
+  }
+
+  deleteItem(id) {
+    let operation = '';
+    let payload
+    if(this.current_tab == 'Job Category') {
+     operation = 'deleteJobcategory';
+     payload = {
+      jobCategoryIds: [id]
+     }
+    } else if(this.current_tab == 'Job Type') {
+      operation = 'deleteJobType';
+      payload = {
+        jobTypeIds: [id]
+      }
+    } else if(this.current_tab == 'Specialization') {
+      operation = 'deleteSpecialization';
+      payload = {
+        specializationIds:[id]
+      }
+    } else if(this.current_tab == 'Location') {
+      operation = 'deleteLocation';
+      payload = {
+        locationIds: [id]
+      }
+    } else if(this.current_tab == 'Industry') {
+      operation = 'deleteIndustry';
+      payload = {
+        industryIds:[id]
+      }
+    } else {
+      operation = 'deleteExperienceLevel';
+      payload = {
+        experienceLevelIds: [id]
+      }
+    }
+    swal.fire({
+      title: '',
+      html: `
+      <div class="alert alert-danger" role="alert">
+        <img src="assets/img/Error.svg" alt="">
+        <span class="px-3">Warning: You are about to delete a section of this course outline!</span>
+      </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Confirm!',
+      cancelButtonText: 'Cancel',
+      width: '500px'
+    })
+    .then((result) => {
+      if (result.value) {
+        this.rmsService[operation](payload).subscribe((data) => {
+          if (data['result'] == true) {
+            swal.fire('GOS FINANCIAL', `${operation} deleted successful.`, 'success');
+            this.getAllIndustries();
+          } else {
+            swal.fire('GOS FINANCIAL', 'Record not deleted', 'error');
+          }
+        });
+      } else {
+        swal.fire('GOS FINANCIAL', 'Cancelled', 'error');
+      }
+    });
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked

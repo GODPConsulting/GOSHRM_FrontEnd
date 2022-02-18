@@ -14,7 +14,7 @@
         <a class="btn upload-btn hint" (click)="openUploadModal()"
           ><span class="hint-text">Upload</span><img src="assets/img/upload.svg">
         </a>
-        <a class="btn upload-btn hint" data-toggle="modal" (click)="delete()"
+        <a class="btn upload-btn hint" data-toggle="modal"
           ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
         </a>
         <a class="btn upload-btn hint" (click)="openModal(false)"
@@ -122,21 +122,21 @@
                 <thead>
                   <tr>
                     <th>
-                      <input type="checkbox"> Cateory
+                      <input type="checkbox"> Category
                     </th>
                     <th>Description</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
+                  <tr *ngFor="let category of jobCategories">
                     <th scope="row">
                       <input type="checkbox">
-                      <span> Design, Art and Multimedia</span>
+                      <span> {{ category?.jobCategoryName }}</span>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto">{{ category?.jobCategoryDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(category?.jobCategoryId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, category)">
                     </td>
                   </tr>
                 </tbody>
@@ -163,15 +163,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
+                  <tr *ngFor="let jobType of jobTypes">
                     <th scope="row">
                       <input type="checkbox">
-                      <span> Design, Art and Multimedia</span>
+                      <span> {{ jobType?.jobTypeName }}</span>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto"> {{ jobType?.jobTypeDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(jobType?.jobTypeId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, jobType)">
                     </td>
                   </tr>
                 </tbody>
@@ -198,15 +198,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
+                  <tr *ngFor="let specialization of specializations">
                     <th scope="row">
                       <input type="checkbox">
-                      <span> Aviation/Airline</span>
+                      <span>{{ specialization?.specializationName }}</span>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto">{{ specialization?.specializationDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(specialization?.specializationId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, specialization)">
                     </td>
                   </tr>
                 </tbody>
@@ -233,15 +233,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
+                  <tr *ngFor="let location of locations">
                     <th scope="row">
                       <input type="checkbox">
-                      <span> Lagos</span>
+                      <span> {{ location?.locationName }}</span>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto">{{ location?.locationDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(location?.locationId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, location)">
                     </td>
                   </tr>
                 </tbody>
@@ -268,15 +268,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
+                  <tr *ngFor="let industry of industries">
                     <th scope="row">
                       <input type="checkbox">
-                      <span> Engineering</span>
+                      <span> {{ industry?.industryName }}</span>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto"> {{ industry?.industryDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(industry?.industryId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, industry)">
                     </td>
                   </tr>
                 </tbody>
@@ -303,15 +303,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
+                  <tr *ngFor="let level of experienceLevels">
                     <th scope="row">
                       <input type="checkbox">
-                      <span> Design, Art and Multimedia</span>
+                      <span> {{ level?.experienceLevelName }}</span>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto">{{ level?.experienceLevelDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(level?.experienceLevelId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, level)">
                     </td>
                   </tr>
                 </tbody>
@@ -326,7 +326,7 @@
 <!-- /Page Content -->
 
 <!-- Add Modal -->
-<!-- <div id="add_job_grade" class="modal custom-modal fade" role="dialog">
+<div id="add_job_grade" class="modal custom-modal fade" role="dialog">
   <div class="modal-dialog modal-dialog-left modal-md">
     <div class="modal-content">
       <div class="modal-header">
@@ -342,7 +342,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form *ngIf="current_tab == 'Job Category'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="">
+        <form *ngIf="current_tab == 'Job Category'" (ngSubmit)="submitJobCategory(jobCategoryForm)" [formGroup]="jobCategoryForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -352,18 +352,18 @@
                 <input
                   class="form-control"
                   type="text"
-                  formControlName=""
+                  formControlName="jobCategoryName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  jobCategoryForm.get('jobCategoryName').invalid &&
+                  jobCategoryForm.get('jobCategoryName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    jobCategoryForm.get('jobCategoryName').invalid &&
+                    jobCategoryForm.get('jobCategoryName').touched
                     "
                     class="text-danger"
                   >
@@ -378,7 +378,7 @@
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="jobCategoryDescription"
                 ></textarea>
               </div>
             </div>
@@ -402,7 +402,7 @@
           </div>
         </form>
 
-        <form *ngIf="current_tab == 'Job Type'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="">
+        <form *ngIf="current_tab == 'Job Type'" (ngSubmit)="submitJobType(jobTypeForm)" [formGroup]="jobTypeForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -413,21 +413,21 @@
                   class="form-control"
                   type="text"
                   [class.invalid]="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  jobTypeForm.get('jobTypeName').invalid &&
+                  jobTypeForm.get('jobTypeName').touched
                   "
-                  formControlName="job_grade"
+                  formControlName="jobTypeName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  jobTypeForm.get('jobTypeName').invalid &&
+                    jobTypeForm.get('jobTypeName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    jobTypeForm.get('jobTypeName').invalid &&
+                      jobTypeForm.get('jobTypeName').touched
                     "
                     class="text-danger"
                   >
@@ -442,7 +442,7 @@
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="jobTypeDescription"
                 ></textarea>
               </div>
             </div>
@@ -466,7 +466,7 @@
           </div>
         </form>
 
-        <form *ngIf="current_tab == 'Specialization'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="">
+        <form *ngIf="current_tab == 'Specialization'" (ngSubmit)="submitSpecialization(specializationForm)" [formGroup]="specializationForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -477,21 +477,21 @@
                   class="form-control"
                   type="text"
                   [class.invalid]="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  specializationForm.get('specializationName').invalid &&
+                  specializationForm.get('specializationName').touched
                   "
-                  formControlName="job_grade"
+                  formControlName="specializationName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  specializationForm.get('specializationName').invalid &&
+                  specializationForm.get('specializationName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    specializationForm.get('specializationName').invalid &&
+                    specializationForm.get('specializationName').touched
                     "
                     class="text-danger"
                   >
@@ -506,7 +506,7 @@
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="specializationDescription"
                 ></textarea>
               </div>
             </div>
@@ -530,7 +530,7 @@
           </div>
         </form>
 
-        <form *ngIf="current_tab == 'Location'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="">
+        <form *ngIf="current_tab == 'Location'" (ngSubmit)="submitLocation(locationForm)" [formGroup]="locationForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -540,18 +540,18 @@
                 <input
                   class="form-control"
                   type="text"
-                  formControlName=""
+                  formControlName="locationName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  locationForm.get('locationName').invalid &&
+                  locationForm.get('locationName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    locationForm.get('locationName').invalid &&
+                    locationForm.get('locationName').touched
                     "
                     class="text-danger"
                   >
@@ -566,7 +566,7 @@
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="locationDescription"
                 ></textarea>
               </div>
             </div>
@@ -590,7 +590,7 @@
           </div>
         </form>
 
-        <form *ngIf="current_tab == 'Industry'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="">
+        <form *ngIf="current_tab == 'Industry'" (ngSubmit)="submitIndustry(industryForm)" [formGroup]="industryForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -601,21 +601,21 @@
                   class="form-control"
                   type="text"
                   [class.invalid]="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  industryForm.get('industryName').invalid &&
+                  industryForm.get('industryName').touched
                   "
-                  formControlName="job_grade"
+                  formControlName="industryName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  industryForm.get('industryName').invalid &&
+                  industryForm.get('industryName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    industryForm.get('industryName').invalid &&
+                    industryForm.get('industryName').touched
                     "
                     class="text-danger"
                   >
@@ -624,13 +624,13 @@
                 </div>
               </div>
             </div>
-            <div class="col">
+            <div class="col-12">
               <div class="form-group">
                 <label class="col-form-label">Description </label>
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="industryDescription"
                 ></textarea>
               </div>
             </div>
@@ -638,7 +638,6 @@
           <div class="d-flex justify-content-between">
             <button
               class="btn btn-primary submit-btn cancel-btn"
-              type="submit"
               (click)="closeModal()"
             >
               <span>Back</span>
@@ -654,7 +653,7 @@
           </div>
         </form>
 
-        <form *ngIf="current_tab == 'Experience Level'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="">
+        <form *ngIf="current_tab == 'Experience Level'" (ngSubmit)="submitLevel(levelForm)" [formGroup]="levelForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -665,21 +664,21 @@
                   class="form-control"
                   type="text"
                   [class.invalid]="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  levelForm.get('experienceLevelName').invalid &&
+                  levelForm.get('experienceLevelName').touched
                   "
-                  formControlName="job_grade"
+                  formControlName="experienceLevelName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  levelForm.get('experienceLevelName').invalid &&
+                  levelForm.get('experienceLevelName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    levelForm.get('experienceLevelName').invalid &&
+                    levelForm.get('experienceLevelName').touched
                     "
                     class="text-danger"
                   >
@@ -694,7 +693,7 @@
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="experienceLevelDescription"
                 ></textarea>
               </div>
             </div>
@@ -720,7 +719,7 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
 <!-- /Add Modal -->
 
 <!-- Delete Modal -->
@@ -728,7 +727,7 @@
   <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
      <div class="modal-body">
-        <form (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="">
+        <form (ngSubmit)="deleteIndustry()">
           <div class="alert alert-danger" role="alert">
             <img src="assets/img/Error.svg" alt="">
             <span class="px-3">Warning: You are about to delete a section of this course outline!</span>
