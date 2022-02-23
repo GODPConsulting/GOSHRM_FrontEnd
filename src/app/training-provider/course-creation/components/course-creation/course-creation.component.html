@@ -80,9 +80,9 @@
                     </li>
                       <li (click)="openDialog( {isEditing: true, editObject: course } )"><a class="dropdown-item"
                         >Participants</a></li>
-                      <li><a class="dropdown-item" routerLink="/training-provider/course-creation/course-assessment"
+                      <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/course-assessment', course?.courseId]"
                         >Course Assessment</a></li>
-                      <li><a class="dropdown-item" routerLink="/training-provider/course-creation/competence-assessment"
+                      <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/competence-assessment', course?.courseId]"
                         >Competence Assessment</a></li>
                       <li><a class="dropdown-item" routerLink="/training-provider/course-creation/learning-assessment"
                         >Learning Assessment </a></li>

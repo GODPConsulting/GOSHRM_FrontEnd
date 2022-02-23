@@ -7,7 +7,7 @@
     </div>
 
     <div class="learning-form__wrapper">
-        <form [formGroup]="addLearningAssessmentForm">
+        <form [formGroup]="quizQuestioForm">
             <div class="learning-title border-grey bg-white p-4 my-5">
                 <div class="row">
                     <div class="col-12">
@@ -26,17 +26,23 @@
                       </div>
                 </div>
             </div>
-
-            <div #childform formArrayName="addQuestionIndex">
-                <div class="question_wrapper" *ngFor="let item of facilitatorItems.controls let child = index" [formGroupName]="child">
+            <div formArrayName="question">
+                <div 
+                    class="question_wrapper"
+                    [formGroupName]="i"
+                    *ngFor="
+                        let question of getQuizQuestion.controls;
+                        index as i
+                    " 
+                >
                     <div class="question-title border-grey bg-white p-4 mt-5 mb-4">
                         <div class="row">
                             <div class="col-12">
                                 <div class="form_group">
                                   <label for="" class="form-label d-flex justify-content-between"
                                     >
-                                    <span class="text-dark">Question {{child + 1}}</span>
-                                    <span class="click" (click)="removeQuestion(child)">
+                                    <span class="text-dark">Question {{i + 1}}</span>
+                                    <span class="click" (click)="removeQuestion(i)">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M12 21.9995C17.5229 21.9995 22 17.5224 22 11.9995C22 6.47666 17.5229 1.99951 12 1.99951C6.47715 1.99951 2 6.47666 2 11.9995C2 17.5224 6.47715 21.9995 12 21.9995Z" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
                                             <path d="M15 8.99976L9 14.9998" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
@@ -50,7 +56,12 @@
                                         id=""
                                         class="form-control"
                                         placeholder="Enter your question here"
-                                        formControlName="question_Title"
+                                        formControlName="question_Varaible"
+                                        [ngClass]="{
+                                        'is-invalid':
+                                        question.get('question_Varaible').errors &&
+                                        question.get('question_Varaible').touched
+                                    }"
                                     />
                                     <span class="pt-3 ps-3">
                                         <svg width="36" height="37" viewBox="0 0 36 37" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,16 +78,24 @@
                         </div>
                     </div>
                     <div class="question-options border-grey bg-white p-4 my-4">
-                        <div class="row mb-3">
+                        <div formArrayName="course_Answers">
+                            <div
+                                *ngFor="
+                                    let answer of question.get('course_Answers')['controls'];
+                                    index as j
+                                "
+                                [formGroupName]="j"
+                            >
+                                 <div class="row mb-3">
                             <div class="col-md-9">
                                 <div class="form_group">
-                                    <input type="text" class="form-control" formControlName="option1">
+                                    <input type="text" class="form-control" formControlName="answer_Varaibles">
                                 </div>
                             </div>
                             <div class="col-md-3 form_group d-flex justify-content-between">
-                                <select name="" id="" class="form-select">
-                                    <option value=false>Wrong Answer</option>
-                                    <option value=true>Right Answer</option>
+                                <select name="" id="" class="form-select" formControlName="isAnswer">
+                                    <option [ngValue]="false">Wrong Answer</option>
+                                    <option [ngValue]="true">Right Answer</option>
                                 </select>
                                 <span class="ps-4 pt-4">
                                     <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -85,28 +104,12 @@
                                     </svg>                                    
                                 </span>
                             </div>
+                            </div>
+                           
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-9">
-                                <div class="form_group">
-                                    <input type="text" class="form-control" formControlName="option2">
-                                </div>
-                            </div>
-                            <div class="col-md-3 form_group d-flex justify-content-between">
-                                <select name="" id="" class="form-select">
-                                    <option value=false>Wrong Answer</option>
-                                    <option value=true>Right Answer</option>
-                                </select>
-                                <span class="ps-4 pt-4">
-                                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M15 30C6.72867 30 0 23.2713 0 15C0 6.72867 6.72867 0 15 0C23.2713 0 30 6.72867 30 15C30 23.2713 23.2713 30 15 30ZM15 1.875C7.76253 1.875 1.875 7.76253 1.875 15C1.875 22.2375 7.76253 28.125 15 28.125C22.2375 28.125 28.125 22.2375 28.125 15C28.125 7.76253 22.2375 1.875 15 1.875Z" fill="#B9BBBE"/>
-                                        <path d="M21.5625 15.9375H8.4375C7.92 15.9375 7.5 15.5175 7.5 15C7.5 14.4825 7.92 14.0625 8.4375 14.0625H21.5625C22.08 14.0625 22.5 14.4825 22.5 15C22.5 15.5175 22.08 15.9375 21.5625 15.9375Z" fill="#B9BBBE"/>
-                                    </svg>                                    
-                                </span>
-                            </div>
                         </div>
                         <div class="d-flex justify-content-end p-4">
-                            <button class="btn text-orange">+ Add more</button>
+                            <button (click)="getQuizAnswers(1)" class="btn text-orange">+ Add more</button>
                         </div>
                     </div>
                 </div>
@@ -115,12 +118,15 @@
     </div>
 
     <div class="d-flex justify-content-end">
-        <button class="btn-outline-green btn-lg px-5 me-4">
+        <button 
+            class="btn-outline-green btn-lg px-5 me-4"
+            (click)="submit()"
+        >
             Done
         </button>
         <button 
             class="btn-green btn-lg"
-            (click)="addNewQuestion()"
+            (click)="addQuestion()"
         >
             Add Another question
         </button>

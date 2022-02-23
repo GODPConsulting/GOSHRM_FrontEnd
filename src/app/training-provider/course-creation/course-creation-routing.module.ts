@@ -37,7 +37,7 @@ const routes: Routes = [
         component: CreateCourseAssessmentComponent
     },
     {
-        path: 'course-assessment',
+        path: 'course-assessment/:id',
         component: CourseAssessmentComponent
     },
     {

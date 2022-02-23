@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Currency } from '@core/models/currencies.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
@@ -51,7 +51,8 @@ export class AddCourseComponent implements OnInit {
     private _helper: HelperService,
     private activateRoute: ActivatedRoute,
     private _route:ActivatedRoute,
-    public datepipe: DatePipe
+    public datepipe: DatePipe,
+    private _router: Router
   ) { }
 
   ngOnInit(): void {
@@ -75,9 +76,10 @@ export class AddCourseComponent implements OnInit {
       this._courses.getOneCoursesById(this.courseId).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
-          this.course = res['course_CreationSetupTypes'];
-          // console.log(this.course)
+          this.course = res['course_CreationSetupTypes'][0];
+          console.log(this.course)
           this.initAddCourseForm();
+          console.log(this.addCourseForm.value)
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();
@@ -170,6 +172,7 @@ getTimeSpan(ticks: any ) {
           console.log(res)
           this._helper.triggerSucessAlert('Course created successfully!!!')
           this.addCourseForm.reset();
+          this._router.navigate(['/training-provider/course-creation'])
          } else {
            this._helper.stopSpinner();
            this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)

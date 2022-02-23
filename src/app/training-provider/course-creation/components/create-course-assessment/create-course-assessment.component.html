@@ -8,8 +8,7 @@
 
     <div class="learning-form__wrapper">
         <form [formGroup]="quizQuestioForm">
-
-            <div formArrayName="questions">
+            <div formArrayName="question">
                 <div 
                     class="question_wrapper"
                     [formGroupName]="i"
@@ -39,11 +38,11 @@
                                         id=""
                                         class="form-control"
                                         placeholder="Enter your question here"
-                                        formControlName="question"
+                                        formControlName="question_Varaible"
                                         [ngClass]="{
                                         'is-invalid':
-                                        question.get('question').errors &&
-                                        question.get('question').touched
+                                        question.get('question_Varaible').errors &&
+                                        question.get('question_Varaible').touched
                                     }"
                                     />
                                     <span class="pt-3 ps-3">
@@ -61,10 +60,10 @@
                         </div>
                     </div>
                     <div class="question-options border-grey bg-white p-4 my-4">
-                        <div formArrayName="answers">
+                        <div formArrayName="course_Answers">
                             <div
                                 *ngFor="
-                                    let answer of question.get('answers')['controls'];
+                                    let answer of question.get('course_Answers')['controls'];
                                     index as j
                                 "
                                 [formGroupName]="j"
@@ -72,13 +71,13 @@
                                  <div class="row mb-3">
                             <div class="col-md-9">
                                 <div class="form_group">
-                                    <input type="text" class="form-control" formControlName="answer">
+                                    <input type="text" class="form-control" formControlName="answer_Varaibles">
                                 </div>
                             </div>
                             <div class="col-md-3 form_group d-flex justify-content-between">
                                 <select name="" id="" class="form-select" formControlName="isAnswer">
-                                    <option value=false>Wrong Answer</option>
-                                    <option value=true>Right Answer</option>
+                                    <option [ngValue]="false">Wrong Answer</option>
+                                    <option [ngValue]="true">Right Answer</option>
                                 </select>
                                 <span class="ps-4 pt-4">
                                     <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -92,7 +91,7 @@
                         </div>
                         </div>
                         <div class="d-flex justify-content-end p-4">
-                            <button class="btn text-orange">+ Add more</button>
+                            <button (click)="getQuizAnswers(1)" class="btn text-orange">+ Add more</button>
                         </div>
                     </div>
                 </div>

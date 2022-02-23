@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { CourseCreationService } from '../../services/course-creation.service';
+import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-course-assessment',
@@ -12,12 +14,15 @@ import { CourseCreationService } from '../../services/course-creation.service';
   styleUrls: ['./create-course-assessment.component.scss']
 })
 export class CreateCourseAssessmentComponent implements OnInit {
+  public sub: Subscription = new Subscription();
   public quizQuestioForm!: FormGroup;
   public assessmentFormSubmitted: boolean = false;
   public loggedInUser: any;
   public courseId: any;
   public questionId: any = 0;
   public course_AssessmentId: any = 0;
+  public assessments: any[] = [];
+  public isFetchingAssessment: boolean = false;
   constructor(
     private fb: FormBuilder,
     private _helper: HelperService,
@@ -38,31 +43,32 @@ export class CreateCourseAssessmentComponent implements OnInit {
 
   initQuizQuestionForm() {
     this.quizQuestioForm = this.fb.group({
-      questions: this.fb.array([this.newQuestion])
+      question: this.fb.array([this.newQuestion])
     });
   }
 
-  get newQuestion() {
+  newQuestion() {
     return this.fb.group({
-      question: ['', Validators.required],
-      answers: this.fb.array([
+      questionId: [0],
+      question_Varaible: ['', Validators.required],
+      course_Answers: this.fb.array([
         this.fb.group({
-          answer: ['', Validators.required],
+          answer_Varaibles: ['', Validators.required],
           answerId: [0],
           isAnswer: [false]
         }),
         this.fb.group({
-          answer: ['', Validators.required],
+          answer_Varaibles: ['', Validators.required],
           answerId: [0],
           isAnswer: [false]
         }),
         this.fb.group({
-          answer: ['', Validators.required],
+          answer_Varaibles: [''],
           answerId: [0],
           isAnswer: [false]
         }),
         this.fb.group({
-          answer: ['', Validators.required],
+          answer_Varaibles: [''],
           answerId: [0],
           isAnswer: [false]
         })
@@ -70,18 +76,25 @@ export class CreateCourseAssessmentComponent implements OnInit {
     });
   }
 
+  addOption() {
+    return this.fb.group({
+      answer_Varaibles: [''],
+      answerId: [0],
+      isAnswer: [false]
+    })
+  }
+
   get getQuizQuestion(): any {
-    return this.quizQuestioForm.get('questions') as FormArray;
+    return this.quizQuestioForm.get('question') as FormArray;
   }
 
   getQuizAnswers(index: any): FormArray {
-    // return this.quizForm.get('answers') as FormArray;
-    return this.getQuizQuestion[index].get('answers') as FormArray;
+    return this.getQuizQuestion[index].get('course_Answers') as FormArray;
   }
 
   addQuestion() {
     let entry = { ...this.getQuizQuestion };
-    let answers: [] = entry.controls[0].get('answers').value;
+    let answers: [] = entry.controls[0].get('course_Answers').value;
     //check that there is at least one true value
     const atLeastOne = answers.filter((el: any) => {
       return el.isAnswer;
@@ -90,19 +103,19 @@ export class CreateCourseAssessmentComponent implements OnInit {
     if (atLeastOne.length == 1) {
       this.getQuizQuestion.push(this.newQuestion);
     } else if (atLeastOne.length < 1) {
-      // Swal.fire({
-      //   title: 'Error',
-      //   icon: 'info',
-      //   html:
-      //     '<p>You need to select one of the options as the correct answer</p>'
-      // });
+      Swal.fire({
+        title: 'Error',
+        icon: 'info',
+        html:
+          '<p>You need to select one of the options as the correct answer</p>'
+      });
     } else {
-      // Swal.fire({
-      //   title: 'Error',
-      //   icon: 'info',
-      //   html:
-      //     '<p>Only one option can be selected as the right answer to a question</p>'
-      // });
+      Swal.fire({
+        title: 'Error',
+        icon: 'info',
+        html:
+          '<p>Only one option can be selected as the right answer to a question</p>'
+      });
     }
   }
 
@@ -114,11 +127,9 @@ export class CreateCourseAssessmentComponent implements OnInit {
     this.assessmentFormSubmitted = true;
     if (this.quizQuestioForm.valid) {
       this._helper.startSpinner();
-      const payload = this.quizQuestioForm.get('questions')?.value[0];
-      payload.trainingProviderId = this.loggedInUser.trainingProviderId;
-     payload.courseId = 1;
-    //  payload.courseId = this.courseId;
-     payload.questionId = this.questionId;
+      const payload = this.quizQuestioForm.value;
+      payload.trainingInstructorId = this.loggedInUser.trainingProviderId;
+     payload.courseId = +this.courseId;
      payload.course_AssessmentId = this.course_AssessmentId;
      console.log(payload)
       this._course.AddUpdateCourseAssessment(payload).subscribe({

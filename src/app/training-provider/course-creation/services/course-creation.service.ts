@@ -40,7 +40,7 @@ export class CourseCreationService {
   public getAllCourseOutline(
     courseid: string
   ): Observable<ResponseModel<CourseOutline>> {
-   const endpoint = '/lms/coursecreationcourseoutline/get/byId/coursecreationcourseoutline';
+   const endpoint = '/lms/courseoutline/get/byId/courseoutline';
    const params = new HttpParams()
    .set('courseId', courseid)
    return this.http.getRequestWithParams(endpoint, params);
@@ -49,7 +49,7 @@ export class CourseCreationService {
   public UpdateCourseOutline(
     course: CourseOutline, trainingProviderId: string
   ): Observable<ResponseModel<CourseOutline>> {
-    const endpoint = '/lms/coursecreationcourseoutline/add/update/coursecreationcourseoutline';
+    const endpoint = '/lms/courseoutline/add/update/courseoutline';
     const params = new HttpParams()
     .set('trainingProviderId', trainingProviderId)
     return this.http.makeRequestWithData('post', endpoint, params, course);
@@ -58,8 +58,32 @@ export class CourseCreationService {
   public AddUpdateCourseAssessment(
     course: CourseAssessment
   ): Observable<ResponseModel<CourseAssessment>> {
-    console.log(course)
-    const endpoint = '/lms/coursecreationcourseassessment/add/update/coursecreationcourseassessment';
-    return this.http.makeRequestWithData('post', endpoint, course);
+    const endpoint = '/lms/courseassessment/add/update/courseassessment';
+    return this.http.makeRequestWithData('post', endpoint, {}, course);
+  }
+
+  public getAssessments(
+    courseId: any
+  ): Observable<ResponseModel<CourseAssessment>> {
+    const params = new HttpParams()
+    .set('courseId', courseId)
+    const endpoint = '/lms/courseassessment/get/byId/courseassessment';
+    return this.http.getRequestWithParams( endpoint, params);
+  }
+
+  public AddUpdateLearningAssessment(
+    course: CourseAssessment
+  ): Observable<ResponseModel<CourseAssessment>> {
+    const endpoint = '/lms/learningassessment/add/update/learningassessment';
+    return this.http.makeRequestWithData('post', endpoint, {}, course);
+  }
+
+  public getLearningAssessments(
+    courseId: any
+  ): Observable<ResponseModel<CourseAssessment>> {
+    const params = new HttpParams()
+    .set('courseId', courseId)
+    const endpoint = '/lms/learningassessment/get/courseId/learningassessment';
+    return this.http.getRequestWithParams( endpoint, params);
   }
 }
