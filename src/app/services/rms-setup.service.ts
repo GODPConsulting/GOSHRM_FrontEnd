@@ -41,7 +41,7 @@ export class RmsSetupService {
     const params = new HttpParams()
     .set('IndustryId', IndustryId)
     .set('SearchWord', SearchWord);
-    return this.apiService.get(`/rmssetup/export/industrybyId`, params).pipe(
+    return this.apiService.get(`/rmssetup/get/industrybyId`, params).pipe(
       tap(),
       map((res) => {
         return res;
@@ -60,15 +60,15 @@ export class RmsSetupService {
     );
   }
 
-  uploadIndustry(payload) {
-    return this.apiService.post("/rmssetup/upload/industry", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+
+  uploadIndustry(File: File): Promise<any> {
+    return this.apiService
+      .uploadExcel("/rmssetup/upload/industry", File)
+      .then(data => {
+        return data;
+      });
   }
+
 
   deleteIndustry(payload) {
     return this.apiService.post("/rmssetup/delete/industry", payload).pipe(
@@ -107,7 +107,7 @@ export class RmsSetupService {
     const params = new HttpParams()
     .set('SpecializationId', SpecializationId)
     .set('SearchWord', SearchWord);
-    return this.apiService.get(`/rmssetup/export/specializationbyId`, params).pipe(
+    return this.apiService.get(`/rmssetup/get/specializationbyId`, params).pipe(
       tap(),
       map((res) => {
         return res;
@@ -126,14 +126,12 @@ export class RmsSetupService {
     );
   }
 
-  uploadSpecialization(payload) {
-    return this.apiService.post("/rmssetup/upload/specialization", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+  uploadSpecialization(File: File): Promise<any> {
+    return this.apiService
+      .uploadExcel("rmssetup/upload/specialization", File)
+      .then(data => {
+        return data;
+      });
   }
 
   deleteSpecialization(payload) {
@@ -173,7 +171,7 @@ export class RmsSetupService {
     const params = new HttpParams()
     .set('LocationId', LocationId)
     .set('SearchWord', SearchWord);
-    return this.apiService.get(`/rmssetup/export/locationbyId`, params).pipe(
+    return this.apiService.get(`/rmssetup/get/locationbyId`, params).pipe(
       tap(),
       map((res) => {
         return res;
@@ -192,14 +190,13 @@ export class RmsSetupService {
     );
   }
 
-  uploadLocation(payload) {
-    return this.apiService.post("/rmssetup/upload/location", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+
+  uploadLocation(File: File): Promise<any> {
+    return this.apiService
+      .uploadExcel("rmssetup/upload/location", File)
+      .then(data => {
+        return data;
+      });
   }
 
   deleteLocation(payload) {
@@ -239,7 +236,7 @@ export class RmsSetupService {
     const params = new HttpParams()
     .set('JobCategoryId', JobCategoryId)
     .set('SearchWord', SearchWord);
-    return this.apiService.get(`/rmssetup/export/jobcategorybyId`, params).pipe(
+    return this.apiService.get(`/rmssetup/get/jobcategorybyId`, params).pipe(
       tap(),
       map((res) => {
         return res;
@@ -258,14 +255,13 @@ export class RmsSetupService {
     );
   }
 
-  uploadJobcategory(payload) {
-    return this.apiService.post("/rmssetup/upload/jobcategory", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+
+  uploadJobcategory(File: File): Promise<any> {
+    return this.apiService
+      .uploadExcel("rmssetup/upload/jobcategory", File)
+      .then(data => {
+        return data;
+      });
   }
 
   deleteJobcategory(payload) {
@@ -305,7 +301,7 @@ export class RmsSetupService {
     const params = new HttpParams()
     .set('JobTypeId', jobtypeId)
     .set('SearchWord', SearchWord);
-    return this.apiService.get(`/rmssetup/export/jobtypebyId`, params).pipe(
+    return this.apiService.get(`/rmssetup/get/jobtypebyId`, params).pipe(
       tap(),
       map((res) => {
         return res;
@@ -324,14 +320,12 @@ export class RmsSetupService {
     );
   }
 
-  uploadJobType(payload) {
-    return this.apiService.post("/rmssetup/upload/jobtype", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+  uploadJobType(File: File): Promise<any> {
+    return this.apiService
+      .uploadExcel("rmssetup/upload/jobtype", File)
+      .then(data => {
+        return data;
+      });
   }
 
   deleteJobType(payload) {
@@ -371,7 +365,7 @@ export class RmsSetupService {
     const params = new HttpParams()
     .set('ExperienceLevelId', ExperienceLevelId)
     .set('SearchWord', SearchWord);
-    return this.apiService.get(`/rmssetup/export/experiencelevelbyId`, params).pipe(
+    return this.apiService.get(`/rmssetup/get/experiencelevelbyId`, params).pipe(
       tap(),
       map((res) => {
         return res;
@@ -390,14 +384,13 @@ export class RmsSetupService {
     );
   }
 
-  uploadExperienceLevel(payload) {
-    return this.apiService.post("/rmssetup/upload/experiencelevel", payload).pipe(
-      tap(),
-      map((res) => {
-        return res;
-      }),
-      catchError(this.handleError)
-    );
+
+  uploadExperienceLevel(File: File): Promise<any> {
+    return this.apiService
+      .uploadExcel("/rmssetup/upload/experiencelevel", File)
+      .then(data => {
+        return data;
+      });
   }
 
   deleteExperienceLevel(payload) {

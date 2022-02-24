@@ -41,7 +41,7 @@ export class StaffInfoListComponent implements OnInit {
   }
 
   showAddNew() {
-    this.router.navigate(['/admin/staff-info']);
+    this.router.navigate(['/setup/staff-info']);
   }
 
   getAllStaff() {
@@ -53,7 +53,7 @@ export class StaffInfoListComponent implements OnInit {
     );
   }
   editStaff(row) {
-    this.router.navigate(['/admin/staff-info'], {
+    this.router.navigate(['/setup/staff-info'], {
       queryParams: { editstaffinfo: row.staffId },
     });
   }

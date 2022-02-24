@@ -8,19 +8,42 @@
       </div>
       <div class="col-auto float-right ml-auto d-inline-block">
         <app-searchbar class="d-inline-block px-3"></app-searchbar>
-        <a class="btn download-btn hint" (click)="downloadFile()"
+        <a class="btn download-btn hint" (click)="exportList()"
           ><span class="hint-text">Download</span><img src="assets/img/download.svg">
         </a>
-        <a class="btn upload-btn hint" (click)="openUploadModal()"
-          ><span class="hint-text">Upload</span><img src="assets/img/upload.svg">
+        <a class="btn upload-btn hint" (click)="uploadList()"
+          ><span class="hint-text">Upload</span>
+          <div style="position: relative">
+            <img class="position: absolute" src="assets/img/upload.svg">
+            <!-- <input
+                  style="width: 100%; height: 100%; position: absolute; top: 0;"
+                  class="form-control"
+                  type="file"
+                  (change)="handleFileInput($event.target.files)"
+                  id="file1"
+                  accept=".xls,.xlsx"
+                  #fileInput
+                  name="fileInput"
+                /> -->
+          </div>
         </a>
-        <a class="btn upload-btn hint" data-toggle="modal"
+        <a class="btn upload-btn hint" data-toggle="modal" (click)="multipleDelete()"
           ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
         </a>
         <a class="btn upload-btn hint" (click)="openModal(false)"
           ><span class="hint-text">Add</span><img src="assets/img/add.svg">
         </a>
       </div>
+      <input
+        style=""
+        class="form-control"
+        type="file"
+        (change)="handleFileInput($event.target.files)"
+        id="file1"
+        accept=".xls,.xlsx"
+        #fileInput
+        name="fileInput"
+      />
     </div>
   </div>
   <!-- /Page Header -->
@@ -116,31 +139,57 @@
         aria-labelledby="pills-jobCategory"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="jobCategories"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th>
-                      <input type="checkbox"> Category
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <th>Description</th>
+                    <th>Category</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
                   </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let category of jobCategories">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span> {{ category?.jobCategoryName }}</span>
-                    </th>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.jobCategoryName }}</td>
                     <td class="d-flex justufy-content-between">
-                      <span class="mr-auto">{{ category?.jobCategoryDescription }}</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(category?.jobCategoryId)">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, category)">
+                      <span class="mr-auto"> {{ row?.jobTypeDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.jobTypeId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>
@@ -153,29 +202,57 @@
         aria-labelledby="pills-jobType"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="jobTypes"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th> <input type="checkbox"> Job Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let jobType of jobTypes">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span> {{ jobType?.jobTypeName }}</span>
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
+                    <th>Category</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.jobTypeName }}</td>
                     <td class="d-flex justufy-content-between">
-                      <span class="mr-auto"> {{ jobType?.jobTypeDescription }}</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(jobType?.jobTypeId)">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, jobType)">
+                      <span class="mr-auto"> {{ row?.jobTypeDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.jobTypeId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>
@@ -188,29 +265,57 @@
         aria-labelledby="pills-specialization"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="specializations"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th> <input type="checkbox"> Specialization</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let specialization of specializations">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span>{{ specialization?.specializationName }}</span>
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
+                    <th>specialization</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.specializationName }}</td>
                     <td class="d-flex justufy-content-between">
-                      <span class="mr-auto">{{ specialization?.specializationDescription }}</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(specialization?.specializationId)">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, specialization)">
+                      <span class="mr-auto"> {{ row?.specializationDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.specializationId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>
@@ -223,29 +328,57 @@
         aria-labelledby="pills-location"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="locations"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th> <input type="checkbox"> States</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let location of locations">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span> {{ location?.locationName }}</span>
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
+                    <th>specialization</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.locationName }}</td>
                     <td class="d-flex justufy-content-between">
-                      <span class="mr-auto">{{ location?.locationDescription }}</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(location?.locationId)">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, location)">
+                      <span class="mr-auto"> {{ row?.locationDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.locationId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>
@@ -258,29 +391,57 @@
         aria-labelledby="pills-industry"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="industries"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th> <input type="checkbox"> Industry</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let industry of industries">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span> {{ industry?.industryName }}</span>
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
+                    <th>specialization</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.industryName }}</td>
                     <td class="d-flex justufy-content-between">
-                      <span class="mr-auto"> {{ industry?.industryDescription }}</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(industry?.industryId)">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, industry)">
+                      <span class="mr-auto"> {{ row?.industryDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.industryId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>
@@ -293,29 +454,57 @@
         aria-labelledby="pills-experience"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="experienceLevels"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th> <input type="checkbox"> Level</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let level of experienceLevels">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span> {{ level?.experienceLevelName }}</span>
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
+                    <th>specialization</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.experienceLevelName }}</td>
                     <td class="d-flex justufy-content-between">
-                      <span class="mr-auto">{{ level?.experienceLevelDescription }}</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(level?.experienceLevelId)">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, level)">
+                      <span class="mr-auto"> {{ row?.experienceLevelDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.experienceLevelId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>

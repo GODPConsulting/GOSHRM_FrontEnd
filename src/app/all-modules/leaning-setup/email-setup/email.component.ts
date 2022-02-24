@@ -20,10 +20,17 @@ export class EmailSetupComponent implements OnInit {
    public emailSetupForm: FormGroup;
    public companyId: number;
    public emailSetupInfo: any = {
-    "email_Address": "",
-    "full_Name": "",
-    "password": "",
-    "emailRestrictionList": "",
+    "emailId": 0,
+    "stmp_Client": "",
+    "sender_Email": "",
+    "sender_Username": "",
+    "smtp_Port": "",
+    "mail_Caption": "",
+    "sender_Password": "",
+    "send_notification": false,
+    "enableSSl": false,
+    "baseFrontEndURL": "",
+    "companyId": 0
   }
 
   constructor(
@@ -40,10 +47,15 @@ export class EmailSetupComponent implements OnInit {
 
   initEmailSetupForm() {
     this.emailSetupForm = this.fb.group({
-      email_Address: [this.emailSetupInfo?.email_Address ? this.emailSetupInfo?.email_Address  : '', Validators.required],
-      full_Name: [this.emailSetupInfo?.full_Name ? this.emailSetupInfo?.full_Name  : '', Validators.required ],
-      password: [this.emailSetupInfo?.password ? this.emailSetupInfo?.password  : '', Validators.required ],
-      emailRestrictionList: [this.emailSetupInfo?.emailRestrictionList ? this.emailSetupInfo?.emailRestrictionList  : '', Validators.required ],
+      sender_Email: [this.emailSetupInfo?.sender_Email ? this.emailSetupInfo?.sender_Email  : '', Validators.required],
+      sender_Username: [this.emailSetupInfo?.sender_Username ? this.emailSetupInfo?.sender_Username  : '', Validators.required ],
+      sender_Password: [this.emailSetupInfo?.sender_Password ? this.emailSetupInfo?.sender_Password  : '', Validators.required ],
+      stmp_Client: [this.emailSetupInfo?.stmp_Client ? this.emailSetupInfo?.stmp_Client  : '', Validators.required],
+      smtp_Port: [this.emailSetupInfo?.smtp_Port ? this.emailSetupInfo?.smtp_Port  : '', Validators.required],
+      mail_Caption: [this.emailSetupInfo?.mail_Caption ? this.emailSetupInfo?.mail_Caption  : '', Validators.required],
+      send_notification: [this.emailSetupInfo?.send_notification ? this.emailSetupInfo?.send_notification  : false, Validators.required],
+      enableSSl: [this.emailSetupInfo?.enableSSl ? this.emailSetupInfo?.enableSSl  : false, Validators.required],
+      baseFrontEndURL: [this.emailSetupInfo?.baseFrontEndURL ? this.emailSetupInfo?.baseFrontEndURL  : '', Validators.required],
     })
   }
 

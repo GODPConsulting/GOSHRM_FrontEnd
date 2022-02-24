@@ -24,6 +24,7 @@ export class SetupComponent implements OnInit {
   levelForm: FormGroup;
   specializationForm: FormGroup;
   locationForm: FormGroup;
+  fileToUpload: File;
   public industries: any[] = [];
   public jobTypes: any[] = [];
   public jobCategories: any[] = [];
@@ -33,7 +34,7 @@ export class SetupComponent implements OnInit {
   public selectedId: number[] = [];
   public spinner: boolean = false;
   dtTrigger: Subject<any> = new Subject();
-  selectDeleteitems: any[];
+  selectDeleteitems: any[] = [];
   cols: ISearchColumn[];
   modalData = {
     isEditing: false,
@@ -42,10 +43,9 @@ export class SetupComponent implements OnInit {
   current_tab: string;
   constructor(
     private fb: FormBuilder,
-    private setupService: SetupService,
     private utilitiesService: UtilitiesService,
     private loadingService: LoadingService,
-    private rmsService: RmsSetupService
+    private rmsService: RmsSetupService,
   ) {
     this.jobCategoryForm = this.fb.group({
       jobCategoryId: [0],
@@ -90,93 +90,83 @@ export class SetupComponent implements OnInit {
     this.getAllSpecializations();
     this.getExperiencelevels();
     this.initializeForm(this.current_tab);
-    this.cols = [
-      {
-        header: "job_grade",
-        field: "job_grade",
-      },
-      {
-        header: "job_grade_reporting_to",
-        field: "job_grade_reporting_to",
-      },
-      {
-        header: "rank",
-        field: "rank",
-      },
-      {
-        header: "probation_period_in_months",
-        field: "probation_period_in_months",
-      },
-    ];
+    // this.cols = [
+    //   {
+    //     header: "job_grade",
+    //     field: "job_grade",
+    //   },
+    //   {
+    //     header: "job_grade_reporting_to",
+    //     field: "job_grade_reporting_to",
+    //   },
+    //   {
+    //     header: "rank",
+    //     field: "rank",
+    //   },
+    //   {
+    //     header: "probation_period_in_months",
+    //     field: "probation_period_in_months",
+    //   },
+    // ];
   }
 
   getAllIndustries() {
     this.rmsService.getAllIndustry().subscribe(
       (data) => {
-        console.log(data)
+        // console.log(data)
         this.industries = data.industries;
       },
       (err) => {}
     );
   }
+
   getAllJobTypes() {
     this.rmsService.getAllJobType().subscribe(
       (data) => {
-        console.log(data)
+        // console.log(data)
         this.jobTypes = data.jobTypes;
       },
       (err) => {}
     );
   }
+
   getAllJobCategories() {
     this.rmsService.getAllJobcategory().subscribe(
       (data) => {
-        console.log(data)
+        // console.log(data)
         this.jobCategories = data.jobCategories;
       },
       (err) => {}
     );
   }
+
   getAllLocations() {
     this.rmsService.getAllLocation().subscribe(
       (data) => {
-        console.log(data)
+        // console.log(data)
         this.locations = data.locations;
       },
       (err) => {}
     );
   }
+
   getAllSpecializations() {
     this.rmsService.getAllSpecialization().subscribe(
       (data) => {
-        console.log(data)
+        // console.log(data)
         this.specializations = data.specializations;
       },
       (err) => {}
     );
   }
+
   getExperiencelevels() {
     this.rmsService.getExperiencelevel().subscribe(
       (data) => {
-        console.log(data)
+        // console.log(data)
         this.experienceLevels = data.experienceLevels;
       },
       (err) => {}
-    );
-  }
-
-  downloadFile() {
-    // this.loadingService.show();
-    this.setupService.exportExcelFile("/hrmsetup/download/jobgrade").subscribe(
-      (resp) => {
-        // this.loadingService.hide();
-        this.utilitiesService.byteToFile(resp, "Job Grade.xlsx", {
-          type: "application/vnd.ms-excel",
-        });
-      },
-      (err) => {
-        // this.loadingService.hide();
-      }
     );
   }
 
@@ -235,20 +225,9 @@ export class SetupComponent implements OnInit {
     }
   }
 
-  openDeleteModal() {
-    this.initializeForm(this.current_tab);
-    $("#delete_item").modal("show");
-    console.log('Hello')
-  }
-
   closeModal() {
     $("#add_job_grade").modal("hide");
   }
-
-  closeDeleteModal() {
-    $("#delete_item").modal("hide");
-  }
-
 
   addItemId(event: Event, id: number) {
     this.utilitiesService.deleteArray(event, id, this.selectedId);
@@ -260,8 +239,6 @@ export class SetupComponent implements OnInit {
       this.industries
     );
   }
-
-
 
   getCurrentTab(tabName) {
     this.current_tab = tabName;
@@ -429,7 +406,7 @@ export class SetupComponent implements OnInit {
       if (result.value) {
         this.rmsService[operation](payload).subscribe((data) => {
           if (data['result'] == true) {
-            swal.fire('GOS FINANCIAL', `${operation} deleted successful.`, 'success');
+            swal.fire('GOS FINANCIAL', `${this.current_tab} deleted successful.`, 'success');
             this.getAllIndustries();
           } else {
             swal.fire('GOS FINANCIAL', 'Record not deleted', 'error');
@@ -439,6 +416,180 @@ export class SetupComponent implements OnInit {
         swal.fire('GOS FINANCIAL', 'Cancelled', 'error');
       }
     });
+  }
+
+  multipleDelete() {
+    if (this.selectDeleteitems.length == 0) {
+      return swal.fire('GOS FINANCIAL', 'Select item to delete', 'error');
+    }
+    const tempData = this.selectDeleteitems;
+    let operation = '';
+    let payload
+    console.log(this.selectDeleteitems)
+    if(this.current_tab == 'Job Category' && tempData !== undefined) {
+     operation = 'deleteJobcategory';
+     tempData.forEach((el) => {
+        let data = el.jobCategoryId;
+        payload= {
+          jobCategoryIds: [data]
+        }
+      });
+    } else if(this.current_tab == 'Job Type' && tempData !== undefined) {
+      operation = 'deleteJobType';
+      tempData.forEach((el) => {
+        let data = el.jobTypeId;
+        payload = {
+          jobTypeIds: [data]
+        }
+      });
+    } else if(this.current_tab == 'Specialization' && tempData !== undefined) {
+      operation = 'deleteSpecialization';
+      tempData.forEach((el) => {
+        let data = el.specializationId;
+        payload = {
+          specializationIds: [data]
+        }
+      });
+    } else if(this.current_tab == 'Location' && tempData !== undefined) {
+      operation = 'deleteLocation';
+      tempData.forEach((el) => {
+        let data = el.locationId;
+        payload = {
+          locationIds: [data]
+        }
+      });
+    } else if(this.current_tab == 'Industry' && tempData !== undefined) {
+      operation = 'deleteIndustry';
+      tempData.forEach((el) => {
+        let data = el.industryId;
+        payload = {
+          industryIds: [data]
+        }
+      });
+    } else {
+      operation = 'deleteExperienceLevel';
+      tempData.forEach((el) => {
+        let data = el.experienceLevelId;
+        payload = {
+          experienceLevelIds: [data]
+        }
+      });
+    }
+    swal.fire({
+      title: '',
+      html: `
+      <div class="alert alert-danger" role="alert">
+        <img src="assets/img/Error.svg" alt="">
+        <span class="px-3">Warning: You are about to delete a section of this course outline!</span>
+      </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Confirm!',
+      cancelButtonText: 'Cancel',
+      width: '500px'
+    })
+    .then((result) => {
+      if (result.value) {
+        this.rmsService[operation](payload).subscribe((data) => {
+          if (data['result'] == true) {
+            swal.fire('GOS FINANCIAL', `${this.current_tab} deleted successful.`, 'success');
+            this.getAllIndustries();
+          } else {
+            swal.fire('GOS FINANCIAL', 'Record not deleted', 'error');
+          }
+        });
+      } else {
+        swal.fire('GOS FINANCIAL', 'Cancelled', 'error');
+      }
+    });
+  }
+
+  exportList() {
+    let operation = '';
+    if(this.current_tab == 'Job Category') {
+     operation = 'exportJobcategory';
+    } else if(this.current_tab == 'Job Type') {
+      operation = 'exportJobType';
+    } else if(this.current_tab == 'Specialization') {
+      operation = 'exportSpecialization';
+    } else if(this.current_tab == 'Location') {
+      operation = 'exportLocation';
+    } else if(this.current_tab == 'Industry') {
+      operation = 'exportIndustry';
+    } else {
+      operation = 'exportExperienceLevel';
+    }
+   
+    this.loadingService.show();
+    this.rmsService[operation]().subscribe(
+      (resp) => {
+        this.loadingService.hide();
+        this.utilitiesService.byteToFile(resp.export, `${this.current_tab}.xlsx`, {
+          type: "application/vnd.ms-excel",
+        });
+      },
+      (err) => {
+        this.loadingService.hide();
+      }
+    );
+  }
+
+  handleFileInput(file: FileList) {
+    this.fileToUpload = file.item(0);
+    // this.uploadList();
+  }
+
+  async uploadList() {
+    if (this.fileToUpload == null) {
+      swal.fire(
+        'GOS FINANCIAL',
+        'Please select upload document to continue',
+        'error'
+      );
+      return;
+    }
+    if (
+      this.fileToUpload.type !=
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    ) {
+      return swal.fire('GOS FINANCIAL', 'Only excel files allowed', 'error');
+    }
+    let operation = '';
+    if(this.current_tab == 'Job Category') {
+     operation = 'uploadJobcategory';
+    } else if(this.current_tab == 'Job Type') {
+      operation = 'uploadJobType';
+    } else if(this.current_tab == 'Specialization') {
+      operation = 'uploadSpecialization';
+    } else if(this.current_tab == 'Location') {
+      operation = 'uploadLocation';
+    } else if(this.current_tab == 'Industry') {
+      operation = 'uploadIndustry';
+    } else {
+      operation = 'uploadExperienceLevel';
+    }
+    console.log(this.fileToUpload);
+    await this.rmsService[operation](this.fileToUpload)
+      .then((data) => {
+        const message = data.status.message.friendlyMessage;
+        if (data.status.isSuccessful) {
+          this.fileToUpload = null;
+          // this.getAllCountry();
+          this.fileInput.nativeElement.value = '';
+          swal.fire('GOS FINANCIAL', message, 'success');
+        } else {
+          this.fileToUpload = null;
+          // this.getAllCountry();
+          this.fileInput.nativeElement.value = '';
+          swal.fire('GOS FINANCIAL', message, 'error');
+        }
+      })
+      .catch((err) => {
+        let error = JSON.stringify(err);
+        console.log(error);
+        // const message = error.status.message.friendlyMessage;
+        // swal.fire('GOS FINANCIAL', message, 'error');
+      });
   }
 
   // Prevents the edit modal from popping up when checkbox is clicked
