@@ -6,6 +6,7 @@ import { JobSetupComponent } from "./job-setup.component";
 import { AdminComponent } from "./admin/admin.component";
 import { SocialMediaComponent } from "./social-media/social-media.component";
 import { ReportComponent } from './report/report.component';
+import { EducationalSetupComponent } from './educational-setup/educational-setup.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,10 @@ const routes: Routes = [
       {
         path: "setup",
         component: SetupComponent,
+      },
+      {
+        path: "educational-setup",
+        component: EducationalSetupComponent,
       },
       {
         path: "report",

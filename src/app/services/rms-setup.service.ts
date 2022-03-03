@@ -128,7 +128,7 @@ export class RmsSetupService {
 
   uploadSpecialization(File: File): Promise<any> {
     return this.apiService
-      .uploadExcel("rmssetup/upload/specialization", File)
+      .uploadExcel("/rmssetup/upload/specialization", File)
       .then(data => {
         return data;
       });
@@ -193,7 +193,7 @@ export class RmsSetupService {
 
   uploadLocation(File: File): Promise<any> {
     return this.apiService
-      .uploadExcel("rmssetup/upload/location", File)
+      .uploadExcel("/rmssetup/upload/location", File)
       .then(data => {
         return data;
       });
@@ -258,7 +258,7 @@ export class RmsSetupService {
 
   uploadJobcategory(File: File): Promise<any> {
     return this.apiService
-      .uploadExcel("rmssetup/upload/jobcategory", File)
+      .uploadExcel("/rmssetup/upload/jobcategory", File)
       .then(data => {
         return data;
       });
@@ -322,7 +322,7 @@ export class RmsSetupService {
 
   uploadJobType(File: File): Promise<any> {
     return this.apiService
-      .uploadExcel("rmssetup/upload/jobtype", File)
+      .uploadExcel("/rmssetup/upload/jobtype", File)
       .then(data => {
         return data;
       });
