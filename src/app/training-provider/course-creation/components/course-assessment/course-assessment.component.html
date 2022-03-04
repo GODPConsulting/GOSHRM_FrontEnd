@@ -2,7 +2,10 @@
     <div class="course-assessment-header">
         <div class="d-flex justify-content-between">
             <h3>Course Assessment</h3>
-            <app-searchbar></app-searchbar>
+            <app-searchbar
+                [canAdd]="true"
+                (btnAction)="goTo()"
+            ></app-searchbar>
         </div>
 
         <div class="assessment_wrapper bg-white p-4 my-5">

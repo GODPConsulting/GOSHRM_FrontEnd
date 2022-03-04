@@ -27,9 +27,11 @@
                               <ng-select 
                                   [items]="requirement" 
                                   bindLabel="name" 
-                                  bindValue="id" 
+                                  bindValue="name" 
                                   [multiple]="true"
+                                  [addTag]="newRequirement"
                                   formControlName="training_Requirements"
+                                  (keyup.enter)="checkForKeyEnter($event)"
                               >
                               </ng-select>
                           </div>
@@ -84,12 +86,16 @@
                                 <label for="currentPassword" class="form-label"
                                   >Expected Competence <span class="text-orange">(+)</span>:
                                 </label>
-                                  <input
-                                    class="form-control pr-2"
-                                    type="text"
-                                    placeholder=""
-                                    formControlName="training_Requirements"
-                                  />
+                                <ng-select 
+                                  [items]="competencies" 
+                                  bindLabel="name" 
+                                  bindValue="name"
+                                  [addTag]="newCompetence"
+                                  (keyup.enter)="checkForKeyEnter($event)"
+                                  [multiple]="true"
+                                  formControlName="expected_Competence"
+                                >
+                                </ng-select>
                               </div>
                         </div>
                     </div>
@@ -113,8 +119,10 @@
                               <ng-select 
                                 [items]="participant" 
                                 bindLabel="name" 
-                                bindValue="id" 
-                                [multiple]="false"
+                                bindValue="name"
+                                [addTag]="newParticipant"
+                                (keyup.enter)="checkForKeyEnter($event)"
+                                [multiple]="true"
                                 formControlName="suggested_Participant"
                               >
                               </ng-select>
@@ -127,7 +135,7 @@
                             </label>
                               <select name="" id="" class="form-select" formControlName="delivery_Type">
                                   <option value="classroom ">Classroom </option>
-                                  <option value="online">Online (Video)</option>
+                                  <option value="online">Video</option>
                                   <option value="virtual">Virtual</option>
                               </select>
                           </div>
@@ -154,6 +162,7 @@
                                 class="form-control pr-2"
                                 type="number"
                                 placeholder=""
+                                step=".01"
                                 formControlName="cost"
                               />
                           </div>
@@ -201,18 +210,6 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form_group mb-4">
-                            <label for="" class="form-label"
-                            >Welcome Message:
-                            </label>
-                            <textarea 
-                                class="form-control" 
-                                cols="30" rows="10"
-                                formControlName="welcome_message"
-                            ></textarea>
-                       </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
                             <label for="currentPassword" class="form-label"
                               >Discount Rate(%):
                             </label>
@@ -227,7 +224,7 @@
                     <div class="col-md-6">
                         <div class="form_group mb-4">
                             <label for="currentPassword" class="form-label"
-                              >Completence Assessment
+                              >Competence Assessment
                             </label>
                               <select name="" id="" class="form-select" formControlName="competence_assessment">
                                   <option value="3 ">3 months </option>
@@ -236,6 +233,18 @@
                               </select>
                           </div>
                     </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="" class="form-label"
+                          >Welcome Message:
+                          </label>
+                          <textarea 
+                              class="form-control" 
+                              cols="30" rows="10"
+                              formControlName="welcome_message"
+                          ></textarea>
+                     </div>
+                  </div>
                     <div class="col-md-6">
                         <div class="form_group mb-4">
                             <label for="" class="form-label"
@@ -248,7 +257,7 @@
                             ></textarea>
                        </div>
                     </div>
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                         <div class="form_group mb-4">
                             <label for="" class="form-label"
                             >Add Cover Image:
@@ -280,7 +289,7 @@
                               >
                             </div>
                        </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-6">
                         <div class="form_group mb-4">
                             <label for="" class="form-label"

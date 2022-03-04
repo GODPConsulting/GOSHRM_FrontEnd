@@ -32,6 +32,9 @@ export class AddCourseComponent implements OnInit {
   public endDate: any = new Date('2008-09-19 17:35:00');
   public sp: any;
   public htmlContent = ``;
+  public newRequirement = (requirement: any) => ({ name: requirement });
+  public newParticipant = (participant: any) => ({ name: participant });
+  public newCompetence = (competence: any) => ({ name: competence });
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -42,7 +45,26 @@ export class AddCourseComponent implements OnInit {
     defaultParagraphSeparator: 'p',
     defaultFontName: 'Arial',
     toolbarHiddenButtons: [
-      ['bold']
+      [
+        'undo',
+        'redo',
+        'bold',
+        'italic',
+        'underline',
+        'strikeThrough',
+        'subscript',
+        'superscript',
+        'justifyLeft',
+        'justifyCenter',
+        'justifyRight',
+        'justifyFull',
+        'indent',
+        'outdent',
+        'insertUnorderedList',
+        'insertOrderedList',
+        'heading',
+        'fontName'
+      ],
       ],
     customClasses: [
       {
@@ -63,15 +85,20 @@ export class AddCourseComponent implements OnInit {
   // alert("timeuse：" + sp.hour + " hour " + sp.minute + " minute " + sp.second + " second ");
 
   public participant: any[] = [
-    {id: 1, name: 'Muhydeen Alabi'},
-    {id: 2, name: 'Etim Essang'},
-    {id: 3, name: 'Dayo Tella'},
+    {name: 'Enginnering'},
+    {name: ''},
+    {name: 'Dayo Tella'},
   ];
   public requirement: any[] = [
-    {id: 1, name: 'Laptop'},
-    {id: 2, name: 'Internet'},
-    {id: 3, name: 'Notepad'},
+    { name: 'Laptop'},
+    { name: 'Internet'},
+    { name: 'Notepad'},
   ];
+  public competencies: any[] = [
+    { name: 'Good'},
+    { name: 'very Good'},
+    { name: 'Excellent'},
+  ]
 
   constructor(
     private fb: FormBuilder,
@@ -177,11 +204,9 @@ getTimeSpan(ticks: any ) {
         }
   }
 
-  public checkForKeyEnter(event: KeyboardEvent): void {
+  public checkForKeyEnter(event: any): void {
     var key = event.key || event.keyCode;
     if (key == 'Enter' || key == 8) {
-      console.log('wrks')
-      // this.login();
     }
   }
    

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HelperService } from '@core/services/healper.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
@@ -26,6 +26,7 @@ export class CourseAssessmentComponent implements OnInit {
     private _course: CourseCreationService,
     private _route: ActivatedRoute,
     private fb: FormBuilder,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -106,6 +107,10 @@ export class CourseAssessmentComponent implements OnInit {
 
   get getOptions(): any {
     return this.quizQuestionForm.get('course_Answers') as FormArray;
+  }
+
+  goTo() {
+    this.router.navigate(['/training-provider/course-creation/create-course-assement'])
   }
 
   
