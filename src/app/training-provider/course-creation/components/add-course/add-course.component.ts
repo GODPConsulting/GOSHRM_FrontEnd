@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { Courses } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 import { DatePipe } from '@angular/common'
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
   selector: 'app-add-course',
@@ -29,8 +30,36 @@ export class AddCourseComponent implements OnInit {
   public course!: Courses;
   public beginDate: any = new Date('2008-09-19 07:14:00');
   public endDate: any = new Date('2008-09-19 17:35:00');
-
   public sp: any;
+  public htmlContent = ``;
+  public config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    // height: '2rem',
+    minHeight: '10rem',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [
+      ['bold']
+      ],
+    customClasses: [
+      {
+        name: "quote",
+        class: "quote",
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
+      },
+    ]
+  };
   // alert("timeuse：" + sp.hour + " hour " + sp.minute + " minute " + sp.second + " second ");
 
   public participant: any[] = [
@@ -148,7 +177,13 @@ getTimeSpan(ticks: any ) {
         }
   }
 
-  
+  public checkForKeyEnter(event: KeyboardEvent): void {
+    var key = event.key || event.keyCode;
+    if (key == 'Enter' || key == 8) {
+      console.log('wrks')
+      // this.login();
+    }
+  }
    
 
   public submit(): void {
@@ -171,7 +206,6 @@ getTimeSpan(ticks: any ) {
           this._helper.stopSpinner();
           console.log(res)
           this._helper.triggerSucessAlert('Course created successfully!!!')
-          this.addCourseForm.reset();
           this._router.navigate(['/training-provider/course-creation'])
          } else {
            this._helper.stopSpinner();

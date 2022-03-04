@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
@@ -37,8 +37,6 @@ export class AddInstructorDialogComponent implements OnInit {
   }> = new EventEmitter<{ editObject?: any; isEditing: boolean }>();
 
   constructor(
-    public dialogRef: MatDialogRef<AddInstructorDialogComponent>,
-    // @Inject(MAT_DIALOG_DATA) public modalData: any,
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<string>,
     private fb: FormBuilder,
     private _instructor: InstructorService,
@@ -86,7 +84,12 @@ export class AddInstructorDialogComponent implements OnInit {
           if(res.status.isSuccessful) {
             this._helper.stopSpinner();
             this.isRegisteringFormSubmitted = true;
-            this._helper.triggerSucessAlert('Instructor added successfully')
+            this.event.emit({
+              isEditing: this.data.isEditing,
+              editObject: payload
+            })
+            this.close.nativeElement.click();
+            this._helper.triggerSucessAlert('Instructor added successfully');
           } else {
             this._helper.stopSpinner();
             this.isError = true;

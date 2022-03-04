@@ -62,7 +62,7 @@ export class InstructorFacilitatorSetupComponent implements OnInit {
 
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-          
+          this.instructors = [event?.editObject, ...this.instructors];
       }
     );
   }

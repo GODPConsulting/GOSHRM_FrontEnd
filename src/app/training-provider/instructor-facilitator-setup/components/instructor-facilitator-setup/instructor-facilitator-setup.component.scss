@@ -13,6 +13,24 @@
                     height: 10rem;
                     border-radius: 50%;
                     background: #C4C4C4;
+                    position: relative;
+                    .upload-icon {
+                        position: absolute;
+                        bottom: 1rem;
+                        right: 1rem;
+                        height: 2rem;
+                        cursor: pointer;
+                        .fa {
+                            color: $orange-400;
+                            font-size: 2rem !important;
+                        }
+                        .upload-file {
+                            position: absolute;
+                            height: 100%;
+                            left: .05rem;
+                            opacity: 0;
+                        }
+                    }
                 }
                 .ratings i {
                     color: #cecece;

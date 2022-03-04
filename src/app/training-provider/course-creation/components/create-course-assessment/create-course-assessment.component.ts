@@ -4,9 +4,9 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
+import { Subscription } from 'rxjs';
 import { CourseCreationService } from '../../services/course-creation.service';
 import Swal from 'sweetalert2';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-course-assessment',
@@ -23,6 +23,7 @@ export class CreateCourseAssessmentComponent implements OnInit {
   public course_AssessmentId: any = 0;
   public assessments: any[] = [];
   public isFetchingAssessment: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private _helper: HelperService,
@@ -47,7 +48,7 @@ export class CreateCourseAssessmentComponent implements OnInit {
     });
   }
 
-  newQuestion() {
+  get newQuestion() {
     return this.fb.group({
       questionId: [0],
       question_Varaible: ['', Validators.required],
@@ -152,4 +153,5 @@ export class CreateCourseAssessmentComponent implements OnInit {
       });
     }
   }
+
 }

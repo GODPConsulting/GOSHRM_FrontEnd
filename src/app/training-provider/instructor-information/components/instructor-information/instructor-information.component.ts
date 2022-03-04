@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
@@ -30,7 +30,8 @@ export class InstructorInformationComponent implements OnInit {
     private _base: BaseComponent,
     private _helper: HelperService,
     private fb: FormBuilder,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -81,8 +82,8 @@ export class InstructorInformationComponent implements OnInit {
       this._instructor.UpdateFaciltator(payload).subscribe({
         next: (res: ResponseModel<Facilitator>) => {
           this._helper.stopSpinner();
-          console.log(res)
-          
+          // console.log(res)
+          this.router.navigate(['/training-provider/setup'])
           this._base.openSnackBar(
             'Great...!!!, Your action was successful',
             'success'

@@ -51,11 +51,7 @@
                             <label for="" class="form-label"
                             >Training Transcript:
                             </label>
-                            <textarea 
-                                class="form-control" 
-                                cols="30" rows="10"
-                                formControlName="training_Transcript"
-                            ></textarea>
+                            <angular-editor formControlName="training_Transcript" [config]="config"></angular-editor>
                        </div>
                     </div>
                     <div class="col-md-6">

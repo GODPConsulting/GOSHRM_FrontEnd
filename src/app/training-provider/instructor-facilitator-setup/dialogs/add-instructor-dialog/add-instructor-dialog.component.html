@@ -79,7 +79,7 @@
                             ></textarea>
                        </div>
                     </div>
-                    <div class="col-12">
+                    <!-- <div class="col-12">
                         <div class="form_group mb-4">
                             <label for="" class="form-label"
                             >Upload Image
@@ -109,7 +109,7 @@
                                  </label>
                               </div>
                        </div>
-                    </div>
+                    </div> -->
                  </div>
             </div>
         </div>
@@ -118,6 +118,14 @@
    
   </mat-dialog-content>
   <mat-dialog-actions align="end">
+    <button
+      class="btn btn-green btn-md d-none"
+      mat-dialog-close
+      mat-button
+      #close
+    >
+        Clse
+    </button>
     <button
       class="btn btn-green btn-md px-4"
       (click)="submit()"
