@@ -34,7 +34,6 @@ export class CourseOutlineComponent implements OnInit {
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
     this.courseId = this._route.snapshot.paramMap.get('courseId');
-    console.log(this.courseId)
     this.getAllCourseOutlines();
   }
 
@@ -47,7 +46,7 @@ export class CourseOutlineComponent implements OnInit {
           this._helper.stopSpinner();
           this.isFetchingCourseOutlines = false;
           this.courseOutlines = res['course_OutlineSetupTypes'];
-          console.log(res, this.courseOutlines)
+          // console.log(res, this.courseOutlines)
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();
@@ -65,7 +64,7 @@ export class CourseOutlineComponent implements OnInit {
     const dialogRef = this.dialog.open(CourseOutlineDialogComponent, {
       data: object,
     });
-    console.log(payload)
+    // console.log(payload)
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
         if (event?.isEditing) {

@@ -46,7 +46,6 @@ export class CourseOutlineDialogComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUser = this._current.getUser();
-    console.log(this.data)
     this.initCourseOutlineForm();
   }
 
@@ -72,7 +71,6 @@ export class CourseOutlineDialogComponent implements OnInit {
     payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
     payload.trainingInstructorId = this.loggedInUser?.trainingInstructorId;
     payload.sectionId = this.data?.editObject?.sectionId ? this.data?.editObject?.sectionId : 0 ;
-    // payload.courseId = this.data?.editObject?.courseId;
     this.data.isEditing ? payload.courseId = this.data.editObject.courseId : payload.courseId = this.data.editObject
     payload.courseId = parseInt(payload.courseId);
     console.log(payload);
