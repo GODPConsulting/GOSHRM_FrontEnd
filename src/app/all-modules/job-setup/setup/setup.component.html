@@ -11,20 +11,10 @@
         <a class="btn download-btn hint" (click)="exportList()"
           ><span class="hint-text">Download</span><img src="assets/img/download.svg">
         </a>
-        <a class="btn upload-btn hint" (click)="uploadList()"
+        <a class="btn upload-btn hint" (click)="openUploadModal()"
           ><span class="hint-text">Upload</span>
           <div style="position: relative">
             <img class="position: absolute" src="assets/img/upload.svg">
-            <!-- <input
-                  style="width: 100%; height: 100%; position: absolute; top: 0;"
-                  class="form-control"
-                  type="file"
-                  (change)="handleFileInput($event.target.files)"
-                  id="file1"
-                  accept=".xls,.xlsx"
-                  #fileInput
-                  name="fileInput"
-                /> -->
           </div>
         </a>
         <a class="btn upload-btn hint" data-toggle="modal" (click)="multipleDelete()"
@@ -34,16 +24,6 @@
           ><span class="hint-text">Add</span><img src="assets/img/add.svg">
         </a>
       </div>
-      <input
-        style=""
-        class="form-control"
-        type="file"
-        (change)="handleFileInput($event.target.files)"
-        id="file1"
-        accept=".xls,.xlsx"
-        #fileInput
-        name="fileInput"
-      />
     </div>
   </div>
   <!-- /Page Header -->
@@ -911,37 +891,66 @@
 </div>
 <!-- /Add Modal -->
 
-<!-- Delete Modal -->
-<!-- <div id="delete_item" class="modal custom-modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog-centered modal-md">
-    <div class="modal-content">
-     <div class="modal-body">
-        <form (ngSubmit)="deleteIndustry()">
-          <div class="alert alert-danger" role="alert">
-            <img src="assets/img/Error.svg" alt="">
-            <span class="px-3">Warning: You are about to delete a section of this course outline!</span>
-          </div>
-        </form>
-        <div class="d-flex justify-content-center">
+  <!-- Upload Modal -->
+  <div id="upload_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Upload Academic Grade</h5>
           <button
-            class="btn btn-primary submit-btn confirm-btn"
-            type="submit"
-            [disabled]="spinner"
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeModal()"
           >
-            <span *ngIf="!spinner">Confirm</span>
-            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            <span aria-hidden="true">&times;</span>
           </button>
-          <button
-            class="btn btn-primary submit-btn"
-            type="submit"
-            (click)="closeDeleteModal()"
-          >
-            Cancel
-          </button>
+        </div>
+        <div class="modal-body px-5">
+            <div class="row">
+              <div class="form-group row">
+                <label class="col-form-label col-md-5"
+                  >Choose File (excel format)</label
+                >
+                <div class="col-md-7">
+                  <input
+                    style=""
+                    class="form-control"
+                    type="file"
+                    (change)="handleFileInput($event.target.files)"
+                    id="file1"
+                    accept=".xls,.xlsx"
+                    #fileInput
+                    name="fileInput"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <p>Please use the guide below for your sheet</p>
+              <table class="table table-bordered">
+                <tr>
+                  <th>Grade</th>
+                  <th>Description</th>
+                  <th>Rank</th>
+                </tr>
+              </table>
+            </div>
+            <div class="submit-section">
+              <button
+                class="btn btn-primary submit-btn"
+                type="submit"
+                [disabled]="spinner"
+                (click)="uploadList()"
+              >
+                <span *ngIf="!spinner">Submit</span>
+                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
+            </div>
         </div>
       </div>
     </div>
   </div>
-</div> -->
-<!-- /Delete Modal -->
+  <!-- /Upload Modal -->
 

@@ -56,6 +56,7 @@ export class EmailSetupComponent implements OnInit {
       send_notification: [this.emailSetupInfo?.send_notification ? this.emailSetupInfo?.send_notification  : false, Validators.required],
       enableSSl: [this.emailSetupInfo?.enableSSl ? this.emailSetupInfo?.enableSSl  : false, Validators.required],
       baseFrontEndURL: [this.emailSetupInfo?.baseFrontEndURL ? this.emailSetupInfo?.baseFrontEndURL  : '', Validators.required],
+      emailId: [this.emailSetupInfo?.emailId ? this.emailSetupInfo?.emailId  : 0, Validators.required],
     })
   }
 
@@ -64,8 +65,9 @@ export class EmailSetupComponent implements OnInit {
       this._lmsService.getAllEmailSetup(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingEmailSetup = false;
-          this.emailSetupInfo = res;
-          console.log(res);
+          this.emailSetupInfo = res['emailSetupTypes'];
+          this.initEmailSetupForm();
+          // console.log(res, this.emailSetupInfo);
         },
         error: (error) => {
           this.isFetchingEmailSetup = false;
@@ -76,15 +78,17 @@ export class EmailSetupComponent implements OnInit {
   }
 
   updateEmailSetup() {
+    const payload = this.emailSetupForm.value;
+    payload.companyId = this.companyId;
     this.emailSetupFormSubmitted = true;
     this.sub.add(
-      this._lmsService.updateEmailSetup(this.emailSetupForm.value).subscribe({
+      this._lmsService.updateEmailSetup(payload).subscribe({
         next: (res) => {
           this.emailSetupFormSubmitted = false;
           console.log(res);
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
-              this.initEmailSetupForm();
+              this.emailSetupInfo = payload;
             });
           } else {
             swal.fire("GOSHRM", "error");

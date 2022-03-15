@@ -58,11 +58,15 @@
                   />
                   <span class="checkmark"></span>
                 </label>
-                <span class="px-3">{{ trainee?.training_Date | date }}</span>
+                <span class="px-3">{{ trainee?.createdOn | date }}</span>
               </th>
               <td> {{ trainee?.full_Name }} </td>
-              <td> {{ trainee?.email_Address }} </td>
-              <td> www.godp.co.uk </td>
+              <td>
+                <a [href]="'mailto:' + trainee?.email_Address">{{ trainee?.email_Address }} </a>
+              </td>
+              <td>
+                <a href="https://www.godp.co.uk" target="_blank">www.godp.co.uk</a>
+              </td>
               <td> 
                 <a [href]="'tel:' + trainee?.phone_Number">{{ trainee?.phone_Number }} </a>
               </td>

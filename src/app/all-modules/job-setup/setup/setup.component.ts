@@ -177,7 +177,7 @@ export class SetupComponent implements OnInit {
   openUploadModal() {
     // Reset upload form
     this.fileInput.nativeElement.value = "";
-    $("#upload_job_grade").modal("show");
+    $("#upload_modal").modal("show");
   }
 
   openModal(isEdit: boolean, data?: any) {
