@@ -21,7 +21,9 @@ export class PayoutComponent implements OnInit {
    public payoutId: number = 0;
    public profile: any;
    public companyId: number;
+   public userid: string;
    public payoutList: any;
+   public selectedPayout: any[] = [];
    public payoutListItem: any = {
     "payoutId": 0,
     "account_TypeId": 1,
@@ -44,6 +46,7 @@ export class PayoutComponent implements OnInit {
   ngOnInit(): void {
     this.profile = JSON.parse(localStorage.getItem('userDetails'));
     this.companyId = this.profile.companyId;
+    this.userid = this.profile.userId;
     this.initPayoutSetupForm();
     this.getPayoutSetupInfo();
   }
@@ -58,6 +61,15 @@ export class PayoutComponent implements OnInit {
 
   closeAccountModal() {
     $("#account-modal").modal("hide");
+  }
+
+  selectDeselectPayout(payout) {
+    this.selectedPayout.includes(payout.payoutId)
+      ? (this.selectedPayout = this.selectedPayout.filter(
+          code => code != payout.payoutId
+        ))
+      : this.selectedPayout.push(payout.payoutId);
+    // console.log(this.selectedPayout);
   }
 
   initPayoutSetupForm() {
@@ -89,17 +101,17 @@ export class PayoutComponent implements OnInit {
   changeDefaultAccount(payoutId) {
     this.payoutListItem.account_Default = !this.payoutListItem.account_Default;
     console.log(this.payoutListItem.account_Default);
-    this.updatePayoutSetup(payoutId);
+    // this.updatePayoutSetup(payoutId);
   }
 
   getPayoutSetupInfo() {
     this.sub.add(
-      this._lmsService.getAllPayoutSetup(this.companyId).subscribe({
+      this._lmsService.getAllPayoutSetup(this.companyId, this.userid).subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           this.isPayoutReady = false;
           this.payoutList = res.payoutSetupTypes;
-          console.log(this.payoutList, typeof(res.payoutSetupTypes));
+          // console.log(this.payoutList);
         },
         error: (error) => {
           this.isPayoutReady = false;
@@ -115,6 +127,8 @@ export class PayoutComponent implements OnInit {
     payload.account_TypeId = parseInt(payload.account_TypeId);
     payload.companyid = this.companyId;
     payload.payoutId = payoutId;
+    payload.paySetUpCreatedByType = 1;
+    payload.userid = this.userid;
     payload.account_Default = this.payoutListItem.account_Default;
     console.log(payload);
     this.sub.add(
@@ -146,6 +160,46 @@ export class PayoutComponent implements OnInit {
         },
       })
     );
+  }
+
+  deletePayout() {
+    if(this.selectedPayout.length == 0) {
+      swal.fire("GOSHRM", 'Please select payout to delete')
+        .then(() => {
+        
+      });
+    }
+    this.payoutSetupFormSubmitted = true;
+    const payload = {
+      companyId: this.companyId,
+      pageContentId: this.selectedPayout,
+      type: 1,
+      userId: this.userid
+    };
+    console.log(payload);
+    if(this.selectedPayout.length != 0) {
+      this.sub.add(
+        this._lmsService.deletePayoutSetup(payload).subscribe({
+          next: (res) => {
+            this.payoutSetupFormSubmitted = false;
+            console.log(res);
+            if (res.status.isSuccessful) {
+              swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
+                this.getPayoutSetupInfo();
+                this.initPayoutSetupForm();
+                this.closeAccountModal();
+              });
+            } else {
+              swal.fire("GOSHRM", "error");
+            }
+          },
+          error: (error) => {
+            this.payoutSetupFormSubmitted = false;
+            console.log(error);
+          },
+        })
+      );
+    }
   }
   
 }

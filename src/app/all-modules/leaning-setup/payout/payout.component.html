@@ -1,13 +1,32 @@
 <div class="payout_wrapper">
     <div class="d-flex justify-content-between">
       <h3 class="pt-3">Payout</h3>
-      <button class="btn btn-orange" (click)="openAccountModal(payoutListItem)">
-        Add Payout
-      </button>
+      <div class="d-flex">
+        <button class="btn text-orange" (click)="deletePayout()">
+          <i class="fas fa-trash"></i>
+        </button>
+        <button class="btn btn-orange" (click)="openAccountModal(payoutListItem)">
+          Add Payout
+        </button>
+      </div>
     </div>
-    <div class="password_wrapper my-4" *ngFor="let account of payoutList">
-        <div class="p-4 bg-white">
-            <div class="d-flex justify-content-end">
+    <div class="password_wrapper my-4">
+        <div class="payout-wrapper p-4 bg-white">
+          <div class="empty-state text-center my-auto" *ngIf="payoutList.length == 0">
+            <p class="py-5">You do not have any payout account yet</p>
+          </div>
+          <div class="" *ngFor="let account of payoutList; index as i">
+            <div class="d-flex justify-content-between">
+                <div>
+                  <label for="payout{{i}}">
+                    <input 
+                      type="checkbox" 
+                      id="payout{{i}}" 
+                      name="" id=""
+                      (change)="selectDeselectPayout(account)"
+                    />
+                  </label>
+                </div>
                 <div class="click" (click)="openAccountModal(account)">
                     <img src="assets/img/edit-pen.svg" alt="">
                     <span class="edit-pen px-3">Edit</span>
@@ -115,6 +134,7 @@
                
             </form>
           </div>
+        </div>
     </div>
 </div>
 

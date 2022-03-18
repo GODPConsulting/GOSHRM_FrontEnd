@@ -22,6 +22,7 @@ export class CompanyInformationComponent implements OnInit {
     websiteFormSubmitted: boolean = false;
     profile: any;
     companyId: number;
+    userid: string;
     companyForm: FormGroup;
     socialMediaForm: FormGroup;
     websiteForm: FormGroup;
@@ -53,6 +54,7 @@ export class CompanyInformationComponent implements OnInit {
   ngOnInit(): void {
     this.profile = JSON.parse(localStorage.getItem('userDetails'));
     this.companyId = this.profile.companyId;
+    this.userid = this.profile.userId;
     this.initCompanyInfoForm();
     this.initSocialMediaForm();
     this.initWebsiteForm();
@@ -108,7 +110,7 @@ export class CompanyInformationComponent implements OnInit {
 
   initWebsiteForm() {
     this.websiteForm = this.fb.group({
-      websites: this.fb.array([
+      websiteItem: this.fb.array([
         this.fb.group({
           websiteId: [0],
           website_Link: ['https://',
@@ -125,7 +127,7 @@ export class CompanyInformationComponent implements OnInit {
   }
 
   get newWebsiteForm(): FormArray {
-    return this.websiteForm.get('websites') as FormArray;
+    return this.websiteForm.get('websiteItem') as FormArray;
   }
 
   addWebsite() {
@@ -199,11 +201,11 @@ export class CompanyInformationComponent implements OnInit {
 
   getPayouts() {
     this.sub.add(
-      this._lmsService.getAllPayoutSetup(this.companyId).subscribe({
+      this._lmsService.getAllPayoutSetup(this.companyId, this.userid).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
           this.payouts = res['payoutSetupTypes'];
-          // console.log(res);
+          console.log(res);
         },
         error: (error) => {
           this.isFetchingCompanyInfo = false;
@@ -419,8 +421,8 @@ export class socialMedia {
 } 
 
 export class Website {
-  websiteId= 0;
-  website_Name= "";
-  website_Link: "";
+  websiteId = 0;
+  website_Name = "";
+  website_Link = "";
   companyId = 0;
 }

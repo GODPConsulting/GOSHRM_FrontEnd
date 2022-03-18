@@ -99,9 +99,11 @@ export class LmsService {
     );
   }
 
-  getAllPayoutSetup(companyId) {
+  getAllPayoutSetup(companyId, userid) {
     const params = new HttpParams()
-    .set('companyId', companyId);
+    .set('companyId', companyId)
+    .set('type', '1')
+    .set('userid', userid);
     return this.apiService
       .get(`/lms/payout/getAllPayOutSetup`, params
       )
@@ -117,6 +119,18 @@ export class LmsService {
   updatePayoutSetup(payload) {
     return this.apiService
       .post("/lms/payout/addAndUpdatePayOutSetup", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  deletePayoutSetup(payload) {
+    return this.apiService
+      .post("/lms/payoutsetup/deletePayoutsetup", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -210,11 +224,55 @@ export class LmsService {
     );
   }
 
+  deleteContent(payload) {
+    return this.apiService.post(`/lms/pagecontentsetup/DeletePageContent`, payload).pipe(
+      map(data => {
+        return data;
+      })
+    );
+  }
+
+  uploadPageImage(payload): Observable<any> {
+    return this.apiService.post(`/lms/pagecontentsetup/addAndUpdatePageImage`, payload).pipe(
+      map(data => {
+        return data;
+      })
+    );
+  }
+
+  getPageBanner(companyId) {
+    const params = new HttpParams()
+    .set('companyId', companyId);
+    return this.apiService
+      .get(`/lms/pagebannersetup/getPageBanner`, params)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   getPageContent(companyId) {
     const params = new HttpParams()
     .set('companyId', companyId);
     return this.apiService
-      .get(`/lms/pagecontentsetup/get/all/pagecontentsetup`, params)
+      .get(`/lms/pagecontentsetup/getAllPageContent`, params)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  getPageContentById(companyId, pageContentId) {
+    const params = new HttpParams()
+    .set('companyId', companyId)
+    .set('pageContentId', pageContentId);
+    return this.apiService
+      .get(`/lms/pagecontentsetup/getPageContentById`, params)
       .pipe(
         tap(),
         map((res) => {
@@ -225,7 +283,7 @@ export class LmsService {
   }
 
   updatePageBanner(payload) {
-    return this.apiService.post("/lms/pagecontentsetup/getAllPageContentSetup", payload).pipe(
+    return this.apiService.post("/lms/pagebannersetup/addAndUpdatePageBannerSetup", payload).pipe(
       tap(),
       map((res) => {
         return res;
