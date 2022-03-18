@@ -220,7 +220,7 @@ export class CompanyInformationComponent implements OnInit {
       this._lmsService.getAllTrainers(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingCompanyInfo = false;
-          this.allTrainers = res['traineeSetupTypes'];
+          this.allTrainers = res['trainingProviderObjs'];
           // console.log(res);
         },
         error: (error) => {

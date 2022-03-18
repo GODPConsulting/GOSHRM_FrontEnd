@@ -295,7 +295,7 @@ export class LmsService {
   getAllTrainers(companyId) {
     const params = new HttpParams()
     .set('companyId', companyId);
-    return this.apiService.get("/lms/trainee/getAllTrainersProvider", params).pipe(
+    return this.apiService.get("/lms/trainingproviders/getAllTrainingproviders", params).pipe(
       tap(),
       map((res) => {
         return res;

@@ -128,24 +128,6 @@
                   <img *ngIf="item?.socialMediaType == 4" class="click pr-4" src="assets/img/twitter-icon.svg" alt="">
                   <img *ngIf="item?.socialMediaType == 1" class="click pr-4" src="assets/img/youtube-icon.svg" alt="">
                 </a>
-                <!-- <a 
-                  [href]="socialMediaInfo?.facebookType"
-                  target="_blank"
-                  *ngIf="socialMediaInfo?.facebookType"
-                ><img class="click pr-4" src="assets/img/facebook-icon.svg" alt="">
-                </a>
-                <a 
-                  [href]="socialMediaInfo?.twitterType"
-                  target="_blank"
-                  *ngIf="socialMediaInfo?.twitterType"
-                ><img class="click pr-4" src="assets/img/twitter-icon.svg" alt="">
-                </a>
-                <a 
-                  [href]="socialMediaInfo?.youtubeType"
-                  target="_blank"
-                  *ngIf="socialMediaInfo?.youtubeType"
-                ><img class="click pr-4" src="assets/img/youtube-icon.svg" alt="">
-                </a> -->
             </div>
         </div>
 
@@ -181,8 +163,8 @@
                     >View All</span>
                 </div>
             </div>
-            <div class="d-flex justify-content-between">
-               <div *ngFor="let trainer of allTrainers  | slice:0:4">
+            <div>
+               <div class="d-flex justify-content-between" *ngFor="let trainer of allTrainers  | slice:0:4">
                    <p>{{ trainer?.full_Name }}</p>
                </div>
             </div>

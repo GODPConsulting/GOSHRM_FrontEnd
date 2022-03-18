@@ -37,7 +37,7 @@
               </th>
               <th>Name</th>
               <th>Email Address</th>
-              <th>Wbsite</th>
+              <th>Website</th>
               <th>Phone Number</th>
               <th></th>
             </tr>
@@ -65,7 +65,7 @@
                 <a [href]="'mailto:' + trainee?.email_Address">{{ trainee?.email_Address }} </a>
               </td>
               <td>
-                <a href="https://www.godp.co.uk" target="_blank">www.godp.co.uk</a>
+                <a [href]="trainee?.website" target="_blank">{{ trainee?.website }}</a>
               </td>
               <td> 
                 <a [href]="'tel:' + trainee?.phone_Number">{{ trainee?.phone_Number }} </a>

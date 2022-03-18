@@ -13,7 +13,7 @@ declare const $: any;
 export class TrainingProviderComponent implements OnInit {
     public sub: Subscription = new Subscription();
    public spinner: boolean = false;
-   companyId: number;
+   public companyId: number;
    public isFetchingTrainers: boolean = false;
    public dtOptions: DataTables.Settings = {};
    public isCheck: boolean = false;
@@ -37,8 +37,8 @@ export class TrainingProviderComponent implements OnInit {
       this._lmsService.getAllTrainers(this.companyId).subscribe({
         next: (res) => {
           this.isFetchingTrainers = false;
-          this.trainingProviderS = res['traineeSetupTypes'];
-          // console.log(res);
+          this.trainingProviderS = res['trainingProviderObjs'];
+          // console.log(res, this.trainingProviderS);
         },
         error: (error) => {
           this.isFetchingTrainers = false;
