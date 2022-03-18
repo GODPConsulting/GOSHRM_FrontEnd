@@ -80,17 +80,18 @@ export class PayoutFormDialogComponent implements OnInit {
     // this.payoutListItem.account_Default = checkDefault;
   }
 
-
   submit() {
     this._helper.startSpinner();
     this.payoutSetupFormSubmitted = true;
     const payload = this.payoutForm.value;
     payload.account_TypeId = parseInt(payload.account_TypeId);
-    payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
+    payload.paySetUpCreatedByType = 2;
+    payload.userid = this.loggedInUser.userId;
+    payload.companyId = this.loggedInUser.companyId;
     payload.payoutId = this.data?.editObject?.payoutId;
     console.log(payload);
     this.sub.add(
-      this._payoutService.updatePayoutSetup(payload, this.loggedInUser?.trainingProviderId).subscribe({
+      this._payoutService.updatePayoutSetup(payload).subscribe({
         next: (res: any) => {
           this.payoutSetupFormSubmitted = false;
           console.log(res);

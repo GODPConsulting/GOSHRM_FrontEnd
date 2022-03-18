@@ -84,11 +84,6 @@ export class AddCourseComponent implements OnInit {
   };
   // alert("timeuse：" + sp.hour + " hour " + sp.minute + " minute " + sp.second + " second ");
 
-  public participant: any[] = [
-    {name: 'Enginnering'},
-    {name: ''},
-    {name: 'Dayo Tella'},
-  ];
   public requirement: any[] = [
     { name: 'Laptop'},
     { name: 'Internet'},
@@ -98,7 +93,20 @@ export class AddCourseComponent implements OnInit {
     { name: 'Good'},
     { name: 'very Good'},
     { name: 'Excellent'},
-  ]
+  ];
+  public industries: any[] = [
+    {name: 'Energy'},
+    {name: 'Materials'},
+    {name: 'Industrials'},
+    {name: 'Consumer Discretionary'},
+    {name: 'Consumer Staples'},
+    {name: 'Health Care'},
+    {name: 'Financials'},
+    {name: 'Information Technology'},
+    {name: 'Communication Services'},
+    {name: 'Utilities'},
+    {name: 'Real Estate'},
+  ];
 
   constructor(
     private fb: FormBuilder,

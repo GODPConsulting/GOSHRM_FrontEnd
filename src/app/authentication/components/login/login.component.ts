@@ -48,11 +48,11 @@ export class LoginComponent implements OnInit {
     this.isLoggingIn = true;
     this.loginFormSubmitted = true;
     const payload = this.loginForm.value;
-    console.log(payload);
+    // console.log(payload);
     if (this.loginForm.valid) {
       this._auth.login(payload).subscribe({
         next: (res: any) => {
-          console.log(res);
+          // console.log(res);
           this._helper.stopSpinner();
           this.isLoggingIn = false;
           if(res?.status.isSuccessful) {
@@ -73,6 +73,7 @@ export class LoginComponent implements OnInit {
         },
       });
     } else {
+      this._helper.stopSpinner();
       this.isLoggingIn = false;
       this.isError = true;
       this.err_message = "Kindly fill the form correctly"
@@ -82,7 +83,7 @@ export class LoginComponent implements OnInit {
   getProfile() {
     this._auth.getProfile().subscribe({
       next: (res: any) => {
-        console.log(res);
+        // console.log(res);
         this.isLoggingIn = false;
         this._current.storeUserDetails(res);
         if(res?.status.isSuccessful) {

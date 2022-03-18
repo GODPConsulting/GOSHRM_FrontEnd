@@ -102,28 +102,14 @@
           <p>You do not have any social media acoount available</p>
         </div>
         <a 
-          [href]="socialMediaInfo?.linkedInType"
+          *ngFor="let item of socialMediaInfo"
+          [href]="item?.socialMediaUrl"
           target="_blank"
-          *ngIf="socialMediaInfo?.linkedInType"
-        ><img class="click pe-4" src="assets/images/linkedIn-icon.svg" alt="">
-        </a>
-        <a 
-          [href]="socialMediaInfo?.facebookType"
-          target="_blank"
-          *ngIf="socialMediaInfo?.facebookType"
-        ><img class="click pe-4" src="assets/images/facebook-icon.svg" alt="">
-        </a>
-        <a 
-          [href]="socialMediaInfo?.twitterType"
-          target="_blank"
-          *ngIf="socialMediaInfo?.twitterType"
-        ><img class="click pe-4" src="assets/images/twitter-icon.svg" alt="">
-        </a>
-        <a 
-          [href]="socialMediaInfo?.youtubeType"
-          target="_blank"
-          *ngIf="socialMediaInfo?.youtubeType"
-        ><img class="click pe-4" src="assets/images/youtube-icon.svg" alt="">
+        >
+          <img *ngIf="item?.socialMediaType == 1" class="click pe-4" src="assets/images/youtube-icon.svg" alt="">
+          <img *ngIf="item?.socialMediaType == 2" class="click pe-4" src="assets/images/linkedIn-icon.svg" alt="">
+          <img *ngIf="item?.socialMediaType == 3" class="click pe-4" src="assets/images/facebook-icon.svg" alt="">
+          <img *ngIf="item?.socialMediaType == 4" class="click pe-4" src="assets/images/twitter-icon.svg" alt="">
         </a>
       </div>
      
@@ -139,26 +125,14 @@
         </div>
       </div>
       <div class="py-3">
-        <div *ngIf="websites == null">
+        <div *ngIf="websites?.length == 0">
           <p>You do not have any website available</p>
         </div>
         <ul>
-             <li>
+             <li *ngFor="let item of websites">
                <a 
-                 [href]="websites?.website_Link_First" target="_blank"
-               >{{ websites?.website_Name_First }}
-               </a>
-             </li>
-             <li>
-               <a 
-                 [href]="websites?.website_Link_Second" target="_blank"
-               >{{ websites?.website_Name_Second }}
-               </a>
-             </li>
-             <li>
-               <a 
-                 [href]="websites?.website_Link_Third" target="_blank"
-               >{{ websites?.website_Name_Third }}
+                 [href]="item?.website_Link" target="_blank"
+               >{{ item?.website_Name }}
                </a>
              </li>
         </ul>

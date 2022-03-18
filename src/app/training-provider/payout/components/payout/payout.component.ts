@@ -22,6 +22,7 @@ export class PayoutComponent implements OnInit {
   public payoutSetupFormSubmitted: boolean = false;
   public loggedInUser: any;
   public defaultAccout!: Payout;
+  public selectedPayout: Payout[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -40,12 +41,12 @@ export class PayoutComponent implements OnInit {
     this._helper.startSpinner();
     this.isFetchingPayout = true;
     this.sub.add(
-      this._payout.getPayout(this.loggedInUser?.trainingProviderId).subscribe({
+      this._payout.getPayout().subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingPayout = false;
           this.payouts = res['payoutSetupTypes'];
-          console.log(res, this.payouts)
+          // console.log(res, this.payouts)
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();
@@ -82,19 +83,26 @@ export class PayoutComponent implements OnInit {
     );
   }
 
-  getDefaultAccount(payout: any) {
-   
+  selectDeselectPayout(payout: any) {
+    this.selectedPayout.includes(payout.payoutId)
+      ? (this.selectedPayout = this.selectedPayout.filter(
+          code => code != payout.payoutId
+        ))
+      : this.selectedPayout.push(payout.payoutId);
+    // console.log(this.selectedPayout);
   }
 
-  setAsDefault(payout: Payout) {
+  setAsDefault(payout: any) {
     this._helper.startSpinner();
     this.payoutSetupFormSubmitted = true;
-    payout.trainingProviderId = this.loggedInUser.trainingProviderId;
+    payout.paySetUpCreatedByType = 2;
+    payout.userid = this.loggedInUser.userId;
+    payout.companyId = this.loggedInUser.companyId;
     payout.payoutId = payout?.payoutId;
     payout.account_Default = !payout.account_Default;
     // console.log(payout);
     this.sub.add(
-      this._payout.updatePayoutSetup(payout, this.loggedInUser.trainingProviderId).subscribe({
+      this._payout.updatePayoutSetup(payout).subscribe({
         next: (res: ResponseModel<Payout>) => {
           this._helper.stopSpinner();
           this.payoutSetupFormSubmitted = false;
@@ -112,6 +120,46 @@ export class PayoutComponent implements OnInit {
         },
       })
     );
+  }
+
+  deletePayout() {
+    if(this.selectedPayout.length == 0) {
+      this._base.openSnackBar(
+        'Error...!!!, You have to select item to delete',
+        'Error'
+      );
+    }
+    this.payoutSetupFormSubmitted = true;
+    const payload = {
+      companyId: this.loggedInUser.companyId,
+      pageContentId: this.selectedPayout,
+      type: 2,
+      userId: this.loggedInUser.userId
+    };
+    // console.log(payout);
+    if(this.selectedPayout.length != 0) {
+      this._helper.startSpinner();
+      this.sub.add(
+        this._payout.deletePayout(payload).subscribe({
+          next: (res: ResponseModel<Payout>) => {
+            this._helper.stopSpinner();
+            this.payoutSetupFormSubmitted = false;
+            // console.log(res);
+            this.payoutSetupFormSubmitted = false;
+            this._base.openSnackBar(
+              'Great...!!!, Your action was successful',
+              'success'
+            );
+            this.getUserPayouts();
+          },
+          error: (error: any) => {
+            this._helper.stopSpinner();
+            this.payoutSetupFormSubmitted = false;
+            console.log(error);
+          },
+        })
+      );
+    }
   }
 
 }

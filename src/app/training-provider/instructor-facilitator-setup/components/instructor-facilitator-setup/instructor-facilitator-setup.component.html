@@ -12,12 +12,20 @@
         </div>
     </div>
 
-    <div class="setup_content my-4">
-        <div class="setup-card bg-white p-4 my-4" *ngFor="let instructor of instructors">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <input type="checkbox" name="" id="">
-                </div>
+    <div class="setup_content  bg-white p-4 my-4">
+        <div class="text-center" *ngIf="instructors.length == 0">
+            <p>You have not created any instructor yet</p>
+        </div>
+        <div class="setup-card my-4" *ngFor="let instructor of instructors, index as i">
+            <div class="d-flex justify-content-between py-3">
+                <label for="payout{{i}}">
+                    <input 
+                      type="checkbox" 
+                      id="payout{{i}}" 
+                      name="" id=""
+                      (change)="selectDeselectInstructor(instructor)"
+                    />
+                  </label>
                 <div 
                     class="click" 
                     [routerLink]="['/training-provider/instructor-information', instructor?.instructorId]"

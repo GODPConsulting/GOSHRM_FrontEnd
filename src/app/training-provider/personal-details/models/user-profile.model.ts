@@ -15,10 +15,8 @@ export interface Profile {
 export interface SocialMedia {
     companyId: number,
     socialMediaId: number,
-    linkedInType: string,
-    facebookType: string,
-    twitterType: string,
-    youtubeType: string,
+    socialMediaType: number; 
+	socialMediaUrl: string;
     active: boolean,
     deleted: boolean,
     trainingProviderId: number
@@ -27,12 +25,8 @@ export interface SocialMedia {
 export interface Website {
     companyId: number,
     websiteId: number,
-    website_Name_First: string,
-    website_Link_First: string,
-    website_Name_Second: string,
-    website_Link_Second: string,
-    website_Name_Third: string,
-    website_Link_Third: string,
+    website_Name: string,
+    website_Link: string,
     active: boolean,
     deleted: boolean,
     trainingProviderId: number

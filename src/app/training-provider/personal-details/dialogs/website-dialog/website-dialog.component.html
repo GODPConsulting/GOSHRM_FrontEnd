@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between" mat-dialog-title>
-    <h2 mat-dialog-title>Social Media Accounts </h2>
+    <h2 mat-dialog-title>Website </h2>
     <div class="click" mat-dialog-close>
       <img src="assets/icons/x.svg" alt="" />
     </div>
@@ -7,84 +7,55 @@
   <mat-dialog-content class="mat-typography">
     <div>
         <form [formGroup]="websiteForm">
-            <div class="py-4">
-                <h3>Websites</h3>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form_group">
-                        <label class="col-form-label"
-                            >Website Name</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Name_First"
-                        />
+            <div class="">
+                <div formArrayName="websites">
+                  <div *ngFor="let item of newForm.controls; index as i">
+                    <div [formGroupName]="i">
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="form_group">
+                              <label class="col-form-label"
+                                  >Website Name</label
+                              >
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    formControlName="website_Name"
+                                    [ngClass]="{
+                                        'is-invalid':
+                                        (websiteForm.get('website_Name')?.errors && 
+                                        websiteForm.get('website_Name')?.touched) || 
+                                        (websiteForm.get('website_Name')?.hasError('required') &&
+                                        websiteFormSubmitted)
+                                    }"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form_group">
+                            <label class="col-form-label"
+                                >Website Link</label
+                            >
+                            <input
+                                class="form-control"
+                                type="text"
+                                formControlName="website_Link"
+                                [ngClass]="{
+                                  'is-invalid':
+                                    (websiteForm.get('website_Link')?.errors && 
+                                    websiteForm.get('website_Link')?.touched) || 
+                                    (websiteForm.get('website_Link')?.hasError('required') &&
+                                    websiteFormSubmitted)
+                                }"
+                            />
+                            </div>
+                        </div>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="form_group">
-                        <label class="col-form-label"
-                            >Website Link</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Link_First"
-                        />
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form_group">
-                        <label class="col-form-label"
-                            >Website Name</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Name_Second"
-                        />
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form_group">
-                        <label class="col-form-label"
-                            >Website Link</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Link_Second"
-                        />
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form_group">
-                        <label class="col-form-label"
-                            >Website Name</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Name_Third"
-                        />
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form_group">
-                        <label class="col-form-label"
-                            >Website Link</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Link_Third"
-                        />
-                        </div>
-                    </div>
+                  </div>
                 </div>
             </div>
-          </form>
+        </form>
     </div>
    
   </mat-dialog-content>
@@ -95,6 +66,12 @@
       #close
     >
       No, cancel
+    </button>
+    <button
+      class="btn btn-outline-green btn-md me-4 px-4"
+      (click)="addWebsite()"
+    >
+      Add more
     </button>
     <button
       class="btn btn-green btn-md px-4"

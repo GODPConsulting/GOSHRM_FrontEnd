@@ -4,6 +4,9 @@
 
 .payout__wrapper {
     padding: 3rem 5rem;
+    .payout_detail {
+        min-height: 70vh;
+    }
     .payout-form {
         span {
             color: $orange-400;

@@ -52,6 +52,7 @@ export class UploadProfileComponent implements OnInit {
       this.croppedImage,
       "profileImage.png"
     );
+    // console.log(this.croppedImage)
   }
 
   imageLoaded() {
@@ -78,6 +79,7 @@ export class UploadProfileComponent implements OnInit {
     while (n--) {
       u8arr[n] = bstr.charCodeAt(n);
     }
+    console.log(arr)
     return new File([u8arr], filename, { type: mime });
   }
 

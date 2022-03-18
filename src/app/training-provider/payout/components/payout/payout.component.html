@@ -7,14 +7,28 @@
             <app-searchbar 
               [canAdd]="true" 
               [canDelete]="true"
+              (deleteAction)="deletePayout()"
               (btnAction)="openPayoutDialog({ isEditing: false, editObject: {account_TypeId: 1}})"
             ></app-searchbar>
         </div>
     </div>
-    <div class="payout_detail">
-      <div class="payout-form my-4" *ngFor="let account of payouts">
-        <div class="p-4 bg-white">
-            <div class="d-flex justify-content-end">
+    <div class="payout_detail bg-white p-4">
+      <div class="text-center p-5 my-auto" *ngIf="payouts.length == 0">
+        <p>You do not have any payout information yet</p>
+      </div>
+      <div class="payout-form my-4" *ngFor="let account of payouts; index as i">
+        <div class="">
+            <div class="d-flex justify-content-between py-3">
+              <div>
+                <label for="payout{{i}}">
+                  <input 
+                    type="checkbox" 
+                    id="payout{{i}}" 
+                    name="" id=""
+                    (change)="selectDeselectPayout(account)"
+                  />
+                </label>
+              </div>
                 <div class="click" (click)="openPayoutDialog({ isEditing: true, editObject: account })">
                     <img src="assets/images/edit-pen.svg" alt="">
                     <span class="edit-pen p-4">Edit</span>
@@ -129,7 +143,6 @@
               </button>
           </div>
           </div>
-    </div>
-
+      </div>
     </div>
 </div>

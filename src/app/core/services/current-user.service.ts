@@ -70,7 +70,8 @@ export class CurrentUserService {
       full_Name: userDetails.firstName,
       trainingProviderId: userDetails.trainingProviderId,
       customerTypeId: userDetails.customerTypeId,
-      trainingInstructorId: userDetails.trainingInstructorId
+      trainingInstructorId: userDetails.trainingInstructorId,
+      companyId: userDetails.companyId
     };
     this.localStorageAS.set('GOS_user_details', user_data_to_store);
   }

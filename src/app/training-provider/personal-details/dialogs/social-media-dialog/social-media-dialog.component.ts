@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
@@ -55,24 +55,31 @@ export class SocialMediaDialogComponent implements OnInit {
   
   initSocialMediaForm() {
     this.socialMediaForm = this.fb.group({
-      linkedInType: [
-        this.data?.editObject?.linkedInType ? this.data?.editObject?.linkedInType  : 'https://',
-        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
-       ],
-      facebookType: [
-        this.data?.editObject?.facebookType ? this.data?.editObject?.facebookType  : 'https://',
-        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
-      ],
-      twitterType: [
-        this.data?.editObject?.twitterType ? this.data?.editObject?.twitterType  : 'https://' ,
-        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
-      ],
-      youtubeType: [
-        this.data?.editObject?.youtubeType ? this.data?.editObject?.youtubeType  : 'https://',
-        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
-      ],
+      socialMedia: this.fb.array([
+        this.fb.group({
+          socialMediaId: [0],
+          socialMediaUrl: ['https://',
+            [
+              Validators.required,
+              Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')
+            ]
+          ],
+          socialMediaType: [0, Validators.required],
+          companyId: [0]
+        })
+      ]),
     })
   }
+
+  get newForm(): FormArray {
+    return this.socialMediaForm.get('socialMedia') as FormArray;
+  }
+
+  addSocialMedia() {
+    let sm = this.fb.group(new socialMedia());
+		this.newForm.push(sm);
+  }
+
 
 
   public checkForKeyEnter(event: KeyboardEvent): void {
@@ -87,22 +94,27 @@ export class SocialMediaDialogComponent implements OnInit {
     if (this.socialMediaForm.valid) {
       this._healper.startSpinner();
       this.isLoading = true;
-      const payload = this.socialMediaForm.value;
-      payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
-      payload.socialMediaId = this.data?.editObject?.socialMediaId;
-      this._profile.updateSocialmedia(payload, this.loggedInUser?.trainingProviderId).subscribe({
+      const payload = this.socialMediaForm.get('socialMedia')?.value;
+      payload.map((m: any) => {
+        m.socialMediaType = +m.socialMediaType,
+        m.companyId = 2,
+        m.SociaMediaCreatedByType = 2,
+        m.userId = this.loggedInUser.userId
+      })
+      console.log(payload)
+      this._profile.updateSocialmedia(payload).subscribe({
         next: (res: any) => {
           if(res.status.isSuccessful) {
             this._healper.stopSpinner();
             this.isLoading = false;
             console.log(res)
-            if (this.data?.isEditing) {
-              payload.id = payload?.id;
-              payload.active = true;
-              payload.deleted = false;
-            } else {
-              payload.id = res?.response?.trainingProviderId;
-            }
+            // if (this.data?.isEditing) {
+            //   payload.id = payload?.id;
+            //   payload.active = true;
+            //   payload.deleted = false;
+            // } else {
+            //   payload.id = res?.response?.trainingProviderId;
+            // }
             // delete payload?.id;
             this.event.emit({
               isEditing: this.data?.isEditing,
@@ -130,3 +142,11 @@ export class SocialMediaDialogComponent implements OnInit {
     }
   }
 }
+
+
+export class socialMedia {
+	socialMediaId = 0;
+	socialMediaType = 0; 
+	socialMediaUrl = '';
+	companyId = 0;
+} 

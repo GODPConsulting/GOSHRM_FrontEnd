@@ -29,8 +29,8 @@ export class PersonalDetailsComponent implements OnInit {
   public isFetchingWebsiteUrl: boolean = false;
   public profile!: Profile;
   public profileImg: string = "assets/images/profile.png";
-  public socialMediaInfo!: SocialMedia;
-  public websites!: Website;
+  public socialMediaInfo: SocialMedia[] = [];
+  public websites: Website[] = [];
   public payouts: Payout[] = [];
   public runningCourses: RunningCourses[] = [];
   public loggedInUser: any;
@@ -59,11 +59,11 @@ export class PersonalDetailsComponent implements OnInit {
       this.activateRoute.data.subscribe((data: any) => {
         // console.log(data);
         this.profile = data?.resolveData?.profile?.trainingProviderObjs[0];
-        this.websites = data?.resolveData?.website?.websiteSetupTypes[0];
-        this.socialMediaInfo = data?.resolveData?.socialMedia?.socialMediaSetupTypes[0];
+        this.websites = data?.resolveData?.website?.websiteSetupTypes;
+        this.socialMediaInfo = data?.resolveData?.socialMedia?.socialMediaSetupTypes;
         this.payouts = data?.resolveData?.payout?.payoutSetupTypes;
         this.runningCourses = data?.resolveData?.runningCourse?.facilated_CoursesSetupTypes;
-        // console.log(this.runningCourses)
+        // console.log(this.websites)
       })
     );
   }

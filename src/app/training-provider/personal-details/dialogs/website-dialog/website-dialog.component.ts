@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
@@ -55,22 +55,29 @@ export class WebsiteDialogComponent implements OnInit {
   
   initWebsiteForm() {
     this.websiteForm = this.fb.group({
-      website_Name_First: [this.data?.editObject?.website_Name_First ? this.data?.editObject?.website_Name_First  : '' ],
-      website_Link_First: [
-        this.data?.editObject?.website_Link_First ? this.data?.editObject?.website_Link_First  : 'https://',
-        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
-      ],
-      website_Name_Second: [this.data?.editObject?.website_Name_Second ? this.data?.editObject?.website_Name_Second  : '' ],
-      website_Link_Second: [
-        this.data?.editObject?.website_Link_Second ? this.data?.editObject?.website_Link_Second  : 'https://',
-        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
-      ],
-      website_Name_Third: [this.data?.editObject?.website_Name_Third ? this.data?.editObject?.website_Name_Third  : '' ],
-      website_Link_Third: [
-        this.data?.editObject?.website_Link_Third ? this.data?.editObject?.website_Link_Third  : 'https://',
-        [Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]
-      ],
+      websites: this.fb.array([
+        this.fb.group({
+          websiteId: [0],
+          website_Link: ['https://',
+            [
+              Validators.required,
+              Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')
+            ]
+          ],
+          website_Name: ['', Validators.required],
+          companyId: [0]
+        })
+      ]),
     })
+  }
+
+  get newForm(): FormArray {
+    return this.websiteForm.get('websites') as FormArray;
+  }
+
+  addWebsite() {
+    let web = this.fb.group(new WebsiteDTO());
+		this.newForm.push(web);
   }
 
 
@@ -86,22 +93,26 @@ export class WebsiteDialogComponent implements OnInit {
     if (this.websiteForm.valid) {
       this._helper.startSpinner();
       this.isLoading = true;
-      const payload = this.websiteForm.value;
-      payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
+      const payload = this.websiteForm.get('websites')?.value;
+      payload.map((m: any) => {
+        m.companyId = 2,
+        m.sociaMediaCreatedByType = 2,
+        m.userId = this.loggedInUser.userId
+      })
       console.log(payload)
-      this._profile.updateWebsites(payload, this.loggedInUser?.trainingProviderId).subscribe({
+      this._profile.updateWebsites(payload).subscribe({
         next: (res: any) => {
           if(res.status.isSuccessful) {
             this._helper.stopSpinner();
             this.isLoading = false;
             console.log(res)
-            if (this.data?.isEditing) {
-              payload.trainingProviderId = payload?.trainingProviderId;
-              payload.active = true;
-              payload.deleted = false;
-            } else {
-              payload.trainingProviderId = res?.response?.trainingProviderId;
-            }
+            // if (this.data?.isEditing) {
+            //   payload.trainingProviderId = payload?.trainingProviderId;
+            //   payload.active = true;
+            //   payload.deleted = false;
+            // } else {
+            //   payload.trainingProviderId = res?.response?.trainingProviderId;
+            // }
             // delete payload?.id;
             this.event.emit({
               isEditing: this.data?.isEditing,
@@ -128,5 +139,12 @@ export class WebsiteDialogComponent implements OnInit {
       });
     }
   }
+}
+
+export class WebsiteDTO {
+  websiteId= 0;
+  website_Name= "";
+  website_Link = "";
+  companyId = 0;
 }
 

@@ -19,6 +19,7 @@ export class InstructorFacilitatorSetupComponent implements OnInit {
   public instructors: Facilitator[] = [];
   public isFetchngFacilitatorDetail: boolean = false;
   public loggedInUser: any;
+  public selectedInstructors: Facilitator[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -65,6 +66,15 @@ export class InstructorFacilitatorSetupComponent implements OnInit {
           this.instructors = [event?.editObject, ...this.instructors];
       }
     );
+  }
+
+  selectDeselectInstructor(payout: any) {
+    this.selectedInstructors.includes(payout.payoutId)
+      ? (this.selectedInstructors = this.selectedInstructors.filter(
+          code => code != payout.payoutId
+        ))
+      : this.selectedInstructors.push(payout.payoutId);
+    // console.log(this.selectedPayout);
   }
 
 }

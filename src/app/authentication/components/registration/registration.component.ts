@@ -60,8 +60,8 @@ export class RegistrationComponent implements OnInit {
             this.isRegisteringFormSubmitted = true;
             this._helper.triggerSucessAlert('Registration scuccessful!!!')
             // this._current.storeUserCredentials(res)
-            this.router.navigate(['/authentication/login']);
-            // this.router.navigate(['/authentication/confirmation']);
+            // this.router.navigate(['/authentication/login']);
+            this.router.navigate(['/authentication/confirmation']);
           } else {
             this._helper.stopSpinner();
             this.isError = true;
