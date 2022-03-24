@@ -11,6 +11,7 @@ import {
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
@@ -30,6 +31,7 @@ export class SocialMediaDialogComponent implements OnInit {
   public profileFormSubmitted: boolean = false;
   public error_message: string = '';
   public loggedInUser!: any;
+  public createdBy = CreatedByType;
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -65,7 +67,9 @@ export class SocialMediaDialogComponent implements OnInit {
             ]
           ],
           socialMediaType: [0, Validators.required],
-          companyId: [0]
+          companyId: [this.loggedInUser.companyId],
+          userId: [this.loggedInUser.userId],
+          SociaMediaCreatedByType: [this.createdBy.provider]
         })
       ]),
     })
@@ -96,10 +100,7 @@ export class SocialMediaDialogComponent implements OnInit {
       this.isLoading = true;
       const payload = this.socialMediaForm.get('socialMedia')?.value;
       payload.map((m: any) => {
-        m.socialMediaType = +m.socialMediaType,
-        m.companyId = 2,
-        m.SociaMediaCreatedByType = 2,
-        m.userId = this.loggedInUser.userId
+        m.socialMediaType = +m.socialMediaType
       })
       console.log(payload)
       this._profile.updateSocialmedia(payload).subscribe({

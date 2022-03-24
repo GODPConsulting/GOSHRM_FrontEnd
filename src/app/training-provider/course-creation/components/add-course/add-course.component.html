@@ -30,7 +30,8 @@
                                   bindValue="name" 
                                   [multiple]="true"
                                   [addTag]="newRequirement"
-                                  formControlName="training_Requirements"
+                                  formControlName="course_Requirement"
+                                  [closeOnSelect]="false"
                                   (keyup.enter)="checkForKeyEnter($event)"
                               >
                               </ng-select>
@@ -93,8 +94,17 @@
                                   [addTag]="newCompetence"
                                   (keyup.enter)="checkForKeyEnter($event)"
                                   [multiple]="true"
-                                  formControlName="expected_Competence"
+                                  [closeOnSelect]="false"
+                                  formControlName="course_Competence"
                                 >
+                                    <ng-template
+                                      ng-option-tmp
+                                      let-item="item"
+                                      let-item$="item$"
+                                      let-index="index"
+                                    >
+                                      {{ item.name }}
+                                    </ng-template>
                                 </ng-select>
                               </div>
                         </div>
@@ -123,7 +133,8 @@
                                 [addTag]="newParticipant"
                                 (keyup.enter)="checkForKeyEnter($event)"
                                 [multiple]="true"
-                                formControlName="suggested_Participant"
+                                [closeOnSelect]="false"
+                                formControlName="course_sector"
                               >
                               </ng-select>
                           </div>
@@ -177,7 +188,8 @@
                               bindLabel="instructor_Name" 
                               bindValue="instructorId" 
                               [multiple]="true"
-                              formControlName="currencyId"
+                              [closeOnSelect]="false"
+                              formControlName="facilitator"
                             >
                             </ng-select>
                           </div>
@@ -187,9 +199,9 @@
                             <label for="currentPassword" class="form-label"
                               >Apply Discount:
                             </label>
-                              <select name="" id="" class="form-select" formControlName="facilitator">
-                                  <option value="true ">Yes </option>
-                                  <option value="false">No</option>
+                              <select name="" id="" class="form-select" formControlName="apply_Discount">
+                                  <option [value]="true ">Yes </option>
+                                  <option [value]="false">No</option>
                               </select>
                           </div>
                     </div>
@@ -215,6 +227,7 @@
                             </label>
                               <input
                                 class="form-control pr-2"
+                                step="any"
                                 type="number"
                                 placeholder=""
                                 formControlName="discount_Rate"

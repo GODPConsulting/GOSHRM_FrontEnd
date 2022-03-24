@@ -11,6 +11,7 @@ import { Courses } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 import { DatePipe } from '@angular/common'
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { CreatedByType } from '@core/models/creation-type.model';
 
 @Component({
   selector: 'app-add-course',
@@ -32,6 +33,7 @@ export class AddCourseComponent implements OnInit {
   public endDate: any = new Date('2008-09-19 17:35:00');
   public sp: any;
   public htmlContent = ``;
+  public createdBy = CreatedByType;
   public newRequirement = (requirement: any) => ({ name: requirement });
   public newParticipant = (participant: any) => ({ name: participant });
   public newCompetence = (competence: any) => ({ name: competence });
@@ -128,9 +130,9 @@ export class AddCourseComponent implements OnInit {
     }
     if (this._route.snapshot.paramMap.get('courseId')) {
       this.courseId = this._route.snapshot.paramMap.get('courseId');
+      this.getOneCourses();
     }
     this.getResolvedData();
-    this.getOneCourses();
     this.initAddCourseForm();
   }
 
@@ -141,9 +143,7 @@ export class AddCourseComponent implements OnInit {
         next: (res: any) => {
           this._helper.stopSpinner();
           this.course = res['course_CreationSetupTypes'][0];
-          console.log(this.course)
           this.initAddCourseForm();
-          console.log(this.addCourseForm.value)
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();
@@ -165,20 +165,26 @@ export class AddCourseComponent implements OnInit {
 
   initAddCourseForm() {
     this.addCourseForm = this.fb.group({
+      courseId: [this.courseId],
+      createdByType: [this.createdBy.provider],
+      providerId: [this.loggedInUser.trainingProviderId],
+      companyId: [this.loggedInUser.companyId],
+      decisionType: [''],
       training_Name: [this.course?.training_Name ? this.course?.training_Name : '', Validators.required],
       training_Objective: [this.course?.training_Objective? this.course?.training_Objective :''],
-      training_Requirements: [this.course?.training_Requirements ? this.course?.training_Requirements : ''],
+      course_Requirement: [[]],
       training_Transcript: [this.course?.training_Transcript ? this.course?.training_Transcript : ''],
       training_Details: [this.course?.training_Details ? this.course?.training_Details : ''],
       difficulty_Level: [this.course?.difficulty_Level ? this.course?.difficulty_Level :''],
-      expected_Competence: [this.course?.expected_Competence ? this.course?.expected_Competence : ''],
+      course_Competence: [this.competencies[0].name],
       category: [this.course?.category ? this.course?.category : ''],
-      suggested_Participant: [this.course?.suggested_Participant ? this.course?.suggested_Participant : ''],
+      course_sector: [[]],
       delivery_Type: [this.course?.delivery_Type ? this.course?.delivery_Type : ''],
       duration: [this.course?.duration ? this.course?.duration : ''],
       cost: [this.course?.cost ? this.course?.cost : 0],
-      facilitator: [this.course?.facilitator ? this.course?.facilitator : ''],
-      discount_Rate: [this.course?.discount_Rate ? this.course?.discount_Rate : ''],
+      facilitator: [[]],
+      apply_Discount: [this.course?.apply_Discount ? this.course?.apply_Discount : false],
+      discount_Rate: [this.course?.discount_Rate ? this.course?.discount_Rate : 0],
       currencyId: [this.course?.currencyId ? this.course?.currencyId : 0],
       welcome_message: [this.course?.welcome_message ? this.course?.welcome_message : ''],
       competence_assessment: [this.course?.completence_Assessment ? this.course?.completence_Assessment : ''],
@@ -221,18 +227,57 @@ getTimeSpan(ticks: any ) {
 
   public submit(): void {
     this.courseFormSubmitted = true;
+    console.log(this.addCourseForm.value);
     if (this.addCourseForm.valid) {
       this._helper.startSpinner();
       const payload = this.addCourseForm.value;
-      payload.trainingProviderId = this.loggedInUser.trainingProviderId;
-      payload.faciliator  = 1;
-      payload.suggested_Participant  = 'Muhydeen Alabi';
       payload.addCover_Image  = 0;
       let duration = this.addCourseForm.get('duration')?.value;
       payload.cost = parseInt(payload.cost);
       let new_duration = new Date (new Date().toDateString() + ' ' + duration);
       // payload.duration = this.sp;
-      payload.duration =this.datepipe.transform(new_duration, 'h:mm:ss');
+      payload.duration = this.datepipe.transform(new_duration, 'h:mm:ss');
+      let expected_Competence = [];
+      let facilitators = [];
+      let course_sectors = [];
+      let course_Requirements = [];
+      let competence = payload.course_Competence.map((m: any) => {
+        return {
+          course_CompeteneceId: 0,
+          courseId: this.courseId,
+          name: m
+        }
+      })
+      expected_Competence.push(competence);
+      let course_sector = payload.course_sector.map((m: any) => {
+        return {
+          course_SectorId: 0,
+          courseId: this.courseId,
+          sectorName: m
+        }
+      })
+      course_sectors.push(course_sector);
+      let facilitator = payload.facilitator.map((m: any) => {
+        return {
+          course_FacilitatorId: 0,
+          courseId: this.courseId,
+          instructorId: m
+        }
+      })
+      facilitators.push(facilitator);
+      let course_Requirement = payload.course_Requirement.map((m: any) => {
+        return {
+          training_RequirementId: 0,
+          courseId: this.courseId,
+          name: m
+        }
+      })
+      course_Requirements.push(course_Requirement);
+      console.log(expected_Competence, facilitators, course_sector, course_Requirement);
+      payload.course_Competence = expected_Competence[0];
+      payload.facilitator = facilitators[0];
+      payload.course_sector = course_sectors[0];
+      console.log(payload);
       this._courses.UpdateCourse(payload).subscribe({
         next: (res: any) => {
          if(res.status.isSuccessful) {

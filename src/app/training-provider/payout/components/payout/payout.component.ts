@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
@@ -23,6 +24,7 @@ export class PayoutComponent implements OnInit {
   public loggedInUser: any;
   public defaultAccout!: Payout;
   public selectedPayout: Payout[] = [];
+  public createdBy = CreatedByType;
 
   constructor(
     public dialog: MatDialog,
@@ -64,7 +66,7 @@ export class PayoutComponent implements OnInit {
       payload.editObject.account_TypeId = 1;
     }
     let object: DialogModel<any> = payload;
-    console.log(payload)
+    // console.log(payload)
     const dialogRef = this.dialog.open(PayoutFormDialogComponent, {
       data: object,
     });
@@ -95,7 +97,7 @@ export class PayoutComponent implements OnInit {
   setAsDefault(payout: any) {
     this._helper.startSpinner();
     this.payoutSetupFormSubmitted = true;
-    payout.paySetUpCreatedByType = 2;
+    payout.paySetUpCreatedByType = this.createdBy.provider;
     payout.userid = this.loggedInUser.userId;
     payout.companyId = this.loggedInUser.companyId;
     payout.payoutId = payout?.payoutId;
@@ -133,7 +135,7 @@ export class PayoutComponent implements OnInit {
     const payload = {
       companyId: this.loggedInUser.companyId,
       pageContentId: this.selectedPayout,
-      type: 2,
+      type: this.createdBy.provider,
       userId: this.loggedInUser.userId
     };
     // console.log(payout);

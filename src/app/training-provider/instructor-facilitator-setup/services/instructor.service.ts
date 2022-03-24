@@ -14,7 +14,7 @@ export class InstructorService {
 
   public getAllFaciltator(
   ): Observable<ResponseModel<Facilitator>> {
-   const endpoint = '/lms/traininginstructor/get/all/traininginstructor';
+   const endpoint = '/lms/traininginstructor/getAllTraininginstructors';
    return this.http.getRequest(endpoint);
   }
 

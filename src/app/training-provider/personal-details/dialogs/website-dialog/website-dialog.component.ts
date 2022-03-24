@@ -11,6 +11,7 @@ import {
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
@@ -30,6 +31,7 @@ export class WebsiteDialogComponent implements OnInit {
   public websiteFormSubmitted: boolean = false;
   public error_message: string = '';
   public loggedInUser!: any;
+  public createdBy = CreatedByType;
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -65,7 +67,9 @@ export class WebsiteDialogComponent implements OnInit {
             ]
           ],
           website_Name: ['', Validators.required],
-          companyId: [0]
+          companyId: [this.loggedInUser.companyId],
+          userId: [this.loggedInUser.userId],
+          sociaMediaCreatedByType: [this.createdBy.provider]
         })
       ]),
     })
@@ -94,11 +98,6 @@ export class WebsiteDialogComponent implements OnInit {
       this._helper.startSpinner();
       this.isLoading = true;
       const payload = this.websiteForm.get('websites')?.value;
-      payload.map((m: any) => {
-        m.companyId = 2,
-        m.sociaMediaCreatedByType = 2,
-        m.userId = this.loggedInUser.userId
-      })
       console.log(payload)
       this._profile.updateWebsites(payload).subscribe({
         next: (res: any) => {

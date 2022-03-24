@@ -10,6 +10,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
@@ -31,6 +32,7 @@ export class PayoutFormDialogComponent implements OnInit {
   public isLoading: boolean =false;
   public payoutSetupFormSubmitted: boolean = false;
   public loggedInUser: any;
+  public createdBy = CreatedByType;
   
   @Output() event: EventEmitter<{
     editObject?: Payout;
@@ -62,6 +64,10 @@ export class PayoutFormDialogComponent implements OnInit {
       account_Name: [this.data?.editObject?.account_Name ? this.data?.editObject?.account_Name  : '' ],
       account_Number: [this.data?.editObject?.account_Number ? this.data?.editObject?.account_Number  : '' ],
       account_Default: [this.data?.editObject?.account_Default ? this.data?.editObject?.account_Default  : false ],
+      paySetUpCreatedByType: [this.createdBy.provider],
+      userid: [this.loggedInUser.userId],
+      companyId: [this.loggedInUser.companyId],
+      payoutId: [this.data?.editObject?.payoutId? this.data?.editObject?.payoutId : 0]
     })
   }
 
@@ -85,10 +91,6 @@ export class PayoutFormDialogComponent implements OnInit {
     this.payoutSetupFormSubmitted = true;
     const payload = this.payoutForm.value;
     payload.account_TypeId = parseInt(payload.account_TypeId);
-    payload.paySetUpCreatedByType = 2;
-    payload.userid = this.loggedInUser.userId;
-    payload.companyId = this.loggedInUser.companyId;
-    payload.payoutId = this.data?.editObject?.payoutId;
     console.log(payload);
     this.sub.add(
       this._payoutService.updatePayoutSetup(payload).subscribe({

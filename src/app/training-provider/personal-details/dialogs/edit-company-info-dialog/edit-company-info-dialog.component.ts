@@ -30,6 +30,20 @@ export class EditCompanyInfoDialogComponent implements OnInit {
   public profileFormSubmitted: boolean = false;
   public error_message: string = '';
   public loggedInUser!: any;
+  public industries: any[] = [
+    {name: 'Advertising and Marketing'}, {name: 'Aerospace'},
+    {name: 'Agriculture'}, {name: 'Computer and Technology'},
+    {name: 'Construction'}, {name: 'Consumer Discretionary'},
+    {name: 'Consumer Staples'}, {name: 'Education'},
+    {name: 'Energy'}, {name: 'Entertainment'},
+    {name: 'Fashion'}, {name: 'Finance and Economic'},
+    {name: 'Food and Beverage'}, {name: 'Healthcare'},
+    {name: 'Hospitality'}, {name: 'Manufacturing'},
+    {name: 'Media and News'}, {name: 'Mining'},
+    {name: 'Pharmaceutical'}, {name: 'Real Estate'}, 
+    {name: 'Telecommunication'}, {name: 'Transportation'}, 
+    {name: 'Utilities'}, {name: 'Others'},
+  ];
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -54,6 +68,7 @@ export class EditCompanyInfoDialogComponent implements OnInit {
 
   initUpdateProfileForm() {
     this.updateProfileForm = this.fb.group({
+      trainingProviderId: [this.loggedInUser.trainingProviderId],
       full_Name: [this.data?.editObject?.full_Name ? this.data?.editObject?.full_Name  : '' ],
       email_Address: [this.data?.editObject?.email_Address ? this.data?.editObject?.email_Address  : ''],
       phone_Number: [this.data?.editObject?.phone_Number ? this.data?.editObject?.phone_Number  : ''],
@@ -77,8 +92,6 @@ export class EditCompanyInfoDialogComponent implements OnInit {
       this._helper.startSpinner();
       this.isLoading = true;
       const payload = this.updateProfileForm.value;
-      payload.trainingProviderId = this.loggedInUser.trainingProviderId;
-      // payload.trainingProviderId = this.data?.editObject?.trainingProviderId;
       this._profile.updateProfile(payload, this.loggedInUser.trainingProviderId).subscribe({
         next: (res: any) => {
           if(res.status.isSuccessful) {
