@@ -5,6 +5,7 @@ import { CompetenceAssessmentComponent } from './components/competence-assessmen
 import { CourseAssessmentComponent } from './components/course-assessment/course-assessment.component';
 import { CourseCreationComponent } from './components/course-creation/course-creation.component';
 import { CourseOutlineComponent } from './components/course-outline/course-outline.component';
+import { CourseSectionComponent } from './components/course-section/course-section.component';
 import { CreateCourseAssessmentComponent } from './components/create-course-assessment/create-course-assessment.component';
 import { CreateLearningAssessmentComponent } from './components/create-learning-assessment/create-learning-assessment.component';
 import { LearningAssessmentComponent } from './components/learning-assessment/learning-assessment.component';
@@ -27,6 +28,10 @@ const routes: Routes = [
     {
         path: 'course-outline/:courseId',
         component: CourseOutlineComponent
+    },
+    {
+        path: 'outline-section',
+        component: CourseSectionComponent
     },
     {
         path: 'create-learning-assessment',

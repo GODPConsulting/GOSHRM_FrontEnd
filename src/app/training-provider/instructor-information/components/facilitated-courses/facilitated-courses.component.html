@@ -16,13 +16,13 @@
         >
         <tbody>
           <ng-container>
-            <tr class="text-capitalize" *ngFor="let leave of [1,2,3,4,5,6,7]">
-              <td>Apr 11, 2018</td>
-              <td>Excel Ms Advanced</td>
-              <td>Online</td>
-              <td>Beginner</td>
-              <td>02:45:12</td>
-              <td>180</td>
+            <tr class="text-capitalize" *ngFor="let course of facilitatedCourses">
+              <td>{{ course?.training_Name}}</td>
+              <td>{{ course?.training_Name}}</td>
+              <td>{{ course?.delivery_Type}}</td>
+              <td>{{ course?.difficulty_Level}}</td>
+              <td>{{ course?.duration}}</td>
+              <td>{{ course?.no_Of_view}}</td>
               <td>
                 <ng-rating-bar
                   [value]="4"

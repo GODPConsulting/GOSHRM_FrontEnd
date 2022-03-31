@@ -11,6 +11,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
@@ -30,6 +31,21 @@ export class EditCompanyInfoDialogComponent implements OnInit {
   public profileFormSubmitted: boolean = false;
   public error_message: string = '';
   public loggedInUser!: any;
+  public createdBy = CreatedByType;
+  public industries: any[] = [
+    {name: 'Advertising and Marketing'}, {name: 'Aerospace'},
+    {name: 'Agriculture'}, {name: 'Computer and Technology'},
+    {name: 'Construction'}, {name: 'Consumer Discretionary'},
+    {name: 'Consumer Staples'}, {name: 'Education'},
+    {name: 'Energy'}, {name: 'Entertainment'},
+    {name: 'Fashion'}, {name: 'Finance and Economic'},
+    {name: 'Food and Beverage'}, {name: 'Healthcare'},
+    {name: 'Hospitality'}, {name: 'Manufacturing'},
+    {name: 'Media and News'}, {name: 'Mining'},
+    {name: 'Pharmaceutical'}, {name: 'Real Estate'}, 
+    {name: 'Telecommunication'}, {name: 'Transportation'}, 
+    {name: 'Utilities'}, {name: 'Others'},
+  ];
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -44,7 +60,7 @@ export class EditCompanyInfoDialogComponent implements OnInit {
     public dialog: MatDialog,
     public _base: BaseComponent,
     private _currentService: CurrentUserService,
-    public _helper: HelperService
+    private _helper: HelperService
   ) {}
 
   ngOnInit(): void {
@@ -54,11 +70,16 @@ export class EditCompanyInfoDialogComponent implements OnInit {
 
   initUpdateProfileForm() {
     this.updateProfileForm = this.fb.group({
-      instructor_Name: [this.data?.editObject?.instructor_Name ? this.data?.editObject?.instructor_Name  : '' ],
-      trainingInstructorEmail: [this.data?.editObject?.trainingInstructorEmail ? this.data?.editObject?.trainingInstructorEmail  : ''],
-      trainingInstructorPhoneNumber: [this.data?.editObject?.trainingInstructorPhoneNumber ? this.data?.editObject?.trainingInstructorPhoneNumber  : ''],
+      instructorId: [this.loggedInUser.trainingInstructorId],
+      companyId: [this.loggedInUser.companyId],
+      userId: [this.loggedInUser.userId],
+      instructor_Name: [this.data?.editObject?.full_Name ? this.data?.editObject?.full_Name  : '' ],
+      trainingInstructorEmail: [this.data?.editObject?.email_Address ? this.data?.editObject?.email_Address  : ''],
+      trainingInstructorPhoneNumber: [this.data?.editObject?.phone_Number ? this.data?.editObject?.phone_Number  : ''],
       physical_Address: [this.data?.editObject?.physical_Address ? this.data?.editObject?.physical_Address  : ''],
-      bios: [this.data?.editObject?.bios ? this.data?.editObject?.bios  : ''],
+      bios: [this.data?.editObject?.aboutInfo ? this.data?.editObject?.aboutInfo  : ''],
+      industryTypes: [this.data?.editObject?.industryTypes ? this.data?.editObject?.industryTypes  : ''],
+      specializationTypes: [this.data?.editObject?.specializationTypes ? this.data?.editObject?.specializationTypes  : ''],
       linkedin_Link: [this.data?.editObject?.linkedin_Link ? this.data?.editObject?.linkedin_Link  : ''],
       twitter_Link: [this.data?.editObject?.twitter_Link ? this.data?.editObject?.twitter_Link  : ''],
     })
@@ -77,16 +98,14 @@ export class EditCompanyInfoDialogComponent implements OnInit {
       this._helper.startSpinner();
       this.isLoading = true;
       const payload = this.updateProfileForm.value;
-      payload.trainingProviderId = this.loggedInUser.trainingProviderId;
-      payload.instructorId = this.data?.editObject?.instructorId;
-      this._profile.updateProfile(payload, this.loggedInUser.trainingProviderId).subscribe({
+      this._profile.updateProfile(payload).subscribe({
         next: (res: any) => {
-          this.isLoading = false;
-          console.log(res)
           if(res.status.isSuccessful) {
+            this._helper.stopSpinner();
+            this.isLoading = false;
+            console.log(res)
             if (this.data?.isEditing) {
-              this._helper.stopSpinner();
-              payload.trainingProviderId = payload?.trainingProviderId;
+              payload.instructorId = payload?.instructorId;
               payload.active = true;
               payload.deleted = false;
             } else {
@@ -105,11 +124,11 @@ export class EditCompanyInfoDialogComponent implements OnInit {
             );
           } else {
             this._helper.stopSpinner();
-            this._helper.triggerErrorAlert(res.status.message.friendlyMessage)
+            this._helper.triggerErrorAlert(res.status?.message?.friendlyMessage)
           }
-          
         },
         error: (error: HttpErrorResponse) => {
+          this._helper.stopSpinner();
           console.log(error);
           this.isLoading = false;
           this.profileFormSubmitted = false;

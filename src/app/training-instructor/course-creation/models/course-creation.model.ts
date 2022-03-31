@@ -1,45 +1,74 @@
-export interface Courses  {"courseId": 0,
-    trainingProviderId: 0,
-    trainingInstructorId: number,
+export interface Courses  {
+    courseId: number,
+    decisionType: string,
+    createdByType: number,
+    providerId: number,
+    trainerId: number,
     training_Name: string,
     training_Objective: string,
-    training_Requirements: string,
     training_Transcript: string,
     training_Details: string,
     difficulty_Level: string,
     category: string,
-    expected_Competence: string,
-    company: string,
-    suggested_Participant: string,
+    companyId: number,
+    course_Competence: [
+      {
+        course_CompeteneceId: number,
+        courseId: number,
+        name: string
+      }
+    ],
+    course_sector: [
+      {
+        course_SectorId: number,
+        courseId: number,
+        sectorName: string
+      }
+    ],
     delivery_Type: string,
-    duration: Date,
+    duration: string,
     cost: number,
-    facilitator: string,
-    apply_Discount: string,
+    facilitator: [
+      {
+        course_FacilitatorId: number,
+        courseId: number,
+        instructorId: number
+      }
+    ],
+    apply_Discount: boolean,
+    course_Requirement: [
+      {
+        courseId: number,
+        course_RequirementId: number,
+        name: string
+      }
+    ],
     currencyId: number,
-    discount_Rate: string,
+    discount_Rate: number,
     completence_Assessment: string,
     welcome_message: string,
     congratulation_message: string,
     other_Comments: string,
     addCover_Image: number,
-    active: boolean,
-    deleted: boolean,
-    companyId: number
+    createdBy: string
 }
 
 export interface CourseOutline  {
-    courseId: number;
+    outlineId: number,
     sectionId: number,
+    type: number,
+    courseId: number,
     trainingProviderId: number,
     trainingInstructorId: number,
     section_Name: string,
-    section_Number: string,
     outline_Name: string,
+    number: string,
     outline_Description: string,
     material_Name: string,
-    material_Type: string,
+    material_Type: number,
     upload_Material: string,
+    photoId: string,
+    photo: string,
     active: boolean,
     deleted: boolean,
     companyId: number
@@ -47,11 +76,32 @@ export interface CourseOutline  {
 
 export interface CourseAssessment {
     course_AssessmentId: number,
-    course_Title: string,
     course: string,
     courseId: number,
     trainingInstructorId: number,
+    question: string,
+    answers: [{
+        answerId: number,
+        answer: string,
+        isAnswer: boolean
+    }],
     active: boolean,
     deleted: boolean,
     companyId: number
+}
+
+export enum OutlineType{
+  Outline =1,
+  Section =2
+}
+
+export enum MediaType{
+  Image = 1,
+  Pdf = 2,
+  Video = 3,
+}
+
+export enum AssessmentType {
+  CourseAssessment = 1,
+  LearningAssessment = 2
 }

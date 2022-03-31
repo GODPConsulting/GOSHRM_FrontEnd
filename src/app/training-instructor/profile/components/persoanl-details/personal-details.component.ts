@@ -28,8 +28,8 @@ export class PersonalDetailsComponent implements OnInit {
   public isFetchingWebsiteUrl: boolean = false;
   public profile!: Profile;
   public profileImg: string = "assets/images/profile.png";
-  public socialMediaInfo!: SocialMedia;
-  public websites!: Website;
+  public socialMediaInfo: SocialMedia[] = [];
+  public websites: Website[] = [];
   public payouts: Payout[] = [];
   public runningCourses: RunningCourses[] = [];
   public loggedInUser: any;
@@ -46,111 +46,21 @@ export class PersonalDetailsComponent implements OnInit {
   ngOnInit() {
     this.loggedInUser = this._currentService.getUser();
     this.getResolvedData();
-    // this.getUserProfile();
-    // this.getWebsiteUrls();
-    // this.getSocialmedia();
-    // this.getRunningCourses();
-    // this.getPayouts();
   }
 
   getResolvedData() {
     this.sub.add(
       this.activateRoute.data.subscribe((data: any) => {
         console.log(data);
-        this.profile = data?.resolveData?.profile?.training_InstructorSetupTypes[0];
-        this.websites = data?.resolveData?.website?.websiteSetupTypes[0];
-        this.socialMediaInfo = data?.resolveData?.socialMedia?.socialMediaSetupTypes[0];
+        this.profile = data?.resolveData?.profile?.trainingProviderObjs[0];
+        this.websites = data?.resolveData?.website?.websiteSetupTypes;
+        this.socialMediaInfo = data?.resolveData?.socialMedia?.socialMediaSetupTypes;
         this.payouts = data?.resolveData?.payout?.payoutSetupTypes;
-        this.runningCourses = data?.resolveData?.runningCourse?.coursesSetupTypes;
-        // console.log(this.runningCourses)
+        this.runningCourses = data?.resolveData?.runningCourse?.facilated_CoursesSetupTypes;
+        // console.log(this.websites)
       })
     );
   }
-
-  // public getUserProfile(): void {
-  //   this.isFetchingProfile = true;
-  //   this.sub.add(
-  //     this._profile.getProfile(this.loggedInUser?.trainingProviderId).subscribe({
-  //       next: (res: any) => {
-  //         this.isFetchingProfile = false;
-  //         this.profile = res['trainingProviderObjs'][0];
-  //         // console.log(res, this.profile)
-  //       },
-  //       error: (error: ResponseModel<null>) => {
-  //         this.isFetchingProfile = false;
-  //         console.log(error);
-  //       },
-  //     })
-  //   );
-  // }
-
-  // public getSocialmedia(): void {
-  //   this.isFetchingSocialMedia = true;
-  //   this.sub.add(
-  //     this._profile.getSocialMedia(this.loggedInUser?.trainingProviderId).subscribe({
-  //       next: (res: any) => {
-  //         this.isFetchingSocialMedia = false;
-  //         this.socialMediaInfo = res['socialMediaSetupTypes'][0];
-  //         // console.log(res, this.socialMediaInfo)
-  //       },
-  //       error: (error: ResponseModel<null>) => {
-  //         this.isFetchingSocialMedia = false;
-  //         console.log(error);
-  //       },
-  //     })
-  //   );
-  // }
-
-  // public getWebsiteUrls(): void {
-  //   this.isFetchingWebsiteUrl = true;
-  //   this.sub.add(
-  //     this._profile.getWebsites(this.loggedInUser?.trainingProviderId).subscribe({
-  //       next: (res: any) => {
-  //         this.isFetchingProfile = false;
-  //         this.websites = res['websiteSetupTypes'][0];
-  //         // console.log(res, this.websites)
-  //       },
-  //       error: (error: ResponseModel<null>) => {
-  //         this.isFetchingWebsiteUrl = false;
-  //         console.log(error);
-  //       },
-  //     })
-  //   );
-  // }
-
-  // public getPayouts(): void {
-  //   this.isFetchingWebsiteUrl = true;
-  //   this.sub.add(
-  //     this._payout.getPayout(this.loggedInUser?.trainingProviderId).subscribe({
-  //       next: (res: any) => {
-  //         this.isFetchingProfile = false;
-  //         this.payouts = res['payoutSetupTypes'];
-  //         // console.log(res, this.payouts)
-  //       },
-  //       error: (error: ResponseModel<null>) => {
-  //         this.isFetchingWebsiteUrl = false;
-  //         console.log(error);
-  //       },
-  //     })
-  //   );
-  // }
-
-  // public getRunningCourses(): void {
-  //   this.isFetchingWebsiteUrl = true;
-  //   this.sub.add(
-  //     this._runningCourseService.getRunningCourses(this.loggedInUser.trainingProviderId).subscribe({
-  //       next: (res: any) => {
-  //         this.isFetchingProfile = false;
-  //         this.runningCourses = res['coursesSetupTypes'];
-  //         console.log(res, this.runningCourses);
-  //       },
-  //       error: (error: ResponseModel<null>) => {
-  //         this.isFetchingWebsiteUrl = false;
-  //         console.log(error);
-  //       },
-  //     })
-  //   );
-  // }
 
   public openProfileUploadDialog(
     payload: { isEditing?: boolean; editObject?: any } | any
@@ -195,5 +105,4 @@ export class PersonalDetailsComponent implements OnInit {
       }
     );
   }
-
 }

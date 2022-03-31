@@ -17,7 +17,7 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.instructorId = this._route.snapshot.paramMap.get('instructorId');
-    console.log(this.instructorId)
+    // console.log(this.instructorId)
   }
 
   public getInformation(): void {

@@ -1,313 +1,331 @@
 <div class="add-course__wrapper">
-    <div class="header">
-        <h3>Add Course</h3>
-    </div>
-    <div class="add-course-form">
-        <div class="bg-white p-4 my-5">
-            <form [formGroup]="addCourseForm">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Training Name:
-                            </label>
-                              <input
-                                class="form-control pr-2"
-                                type="text"
-                                placeholder=""
-                                formControlName="training_Name"
-                              />
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Training Requirements <span class="text-orange">(+)</span>:
-                            </label>
-                              <ng-select 
-                                  [items]="requirement" 
-                                  bindLabel="name" 
-                                  bindValue="id" 
-                                  [multiple]="false"
-                                  formControlName="training_Requirements"
-                              >
-                              </ng-select>
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="" class="form-label"
-                            >Training Objective:
-                            </label>
-                            <textarea 
-                                class="form-control" 
-                                cols="30" rows="10"
-                                formControlName="training_Objective"
-                            ></textarea>
-                       </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="" class="form-label"
-                            >Training Transcript:
-                            </label>
-                            <textarea 
-                                class="form-control" 
-                                cols="30" rows="10"
-                                formControlName="training_Transcript"
-                            ></textarea>
-                       </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="" class="form-label"
-                            >Training Details:
-                            </label>
-                            <textarea 
-                                class="form-control" 
-                                cols="30" rows="10"
-                                formControlName="training_Details"
-                            ></textarea>
-                       </div>
-                    </div>
-                    <div class="col-md-6 row">
-                        <div class="col-12">
-                            <div class="form_group mb-4">
-                                <label for="currentPassword" class="form-label"
-                                  >Difficulty Level:
-                                </label>
-                                  <select name="" id="" class="form-select" formControlName="difficulty_Level">
-                                      <option value="Beginner ">Beginner </option>
-                                      <option value="Intermidiate">Intermidiate</option>
-                                      <option value="Advance">Advance</option>
-                                  </select>
-                              </div>
+  <div class="header">
+      <h3>Add Course</h3>
+  </div>
+  <div class="add-course-form">
+      <div class="bg-white p-4 my-5">
+          <form [formGroup]="addCourseForm">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Training Name:
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              placeholder=""
+                              formControlName="training_Name"
+                            />
                         </div>
-                        <div class="col-12">
-                            <div class="form_group mb-4">
-                                <label for="currentPassword" class="form-label"
-                                  >Expected Competence <span class="text-orange">(+)</span>:
-                                </label>
-                                  <input
-                                    class="form-control pr-2"
-                                    type="text"
-                                    placeholder=""
-                                    formControlName="training_Requirements"
-                                  />
-                              </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Category:
-                            </label>
-                              <select name="" id="" class="form-select" formControlName="difficulty_Level">
-                                  <option value="IT ">IT </option>
-                                  <option value="Finance">Finance</option>
-                                  <option value="Banking">Banking</option>
-                              </select>
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Sugestted Participants<span class="text-orange">(+)</span>:
-                            </label>
-                              <ng-select 
-                                [items]="participant" 
-                                bindLabel="name" 
-                                bindValue="id" 
-                                [multiple]="false"
-                                formControlName="suggested_Participant"
-                              >
-                              </ng-select>
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Delivery Type:
-                            </label>
-                              <select name="" id="" class="form-select" formControlName="delivery_Type">
-                                  <option value="classroom ">Classroom </option>
-                                  <option value="online">Online (Video)</option>
-                                  <option value="virtual">Virtual</option>
-                              </select>
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Duration:
-                            </label>
-                              <input
-                                class="form-control pr-2"
-                                type="time"
-                                placeholder=""
-                                formControlName="{{'duration'}}"
-                              />
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Cost:
-                            </label>
-                              <input
-                                class="form-control pr-2"
-                                type="number"
-                                placeholder=""
-                                formControlName="cost"
-                              />
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Facilitator:
-                            </label>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Training Requirements <span class="text-orange">(+)</span>:
+                          </label>
                             <ng-select 
-                              [items]="instructors" 
-                              bindLabel="instructor_Name" 
-                              bindValue="instructorId" 
+                                [items]="requirement" 
+                                bindLabel="name" 
+                                bindValue="name" 
+                                [multiple]="true"
+                                [addTag]="newRequirement"
+                                formControlName="course_Requirement"
+                                [closeOnSelect]="false"
+                                (keyup.enter)="checkForKeyEnter($event)"
+                            >
+                            </ng-select>
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="" class="form-label"
+                          >Training Objective:
+                          </label>
+                          <textarea 
+                              class="form-control" 
+                              cols="30" rows="10"
+                              formControlName="training_Objective"
+                          ></textarea>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="" class="form-label"
+                          >Training Transcript:
+                          </label>
+                          <angular-editor formControlName="training_Transcript" [config]="config"></angular-editor>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="" class="form-label"
+                          >Training Details:
+                          </label>
+                          <textarea 
+                              class="form-control" 
+                              cols="30" rows="10"
+                              formControlName="training_Details"
+                          ></textarea>
+                     </div>
+                  </div>
+                  <div class="col-md-6 row">
+                      <div class="col-12">
+                          <div class="form_group mb-4">
+                              <label for="currentPassword" class="form-label"
+                                >Difficulty Level:
+                              </label>
+                                <select name="" id="" class="form-select" formControlName="difficulty_Level">
+                                    <option value="Beginner ">Beginner </option>
+                                    <option value="Intermidiate">Intermidiate</option>
+                                    <option value="Advance">Advance</option>
+                                </select>
+                            </div>
+                      </div>
+                      <div class="col-12">
+                          <div class="form_group mb-4">
+                              <label for="currentPassword" class="form-label"
+                                >Expected Competence <span class="text-orange">(+)</span>:
+                              </label>
+                              <ng-select 
+                                [items]="competencies" 
+                                bindLabel="name" 
+                                bindValue="name"
+                                [addTag]="newCompetence"
+                                (keyup.enter)="checkForKeyEnter($event)"
+                                [multiple]="true"
+                                [closeOnSelect]="false"
+                                formControlName="course_Competence"
+                              >
+                                  <ng-template
+                                    ng-option-tmp
+                                    let-item="item"
+                                    let-item$="item$"
+                                    let-index="index"
+                                  >
+                                    {{ item.name }}
+                                  </ng-template>
+                              </ng-select>
+                            </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Category:
+                          </label>
+                            <select name="" id="" class="form-select" formControlName="category">
+                                <option value="IT ">IT </option>
+                                <option value="Finance">Finance</option>
+                                <option value="Banking">Banking</option>
+                            </select>
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Sugestted Participants<span class="text-orange">(+)</span>:
+                          </label>
+                            <ng-select 
+                              [items]="industries" 
+                              bindLabel="name" 
+                              bindValue="name"
+                              [addTag]="newParticipant"
+                              (keyup.enter)="checkForKeyEnter($event)"
                               [multiple]="true"
+                              [closeOnSelect]="false"
+                              formControlName="course_sector"
+                            >
+                            </ng-select>
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Delivery Type:
+                          </label>
+                            <select name="" id="" class="form-select" formControlName="delivery_Type">
+                                <option value="classroom ">Classroom </option>
+                                <option value="online">Video</option>
+                                <option value="virtual">Virtual</option>
+                            </select>
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Duration:
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="time"
+                              placeholder=""
+                              formControlName="{{'duration'}}"
+                            />
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Cost:
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="number"
+                              placeholder=""
+                              step=".01"
+                              formControlName="cost"
+                            />
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Facilitator:
+                          </label>
+                          <ng-select 
+                            [items]="instructors" 
+                            bindLabel="instructor_Name" 
+                            bindValue="instructorId" 
+                            [multiple]="true"
+                            [closeOnSelect]="false"
+                            formControlName="facilitator"
+                          >
+                          </ng-select>
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Apply Discount:
+                          </label>
+                            <select name="" id="" class="form-select" formControlName="apply_Discount">
+                                <option [value]="true ">Yes </option>
+                                <option [value]="false">No</option>
+                            </select>
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Currency:
+                          </label>
+                            <ng-select 
+                              [items]="currencies" 
+                              bindLabel="lookupName" 
+                              bindValue="lookupId" 
+                              [multiple]="false"
                               formControlName="currencyId"
                             >
                             </ng-select>
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Apply Discount:
-                            </label>
-                              <select name="" id="" class="form-select" formControlName="facilitator">
-                                  <option value="true ">Yes </option>
-                                  <option value="false">No</option>
-                              </select>
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Currency:
-                            </label>
-                              <ng-select 
-                                [items]="currencies" 
-                                bindLabel="lookupName" 
-                                bindValue="lookupId" 
-                                [multiple]="false"
-                                formControlName="currencyId"
-                              >
-                              </ng-select>
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="" class="form-label"
-                            >Welcome Message:
-                            </label>
-                            <textarea 
-                                class="form-control" 
-                                cols="30" rows="10"
-                                formControlName="welcome_message"
-                            ></textarea>
-                       </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Discount Rate:
-                            </label>
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Discount Rate(%):
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              step="any"
+                              type="number"
+                              placeholder=""
+                              formControlName="discount_Rate"
+                            />
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Competence Assessment
+                          </label>
+                            <select name="" id="" class="form-select" formControlName="competence_assessment">
+                                <option value="3 ">3 months </option>
+                                <option value="6 ">6 months </option>
+                                <option value="12 ">12 months </option>
+                            </select>
+                        </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form_group mb-4">
+                        <label for="" class="form-label"
+                        >Welcome Message:
+                        </label>
+                        <textarea 
+                            class="form-control" 
+                            cols="30" rows="10"
+                            formControlName="welcome_message"
+                        ></textarea>
+                   </div>
+                </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="" class="form-label"
+                          >Congratulations Message:
+                          </label>
+                          <textarea 
+                              class="form-control" 
+                              cols="30" rows="10"
+                              formControlName="congratulation_message"
+                          ></textarea>
+                     </div>
+                  </div>
+                  <!-- <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="" class="form-label"
+                          >Add Cover Image:
+                          </label>
+                          <div class="upload-document-wrapper text-center click py-5">
+                            <label for="file">
                               <input
-                                class="form-control pr-2"
-                                type="text"
-                                placeholder=""
-                                formControlName="discount_Rate"
+                                id="file"
+                                (change)="addDocument($event)"
+                                type="file"
+                                accept="image/png,image/jpeg,image/jpg"
+                                class="d-none uploader"
+                                formControlName="addCover_Image"
                               />
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="currentPassword" class="form-label"
-                              >Completence Assessment
-                            </label>
-                              <select name="" id="" class="form-select" formControlName="competence_assessment">
-                                  <option value="3 ">3 months </option>
-                                  <option value="6 ">6 months </option>
-                                  <option value="12 ">12 months </option>
-                              </select>
-                          </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="" class="form-label"
-                            >Congratulations Message:
-                            </label>
-                            <textarea 
-                                class="form-control" 
-                                cols="30" rows="10"
-                                formControlName="congratulation_message"
-                            ></textarea>
-                       </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="" class="form-label"
-                            >Add Cover Image:
-                            </label>
-                            <div class="upload-document-wrapper text-center click py-5">
-                              <label for="file">
-                                <input
-                                  id="file"
-                                  (change)="addDocument($event)"
-                                  type="file"
-                                  accept="image/png,image/jpeg,image/jpg"
-                                  class="d-none uploader"
-                                  formControlName="addCover_Image"
-                                />
-                                <div class="icon-wrapper">
-                                  <div>
-                                    <svg width="47" height="42" viewBox="0 0 47 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                      <path d="M23.4999 21.5L28.9166 25.8333M23.4999 21.5V41V21.5ZM23.4999 21.5L18.0833 25.8333L23.4999 21.5Z" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                      <path d="M8.40712 15.2537C6.35791 15.7694 4.56752 17.0156 3.37234 18.7582C2.17715 20.5008 1.65943 22.6199 1.91645 24.7173C2.17347 26.8147 3.18754 28.746 4.76813 30.1485C6.34872 31.5509 8.38704 32.328 10.5001 32.3336H12.6668" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                      <path d="M31.7985 10.9659C31.058 8.03346 29.2301 5.49233 26.6855 3.85761C24.1408 2.2229 21.0698 1.61692 18.0949 2.16251C15.12 2.70811 12.4639 4.36446 10.665 6.79579C8.86605 9.22712 8.05891 12.2515 8.40718 15.2559C8.40718 15.2559 8.73868 17.1669 9.41685 18.2502" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                      <path d="M34.3332 32.3334C35.8629 32.3323 37.3751 32.0073 38.7702 31.3797C40.1653 30.7521 41.4116 29.8362 42.4272 28.6922C43.4428 27.5482 44.2046 26.2021 44.6625 24.7425C45.1204 23.2829 45.2639 21.7428 45.0837 20.2237C44.9035 18.7046 44.4036 17.2409 43.6169 15.929C42.8302 14.617 41.7746 13.4865 40.5195 12.6119C39.2644 11.7373 37.8384 11.1384 36.3352 10.8547C34.832 10.5709 33.2857 10.6088 31.7982 10.9657L28.9165 11.75" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>                                      
-                                  </div>
+                              <div class="icon-wrapper">
+                                <div>
+                                  <svg width="47" height="42" viewBox="0 0 47 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M23.4999 21.5L28.9166 25.8333M23.4999 21.5V41V21.5ZM23.4999 21.5L18.0833 25.8333L23.4999 21.5Z" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8.40712 15.2537C6.35791 15.7694 4.56752 17.0156 3.37234 18.7582C2.17715 20.5008 1.65943 22.6199 1.91645 24.7173C2.17347 26.8147 3.18754 28.746 4.76813 30.1485C6.34872 31.5509 8.38704 32.328 10.5001 32.3336H12.6668" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M31.7985 10.9659C31.058 8.03346 29.2301 5.49233 26.6855 3.85761C24.1408 2.2229 21.0698 1.61692 18.0949 2.16251C15.12 2.70811 12.4639 4.36446 10.665 6.79579C8.86605 9.22712 8.05891 12.2515 8.40718 15.2559C8.40718 15.2559 8.73868 17.1669 9.41685 18.2502" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M34.3332 32.3334C35.8629 32.3323 37.3751 32.0073 38.7702 31.3797C40.1653 30.7521 41.4116 29.8362 42.4272 28.6922C43.4428 27.5482 44.2046 26.2021 44.6625 24.7425C45.1204 23.2829 45.2639 21.7428 45.0837 20.2237C44.9035 18.7046 44.4036 17.2409 43.6169 15.929C42.8302 14.617 41.7746 13.4865 40.5195 12.6119C39.2644 11.7373 37.8384 11.1384 36.3352 10.8547C34.832 10.5709 33.2857 10.6088 31.7982 10.9657L28.9165 11.75" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                  </svg>                                      
                                 </div>
-                                <p class="pt-3 font14 text-center">
-                                  Drag and drop files here <br>
-                                  files supported Video, Powerpoint, PDF and Excel
-                                </p></label
-                              >
-                            </div>
-                       </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="" class="form-label"
-                            >Other Comments:
-                            </label>
-                            <textarea 
-                                class="form-control" 
-                                cols="30" rows="10"
-                                formControlName="other_Comments"
-                            ></textarea>
-                       </div>
-                    </div>
-                </div>
+                              </div>
+                              <p class="pt-3 font14 text-center">
+                                Drag and drop files here <br>
+                                files supported Video, Powerpoint, PDF and Excel
+                              </p></label
+                            >
+                          </div>
+                     </div>
+                  </div> -->
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                          <label for="" class="form-label"
+                          >Other Comments:
+                          </label>
+                          <textarea 
+                              class="form-control" 
+                              cols="30" rows="10"
+                              formControlName="other_Comments"
+                          ></textarea>
+                     </div>
+                  </div>
+              </div>
 
-                <div class="d-flex justify-content-end">
-                    <button 
-                      class="btn btn-green btn-lg"
-                      (click)="submit()"
-                    >
-                        Add Course
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+              <div class="d-flex justify-content-end">
+                  <button 
+                    class="btn btn-green btn-lg"
+                    (click)="submit()"
+                  >
+                      Add Course
+                  </button>
+              </div>
+          </form>
+      </div>
+  </div>
 </div>

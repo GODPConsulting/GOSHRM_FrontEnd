@@ -1,27 +1,25 @@
 export interface Profile {
+    companyId: number,
     instructorId: number,
-    instructor_Image: number,
-    instructor_Name: string,
+    full_Name: string,
+    email_Address: string,
+    phone_Number: string,
     physical_Address: string,
-    trainingInstructorEmail: string,
-    trainingInstructorPhoneNumber: string,
-    bios: string,
-    courses_Facilitator: number,
     linkedin_Link: string,
     twitter_Link: string,
-    trainingProviderId: number,
+    aboutInfo: string,
+    industryTypes: string,
+    specializationTypes: string,
     active: boolean,
     deleted: boolean,
-    companyId: number
+    trainingProviderId: number
 }
 
 export interface SocialMedia {
     companyId: number,
     socialMediaId: number,
-    linkedInType: string,
-    facebookType: string,
-    twitterType: string,
-    youtubeType: string,
+    socialMediaType: number; 
+	socialMediaUrl: string;
     active: boolean,
     deleted: boolean,
     trainingProviderId: number
@@ -30,12 +28,8 @@ export interface SocialMedia {
 export interface Website {
     companyId: number,
     websiteId: number,
-    website_Name_First: string,
-    website_Link_First: string,
-    website_Name_Second: string,
-    website_Link_Second: string,
-    website_Name_Third: string,
-    website_Link_Third: string,
+    website_Name: string,
+    website_Link: string,
     active: boolean,
     deleted: boolean,
     trainingProviderId: number

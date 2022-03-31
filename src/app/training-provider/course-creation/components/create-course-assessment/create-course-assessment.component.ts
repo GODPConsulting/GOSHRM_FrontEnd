@@ -1,12 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { Subscription } from 'rxjs';
 import { CourseCreationService } from '../../services/course-creation.service';
 import Swal from 'sweetalert2';
+import { AssessmentType } from '../../models/course-creation.model';
 
 @Component({
   selector: 'app-create-course-assessment',
@@ -15,7 +16,7 @@ import Swal from 'sweetalert2';
 })
 export class CreateCourseAssessmentComponent implements OnInit {
   public sub: Subscription = new Subscription();
-  public quizQuestioForm!: FormGroup;
+  public quizQuestionForm!: FormGroup;
   public assessmentFormSubmitted: boolean = false;
   public loggedInUser: any;
   public courseId: any;
@@ -23,13 +24,17 @@ export class CreateCourseAssessmentComponent implements OnInit {
   public course_AssessmentId: any = 0;
   public assessments: any[] = [];
   public isFetchingAssessment: boolean = false;
+  public assessmentType = AssessmentType;
+  public isUpload: boolean = false;
+  public quizImg: any = '';
 
   constructor(
     private fb: FormBuilder,
     private _helper: HelperService,
     private _course: CourseCreationService,
     private _current:  CurrentUserService,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -43,7 +48,13 @@ export class CreateCourseAssessmentComponent implements OnInit {
 
 
   initQuizQuestionForm() {
-    this.quizQuestioForm = this.fb.group({
+    this.quizQuestionForm = this.fb.group({
+      course_AssessmentId: [0],
+      courseId: [+this.courseId],
+      trainingInstructorId: [+this.loggedInUser.trainingInstructorId],
+      trainingProviderId: [+this.loggedInUser.trainingProviderId],
+      companyId: [+this.loggedInUser.companyId],
+      assessmentType: [this.assessmentType.CourseAssessment],
       question: this.fb.array([this.newQuestion])
     });
   }
@@ -52,6 +63,7 @@ export class CreateCourseAssessmentComponent implements OnInit {
     return this.fb.group({
       questionId: [0],
       question_Varaible: ['', Validators.required],
+      photo: [''],
       course_Answers: this.fb.array([
         this.fb.group({
           answer_Varaibles: ['', Validators.required],
@@ -86,7 +98,7 @@ export class CreateCourseAssessmentComponent implements OnInit {
   }
 
   get getQuizQuestion(): any {
-    return this.quizQuestioForm.get('question') as FormArray;
+    return this.quizQuestionForm.get('question') as FormArray;
   }
 
   getQuizAnswers(index: any): FormArray {
@@ -120,17 +132,30 @@ export class CreateCourseAssessmentComponent implements OnInit {
     }
   }
 
-  removeQuestion(i: number) {
+  public removeQuestion(i: number) {
     if (i > 0) this.getQuizQuestion.removeAt(i);
+  }
+
+  public getBase64(event: any) {
+    this.isUpload = !this.isUpload;
+    let me = this;
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      // console.log(reader.result);
+      me.quizImg = reader.result;
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
   }
 
   public submit(): void {
     this.assessmentFormSubmitted = true;
-    if (this.quizQuestioForm.valid) {
+    if (this.quizQuestionForm.valid) {
       this._helper.startSpinner();
-      const payload = this.quizQuestioForm.value;
-      payload.trainingInstructorId = this.loggedInUser.trainingProviderId;
-     payload.courseId = +this.courseId;
+      const payload = this.quizQuestionForm.value;
      payload.course_AssessmentId = this.course_AssessmentId;
      console.log(payload)
       this._course.AddUpdateCourseAssessment(payload).subscribe({
@@ -139,7 +164,7 @@ export class CreateCourseAssessmentComponent implements OnInit {
           this._helper.stopSpinner();
           console.log(res)
           this._helper.triggerSucessAlert('Course created successfully!!!')
-          this.quizQuestioForm.reset();
+          this.router.navigate([`/training-provider/course-creation/course-assessment/${this.courseId}`]);
          } else {
            this._helper.stopSpinner();
            this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)

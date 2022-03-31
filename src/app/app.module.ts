@@ -17,14 +17,13 @@ import { TraningProviderComponent } from './training-provider/traning-provider.c
 import { TrainingInstructorComponent } from './training-instructor/training-instructor.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 
-
 @NgModule({
   declarations: [
     AppComponent, 
     NotFoundComponent, 
     OfflineComponent, 
     TraningProviderComponent, 
-    TrainingInstructorComponent
+    TrainingInstructorComponent,
   ],
   imports: [
     BrowserModule,

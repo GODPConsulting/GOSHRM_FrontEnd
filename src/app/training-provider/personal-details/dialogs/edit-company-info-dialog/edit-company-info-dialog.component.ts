@@ -11,6 +11,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
@@ -30,6 +31,7 @@ export class EditCompanyInfoDialogComponent implements OnInit {
   public profileFormSubmitted: boolean = false;
   public error_message: string = '';
   public loggedInUser!: any;
+  public createdBy = CreatedByType;
   public industries: any[] = [
     {name: 'Advertising and Marketing'}, {name: 'Aerospace'},
     {name: 'Agriculture'}, {name: 'Computer and Technology'},
@@ -69,6 +71,7 @@ export class EditCompanyInfoDialogComponent implements OnInit {
   initUpdateProfileForm() {
     this.updateProfileForm = this.fb.group({
       trainingProviderId: [this.loggedInUser.trainingProviderId],
+      companyId: [this.loggedInUser.companyId],
       full_Name: [this.data?.editObject?.full_Name ? this.data?.editObject?.full_Name  : '' ],
       email_Address: [this.data?.editObject?.email_Address ? this.data?.editObject?.email_Address  : ''],
       phone_Number: [this.data?.editObject?.phone_Number ? this.data?.editObject?.phone_Number  : ''],
@@ -92,7 +95,7 @@ export class EditCompanyInfoDialogComponent implements OnInit {
       this._helper.startSpinner();
       this.isLoading = true;
       const payload = this.updateProfileForm.value;
-      this._profile.updateProfile(payload, this.loggedInUser.trainingProviderId).subscribe({
+      this._profile.updateProfile(payload).subscribe({
         next: (res: any) => {
           if(res.status.isSuccessful) {
             this._helper.stopSpinner();

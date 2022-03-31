@@ -18,6 +18,8 @@ import { CourseOutlineDialogComponent } from './dialogs/course-outline-dialog/co
 import { NgRatingBarModule } from 'ng-rating-bar';
 import { ParticipantDialogComponent } from './dialogs/participant-dialog/participant-dialog.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { CourseSectionComponent } from './components/course-section/course-section.component';
+import { CourseSectionDialogComponent } from './dialogs/course-section-dialog/course-section-dialog.component';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     CreateLearningAssessmentComponent,
     CompetenceAssessmentDialogComponent,
     CourseOutlineDialogComponent,
-    ParticipantDialogComponent
+    ParticipantDialogComponent,
+    CourseSectionComponent,
+    CourseSectionDialogComponent
   ],
   imports: [
     CommonModule,

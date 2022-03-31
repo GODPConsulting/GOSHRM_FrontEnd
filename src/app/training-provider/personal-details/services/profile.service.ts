@@ -35,12 +35,10 @@ export class ProfileService {
   }
 
   public updateProfile(
-      getProfile: Profile, trainingProviderId: string
+      getProfile: Profile
     ): Observable<ResponseModel<Profile>> {
-      const endpoint = '/lms/trainingprovidercompanyInfo/add/update/trainingprovidercompanyInfo';
-      const params = new HttpParams()
-      .set('trainingProviderId', trainingProviderId)
-      return this.http.makeRequestWithData('post', endpoint, params, getProfile);
+      const endpoint = '/lms/trainingprovidercompanyInfo/addUpdateTrainingprovidercompanyInfo';
+      return this.http.makeRequestWithData('post', endpoint, {}, getProfile);
   }
 
   public getSocialMedia(): Observable<ResponseModel<Profile>> {

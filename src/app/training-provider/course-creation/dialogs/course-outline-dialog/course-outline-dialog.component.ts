@@ -1,4 +1,3 @@
-
 import { Output, EventEmitter } from '@angular/core';
 // import { HttpErrorResponse } from '@angular/common/http';
 import {
@@ -9,12 +8,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { Subscription } from 'rxjs';
-import { CourseOutline } from '../../models/course-creation.model';
+import { CourseOutline, OutlineType, MediaType } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 
 @Component({
@@ -28,6 +28,10 @@ export class CourseOutlineDialogComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public courseOutlineForm!: FormGroup;
   public loggedInUser: any;
+  public outlineType = OutlineType;
+  public mediaType = MediaType;
+  public courseId: any;
+  public documentUrl: any;
   
   @Output() event: EventEmitter<{
     editObject?: CourseOutline;
@@ -35,47 +39,65 @@ export class CourseOutlineDialogComponent implements OnInit {
   }> = new EventEmitter<{ editObject?: CourseOutline; isEditing: boolean }>();
 
   constructor(
-    public dialogRef: MatDialogRef<CourseOutlineDialogComponent>,
-    // @Inject(MAT_DIALOG_DATA) public modalData: any,
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<CourseOutline>,
     public fb: FormBuilder,
     public _helper: HelperService,
     private _course: CourseCreationService,
-    private _current: CurrentUserService
+    private _current: CurrentUserService,
+    private activateRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.loggedInUser = this._current.getUser();
+    this.courseId = this.activateRoute.snapshot.paramMap.get('courseId');
     this.initCourseOutlineForm();
   }
 
   public initCourseOutlineForm() {
     this.courseOutlineForm = this.fb.group({
-      section_Number: [this.data.editObject.section_Number ? this.data.editObject.section_Number : '', Validators.required],
+      section_Number: [this.data.editObject.number ? this.data.editObject.number : '', Validators.required],
       section_Name: [this.data.editObject.section_Name ? this.data.editObject.section_Name : '', Validators.required],
       outline_Name: [this.data.editObject.outline_Name ? this.data.editObject.outline_Name : '', Validators.required],
       outline_Description: [this.data.editObject.outline_Description ? this.data.editObject.outline_Description : '', Validators.required],
       material_Name: [this.data.editObject.material_Name ? this.data.editObject.material_Name : 'Complete web developemnt'],
-      material_Type: [this.data.editObject.material_Type ? this.data.editObject.material_Type : 'Doc'],
+      material_Type: [this.data.editObject.material_Type ? this.data.editObject.material_Type : 0],
+      upload_Material: [this.data.editObject.upload_Material ? this.data.editObject.upload_Material : ''],
+      type: [this.outlineType.Outline],
+      courseId: [this.data.editObject.courseId],
+      trainingProviderId: [this.loggedInUser.trainingProviderId],
+      trainingInstructorId: [this.loggedInUser.trainingInstructorId],
     })
   }
 
-  public addDocument(event: any): void {
-    let image = event;
-    console.log(image); 
+  public getBase64(event: any) {
+    // this.isUpload = !this.isUpload;
+    let me = this;
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      // console.log(reader.result);
+      me.documentUrl = reader.result;
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
   }
 
   submit() {
     this._helper.startSpinner();
     const payload = this.courseOutlineForm.value;
-    payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
-    payload.trainingInstructorId = this.loggedInUser?.trainingInstructorId;
+    payload.outlineId = this.data.editObject.outlineId ? this.data.editObject.outlineId : 0;
     payload.sectionId = this.data?.editObject?.sectionId ? this.data?.editObject?.sectionId : 0 ;
-    this.data.isEditing ? payload.courseId = this.data.editObject.courseId : payload.courseId = this.data.editObject
     payload.courseId = parseInt(payload.courseId);
+    payload.type = parseInt(payload.type);
+    if(this.documentUrl != null) {
+      const imageUrl = this.documentUrl.split(",");;
+      payload.upload_Material = imageUrl[1]
+    }
     console.log(payload);
     this.sub.add(
-      this._course.UpdateCourseOutline(payload, payload.trainingProviderId).subscribe({
+      this._course.UpdateCourseOutline(payload).subscribe({
         next: (res: any) => {
           console.log(res);
           if(res.status.isSuccessful) {

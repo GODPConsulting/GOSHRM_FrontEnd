@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
@@ -28,7 +28,8 @@ export class CourseOutlineComponent implements OnInit {
     private _course: CourseCreationService,
     public _helper: HelperService,
     public _current: CurrentUserService,
-    public _route: ActivatedRoute
+    public _route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -57,6 +58,12 @@ export class CourseOutlineComponent implements OnInit {
     );
   }
 
+  goToOutline(outline: any) {
+    this.router.navigate(['/training-provider/course-creation/outline-section'], {
+      queryParams: {courseId: this.courseId, outlineId: outline?.courseId},
+    });
+  }
+
   public openDialog(
     payload: { isEditing?: boolean; editObject?: CourseOutline } | any
   ): void {
@@ -64,7 +71,7 @@ export class CourseOutlineComponent implements OnInit {
     const dialogRef = this.dialog.open(CourseOutlineDialogComponent, {
       data: object,
     });
-    // console.log(payload)
+    console.log(payload)
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
         if (event?.isEditing) {

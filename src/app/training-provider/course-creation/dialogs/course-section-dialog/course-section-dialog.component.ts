@@ -1,3 +1,4 @@
+
 import { Output, EventEmitter } from '@angular/core';
 // import { HttpErrorResponse } from '@angular/common/http';
 import {
@@ -18,12 +19,11 @@ import { CourseOutline, OutlineType, MediaType } from '../../models/course-creat
 import { CourseCreationService } from '../../services/course-creation.service';
 
 @Component({
-  selector: 'app-course-outline-dialog',
-  templateUrl: './course-outline-dialog.component.html',
-  styleUrls: ['./course-outline-dialog.component.scss']
+  selector: 'app-course-section-dialog',
+  templateUrl: './course-section-dialog.component.html',
+  styleUrls: ['./course-section-dialog.component.scss']
 })
-
-export class CourseOutlineDialogComponent implements OnInit {
+export class CourseSectionDialogComponent implements OnInit {
   @ViewChild('close') close!: ElementRef;
   public sub: Subscription = new Subscription();
   public courseOutlineForm!: FormGroup;
@@ -55,15 +55,17 @@ export class CourseOutlineDialogComponent implements OnInit {
 
   public initCourseOutlineForm() {
     this.courseOutlineForm = this.fb.group({
-      section_Number: [this.data.editObject.number ? this.data.editObject.number : '', Validators.required],
+      companyId: [this.loggedInUser.companyId],
+      number: [this.data.editObject.number ? this.data.editObject.number : '', Validators.required],
       section_Name: [this.data.editObject.section_Name ? this.data.editObject.section_Name : '', Validators.required],
       outline_Name: [this.data.editObject.outline_Name ? this.data.editObject.outline_Name : '', Validators.required],
       outline_Description: [this.data.editObject.outline_Description ? this.data.editObject.outline_Description : '', Validators.required],
-      material_Name: [this.data.editObject.material_Name ? this.data.editObject.material_Name : 'Complete web developemnt'],
+      material_Name: [this.data.editObject.material_Name ? this.data.editObject.material_Name : ''],
       material_Type: [this.data.editObject.material_Type ? this.data.editObject.material_Type : 0],
       upload_Material: [this.data.editObject.upload_Material ? this.data.editObject.upload_Material : ''],
-      type: [this.outlineType.Outline],
+      type: [this.outlineType.Section],
       courseId: [this.data.editObject.courseId],
+      outlineId: [this.data.editObject.outlineId],
       trainingProviderId: [this.loggedInUser.trainingProviderId],
       trainingInstructorId: [this.loggedInUser.trainingInstructorId],
     })
@@ -90,10 +92,12 @@ export class CourseOutlineDialogComponent implements OnInit {
     payload.outlineId = this.data.editObject.outlineId ? this.data.editObject.outlineId : 0;
     payload.sectionId = this.data?.editObject?.sectionId ? this.data?.editObject?.sectionId : 0 ;
     payload.courseId = parseInt(payload.courseId);
-    payload.type = parseInt(payload.type);
+    payload.outlineId = parseInt(payload.outlineId);
+    payload.material_Type = parseInt(payload.material_Type);
+    payload.number = JSON.stringify(payload.number);
     if(this.documentUrl != null) {
       const imageUrl = this.documentUrl.split(",");;
-      payload.upload_Material = imageUrl[1]
+      payload.material_Name = imageUrl[1];
     }
     console.log(payload);
     this.sub.add(
@@ -128,4 +132,5 @@ export class CourseOutlineDialogComponent implements OnInit {
   }
 
 }
+
 

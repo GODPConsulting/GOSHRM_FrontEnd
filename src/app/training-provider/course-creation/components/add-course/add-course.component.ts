@@ -169,14 +169,14 @@ export class AddCourseComponent implements OnInit {
       createdByType: [this.createdBy.provider],
       providerId: [this.loggedInUser.trainingProviderId],
       companyId: [this.loggedInUser.companyId],
-      decisionType: [''],
+      decisionType: [this.course?.decisionType ? this.course?.decisionType : ''],
       training_Name: [this.course?.training_Name ? this.course?.training_Name : '', Validators.required],
       training_Objective: [this.course?.training_Objective? this.course?.training_Objective :''],
       course_Requirement: [[]],
       training_Transcript: [this.course?.training_Transcript ? this.course?.training_Transcript : ''],
       training_Details: [this.course?.training_Details ? this.course?.training_Details : ''],
       difficulty_Level: [this.course?.difficulty_Level ? this.course?.difficulty_Level :''],
-      course_Competence: [this.competencies[0].name],
+      course_Competence: [[]],
       category: [this.course?.category ? this.course?.category : ''],
       course_sector: [[]],
       delivery_Type: [this.course?.delivery_Type ? this.course?.delivery_Type : ''],
@@ -277,6 +277,8 @@ getTimeSpan(ticks: any ) {
       payload.course_Competence = expected_Competence[0];
       payload.facilitator = facilitators[0];
       payload.course_sector = course_sectors[0];
+      payload.course_Requirement = course_Requirements[0];
+      payload.apply_Discount == 'true' ? payload.apply_Discount = true : payload.apply_Discount = false;
       console.log(payload);
       this._courses.UpdateCourse(payload).subscribe({
         next: (res: any) => {
@@ -294,6 +296,7 @@ getTimeSpan(ticks: any ) {
           this._helper.stopSpinner();
           console.log(error);
           this.courseFormSubmitted = false;
+          this._helper.triggerErrorAlert('error')
         },
       });
     }

@@ -15,7 +15,7 @@ export class InstructorInformationService {
   public getFaciltator(
     trainingInstructorId: string
   ): Observable<ResponseModel<Facilitator>> {
-   const endpoint = '/lms/traininginstructor/get/byId/traininginstructor';
+   const endpoint = '/lms/traininginstructor/getTraininginstructorById';
    const params = new HttpParams()
    .set('trainingInstructorId', trainingInstructorId)
    return this.http.getRequestWithParams(endpoint, params);

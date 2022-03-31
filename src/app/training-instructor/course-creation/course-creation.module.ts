@@ -17,7 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CourseOutlineDialogComponent } from './dialogs/course-outline-dialog/course-outline-dialog.component';
 import { NgRatingBarModule } from 'ng-rating-bar';
 import { ParticipantDialogComponent } from './dialogs/participant-dialog/participant-dialog.component';
-
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 @NgModule({
   declarations: [
@@ -41,7 +41,8 @@ import { ParticipantDialogComponent } from './dialogs/participant-dialog/partici
     ReactiveFormsModule,
     SharedModule,
     FormsModule,
-    NgRatingBarModule
+    NgRatingBarModule,
+    AngularEditorModule
   ]
 })
 export class CourseCreationModule { }

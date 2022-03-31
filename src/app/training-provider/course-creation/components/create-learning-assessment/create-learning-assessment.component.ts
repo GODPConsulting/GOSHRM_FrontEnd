@@ -7,6 +7,7 @@ import { HelperService } from '@core/services/healper.service';
 import { Subscription } from 'rxjs';
 import { CourseCreationService } from '../../services/course-creation.service';
 import Swal from 'sweetalert2';
+import { AssessmentType } from '../../models/course-creation.model';
 
 @Component({
   selector: 'app-create-learning-assessment',
@@ -23,6 +24,7 @@ export class CreateLearningAssessmentComponent implements OnInit {
   public course_AssessmentId: any = 0;
   public assessments: any[] = [];
   public isFetchingAssessment: boolean = false;
+  public assessmentType = AssessmentType;
 
   constructor(
     private fb: FormBuilder,
@@ -44,7 +46,13 @@ export class CreateLearningAssessmentComponent implements OnInit {
 
   initQuizQuestionForm() {
     this.quizQuestioForm = this.fb.group({
-      assessment_Title: ['', Validators.required],
+      course_AssessmentId: [0],
+      courseId: [+this.courseId],
+      trainingInstructorId: [+this.loggedInUser.trainingInstructorId],
+      trainingProviderId: [+this.loggedInUser.trainingProviderId],
+      companyId: [+this.loggedInUser.companyId],
+      title: ['', Validators.required],
+      assessmentType: [this.assessmentType.LearningAssessment],
       question: this.fb.array([this.newQuestion])
     });
   }
@@ -53,6 +61,7 @@ export class CreateLearningAssessmentComponent implements OnInit {
     return this.fb.group({
       questionId: [0],
       question_Varaible: ['', Validators.required],
+      photo: [''],
       course_Answers: this.fb.array([
         this.fb.group({
           answer_Varaibles: ['', Validators.required],
@@ -130,9 +139,6 @@ export class CreateLearningAssessmentComponent implements OnInit {
     if (this.quizQuestioForm.valid) {
       this._helper.startSpinner();
       const payload = this.quizQuestioForm.value;
-      payload.trainingInstructorId = this.loggedInUser.trainingProviderId;
-     payload.courseId = +this.courseId;
-     payload.course_AssessmentId = this.course_AssessmentId;
      console.log(payload)
       this._course.AddUpdateLearningAssessment(payload).subscribe({
         next: (res: any) => {
