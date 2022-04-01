@@ -44,7 +44,7 @@ export class ProfileService {
   public getSocialMedia(): Observable<ResponseModel<Profile>> {
    const endpoint = '/lms/socialMedia/getAllSocialMedias';
    const params = new HttpParams()
-   .set('companyId', 2)
+   .set('companyId', this.companyId)
    .set('type', this.createdBy.instructor)
    .set('userid', this.userId);
    return this.http.getRequestWithParams(endpoint, params);

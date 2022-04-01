@@ -58,7 +58,8 @@ export class AddInstructorDialogComponent implements OnInit {
       twitter_Link: [''],
       addCover_Image: [''],
       password: ['Password@1'],
-      physical_Address: ['']
+      physical_Address: [''],
+      companyId: [this.loggedInUser.companyId]
     })
   }
 

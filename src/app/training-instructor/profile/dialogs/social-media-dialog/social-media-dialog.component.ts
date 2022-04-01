@@ -67,7 +67,7 @@ export class SocialMediaDialogComponent implements OnInit {
             ]
           ],
           socialMediaType: [0, Validators.required],
-          companyId: [2],
+          companyId: [this.loggedInUser.companyId],
           userId: [this.loggedInUser.userId],
           SociaMediaCreatedByType: [this.createdBy.instructor]
         })
