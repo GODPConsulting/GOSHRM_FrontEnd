@@ -295,8 +295,12 @@
                             >Industry</label
                             >
                             <select name="" id="" class="form-control" formControlName="industryTypes">
-                                <option value="banking and Finance">Banking and Finance</option>
-                                <option value="IT & Software">IT & Software</option>
+                                <option value="" selected>-- Select Industry --</option>
+                                <option 
+                                  [value]="industry?.name" 
+                                  *ngFor="let industry of industries">
+                                  {{ industry?.name }}
+                                </option>
                             </select>
                         </div>
                     </div>

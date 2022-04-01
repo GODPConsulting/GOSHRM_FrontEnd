@@ -26,6 +26,20 @@ export class CompanyInformationComponent implements OnInit {
     companyForm: FormGroup;
     socialMediaForm: FormGroup;
     websiteForm: FormGroup;
+    public industries: any[] = [
+      {name: 'Advertising and Marketing'}, {name: 'Aerospace'},
+      {name: 'Agriculture'}, {name: 'Computer and Technology'},
+      {name: 'Construction'}, {name: 'Consumer Discretionary'},
+      {name: 'Consumer Staples'}, {name: 'Education'},
+      {name: 'Energy'}, {name: 'Entertainment'},
+      {name: 'Fashion'}, {name: 'Finance and Economic'},
+      {name: 'Food and Beverage'}, {name: 'Healthcare'},
+      {name: 'Hospitality'}, {name: 'Manufacturing'},
+      {name: 'Media and News'}, {name: 'Mining'},
+      {name: 'Pharmaceutical'}, {name: 'Real Estate'}, 
+      {name: 'Telecommunication'}, {name: 'Transportation'}, 
+      {name: 'Utilities'}, {name: 'Others'},
+    ];
     companyInfo: any = {
       "comapanyId": 0,
       "company_Name": "",
@@ -327,7 +341,7 @@ export class CompanyInformationComponent implements OnInit {
 
   updateWebsiteUrls() {
     this.socialMediaFormSubmitted = true;
-    const payload = this.websiteForm.get('websites').value;
+    const payload = this.websiteForm.get('websiteItem').value;
     payload.map((m: any) => {
       m.companyId = +this.companyId,
       m.SociaMediaCreatedByType = 1
@@ -368,7 +382,7 @@ export class CompanyInformationComponent implements OnInit {
     reader.readAsDataURL(file);
     reader.onload = function () {
       //me.modelvalue = reader.result;
-      console.log(reader.result);
+      // console.log(reader.result);
       me.uploadLogo(reader.result);
     };
     reader.onerror = function (error) {
@@ -382,9 +396,10 @@ export class CompanyInformationComponent implements OnInit {
     const payload = {
       photoUrl: imageUrl[1],
       updatedBy: this.profile.userId,
-      companyId: this.companyId
+      companyId: this.companyId,
+      cratedByType: 1
     }
-    console.log(payload)
+    // console.log(payload)
     if(FileName !=  null) {
       this.sub.add(
         this._lmsService.updateCompanyLogo(payload).subscribe({

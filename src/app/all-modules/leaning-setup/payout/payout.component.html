@@ -12,7 +12,7 @@
     </div>
     <div class="password_wrapper my-4">
         <div class="payout-wrapper p-4 bg-white">
-          <div class="empty-state text-center my-auto" *ngIf="payoutList.length == 0">
+          <div class="empty-state text-center my-auto" *ngIf="payoutList?.length == 0">
             <p class="py-5">You do not have any payout account yet</p>
           </div>
           <div class="" *ngFor="let account of payoutList; index as i">
