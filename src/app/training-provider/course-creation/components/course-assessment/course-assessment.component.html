@@ -36,9 +36,9 @@
                         <span>{{ question?.question_Varaible }}</span>
                     </div>
                 </div>
-                <div *ngIf="question?.photo != null" class="question-img p-4">
+                <div *ngIf="question?.pictureUrl != null" class="question-img p-4">
                     <img 
-                        [src]="question?.photo" 
+                        [src]="question?.pictureUrl" 
                         alt="" 
                     />
                 </div>

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { Subscription } from 'rxjs';
@@ -25,13 +25,16 @@ export class CreateLearningAssessmentComponent implements OnInit {
   public assessments: any[] = [];
   public isFetchingAssessment: boolean = false;
   public assessmentType = AssessmentType;
+  public isUpload: boolean = false;
+  public quizImg: any = '';
 
   constructor(
     private fb: FormBuilder,
     private _helper: HelperService,
     private _course: CourseCreationService,
     private _current:  CurrentUserService,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -134,19 +137,35 @@ export class CreateLearningAssessmentComponent implements OnInit {
     if (i > 0) this.getQuizQuestion.removeAt(i);
   }
 
+  public getBase64(event: any) {
+    this.isUpload = !this.isUpload;
+    let me = this;
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      // console.log(reader.result);
+      me.quizImg = reader.result;
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  }
+
   public submit(): void {
     this.assessmentFormSubmitted = true;
     if (this.quizQuestioForm.valid) {
       this._helper.startSpinner();
       const payload = this.quizQuestioForm.value;
-     console.log(payload)
-      this._course.AddUpdateLearningAssessment(payload).subscribe({
+      payload.course_AssessmentId = this.course_AssessmentId;
+      console.log(payload)
+      this._course.AddUpdateCourseAssessment(payload).subscribe({
         next: (res: any) => {
          if(res.status.isSuccessful) {
           this._helper.stopSpinner();
           console.log(res)
           this._helper.triggerSucessAlert('Course created successfully!!!')
-          this.quizQuestioForm.reset();
+          this.router.navigate([`/training-provider/course-creation/learning-assessment/${this.courseId}`]);
          } else {
            this._helper.stopSpinner();
            this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)

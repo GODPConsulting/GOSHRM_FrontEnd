@@ -59,7 +59,8 @@ export class AddInstructorDialogComponent implements OnInit {
       addCover_Image: [''],
       password: ['Password@1'],
       physical_Address: [''],
-      companyId: [this.loggedInUser.companyId]
+      companyId: [this.loggedInUser.companyId],
+      trainingProviderId: [this.loggedInUser.trainingProviderId],
     })
   }
 

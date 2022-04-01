@@ -168,6 +168,7 @@ export class AddCourseComponent implements OnInit {
       courseId: [this.courseId],
       createdByType: [this.createdBy.provider],
       providerId: [this.loggedInUser.trainingProviderId],
+      trainerId: [this.loggedInUser.trainingInstructorId],
       companyId: [this.loggedInUser.companyId],
       decisionType: [this.course?.decisionType ? this.course?.decisionType : ''],
       training_Name: [this.course?.training_Name ? this.course?.training_Name : '', Validators.required],
@@ -286,7 +287,7 @@ getTimeSpan(ticks: any ) {
           this._helper.stopSpinner();
           console.log(res)
           this._helper.triggerSucessAlert('Course created successfully!!!')
-          this._router.navigate(['/training-provider/course-creation'])
+          this._router.navigate(['/training-instructor/course-creation'])
          } else {
            this._helper.stopSpinner();
            this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
@@ -19,11 +21,14 @@ export class CourseCreationComponent implements OnInit {
   public courses: Courses[] = [];
   public isFetchingCourses:boolean = false;
   public loggedInUser: any;
+  public createdBy = CreatedByType;
+  
   constructor(
     public dialog: MatDialog,
     private _course: CourseCreationService,
     public _helper: HelperService,
-    private _current: CurrentUserService
+    private _current: CurrentUserService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -32,10 +37,15 @@ export class CourseCreationComponent implements OnInit {
   }
 
   public getAllCourses(): void {
+    const payload = {
+      searchParams: "",
+      id: this.loggedInUser?.trainingInstructorId,
+      type: this.createdBy.instructor
+    }
     this._helper.startSpinner();
     this.isFetchingCourses = true;
     this.sub.add(
-      this._course.getAllCourses(this.loggedInUser?.trainingProviderId).subscribe({
+      this._course.getAllCourses(payload).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingCourses = false;
@@ -49,6 +59,10 @@ export class CourseCreationComponent implements OnInit {
         },
       })
     );
+  }
+
+  goTo() {
+    this.router.navigate(['/training-instructor/course-creation/add-course'])
   }
 
   public openDialog(

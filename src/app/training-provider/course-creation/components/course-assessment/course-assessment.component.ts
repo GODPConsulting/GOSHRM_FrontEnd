@@ -162,7 +162,7 @@ export class CourseAssessmentComponent implements OnInit {
     this._helper.startSpinner();
     this.isFetchingAssessment = true;
     this.sub.add(
-      this._course.getAssessments(this.courseId).subscribe({
+      this._course.getAssessments(this.courseId, this.assessmentType.CourseAssessment).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingAssessment = false;
@@ -257,7 +257,7 @@ export class CourseAssessmentComponent implements OnInit {
       const payload = this.updateQuestionForm.value;
       if(this.quizImg != null) {
         const imageUrl = this.quizImg.split(",");
-        payload.photo = imageUrl[1];
+        payload.pictureUrl = imageUrl[1];
       }
      console.log(payload)
       this._course.UpdateCourseAssessment(payload).subscribe({

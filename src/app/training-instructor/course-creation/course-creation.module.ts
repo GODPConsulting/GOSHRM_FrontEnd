@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CourseCreationComponent } from './components/course-creation/course-creation.component';
 import { CourseCreationRoutingModule } from './course-creation-routing.module';
 import { SharedModule } from '@shared/shared.module';
@@ -18,6 +18,8 @@ import { CourseOutlineDialogComponent } from './dialogs/course-outline-dialog/co
 import { NgRatingBarModule } from 'ng-rating-bar';
 import { ParticipantDialogComponent } from './dialogs/participant-dialog/participant-dialog.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { CourseSectionComponent } from './components/course-section/course-section.component';
+import { CourseSectionDialogComponent } from './dialogs/course-section-dialog/course-section-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     CreateLearningAssessmentComponent,
     CompetenceAssessmentDialogComponent,
     CourseOutlineDialogComponent,
-    ParticipantDialogComponent
+    ParticipantDialogComponent,
+    CourseSectionComponent,
+    CourseSectionDialogComponent
   ],
   imports: [
     CommonModule,
@@ -43,6 +47,9 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     FormsModule,
     NgRatingBarModule,
     AngularEditorModule
+  ],
+  providers: [
+    DatePipe
   ]
 })
 export class CourseCreationModule { }

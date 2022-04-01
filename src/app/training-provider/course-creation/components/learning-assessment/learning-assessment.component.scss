@@ -1,8 +1,65 @@
+@import 'partials/abstract/variables';
+@import "partials/abstract/mixins";
+@import "partials/components/forms";
+
 .course-assessment__wrapper {
     padding: 3rem;
-    .question, .options {
-        font-weight: normal;
-        font-size: 1.6rem;
-        line-height: 2.5rem;
+    .assessment-question {
+        .action-btn {
+            opacity: 0;
+        }
+        .question, .options {
+            font-weight: normal;
+            font-size: 1.6rem;
+            line-height: 2.5rem;
+        }
+        &:hover {
+            background: $white-300;
+            .action-btn {
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.learning-assessment__wrapper {
+    padding: 3rem 5rem;
+    color: $black-100;
+    .border-grey {
+        border: .1rem solid #BDBDBD;
+        border-radius: .6rem;
+    }
+    input[type="radio"] {
+        height: 3rem;
+        width: 3rem;
+        margin-top: 1.3rem;
+    }
+
+    .text-orange {
+        color: $orange-400;
+    }
+}
+
+select option:checked {
+    background-color: #FEF1E1 !important;
+    padding: 2rem !important;
+    font-size: 1.5rem !important; 
+    color: #333333 !important;
+}
+
+.form-select option {
+    background-color: #fff !important;
+    padding: 1rem !important;
+    font-size: 1.4rem;
+    color: #333333!important;
+}
+
+.position-relative {
+    input[type="file"] {
+      position: absolute;
+      font-size: 1.5rem;
+      bottom: 0rem;
+      right: .8rem;
+      opacity: 0;
     }
 }

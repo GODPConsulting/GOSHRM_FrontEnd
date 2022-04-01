@@ -92,10 +92,11 @@ export class CourseCreationService {
   }
 
   public getAssessments(
-    courseId: any
+    courseId: any, assessmentType: number
   ): Observable<ResponseModel<CourseAssessment>> {
     const params = new HttpParams()
     .set('courseId', courseId)
+    .set('type', assessmentType)
     const endpoint = '/lms/courseassessment/get/byId/courseassessment';
     return this.http.getRequestWithParams( endpoint, params);
   }

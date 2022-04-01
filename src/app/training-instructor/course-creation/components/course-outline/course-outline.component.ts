@@ -59,7 +59,7 @@ export class CourseOutlineComponent implements OnInit {
   }
 
   goToOutline(outline: any) {
-    this.router.navigate(['/training-provider/course-creation/outline-section'], {
+    this.router.navigate(['/training-instructor/course-creation/outline-section'], {
       queryParams: {courseId: this.courseId, outlineId: outline?.courseId},
     });
   }

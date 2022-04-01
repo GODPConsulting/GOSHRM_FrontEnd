@@ -168,6 +168,7 @@ export class AddCourseComponent implements OnInit {
       courseId: [this.courseId],
       createdByType: [this.createdBy.provider],
       providerId: [this.loggedInUser.trainingProviderId],
+      trainerId: [this.loggedInUser.trainingInstructorId],
       companyId: [this.loggedInUser.companyId],
       decisionType: [this.course?.decisionType ? this.course?.decisionType : ''],
       training_Name: [this.course?.training_Name ? this.course?.training_Name : '', Validators.required],

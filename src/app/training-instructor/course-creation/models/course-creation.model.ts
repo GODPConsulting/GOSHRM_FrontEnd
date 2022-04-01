@@ -1,107 +1,107 @@
 export interface Courses  {
-    courseId: number,
-    decisionType: string,
-    createdByType: number,
-    providerId: number,
-    trainerId: number,
-    training_Name: string,
-    training_Objective: string,
-    training_Transcript: string,
-    training_Details: string,
-    difficulty_Level: string,
-    category: string,
-    companyId: number,
-    course_Competence: [
-      {
-        course_CompeteneceId: number,
-        courseId: number,
-        name: string
-      }
-    ],
-    course_sector: [
-      {
-        course_SectorId: number,
-        courseId: number,
-        sectorName: string
-      }
-    ],
-    delivery_Type: string,
-    duration: string,
-    cost: number,
-    facilitator: [
-      {
-        course_FacilitatorId: number,
-        courseId: number,
-        instructorId: number
-      }
-    ],
-    apply_Discount: boolean,
-    course_Requirement: [
-      {
-        courseId: number,
-        course_RequirementId: number,
-        name: string
-      }
-    ],
-    currencyId: number,
-    discount_Rate: number,
-    completence_Assessment: string,
-    welcome_message: string,
-    congratulation_message: string,
-    other_Comments: string,
-    addCover_Image: number,
-    createdBy: string
+  courseId: number,
+  decisionType: string,
+  createdByType: number,
+  providerId: number,
+  trainerId: number,
+  training_Name: string,
+  training_Objective: string,
+  training_Transcript: string,
+  training_Details: string,
+  difficulty_Level: string,
+  category: string,
+  companyId: number,
+  course_Competence: [
+    {
+      course_CompeteneceId: number,
+      courseId: number,
+      name: string
+    }
+  ],
+  course_sector: [
+    {
+      course_SectorId: number,
+      courseId: number,
+      sectorName: string
+    }
+  ],
+  delivery_Type: string,
+  duration: string,
+  cost: number,
+  facilitator: [
+    {
+      course_FacilitatorId: number,
+      courseId: number,
+      instructorId: number
+    }
+  ],
+  apply_Discount: boolean,
+  course_Requirement: [
+    {
+      courseId: number,
+      course_RequirementId: number,
+      name: string
+    }
+  ],
+  currencyId: number,
+  discount_Rate: number,
+  completence_Assessment: string,
+  welcome_message: string,
+  congratulation_message: string,
+  other_Comments: string,
+  addCover_Image: number,
+  createdBy: string
 }
 
 export interface CourseOutline  {
-    outlineId: number,
-    sectionId: number,
-    type: number,
-    courseId: number,
-    trainingProviderId: number,
-    trainingInstructorId: number,
-    section_Name: string,
-    outline_Name: string,
-    number: string,
-    outline_Description: string,
-    material_Name: string,
-    material_Type: number,
-    upload_Material: string,
-    photoId: string,
-    photo: string,
-    active: boolean,
-    deleted: boolean,
-    companyId: number
+  outlineId: number,
+  sectionId: number,
+  type: number,
+  courseId: number,
+  trainingProviderId: number,
+  trainingInstructorId: number,
+  section_Name: string,
+  outline_Name: string,
+  number: string,
+  outline_Description: string,
+  material_Name: string,
+  material_Type: number,
+  upload_Material: string,
+  photoId: string,
+  photo: string,
+  active: boolean,
+  deleted: boolean,
+  companyId: number
 }
 
 export interface CourseAssessment {
-    course_AssessmentId: number,
-    course: string,
-    courseId: number,
-    trainingInstructorId: number,
-    question: string,
-    answers: [{
-        answerId: number,
-        answer: string,
-        isAnswer: boolean
-    }],
-    active: boolean,
-    deleted: boolean,
-    companyId: number
+  course_AssessmentId: number,
+  course: string,
+  courseId: number,
+  trainingInstructorId: number,
+  question: string,
+  answers: [{
+      answerId: number,
+      answer: string,
+      isAnswer: boolean
+  }],
+  active: boolean,
+  deleted: boolean,
+  companyId: number
 }
 
 export enum OutlineType{
-  Outline =1,
-  Section =2
+Outline =1,
+Section =2
 }
 
 export enum MediaType{
-  Image = 1,
-  Pdf = 2,
-  Video = 3,
+Image = 1,
+Pdf = 2,
+Video = 3,
 }
 
 export enum AssessmentType {
-  CourseAssessment = 1,
-  LearningAssessment = 2
+CourseAssessment = 1,
+LearningAssessment = 2
 }
