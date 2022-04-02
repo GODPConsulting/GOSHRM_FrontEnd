@@ -68,10 +68,17 @@ public getWebsites(): Observable<ResponseModel<Profile>> {
 }
 
   public updateWebsites(
-  getWebsite: any
-  ): Observable<ResponseModel<Website>> {
-  const endpoint = '/lms/website/addAndUpdateWebsite';
-  return this.http.makeRequestWithData('post', endpoint, {}, getWebsite);
+    getWebsite: any
+    ): Observable<ResponseModel<Website>> {
+    const endpoint = '/lms/website/addAndUpdateWebsite';
+    return this.http.makeRequestWithData('post', endpoint, {}, getWebsite);
+  }
+
+  public updateProfileImg(
+    payload: any
+    ): Observable<ResponseModel<Website>> {
+    const endpoint = '/lms/company/addAndUpdateCompanyLogo';
+    return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
 
 }

@@ -47,11 +47,6 @@ export class PersonalDetailsComponent implements OnInit {
   ngOnInit() {
     this.loggedInUser = this._currentService.getUser();
     this.getResolvedData();
-    // this.getUserProfile();
-    // this.getWebsiteUrls();
-    // this.getSocialmedia();
-    // this.getRunningCourses();
-    // this.getPayouts();
   }
 
   getResolvedData() {
@@ -68,91 +63,6 @@ export class PersonalDetailsComponent implements OnInit {
     );
   }
 
-  // public getUserProfile(): void {
-  //   this.isFetchingProfile = true;
-  //   this.sub.add(
-  //     this._profile.getProfile(this.loggedInUser?.trainingProviderId).subscribe({
-  //       next: (res: any) => {
-  //         this.isFetchingProfile = false;
-  //         this.profile = res['trainingProviderObjs'][0];
-  //         // console.log(res, this.profile)
-  //       },
-  //       error: (error: ResponseModel<null>) => {
-  //         this.isFetchingProfile = false;
-  //         console.log(error);
-  //       },
-  //     })
-  //   );
-  // }
-
-  // public getSocialmedia(): void {
-  //   this.isFetchingSocialMedia = true;
-  //   this.sub.add(
-  //     this._profile.getSocialMedia(this.loggedInUser?.trainingProviderId).subscribe({
-  //       next: (res: any) => {
-  //         this.isFetchingSocialMedia = false;
-  //         this.socialMediaInfo = res['socialMediaSetupTypes'][0];
-  //         // console.log(res, this.socialMediaInfo)
-  //       },
-  //       error: (error: ResponseModel<null>) => {
-  //         this.isFetchingSocialMedia = false;
-  //         console.log(error);
-  //       },
-  //     })
-  //   );
-  // }
-
-  // public getWebsiteUrls(): void {
-  //   this.isFetchingWebsiteUrl = true;
-  //   this.sub.add(
-  //     this._profile.getWebsites(this.loggedInUser?.trainingProviderId).subscribe({
-  //       next: (res: any) => {
-  //         this.isFetchingProfile = false;
-  //         this.websites = res['websiteSetupTypes'][0];
-  //         // console.log(res, this.websites)
-  //       },
-  //       error: (error: ResponseModel<null>) => {
-  //         this.isFetchingWebsiteUrl = false;
-  //         console.log(error);
-  //       },
-  //     })
-  //   );
-  // }
-
-  // public getPayouts(): void {
-  //   this.isFetchingWebsiteUrl = true;
-  //   this.sub.add(
-  //     this._payout.getPayout(this.loggedInUser?.trainingProviderId).subscribe({
-  //       next: (res: any) => {
-  //         this.isFetchingProfile = false;
-  //         this.payouts = res['payoutSetupTypes'];
-  //         // console.log(res, this.payouts)
-  //       },
-  //       error: (error: ResponseModel<null>) => {
-  //         this.isFetchingWebsiteUrl = false;
-  //         console.log(error);
-  //       },
-  //     })
-  //   );
-  // }
-
-  // public getRunningCourses(): void {
-  //   this.isFetchingWebsiteUrl = true;
-  //   this.sub.add(
-  //     this._runningCourseService.getRunningCourses(this.loggedInUser.trainingProviderId).subscribe({
-  //       next: (res: any) => {
-  //         this.isFetchingProfile = false;
-  //         this.runningCourses = res['coursesSetupTypes'];
-  //         console.log(res, this.runningCourses);
-  //       },
-  //       error: (error: ResponseModel<null>) => {
-  //         this.isFetchingWebsiteUrl = false;
-  //         console.log(error);
-  //       },
-  //     })
-  //   );
-  // }
-
   public openProfileUploadDialog(
     payload: { isEditing?: boolean; editObject?: any } | any
   ): void {
@@ -162,7 +72,7 @@ export class PersonalDetailsComponent implements OnInit {
     });
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-          this.profileImg = event?.editObject;
+          this.profileImg = event?.editObject.photoUrl;
       }
     );
   }

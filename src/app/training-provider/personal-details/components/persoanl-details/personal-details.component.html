@@ -6,7 +6,11 @@
     <div class="wrapper__sign_in">
       <div class="d-flex">
         <div class="profile_img">
-          <img class="profile__pix" [src]="profileImg" alt="profile image">
+          <img 
+            class="profile__pix" 
+            [src]="profile?.photoUrl ? profile?.photoUrl : profileImg "
+            alt="profile image"
+          />
         </div>
         <div class="profile_detail">
           <div class="upload-btn">

@@ -6,7 +6,7 @@ import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { Subscription } from 'rxjs';
 import { CourseCreationService } from '../../services/course-creation.service';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 import { AssessmentType } from '../../models/course-creation.model';
 
 @Component({
@@ -106,30 +106,7 @@ export class CreateCourseAssessmentComponent implements OnInit {
   }
 
   addQuestion() {
-    let entry = { ...this.getQuizQuestion };
-    let answers: [] = entry.controls[0].get('course_Answers').value;
-    //check that there is at least one true value
-    const atLeastOne = answers.filter((el: any) => {
-      return el.isAnswer;
-    });
-    // if atLeastOne is equal to one, good
-    if (atLeastOne.length == 1) {
-      this.getQuizQuestion.push(this.newQuestion);
-    } else if (atLeastOne.length < 1) {
-      Swal.fire({
-        title: 'Error',
-        icon: 'info',
-        html:
-          '<p>You need to select one of the options as the correct answer</p>'
-      });
-    } else {
-      Swal.fire({
-        title: 'Error',
-        icon: 'info',
-        html:
-          '<p>Only one option can be selected as the right answer to a question</p>'
-      });
-    }
+    this.getQuizQuestion.push(this.newQuestion);
   }
 
   public removeQuestion(i: number) {

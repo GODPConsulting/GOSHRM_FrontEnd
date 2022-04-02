@@ -1,5 +1,5 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Output, EventEmitter } from '@angular/core';
-// import { HttpErrorResponse } from '@angular/common/http';
 import {
   Component,
   ElementRef,
@@ -7,10 +7,14 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BaseComponent } from '@core/base/base/base.component';
+import { CreatedByType } from '@core/models/creation-type.model';
+import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { ProfileService } from '../../services/profile.service';
 
 @Component({
   selector: 'app-upload-profile',
@@ -19,25 +23,30 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 })
 export class UploadProfileComponent implements OnInit {
   @ViewChild('close') close!: ElementRef;
-  imageChangedEvent: any = null;
-  croppedImage: any = "";
-  croppedImageFile: any = "";
-  imageUploaded = false;
-  isLoading = false;
-  imageCrop: boolean = false;
+  public imageChangedEvent: any = null;
+  public croppedImage: any = "";
+  public croppedImageFile: any = "";
+  public imageUploaded = false;
+  public isLoading = false;
+  public imageCrop: boolean = false;
   @Output() event: EventEmitter<{
     editObject?: any;
     isEditing: boolean;
   }> = new EventEmitter<{ editObject?: any; isEditing: boolean }>();
+  public createdBy = CreatedByType;
+  public loggedInUser: any;
 
   constructor(
     public dialogRef: MatDialogRef<UploadProfileComponent>,
-    // @Inject(MAT_DIALOG_DATA) public modalData: any,
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<string>,
+    private _helper: HelperService,
+    private _profile: ProfileService,
+    private _base: BaseComponent,
+    private _current: CurrentUserService
   ) { }
 
   ngOnInit() {
-
+    this.loggedInUser = this._current.getUser();
   }
 
 
@@ -87,12 +96,44 @@ export class UploadProfileComponent implements OnInit {
     this.imageCrop = !this.imageCrop
   }
 
-
   public submit(): void {
     this.isLoading = true;
-    this.event.emit({
-      isEditing: this.data?.isEditing,
-      editObject: this.croppedImage,
-    });
+      this._helper.startSpinner();
+      const imageUrl = this.croppedImage.split(",");
+      const payload = {
+        companyId: this.loggedInUser.companyId,
+        cratedByType: this.createdBy.provider,
+        updatedBy: this.loggedInUser.userId,
+        detailId: this.loggedInUser.trainingProviderId,
+        photoUrl: imageUrl[1]
+      }
+      this._profile.updateProfileImg(payload).subscribe({
+        next: (res: any) => {
+          if(res.status.isSuccessful) {
+            this._helper.stopSpinner();
+            this.isLoading = false;
+            console.log(res)
+            this.event.emit({
+              isEditing: this.data?.isEditing,
+              editObject: this.croppedImage,
+            });
+            this.isLoading = false;
+            this.close.nativeElement.click();
+            this._base.openSnackBar(
+              'Great...!!!, Your action was successful',
+              'success'
+            );
+          } else {
+            this._helper.stopSpinner();
+            this._helper.triggerErrorAlert(res.status?.message?.friendlyMessage)
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          this._helper.stopSpinner();
+          console.log(error);
+          this.isLoading = false;
+          // this.error_message = error?.error?.Id[0];
+        },
+      });
   }
 }

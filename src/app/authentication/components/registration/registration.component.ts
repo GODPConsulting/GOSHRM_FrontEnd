@@ -1,13 +1,9 @@
-// import { HttpErrorResponse } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-// import { RegisterResponseDTO } from '@auth/models/auth.model';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@auth/services/auth.service';
 import { HelperService } from '@core/services/healper.service';
-// import { ResponseModel } from 'app/models/response.model';
-// import { CurrentUserService  } from '@core/services/current-user.service'
 
 @Component({
   selector: 'app-registration',
@@ -22,16 +18,23 @@ export class RegistrationComponent implements OnInit {
   public isError: boolean = false;
   public showConfirmPassword: boolean = false;
   public error_message: string = '';
+  public findUser: string = 'participant';
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private auth: AuthService,
-    // private _current: CurrentUserService
-    private _helper: HelperService
+    private _helper: HelperService,
+    private _route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    const route = this._route.snapshot.paramMap.get('user');
+    if(route == 'provider') {
+      this.findUser = 'provider';
+    } else {
+      this.findUser = 'participant';
+    }
     this.initRegisterForm();
   }
 
@@ -59,8 +62,6 @@ export class RegistrationComponent implements OnInit {
             this._helper.stopSpinner();
             this.isRegisteringFormSubmitted = true;
             this._helper.triggerSucessAlert('Registration scuccessful!!!')
-            // this._current.storeUserCredentials(res)
-            // this.router.navigate(['/authentication/login']);
             this.router.navigate(['/authentication/confirmation']);
           } else {
             this._helper.stopSpinner();

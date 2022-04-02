@@ -9,7 +9,6 @@
                     <input
                         class="form-control pr-2"
                         type="text"
-                        [attr.disabled]="true"
                         formControlName="instructor_Name"
                     />
                 </div>
@@ -22,7 +21,6 @@
                         <input
                             class="form-control pr-2"
                             type="text"
-                            [attr.disabled]="true"
                             formControlName="trainingInstructorEmail"
                             placeholder="Enter username"
                         />
@@ -36,7 +34,6 @@
                     <input
                         class="form-control pr-2"
                         type="text"
-                        [attr.disabled]="true"
                         formControlName="linkedin_Link"
                         placeholder="Enter linkedIn link"
                     />
@@ -51,7 +48,6 @@
                         class="form-control pr-2"
                         type="text"
                         formControlName="twitter_Link"
-                        [attr.disabled]="true"
                         placeholder="Enter twitter link"
                     />
                 </div>
@@ -65,7 +61,6 @@
                     class="form-control" 
                     name="" id="" cols="30" 
                     rows="10"
-                    [attr.disabled]="true"
                     formControlName="bios"
                 ></textarea>
                 </div>
@@ -74,7 +69,6 @@
         <div class="d-flex justify-content-end py-5">
             <button 
                 class="btn btn-green btn-lg"
-                [attr.disabled]="true"
                 (click)="submit()"
             >
                 Save
