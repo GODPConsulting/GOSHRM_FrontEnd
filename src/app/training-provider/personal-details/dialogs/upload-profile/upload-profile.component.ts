@@ -112,7 +112,7 @@ export class UploadProfileComponent implements OnInit {
           if(res.status.isSuccessful) {
             this._helper.stopSpinner();
             this.isLoading = false;
-            console.log(res)
+            // console.log(res)
             this.event.emit({
               isEditing: this.data?.isEditing,
               editObject: this.croppedImage,

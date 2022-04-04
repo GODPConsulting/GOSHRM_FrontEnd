@@ -57,8 +57,8 @@ export class PersonalDetailsComponent implements OnInit {
         this.websites = data?.resolveData?.website?.websiteSetupTypes;
         this.socialMediaInfo = data?.resolveData?.socialMedia?.socialMediaSetupTypes;
         this.payouts = data?.resolveData?.payout?.payoutSetupTypes;
-        this.runningCourses = data?.resolveData?.runningCourse?.facilated_CoursesSetupTypes;
-        // console.log(this.websites)
+        this.runningCourses = data?.resolveData?.runningCourse?.coursesSetupTypes;
+        // console.log(this.runningCourses)
       })
     );
   }
@@ -72,7 +72,7 @@ export class PersonalDetailsComponent implements OnInit {
     });
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-          this.profileImg = event?.editObject.photoUrl;
+          this.profileImg = event?.editObject.pictureUrl;
       }
     );
   }

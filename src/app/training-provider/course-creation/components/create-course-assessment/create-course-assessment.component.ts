@@ -107,6 +107,7 @@ export class CreateCourseAssessmentComponent implements OnInit {
 
   addQuestion() {
     this.getQuizQuestion.push(this.newQuestion);
+    // window.scrollTo(0, document.body.scrollHeight);
   }
 
   public removeQuestion(i: number) {

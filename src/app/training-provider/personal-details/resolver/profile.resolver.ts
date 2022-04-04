@@ -6,7 +6,7 @@ import {
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { PayoutService } from 'app/training-provider/payout/services/payout.service';
-// import { RunningCoursesService } from 'app/training-provider/running-courses/services/running-courses.service';
+import { RunningCoursesService } from 'app/training-provider/running-courses/services/running-courses.service';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ProfileService } from '../services/profile.service';
@@ -19,7 +19,7 @@ export class ProfileResolver implements Resolve<boolean> {
   constructor(
     private _profile: ProfileService,
     private _payout: PayoutService,
-    // private _runningCourse: RunningCoursesService,
+    private _runningCourse: RunningCoursesService,
     private _current: CurrentUserService,
     private _helper: HelperService
   ) {}
@@ -27,13 +27,14 @@ export class ProfileResolver implements Resolve<boolean> {
   resolve(route: ActivatedRouteSnapshot): Observable<any> | Promise<any> | any {
     this.loggedInUser = this._current.getUser()
     let trainingProviderId = this.loggedInUser.trainingProviderId;
+    let companyId = this.loggedInUser.companyId;
     const profile = this._profile.getProfile(trainingProviderId);
     const socialMedia = this._profile.getSocialMedia();
     const website = this._profile.getWebsites();
     const payout = this._payout.getPayout();
-    // const runningCourse = this._runningCourse.getRunningCourses(trainingProviderId);
+    const runningCourse = this._runningCourse.getRunningCourses(companyId);
     this._helper.startSpinner();
-    return forkJoin([profile, socialMedia, website, payout]).pipe(
+    return forkJoin([profile, socialMedia, website, payout, runningCourse]).pipe(
       map(response => {
         this._helper.stopSpinner();
         return {
@@ -41,7 +42,7 @@ export class ProfileResolver implements Resolve<boolean> {
           socialMedia: response[1],
           website: response[2],
           payout: response[3],
-          // runningCourse: response[4],
+          runningCourse: response[4],
         };
       })
     );

@@ -10,7 +10,7 @@
               <th>Upload Date</th>
               <th>Facilitator</th>
               <th>Course Title</th>
-              <th>No. of Views</th>
+              <th>No. of Enrolled</th>
               <th>Ratings</th>
               <th></th>
             </tr>
@@ -21,8 +21,8 @@
             <tr class="text-capitalize" *ngFor="let course of runningCourses">
               <td>{{ course?.upload_Date | date }}</td>
               <td>{{ course?.facilitator }}</td>
-              <td>{{ course?.training_Name }}</td>
-              <td>{{ course?.noOfViews }}</td>
+              <td>{{ course?.course_Title }}</td>
+              <td>{{ course?.no_Of_Views }}</td>
               <td>
                 <div class="d-flex justify-content-center align-items-center">
                    <ng-rating-bar

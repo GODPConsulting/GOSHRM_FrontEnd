@@ -8,7 +8,7 @@
         <div class="profile_img">
           <img 
             class="profile__pix" 
-            [src]="profile?.photoUrl ? profile?.photoUrl : profileImg "
+            [src]="profile?.pictureUrl ? profile?.pictureUrl : profileImg "
             alt="profile image"
           />
         </div>
@@ -168,7 +168,7 @@
           <p>You do not any running course available</p>
         </div>
         <div class="d-flex justify-content-between" *ngFor="let course of runningCourses | slice:0:3">
-          <p>{{ course }}</p>
+          <p>{{ course?.course_Title }}</p>
           <ng-rating-bar
               [value]="course?.ratings || 0"
               [ratingCount]="5"

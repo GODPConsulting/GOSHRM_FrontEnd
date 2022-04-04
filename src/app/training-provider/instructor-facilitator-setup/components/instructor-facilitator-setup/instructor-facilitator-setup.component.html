@@ -77,14 +77,14 @@
                     <div class="d-flex">
                         <a [href]="instructor?.linkedin_Link" target="_blank">
                             <img 
-                                *ngIf="instructor?.linkedin_Link != null" 
+                                *ngIf="instructor?.linkedin_Link != null && instructor?.linkedin_Link != ''" 
                                 class="click pe-3" src="assets/images/linkedIn-icon.svg" 
                                 alt=""
                             >
                         </a>
                         <a [href]="instructor?.twitter_Link" target="_blank">
                             <img 
-                                *ngIf="instructor?.twitter_Link != null" 
+                                *ngIf="instructor?.twitter_Link != null && instructor?.twitter_Link != ''" 
                                 class="click ps-3" 
                                 src="assets/images/twitter-icon.svg" 
                                 alt=""

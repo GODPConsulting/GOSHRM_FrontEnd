@@ -78,7 +78,7 @@
     height: 4.8rem;
     border-radius: 0.8rem;
     font-size: 1.4rem;
-    color: $blue-700;
+    color: $black-100;
     padding: 1.35rem 1.6rem;
     background: rgba($blue-700, 0.07);
     display: flex;
@@ -86,12 +86,12 @@
   }
   .ng-select.ng-select-focused.ng-select-opened > .ng-select-container {
     background: $white-100 !important;
-    color: $blue-700;
-    border: 0.1rem solid rgba($blue-700, 0.4);
+    color: $black-100;
+    border: 0.1rem solid rgba($black-100, 0.4);
     box-shadow: none;
   }
   .ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
-    border-color: rgba($blue-700, 0.4);
+    border-color: rgba($black-100, 0.4);
     box-shadow: none;
   }
   /* Border Color */

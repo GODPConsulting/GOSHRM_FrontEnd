@@ -14,11 +14,11 @@ export class RunningCoursesService {
   constructor(private http: HttpService) {}
 
   public getRunningCourses(
-    trainingProviderId: any
+    CompanyId: number
   ): Observable<ResponseModel<RunningCourses>> {
-   const endpoint = '/lms/runningcoursebyproviderId/get/ById/runningcourseproviderId';
+   const endpoint = '/lms/runningcourse/getAllRunningcourse';
    const params = new HttpParams()
-   .set('trainingProviderId', trainingProviderId)
+   .set('CompanyId', CompanyId)
    return this.http.getRequestWithParams(endpoint, params);
   }
 

@@ -32,8 +32,9 @@ export class CoursesComponent implements OnInit {
     this._helper.startSpinner();
     this.isfetchingCourses = true;
     this.sub.add(
-      this._runningCourses.getRunningCourses(this.loggedInUser.trainingProviderId).subscribe({
+      this._runningCourses.getRunningCourses(this.loggedInUser.companyId).subscribe({
         next: (res: any) => {
+          console.log(res)
           this._helper.stopSpinner();
           this.isfetchingCourses = false;
           this.runningCourses = res['coursesSetupTypes'];

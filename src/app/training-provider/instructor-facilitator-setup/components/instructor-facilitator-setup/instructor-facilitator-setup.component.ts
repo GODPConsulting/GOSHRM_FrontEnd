@@ -42,7 +42,7 @@ export class InstructorFacilitatorSetupComponent implements OnInit {
           this._helper.stopSpinner();
           this.isFetchngFacilitatorDetail = false;
           this.instructors = res['training_InstructorSetupTypes'];
-          console.log(res, this.instructors)
+          // console.log(res, this.instructors)
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();
