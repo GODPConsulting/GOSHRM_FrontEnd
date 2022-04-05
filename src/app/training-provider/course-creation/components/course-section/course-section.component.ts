@@ -1,13 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
-import { CourseSectionDialogComponent } from '../../dialogs/course-section-dialog/course-section-dialog.component';
+import { CourseOutlineDialogComponent } from '../../dialogs/course-outline-dialog/course-outline-dialog.component';
 import { CourseOutline } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 
@@ -23,22 +23,19 @@ export class CourseSectionComponent implements OnInit {
   public isFetchingCourseOutlines: boolean = false;
   public loggedInUser: any;
   public courseId: any;
-  public outlineId: any;
 
   constructor(
     public dialog: MatDialog,
     private _course: CourseCreationService,
     public _helper: HelperService,
     public _current: CurrentUserService,
-    public _route: ActivatedRoute
+    public _route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
-    this._route.queryParams.subscribe(params => {
-      this.courseId = params.courseId;
-      this.outlineId = params.outlineId;
-    });
+    this.courseId = this._route.snapshot.paramMap.get('courseId');
     this.getAllCourseOutlines();
   }
 
@@ -46,12 +43,12 @@ export class CourseSectionComponent implements OnInit {
     this._helper.startSpinner();
     this.isFetchingCourseOutlines = true;
     this.sub.add(
-      this._course.getAllCourseSection(this.courseId, this.outlineId).subscribe({
+      this._course.getAllCourseOutline(this.courseId).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingCourseOutlines = false;
-          this.courseSections = res['course_Section'];
-          // console.log(res, this.courseOutlines)
+          this.courseSections = res['course_OutlineSetupTypes'];
+          // console.log(res, this.courseSections)
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();
@@ -60,6 +57,12 @@ export class CourseSectionComponent implements OnInit {
         },
       })
     );
+  }
+
+  public goToOutline(outline: any) {
+    this.router.navigate(['/training-provider/course-creation/course-outline'], {
+      queryParams: {courseId: this.courseId, outlineId: outline?.courseId},
+    });
   }
 
   public selectDeselectOutline(outline: CourseOutline) {
@@ -73,7 +76,7 @@ export class CourseSectionComponent implements OnInit {
     payload: { isEditing?: boolean; editObject?: CourseOutline } | any
   ): void {
     let object: DialogModel<any> = payload;
-    const dialogRef = this.dialog.open(CourseSectionDialogComponent, {
+    const dialogRef = this.dialog.open(CourseOutlineDialogComponent, {
       data: object,
     });
     // console.log(payload)
@@ -91,8 +94,8 @@ export class CourseSectionComponent implements OnInit {
     );
   }
 
-  public deleteCourses(): void {
-    const courseIds = this.SelectedCourseOutlines.map(c => c.sectionId)
+  public deleteCourseOutline(SelectedCourseOutlines: any): void {
+    const courseIds = SelectedCourseOutlines.map((c: any) => c.sectionId)
     const payload = {
       courseIds:courseIds
     };

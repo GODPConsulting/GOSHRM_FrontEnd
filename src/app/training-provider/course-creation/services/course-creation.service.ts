@@ -130,4 +130,37 @@ export class CourseCreationService {
     const endpoint = '/lms/learningassessment/get/courseId/learningassessment';
     return this.http.getRequestWithParams( endpoint, params);
   }
+
+  public getCompetencyByCourse(
+    courseId: number, searchParams: string
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/course/getCourseCompetenceAssessment';
+   const params = new HttpParams()
+   .set('courseId', courseId)
+   .set('searchParams', searchParams);
+   return this.http.makeRequestWithData('get',endpoint, params);
+  }
+
+  public getAllCompetencies(
+    searchParams: string
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/course/getAllCourseCompetenceAssessment';
+   const params = new HttpParams()
+   .set('searchParams', searchParams);
+   return this.http.makeRequestWithData('get',endpoint, params);
+  }
+
+  public addUpdateCompetence(
+    payload: any
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/course/addCourseCompetenceAssessment';
+   return this.http.makeRequestWithData('post',endpoint, {}, payload);
+  }
+
+  public deleteCompetence(
+    payload: any
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/course/deleteCourseCompetenceAssessment';
+   return this.http.makeRequestWithData('post',endpoint, {}, payload);
+  }
 }

@@ -22,15 +22,15 @@ const routes: Routes = [
         resolve: {resolveData: AddCourseResolver}
     },
     {
-        path: 'competence-assessment',
+        path: 'competence-assessment/:courseId',
         component: CompetenceAssessmentComponent
     },
     {
-        path: 'course-outline/:courseId',
+        path: 'course-outline',
         component: CourseOutlineComponent
     },
     {
-        path: 'outline-section',
+        path: 'course-section/:courseId',
         component: CourseSectionComponent
     },
     {

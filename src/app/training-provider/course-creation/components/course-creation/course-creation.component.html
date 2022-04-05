@@ -5,10 +5,12 @@
         </div>
         <div class="col-md-7 d-flex justify-content-end">
             <app-searchbar
-            [canAdd]="true"
-            [canDelete]="true"
-            (btnAction)="goTo()"
-            (deleteAction)="deleteCourses()"
+              [canAdd]="true"
+              [canDelete]="true"
+              (btnAction)="goTo()"
+              (deleteAction)="deleteCourses()"
+              (searchQuery)="getSearchQuery($event)"
+              (searchAction)="getAllCourses(false)"
             ></app-searchbar>
         </div>
     </div>
@@ -71,7 +73,7 @@
                             Create Experience
                         </button>
                         <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
-                          <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/course-outline', course?.courseId]">
+                          <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/course-section', course?.courseId]">
                               Course Outline</a>
                         </li>
                           <li (click)="openDialog( {isEditing: true, editObject: course } )"><a class="dropdown-item"

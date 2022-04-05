@@ -2,15 +2,21 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import {
+  InitialSearchDTO,
+  // PaginationResponse,
+  ResponseModel,
+  SearchDTO,
+} from 'app/models/response.model';
 import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
-import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { ParticipantDialogComponent } from '../../dialogs/participant-dialog/participant-dialog.component';
 import { Courses } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-course-creation',
@@ -24,6 +30,8 @@ export class CourseCreationComponent implements OnInit {
   public loggedInUser: any;
   public createdBy = CreatedByType;
   public selectedCourses: Courses[] = [];
+  public isInitialRequest: boolean = true;
+  public searchQuery: SearchDTO = { ...InitialSearchDTO, search: '' };
   
   constructor(
     public dialog: MatDialog,
@@ -35,32 +43,74 @@ export class CourseCreationComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
-    this.getAllCourses();
+    this.getAllCourses(true);
   }
 
-  public getAllCourses(): void {
+  // public getAllCourses(): void {
+  //   const payload = {
+  //     searchParams: "",
+  //     id: this.loggedInUser?.trainingProviderId,
+  //     type: this.createdBy.provider
+  //   }
+  //   this._helper.startSpinner();
+  //   this.isFetchingCourses = true;
+  //   this.sub.add(
+  //     this._course.getAllCourses(payload).subscribe({
+  //       next: (res: any) => {
+  //         this._helper.stopSpinner();
+  //         this.isFetchingCourses = false;
+  //         this.courses = res['course_CreationSetupTypes'];
+  //         console.log(res, this.courses)
+  //       },
+  //       error: (error: ResponseModel<null>) => {
+  //         this._helper.stopSpinner();
+  //         this.isFetchingCourses = false;
+  //         console.log(error);
+  //       },
+  //     })
+  //   );
+  // }
+
+  public getAllCourses(
+    initial: boolean,
+    isPagination?: boolean,
+    pageEvent?: PageEvent
+  ): void {
+    if (pageEvent) {
+      this.searchQuery = {
+        search: this.searchQuery?.search,
+        pageNumber: pageEvent?.pageIndex + 1,
+        pageSize: pageEvent?.pageSize,
+      };
+    }
+    initial ? (this.isInitialRequest = true) : (this.isInitialRequest = false);
     const payload = {
-      searchParams: "",
+      searchParams: this.searchQuery.search,
       id: this.loggedInUser?.trainingProviderId,
       type: this.createdBy.provider
     }
-    this._helper.startSpinner();
     this.isFetchingCourses = true;
     this.sub.add(
       this._course.getAllCourses(payload).subscribe({
         next: (res: any) => {
-          this._helper.stopSpinner();
           this.isFetchingCourses = false;
+          // this.paginatedResponse = res?.response;
           this.courses = res['course_CreationSetupTypes'];
-          console.log(res, this.courses)
+
+          // this.searchQuery.pageNumber = this.paginatedResponse?.pageNumber;
+          // this.searchQuery.pageSize = this.paginatedResponse?.pageSize;
         },
         error: (error: ResponseModel<null>) => {
-          this._helper.stopSpinner();
           this.isFetchingCourses = false;
           console.log(error);
         },
       })
     );
+  }
+
+  public getSearchQuery(searchQuery: string): void {
+    this.searchQuery.search = searchQuery;
+    console.log(this.searchQuery.search)
   }
 
   public goTo() {
@@ -103,7 +153,7 @@ export class CourseCreationComponent implements OnInit {
           this._helper.stopSpinner();
           console.log(res)
           this._helper.triggerSucessAlert('Course created successfully!!!')
-          this.getAllCourses();
+          this.getAllCourses(true);
          } else {
            this._helper.stopSpinner();
            this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)

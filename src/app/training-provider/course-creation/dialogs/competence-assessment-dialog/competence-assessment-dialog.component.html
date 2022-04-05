@@ -6,7 +6,7 @@
 </div>
   <mat-dialog-content class="mat-typography">
     <div>
-        <form [formGroup]="reviewerForm" *ngIf="data.isEditing">
+        <form [formGroup]="reviewerForm" *ngIf="!data.isEditing">
             <div class="row">
                 <div class="col-12">
                     <div class="form_group mb-5">
@@ -25,14 +25,14 @@
             </div>
         </form>
 
-        <form [formGroup]="ratingForm" *ngIf="!data.isEditing">
+        <form [formGroup]="ratingForm" *ngIf="data.isEditing">
             <div class="row">
                 <div class="col-12">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
                         >Ratings
                       </label>
-                      <select name="" id="" class="form-control" formControlName="ratings">
+                      <select name="" id="" class="form-control" formControlName="rating">
                           <option value="2">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -56,7 +56,7 @@
     </button>
     <button
       class="btn btn-green btn-md px-4"
-      (click)="data.isEditing ? submitReview() : submitRating()"
+      (click)="data.isEditing ? submitRating() : submitReview()"
     >
         <app-loading-button
           [text]="'Done'"

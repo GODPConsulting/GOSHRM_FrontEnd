@@ -86,16 +86,16 @@ export class HelperService {
     }
 
     triggerQuestionConfirmationAlert(questionTitle: any, question: any, callback?: () => any) {
-    SwalConfig.fire({
-        title: `${questionTitle}?`,
-        icon: 'question',
-        html: `<p>${question}</p>`,
-    }).then((result: any) => {
-        if (result.value) {
-        if(callback){
-            callback()
-        }
-        }
-    })
+        SwalConfig.fire({
+            title: `${questionTitle}?`,
+            icon: 'question',
+            html: `<p>${question}</p>`,
+        }).then((result: any) => {
+            if (result.value) {
+            if(callback){
+                callback()
+            }
+            }
+        })
     }
 }

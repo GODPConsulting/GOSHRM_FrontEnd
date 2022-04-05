@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 export const SwalConfig = Swal.mixin({
     showCancelButton: true,
     cancelButtonText: 'Cancel',
-    confirmButtonText: 'Continue',
+    confirmButtonText: 'Confirm',
     reverseButtons: true,
     allowOutsideClick: false,
     width: '500px',
