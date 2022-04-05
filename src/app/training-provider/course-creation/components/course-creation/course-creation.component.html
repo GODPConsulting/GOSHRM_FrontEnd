@@ -8,6 +8,7 @@
             [canAdd]="true"
             [canDelete]="true"
             (btnAction)="goTo()"
+            (deleteAction)="deleteCourses()"
             ></app-searchbar>
         </div>
     </div>
@@ -21,7 +22,12 @@
               <ng-container>
                 <thead class="bg-white">
                   <tr>
-                    <th><input type="checkbox" name="" id=""></th>
+                    <th>
+                      <input 
+                        type="checkbox" 
+                        name="" id=""
+                      >
+                    </th>
                     <th>Facilitator’s Name</th>
                     <th>Training Tiltle</th>
                     <th>Rating</th>
@@ -33,7 +39,13 @@
               <tbody>
                 <ng-container>
                   <tr class="text-capitalize" *ngFor="let course of courses">
-                    <td><input type="checkbox" name="" id=""></td>
+                    <td>
+                      <input 
+                        type="checkbox" 
+                        name="" id=""
+                        (change)="selectDeselectCourses(course)"
+                      >
+                    </td>
                     <td class="click" [routerLink]="['/training-provider/course-creation/add-course', {courseId: course?.courseId}]">
                       {{ course?.training_Name }}
                     </td>

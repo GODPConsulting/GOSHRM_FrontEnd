@@ -84,10 +84,24 @@ export class CourseCreationService {
     return this.http.makeRequestWithData('post', endpoint, param);
   }
 
+  public deleteCourses(
+    courseIds: any
+  ): Observable<ResponseModel<CourseAssessment>> {
+    const endpoint = '/lms/course/deleteCourse';
+    return this.http.makeRequestWithData('post', endpoint, {}, courseIds);
+  }
+
   public deleteQuestion(
     course: any
   ): Observable<ResponseModel<CourseAssessment>> {
     const endpoint = '/lms/course/deleteCourseQuestionsAndAnswers';
+    return this.http.makeRequestWithData('post', endpoint, {}, course);
+  }
+
+  public deleteSectionOuline(
+    course: any
+  ): Observable<ResponseModel<CourseAssessment>> {
+    const endpoint = '/lms/course/deleteCourseOulineAndSection';
     return this.http.makeRequestWithData('post', endpoint, {}, course);
   }
 

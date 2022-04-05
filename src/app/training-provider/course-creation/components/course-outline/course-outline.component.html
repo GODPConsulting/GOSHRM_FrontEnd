@@ -31,7 +31,13 @@
         <tbody>
           <ng-container>
             <tr class="text-capitalize" *ngFor="let outline of courseOutlines">
-              <td><input type="checkbox" name="" id=""></td>
+              <td>
+                <input 
+                  type="checkbox" 
+                  name="" id=""
+                  (change)="selectDeselectOutline(outline)"
+                >
+                </td>
               <td class="click" (click)="goToOutline(outline)">
                 {{ outline?.number }}
               </td>

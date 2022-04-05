@@ -68,13 +68,11 @@ export class InstructorFacilitatorSetupComponent implements OnInit {
     );
   }
 
-  selectDeselectInstructor(payout: any) {
-    this.selectedInstructors.includes(payout.payoutId)
-      ? (this.selectedInstructors = this.selectedInstructors.filter(
-          code => code != payout.payoutId
-        ))
-      : this.selectedInstructors.push(payout.payoutId);
-    // console.log(this.selectedPayout);
+  public selectDeselectInstructor(facililtator: Facilitator) {
+    this.selectedInstructors.includes(facililtator)
+      ? (this.selectedInstructors = this.selectedInstructors.filter((c: any) => c!== facililtator))
+      : this.selectedInstructors.push(facililtator);
+    console.log(this.selectedInstructors)
   }
 
 }

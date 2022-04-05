@@ -11,6 +11,7 @@ export interface Courses  {
     difficulty_Level: string,
     category: string,
     companyId: number,
+    scheduleType: string,
     course_Competence: [
       {
         course_CompeteneceId: number,

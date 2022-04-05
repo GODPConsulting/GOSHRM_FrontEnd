@@ -8,7 +8,7 @@
             <app-searchbar
                 [canAdd]="true"
                 [canDelete]="true"
-                (btnAction)="goTo()"
+                (btnAction)="assessments == null ? goTo() : addNewQuestion()"
                 (deleteAction)="deleteAssessment()"
 
             ></app-searchbar>

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
@@ -18,6 +19,7 @@ import { CourseCreationService } from '../../services/course-creation.service';
 export class CourseSectionComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public courseSections: CourseOutline[] = [];
+  public SelectedCourseOutlines: CourseOutline[] = [];
   public isFetchingCourseOutlines: boolean = false;
   public loggedInUser: any;
   public courseId: any;
@@ -60,6 +62,13 @@ export class CourseSectionComponent implements OnInit {
     );
   }
 
+  public selectDeselectOutline(outline: CourseOutline) {
+    this.SelectedCourseOutlines.includes(outline)
+      ? (this.SelectedCourseOutlines = this.SelectedCourseOutlines.filter((c: any) => c!== outline))
+      : this.SelectedCourseOutlines.push(outline);
+    console.log(this.SelectedCourseOutlines)
+  }
+
   public openDialog(
     payload: { isEditing?: boolean; editObject?: CourseOutline } | any
   ): void {
@@ -80,6 +89,34 @@ export class CourseSectionComponent implements OnInit {
         }
       }
     );
+  }
+
+  public deleteCourses(): void {
+    const courseIds = this.SelectedCourseOutlines.map(c => c.sectionId)
+    const payload = {
+      courseIds:courseIds
+    };
+    if (payload.courseIds.length > 0) {
+      this._helper.startSpinner();
+     console.log(payload)
+      this._course.deleteSectionOuline(payload.courseIds).subscribe({
+        next: (res: any) => {
+         if(res.status.isSuccessful) {
+          this._helper.stopSpinner();
+          console.log(res)
+          this._helper.triggerSucessAlert('Course created successfully!!!')
+          this.getAllCourseOutlines();
+         } else {
+           this._helper.stopSpinner();
+           this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
+         }
+        },
+        error: (error: HttpErrorResponse) => {
+          this._helper.stopSpinner();
+          console.log(error);
+        },
+      });
+    }
   }
 
 }
