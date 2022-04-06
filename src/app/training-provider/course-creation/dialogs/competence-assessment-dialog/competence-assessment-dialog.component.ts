@@ -57,6 +57,7 @@ export class CompetenceAssessmentDialogComponent implements OnInit {
       companyId: [this.data.editObject.companyId],
       courseId: [this.data.editObject.courseId],
       competenceId: [this.data.editObject.competenceId],
+      competence: [this.data.editObject.competence],
       rating: [0, Validators.required],
     })
   }

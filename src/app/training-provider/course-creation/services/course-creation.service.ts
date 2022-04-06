@@ -44,6 +44,15 @@ export class CourseCreationService {
    return this.http.getRequestWithParams(endpoint, params);
   }
 
+  public getCourseOutlineById(
+    courseid: string
+  ): Observable<ResponseModel<CourseOutline>> {
+   const endpoint = '/lms/courseoutline/get/byId/courseoutline';
+   const params = new HttpParams()
+   .set('courseId', courseid)
+   return this.http.getRequestWithParams(endpoint, params);
+  }
+
   public getAllCourseSection(
     courseid: string, courseOutlineId: string
   ): Observable<ResponseModel<CourseOutline>> {
@@ -99,10 +108,12 @@ export class CourseCreationService {
   }
 
   public deleteSectionOuline(
-    course: any
+    course: any, type: number
   ): Observable<ResponseModel<CourseAssessment>> {
     const endpoint = '/lms/course/deleteCourseOulineAndSection';
-    return this.http.makeRequestWithData('post', endpoint, {}, course);
+    const params = new HttpParams()
+   .set('type', type);
+    return this.http.makeRequestWithData('post', endpoint, params, course);
   }
 
   public getAssessments(

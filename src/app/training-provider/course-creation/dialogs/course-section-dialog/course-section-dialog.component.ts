@@ -55,6 +55,8 @@ export class CourseSectionDialogComponent implements OnInit {
 
   public initCourseOutlineForm() {
     this.courseOutlineForm = this.fb.group({
+      outlineId: [this.data.editObject.outlineId ? this.data.editObject.outlineId : 0],
+      sectionId: [this.data?.editObject?.sectionId ? this.data?.editObject?.sectionId : 0 ],
       companyId: [this.loggedInUser.companyId],
       number: [this.data.editObject.number ? this.data.editObject.number : '', Validators.required],
       section_Name: [this.data.editObject.section_Name ? this.data.editObject.section_Name : '', Validators.required],
@@ -63,11 +65,10 @@ export class CourseSectionDialogComponent implements OnInit {
       material_Name: [this.data.editObject.material_Name ? this.data.editObject.material_Name : ''],
       material_Type: [this.data.editObject.material_Type ? this.data.editObject.material_Type : 0],
       upload_Material: [this.data.editObject.upload_Material ? this.data.editObject.upload_Material : ''],
-      type: [this.outlineType.Section],
-      courseId: [this.data.editObject.courseId],
-      outlineId: [this.data.editObject.outlineId],
+      type: [+this.outlineType.Section],
       trainingProviderId: [this.loggedInUser.trainingProviderId],
       trainingInstructorId: [this.loggedInUser.trainingInstructorId],
+      courseId: +[this.courseId]
     })
   }
 
@@ -89,10 +90,6 @@ export class CourseSectionDialogComponent implements OnInit {
   submit() {
     this._helper.startSpinner();
     const payload = this.courseOutlineForm.value;
-    payload.outlineId = this.data.editObject.outlineId ? this.data.editObject.outlineId : 0;
-    payload.sectionId = this.data?.editObject?.sectionId ? this.data?.editObject?.sectionId : 0 ;
-    payload.courseId = parseInt(payload.courseId);
-    payload.outlineId = parseInt(payload.outlineId);
     payload.material_Type = parseInt(payload.material_Type);
     payload.number = JSON.stringify(payload.number);
     if(this.documentUrl != null) {

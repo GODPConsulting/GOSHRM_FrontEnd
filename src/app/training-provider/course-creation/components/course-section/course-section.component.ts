@@ -8,7 +8,7 @@ import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { CourseOutlineDialogComponent } from '../../dialogs/course-outline-dialog/course-outline-dialog.component';
-import { CourseOutline } from '../../models/course-creation.model';
+import { CourseOutline, OutlineType } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 
 @Component({
@@ -23,6 +23,8 @@ export class CourseSectionComponent implements OnInit {
   public isFetchingCourseOutlines: boolean = false;
   public loggedInUser: any;
   public courseId: any;
+  public outlineType = OutlineType;
+  public isCheck: boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -61,8 +63,30 @@ export class CourseSectionComponent implements OnInit {
 
   public goToOutline(outline: any) {
     this.router.navigate(['/training-provider/course-creation/course-outline'], {
-      queryParams: {courseId: this.courseId, outlineId: outline?.courseId},
+      queryParams: {courseId: this.courseId, outlineId: outline?.sectionId},
     });
+  }
+  public checkUncheckAll() {
+    for (var i = 0 ; i < this.courseSections.length; i++) {
+      this.courseSections[i].isSelected = this.isCheck;
+    }
+    this.getCheckedItemList();
+  }
+
+  public isAllSelected() {
+    this.isCheck = this.courseSections.every(function(item:any) {
+        return item.isSelected == true;
+      })
+    this.getCheckedItemList();
+  }
+  
+  public getCheckedItemList(){
+    this.SelectedCourseOutlines = [];
+    for (let i = 0; i < this.courseSections.length; i++) {
+      if(this.courseSections[i].isSelected)
+      this.SelectedCourseOutlines.push(this.courseSections[i]);
+    }
+    console.log(this.SelectedCourseOutlines);
   }
 
   public selectDeselectOutline(outline: CourseOutline) {
@@ -102,7 +126,7 @@ export class CourseSectionComponent implements OnInit {
     if (payload.courseIds.length > 0) {
       this._helper.startSpinner();
      console.log(payload)
-      this._course.deleteSectionOuline(payload.courseIds).subscribe({
+      this._course.deleteSectionOuline(payload.courseIds, this.outlineType.Section).subscribe({
         next: (res: any) => {
          if(res.status.isSuccessful) {
           this._helper.stopSpinner();

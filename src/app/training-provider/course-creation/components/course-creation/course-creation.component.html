@@ -27,24 +27,29 @@
                     <th>
                       <input 
                         type="checkbox" 
-                        name="" id=""
+                        name="" 
+                        [(ngModel)]="isCheck"
+                        (change)="checkUncheckAll()"
                       >
                     </th>
                     <th>Facilitator’s Name</th>
                     <th>Training Tiltle</th>
                     <th>Rating</th>
                     <th>Status</th>
+                    <th>Date Created</th>
                     <th></th>
                   </tr>
                 </thead></ng-container
               >
               <tbody>
                 <ng-container>
-                  <tr class="text-capitalize" *ngFor="let course of courses">
+                  <tr class="text-capitalize" *ngFor="let course of courses; index as i">
                     <td>
                       <input 
                         type="checkbox" 
-                        name="" id=""
+                        name="" 
+                        id="checkbox{{i}}"
+                        [(ngModel)]="course.isSelected"
                         (change)="selectDeselectCourses(course)"
                       >
                     </td>
@@ -67,6 +72,9 @@
                     <td class="click" [routerLink]="['/training-provider/course-creation/add-course', {courseId: course?.courseId}]">
                       {{ course?.decisionType }}
                     </td>
+                    <td class="click" [routerLink]="['/training-provider/course-creation/add-course', {courseId: course?.courseId}]">
+                      {{ course?.createdAt | date }}
+                    </td>
                     <td>
                       <div class="dropdown">
                         <button class="btn btn-secondary btn-md dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -75,16 +83,17 @@
                         <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
                           <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/course-section', course?.courseId]">
                               Course Outline</a>
-                        </li>
-                          <li (click)="openDialog( {isEditing: true, editObject: course } )"><a class="dropdown-item"
-                            >Participants</a></li>
+                          </li>
                           <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/course-assessment', course?.courseId]"
                             >Course Assessment</a></li>
                           <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/competence-assessment', course?.courseId]"
                             >Competence Assessment</a></li>
                           <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/learning-assessment', course?.courseId]"
                             >Learning Assessment </a></li>
-                          <li><a class="dropdown-item" href="#">Schedule Class</a></li>
+                          <li (click)="openDialog( {isEditing: true, editObject: course } )"><a class="dropdown-item"
+                            >Participants</a></li>
+                          <li (click)="openScheduleClassDialog({isEditing: false})"><a class="dropdown-item"
+                            >Schedule Class</a></li>
                           <li><a class="dropdown-item" href="#">Submit</a></li>
                         </ul>
                       </div>

@@ -6,7 +6,6 @@ import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
-import Swal from 'sweetalert2';
 import { AssessmentType } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 
@@ -119,38 +118,21 @@ export class CourseAssessmentComponent implements OnInit {
   }
 
   addNewQuestion(){
-    this.addNewQuiz = !this.addNewQuiz
+    this.addNewQuiz = !this.addNewQuiz;
+    window.scrollTo(0, document.body.scrollHeight);
+    // console.log(document.body.scrollHeight)
   }
 
   addQuestion() {
-    let entry = { ...this.getQuizQuestion };
-    let answers: [] = entry.controls[0].get('course_Answers').value;
-    //check that there is at least one true value
-    const atLeastOne = answers.filter((el: any) => {
-      return el.isAnswer;
-    });
-    // if atLeastOne is equal to one, good
-    if (atLeastOne.length == 1) {
-      this.getQuizQuestion.push(this.newQuestion);
-    } else if (atLeastOne.length < 1) {
-      Swal.fire({
-        title: 'Error',
-        icon: 'info',
-        html:
-          '<p>You need to select one of the options as the correct answer</p>'
-      });
-    } else {
-      Swal.fire({
-        title: 'Error',
-        icon: 'info',
-        html:
-          '<p>Only one option can be selected as the right answer to a question</p>'
-      });
-    }
+    this.getQuizQuestion.push(this.newQuestion);
   }
 
   removeQuestion(i: number) {
-    if (i > 0) this.getQuizQuestion.removeAt(i);
+    if(i == 0) {
+      this.addNewQuiz = false;
+    } else {
+      this.getQuizQuestion.removeAt(i);
+    }
   }
 
   goTo() {

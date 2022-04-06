@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between" mat-dialog-title>
-    <h2 mat-dialog-title>Add Course Outline </h2>
+    <h2 mat-dialog-title>Schedule Class </h2>
     <div class="click" mat-dialog-close>
       <img src="assets/icons/x.svg" alt="" />
     </div>
@@ -11,21 +11,20 @@
                 <div class="col-12">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
-                        >Section Number
+                        >Session Type
                       </label>
-                      <input
-                        type="number"
-                        id="sectionId"
-                        class="form-control"
-                        placeholder=""
-                        formControlName="number"
-                      />
+                      <select name="" id="" class="form-select">
+                          <option value="" selected></option>
+                          <option [value]="type?.name" *ngFor="let type of sessionType">
+                            {{ type?.name }}
+                          </option>
+                      </select>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
-                        >Section Name
+                        >Job Title
                       </label>
                       <input
                         type="text"
@@ -39,7 +38,7 @@
                 <div class="col-12">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
-                        >Outline Name
+                        >Job Grade
                       </label>
                       <input
                         type="text"
@@ -53,7 +52,7 @@
                 <div class="col-12">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
-                        >Outline Description
+                        >Office
                       </label>
                       <input
                         type="text"
@@ -64,7 +63,29 @@
                       />
                     </div>
                 </div>
-               </div>
+                <div class="col-12">
+                  <div class="form_group mb-5">
+                    <label for="" class="form-label">Participants</label>
+                    <input
+                        id=""
+                        type="text"
+                        class="form-control"
+                        formControlName="material_Name"
+                    />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="form_group mb-5">
+                    <label for="" class="form-label">Duration</label>
+                    <input
+                        id=""
+                        type="text"
+                        class="form-control"
+                        formControlName="material_Name"
+                    />
+                  </div>
+                </div>
+            </div>
         </form>
     </div>
    

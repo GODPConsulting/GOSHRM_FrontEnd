@@ -17,6 +17,7 @@ import { ParticipantDialogComponent } from '../../dialogs/participant-dialog/par
 import { Courses } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 import { PageEvent } from '@angular/material/paginator';
+import { SceduleClassDialogComponent } from '../../dialogs/scedule-class-dialog/scedule-class-dialog.component';
 
 @Component({
   selector: 'app-course-creation',
@@ -32,6 +33,7 @@ export class CourseCreationComponent implements OnInit {
   public selectedCourses: Courses[] = [];
   public isInitialRequest: boolean = true;
   public searchQuery: SearchDTO = { ...InitialSearchDTO, search: '' };
+  public isCheck: boolean = false;
   
   constructor(
     public dialog: MatDialog,
@@ -45,31 +47,6 @@ export class CourseCreationComponent implements OnInit {
     this.loggedInUser = this._current.getUser();
     this.getAllCourses(true);
   }
-
-  // public getAllCourses(): void {
-  //   const payload = {
-  //     searchParams: "",
-  //     id: this.loggedInUser?.trainingProviderId,
-  //     type: this.createdBy.provider
-  //   }
-  //   this._helper.startSpinner();
-  //   this.isFetchingCourses = true;
-  //   this.sub.add(
-  //     this._course.getAllCourses(payload).subscribe({
-  //       next: (res: any) => {
-  //         this._helper.stopSpinner();
-  //         this.isFetchingCourses = false;
-  //         this.courses = res['course_CreationSetupTypes'];
-  //         console.log(res, this.courses)
-  //       },
-  //       error: (error: ResponseModel<null>) => {
-  //         this._helper.stopSpinner();
-  //         this.isFetchingCourses = false;
-  //         console.log(error);
-  //       },
-  //     })
-  //   );
-  // }
 
   public getAllCourses(
     initial: boolean,
@@ -117,6 +94,29 @@ export class CourseCreationComponent implements OnInit {
     this.router.navigate(['/training-provider/course-creation/add-course'])
   }
 
+  public checkUncheckAll() {
+    for (var i = 0 ; i < this.courses.length; i++) {
+      this.courses[i].isSelected = this.isCheck;
+    }
+    this.getCheckedItemList();
+  }
+
+  public isAllSelected() {
+    this.isCheck = this.courses.every(function(item:any) {
+        return item.isSelected == true;
+      })
+    this.getCheckedItemList();
+  }
+  
+  public getCheckedItemList(){
+    this.selectedCourses = [];
+    for (let i = 0; i < this.courses.length; i++) {
+      if(this.courses[i].isSelected)
+      this.selectedCourses.push(this.courses[i]);
+    }
+    console.log(this.selectedCourses);
+  }
+
   public selectDeselectCourses(course: Courses) {
     this.selectedCourses.includes(course)
       ? (this.selectedCourses = this.selectedCourses.filter((c: any) => c!== course))
@@ -135,6 +135,28 @@ export class CourseCreationComponent implements OnInit {
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
           
+      }
+    );
+  }
+
+  public openScheduleClassDialog(
+    payload: { isEditing?: boolean; editObject?: any } | any
+  ): void {
+    let object: DialogModel<any> = payload;
+    const dialogRef = this.dialog.open(SceduleClassDialogComponent, {
+      data: object,
+    });
+    // console.log(payload)
+    dialogRef.componentInstance.event.subscribe(
+      (event: DialogModel<any>) => {
+        // if (event?.isEditing) {
+        //   const index = this.courseSections.findIndex((courseOutline: CourseOutline) => {
+        //     return courseOutline.sectionId == event?.editObject?.sectionId;
+        //   });
+        //   this.courseSections[index] = event?.editObject;
+        // } else {
+        //   this.courseSections = [event?.editObject, ...this.courseSections];
+        // }
       }
     );
   }

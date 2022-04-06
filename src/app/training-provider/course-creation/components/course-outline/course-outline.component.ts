@@ -8,7 +8,7 @@ import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { CourseSectionDialogComponent } from '../../dialogs/course-section-dialog/course-section-dialog.component';
-import { CourseOutline } from '../../models/course-creation.model';
+import { CourseOutline, OutlineType } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 import { SwalConfig } from '../../../../_config/sweetalert';
 
@@ -26,6 +26,8 @@ export class CourseOutlineComponent implements OnInit {
   public loggedInUser: any;
   public courseId: any;
   public outlineId: any;
+  public outlineType = OutlineType;
+  public isCheck: boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -62,6 +64,29 @@ export class CourseOutlineComponent implements OnInit {
         },
       })
     );
+  }
+
+  public checkUncheckAll() {
+    for (var i = 0 ; i < this.courseOutlines.length; i++) {
+      this.courseOutlines[i].isSelected = this.isCheck;
+    }
+    this.getCheckedItemList();
+  }
+
+  public isAllSelected() {
+    this.isCheck = this.courseOutlines.every(function(item:any) {
+        return item.isSelected == true;
+      })
+    this.getCheckedItemList();
+  }
+  
+  public getCheckedItemList(){
+    this.SelectedCourseOutlines = [];
+    for (let i = 0; i < this.courseOutlines.length; i++) {
+      if(this.courseOutlines[i].isSelected)
+      this.SelectedCourseOutlines.push(this.courseOutlines[i]);
+    }
+    console.log(this.SelectedCourseOutlines);
   }
 
   public selectDeselectOutline(outline: CourseOutline) {
@@ -116,7 +141,7 @@ export class CourseOutlineComponent implements OnInit {
       if (payload.courseIds.length > 0) {
         this._helper.startSpinner();
       console.log(payload)
-        this._course.deleteSectionOuline(payload.courseIds).subscribe({
+        this._course.deleteSectionOuline(payload.courseIds, this.outlineType.Outline).subscribe({
           next: (res: any) => {
           if(res.status.isSuccessful) {
             this._helper.stopSpinner();

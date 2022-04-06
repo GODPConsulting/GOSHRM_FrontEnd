@@ -91,7 +91,7 @@ export class CompetenceAssessmentComponent implements OnInit {
     if (payload.comepetenceAssement.length > 0) {
       this._helper.startSpinner();
      console.log(payload)
-      this._course.deleteSectionOuline(payload).subscribe({
+      this._course.deleteCompetence(payload).subscribe({
         next: (res: any) => {
          if(res.status.isSuccessful) {
           this._helper.stopSpinner();

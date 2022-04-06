@@ -12,6 +12,7 @@ export interface Courses  {
     category: string,
     companyId: number,
     scheduleType: string,
+    createdAt: string,
     course_Competence: [
       {
         course_CompeteneceId: number,
@@ -51,7 +52,8 @@ export interface Courses  {
     congratulation_message: string,
     other_Comments: string,
     addCover_Image: number,
-    createdBy: string
+    createdBy: string,
+    isSelected: boolean
 }
 
 export interface CourseOutline  {
@@ -72,7 +74,8 @@ export interface CourseOutline  {
     photo: string,
     active: boolean,
     deleted: boolean,
-    companyId: number
+    companyId: number,
+    isSelected: boolean
 }
 
 export interface CourseAssessment {
