@@ -31,6 +31,7 @@ export class CourseSectionDialogComponent implements OnInit {
   public outlineType = OutlineType;
   public mediaType = MediaType;
   public courseId: any;
+  public outlineId: any;
   public documentUrl: any;
   
   @Output() event: EventEmitter<{
@@ -49,18 +50,22 @@ export class CourseSectionDialogComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUser = this._current.getUser();
-    this.courseId = this.activateRoute.snapshot.paramMap.get('courseId');
+    this.activateRoute.queryParams.subscribe(params => {
+      this.courseId = params.courseId;
+      this.outlineId = params.outlineId;
+    });
     this.initCourseOutlineForm();
   }
 
   public initCourseOutlineForm() {
     this.courseOutlineForm = this.fb.group({
-      outlineId: [this.data.editObject.outlineId ? this.data.editObject.outlineId : 0],
+      outlineId: [this.outlineId],
       sectionId: [this.data?.editObject?.sectionId ? this.data?.editObject?.sectionId : 0 ],
       companyId: [this.loggedInUser.companyId],
       number: [this.data.editObject.number ? this.data.editObject.number : '', Validators.required],
+      sectionNumber: [this.data.editObject.sectionNumber ? this.data.editObject.sectionNumber : '', Validators.required],
       section_Name: [this.data.editObject.section_Name ? this.data.editObject.section_Name : '', Validators.required],
-      outline_Name: [this.data.editObject.outline_Name ? this.data.editObject.outline_Name : '', Validators.required],
+      outline_Name: [this.data.editObject.outlineName ? this.data.editObject.outlineName : '', Validators.required],
       outline_Description: [this.data.editObject.outline_Description ? this.data.editObject.outline_Description : '', Validators.required],
       material_Name: [this.data.editObject.material_Name ? this.data.editObject.material_Name : ''],
       material_Type: [this.data.editObject.material_Type ? this.data.editObject.material_Type : 0],
@@ -68,7 +73,7 @@ export class CourseSectionDialogComponent implements OnInit {
       type: [+this.outlineType.Section],
       trainingProviderId: [this.loggedInUser.trainingProviderId],
       trainingInstructorId: [this.loggedInUser.trainingInstructorId],
-      courseId: +[this.courseId]
+      courseId: [+this.courseId]
     })
   }
 
@@ -92,6 +97,7 @@ export class CourseSectionDialogComponent implements OnInit {
     const payload = this.courseOutlineForm.value;
     payload.material_Type = parseInt(payload.material_Type);
     payload.number = JSON.stringify(payload.number);
+    payload.outlineId = +payload.outlineId;
     if(this.documentUrl != null) {
       const imageUrl = this.documentUrl.split(",");;
       payload.material_Name = imageUrl[1];

@@ -59,7 +59,7 @@ export class CourseOutlineDialogComponent implements OnInit {
       sectionId: [this.data?.editObject?.sectionId ? this.data?.editObject?.sectionId : 0 ],
       number: [this.data.editObject.number ? this.data.editObject.number : '', Validators.required],
       section_Name: [this.data.editObject.section_Name ? this.data.editObject.section_Name : '', Validators.required],
-      outline_Name: [this.data.editObject.outline_Name ? this.data.editObject.outline_Name : '', Validators.required],
+      outline_Name: [this.data.editObject.outlineName ? this.data.editObject.outlineName : '', Validators.required],
       outline_Description: [this.data.editObject.outline_Description ? this.data.editObject.outline_Description : '', Validators.required],
       material_Name: [this.data.editObject.material_Name ? this.data.editObject.material_Name : 'Complete web developemnt'],
       material_Type: [this.data.editObject.material_Type ? this.data.editObject.material_Type : 0],
@@ -90,6 +90,7 @@ export class CourseOutlineDialogComponent implements OnInit {
     this._helper.startSpinner();
     const payload = this.courseOutlineForm.value;
     payload.number = JSON.stringify(payload.number);
+    payload.outlineId = +payload.outlineId;
     if(this.documentUrl != null) {
       const imageUrl = this.documentUrl.split(",");;
       payload.upload_Material = imageUrl[1]

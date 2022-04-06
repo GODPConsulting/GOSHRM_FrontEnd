@@ -27,7 +27,7 @@
                   [(ngModel)]="isCheck"
                 >
               </th>
-              <th>Section No.</th>
+              <th>Outline No.</th>
               <th>Section Name</th>
               <th>Outline Name</th>
               <th>Outline Description</th>
@@ -51,7 +51,7 @@
                 </td>
               <td>{{ outline?.number }}</td>
               <td>{{ outline?.section_Name }}</td>
-              <td>{{ outline?.outline_Name }}</td>
+              <td>{{ outline?.outlineName }}</td>
               <td>{{ outline?.outline_Description }}</td>
               <td>
                 <a [href]="outline?.material_Name" download>
