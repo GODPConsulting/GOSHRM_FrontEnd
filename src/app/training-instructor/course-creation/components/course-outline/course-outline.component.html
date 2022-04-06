@@ -30,16 +30,16 @@
           <tr class="text-capitalize" *ngFor="let outline of courseOutlines">
             <td><input type="checkbox" name="" id=""></td>
             <td class="click" (click)="goToOutline(outline)">
-              {{ outline?.number }}
-            </td>
-            <td class="click" (click)="goToOutline(outline)">
-              {{ outline?.section_Name }}
+              {{ outline?.SectionNumber }}
             </td>
             <td class="click" (click)="goToOutline(outline)">
               {{ outline?.outline_Name }}
             </td>
             <td class="click" (click)="goToOutline(outline)">
-              {{ outline?.outline_Description }}
+              {{ outline?.outline_Name }}
+            </td>
+            <td class="click" (click)="goToOutline(outline)">
+              {{ outline?.outlineDescription }}
             </td>
             <td class="click" (click)="goToOutline(outline)">
               PR_Sales_45342...

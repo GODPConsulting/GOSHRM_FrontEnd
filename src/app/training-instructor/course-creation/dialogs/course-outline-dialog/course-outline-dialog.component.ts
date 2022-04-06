@@ -55,10 +55,10 @@ export class CourseOutlineDialogComponent implements OnInit {
 
   public initCourseOutlineForm() {
     this.courseOutlineForm = this.fb.group({
-      section_Number: [this.data.editObject.number ? this.data.editObject.number : '', Validators.required],
+      number: [this.data.editObject.number ? this.data.editObject.number : '', Validators.required],
       section_Name: [this.data.editObject.section_Name ? this.data.editObject.section_Name : '', Validators.required],
       outline_Name: [this.data.editObject.outline_Name ? this.data.editObject.outline_Name : '', Validators.required],
-      outline_Description: [this.data.editObject.outline_Description ? this.data.editObject.outline_Description : '', Validators.required],
+      outline_Description: [this.data.editObject.outlineDescription ? this.data.editObject.outlineDescription : '', Validators.required],
       material_Name: [this.data.editObject.material_Name ? this.data.editObject.material_Name : 'Complete web developemnt'],
       material_Type: [this.data.editObject.material_Type ? this.data.editObject.material_Type : 0],
       upload_Material: [this.data.editObject.upload_Material ? this.data.editObject.upload_Material : ''],

@@ -51,15 +51,16 @@ export class CourseSectionDialogComponent implements OnInit {
     this.loggedInUser = this._current.getUser();
     this.courseId = this.activateRoute.snapshot.paramMap.get('courseId');
     this.initCourseOutlineForm();
+    console.log(this.courseOutlineForm.value)
   }
 
   public initCourseOutlineForm() {
     this.courseOutlineForm = this.fb.group({
       companyId: [this.loggedInUser.companyId],
-      number: [this.data.editObject.number ? this.data.editObject.number : '', Validators.required],
+      number: [this.data.editObject.SectionNumber ? this.data.editObject.SectionNumber : '', Validators.required],
       section_Name: [this.data.editObject.section_Name ? this.data.editObject.section_Name : '', Validators.required],
       outline_Name: [this.data.editObject.outline_Name ? this.data.editObject.outline_Name : '', Validators.required],
-      outline_Description: [this.data.editObject.outline_Description ? this.data.editObject.outline_Description : '', Validators.required],
+      outline_Description: [this.data.editObject.outlineDescription ? this.data.editObject.outlineDescription : '', Validators.required],
       material_Name: [this.data.editObject.material_Name ? this.data.editObject.material_Name : ''],
       material_Type: [this.data.editObject.material_Type ? this.data.editObject.material_Type : 0],
       upload_Material: [this.data.editObject.upload_Material ? this.data.editObject.upload_Material : ''],
@@ -94,7 +95,7 @@ export class CourseSectionDialogComponent implements OnInit {
     payload.courseId = parseInt(payload.courseId);
     payload.outlineId = parseInt(payload.outlineId);
     payload.material_Type = parseInt(payload.material_Type);
-    payload.number = JSON.stringify(payload.number);
+    // payload.number = JSON.stringify(payload.number);
     if(this.documentUrl != null) {
       const imageUrl = this.documentUrl.split(",");;
       payload.material_Name = imageUrl[1];
