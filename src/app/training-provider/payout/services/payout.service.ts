@@ -15,7 +15,7 @@ export class PayoutService {
   public loggedInUser: any;
   public companyId: any;
   public userId: any;
-  public createdBy = CreatedByType
+  public createdBy: number;
 
   constructor(
     private http: HttpService,
@@ -24,13 +24,20 @@ export class PayoutService {
     this.loggedInUser = this._currentService.getUser();
     this.companyId = this.loggedInUser.companyId;
     this.userId = this.loggedInUser.userId;
+    if(this.loggedInUser.customerTypeId == 1) {
+      this.createdBy = CreatedByType.provider
+    } else if (this.loggedInUser.customerTypeId == 2) {
+      this.createdBy = CreatedByType.instructor
+    } else {
+      this.createdBy = CreatedByType.participant
+    }
   }
 
   public getPayout(): Observable<ResponseModel<Payout>> {
    const endpoint = '/lms/payout/getAllPayOutSetup';
    const params = new HttpParams()
    .set('companyId', this.companyId)
-   .set('type', this.createdBy.provider)
+   .set('type', this.createdBy)
    .set('userid', this.userId);
    return this.http.getRequestWithParams(endpoint, params);
   }

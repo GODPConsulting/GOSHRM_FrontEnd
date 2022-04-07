@@ -14,7 +14,7 @@ export class ProfileService {
   public loggedInUser: any;
   public companyId: any;
   public userId: any;
-  public createdBy = CreatedByType;
+  public createdBy: number;
 
   constructor(
     private http: HttpService,
@@ -23,9 +23,25 @@ export class ProfileService {
     this.loggedInUser = this._currentService.getUser();
     this.companyId = this.loggedInUser.companyId;
     this.userId = this.loggedInUser.userId;
+    if(this.loggedInUser.customerTypeId == 1) {
+      this.createdBy = CreatedByType.provider
+    } else if (this.loggedInUser.customerTypeId == 2) {
+      this.createdBy = CreatedByType.instructor
+    } else {
+      this.createdBy = CreatedByType.participant
+    }
   }
 
   public getProfile(
+       trainingProviderId: string
+    ): Observable<ResponseModel<Profile>> {
+      const endpoint = '/lms/trainingprovider/getTrainingProviderById';
+      const params = new HttpParams()
+      .set('trainingProviderId', trainingProviderId)
+      return this.http.getRequestWithParams(endpoint, params);
+  }
+
+  public getInstructorProfile(
        trainingProviderId: string
     ): Observable<ResponseModel<Profile>> {
       const endpoint = '/lms/trainingprovider/getTrainingProviderById';
@@ -45,7 +61,7 @@ export class ProfileService {
    const endpoint = '/lms/socialMedia/getAllSocialMedias';
    const params = new HttpParams()
    .set('companyId', this.companyId)
-   .set('type', this.createdBy.provider)
+   .set('type', this.createdBy)
    .set('userid', this.userId);
    return this.http.getRequestWithParams(endpoint, params);
 }
@@ -62,7 +78,7 @@ public getWebsites(): Observable<ResponseModel<Profile>> {
  const endpoint = '/lms/website/getWebsiteById';
  const params = new HttpParams()
  .set('companyId', this.companyId)
- .set('type', this.createdBy.provider)
+ .set('type', this.createdBy)
  .set('userid', this.userId);
  return this.http.getRequestWithParams(endpoint, params);
 }

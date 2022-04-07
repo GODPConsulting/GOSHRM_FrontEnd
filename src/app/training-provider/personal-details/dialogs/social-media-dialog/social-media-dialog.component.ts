@@ -31,7 +31,7 @@ export class SocialMediaDialogComponent implements OnInit {
   public profileFormSubmitted: boolean = false;
   public error_message: string = '';
   public loggedInUser!: any;
-  public createdBy = CreatedByType;
+  public createdBy!: number;
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -51,6 +51,13 @@ export class SocialMediaDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this._currentService.getUser();
+    if(this.loggedInUser.customerTypeId == 1) {
+      this.createdBy = CreatedByType.provider
+    } else if (this.loggedInUser.customerTypeId == 2) {
+      this.createdBy = CreatedByType.instructor
+    } else {
+      this.createdBy = CreatedByType.participant
+    }
     this.initSocialMediaForm();
   }
 
@@ -69,7 +76,7 @@ export class SocialMediaDialogComponent implements OnInit {
           socialMediaType: [0, Validators.required],
           companyId: [this.loggedInUser.companyId],
           userId: [this.loggedInUser.userId],
-          SociaMediaCreatedByType: [this.createdBy.provider]
+          SociaMediaCreatedByType: [this.createdBy]
         })
       ]),
     })

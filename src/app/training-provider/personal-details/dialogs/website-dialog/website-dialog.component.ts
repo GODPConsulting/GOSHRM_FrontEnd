@@ -31,7 +31,7 @@ export class WebsiteDialogComponent implements OnInit {
   public websiteFormSubmitted: boolean = false;
   public error_message: string = '';
   public loggedInUser!: any;
-  public createdBy = CreatedByType;
+  public createdBy!: number;
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -51,6 +51,13 @@ export class WebsiteDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this._currentservice.getUser();
+    if(this.loggedInUser.customerTypeId == 1) {
+      this.createdBy = CreatedByType.provider
+    } else if (this.loggedInUser.customerTypeId == 2) {
+      this.createdBy = CreatedByType.instructor
+    } else {
+      this.createdBy = CreatedByType.participant
+    }
     this.initWebsiteForm();
   }
 
@@ -69,7 +76,7 @@ export class WebsiteDialogComponent implements OnInit {
           website_Name: ['', Validators.required],
           companyId: [this.loggedInUser.companyId],
           userId: [this.loggedInUser.userId],
-          sociaMediaCreatedByType: [this.createdBy.provider]
+          sociaMediaCreatedByType: [this.createdBy]
         })
       ]),
     })
