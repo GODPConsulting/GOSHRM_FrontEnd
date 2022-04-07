@@ -14,7 +14,6 @@ import { LocalStorageService } from '@shared/services/local-storage.service';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { OfflineComponent } from './offline/offline.component';
 import { TraningProviderComponent } from './training-provider/traning-provider.component';
-import { TrainingInstructorComponent } from './training-instructor/training-instructor.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
@@ -22,8 +21,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     AppComponent, 
     NotFoundComponent, 
     OfflineComponent, 
-    TraningProviderComponent, 
-    TrainingInstructorComponent,
+    TraningProviderComponent,
   ],
   imports: [
     BrowserModule,

@@ -62,6 +62,7 @@ export class RegistrationComponent implements OnInit {
       payload.PhysicalAddress = 'Nigeria';
       payload.DeliveryType = 'online';
       payload.Status = 'Pending';
+      payload.PhoneNumber = '08065126534';
       delete payload.full_Name;
       delete payload.email_Address;
       delete payload.password;

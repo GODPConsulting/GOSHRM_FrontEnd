@@ -89,11 +89,11 @@ export class LoginComponent implements OnInit {
         if(res?.status.isSuccessful) {
           this.loginFormSubmitted = true;
           this.profile = res;
-          if(this.profile.customerTypeId == 1) {
-            this.router.navigate(['training-provider']);
-          } else {
-            this.router.navigate(['training-instructor']);
-          }
+          // if(this.profile.customerTypeId == 1) {
+            this.router.navigate(['/profile']);
+          // } else if(this.profile.customerTypeId == 2) {
+          //   this.router.navigate(['training-instructor']);
+          // }
         } else {
           this.isError = true;
           this.err_message = res?.status?.message?.friendlyMessage

@@ -25,17 +25,85 @@ const routes: Routes = [
     canActivate: [RouteGuard],
     children: [
       {
-        path: 'training-provider',
+          path: '',
+          redirectTo: 'profile',
+          pathMatch: 'full',
+      },
+      {
+        path: 'profile',
         loadChildren: () =>
-          import('./training-provider/traning-provider.module').then(
-            (m) => m.TraningProviderModule
+          import('./training-provider/personal-details/profile.module').then(
+            (m) => m.PersonalDetailsModule
           ),
       },
       {
-        path: 'training-instructor',
+        path: 'running-courses',
         loadChildren: () =>
-          import('./training-instructor/training-instructor.module').then(
-            (m) => m.TraningInstructorModule
+          import('./training-provider/running-courses/running-courses.module').then(
+            (m) => m.RunningCoursesModule
+          ),
+      },
+      {
+        path: 'payout',
+        loadChildren: () =>
+          import('./training-provider/payout/payout.module').then(
+            (m) => m.PayoutModule
+          ),
+      },
+      {
+        path: 'settings',
+        loadChildren: () =>
+          import('./training-provider/account-settings/account-settings.module').then(
+            (m) => m.AccountSettingsModule
+          ),
+      },
+      {
+        path: 'security',
+        loadChildren: () =>
+          import('./training-provider/security/security.module').then(
+            (m) => m.SecurityModule
+          ),
+      },
+      {
+        path: 'setup',
+        loadChildren: () =>
+          import('./training-provider/instructor-facilitator-setup/instructor-facilitator-setup.module').then(
+            (m) => m.InstructorFacilitatorSetupModule
+          ),
+      },
+      {
+        path: 'instructor-information/:instructorId',
+        loadChildren: () =>
+          import('./training-provider/instructor-information/instructor-information.module').then(
+            (m) => m.InstructorInformationModule
+          ),
+      },
+      {
+        path: 'course-creation',
+        loadChildren: () =>
+          import('./training-provider/course-creation/course-creation.module').then(
+            (m) => m.CourseCreationModule
+          ),
+      },
+      {
+        path: 'communication',
+        loadChildren: () =>
+          import('./training-provider/communication/communication.module').then(
+            (m) => m.CommunicationModule
+          ),
+      },
+      {
+        path: 'instructor-community',
+        loadChildren: () =>
+          import('./training-provider/instructor-community/instructor-community.module').then(
+            (m) => m.InstructorCommunityModule
+          ),
+      },
+      {
+        path: 'course-approval',
+        loadChildren: () =>
+          import('./training-provider/course-approval/course-approval.module').then(
+            (m) => m.CourseApprovalModule
           ),
       },
       {

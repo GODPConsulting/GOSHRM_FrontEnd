@@ -12,7 +12,7 @@ export interface RegisterRequestDTO {
   full_Name: string,
   email_Address: string,
   password: string,
-  companyId: number;
+  companyId: string;
 }
 
 export interface RegisterResponseDTO {
