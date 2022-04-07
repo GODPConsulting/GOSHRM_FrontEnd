@@ -33,7 +33,7 @@ export class AddCourseComponent implements OnInit {
   public endDate: any = new Date('2008-09-19 17:35:00');
   public sp: any;
   public htmlContent = ``;
-  public createdBy = CreatedByType;
+  public createdBy!: number;
   public newRequirement = (requirement: any) => ({ name: requirement });
   public newParticipant = (participant: any) => ({ name: participant });
   public newCompetence = (competence: any) => ({ name: competence });
@@ -125,12 +125,18 @@ export class AddCourseComponent implements OnInit {
     // this.sp = this.getTimeSpan(this.endDate - this.beginDate);
     // console.log(this.sp)
     this.loggedInUser = this._currentService.getUser();
-    if (this._route.snapshot.paramMap.get('instructorId')) {
-      this.instructorId = this._route.snapshot.paramMap.get('instructorId');
-    }
+    // if (this._route.snapshot.paramMap.get('instructorId')) {
+    //   this.instructorId = this._route.snapshot.paramMap.get('instructorId');
+    // }
     if (this._route.snapshot.paramMap.get('courseId')) {
       this.courseId = this._route.snapshot.paramMap.get('courseId');
       this.getOneCourses();
+    }
+    if(this.loggedInUser.customerTypeId == 1) {
+      this.createdBy = CreatedByType.provider;
+    }
+    if(this.loggedInUser.customerTypeId == 2) {
+      this.createdBy = CreatedByType.instructor;
     }
     this.getResolvedData();
     this.initAddCourseForm();
@@ -166,7 +172,7 @@ export class AddCourseComponent implements OnInit {
   initAddCourseForm() {
     this.addCourseForm = this.fb.group({
       courseId: [this.courseId],
-      createdByType: [this.createdBy.provider],
+      createdByType: [this.createdBy],
       providerId: [this.loggedInUser.trainingProviderId],
       trainerId: [this.loggedInUser.trainingInstructorId],
       companyId: [this.loggedInUser.companyId],

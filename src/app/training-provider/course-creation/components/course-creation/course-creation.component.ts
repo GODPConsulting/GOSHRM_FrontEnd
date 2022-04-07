@@ -29,7 +29,8 @@ export class CourseCreationComponent implements OnInit {
   public courses: Courses[] = [];
   public isFetchingCourses:boolean = false;
   public loggedInUser: any;
-  public createdBy = CreatedByType;
+  public loggedInId!: number;
+  public createdBy!: number;
   public selectedCourses: Courses[] = [];
   public isInitialRequest: boolean = true;
   public searchQuery: SearchDTO = { ...InitialSearchDTO, search: '' };
@@ -45,6 +46,14 @@ export class CourseCreationComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
+    if(this.loggedInUser.customerTypeId == 1) {
+      this.createdBy = CreatedByType.provider;
+      this.loggedInId = this.loggedInUser.trainingProviderId
+    }
+    if(this.loggedInUser.customerTypeId == 2) {
+      this.createdBy = CreatedByType.instructor;
+      this.loggedInId = this.loggedInUser.trainingInstructorId
+    }
     this.getAllCourses(true);
   }
 
@@ -63,8 +72,8 @@ export class CourseCreationComponent implements OnInit {
     initial ? (this.isInitialRequest = true) : (this.isInitialRequest = false);
     const payload = {
       searchParams: this.searchQuery.search,
-      id: this.loggedInUser?.trainingProviderId,
-      type: this.createdBy.provider
+      id: this.loggedInId,
+      type: this.createdBy
     }
     this.isFetchingCourses = true;
     this.sub.add(
