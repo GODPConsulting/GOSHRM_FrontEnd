@@ -6,7 +6,7 @@ import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { Subscription } from 'rxjs';
-// import { CourseApprovalService } from '../../services/course-approval.service';
+import { CourseApprovalService } from '../../services/course-approval.service';
 
 @Component({
   selector: 'app-decision-dialog',
@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
 export class DecisionDialogComponent implements OnInit {
   @ViewChild('close') close!: ElementRef;
   public sub: Subscription = new Subscription();
-  public courseOutlineForm!: FormGroup;
+  public decisionForm!: FormGroup;
   public loggedInUser: any;
   
   @Output() event: EventEmitter<{
@@ -30,7 +30,7 @@ export class DecisionDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<any>,
     public fb: FormBuilder,
     public _helper: HelperService,
-    // private _course: CourseApprovalService,
+    private _course: CourseApprovalService,
     private _current: CurrentUserService
   ) { }
 
@@ -41,9 +41,10 @@ export class DecisionDialogComponent implements OnInit {
   }
 
   public initCourseOutlineForm() {
-    this.courseOutlineForm = this.fb.group({
-      decision: [this.data.editObject.section_Number ? this.data.editObject.section_Number : '', Validators.required],
-      comment: [this.data.editObject.section_Name ? this.data.editObject.section_Name : '', Validators.required],
+    this.decisionForm = this.fb.group({
+      courseId: [this.data.editObject.courseId ? this.data.editObject.courseId : '', Validators.required],
+      decisionType: [this.data.editObject.decisionType ? this.data.editObject.decisionType : '', Validators.required],
+      comment: [this.data.editObject.comment ? this.data.editObject.comment : ''],
     })
   }
 
@@ -54,43 +55,39 @@ export class DecisionDialogComponent implements OnInit {
 
   submit() {
     this._helper.startSpinner();
-    const payload = this.courseOutlineForm.value;
-    payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
-    payload.trainingInstructorId = this.loggedInUser?.trainingInstructorId;
-    payload.sectionId = this.data?.editObject?.sectionId ? this.data?.editObject?.sectionId : 0 ;
-    // payload.courseId = this.data?.editObject?.courseId;
-    this.data.isEditing ? payload.courseId = this.data.editObject.courseId : payload.courseId = this.data.editObject
+    const payload = this.decisionForm.value;
+    let decision = this.decisionForm.get('decisionType')?.value;
     payload.courseId = parseInt(payload.courseId);
     console.log(payload);
-    // this.sub.add(
-    //   this._course.UpdateCourseOutline(payload, payload.trainingProviderId).subscribe({
-    //     next: (res: any) => {
-    //       console.log(res);
-    //       if(res.status.isSuccessful) {
-    //         this._helper.stopSpinner();
-    //         if (this.data?.isEditing) {
-    //           payload.sectionId = payload?.sectionId;
-    //           payload.deleted = false;
-    //         } else {
-    //           payload.sectionId = res;
-    //         }
-    //         this.event.emit({
-    //           isEditing: this.data?.isEditing,
-    //           editObject: payload,
-    //         });
-    //         this.close.nativeElement.click();
-    //         this._helper.triggerSucessAlert('Course outline created successfully!!!')
-    //       } else {
-    //         this._helper.stopSpinner();
-    //         this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
-    //       }
-    //     },
-    //     error: (error: any) => {
-    //       this._helper.stopSpinner();
-    //       console.log(error);
-    //     },
-    //   })
-    // );
+    this.sub.add(
+      this._course.ApproveCourse(payload).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          if(res.status.isSuccessful) {
+            this._helper.stopSpinner();
+            if (this.data?.isEditing) {
+              payload.courseId = payload?.courseId;
+              payload.deleted = false;
+            } else {
+              payload.sectionId = res;
+            }
+            this.event.emit({
+              isEditing: this.data?.isEditing,
+              editObject: payload,
+            });
+            this.close.nativeElement.click();
+            this._helper.triggerSucessAlert(`You have successfully ${decision} a new course!!!`)
+          } else {
+            this._helper.stopSpinner();
+            this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
+          }
+        },
+        error: (error: any) => {
+          this._helper.stopSpinner();
+          console.log(error);
+        },
+      })
+    );
   }
 
 }
