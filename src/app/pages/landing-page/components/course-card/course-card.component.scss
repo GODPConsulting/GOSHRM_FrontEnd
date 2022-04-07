@@ -1,0 +1,38 @@
+@import 'partials/abstract/variables';
+
+.card {
+    border: none;
+    .card-title {
+        .course-title {
+            font-weight: 700;
+            font-size: 2rem;
+            line-height: 2.7rem;
+            color: $black-100;
+        }
+        .instructor {
+            font-weight: 700;
+            font-size: 1.6rem;
+            line-height: 2.2rem;
+            color: #BDBDBD;
+        }
+    }
+    .card-text {
+        .price {
+            color: $orange-400;
+            font-weight: 700;
+            font-size: 1.8rem;
+            line-height: 2.5rem;
+            display: block;
+        }
+        .competency {
+            font-weight: 600;
+            font-size: 1.8rem;
+            line-height: 2.5rem;
+            color: $black-100;
+            display: block;
+        }
+        .btn {
+            background: rgba(34, 20, 0, 0.1);
+        }
+    }
+}

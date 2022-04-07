@@ -1,0 +1,40 @@
+@import 'partials/abstract/variables';
+@import "partials/abstract/mixins";
+@import "partials/components/forms";
+
+.wrapper {
+    // padding: 3rem;
+    background: #F9FAFB;
+    min-height: 100vh;
+    .banner {
+        min-height: 50vh;
+        border-radius: .6rem;
+        h2 {
+            font-weight: bold;
+            font-size: 3.6rem;
+            line-height: 150%;
+        }
+        img {
+            width: 100%;
+        }
+
+        .bg-secondary {
+            background: #013A61 !important;
+        }
+    }
+    .footer_wrapper {
+        background: $white-100;
+        min-height: 80vh;
+        position: relative;
+        .curve {
+            background: rgba($color: #0081FE, $alpha: 0.1);
+            height: 50vh;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top-left-radius: 25%;
+            border-top-right-radius: 25%;
+        }
+    }
+}

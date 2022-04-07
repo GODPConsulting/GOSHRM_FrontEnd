@@ -20,6 +20,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'home',
+    loadChildren: () =>
+      import('./pages/landing-page/landing-page.module').then(
+        (m) => m.LandingPageModule
+      ),
+  },
+  {
     path: '',
     component: LayoutComponent,
     canActivate: [RouteGuard],
@@ -28,6 +35,13 @@ const routes: Routes = [
           path: '',
           redirectTo: 'profile',
           pathMatch: 'full',
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () =>
+          import('./pages/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
+          ),
       },
       {
         path: 'profile',
