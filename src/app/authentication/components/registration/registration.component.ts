@@ -29,12 +29,13 @@ export class RegistrationComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const route = this._route.snapshot.paramMap.get('user');
-    if(route == 'provider') {
-      this.findUser = 'provider';
-    } else {
-      this.findUser = 'participant';
-    }
+     this._route.queryParams.subscribe(params => {
+       const route = params.q;
+       if(route == 'provider') {
+          this.findUser = route;
+        }
+    });
+    console.log(this.findUser)
     this.initRegisterForm();
   }
 
@@ -43,6 +44,7 @@ export class RegistrationComponent implements OnInit {
         full_Name: ['', Validators.required],
         email_Address: ["", Validators.compose([Validators.required, Validators.email])],
         physical_Address: [''],
+        companyId: [2],
         password: ['', Validators.required],
     })
   }
@@ -52,9 +54,18 @@ export class RegistrationComponent implements OnInit {
     this.isRegistering = true;
     this.isRegisteringFormSubmitted = true;
     const payload = this.registrationForm.value;
-    payload.companyId = 2;
+    const operation = this.findUser == 'provider' ? 'registerProvider' : 'registerParticipant';
+    if(this.findUser != 'provider') {
+      payload.ParticipantName = payload.full_Name;
+      payload.EmailAddress = payload.email_Address;
+      payload.Password = payload.password;
+      delete payload.full_Name;
+      delete payload.email_Address;
+      delete payload.password;
+    }
+    console.log(payload);
     if(this.registrationForm.valid) {
-      this.auth.register(payload).subscribe({
+      this.auth[operation](payload).subscribe({
         next: (res: any) => {
           console.log(res);
           this.isRegistering = false;

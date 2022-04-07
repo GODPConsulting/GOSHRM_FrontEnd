@@ -19,10 +19,17 @@ export class AuthService {
     return this.http.makeRequestWithData('post', endpoint, {}, loginRequestDTO);
   }
 
-  public register(
+  public registerProvider(
     registerRequestDTO: RegisterRequestDTO
   ): Observable<ResponseModel<RegisterResponseDTO>> {
     const endpoint = '/lms/signup';
+    return this.http.makeRequestWithData('post', endpoint, {}, registerRequestDTO);
+  }
+
+  public registerParticipant(
+    registerRequestDTO: RegisterRequestDTO
+  ): Observable<ResponseModel<RegisterResponseDTO>> {
+    const endpoint = '/lms/participantsignup';
     return this.http.makeRequestWithData('post', endpoint, {}, registerRequestDTO);
   }
   public forgotPassword(
