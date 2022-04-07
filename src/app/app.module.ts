@@ -13,7 +13,7 @@ import { CoreModule } from '@core/core.module';
 import { LocalStorageService } from '@shared/services/local-storage.service';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { OfflineComponent } from './offline/offline.component';
-import { TraningProviderComponent } from './training-provider/traning-provider.component';
+import { TraningProviderComponent } from './pages/traning-provider.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
