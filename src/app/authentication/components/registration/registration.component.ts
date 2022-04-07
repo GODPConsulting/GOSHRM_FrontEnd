@@ -59,9 +59,13 @@ export class RegistrationComponent implements OnInit {
       payload.ParticipantName = payload.full_Name;
       payload.EmailAddress = payload.email_Address;
       payload.Password = payload.password;
+      payload.PhysicalAddress = 'Nigeria';
+      payload.DeliveryType = 'online';
+      payload.Status = 'Pending';
       delete payload.full_Name;
       delete payload.email_Address;
       delete payload.password;
+      delete payload.physical_Address;
     }
     console.log(payload);
     if(this.registrationForm.valid) {
