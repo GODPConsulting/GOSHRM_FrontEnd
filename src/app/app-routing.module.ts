@@ -79,7 +79,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'course-creation',
+        path: 'courses',
         loadChildren: () =>
           import('./pages/course-creation/course-creation.module').then(
             (m) => m.CourseCreationModule
