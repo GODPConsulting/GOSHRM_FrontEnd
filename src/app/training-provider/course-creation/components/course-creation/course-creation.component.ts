@@ -100,7 +100,7 @@ export class CourseCreationComponent implements OnInit {
   }
 
   public goTo() {
-    this.router.navigate(['/training-provider/course-creation/add-course'])
+    this.router.navigate(['/course-creation/add-course'])
   }
 
   public checkUncheckAll() {

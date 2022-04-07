@@ -29,19 +29,35 @@
             <span>{{ loggedInUser?.full_Name }}</span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li *ngIf="loggedInUser.customerTypeId === 1">
+            <li>
               <a class="dropdown-item" 
-                routerLink="training-provider/profile" 
+                routerLink="/profile" 
                 routerLinkActive="router-link-active" 
-              >Profile</a>
+              >Personal Information</a>
             </li>
-            <li *ngIf="loggedInUser.customerTypeId === 2">
+            <li *ngIf="loggedInUser.customerTypeId == 3">
               <a class="dropdown-item" 
-                routerLink="training-instructor/profile" 
+                routerLink="/messages" 
                 routerLinkActive="router-link-active" 
-              >Profile</a>
+              >Messages</a>
             </li>
-             <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+            <li *ngIf="loggedInUser.customerTypeId == 3">
+              <a class="dropdown-item" 
+                routerLink="/running-courses" 
+                routerLinkActive="router-link-active" 
+              >Running Courses</a>
+            </li>
+            <li *ngIf="loggedInUser.customerTypeId == 3">
+              <a class="dropdown-item" 
+                routerLink="/security" 
+                routerLinkActive="router-link-active" 
+              >Security</a>
+            </li>
+             <li>
+               <a class="dropdown-item" 
+                (click)="logout()"
+                >Logout</a>
+              </li>
           </ul>
         </li>
       </ul>

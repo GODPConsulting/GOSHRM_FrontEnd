@@ -37,4 +37,13 @@ nav {
     width: 3.5rem;
     height: 3.5rem;
   }
+  .dropdown-menu {
+    .dropdown-item {
+      padding: 1.2rem 2rem;
+      font-size: 1.6rem;
+      &:hover {
+        background: #FEF1E1;
+      }
+    }
+  }
 }

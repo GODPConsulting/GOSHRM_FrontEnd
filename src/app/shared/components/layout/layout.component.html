@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper" *ngIf="loggedinUser.customerTypeId != 3">
   <app-sidebar (showMinimized)='showMinimizedMenu($event)'></app-sidebar>
   <div class="wrapper__layout" [ngClass]="{'showMinimized': showMinimized}">
     <app-navbar></app-navbar>
@@ -6,5 +6,13 @@
       <router-outlet></router-outlet>
     </div>
   </div>
+  <!-- <app-task-bar></app-task-bar> -->
+</div>
+
+<div class="wrapper" *ngIf="loggedinUser.customerTypeId == 3">
+    <app-navbar></app-navbar>
+    <div class="container bg-grey">
+      <router-outlet></router-outlet>
+    </div>
   <!-- <app-task-bar></app-task-bar> -->
 </div>

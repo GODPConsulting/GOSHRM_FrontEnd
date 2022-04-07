@@ -53,13 +53,13 @@
                         (change)="selectDeselectCourses(course)"
                       >
                     </td>
-                    <td class="click" [routerLink]="['/training-provider/course-creation/add-course', {courseId: course?.courseId}]">
+                    <td class="click" [routerLink]="['/course-creation/add-course', {courseId: course?.courseId}]">
                       {{ course?.training_Name }}
                     </td>
-                    <td class="click" [routerLink]="['/training-provider/course-creation/add-course', {courseId: course?.courseId}]">
+                    <td class="click" [routerLink]="['/course-creation/add-course', {courseId: course?.courseId}]">
                       {{ course?.training_Name }}
                     </td>
-                    <td class="click" [routerLink]="['/training-provider/course-creation/add-course', {courseId: course?.courseId}]">
+                    <td class="click" [routerLink]="['/course-creation/add-course', {courseId: course?.courseId}]">
                       <ng-rating-bar
                         [value]="4"
                         [ratingCount]="5"
@@ -69,10 +69,10 @@
                         colorDefault="#cecece"
                       ></ng-rating-bar>
                     </td>
-                    <td class="click" [routerLink]="['/training-provider/course-creation/add-course', {courseId: course?.courseId}]">
+                    <td class="click" [routerLink]="['/course-creation/add-course', {courseId: course?.courseId}]">
                       {{ course?.decisionType }}
                     </td>
-                    <td class="click" [routerLink]="['/training-provider/course-creation/add-course', {courseId: course?.courseId}]">
+                    <td class="click" [routerLink]="['/course-creation/add-course', {courseId: course?.courseId}]">
                       {{ course?.createdAt | date }}
                     </td>
                     <td>
@@ -81,14 +81,14 @@
                             Create Experience
                         </button>
                         <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
-                          <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/course-section', course?.courseId]">
+                          <li><a class="dropdown-item" [routerLink]="['/course-creation/course-section', course?.courseId]">
                               Course Outline</a>
                           </li>
-                          <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/course-assessment', course?.courseId]"
+                          <li><a class="dropdown-item" [routerLink]="['/course-creation/course-assessment', course?.courseId]"
                             >Course Assessment</a></li>
-                          <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/competence-assessment', course?.courseId]"
+                          <li><a class="dropdown-item" [routerLink]="['/course-creation/competence-assessment', course?.courseId]"
                             >Competence Assessment</a></li>
-                          <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/learning-assessment', course?.courseId]"
+                          <li><a class="dropdown-item" [routerLink]="['/course-creation/learning-assessment', course?.courseId]"
                             >Learning Assessment </a></li>
                           <li (click)="openDialog( {isEditing: true, editObject: course } )"><a class="dropdown-item"
                             >Participants</a></li>
