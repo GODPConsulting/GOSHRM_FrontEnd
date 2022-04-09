@@ -28,6 +28,7 @@ export interface Courses  {
       }
     ],
     delivery_Type: string,
+    session_Type: string,
     duration: string,
     cost: number,
     facilitator: [

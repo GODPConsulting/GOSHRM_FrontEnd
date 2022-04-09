@@ -33,6 +33,7 @@ export class CourseSectionDialogComponent implements OnInit {
   public courseId: any;
   public outlineId: any;
   public documentUrl: any;
+  public file!: File;
   
   @Output() event: EventEmitter<{
     editObject?: CourseOutline;
@@ -89,6 +90,43 @@ export class CourseSectionDialogComponent implements OnInit {
     reader.onerror = function (error) {
       console.log('Error: ', error);
     };
+  }
+
+  public dropHandler(ev: any): void {
+    ev.preventDefault();
+    ev.stopPropagation();
+    let me = this;
+    let file = ev.dataTransfer.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      // console.log(reader.result);
+      me.documentUrl = reader.result;
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  }
+
+  public dragOverHandler(ev: any): void {
+    ev.preventDefault();
+    ev.stopPropagation();
+  }
+
+  public onFileDropped(event: any) {
+    if (event.target.files.length > 0) {
+      let me = this;
+      let file = event.dataTransfer.files[0];
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        // console.log(reader.result);
+        me.documentUrl = reader.result;
+      };
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+      };
+    }
   }
 
   submit() {

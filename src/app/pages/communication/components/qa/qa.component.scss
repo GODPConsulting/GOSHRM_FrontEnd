@@ -5,22 +5,6 @@
 .community__wrapper {
     padding: 3rem;
 
-    .banner {
-        min-height: 50vh;
-        border-radius: .6rem;
-        h2 {
-            font-weight: bold;
-            font-size: 3.6rem;
-            line-height: 150%;
-        }
-        img {
-            width: 80%;
-        }
-
-        .bg-secondary {
-            background: #013A61 !important;
-        }
-    }
     .activities {
              .card-left {
                  .img-wrapper {
@@ -64,5 +48,9 @@
                      background: #C4C4C4;
                  }
              }
-     }
+    }
+}
+
+.isLike {
+    fill: $orange-400;
 }

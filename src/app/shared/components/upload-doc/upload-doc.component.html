@@ -1,0 +1,12 @@
+<div class="wrapper">
+    <div class="d-flex">
+      <img [src]="getFileType()" alt="" class="wrapper_ext" />
+      <p class="wrapper_name">{{ file_name }} - {{ formatBytes() }}</p>
+    </div>
+    <img
+      src="assets/icons/close.svg"
+      alt=""
+      class="wrapper_close"
+      (click)="removeFile()"
+    />
+  </div>

@@ -21,6 +21,7 @@ import { SuccessModalComponent } from './components/success-modal/success-modal.
 import { TaskBarComponent } from './components/task-bar/task-bar.component';
 import { FAQComponent } from './components/faq/faq.component';
 import { BackButtonComponent } from './components/back-button/back-button.component';
+import { UploadDocComponent } from './components/upload-doc/upload-doc.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { BackButtonComponent } from './components/back-button/back-button.compon
     SuccessModalComponent,
     TaskBarComponent,
     FAQComponent,
-    BackButtonComponent
+    BackButtonComponent,
+    UploadDocComponent
   ],
   imports: [
     CommonModule,
@@ -66,7 +68,8 @@ import { BackButtonComponent } from './components/back-button/back-button.compon
     NgSelectModule,
     SuccessModalComponent,
     TaskBarComponent,
-    BackButtonComponent
+    BackButtonComponent,
+    UploadDocComponent
   ],
 })
 export class SharedModule {}

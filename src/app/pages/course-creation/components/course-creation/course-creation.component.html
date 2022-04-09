@@ -92,7 +92,7 @@
                             >Learning Assessment </a></li>
                           <li (click)="openDialog( {isEditing: true, editObject: course } )"><a class="dropdown-item"
                             >Participants</a></li>
-                          <li (click)="openScheduleClassDialog({isEditing: false})"><a class="dropdown-item"
+                          <li (click)="openScheduleClassDialog({isEditing: false, course: course})"><a class="dropdown-item"
                             >Schedule Class</a></li>
                           <li><a class="dropdown-item" href="#">Submit</a></li>
                         </ul>

@@ -14,7 +14,7 @@ import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { Subscription } from 'rxjs';
-import { CourseOutline, OutlineType, MediaType } from '../../models/course-creation.model';
+import { CourseOutline, OutlineType, MediaType, Courses } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 
 @Component({
@@ -32,6 +32,7 @@ export class SceduleClassDialogComponent implements OnInit {
   public mediaType = MediaType;
   public courseId: any;
   public documentUrl: any;
+  public course!: Courses;
   public sessionType: any[] = [
     {id: 1, name: 'Public'},
     {id: 2, name: 'Private'},
@@ -41,7 +42,8 @@ export class SceduleClassDialogComponent implements OnInit {
   @Output() event: EventEmitter<{
     editObject?: CourseOutline;
     isEditing: boolean;
-  }> = new EventEmitter<{ editObject?: CourseOutline; isEditing: boolean }>();
+    course: Courses
+  }> = new EventEmitter<{ editObject?: CourseOutline; isEditing: boolean, course: Courses }>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<CourseOutline>,
@@ -55,6 +57,7 @@ export class SceduleClassDialogComponent implements OnInit {
   ngOnInit() {
     this.loggedInUser = this._current.getUser();
     this.courseId = this.activateRoute.snapshot.paramMap.get('courseId');
+    this.course = this.data.course;
     this.initCourseOutlineForm();
   }
 
@@ -116,6 +119,7 @@ export class SceduleClassDialogComponent implements OnInit {
             this.event.emit({
               isEditing: this.data?.isEditing,
               editObject: payload,
+              course: this.course
             });
             this.close.nativeElement.click();
             this._helper.triggerSucessAlert('Course outline created successfully!!!')

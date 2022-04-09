@@ -64,7 +64,11 @@
                     </div>
                 </div>
                 <div class="col-12">
-                  <div class="upload-document-wrapper text-center click py-5">
+                  <div 
+                    class="upload-document-wrapper text-center click py-5"
+                    (drop)="dropHandler($event)"
+                    (dragover)="dragOverHandler($event)"
+                  >
                     <label for="file">
                       <input
                         id="file"
@@ -90,6 +94,15 @@
                     >
                   </div>
                 </div>
+                <!-- <div class="row mt-4">
+                  <div class="col-12 col-lg-6 doc">
+                    <app-upload-doc
+                      [file_name]="file.name"
+                      [type]="file.type"
+                      [file_size]="file.size"
+                    ></app-upload-doc>
+                  </div>
+                </div> -->
             </div>
         </form>
     </div>

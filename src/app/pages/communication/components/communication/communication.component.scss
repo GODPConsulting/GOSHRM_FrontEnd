@@ -1,0 +1,27 @@
+@import 'partials/abstract/variables';
+@import "partials/abstract/mixins";
+@import "partials/components/forms";
+
+.setup__wrapper {
+    padding: 3rem;
+    color: $black-100;
+    .setup_content {
+        min-height: 50vh;
+    }
+    .font-bold {
+        font-weight: 600;
+    }
+    .btn-secondary {
+        background: $orange-400;
+        border: .1rem solid $orange-400;
+    }
+    .dropdown-menu {
+        .dropdown-item {
+          padding: 1rem 1.5rem;
+          font-size: 1.2rem;
+          &:hover, &:focus {
+            background: #FEF1E1;
+          }
+        }
+    }
+}
