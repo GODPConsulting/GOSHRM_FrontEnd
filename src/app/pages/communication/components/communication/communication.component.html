@@ -12,6 +12,28 @@
             ></app-searchbar>
         </div>
     </div>
+    <div>
+        <div class="row">
+            <div class="row col-md-6">
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                        <label for="" class="form-label">Delivery Type</label>
+                        <select name="" id="" class="form-select">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                        <label for="" class="form-label">Session Type</label>
+                        <select name="" id="" class="form-select">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="setup_content bg-white my-4">
         <div class="my-5" *ngIf="courses?.length == 0">
@@ -23,8 +45,8 @@
                 <thead class="bg-white">
                   <tr>
                     <th>Course Title</th>
-                    <th>No. of Questions</th>
-                    <th>Recent Question</th>
+                    <th>No. of Comments</th>
+                    <th>Last Comment Date</th>
                     <th></th>
                   </tr>
                 </thead></ng-container
@@ -36,14 +58,14 @@
                       {{ course?.courseName }}
                     </td>
                     <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
-                      {{ course?.lastQACreated | date }}
+                        {{ course?.numberOfQA }}
                     </td>
                     <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
-                      {{ course?.numberOfQA }}
+                      {{ course?.lastQACreated | date }}
                     </td>
                     <td>
                       <span class="text-orange">
-                          View Questions
+                          View Q & A
                       </span>
                     </td>
                   </tr>

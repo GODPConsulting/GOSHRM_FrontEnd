@@ -1,5 +1,6 @@
 <div class="community__wrapper">
-    <div class="community-activities">
+    <app-back-button></app-back-button>
+    <div class="community-activities py-3">
         <div class="d-md-flex justify-content-between">
             <div class="">
                 <h3>Q & A</h3>
@@ -9,28 +10,6 @@
                     [canAdd]="true"
                     (btnAction)="openDialog({isEditing: false, course: courseId})"
                 ></app-searchbar>
-            </div>
-        </div>
-        <div>
-            <div class="row">
-                <div class="row col-md-6">
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="" class="form-label">Delivery Type</label>
-                            <select name="" id="" class="form-select">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form_group mb-4">
-                            <label for="" class="form-label">Session Type</label>
-                            <select name="" id="" class="form-select">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="activities bg-white p-4 my-3" *ngFor="let question of questions; index as i">

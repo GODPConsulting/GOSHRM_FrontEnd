@@ -34,6 +34,8 @@
                     </th>
                     <th>Facilitator’s Name</th>
                     <th>Training Tiltle</th>
+                    <th>Schedule Type</th>
+                    <th>Delivery Type</th>
                     <th>Rating</th>
                     <th>Status</th>
                     <th>Date Created</th>
@@ -58,6 +60,12 @@
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
                       {{ course?.training_Name }}
+                    </td>
+                    <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
+                      {{ course?.session_Type }}
+                    </td>
+                    <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
+                      {{ course?.delivery_Type }}
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
                       <ng-rating-bar
