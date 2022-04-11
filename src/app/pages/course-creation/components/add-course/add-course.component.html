@@ -283,7 +283,7 @@
                             ></textarea>
                        </div>
                     </div>
-                    <!-- <div class="col-md-6">
+                    <div class="col-md-6">
                         <div class="form_group mb-4">
                             <label for="" class="form-label"
                             >Add Cover Image:
@@ -292,11 +292,10 @@
                               <label for="file">
                                 <input
                                   id="file"
-                                  (change)="addDocument($event)"
+                                  (change)="getBase64($event)"
                                   type="file"
                                   accept="image/png,image/jpeg,image/jpg"
                                   class="d-none uploader"
-                                  formControlName="addCover_Image"
                                 />
                                 <div class="icon-wrapper">
                                   <div>
@@ -315,7 +314,7 @@
                               >
                             </div>
                        </div>
-                    </div> -->
+                    </div>
                     <div class="col-md-6">
                         <div class="form_group mb-4">
                             <label for="" class="form-label"

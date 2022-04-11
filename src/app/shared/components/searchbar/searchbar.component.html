@@ -43,6 +43,16 @@
   </div> -->
 
 
+  <div class="btn-wrapper mx-3" *ngIf="canReply">
+    <button class="btn px-3" (click)="downloadPressed()">
+      <span class="text-white">
+        <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21.9993 10L14.9993 1V6C3.04632 6 1.66732 15.678 1.99932 21C2.50132 18.315 2.73432 14 14.9993 14V19L21.9993 10Z" stroke="#F88F09" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>          
+      </span>
+    </button>
+  </div>
+
   <div class="btn-wrapper mx-3" *ngIf="canDownload">
     <button class="btn px-3" (click)="downloadPressed()">
       <span class="text-white">

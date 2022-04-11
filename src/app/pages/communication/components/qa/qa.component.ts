@@ -262,16 +262,18 @@ export class QaComponent implements OnInit {
   ) {
     const payload = {
       courseQAId: question?.courseQAId,
-      likeCourseQAId: 0,
+      likeCourseQAId: question.likeId ? question.likeId : 0,
       qaType: 1,
       replyId: reply?.replyId ? reply?.replyId : 0,
       isLiked: !question.isLiked,
       createdById: this.userId,
     }
-    if (question.replyId != 0) {
-      payload.qaType = 2
-    }
-      console.log(payload);
+    if (payload.replyId != 0) {
+      payload.qaType = 2;
+      payload.likeCourseQAId = reply?.likedId ? reply?.likedId : 0;
+      payload.isLiked = !reply.isLiked
+     }
+      console.log(reply, payload);
       this.sub.add(
         this._communication.likeAndDislikeQuestionAndAnswer(payload).subscribe({
           next: (res: any) => {

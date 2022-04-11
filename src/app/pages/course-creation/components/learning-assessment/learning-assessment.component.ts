@@ -120,7 +120,8 @@ export class LearningAssessmentComponent implements OnInit {
   }
 
   addNewQuestion(){
-    this.addNewQuiz = !this.addNewQuiz
+    this.addNewQuiz = !this.addNewQuiz;
+    window.scrollTo(0, 0);
   }
 
   addQuestion() {
@@ -155,7 +156,7 @@ export class LearningAssessmentComponent implements OnInit {
   }
 
   goTo() {
-    this.router.navigate(['/training-provider/courses/create-learning-assessment', {courseId: this.courseId}])
+    this.router.navigate(['/courses/create-learning-assessment', {courseId: this.courseId}])
   }
   
 

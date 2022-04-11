@@ -25,10 +25,12 @@ export class SearchbarComponent implements OnInit {
   @Output() downloadAction = new EventEmitter();
   @Output() searchAction = new EventEmitter();
   @Output() sortAction = new EventEmitter();
+  @Output() replyAction = new EventEmitter();
   @Output() searchQuery: EventEmitter<string> = new EventEmitter<string>();
   @Input() canDownload: boolean = false;
   @Input() canDelete: boolean = false;
   @Input() canAdd: boolean = false;
+  @Input() canReply: boolean = false;
 
   constructor() { }
 
@@ -47,6 +49,9 @@ export class SearchbarComponent implements OnInit {
   }
   public searchPressed(): void {
     this.searchAction.emit(true);
+  }
+  public replyPressed(): void {
+    this.replyAction.emit(true);
   }
 
   public getSearchQuery(

@@ -28,7 +28,6 @@ export interface Courses  {
       }
     ],
     delivery_Type: string,
-    session_Type: string,
     duration: string,
     cost: number,
     facilitator: [
@@ -54,6 +53,7 @@ export interface Courses  {
     other_Comments: string,
     addCover_Image: number,
     createdBy: string,
+    coursePhotoUrl: string,
     isSelected: boolean
 }
 

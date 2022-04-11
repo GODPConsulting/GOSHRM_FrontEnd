@@ -33,6 +33,7 @@ export class AddCourseComponent implements OnInit {
   public endDate: any = new Date('2008-09-19 17:35:00');
   public sp: any;
   public htmlContent = ``;
+  public documentUrl: any;
   public createdBy!: number;
   public newRequirement = (requirement: any) => ({ name: requirement });
   public newParticipant = (participant: any) => ({ name: participant });
@@ -202,10 +203,19 @@ export class AddCourseComponent implements OnInit {
     })
   }
 
-  public addDocument(event: any): void {
-    let image = event;
-    console.log(image);
-    
+  public getBase64(event: any) {
+    // this.isUpload = !this.isUpload;
+    let me = this;
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      // console.log(reader.result);
+      me.documentUrl = reader.result;
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
   }
 
  stringToDate(string: any) {
@@ -244,6 +254,10 @@ getTimeSpan(ticks: any ) {
       payload.cost = parseInt(payload.cost);
       let new_duration = new Date (new Date().toDateString() + ' ' + duration);
       // payload.duration = this.sp;
+      if(this.documentUrl != null) {
+        const imageUrl = this.documentUrl.split(",");;
+        payload.photoUrl = imageUrl[1]
+      }
       payload.duration = this.datepipe.transform(new_duration, 'h:mm:ss');
       let expected_Competence = [];
       let facilitators = [];
@@ -294,7 +308,7 @@ getTimeSpan(ticks: any ) {
           this._helper.stopSpinner();
           console.log(res)
           this._helper.triggerSucessAlert('Course created successfully!!!')
-          this._router.navigate(['/training-provider/courses'])
+          this._router.navigate(['/courses'])
          } else {
            this._helper.stopSpinner();
            this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)

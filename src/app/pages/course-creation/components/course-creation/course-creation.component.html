@@ -46,14 +46,25 @@
               <tbody>
                 <ng-container>
                   <tr class="text-capitalize" *ngFor="let course of courses; index as i">
-                    <td>
+                    <td class="d-flex">
                       <input 
                         type="checkbox" 
+                        class="ps-4"
                         name="" 
                         id="checkbox{{i}}"
                         [(ngModel)]="course.isSelected"
                         (change)="selectDeselectCourses(course)"
                       >
+                      <span class="img-wrapper">
+                          <img 
+                            [src]="course?.coursePhotoUrl ? course?.coursePhotoUrl : '' " 
+                            alt=""
+                          />
+                          <div class="upload-icon">
+                              <i class="fa fa-camera"></i>
+                              <input class="upload-file" type="file" name="" id="">
+                          </div>
+                        </span>
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
                       {{ course?.training_Name }}
@@ -62,7 +73,7 @@
                       {{ course?.training_Name }}
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
-                      {{ course?.session_Type }}
+                      {{ course?.scheduleType }}
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
                       {{ course?.delivery_Type }}

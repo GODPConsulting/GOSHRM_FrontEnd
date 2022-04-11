@@ -119,8 +119,7 @@ export class CourseAssessmentComponent implements OnInit {
 
   addNewQuestion(){
     this.addNewQuiz = !this.addNewQuiz;
-    window.scrollTo(0, document.body.scrollHeight);
-    // console.log(document.body.scrollHeight)
+    window.scrollTo(0, 0);
   }
 
   addQuestion() {
@@ -136,7 +135,7 @@ export class CourseAssessmentComponent implements OnInit {
   }
 
   goTo() {
-    this.router.navigate(['/training-provider/courses/create-course-assessment', {courseId: this.courseId}])
+    this.router.navigate(['/courses/create-course-assessment', {courseId: this.courseId}])
   }
   
 

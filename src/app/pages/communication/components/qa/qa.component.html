@@ -17,7 +17,7 @@
                 <div class="card-left">
                     <div class="img-wrapper">
                         <img 
-                            [src]="question?.coursePictureUrl ? question?.coursePictureUrl : '' " 
+                            [src]="question?.questionByPictureUrl ? question?.questionByPictureUrl : '' " 
                             alt=""
                         />
                     </div>
@@ -60,7 +60,10 @@
                         <div *ngFor="let reply of question?.replies; index as j">
                             <div class="d-flex pb-2">
                                 <div class="responder-img">
-                                    <img src="" alt="">
+                                    <img 
+                                        [src]="reply?.questionByPictureUrl ? reply?.questionByPictureUrl : ''" 
+                                        alt=""
+                                    />
                                 </div>
                                 <span class="px-3">Innocent Sample</span>
                             </div>
@@ -99,7 +102,10 @@
                                 <div *ngFor="let item of replies; index as k">
                                     <div class="d-flex pb-2">
                                         <div class="responder-img">
-                                            <img src="" alt="">
+                                            <img 
+                                                [src]="item?.questionByPictureUrl ? item?.questionByPictureUrl : ''" 
+                                                alt=""
+                                            />
                                         </div>
                                         <span class="px-3">Innocent Sample</span>
                                     </div>
