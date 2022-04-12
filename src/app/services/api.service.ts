@@ -37,6 +37,84 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  delete(path): Observable<any> {
+    return this.http
+      .delete(`${environment.api_url}${path}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getExcel(
+    path: string,
+    params: HttpParams = new HttpParams()
+  ): Observable<any> {
+    return this.http
+      .get(`${environment.api_url}${path}`, { params })
+      .pipe(catchError(this.handleError));
+  }
+
+  uploadFSTemplate(path, file: File, body: any) {
+    return new Promise((resolve, reject) => {
+      let url = `${environment.api_url}${path}`;
+      let xhr: XMLHttpRequest = new XMLHttpRequest();
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            resolve(JSON.parse(xhr.response));
+          } else {
+            reject(xhr.response);
+          }
+        }
+      };
+
+      xhr.open("POST", url, true);
+      let formData = new FormData();
+      formData.append("Image", file, file.name);
+
+      formData.append("companyId", body.companyStructureId);
+
+      const token = this.jwtService.getToken();
+      xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+      xhr.send(formData);
+    });
+  }
+
+  updateCompanyStructure(file: File, body: any, file2: File) {
+    return new Promise((resolve, reject) => {
+      let url = `${environment.api_url}/company/add/update/companystructure`;
+
+      let xhr: XMLHttpRequest = new XMLHttpRequest();
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            resolve(JSON.parse(xhr.response));
+          } else {
+            reject(xhr.response);
+          }
+        }
+      };
+      xhr.open("POST", url, true);
+      let formData = new FormData();
+      if (file2) {
+        formData.append('fSTemplate', file2, file2.name);
+      }
+      if (file) {
+        formData.append("file", file, file.name);
+      }
+
+      for (var key in body) {
+        formData.append(key, body[key]);
+      }
+
+      let token = this.jwtService.getToken();
+      xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+      xhr.send(formData);
+    });
+  }
+
   /* downloadLink() {
     return this.http.get(
       "http://godp.co.uk:72/api/v1/hrmsetup/download/academic/disciplines",

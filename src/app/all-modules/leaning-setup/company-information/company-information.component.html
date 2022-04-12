@@ -6,7 +6,7 @@
       <div class="">
         <div class="d-flex">
           <div class="profile_img">
-            <img class="profile__pix" src="assets/img/profile-img.svg" alt="profile image">
+            <img class="profile__pix" [src]="companyInfo?.photoUrl" alt="profile image">
           </div>
           <div class="profile_detail d-flex">
             <div class="upload-btn">
@@ -20,6 +20,7 @@
                   name="file-1"
                   id="file-1"
                   accept="image/png,image/jpeg,image/jpg"
+                  (change)="getBase64($event)"
               />
             </div>
             <div>
@@ -55,7 +56,7 @@
                         id="firstName"
                         class="form-control"
                         readonly
-                        placeholder="{{ companyInfo?.full_Name }}"
+                        placeholder="{{ companyInfo?.company_Name }}"
                       />
                     </div>
                   </div>
@@ -118,28 +119,14 @@
             </div>
             <div class="d-flex py-3">
                 <a 
-                  [href]="socialMediaInfo?.linkedInType"
+                  *ngFor="let item of socialMediaInfo"
+                  [href]="item?.socialMediaUrl"
                   target="_blank"
-                  *ngIf="socialMediaInfo?.linkedInType"
-                ><img class="click pr-4" src="assets/img/linkedIn-icon.svg" alt="">
-                </a>
-                <a 
-                  [href]="socialMediaInfo?.facebookType"
-                  target="_blank"
-                  *ngIf="socialMediaInfo?.facebookType"
-                ><img class="click pr-4" src="assets/img/facebook-icon.svg" alt="">
-                </a>
-                <a 
-                  [href]="socialMediaInfo?.twitterType"
-                  target="_blank"
-                  *ngIf="socialMediaInfo?.twitterType"
-                ><img class="click pr-4" src="assets/img/twitter-icon.svg" alt="">
-                </a>
-                <a 
-                  [href]="socialMediaInfo?.youtubeType"
-                  target="_blank"
-                  *ngIf="socialMediaInfo?.youtubeType"
-                ><img class="click pr-4" src="assets/img/youtube-icon.svg" alt="">
+                >
+                  <img *ngIf="item?.socialMediaType == 2" class="click pr-4" src="assets/img/linkedIn-icon.svg" alt="">
+                  <img *ngIf="item?.socialMediaType == 3" class="click pr-4" src="assets/img/facebook-icon.svg" alt="">
+                  <img *ngIf="item?.socialMediaType == 4" class="click pr-4" src="assets/img/twitter-icon.svg" alt="">
+                  <img *ngIf="item?.socialMediaType == 1" class="click pr-4" src="assets/img/youtube-icon.svg" alt="">
                 </a>
             </div>
         </div>
@@ -155,22 +142,10 @@
             </div>
             <div class="py-3">
                <ul>
-                    <li>
+                    <li *ngFor="let item of websiteUrls">
                       <a 
-                        [href]="websiteUrls?.website_Link_First" target="_blank"
-                      >{{ websiteUrls?.website_Name_First }}
-                      </a>
-                    </li>
-                    <li>
-                      <a 
-                        [href]="websiteUrls?.website_Link_Second" target="_blank"
-                      >{{ websiteUrls?.website_Name_Second }}
-                      </a>
-                    </li>
-                    <li>
-                      <a 
-                        [href]="websiteUrls?.website_Link_Third" target="_blank"
-                      >{{ websiteUrls?.website_Name_Third }}
+                        [href]="item?.website_Link" target="_blank"
+                      >{{ item?.website_Name }}
                       </a>
                     </li>
                </ul>
@@ -180,7 +155,7 @@
         <hr>
         <div class="py-3">
             <div class="d-flex justify-content-between pb-3">
-                <h3>No. of Trainin Providers - 36 Trainers</h3>
+                <h3>No. of Training Providers - {{ allTrainers?.length }}</h3>
                 <div>
                     <span 
                       class="edit-pen click px-3"
@@ -188,19 +163,9 @@
                     >View All</span>
                 </div>
             </div>
-            <div class="d-flex justify-content-between">
-               <div>
-                   <p>Foundations  of User Experience (UX) Design</p>
-               </div>
-            </div>
-            <div class="d-flex justify-content-between">
-               <div>
-                   <p>Foundations  of User Experience (UX) Design</p>
-               </div>
-            </div>
-            <div class="d-flex justify-content-between">
-               <div>
-                   <p>Foundations  of User Experience (UX) Design</p>
+            <div>
+               <div class="d-flex justify-content-between" *ngFor="let trainer of allTrainers  | slice:0:4">
+                   <p>{{ trainer?.full_Name }}</p>
                </div>
             </div>
         </div>
@@ -214,16 +179,35 @@
                     <span class="edit-pen px-3">Edit</span>
                 </div>
             </div>
-            <div class="d-flex">
-                <div class="pr-4 border-right">
-                    <p class="text-grey">Paypal Email: <span class="font-bold">I.Sample673@paypal.com</span></p>
-                    <p class="text-grey">Paypal Name: <span class="font-bold">Innocent Sample</span></p>
+            <div class="">
+              <div class="" *ngIf="payouts?.length == 0">
+                <p>You do not any running course available</p>
+              </div>
+              <div class="d-md-flex">
+                <div class="pr-4 border-right mb-4">
+                  <div *ngIf="payouts[0]?.account_TypeId == 1">
+                    <p class="text-grey">Paypal Email: <span class="font-bold">{{ payouts[0]?.paypal_Email }}</span></p>
+                    <p class="text-grey">Paypal Name: <span class="font-bold">{{ payouts[0]?.paypal_Name }}</span></p>
+                  </div>
+                  <div *ngIf="payouts[0]?.account_TypeId == 2">
+                    <p class="text-grey">Bank Name: <span class="font-bold">{{ payouts[0]?.bank_Name }}</span></p>
+                    <p class="text-grey">Account Name: <span class="font-bold">{{ payouts[0]?.account_Name }}</span></p>
+                    <p class="text-grey">Account Number: <span class="font-bold">{{ payouts[0]?.account_Number }}</span></p>
+                  </div>
                 </div>
+                <div class="border mx-3 mb-4"></div>
                 <div class="pl-4">
-                    <p class="text-grey">Bank Name: <span class="font-bold">First Bank of Nigeria</span></p>
-                    <p class="text-grey">Account Name: <span class="font-bold">Innocent Sample</span></p>
-                    <p class="text-grey">Account Number: <span class="font-bold">3076542719</span></p>
+                  <div *ngIf="payouts[1]?.account_TypeId == 1">
+                    <p class="text-grey">Paypal Email: <span class="font-bold">{{ payouts[1]?.paypal_Email }}</span></p>
+                    <p class="text-grey">Paypal Name: <span class="font-bold">{{ payouts[1]?.paypal_Name }}</span></p>
+                  </div>
+                  <div *ngIf="payouts[1]?.account_TypeId == 2">
+                    <p class="text-grey">Bank Name: <span class="font-bold">{{ payouts[1]?.bank_Name }}</span></p>
+                    <p class="text-grey">Account Name: <span class="font-bold">{{ payouts[1]?.account_Name }}</span></p>
+                    <p class="text-grey">Account Number: <span class="font-bold">{{ payouts[1]?.account_Number }}</span></p>
+                  </div>
                 </div>
+              </div>
             </div>
         </div>
     </div>
@@ -247,7 +231,7 @@
                         <input
                             class="form-control"
                             type="text"
-                            formControlName="full_Name"
+                            formControlName="company_Name"
                         />
                         </div>
                     </div>
@@ -311,8 +295,12 @@
                             >Industry</label
                             >
                             <select name="" id="" class="form-control" formControlName="industryTypes">
-                                <option value="banking and Finance">Banking and Finance</option>
-                                <option value="IT & Software">IT & Software</option>
+                                <option value="" selected>-- Select Industry --</option>
+                                <option 
+                                  [value]="industry?.name" 
+                                  *ngFor="let industry of industries">
+                                  {{ industry?.name }}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -355,7 +343,59 @@
           <form [formGroup]="socialMediaForm">
             <div class="py-4">
                 <h3>Social Media Accounts</h3>
-                <div class="row">
+                <div formArrayName="socialMedia">
+                  <div *ngFor="let item of newForm.controls; index as i">
+                    <div [formGroupName]="i">
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="form-group">
+                              <label class="col-form-label"
+                                  >Social Media Type</label
+                              >
+                              <!-- <input
+                                  class="form-control"
+                                  type="text"
+                                  formControlName="socialMediaType"
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      (socialMediaForm.get('socialMediaType')?.errors && 
+                                      socialMediaForm.get('socialMediaType')?.touched) || 
+                                      (socialMediaForm.get('socialMediaType')?.hasError('required') &&
+                                      socialMediaFormSubmitted)
+                                  }"
+                              /> -->
+                              <select class="form-control" formControlName="socialMediaType">
+                                <option [value]="1">Youtube</option>
+                                <option [value]="2">Linkedin</option>
+                                <option [value]="3">Facebook</option>
+                                <option [value]="4">Twitter</option>
+                              </select>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                            <label class="col-form-label"
+                                >Social Media Url</label
+                            >
+                            <input
+                                class="form-control"
+                                type="text"
+                                formControlName="socialMediaUrl"
+                                [ngClass]="{
+                                  'is-invalid':
+                                    (socialMediaForm.get('socialMediaUrl')?.errors && 
+                                    socialMediaForm.get('socialMediaUrl')?.touched) || 
+                                    (socialMediaForm.get('socialMediaUrl')?.hasError('required') &&
+                                    socialMediaFormSubmitted)
+                                }"
+                            />
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="row">
                     <div class="col-12">
                         <div class="form-group">
                         <label class="col-form-label"
@@ -432,9 +472,16 @@
                         />
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="d-flex justify-content-end pt-4">
+              <button
+                class="btn btn-outline-orange submit-btn"
+                type="submit"
+                (click)="addSocialMedia()"
+              >
+                Add more
+              </button>
               <button
                 class="btn btn-orange submit-btn"
                 type="submit"
@@ -458,83 +505,140 @@
         <div class="modal-body">
           <form [formGroup]="websiteForm">
             <div class="py-4">
-                <h3>Websites</h3>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                        <label class="col-form-label"
-                            >Website Name</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Name_First"
-                        />
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                        <label class="col-form-label"
-                            >Website Link</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Link_First"
-                        />
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                        <label class="col-form-label"
-                            >Website Name</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Name_Second"
-                        />
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                        <label class="col-form-label"
-                            >Website Link</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Link_Second"
-                        />
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                        <label class="col-form-label"
-                            >Website Name</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Name_Third"
-                        />
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                        <label class="col-form-label"
-                            >Website Link</label
-                        >
-                        <input
-                            class="form-control"
-                            type="text"
-                            formControlName="website_Link_Third"
-                        />
-                        </div>
-                    </div>
+              <h3>Social Media Accounts</h3>
+              <div formArrayName="websiteItem">
+                <div *ngFor="let item of newWebsiteForm.controls; index as i">
+                  <div [formGroupName]="i">
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="form-group">
+                            <label class="col-form-label"
+                                >Website Name</label
+                            >
+                            <input
+                                class="form-control"
+                                type="text"
+                                formControlName="website_Name"
+                                [ngClass]="{
+                                  'is-invalid':
+                                    (websiteForm.get('website_Name')?.errors && 
+                                    websiteForm.get('website_Name')?.touched) || 
+                                    (websiteForm.get('website_Name')?.hasError('required') &&
+                                    websiteFormSubmitted)
+                                }"
+                            />
+                          </div>
+                      </div>
+                      <div class="col-12">
+                          <div class="form-group">
+                          <label class="col-form-label"
+                              >Website Link</label
+                          >
+                          <input
+                              class="form-control"
+                              type="text"
+                              formControlName="website_Link"
+                              [ngClass]="{
+                                'is-invalid':
+                                  (websiteForm.get('website_Link')?.errors && 
+                                  websiteForm.get('website_Link')?.touched) || 
+                                  (websiteForm.get('website_Link')?.hasError('required') &&
+                                  websiteFormSubmitted)
+                              }"
+                          />
+                          </div>
+                      </div>
+                      </div>
+                  </div>
                 </div>
-            </div>
+              </div>
+              <!-- <div class="row">
+                  <div class="col-12">
+                      <div class="form-group">
+                      <label class="col-form-label"
+                          >LinkedIn</label
+                      >
+                      <input
+                          class="form-control"
+                          type="text"
+                          formControlName="linkedInType"
+                          [ngClass]="{
+                            'is-invalid':
+                              (socialMediaForm.get('linkedInType')?.errors && 
+                              socialMediaForm.get('linkedInType')?.touched) || 
+                              (socialMediaForm.get('linkedInType')?.hasError('required') &&
+                              socialMediaFormSubmitted)
+                          }"
+                      />
+                      </div>
+                  </div>
+                  <div class="col-12">
+                      <div class="form-group">
+                      <label class="col-form-label"
+                          >Facebook</label
+                      >
+                      <input
+                          class="form-control"
+                          type="text"
+                          formControlName="facebookType"
+                          [ngClass]="{
+                            'is-invalid':
+                              (socialMediaForm.get('facebookType')?.errors && 
+                              socialMediaForm.get('facebookType')?.touched) || 
+                              (socialMediaForm.get('facebookType')?.hasError('required') &&
+                              socialMediaFormSubmitted)
+                          }"
+                      />
+                      </div>
+                  </div>
+                  <div class="col-12">
+                      <div class="form-group">
+                      <label class="col-form-label"
+                          >Twitter</label
+                      >
+                      <input
+                          class="form-control"
+                          type="text"
+                          formControlName="twitterType"
+                          [ngClass]="{
+                            'is-invalid':
+                              (socialMediaForm.get('twitterType')?.errors && 
+                              socialMediaForm.get('twitterType')?.touched) || 
+                              (socialMediaForm.get('twitterType')?.hasError('required') &&
+                              socialMediaFormSubmitted)
+                          }"
+                      />
+                      </div>
+                  </div>
+                  <div class="col-12">
+                      <div class="form-group">
+                      <label class="col-form-label"
+                          >Youtube</label
+                      >
+                      <input
+                          class="form-control"
+                          type="text"
+                          formControlName="youtubeType"
+                          [ngClass]="{
+                            'is-invalid':
+                              (socialMediaForm.get('youtubeType')?.errors && 
+                              socialMediaForm.get('youtubeType')?.touched) || 
+                              (socialMediaForm.get('youtubeType')?.hasError('required') &&
+                              socialMediaFormSubmitted)
+                          }"
+                      />
+                      </div>
+                  </div>
+              </div> -->
+          </div>
             <div class="d-flex justify-content-end pt-4">
+              <button
+                class="btn btn-outline-orange submit-btn"
+                type="submit"
+                (click)="addWebsite()"
+              >
+                Add more
+              </button>
               <button
                 class="btn btn-orange submit-btn"
                 type="submit"

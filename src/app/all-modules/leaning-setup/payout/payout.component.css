@@ -3,12 +3,8 @@
     padding: 3rem 5rem 3rem 5rem;
 }
 
-.company-information {
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
-    padding: 2rem 3rem;
-    background: #fff;
-    color: #333;
+.payout-wrapper {
+    min-height: 70vh;
 }
 
 .btn {
@@ -75,4 +71,17 @@ h3 {
 
 input[type="email"] {
     text-transform: lowercase;
+}
+
+.text-orange {
+    color: #F88F09;
+}
+
+.fas {
+    font-size: 2rem;
+}
+
+.empty-state p {
+    margin: auto 0;
+    font-size: 1.8rem;
 }

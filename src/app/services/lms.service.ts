@@ -17,7 +17,7 @@ export class LmsService {
   getCompanyProfile(companyId): Observable<any> {
     const params = new HttpParams()
     .set('companyId', companyId);
-    return this.apiService.get(`/lms/companyInfo/get/all/companyId`, params).pipe(
+    return this.apiService.get(`/lms/company/getCompanyInfoById`, params).pipe(
       tap(),
       map((res) => {
         return res;
@@ -27,7 +27,7 @@ export class LmsService {
   }
 
   updateCompanyProfile(payload) {
-    return this.apiService.post("/lms/companyInfo/add/update/company", payload).pipe(
+    return this.apiService.post("/lms/company/addAndUpdateCompanyInfo", payload).pipe(
       tap(),
       map((res) => {
         return res;
@@ -36,10 +36,12 @@ export class LmsService {
     );
   }
 
-  getSocialMediaUrls(companyId) {
+  getSocialMediaUrls(companyId, userId) {
     const params = new HttpParams()
-    .set('companyId', companyId);
-    return this.apiService.get(`/lms/socialmedia/get/all/socialmedia`, params).pipe(
+    .set('companyId', companyId)
+    .set('type', '1')
+    .set('userId', userId);
+    return this.apiService.get(`/lms/socialMedia/getAllSocialMedias`, params).pipe(
       tap(),
       map((res) => {
         return res;
@@ -49,7 +51,7 @@ export class LmsService {
   }
 
   updateSocialMediaUrls(payload) {
-    return this.apiService.post("/lms/socialmedia/add/update/socialmedia", payload).pipe(
+    return this.apiService.post("/lms/socialMedia/addAndUpdateSocialMedia", payload).pipe(
       tap(),
       map((res) => {
         return res;
@@ -58,11 +60,13 @@ export class LmsService {
     );
   }
 
-  getWebsiteUrls(companyId) {
+  getWebsiteUrls(companyId, userId) {
     const params = new HttpParams()
-    .set('companyId', companyId);
+    .set('companyId', companyId)
+    .set('type', '1')
+    .set('userId', userId);
     return this.apiService
-      .get(`/lms/website/get/all/websiteId`, params)
+      .get(`/lms/website/getWebsiteById`, params)
       .pipe(
         tap(),
         map((res) => {
@@ -73,7 +77,7 @@ export class LmsService {
   }
 
   updateWebsiteUrls(payload) {
-    return this.apiService.post("/lms/website/add/update/website", payload)
+    return this.apiService.post("/lms/website/addAndUpdateWebsite", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -86,7 +90,7 @@ export class LmsService {
   getAllRunningCourses(companyId) {
     const params = new HttpParams()
     .set('companyId', companyId);
-    return this.apiService.get("/lms/runningcourse/get/all/runningcourse", params).pipe(
+    return this.apiService.get("/lms/runningcourse/getAllRunningcourse", params).pipe(
       tap(),
       map((res) => {
         return res;
@@ -95,11 +99,13 @@ export class LmsService {
     );
   }
 
-  getAllPayoutSetup(companyId) {
+  getAllPayoutSetup(companyId, userid) {
     const params = new HttpParams()
-    .set('companyId', companyId);
+    .set('companyId', companyId)
+    .set('type', '1')
+    .set('userid', userid);
     return this.apiService
-      .get(`/lms/payoutsetup/get/all/payoutsetup`, params
+      .get(`/lms/payout/getAllPayOutSetup`, params
       )
       .pipe(
         tap(),
@@ -112,7 +118,19 @@ export class LmsService {
 
   updatePayoutSetup(payload) {
     return this.apiService
-      .post("/lms/payoutsetup/add/update/payoutsetup", payload)
+      .post("/lms/payout/addAndUpdatePayOutSetup", payload)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  deletePayoutSetup(payload) {
+    return this.apiService
+      .post("/lms/payoutsetup/deletePayoutsetup", payload)
       .pipe(
         tap(),
         map((res) => {
@@ -126,7 +144,7 @@ export class LmsService {
     const params = new HttpParams()
     .set('companyId', companyId);
     return this.apiService
-      .get(`/lms/emailsetup/get/all/emailsetupId`, params)
+      .get(`/lms/emailsetup/getAllEmailSetup`, params)
       .pipe(
         tap(),
         map((res) => {
@@ -138,7 +156,7 @@ export class LmsService {
 
   updateEmailSetup(payload) {
     return this.apiService
-      .post(`/lms/emailsetup/add/update/emailsetup`, payload)
+      .post(`/lms/emailsetup/addAndUpdateEmailSetup`, payload)
       .pipe(
         tap(),
         map((res) => {
@@ -152,7 +170,7 @@ export class LmsService {
     const params = new HttpParams()
     .set('companyId', companyId);
     return this.apiService
-      .get(`/lms/policysetup/get/all/policysetup`, params)
+      .get(`/lms/privacy/getAllPolicySetup`, params)
       .pipe(
         tap(),
         map((res) => {
@@ -163,7 +181,7 @@ export class LmsService {
   }
 
   updateCompanyPolicy(payload) {
-    return this.apiService.post("/lms/policysetup/add/update/policysetup", payload).pipe(
+    return this.apiService.post("/lms/privacy/addAndUpdatePolicySetup", payload).pipe(
       tap(),
       map((res) => {
         return res;
@@ -176,7 +194,7 @@ export class LmsService {
     const params = new HttpParams()
     .set('companyId', companyId);
     return this.apiService
-      .get(`/lms/securitysetup/get/all/securitysetup`, params)
+      .get(`/lms/securitysetup/getAllSecuritysetup`, params)
       .pipe(
         tap(),
         map((res) => {
@@ -197,7 +215,7 @@ export class LmsService {
   }
 
   updatePageContent(payload) {
-    return this.apiService.post("/lms/pagecontentsetup/add/update/pagecontentsetup", payload).pipe(
+    return this.apiService.post("/lms/pagecontentsetup/addAndUpdatePageContentSetup", payload).pipe(
       tap(),
       map((res) => {
         return res;
@@ -206,11 +224,55 @@ export class LmsService {
     );
   }
 
+  deleteContent(payload) {
+    return this.apiService.post(`/lms/pagecontentsetup/DeletePageContent`, payload).pipe(
+      map(data => {
+        return data;
+      })
+    );
+  }
+
+  uploadPageImage(payload): Observable<any> {
+    return this.apiService.post(`/lms/pagecontentsetup/addAndUpdatePageImage`, payload).pipe(
+      map(data => {
+        return data;
+      })
+    );
+  }
+
+  getPageBanner(companyId) {
+    const params = new HttpParams()
+    .set('companyId', companyId);
+    return this.apiService
+      .get(`/lms/pagebannersetup/getPageBanner`, params)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   getPageContent(companyId) {
     const params = new HttpParams()
     .set('companyId', companyId);
     return this.apiService
-      .get(`/lms/pagecontentsetup/get/all/pagecontentsetup`, params)
+      .get(`/lms/pagecontentsetup/getAllPageContent`, params)
+      .pipe(
+        tap(),
+        map((res) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  getPageContentById(companyId, pageContentId) {
+    const params = new HttpParams()
+    .set('companyId', companyId)
+    .set('pageContentId', pageContentId);
+    return this.apiService
+      .get(`/lms/pagecontentsetup/getPageContentById`, params)
       .pipe(
         tap(),
         map((res) => {
@@ -221,7 +283,29 @@ export class LmsService {
   }
 
   updatePageBanner(payload) {
-    return this.apiService.post("/lms/securitysetup/add/update/securitysetup", payload).pipe(
+    return this.apiService.post("/lms/pagebannersetup/addAndUpdatePageBannerSetup", payload).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  getAllTrainers(companyId) {
+    const params = new HttpParams()
+    .set('companyId', companyId);
+    return this.apiService.get("/lms/trainingproviders/getAllTrainingproviders", params).pipe(
+      tap(),
+      map((res) => {
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  updateCompanyLogo(payload) {
+    return this.apiService.post("/lms/company/addAndUpdateCompanyLogo", payload).pipe(
       tap(),
       map((res) => {
         return res;

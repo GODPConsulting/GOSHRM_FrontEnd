@@ -1,0 +1,119 @@
+<div class="email-config_wrapper ui-g">
+    <div class="ui-g-12">
+      <div style="margin-bottom:0" class="panel panel-default">
+        <div class="panel-heading my-5">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="panel-title pull-left">
+                    Email Configuration
+                </h2>
+                <div class="pull-right">
+                  <a class="btn upload-btn hint"  (click)="addMailConfig()"
+                  ><span class="hint-text">Add</span><img src="assets/img/add.svg">
+                  </a>
+                </div>
+                <div class="pull-right">
+                    <a class="btn upload-btn hint"  (click)="deleteMailConfigur()"
+                    ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
+                    </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="panel-body">
+          <div class="form-horizontal">
+            <p-table
+              #dt
+              [columns]="cols"
+              [value]="emailConfigs"
+              dataKey="emailConfigId"
+              [(selection)]="selectedMailConfig"
+              [paginator]="false"
+              [scrollable]="true"
+              [scrollHeight]="viewHeight"
+              [responsive]="true"
+            >
+              <ng-template pTemplate="caption">
+                <div style="text-align: right">
+                  <input
+                    type="text"
+                    pInputText
+                    size="50"
+                    class="form-control"
+                    placeholder="Search..."
+                    (keyup)="
+                                          dt.filterGlobal(
+                                              $event.target.value,
+                                              'contains'
+                                          )
+                                      "
+                    style="width:auto"
+                  />
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th class="checkbox_row">
+                    <p-tableHeaderCheckbox>
+                    </p-tableHeaderCheckbox>
+                  </th>
+                   <th class="sn_width">S/N</th>
+                  <th [pSortableColumn]="'probationPeriod'">Smtp Client
+                    <i
+                      class="ui-icon-arrow-drop-down sort--icon__special"
+                    ></i>
+                  </th>
+                  <th [pSortableColumn]="'from'">Smtp Port
+                    <i
+                      class="ui-icon-arrow-drop-down sort--icon__special"
+                    ></i>
+                  </th>
+  
+                  <th [pSortableColumn]="'to'">Sender Email
+                    <i
+                      class="ui-icon-arrow-drop-down sort--icon__special"
+                    ></i>
+                  </th>
+                  <th [pSortableColumn]="'to'">Sender Username
+                    <i
+                      class="ui-icon-arrow-drop-down sort--icon__special"
+                    ></i>
+                  </th>
+                  <th class="width__special"></th>
+                  <th class="width__special"></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-x let-i="rowIndex">
+                <tr [pSelectableRow]="x" (click)="rowClicked(x)">
+                  <td class="checkbox_row">
+                    <p-tableCheckbox
+                      [value]="x"
+                    ></p-tableCheckbox>
+                  </td>
+                   <td class="sn_width">{{ i + 1 }}</td>
+                  <td>{{ x.smtpClient }}</td>
+                  <td>
+                    {{ x.smtpPort }}
+                  </td>
+                  <td>{{ x.senderEmail }}</td>
+                  <td>{{x.senderUserName}}</td>
+                  <td class="width__special">
+                    <a class="table_link" (click)="editMailConfig(x)">Edit</a>
+                  </td>
+                  <td class="width__special">
+                    <a class="table_link" (click)="deleteMailConfig(x)">Delete</a>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-md-12"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  

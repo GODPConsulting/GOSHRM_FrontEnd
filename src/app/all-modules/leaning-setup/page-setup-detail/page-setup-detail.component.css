@@ -28,10 +28,6 @@
     color: rgba(#333, 0.5);
   }
   
-  .btn {
-    padding: 10px 50px;
-  }
-  
   .btn-orange {
     background: #F88F09;
     border: .1rem solid #F88F09;

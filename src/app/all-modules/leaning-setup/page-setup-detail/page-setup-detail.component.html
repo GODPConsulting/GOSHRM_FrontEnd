@@ -1,127 +1,121 @@
 <div class="email-setup_wrapper">
     <div class="d-flex justify-content-between">
-      <h3>Page Setup</h3>
+      <h3 class="text-capitalize">{{ formName }}</h3>
     </div>
   
     <div class="bg-white p-5 my-4">
         <div>
           <div class="form-title d-flex justify-content-between pb-4">
-            <h4>Landing Page</h4>
-            <div>
-              <img (click)="editForm()" class="click" src="assets/img/edit-pen.svg" alt="">
+            <h4 class="text-capitalize">{{ formName }}</h4>
+          </div>
+          <form [formGroup]="pageSetupForm" *ngIf="formName == 'banner'">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="currentPassword" class="form-label"
+                          >Banner Title
+                        </label>
+                        <input
+                            class="form-control pr-2"
+                            type="text"
+                            formControlName="pageBannerName"
+                            placeholder=""
+                          />
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="currentPassword" class="form-label"
+                          >Banner Content
+                        </label>
+                        <input
+                            class="form-control pr-2"
+                            type="text"
+                            formControlName="pageBannerTitle"
+                            placeholder=""
+                          />
+                      </div>
+                  </div>
+                  <!-- <div class="col-md-6">
+                    <div class="form_group mb-4">
+                      <label for="currentPassword" class="form-label"
+                        >Cover Image
+                      </label>
+                      <div class="attachment_wrapper">
+                        <p>Click here to edit image</p>
+                        <div class="d-flex justify-content-center">
+                          <img src="assets/img/img-icon.svg" alt="">
+                          <input type="file"
+                            name="file-1"
+                            id="file-1"
+                            accept="image/png,image/jpeg,image/jpg"
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div> -->
+              </div>
+          </form>
+          <form [formGroup]="contentForm" *ngIf="formName == 'content'">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                      <label for="currentPassword" class="form-label"
+                        >Content Title
+                      </label>
+                      <input
+                          class="form-control pr-2"
+                          type="text"
+                          formControlName="page_Title"
+                          placeholder=""
+                        />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                      <label for="currentPassword" class="form-label"
+                        >Content Subtitle
+                      </label>
+                      <input
+                          class="form-control pr-2"
+                          type="text"
+                          formControlName="section_Content"
+                          placeholder=""
+                        />
+                    </div>
+                </div>
+                <!-- <div class="col-md-6">
+                  <div class="form_group mb-4">
+                    <label for="currentPassword" class="form-label"
+                      >Cover Image
+                    </label>
+                    <div class="attachment_wrapper">
+                      <p>Click here to edit image</p>
+                      <div class="d-flex justify-content-center">
+                        <img src="assets/img/img-icon.svg" alt="">
+                        <input type="file"
+                          name="file-1"
+                          id="file-1"
+                          accept="image/png,image/jpeg,image/jpg"
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
             </div>
-          </div>
-          <form action="" readonly>
-              <div class="row">
-                  <div class="col-md-6">
-                      <div class="form_group mb-4">
-                        <label for="currentPassword" class="form-label"
-                          >Page Title
-                        </label>
-                        <input
-                            class="form-control pr-2"
-                            type="text"
-                            formControlName="currentPassword"
-                            placeholder="Enter current password"
-                            [disabled]="!enableForm"
-                          />
-                      </div>
-                  </div>
-                  <div class="col-md-6">
-                      <div class="form_group mb-4">
-                        <label for="currentPassword" class="form-label"
-                          >Page Subtitle
-                        </label>
-                        <input
-                            class="form-control pr-2"
-                            type="text"
-                            formControlName="currentPassword"
-                            placeholder="Enter current password"
-                            [disabled]="!enableForm"
-                          />
-                      </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form_group mb-4">
-                      <label for="currentPassword" class="form-label"
-                        >Cover Image
-                      </label>
-                      <div class="attachment_wrapper">
-                        <p>Click here to edit image</p>
-                        <div class="d-flex justify-content-center">
-                          <img src="assets/img/img-icon.svg" alt="">
-                          <input type="file"
-                            name="file-1"
-                            id="file-1"
-                            accept="image/png,image/jpeg,image/jpg"
-                            [disabled]="!enableForm"
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-          </form>
-        </div>
-        <hr>
-        <div class="py-3">
-          <div class="form-title d-flex justify-content-between pb-4">
-            <h4>My Learning Page</h4>
-          </div>
-          <form action="">
-              <div class="row">
-                  <div class="col-md-6">
-                      <div class="form_group mb-4">
-                        <label for="currentPassword" class="form-label"
-                          >Page Title
-                        </label>
-                        <input
-                            class="form-control pr-2"
-                            type="text"
-                            formControlName="currentPassword"
-                            placeholder="Enter current password"
-                            [disabled]="!enableForm"
-                          />
-                      </div>
-                  </div>
-                  <div class="col-md-6">
-                      <div class="form_group mb-4">
-                        <label for="currentPassword" class="form-label"
-                          >Page Subtitle
-                        </label>
-                        <input
-                            class="form-control pr-2"
-                            type="text"
-                            formControlName="currentPassword"
-                            placeholder="Enter current password"
-                            [disabled]="!enableForm"
-                          />
-                      </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form_group mb-4">
-                      <label for="currentPassword" class="form-label"
-                        >Cover Image
-                      </label>
-                      <div class="attachment_wrapper">
-                        <p>Click here to edit image</p>
-                        <div class="d-flex justify-content-center">
-                          <img src="assets/img/img-icon.svg" alt="">
-                          <input type="file"
-                            name="file-1"
-                            id="file-1"
-                            accept="image/png,image/jpeg,image/jpg"
-                            [disabled]="!enableForm"
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-          </form>
+        </form>
         </div>
         <div class="d-flex justify-content-end">
-          <button class="btn btn-orange" [hidden]="!enableForm">
+          <button 
+            class="btn btn-danger px-5"
+            (click)="back()"
+          >
+            Back
+          </button>
+          <button 
+            class="btn btn-orange px-5"
+            (click)="submit()"
+          >
             Save
           </button>
         </div>

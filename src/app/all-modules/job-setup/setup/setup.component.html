@@ -8,13 +8,16 @@
       </div>
       <div class="col-auto float-right ml-auto d-inline-block">
         <app-searchbar class="d-inline-block px-3"></app-searchbar>
-        <a class="btn download-btn hint" (click)="downloadFile()"
+        <a class="btn download-btn hint" (click)="exportList()"
           ><span class="hint-text">Download</span><img src="assets/img/download.svg">
         </a>
         <a class="btn upload-btn hint" (click)="openUploadModal()"
-          ><span class="hint-text">Upload</span><img src="assets/img/upload.svg">
+          ><span class="hint-text">Upload</span>
+          <div style="position: relative">
+            <img class="position: absolute" src="assets/img/upload.svg">
+          </div>
         </a>
-        <a class="btn upload-btn hint" data-toggle="modal" (click)="delete()"
+        <a class="btn upload-btn hint" data-toggle="modal" (click)="multipleDelete()"
           ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
         </a>
         <a class="btn upload-btn hint" (click)="openModal(false)"
@@ -116,31 +119,57 @@
         aria-labelledby="pills-jobCategory"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="jobCategories"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th>
-                      <input type="checkbox"> Cateory
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <th>Description</th>
+                    <th>Category</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
                   </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span> Design, Art and Multimedia</span>
-                    </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.jobCategoryName }}</td>
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto"> {{ row?.jobTypeDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.jobTypeId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>
@@ -153,29 +182,57 @@
         aria-labelledby="pills-jobType"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="jobTypes"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th> <input type="checkbox"> Job Type</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span> Design, Art and Multimedia</span>
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    <th>Category</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.jobTypeName }}</td>
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto"> {{ row?.jobTypeDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.jobTypeId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>
@@ -188,29 +245,57 @@
         aria-labelledby="pills-specialization"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="specializations"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th> <input type="checkbox"> Specialization</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span> Aviation/Airline</span>
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    <th>specialization</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.specializationName }}</td>
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto"> {{ row?.specializationDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.specializationId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>
@@ -223,29 +308,57 @@
         aria-labelledby="pills-location"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="locations"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th> <input type="checkbox"> States</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span> Lagos</span>
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    <th>States</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.locationName }}</td>
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto"> {{ row?.locationDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.locationId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>
@@ -258,29 +371,57 @@
         aria-labelledby="pills-industry"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="industries"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th> <input type="checkbox"> Industry</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span> Engineering</span>
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    <th>Industry</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.industryName }}</td>
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto"> {{ row?.industryDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.industryId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>
@@ -293,29 +434,57 @@
         aria-labelledby="pills-experience"
       >
         <div class="row">
-          <div class="col-lg-12">
-            <div class="dashboard table-responsive p-3">
-              <table class="table table-striped text-nowrap" datatable [dtOptions]="dtOptions">
-                <thead>
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <p-table
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                [value]="experienceLevels"
+                [(selection)]="selectDeleteitems"
+                [columns]="cols"
+                [scrollable]="true"
+                scrollHeight="600px"
+              >
+                <ng-template pTemplate="caption">
+                  <div style="text-align: right">
+                    <input
+                      type="text"
+                      pInputText
+                      size="50"
+                      class="form-control"
+                      placeholder="Search..."
+                      (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                      style="width: auto"
+                    />
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="header">
                   <tr>
-                    <th> <input type="checkbox"> Level</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let asset of [1,2,3,4]">
-                    <th scope="row">
-                      <input type="checkbox">
-                      <span> Design, Art and Multimedia</span>
+                    <th class="table-checkbox">
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     </th>
-                    <td class="d-flex justufy-content-between">E
-                      <span class="pr-5">lit, at pellentesque odio id. Enim arcu, sed nec in mattis feugiat.</span>
-                      <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
-                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                    <th>specialization</th>
+                    <th pSortableColumn="rank">Description</th>
+                    <th></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-row let-i="rowIndex">
+                  <tr
+                    data-toggle="modal"
+                    class="pointer"
+                  >
+                    <td class="table-checkbox">
+                      <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </td>
+                    <td>{{ row.experienceLevelName }}</td>
+                    <td class="d-flex justufy-content-between">
+                      <span class="mr-auto"> {{ row?.experienceLevelDescription }}</span>
+                      <img class="click px-3" src="assets/img/trash.svg" (click)="deleteItem(row?.experienceLevelId)">
+                      <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true, row)">
                     </td>
                   </tr>
-                </tbody>
-              </table>
+                </ng-template>
+              </p-table>
             </div>
           </div>
         </div>
@@ -342,7 +511,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form *ngIf="current_tab == 'Job Category'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+        <form *ngIf="current_tab == 'Job Category'" (ngSubmit)="submitJobCategory(jobCategoryForm)" [formGroup]="jobCategoryForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -352,22 +521,18 @@
                 <input
                   class="form-control"
                   type="text"
-                  [class.invalid]="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
-                  "
-                  formControlName="job_grade"
+                  formControlName="jobCategoryName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  jobCategoryForm.get('jobCategoryName').invalid &&
+                  jobCategoryForm.get('jobCategoryName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    jobCategoryForm.get('jobCategoryName').invalid &&
+                    jobCategoryForm.get('jobCategoryName').touched
                     "
                     class="text-danger"
                   >
@@ -382,7 +547,7 @@
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="jobCategoryDescription"
                 ></textarea>
               </div>
             </div>
@@ -406,7 +571,7 @@
           </div>
         </form>
 
-        <form *ngIf="current_tab == 'Job Type'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+        <form *ngIf="current_tab == 'Job Type'" (ngSubmit)="submitJobType(jobTypeForm)" [formGroup]="jobTypeForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -417,21 +582,21 @@
                   class="form-control"
                   type="text"
                   [class.invalid]="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  jobTypeForm.get('jobTypeName').invalid &&
+                  jobTypeForm.get('jobTypeName').touched
                   "
-                  formControlName="job_grade"
+                  formControlName="jobTypeName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  jobTypeForm.get('jobTypeName').invalid &&
+                    jobTypeForm.get('jobTypeName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    jobTypeForm.get('jobTypeName').invalid &&
+                      jobTypeForm.get('jobTypeName').touched
                     "
                     class="text-danger"
                   >
@@ -446,7 +611,7 @@
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="jobTypeDescription"
                 ></textarea>
               </div>
             </div>
@@ -470,7 +635,7 @@
           </div>
         </form>
 
-        <form *ngIf="current_tab == 'Specialization'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+        <form *ngIf="current_tab == 'Specialization'" (ngSubmit)="submitSpecialization(specializationForm)" [formGroup]="specializationForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -481,21 +646,21 @@
                   class="form-control"
                   type="text"
                   [class.invalid]="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  specializationForm.get('specializationName').invalid &&
+                  specializationForm.get('specializationName').touched
                   "
-                  formControlName="job_grade"
+                  formControlName="specializationName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  specializationForm.get('specializationName').invalid &&
+                  specializationForm.get('specializationName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    specializationForm.get('specializationName').invalid &&
+                    specializationForm.get('specializationName').touched
                     "
                     class="text-danger"
                   >
@@ -510,7 +675,7 @@
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="specializationDescription"
                 ></textarea>
               </div>
             </div>
@@ -534,7 +699,7 @@
           </div>
         </form>
 
-        <form *ngIf="current_tab == 'Location'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+        <form *ngIf="current_tab == 'Location'" (ngSubmit)="submitLocation(locationForm)" [formGroup]="locationForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -544,22 +709,18 @@
                 <input
                   class="form-control"
                   type="text"
-                  [class.invalid]="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
-                  "
-                  formControlName="job_grade"
+                  formControlName="locationName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  locationForm.get('locationName').invalid &&
+                  locationForm.get('locationName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    locationForm.get('locationName').invalid &&
+                    locationForm.get('locationName').touched
                     "
                     class="text-danger"
                   >
@@ -574,7 +735,7 @@
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="locationDescription"
                 ></textarea>
               </div>
             </div>
@@ -598,7 +759,7 @@
           </div>
         </form>
 
-        <form *ngIf="current_tab == 'Industry'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+        <form *ngIf="current_tab == 'Industry'" (ngSubmit)="submitIndustry(industryForm)" [formGroup]="industryForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -609,21 +770,21 @@
                   class="form-control"
                   type="text"
                   [class.invalid]="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  industryForm.get('industryName').invalid &&
+                  industryForm.get('industryName').touched
                   "
-                  formControlName="job_grade"
+                  formControlName="industryName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  industryForm.get('industryName').invalid &&
+                  industryForm.get('industryName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    industryForm.get('industryName').invalid &&
+                    industryForm.get('industryName').touched
                     "
                     class="text-danger"
                   >
@@ -632,13 +793,13 @@
                 </div>
               </div>
             </div>
-            <div class="col">
+            <div class="col-12">
               <div class="form-group">
                 <label class="col-form-label">Description </label>
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="industryDescription"
                 ></textarea>
               </div>
             </div>
@@ -646,7 +807,6 @@
           <div class="d-flex justify-content-between">
             <button
               class="btn btn-primary submit-btn cancel-btn"
-              type="submit"
               (click)="closeModal()"
             >
               <span>Back</span>
@@ -662,7 +822,7 @@
           </div>
         </form>
 
-        <form *ngIf="current_tab == 'Experience Level'" (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
+        <form *ngIf="current_tab == 'Experience Level'" (ngSubmit)="submitLevel(levelForm)" [formGroup]="levelForm">
           <div class="row">
             <div class="col-12">
               <div class="form-group">
@@ -673,21 +833,21 @@
                   class="form-control"
                   type="text"
                   [class.invalid]="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  levelForm.get('experienceLevelName').invalid &&
+                  levelForm.get('experienceLevelName').touched
                   "
-                  formControlName="job_grade"
+                  formControlName="experienceLevelName"
                 />
                 <div
                   *ngIf="
-                    jobGradeForm.get('job_grade').invalid &&
-                    jobGradeForm.get('job_grade').touched
+                  levelForm.get('experienceLevelName').invalid &&
+                  levelForm.get('experienceLevelName').touched
                   "
                 >
                   <small
                     *ngIf="
-                      jobGradeForm.get('job_grade').invalid &&
-                      jobGradeForm.get('job_grade').touched
+                    levelForm.get('experienceLevelName').invalid &&
+                    levelForm.get('experienceLevelName').touched
                     "
                     class="text-danger"
                   >
@@ -702,7 +862,7 @@
                 <textarea
                   rows="5"
                   class="form-control"
-                  formControlName="description"
+                  formControlName="experienceLevelDescription"
                 ></textarea>
               </div>
             </div>
@@ -731,49 +891,66 @@
 </div>
 <!-- /Add Modal -->
 
-<!-- Delete Modal -->
-<div id="delete_item" class="modal custom-modal fade" role="dialog">
-  <div class="modal-dialog modal-dialog-centered modal-md">
-    <div class="modal-content">
-      <!-- <div class="modal-header">
-        <h5 class="modal-title">{{ 'Delete ' +  current_tab }}</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-          (click)="closeDeleteModal()"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div> -->
-      <div class="modal-body">
-        <form (ngSubmit)="addJobGrade(jobGradeForm)" [formGroup]="jobGradeForm">
-          <div class="alert alert-danger" role="alert">
-            <img src="assets/img/Error.svg" alt="">
-            <span class="px-3">Warning: You are about to delete a section of this course outline!</span>
-          </div>
-        </form>
-        <div class="d-flex justify-content-center">
+  <!-- Upload Modal -->
+  <div id="upload_modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Upload Academic Grade</h5>
           <button
-            class="btn btn-primary submit-btn confirm-btn"
-            type="submit"
-            [disabled]="spinner"
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            (click)="closeModal()"
           >
-            <span *ngIf="!spinner">Confirm</span>
-            <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            <span aria-hidden="true">&times;</span>
           </button>
-          <button
-            class="btn btn-primary submit-btn"
-            type="submit"
-            (click)="closeDeleteModal()"
-          >
-            Cancel
-          </button>
+        </div>
+        <div class="modal-body px-5">
+            <div class="row">
+              <div class="form-group row">
+                <label class="col-form-label col-md-5"
+                  >Choose File (excel format)</label
+                >
+                <div class="col-md-7">
+                  <input
+                    style=""
+                    class="form-control"
+                    type="file"
+                    (change)="handleFileInput($event.target.files)"
+                    id="file1"
+                    accept=".xls,.xlsx"
+                    #fileInput
+                    name="fileInput"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <p>Please use the guide below for your sheet</p>
+              <table class="table table-bordered">
+                <tr>
+                  <th>Grade</th>
+                  <th>Description</th>
+                  <th>Rank</th>
+                </tr>
+              </table>
+            </div>
+            <div class="submit-section">
+              <button
+                class="btn btn-primary submit-btn"
+                type="submit"
+                [disabled]="spinner"
+                (click)="uploadList()"
+              >
+                <span *ngIf="!spinner">Submit</span>
+                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
+            </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<!-- /Delete Modal -->
+  <!-- /Upload Modal -->
 

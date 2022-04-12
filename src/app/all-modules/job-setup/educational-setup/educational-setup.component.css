@@ -1,0 +1,71 @@
+th {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  
+  .gos-main{
+    background: #E5E5E5 !important;
+  }
+  
+  .nav-link {
+    color: #828282;
+    border-bottom: 1px solid #807700;
+    border-radius: 0;
+    transform: rotate(0.05deg);
+    opacity: 0.3;
+    font-size: 18px;
+    background: transparent;
+    padding: .5rem 2rem;
+  }
+  
+  .nav-link.active {
+    color: #F88F09;
+    opacity: 1;
+    background-color: transparent;
+    border-bottom: #F88F09 solid 1px;
+    font-weight: 600;
+  }
+  
+  .table-responsive {
+    background: #fff;
+  }
+  
+  /* .dataTables_length {
+    display: none !important;
+  }
+  
+  .dataTables_filter {
+    display: none !important;
+  } */
+  
+  div.dataTables_wrapper div.dataTables_filter label {
+    display: none !important;
+  }
+  
+  .cancel-btn {
+    background: #BDBDBD;
+    color: #fff;
+  }
+  
+  .confirm-btn {
+    color: #F88F09;
+    background: transparent;
+    border: 1px solid #F88F09;
+  }
+  
+  .confirm-btn:hover {
+    background-color: #F88F09;
+    color: #fff !important;
+  }
+  
+  .alert-danger {
+    color: #F03D3E;
+    background: rgba( #EB5757, 0.1 );
+  }
+  
+  .click {
+    cursor: pointer;
+  }
+  

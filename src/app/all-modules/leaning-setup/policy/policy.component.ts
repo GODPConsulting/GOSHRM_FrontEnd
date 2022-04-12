@@ -24,8 +24,8 @@ export class PolicyComponent implements OnInit {
    public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
-    height: '15rem',
-    minHeight: '8rem',
+    height: '45rem',
+    minHeight: '10rem',
     placeholder: 'Enter text here...',
     translate: 'no',
     defaultParagraphSeparator: 'p',
@@ -70,6 +70,7 @@ export class PolicyComponent implements OnInit {
           this._loading.hide();
           this.policyInfo = res['policySetupTypes'][0];
           this.policyId = this.policyInfo?.policyId;
+          this.htmlContent = this.policyInfo.policy_Content
           console.log(res);
         },
         error: (error) => {
@@ -106,7 +107,8 @@ export class PolicyComponent implements OnInit {
           console.log(res);
           if (res.status.isSuccessful) {
             swal.fire("GOSHRM", res.status.message.friendlyMessage).then(() => {
-              this.canEditPolicy = !this.canEditPolicy
+              this.canEditPolicy = !this.canEditPolicy;
+              this.policyInfo.policy_Content = this.htmlContent
             });
           } else {
             swal.fire("GOSHRM", res.status.message.friendlyMessage);

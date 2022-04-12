@@ -20,6 +20,25 @@ import { JobSkillComponent } from "./job-skill/job-skill.component";
 import { LocationComponent } from "./location/location.component";
 import { HospitalManagementComponent } from "./hospital-management/hospital-management.component";
 import { EmployeeIdFormatComponent } from "./employee-id-format/employee-id-format.component";
+import { UserRoleComponent } from "./user-role/user-role.component";
+import { UserRoleActivitiesComponent } from "./user-role-activities/user-role-activities.component";
+import { StaffInfoListComponent } from "./staff-info-list/staff-info-list.component";
+import { StaffInfoComponent } from "./staff-info/staff-info.component";
+import { CountryListComponent } from "./country-list/country-list.component";
+import { CountryComponent } from "./country/country.component";
+import { StateListComponent } from "./state-list/state-list.component";
+import { StateComponent } from "./state/state.component";
+import { CityListComponent } from "./city-list/city-list.component";
+import { CityComponent } from "./city/city.component";
+import { CurrencyListComponent } from "./currency-list/currency-list.component";
+import { CurrencyComponent } from "./currency/currency.component";
+import { EmailconfigListComponent } from "./emailconfig-list/emailconfig-list.component";
+import { EmailconfigComponent } from "./emailconfig/emailconfig.component";
+import { CompanyStructureDefinitionListComponent } from "./company-structure-definition-list/company-structure-definition-list.component";
+import { CompanyStructureDefinitionComponent } from "./company-structure-definition/company-structure-definition.component";
+import { CompanyStructureListComponent } from "./company-structure-list/company-structure-list.component";
+import { CompanyStructureComponent } from "./company-structure/company-structure.component";
+import { DocumentTypeComponent } from "./document-type/document-type.component";
 
 const routes: Routes = [
   {
@@ -102,6 +121,82 @@ const routes: Routes = [
         path: "hospital-management",
         component: HospitalManagementComponent,
       },
+      {
+        path: "user-role",
+        component: UserRoleComponent,
+      },
+      {
+        path: "user-role-activity",
+        component: UserRoleActivitiesComponent,
+      },
+      {
+        path: "staff-info-list",
+        component: StaffInfoListComponent,
+      },
+      {
+        path: "staff-info",
+        component: StaffInfoComponent,
+      },
+      {
+        path: "country-list",
+        component: CountryListComponent,
+      },
+      {
+        path: "country",
+        component: CountryComponent,
+      },
+      {
+        path: "state-list",
+        component: StateListComponent,
+      },
+      {
+        path: "state",
+        component: StateComponent,
+      },
+      {
+        path: "city-list",
+        component: CityListComponent,
+      },
+      {
+        path: "city",
+        component: CityComponent,
+      },
+      {
+        path: "currency-list",
+        component: CurrencyListComponent,
+      },
+      {
+        path: "currency",
+        component: CurrencyComponent,
+      },
+      {
+        path: "document-type",
+        component: DocumentTypeComponent,
+      },
+      {
+        path: "emailconfig-list",
+        component: EmailconfigListComponent,
+      },
+      {
+        path: "email-config",
+        component: EmailconfigComponent,
+      },
+      {
+        path: "company-structure",
+        component: CompanyStructureComponent,
+      },
+      {
+        path: "company-structure-list",
+        component: CompanyStructureListComponent,
+      },
+      {
+        path: "company-structure-definition",
+        component: CompanyStructureDefinitionComponent,
+      },
+      {
+        path: "company-structure-definition-list",
+        component: CompanyStructureDefinitionListComponent,
+      }
     ],
   },
 ];

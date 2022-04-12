@@ -1,0 +1,89 @@
+<div class="company_wrapper ui-g">
+    <div class="ui-g-12 no-padding">
+        <div class="card p-5">
+            <div style="margin-bottom:0" class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="panel-title pull-left">
+                                {{ formTitle }}
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="py-5">
+                    <form novalidate [formGroup]="form">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form_group mb-4">
+                                <label for="name" class="form-label"
+                                  >Name<span class="text-danger">*</span>
+                                </label>
+                                  <input
+                                    class="form-control"
+                                    type="text"
+                                    formControlName="definition"
+                                    placeholder=""
+                                  />
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form_group mb-4">
+                                <label for="stateName" class="form-label"
+                                  >Description<span class="text-danger">*</span>
+                                </label>
+                                 <div>
+                                    <textarea 
+                                        name="" id="" cols="30" rows="4" 
+                                        formControlName="description"
+                                        class="form-control"
+                                    >
+                                    </textarea>
+                                 </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form_group mb-4">
+                                <label for="structureLevel" class="form-label"
+                                  >Level<span class="text-danger">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    formControlName="structureLevel"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                    </form>
+                </div>
+  
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button
+                                style="margin-right:5px"
+                                type="button"
+                                [disabled]="!form.valid"
+                                class="btn btn-success pull-right"
+                                (click)="submitCompanyStructureDefinition(form)"
+                            >
+                                Save
+                            </button>
+                            <button
+                                type="button"
+                                style="margin-right:5px"
+                                class="btn btn-danger pull-right"
+                                (click)="goBack()"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  

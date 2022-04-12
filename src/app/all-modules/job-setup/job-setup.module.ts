@@ -12,6 +12,7 @@ import { TemplateComponent } from "./template/template.component";
 import { ReactiveFormsModule } from "@angular/forms";
 import { AdminComponent } from './admin/admin.component';
 import { SocialMediaComponent } from './social-media/social-media.component';
+import { EducationalSetupComponent } from './educational-setup/educational-setup.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { SocialMediaComponent } from './social-media/social-media.component';
     TemplateComponent,
     AdminComponent,
     SocialMediaComponent,
+    EducationalSetupComponent,
   ],
   imports: [
     CommonModule,

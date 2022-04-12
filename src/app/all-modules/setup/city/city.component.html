@@ -1,0 +1,85 @@
+<div class="city_wrapper ui-g">
+    <div class="ui-g-12">
+      <div class="card p-4">
+        <div style="margin-bottom:0" class="panel panel-default">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="panel-title pull-left">
+                  {{formTitle}}
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          <div class="py-5">
+              <form novalidate [formGroup]="form">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="stateCode" class="form-label"
+                            >City Code
+                          </label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              formControlName="cityCode"
+                              placeholder="E.g NGN"
+                            />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="stateName" class="form-label"
+                            >City Name
+                          </label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              formControlName="cityName"
+                              placeholder="Enter Country Name"
+                            />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="stateName" class="form-label"
+                            >State
+                          </label>
+                          <select
+                            type="text"
+                            name="stateId"
+                            formControlName="stateId"
+                            id="stateId"
+                            class="form-control"
+                            (change)="parseValueToInt($event.target.value)"
+                            >
+                            <option value="">-- Select State --</option>
+                            <option *ngFor="let row of stateList" [value]="row.lookupId">
+                                {{ row.lookupName }}
+                            </option>
+                            </select>
+                        </div>
+                      </div>
+                    </div>
+              </form>
+          </div>
+  
+         <div class="panel-footer">
+            <div class="row">
+              <div class="col-md-12">
+                <button style="margin-right:5px" type="button" [disabled]="!form.valid" class="btn btn-primary pull-right"
+                  (click)="submitCityInfo(form)">
+                  Save
+                </button>
+                <button type="button" style="margin-right:5px" class="btn btn-danger pull-right" (click)="goBack()">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
