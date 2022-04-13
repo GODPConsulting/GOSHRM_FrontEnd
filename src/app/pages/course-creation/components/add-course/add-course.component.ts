@@ -83,7 +83,8 @@ export class AddCourseComponent implements OnInit {
         class: "titleText",
         tag: "h1",
       },
-    ]
+    ],
+    toolbarPosition: 'top',
   };
   // alert("timeuse：" + sp.hour + " hour " + sp.minute + " minute " + sp.second + " second ");
 

@@ -4,6 +4,7 @@ import { AnnouncementComponent } from './components/announcement/announcement.co
 import { CommunicationComponent } from './components/communication/communication.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { QaComponent } from './components/qa/qa.component';
+import { ViewMessageComponent } from './components/view-message/view-message.component';
 import { CommunicationResolver } from './resolvers/communication.resolver';
 
 const routes: Routes = [
@@ -19,6 +20,10 @@ const routes: Routes = [
   { 
     path: 'messages',
     component: MessagesComponent,
+  },
+  { 
+    path: 'view-message',
+    component: ViewMessageComponent,
   },
   { 
     path: 'announcement',

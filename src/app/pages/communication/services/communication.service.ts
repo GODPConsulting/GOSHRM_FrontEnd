@@ -4,6 +4,7 @@ import { HttpService } from '@shared/services/http.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Courses } from 'app/pages/course-creation/models/course-creation.model';
 import { Observable } from 'rxjs';
+import { messageDTO } from '../models/communication.model';
 
 @Injectable({
   providedIn: 'root',
@@ -67,6 +68,33 @@ export class CommunicationService {
   ): Observable<ResponseModel<any>> {
    const endpoint = '/lms/course/deleteCourseQuestionsAndAnswers';
    return this.http.makeRequestWithData('post', endpoint, {}, payload);
+  }
+
+  public getAllMessages(
+    type:any, courseId: any
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/course/getCourseMessages';
+   const params = new HttpParams()
+   .set('type', type)
+   .set('courseId', courseId);
+   return this.http.getRequestWithParams(endpoint, params);
+  }
+
+  public getMessageById(
+    messageId: number, courseId: number
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/course/getCourseMessageById';
+   const params = new HttpParams()
+   .set('messageId', messageId)
+   .set('courseId', courseId)
+   return this.http.getRequestWithParams(endpoint, params);
+  }
+
+  public sendNewMessage(
+    message: messageDTO
+  ): Observable<ResponseModel<messageDTO>> {
+    const endpoint = '/lms/course/addCourseMessage';
+    return this.http.makeRequestWithData('post', endpoint, {}, message);
   }
 
 }

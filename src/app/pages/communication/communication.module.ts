@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { QuestionDialogComponent } from './dialogs/question-dialog/question-dialog.component';
 import { CommunicationComponent } from './components/communication/communication.component';
+import { ViewMessageComponent } from './components/view-message/view-message.component';
+import { SendMessageComponent } from './components/send-message/send-message.component';
 
 
 
@@ -19,7 +21,9 @@ import { CommunicationComponent } from './components/communication/communication
     MessagesComponent,
     AnnouncementComponent,
     QuestionDialogComponent,
-    CommunicationComponent
+    CommunicationComponent,
+    ViewMessageComponent,
+    SendMessageComponent
   ],
   imports: [
     CommonModule,

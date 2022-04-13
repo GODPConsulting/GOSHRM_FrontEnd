@@ -1,0 +1,87 @@
+<div class="message_wrapper p-5">
+    <div class="d-flex justify-content-between">
+        <h3 class="header">Message</h3>
+        <div>
+            <button 
+                class="btn btn-green btn-lg"
+                (click)="openMessager()"
+            >Send New Mesaage</button>
+        </div>
+    </div>
+
+    <div class="message-content bg-white p-5 mt-5">
+        <div class="message-title d-flex">
+            <h2>Advanced Excel Ms</h2>
+            <div class="ms-5 mt-2">
+                <span class="py-2 px-3">inbox</span>
+            </div>
+        </div>
+
+        <div class="sender-detail d-flex justify-content-between">
+            <div class="sender d-flex">
+                <span class="img-wrapper">
+                    <img src="assets/images/user.svg" alt="">
+                </span>
+                <span class="sender-name">
+                    <p class="m-0">
+                        <span class="name">GODP</span>
+                        <span class="email">&#60;GODP@example.com&#62;</span>
+                        <span class="user-type">Participant</span>
+                    </p>
+                    <p class="receiver">to me</p>
+                </span>
+            </div>
+            <div class="received-time">
+                <span class="pe-3">3:56PM (43 minutes ago)</span>
+                <span>
+                    <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.2498 4.49948H8.99977V0.749422C8.99977 0.438917 8.80926 0.161412 8.52126 0.0489107C8.23325 -0.062091 7.90475 0.0159103 7.69475 0.245414L0.194628 8.49554C-0.064876 8.78055 -0.064876 9.21705 0.194628 9.50356L7.69475 17.7537C7.84025 17.9127 8.04275 17.9997 8.24975 17.9997C8.34126 17.9997 8.43276 17.9832 8.52126 17.9502C8.80926 17.8377 8.99977 17.5602 8.99977 17.2497V13.4996H11.0863C15.3674 13.4996 19.5134 15.0326 22.7625 17.8197C22.983 18.0102 23.2995 18.0537 23.5635 17.9307C23.8305 17.8092 24 17.5422 24 17.2497C24 10.2191 18.2804 4.49948 11.2498 4.49948ZM11.0863 11.9996H8.24975C7.83575 11.9996 7.49974 12.3356 7.49974 12.7496V15.3101L1.76365 8.99955L7.49974 2.68895V5.24949C7.49974 5.6635 7.83575 5.9995 8.24975 5.9995H11.2498C14.2543 5.9995 17.0804 7.16952 19.2044 9.29355C20.94 11.0291 22.0395 13.2326 22.383 15.6177C19.0979 13.2746 15.1484 11.9996 11.0863 11.9996Z" fill="#828282"/>
+                    </svg>                        
+                </span>
+            </div>
+        </div>
+
+        <div class="content py-5">
+            <p>
+                Felis id nibh pulvinar ipsum adipiscing aliquam in. Auctor ac sed tristique elementum. Id luctus sapien sed a. Molestie volutpat sit dictumst blandit duis. Eu vulputate tortor eget etiam massa nec orci. Risus nisi lacus sollicitudin lectus tortor non vitae neque. Feugiat est mauris arcu arcu, sollicitudin ipsum. Aenean augue rhoncus, purus augue convallis vitae, turpis.
+            </p>
+
+            <p>
+                Urna sed at vel aliquet tellus. Sed sociis consectetur urna ultrices sed adipiscing. Nulla bibendum posuere consequat quis. Dignissim vitae quis faucibus fames viverra quis vel amet. Mattis sit arcu suspendisse ipsum tristique massa. Sit fringilla fermentum vel massa lacus. Sed in adipiscing suscipit faucibus amet. Vestibulum posuere mi ut feugiat dui.
+            </p>
+
+            <p>
+                Feugiat donec tellus eget porttitor varius eget magna viverra. Tempus, nec etiam vestibulum pellentesque diam in vitae sed sodales. Cursus sed varius enim lobortis placerat donec donec commodo. A, sit auctor morbi mauris. 
+            </p>
+        </div>
+
+        <div class="d-flex py-4">
+            <button class="btn btn-light btn-lg me-4">Reply</button>
+            <button class="btn btn-light btn-lg me-4">Reply All</button>
+            <button class="btn btn-light btn-lg">Forward</button>
+        </div>
+    </div>
+
+    <div class="row d-flex my-5">
+        <div class="col-1 img-wrapper">
+            <img src="" alt="">
+        </div>
+        <div class="col-11 reply-box p-4">
+            <div class="form_group">
+                <angular-editor 
+                    class="form-control" 
+                    [config]="config"
+                ></angular-editor>
+            </div>
+            <div>
+                <button class="btn btn-green btn-lg px-5 mt-3">
+                    Send
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="messager" class="message-box d-none">
+    <app-send-message></app-send-message>
+</div>
