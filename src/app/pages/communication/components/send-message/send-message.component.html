@@ -22,13 +22,11 @@
                        > -->
                        <ng-select 
                            class="custom message-input"
-                           [items]="recipient"
+                           [items]="allUsers"
                            bindLabel="name" 
-                           bindValue="name"
-                           [addTag]="recipients"
+                           bindValue="userId"
                            [multiple]="true"
                            formControlName="recipients"
-                           (keyup.enter)="checkForKeyEnter($event)"
                        >
                        </ng-select>
                    </div>
@@ -36,12 +34,17 @@
                <div class="col-12 messages">
                    <div class="d-flex">
                        <label class="message-label pe-3">Subject: </label>
-                       <input type="email" class="message-input" formControlName="subject">
+                       <input 
+                        type="email" 
+                        class="message-input"
+                        formControlName="subject"
+                    >
                    </div>
                </div>
                <div class="col-12">
                    <angular-editor 
-                       class="editor" 
+                       class="editor"
+                       [(ngModel)]="htmlContent"
                        [config]="config"
                        formControlName="message"
                    ></angular-editor>

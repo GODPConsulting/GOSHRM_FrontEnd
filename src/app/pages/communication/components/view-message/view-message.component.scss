@@ -77,6 +77,24 @@
     }
 
     .reply-box {
+        .message-label {
+            font-weight: 400;
+            font-size: 1.8rem;
+            line-height: 150%;
+        }
+        .message-input {
+            border: none;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            font-size: 1.8rem;
+        }
+        .editor {
+            border: none;
+        }
+        .ng-select.custom .ng-select-container  {            
+            border: none !important;
+        }
         .form-control {
             width: 100%;
         }

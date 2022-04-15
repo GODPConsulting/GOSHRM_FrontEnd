@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from '@auth/services/auth.service';
+import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { CommunicationService } from '../../services/communication.service';
 
@@ -20,74 +23,36 @@ export class SendMessageComponent implements OnInit {
   public senderEmail: any;
   public courseId: any;
   public recipient: any;
-  public recipients = (recipient: any) => ({ name: recipient });
+  public allUsers: any[] = [];
+  public isFetchingUsers: boolean = false;
   public companyId: number = 0;
   public config: AngularEditorConfig = {
-      editable: true,
-      spellcheck: true,
-      height: 'auto',
-      minHeight: '30rem',
-      maxHeight: 'auto',
-      width: 'auto',
-      minWidth: '0',
-      translate: 'yes',
-      enableToolbar: true,
-      showToolbar: true,
-      placeholder: 'Enter text here...',
-      defaultParagraphSeparator: '',
-      defaultFontName: '',
-      defaultFontSize: '',
-      fonts: [
-        {class: 'arial', name: 'Arial'},
-        {class: 'times-new-roman', name: 'Times New Roman'},
-        {class: 'calibri', name: 'Calibri'},
-        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+    editable: true,
+    spellcheck: true,
+    height: '25rem',
+    minHeight: '5rem',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarPosition: 'bottom',
+    toolbarHiddenButtons: [
+      ['bold']
       ],
-      customClasses: [
+    customClasses: [
       {
-        name: 'quote',
-        class: 'quote',
+        name: "quote",
+        class: "quote",
       },
       {
         name: 'redText',
         class: 'redText'
       },
       {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
       },
-    ],
-    uploadUrl: 'v1/image',
-    // upload: (file: File): Observable<HttpEvent<any>> => { return File },
-    uploadWithCredentials: false,
-    sanitize: true,
-    toolbarPosition: 'bottom',
-    toolbarHiddenButtons: [
-        [
-          'underline',
-          'strikeThrough',
-          'subscript',
-          'superscript',
-          'indent',
-          'outdent',
-          'insertUnorderedList',
-          'insertOrderedList',
-          'heading',
-          'fontName'
-        ],
-        [
-          'fontSize',
-          'textColor',
-          'backgroundColor',
-          'customClasses',
-          'link',
-          'unlink',
-          'insertVideo',
-          'insertHorizontalRule',
-          'removeFormat',
-          'toggleEditorMode'
-        ]
     ]
   };
 
@@ -95,8 +60,37 @@ export class SendMessageComponent implements OnInit {
     private fb: FormBuilder,
     private _communication: CommunicationService,
     private _helper: HelperService,
-    private _current: CurrentUserService
+    private _current: CurrentUserService,
+    private _auth: AuthService
   ) { }
+
+  ngOnInit(): void {
+    this.loggedInUser = this._current.getUser();
+    this.companyId = this.loggedInUser.companyId;
+    this.senderEmail = this.loggedInUser.userName;
+    this.initMessageForm();
+    this.getAllUsers();
+  }
+
+  public getAllUsers(): void {
+    this.isFetchingUsers = true;
+    this._helper.startSpinner();
+    this.sub.add(
+      this._auth.getAllUsers().subscribe({
+        next: (res: any) => {
+          this._helper.stopSpinner();
+          this.isFetchingUsers = false;
+          this.allUsers = res['users'];
+          // console.log(res, this.allUsers);
+        },
+        error: (error: ResponseModel<null>) => {
+          this.isFetchingUsers = false;
+          this._helper.stopSpinner();
+          console.log(error);
+        },
+      })
+    );
+  }
 
   public initMessageForm() {
     this.messageForm = this.fb.group({
@@ -110,19 +104,6 @@ export class SendMessageComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {
-    this.loggedInUser = this._current.getUser();
-    this.companyId = this.loggedInUser.companyId;
-    this.senderEmail = this.loggedInUser.userName;
-    this.initMessageForm();
-  }
-
-  public checkForKeyEnter(event: any): void {
-    var key = event.key || event.keyCode;
-    if (key == 'Enter' || key == 8) {
-    }
-  }
-
   public openMessager(){
     let messager = document.getElementById('messager');
     if(messager?.classList.contains('d-none')) {
@@ -134,23 +115,39 @@ export class SendMessageComponent implements OnInit {
 
   public submit() {
     this._helper.startSpinner();
+    console.log(this.htmlContent)
     const payload = this.messageForm.value;
     payload.courseId = 1;
+    payload.message = this.htmlContent;
     // payload.courseId = +this.courseId;
     let recipients = [];
-    let recipient = payload.recipients.map((m: any) => {
-      return {
-        recipientId: m,
-        recipientType: 1,
-      }
+    let recipient = this.allUsers.filter((m: any) => {
+       return payload.recipients.find((user: any) => {
+          return user === m.userId
+        })
+    });
+    let user = recipient.map((m: any) => {
+          let createdBy
+          if (m.userType == 1) {
+            createdBy = CreatedByType.provider
+          } else if (m.userType == 2) {
+            createdBy = CreatedByType.instructor
+          } else if (m.userType == 3) {
+            createdBy = CreatedByType.participant
+          } else {
+            createdBy = CreatedByType.admin
+          }
+          return {
+            recipientId: m.userId,
+            recipientType: createdBy,
+          }
     })
-    recipients.push(recipient);
+    recipients.push(user);
     payload.recipients = recipients[0];
     console.log(payload)
     if(this.messageForm.valid) {
-      console.log(payload);
       this.sub.add(
-        this._communication.AddQuestionAndAnswer(payload).subscribe({
+        this._communication.sendNewMessage(payload).subscribe({
           next: (res: any) => {
             console.log(res);
             if(res.status.isSuccessful) {

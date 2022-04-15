@@ -47,10 +47,13 @@ export class AuthService {
 
   public getProfile(
   ): Observable<ResponseModel<LoginResponseDTO>> {
-    // const headers: HttpHeaders = new HttpHeaders({
-    //   // headers['Authorization'] = `Bearer `;
-    // })
     const endpoint = '/lms/fetch/profile';
+    return this.http.makeRequestWithData('get', endpoint, {});
+  }
+
+  public getAllUsers(
+  ): Observable<ResponseModel<LoginResponseDTO>> {
+    const endpoint = '/lms/allUsers';
     return this.http.makeRequestWithData('get', endpoint, {});
   }
 }

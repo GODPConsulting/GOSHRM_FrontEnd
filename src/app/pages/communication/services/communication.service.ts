@@ -71,22 +71,19 @@ export class CommunicationService {
   }
 
   public getAllMessages(
-    type:any, courseId: any
+    payload:any
   ): Observable<ResponseModel<Courses>> {
    const endpoint = '/lms/course/getCourseMessages';
-   const params = new HttpParams()
-   .set('type', type)
-   .set('courseId', courseId);
-   return this.http.getRequestWithParams(endpoint, params);
+   return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
 
   public getMessageById(
-    messageId: number, courseId: number
+    payload: any
   ): Observable<ResponseModel<Courses>> {
    const endpoint = '/lms/course/getCourseMessageById';
    const params = new HttpParams()
-   .set('messageId', messageId)
-   .set('courseId', courseId)
+   .set('messageId', payload.messageId)
+   .set('courseId', payload.courseId)
    return this.http.getRequestWithParams(endpoint, params);
   }
 
@@ -94,6 +91,13 @@ export class CommunicationService {
     message: messageDTO
   ): Observable<ResponseModel<messageDTO>> {
     const endpoint = '/lms/course/addCourseMessage';
+    return this.http.makeRequestWithData('post', endpoint, {}, message);
+  }
+
+  public replyMessage(
+    message: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/lms/course/addCourseMessageReply';
     return this.http.makeRequestWithData('post', endpoint, {}, message);
   }
 

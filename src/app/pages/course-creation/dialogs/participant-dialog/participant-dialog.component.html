@@ -51,12 +51,24 @@
     </button>
     <button
       class="btn btn-green btn-md px-4"
-      (click)="submit()"
     >
         <app-loading-button
-          [text]="'Upload Participants'"
+          [text]="'Add Participants'"
           [condition]="isLoading"
+          (click)="submit()"
         ></app-loading-button>
+        <span class="dropdown px-3">
+          <div class="dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <!-- <svg width="27" height="24" viewBox="0 0 27 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.19336 9L13.5 15L19.8066 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>  -->
+          </div>
+          <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item">
+              Upload Participants</a>
+            </li>
+          </ul>        
+        </span>
     </button>
   </mat-dialog-actions>
   

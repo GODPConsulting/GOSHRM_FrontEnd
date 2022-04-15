@@ -8,6 +8,11 @@ export enum recipientType {
     Reply = 2
 }
 
+export enum MessageType {
+  Sent = 1,
+  Inbox = 2
+}
+
 export interface messageDTO {
     courseMessageId: number,
     subject: string,

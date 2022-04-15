@@ -7,3 +7,13 @@
         background: #E7FEF1 !important;
     }
 }
+
+.dropdown-menu {
+    .dropdown-item {
+      padding: 1rem 1.5rem;
+      font-size: 1.2rem;
+      &:hover, &:focus {
+        background: #FEF1E1;
+      }
+    }
+}
