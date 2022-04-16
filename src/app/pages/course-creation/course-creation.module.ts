@@ -21,6 +21,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { CourseSectionComponent } from './components/course-section/course-section.component';
 import { CourseSectionDialogComponent } from './dialogs/course-section-dialog/course-section-dialog.component';
 import { SceduleClassDialogComponent } from './dialogs/scedule-class-dialog/scedule-class-dialog.component';
+import { AddParticipantComponent } from './dialogs/add-participant/add-participant.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { SceduleClassDialogComponent } from './dialogs/scedule-class-dialog/sced
     ParticipantDialogComponent,
     CourseSectionComponent,
     CourseSectionDialogComponent,
-    SceduleClassDialogComponent
+    SceduleClassDialogComponent,
+    AddParticipantComponent
   ],
   imports: [
     CommonModule,

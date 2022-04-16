@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Observable } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
 // import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
@@ -55,5 +56,14 @@ export class AuthService {
   ): Observable<ResponseModel<LoginResponseDTO>> {
     const endpoint = '/lms/allUsers';
     return this.http.makeRequestWithData('get', endpoint, {});
+  }
+
+  public getAllParticipants(
+    companyId: number
+    ): Observable<ResponseModel<any>> {
+      const params = new HttpParams()
+      .set('companyId', companyId);
+     const endpoint = '/lms/trainingparticipant/getTrainingParticipants';
+     return this.http.getRequestWithParams(endpoint, params);
   }
 }

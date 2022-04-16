@@ -7,9 +7,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogModel } from '@shared/components/models/dialog.model';
+import { AddParticipantComponent } from '../add-participant/add-participant.component';
 
 @Component({
   selector: 'app-participant-dialog',
@@ -31,18 +32,29 @@ export class ParticipantDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<ParticipantDialogComponent>,
     // @Inject(MAT_DIALOG_DATA) public modalData: any,
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<string>,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    public dialog: MatDialog,
   ) { }
 
   ngOnInit() {
-    // this.initReviewerForm();
   }
 
-  public initReviewerForm() {
-    this.courseOutlineForm = this.fb.group({
-      reviewers: ['', Validators.required]
-    })
+  public openDialog(
+    payload: { isEditing?: boolean; editObject?: any } | any
+  ): void {
+    this.close.nativeElement.click();
+    let object: DialogModel<any> = payload;
+    const dialogRef = this.dialog.open(AddParticipantComponent, {
+      data: object,
+    });
+
+    dialogRef.componentInstance.event.subscribe(
+      (event: DialogModel<any>) => {
+          
+      }
+    );
   }
+
 
   public submit(): void {
     this.isLoading = true;

@@ -45,6 +45,13 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button
+      class="btn btn-outline-green btn-md d-none"
+      [mat-dialog-close]="true"
+      #close
+    >
+      Cancel
+    </button>
+    <button
       class="btn btn-outline-green btn-md me-4 px-4"
     >
       Attended
@@ -55,7 +62,7 @@
         <app-loading-button
           [text]="'Add Participants'"
           [condition]="isLoading"
-          (click)="submit()"
+          (click)="openDialog(false)"
         ></app-loading-button>
         <span class="dropdown px-3">
           <div class="dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
