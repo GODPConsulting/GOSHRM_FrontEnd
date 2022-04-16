@@ -13,6 +13,11 @@ export enum MessageType {
   Inbox = 2
 }
 
+export enum AnnouncementType {
+  Promotional =1,
+  Educational =2
+}
+
 export interface messageDTO {
     courseMessageId: number,
     subject: string,

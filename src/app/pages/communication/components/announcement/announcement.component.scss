@@ -2,15 +2,19 @@
     .message_content {
         position: relative;
         .table {
-            tr>td:first-child {
-                font-weight: 600;
-                font-size: 1.8rem;
-                line-height: 150%;
-            }
             td {
                 font-weight: 400;
                 font-size: 18px;
                 line-height: 150%;
+            }
+        }
+        .broadcast {
+            .table {
+                tr>td:first-child {
+                    font-weight: 600;
+                    font-size: 1.8rem;
+                    line-height: 150%;
+                }
             }
         }
         .message-box {

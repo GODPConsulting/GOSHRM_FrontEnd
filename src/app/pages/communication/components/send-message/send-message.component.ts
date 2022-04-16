@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '@auth/services/auth.service';
 import { CreatedByType } from '@core/models/creation-type.model';
@@ -15,6 +15,8 @@ import { CommunicationService } from '../../services/communication.service';
   styleUrls: ['./send-message.component.scss']
 })
 export class SendMessageComponent implements OnInit {
+  @Input() type: string = '';
+  @Input() announcementType: number = 0;
   public sub: Subscription = new Subscription();
   public current_tab: string = 'all';
   public htmlContent: string = '';
@@ -144,10 +146,16 @@ export class SendMessageComponent implements OnInit {
     })
     recipients.push(user);
     payload.recipients = recipients[0];
+    const operation = this.type === 'message' ? 'sendNewMessage' : 'sendNewAnnouncement';
+    if(this.type == 'announcement') {
+      payload.courseAnnouncementId = payload.courseMessageId;
+      payload.announcementType = this.announcementType
+      delete payload.courseMessageId;
+    }
     console.log(payload)
     if(this.messageForm.valid) {
       this.sub.add(
-        this._communication.sendNewMessage(payload).subscribe({
+        this._communication[operation](payload).subscribe({
           next: (res: any) => {
             console.log(res);
             if(res.status.isSuccessful) {

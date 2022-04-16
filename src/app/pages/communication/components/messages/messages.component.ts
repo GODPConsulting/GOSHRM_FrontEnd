@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
@@ -20,7 +20,7 @@ export class MessagesComponent implements OnInit {
   public courseId: any;
   public messages: any[] = [];
   public isFetchingMessages: any;
-  public userType: number = 0;
+  public userType: number = 2;
   public messageType = MessageType;
   public tabType: number = 2;
   public createdBy = CreatedByType;
@@ -29,12 +29,16 @@ export class MessagesComponent implements OnInit {
     private router: Router,
     private _current: CurrentUserService,
     private _communication: CommunicationService,
-    private _helper: HelperService
+    private _helper: HelperService,
+    private _route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
-    this.getAllMessages(MessageType.Inbox, this.tabType);
+    this._route.queryParams.subscribe(params => {
+      this.current_tab = params.q;
+    });
+    this.getAllMessages(MessageType.Inbox, this.userType);
   }
 
   public getAllMessages(
@@ -45,7 +49,7 @@ export class MessagesComponent implements OnInit {
     this.isFetchingMessages = true;
     this._helper.startSpinner();
     const payload = {
-      userType: this.userType,
+      userType: userType,
       messageType: messageType,
       senderEmail: this.loggedInUser.userName
     };

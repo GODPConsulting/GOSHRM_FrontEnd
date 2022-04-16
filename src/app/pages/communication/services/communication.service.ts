@@ -101,4 +101,35 @@ export class CommunicationService {
     return this.http.makeRequestWithData('post', endpoint, {}, message);
   }
 
+  public getAllAnnoucement(
+    payload:any
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/course/getCourseAnnouncements';
+   return this.http.makeRequestWithData('post', endpoint, {}, payload);
+  }
+
+  public getAnnouncementById(
+    payload: any
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/course/getCourseAnnouncementById';
+   const params = new HttpParams()
+   .set('announcementId', payload.announcementId)
+   .set('courseId', payload.courseId)
+   return this.http.getRequestWithParams(endpoint, params);
+  }
+
+  public sendNewAnnouncement(
+    announcement: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/lms/course/addCourseAnnouncement';
+    return this.http.makeRequestWithData('post', endpoint, {}, announcement);
+  }
+
+  public replyAnnouncement(
+    announcement: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/lms/course/addCourseAnnouncementReply';
+    return this.http.makeRequestWithData('post', endpoint, {}, announcement);
+  }
+
 }

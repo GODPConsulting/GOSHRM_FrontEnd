@@ -12,6 +12,7 @@ import { QuestionDialogComponent } from './dialogs/question-dialog/question-dial
 import { CommunicationComponent } from './components/communication/communication.component';
 import { ViewMessageComponent } from './components/view-message/view-message.component';
 import { SendMessageComponent } from './components/send-message/send-message.component';
+import { ContactListDialogComponent } from './dialogs/contact-list-dialog/contact-list-dialog.component';
 
 
 
@@ -23,7 +24,8 @@ import { SendMessageComponent } from './components/send-message/send-message.com
     QuestionDialogComponent,
     CommunicationComponent,
     ViewMessageComponent,
-    SendMessageComponent
+    SendMessageComponent,
+    ContactListDialogComponent
   ],
   imports: [
     CommonModule,
