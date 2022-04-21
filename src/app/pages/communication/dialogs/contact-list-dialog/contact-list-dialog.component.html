@@ -6,43 +6,79 @@
 </div>
   <mat-dialog-content class="mat-typography">
     <div>
-        <form>
+        <form [formGroup]="addTagForm" *ngIf="!data.isEditing">
             <div class="row">
                 <div class="col-12">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
                         >Tag
                       </label>
-                      <ng-select 
-                        [items]="allParticipants" 
-                        bindLabel="participantName" 
-                        bindValue="emailAddress" 
-                        [multiple]="true"
-                        [compareWith]="compareFn"
-                        [(ngModel)]="allParticipantsNames"
-                        (change)="selectParticipant()"
-                        >
-                        </ng-select>
+                      <input 
+                        type="text" 
+                        class="form-control"
+                        formControlName="tagName"
+                      >
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div formArrayName="contactListDetails">
+                  <div *ngFor="let item of newForm.controls; index as i" [formGroupName]="i">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form_group mb-5">
+                          <label for="" class="form-label"
+                            >Full Name
+                          </label>
+                          <select 
+                            name="" id="" 
+                            class="form-select"
+                            formControlName="name"
+                            (change)="newForm.get('email')?.setValue(''); userSelected($event.target)"
+                          >
+                            <option value=""></option>
+                            <option 
+                              [value]="user?.participantName" 
+                              *ngFor="let user of allParticipants"
+                            >{{ user?.participantName }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="form_group mb-5">
+                            <label for="" class="form-label"
+                              >Email Address
+                            </label>
+                            <input 
+                              type="text" 
+                              class="form-control"
+                              formControlName="email"
+                            >
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </form>
+        <form *ngIf="data.isEditing">
+          <div class="row">
+              <div class="col-12">
+                <div class="form_group mb-5">
+                  <label for="" class="form-label"
+                    >Full Name
+                  </label>
+                  <input type="text" class="form-control">
+                </div>
+            </div>
+              <div class="col-12">
                   <div class="form_group mb-5">
                     <label for="" class="form-label"
-                      >Full Name
+                      >Email Address
                     </label>
                     <input type="text" class="form-control">
                   </div>
               </div>
-                <div class="col-md-6">
-                    <div class="form_group mb-5">
-                      <label for="" class="form-label"
-                        >Email Address
-                      </label>
-                      <input type="text" class="form-control">
-                    </div>
-                </div>
-            </div>
-        </form>
+          </div>
+      </form>
     </div>
    
   </mat-dialog-content>
@@ -53,6 +89,27 @@
       #close
     >
       No, cancel
+    </button>
+    <button
+      class="btn btn-outline-green btn-md px-4"
+    >
+        <app-loading-button
+          [text]="'Add more emails'"
+          [condition]="isLoading"
+          (click)="addUser()"
+        ></app-loading-button>
+        <span class="dropdown px-3">
+          <div class="dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <!-- <svg width="27" height="24" viewBox="0 0 27 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.19336 9L13.5 15L19.8066 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>  -->
+          </div>
+          <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item">
+               Upload Emails</a>
+            </li>
+          </ul>        
+        </span>
     </button>
     <button
       class="btn btn-green btn-md px-4"

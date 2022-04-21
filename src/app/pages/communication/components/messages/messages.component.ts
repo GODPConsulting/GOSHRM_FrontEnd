@@ -105,7 +105,7 @@ export class MessagesComponent implements OnInit {
 
   public goToMesage(message: any) {
     this.router.navigate([`/communication/view-message/${message?.courseMessageId}`], {
-      queryParams: {courseId: message.courseId},
+      queryParams: {courseId: message.courseId, page: 'message'},
     });
   }
 

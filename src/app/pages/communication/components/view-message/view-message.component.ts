@@ -17,13 +17,14 @@ export class ViewMessageComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public htmlContent: string = '';
   public loggedInUser: any;
-  public messageId: any;
+  public id: any;
   public courseId: any;
   public message: any;
   public allUsers: any[] = [];
   public isForwarding: boolean = false;
   public isFetchingUsers: boolean = false;
   public isFetchingMessage: boolean = false;
+  public getPage: any = 'message';
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -64,11 +65,12 @@ export class ViewMessageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
-    this.messageId = this._route.snapshot.paramMap.get('messageId');
+    this.id = this._route.snapshot.paramMap.get('id');
     this._route.queryParams.subscribe(params => {
       this.courseId = params.courseId;
+      this.getPage = params.page
     });
-    console.log(this.messageId, this.courseId)
+    // console.log(this.id, this.courseId)
     this.getMessage();
     this.getAllUsers();
   }
@@ -76,16 +78,27 @@ export class ViewMessageComponent implements OnInit {
   public getMessage(): void {
     this.isFetchingMessage = true;
     this._helper.startSpinner();
+    const operation = this.getPage == 'message' ? 'getMessageById' : 'getAnnouncementById';
     const payload = {
-      messageId: this.messageId,
-      courseId: this.courseId
+      messageId: this.id,
+      courseId: this.courseId,
+      announcementId: this.id
     };
+    if (this.getPage != 'message') {
+      delete payload.messageId;
+    } else {
+      delete payload.announcementId
+    }
     this.sub.add(
-      this._communication.getMessageById(payload).subscribe({
+      this._communication[operation](payload).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingMessage = false;
-          this.message = res['courseMessageresponse'];
+          if(this.getPage == 'message') {
+            this.message = res['courseMessageresponse'];
+          } else {
+            this.message = res['courseAnnouncementresponse'];
+          }
           console.log(this.message);
         },
         error: (error: ResponseModel<null>) => {
@@ -140,9 +153,8 @@ export class ViewMessageComponent implements OnInit {
 
   public submit() {
     this._helper.startSpinner();
-    console.log(this.htmlContent)
     const payload = {
-      courseMessageId: +this.messageId,
+      courseMessageId: +this.id,
       courseMessagereplyId: 0,
       courseId: +this.courseId,
       message: this.htmlContent,

@@ -22,7 +22,7 @@ const routes: Routes = [
     component: MessagesComponent,
   },
   { 
-    path: 'view-message/:messageId',
+    path: 'view-message/:id',
     component: ViewMessageComponent,
   },
   { 

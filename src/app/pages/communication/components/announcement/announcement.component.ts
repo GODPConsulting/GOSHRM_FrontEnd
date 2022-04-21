@@ -18,10 +18,14 @@ import { CommunicationService } from '../../services/communication.service';
 })
 export class AnnouncementComponent implements OnInit {
   public sub: Subscription = new Subscription();
+  public pageTitle: string = 'Contact List';
+  public subContactTitle: string = '';
   public current_tab: string = 'contact';
   public current_subTab: string = 'educational';
   public loggedInUser: any;
   public courseId: any;
+  public contactLists: any[] = [];
+  public contactDetail: any[] = [];
   public announcements: any[] = [];
   public isFetchingMessages: any;
   public userType: number = 2;
@@ -29,6 +33,7 @@ export class AnnouncementComponent implements OnInit {
   public tabType: number = 2;
   public createdBy = CreatedByType;
   public announcementType: number = 2;
+  public isTag: boolean = true;
 
   constructor(
     public dialog: MatDialog,
@@ -44,11 +49,49 @@ export class AnnouncementComponent implements OnInit {
     this._route.queryParams.subscribe(params => {
       this.current_subTab = params.q;
     });
-    console.log(this.current_tab)
-    this.getAllMessages(MessageType.Inbox, AnnouncementType.Educational, this.current_tab, this.userType);
+    this.getAllContactList();
+    this.getAllAnnouncement(MessageType.Inbox, AnnouncementType.Educational, this.current_tab, this.userType);
   }
 
-  public getAllMessages(
+  public getAllContactList(): void {
+    this.sub.add(
+      this._communication.getAllContactList().subscribe({
+        next: (res: any) => {
+          this._helper.stopSpinner();
+          this.isFetchingMessages = false;
+          this.contactLists = res['contactListResponse'];
+          console.log(res, this.contactLists);
+        },
+        error: (error: ResponseModel<null>) => {
+          this.isFetchingMessages = false;
+          this._helper.stopSpinner();
+          console.log(error);
+        },
+      })
+    );
+  }
+
+  public getContactListById(tag: any): void {
+    this.isTag = false;
+    this.subContactTitle = tag?.tagName;
+    this.sub.add(
+      this._communication.getContactById(tag?.contactListId).subscribe({
+        next: (res: any) => {
+          this._helper.stopSpinner();
+          this.isFetchingMessages = false;
+          this.contactDetail = res['contactListDetailResponse'];
+          console.log(res, this.contactDetail);
+        },
+        error: (error: ResponseModel<null>) => {
+          this.isFetchingMessages = false;
+          this._helper.stopSpinner();
+          console.log(error);
+        },
+      })
+    );
+  }
+
+  public getAllAnnouncement(
     messageType: number,
     announcementType: number,
     tabType: string,
@@ -57,6 +100,11 @@ export class AnnouncementComponent implements OnInit {
     this.current_tab = tabType;
     this.isFetchingMessages = true;
     this._helper.startSpinner();
+    if(this.current_tab == 'contact') {
+      this.pageTitle = 'Contact List'
+    } else {
+      this.pageTitle = 'Announcement'
+    }
     const payload = {
       userType: userType,
       announcementType: announcementType,
@@ -83,14 +131,14 @@ export class AnnouncementComponent implements OnInit {
   public getEducational(): void {
     this.current_subTab = 'educational';
     this.router.navigate(['/communication/announcement'], { queryParams: { q: 'educational' } });
-    this.getAllMessages(MessageType.Sent, AnnouncementType.Educational, this.current_tab)
+    this.getAllAnnouncement(MessageType.Sent, AnnouncementType.Educational, this.current_tab)
     this.announcementType = AnnouncementType.Educational
   }
 
   public getPromotional(): void {
     this.current_subTab = 'promotion';
     this.router.navigate(['/communication/announcement'], { queryParams: { q: 'promotional' } });
-    this.getAllMessages(MessageType.Sent, AnnouncementType.Promotional, this.current_tab)
+    this.getAllAnnouncement(MessageType.Sent, AnnouncementType.Promotional, this.current_tab)
     this.announcementType = AnnouncementType.Promotional
   }
 
@@ -107,7 +155,7 @@ export class AnnouncementComponent implements OnInit {
         if (event?.isEditing) {
          
         } else {
-
+          this.contactLists.push(event.editObject);
         }
       }
     );
@@ -123,8 +171,8 @@ export class AnnouncementComponent implements OnInit {
   }
 
   public goToMesage(message: any) {
-    this.router.navigate([`/communication/view-message/${message?.courseMessageId}`], {
-      queryParams: {courseId: message.courseId},
+    this.router.navigate([`/communication/view-message/${message?.courseAnnouncementId}`], {
+      queryParams: {courseId: message.courseId, page: 'announcement'},
     });
   }
 

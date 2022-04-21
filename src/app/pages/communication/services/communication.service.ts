@@ -79,7 +79,7 @@ export class CommunicationService {
 
   public getMessageById(
     payload: any
-  ): Observable<ResponseModel<Courses>> {
+  ): Observable<ResponseModel<any>> {
    const endpoint = '/lms/course/getCourseMessageById';
    const params = new HttpParams()
    .set('messageId', payload.messageId)
@@ -130,6 +130,47 @@ export class CommunicationService {
   ): Observable<ResponseModel<any>> {
     const endpoint = '/lms/course/addCourseAnnouncementReply';
     return this.http.makeRequestWithData('post', endpoint, {}, announcement);
+  }
+
+  public getAllContactList(
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/contactlist/getContactList';
+   return this.http.getRequest(endpoint);
+  }
+
+  public getContactById(
+    contactListId: any
+  ): Observable<ResponseModel<Courses>> {
+   const endpoint = '/lms/contactlist/getContactListById';
+   const params = new HttpParams()
+   .set('contactListId', contactListId);
+   return this.http.getRequestWithParams(endpoint, params);
+  }
+
+  public addContactList(
+    announcement: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/lms/contactlist/addContactList';
+    return this.http.makeRequestWithData('post', endpoint, {}, announcement);
+  }
+
+  public deleteContactList(
+    contactListId: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/lms/contactlist/deleteContactList';
+    const params = new HttpParams()
+    .set('contactListId', contactListId);
+    return this.http.makeRequestWithData('post', endpoint, params);
+  }
+
+  public deleteContactListDetail(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/lms/contactlist/deleteContactListDetails';
+    const params = new HttpParams()
+    .set('contactListId', payload.contactListId)
+    .set('contactListDetailId', payload.contactListDetailId);
+    return this.http.makeRequestWithData('post', endpoint, params);
   }
 
 }

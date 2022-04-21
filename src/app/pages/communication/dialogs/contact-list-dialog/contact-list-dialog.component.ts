@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from '@auth/services/auth.service';
 import { CurrentUserService } from '@core/services/current-user.service';
@@ -15,6 +15,7 @@ import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
+import { CommunicationService } from '../../services/communication.service';
 
 @Component({
   selector: 'app-contact-list-dialog',
@@ -24,12 +25,9 @@ import { Subscription } from 'rxjs';
 export class ContactListDialogComponent implements OnInit {
   @ViewChild('close') close!: ElementRef;
   public sub: Subscription = new Subscription();
-  public addPrticipantForm!: FormGroup;
+  public addTagForm!: FormGroup;
   public isLoading: boolean = false;
   public allParticipants: any[] = [];
-  public allParticipantsNames: any[] = [];
-  public allParticipantsEmail: any[] = [];
-  public allParticipantsPhone: any[] = [];
   public isFetchingParticipant: boolean = false;
   public loggedInUser: any;
   
@@ -44,12 +42,13 @@ export class ContactListDialogComponent implements OnInit {
     public fb: FormBuilder,
     private _helper: HelperService,
     private _auth: AuthService,
-    private _current: CurrentUserService
+    private _current: CurrentUserService,
+    private _communication: CommunicationService
   ) { }
 
   ngOnInit() {
     this.loggedInUser = this._current.getUser();
-    this.initParticipantForm();
+    this.initaddTagForm();
     this.getParticipants();
   }
 
@@ -73,53 +72,77 @@ export class ContactListDialogComponent implements OnInit {
     );
   }
 
-  public initParticipantForm() {
-    this.addPrticipantForm = this.fb.group({
-      name: [[], Validators.required],
-      email: [[], Validators.required],
-      phoneNo: [[], Validators.required]
+  public initaddTagForm() {
+    this.addTagForm = this.fb.group({
+      tagName: ['', Validators.required],
+      contactListId: [0, Validators.required],
+      contactListType: [0, Validators.required],
+      contactListDetails: this.fb.array([
+       this.fb.group({
+        contactListDetailsId: [0],
+        name: [''],
+        email: ['']
+       })
+      ])
     })
   }
 
-  compareFn(item: any, selected: any) {
-    console.log("ITEM", item);
-    console.log("SELECTED", selected);
-    return item.value === selected.value;
+  get newForm(): FormArray {
+    return this.addTagForm.get('contactListDetails') as FormArray;
   }
 
-  public selectParticipant() {
-    const getParticipant = this.allParticipantsNames;
-    // console.log(getParticipant);
-    let recipient = this.allParticipants.filter((m: any) => {
-       return getParticipant.find((user: any) => {
-          return m.emailAddress === user
-        })
-    });
-    console.log(recipient)
-    // let email = recipient.map((m: any) => {
-    //   return m.emailAddress
-    // })
-    // let phone = recipient.map((m: any) => {
-    //   return m.phoneNumber
-    // })
-    // this.allParticipantsEmail.push(email);
-    // this.allParticipantsPhone.push(phone);
-    this.allParticipantsEmail = recipient;
-    this.allParticipantsPhone  = recipient;
-    // console.log(this.allParticipantsEmail)
-    // console.log(this.allParticipantsPhone)
-    this.addPrticipantForm = this.fb.group({
-      name: [getParticipant, Validators.required],
-      email: [this.allParticipantsEmail, Validators.required],
-      phoneNo: [this.allParticipantsPhone, Validators.required]
+  addUser() {
+    let user = this.fb.group(new Contact());
+		this.newForm.push(user);
+  }
+
+  public userSelected(event: any){
+    console.log(event)
+    var sel_user = this.allParticipants.find((c) =>{
+      return c.participantName == event.value;
     })
+    if(sel_user){
+      console.log(sel_user);
+    }
   }
-
 
   public submit() {
-   
+   const payload = this.addTagForm.value;
+   const operation = this.data.isEditing ? 'addContactList' : 'addContactList';
+   this._helper.startSpinner();
+   console.log(payload);
+   this.sub.add(
+    this._communication[operation](payload).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        if(res.status.isSuccessful) {
+          this._helper.stopSpinner();
+          payload.totalEmail = payload.contactListDetails.length;
+          payload.updatedAt = new Date();
+          this.event.emit({
+            isEditing: this.data?.isEditing,
+            editObject: payload,
+          });
+          this.close.nativeElement.click();
+          this._helper.triggerSucessAlert('Course outline created successfully!!!')
+        } else {
+          this._helper.stopSpinner();
+          this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
+        }
+      },
+      error: (error: any) => {
+        this._helper.stopSpinner();
+        console.log(error);
+      },
+    })
+  );
   }
 
 }
 
+export class Contact {
+	contactListDetailsId = 0;
+	name = ''; 
+	email = '';
+} 
 
