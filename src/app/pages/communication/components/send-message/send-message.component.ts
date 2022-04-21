@@ -17,6 +17,7 @@ import { CommunicationService } from '../../services/communication.service';
 export class SendMessageComponent implements OnInit {
   @Input() type: string = '';
   @Input() announcementType: number = 0;
+  @Input() isPromotional!: boolean;
   public sub: Subscription = new Subscription();
   public current_tab: string = 'all';
   public htmlContent: string = '';
@@ -26,7 +27,9 @@ export class SendMessageComponent implements OnInit {
   public courseId: any;
   public recipient: any;
   public allUsers: any[] = [];
+  public contactLists: any[] = [];
   public isFetchingUsers: boolean = false;
+  public isFetchingContacts: boolean = false;
   public companyId: number = 0;
   public config: AngularEditorConfig = {
     editable: true,
@@ -72,6 +75,7 @@ export class SendMessageComponent implements OnInit {
     this.senderEmail = this.loggedInUser.userName;
     this.initMessageForm();
     this.getAllUsers();
+    this.getAllContactList();
   }
 
   public getAllUsers(): void {
@@ -94,12 +98,32 @@ export class SendMessageComponent implements OnInit {
     );
   }
 
+  public getAllContactList(): void {
+    this.sub.add(
+      this._communication.getAllContactList().subscribe({
+        next: (res: any) => {
+          this._helper.stopSpinner();
+          this.isFetchingContacts = false;
+          this.contactLists = res['contactListResponse'];
+          console.log(res, this.contactLists);
+        },
+        error: (error: ResponseModel<null>) => {
+          this.isFetchingContacts = false;
+          this._helper.stopSpinner();
+          console.log(error);
+        },
+      })
+    );
+  }
+
   public initMessageForm() {
     this.messageForm = this.fb.group({
       courseMessageId: [0],
       subject: [''],
       message: [''],
       courseId: [0],
+      modeOfSending: [0],
+      contactListId: [0],
       senderEmail: [this.senderEmail],
       recipients: [],
       companyId: [this.companyId]
@@ -142,6 +166,7 @@ export class SendMessageComponent implements OnInit {
           return {
             recipientId: m.userId,
             recipientType: createdBy,
+            recipientEmail: m
           }
     })
     recipients.push(user);

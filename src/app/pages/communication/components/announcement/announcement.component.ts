@@ -34,6 +34,7 @@ export class AnnouncementComponent implements OnInit {
   public createdBy = CreatedByType;
   public announcementType: number = 2;
   public isTag: boolean = true;
+  public isPromotional: boolean = true;
 
   constructor(
     public dialog: MatDialog,
@@ -132,14 +133,16 @@ export class AnnouncementComponent implements OnInit {
     this.current_subTab = 'educational';
     this.router.navigate(['/communication/announcement'], { queryParams: { q: 'educational' } });
     this.getAllAnnouncement(MessageType.Sent, AnnouncementType.Educational, this.current_tab)
-    this.announcementType = AnnouncementType.Educational
+    this.announcementType = AnnouncementType.Educational;
+    this.isPromotional = false;
   }
 
   public getPromotional(): void {
     this.current_subTab = 'promotion';
     this.router.navigate(['/communication/announcement'], { queryParams: { q: 'promotional' } });
     this.getAllAnnouncement(MessageType.Sent, AnnouncementType.Promotional, this.current_tab)
-    this.announcementType = AnnouncementType.Promotional
+    this.announcementType = AnnouncementType.Promotional;
+    this.isPromotional = true;
   }
 
   public openDialog(
