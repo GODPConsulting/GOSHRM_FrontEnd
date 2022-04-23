@@ -75,11 +75,13 @@ export class CourseCreationComponent implements OnInit {
       id: this.loggedInId,
       type: this.createdBy
     }
+    this._helper.startSpinner();
     this.isFetchingCourses = true;
     this.sub.add(
       this._course.getAllCourses(payload).subscribe({
         next: (res: any) => {
           this.isFetchingCourses = false;
+          this._helper.stopSpinner();
           // this.paginatedResponse = res?.response;
           this.courses = res['course_CreationSetupTypes'];
 
@@ -88,6 +90,7 @@ export class CourseCreationComponent implements OnInit {
         },
         error: (error: ResponseModel<null>) => {
           this.isFetchingCourses = false;
+          this._helper.stopSpinner();
           console.log(error);
         },
       })

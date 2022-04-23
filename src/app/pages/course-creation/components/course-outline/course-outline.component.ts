@@ -134,13 +134,13 @@ export class CourseOutlineComponent implements OnInit {
             </p>`,
     }).then((result: any) => {
         if (result.value) {
-          const courseIds = SelectedCourseOutlines.map((c: any) => c.outlineId)
-      const payload = {
-        courseIds:courseIds
-      };
+        const courseIds = SelectedCourseOutlines.map((c: any) => c.outlineId)
+        const payload = {
+          courseIds:courseIds
+        };
       if (payload.courseIds.length > 0) {
         this._helper.startSpinner();
-      console.log(payload)
+        console.log(payload)
         this._course.deleteSectionOuline(payload.courseIds, this.outlineType.Outline).subscribe({
           next: (res: any) => {
           if(res.status.isSuccessful) {

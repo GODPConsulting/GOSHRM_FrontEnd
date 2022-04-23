@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth/services/auth.service';
+import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -25,6 +26,8 @@ export class ViewMessageComponent implements OnInit {
   public isFetchingUsers: boolean = false;
   public isFetchingMessage: boolean = false;
   public getPage: any = 'message';
+  public createdBy: number = 0;
+  public loggedInId: number = 0;
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -70,7 +73,14 @@ export class ViewMessageComponent implements OnInit {
       this.courseId = params.courseId;
       this.getPage = params.page
     });
-    // console.log(this.id, this.courseId)
+    if(this.loggedInUser.customerTypeId == 1) {
+      this.createdBy = CreatedByType.provider;
+      this.loggedInId = this.loggedInUser.trainingProviderId
+    }
+    if(this.loggedInUser.customerTypeId == 2) {
+      this.createdBy = CreatedByType.instructor;
+      this.loggedInId = this.loggedInUser.trainingInstructorId
+    }
     this.getMessage();
     this.getAllUsers();
   }
@@ -113,8 +123,12 @@ export class ViewMessageComponent implements OnInit {
   public getAllUsers(): void {
     this.isFetchingUsers = true;
     this._helper.startSpinner();
+    const payload = {
+      requesterId: this.loggedInId,
+      createdByType: this.createdBy
+    }
     this.sub.add(
-      this._auth.getAllUsers().subscribe({
+      this._auth.getAllUsers(payload).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingUsers = false;

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@auth/services/auth.service';
 import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
@@ -22,6 +23,7 @@ export class SendMessageComponent implements OnInit {
   public current_tab: string = 'all';
   public htmlContent: string = '';
   public messageForm!: FormGroup;
+  public announcementForm!: FormGroup;
   public loggedInUser: any;
   public senderEmail: any;
   public courseId: any;
@@ -31,6 +33,8 @@ export class SendMessageComponent implements OnInit {
   public isFetchingUsers: boolean = false;
   public isFetchingContacts: boolean = false;
   public companyId: number = 0;
+  public createdBy: number = 0;
+  public loggedInId: number = 0;
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -66,28 +70,42 @@ export class SendMessageComponent implements OnInit {
     private _communication: CommunicationService,
     private _helper: HelperService,
     private _current: CurrentUserService,
-    private _auth: AuthService
+    private _auth: AuthService,
+    private _route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this.courseId = this._route.snapshot.paramMap.get('id')
     this.loggedInUser = this._current.getUser();
     this.companyId = this.loggedInUser.companyId;
     this.senderEmail = this.loggedInUser.userName;
+    if(this.loggedInUser.customerTypeId == 1) {
+      this.createdBy = CreatedByType.provider;
+      this.loggedInId = this.loggedInUser.trainingProviderId
+    }
+    if(this.loggedInUser.customerTypeId == 2) {
+      this.createdBy = CreatedByType.instructor;
+      this.loggedInId = this.loggedInUser.trainingInstructorId
+    }
     this.initMessageForm();
     this.getAllUsers();
-    this.getAllContactList();
+    // this.getAllContactList();
   }
 
   public getAllUsers(): void {
     this.isFetchingUsers = true;
     this._helper.startSpinner();
+    const payload = {
+      requesterId: this.loggedInId,
+      createdByType: this.createdBy
+    }
     this.sub.add(
-      this._auth.getAllUsers().subscribe({
+      this._auth.getAllUsers(payload).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingUsers = false;
           this.allUsers = res['users'];
-          // console.log(res, this.allUsers);
+          console.log(res, this.allUsers);
         },
         error: (error: ResponseModel<null>) => {
           this.isFetchingUsers = false;
@@ -122,6 +140,19 @@ export class SendMessageComponent implements OnInit {
       subject: [''],
       message: [''],
       courseId: [0],
+      senderEmail: [this.senderEmail],
+      recipients: [],
+      companyId: [this.companyId]
+    })
+  }
+
+  public initAnnouncementForm() {
+    this.messageForm = this.fb.group({
+      courseAnnouncementId: [0],
+      announcementType: [0],
+      subject: [''],
+      message: [''],
+      courseId: [0],
       modeOfSending: [0],
       contactListId: [0],
       senderEmail: [this.senderEmail],
@@ -141,11 +172,16 @@ export class SendMessageComponent implements OnInit {
 
   public submit() {
     this._helper.startSpinner();
-    console.log(this.htmlContent)
-    const payload = this.messageForm.value;
-    payload.courseId = 1;
+    console.log(this.htmlContent);
+    let data;
+    if(this.type == 'message') {
+      data = this.messageForm.value;
+    } else {
+      data = this.announcementForm.value;
+    }
+    const payload = data;
     payload.message = this.htmlContent;
-    // payload.courseId = +this.courseId;
+    payload.courseId = +this.courseId;
     let recipients = [];
     let recipient = this.allUsers.filter((m: any) => {
        return payload.recipients.find((user: any) => {
@@ -172,13 +208,7 @@ export class SendMessageComponent implements OnInit {
     recipients.push(user);
     payload.recipients = recipients[0];
     const operation = this.type === 'message' ? 'sendNewMessage' : 'sendNewAnnouncement';
-    if(this.type == 'announcement') {
-      payload.courseAnnouncementId = payload.courseMessageId;
-      payload.announcementType = this.announcementType
-      delete payload.courseMessageId;
-    }
     console.log(payload)
-    if(this.messageForm.valid) {
       this.sub.add(
         this._communication[operation](payload).subscribe({
           next: (res: any) => {
@@ -198,7 +228,6 @@ export class SendMessageComponent implements OnInit {
           },
         })
       );
-    }
   }
 
 }

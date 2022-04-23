@@ -19,7 +19,9 @@
                     <div class="form_group mb-4">
                         <label for="" class="form-label">Delivery Type</label>
                         <select name="" id="" class="form-select">
-                            <option value=""></option>
+                            <option value="classroom">Classroom</option>
+                            <option value="online">Online</option>
+                            <option value="video">Video</option>
                         </select>
                     </div>
                 </div>
@@ -27,7 +29,9 @@
                     <div class="form_group mb-4">
                         <label for="" class="form-label">Session Type</label>
                         <select name="" id="" class="form-select">
-                            <option value=""></option>
+                            <option value="in-house">In-House</option>
+                            <option value="private">Private</option>
+                            <option value="public">Public</option>
                         </select>
                     </div>
                 </div>
@@ -46,6 +50,8 @@
                   <tr>
                     <th>Course Title</th>
                     <th>No. of Comments</th>
+                    <th>Delivery Type</th>
+                    <th>Session Type</th>
                     <th>Last Comment Date</th>
                     <th></th>
                   </tr>
@@ -59,6 +65,12 @@
                     </td>
                     <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
                         {{ course?.numberOfQA }}
+                    </td>
+                    <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
+                        {{ course?.deliveryType }}
+                    </td>
+                    <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
+                        {{ course?.sessionType }}
                     </td>
                     <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
                       {{ course?.lastQACreated | date }}

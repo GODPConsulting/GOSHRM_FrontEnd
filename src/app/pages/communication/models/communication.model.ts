@@ -13,9 +13,14 @@ export enum MessageType {
   Inbox = 2
 }
 
+export enum ContactList {
+  User = 1,
+  ContacList = 2
+}
+
 export enum AnnouncementType {
-  Promotional =1,
-  Educational =2
+  Educational = 1,
+  Promotional = 2
 }
 
 export interface messageDTO {

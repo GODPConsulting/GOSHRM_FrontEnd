@@ -53,9 +53,13 @@ export class AuthService {
   }
 
   public getAllUsers(
+    payload: any
   ): Observable<ResponseModel<LoginResponseDTO>> {
     const endpoint = '/lms/allUsers';
-    return this.http.makeRequestWithData('get', endpoint, {});
+    const params = new HttpParams()
+    .set('requesterId', payload.requesterId)
+    .set('createdByType', payload.createdByType)
+    return this.http.getRequestWithParams( endpoint, params);
   }
 
   public getAllParticipants(

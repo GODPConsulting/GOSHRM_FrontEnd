@@ -17,10 +17,7 @@ export class CommunicationService {
     payload: any
   ): Observable<ResponseModel<Courses>> {
    const endpoint = '/lms/course/getCourseQuestionWithQA';
-   const params = new HttpParams()
-   .set('id', payload.id)
-   .set('type', payload.type);
-   return this.http.getRequestWithParams(endpoint, params);
+   return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
 
   public getCourseQuestionsAndReply(
@@ -133,9 +130,13 @@ export class CommunicationService {
   }
 
   public getAllContactList(
+    payload?: any
   ): Observable<ResponseModel<Courses>> {
    const endpoint = '/lms/contactlist/getContactList';
-   return this.http.getRequest(endpoint);
+   const params = new HttpParams()
+   .set('contactType', payload.contactType)
+   .set('providerId', payload.providerId)
+   return this.http.getRequestWithParams(endpoint, params);
   }
 
   public getContactById(
@@ -154,13 +155,18 @@ export class CommunicationService {
     return this.http.makeRequestWithData('post', endpoint, {}, announcement);
   }
 
+  public updateContactListDetail(
+    announcement: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/lms/contactlist/updateContactListDetail';
+    return this.http.makeRequestWithData('post', endpoint, {}, announcement);
+  }
+
   public deleteContactList(
-    contactListId: any
+    payload: any
   ): Observable<ResponseModel<any>> {
     const endpoint = '/lms/contactlist/deleteContactList';
-    const params = new HttpParams()
-    .set('contactListId', contactListId);
-    return this.http.makeRequestWithData('post', endpoint, params);
+    return this.http.makeRequestWithData('post', endpoint, {}, payload.contactListIds);
   }
 
   public deleteContactListDetail(
@@ -169,8 +175,7 @@ export class CommunicationService {
     const endpoint = '/lms/contactlist/deleteContactListDetails';
     const params = new HttpParams()
     .set('contactListId', payload.contactListId)
-    .set('contactListDetailId', payload.contactListDetailId);
-    return this.http.makeRequestWithData('post', endpoint, params);
+    return this.http.makeRequestWithData('post', endpoint, params, payload.contactListIds);
   }
 
 }

@@ -10,16 +10,11 @@
         </div>
     </div>
    <div>
-       <form [formGroup]="messageForm">
+       <form [formGroup]="type != 'message' ? announcementForm : messageForm">
            <div class="row p-3">
                <div class="col-12 messages">
                    <div class="d-flex">
                        <label class="message-label pe-3">To: </label>
-                       <!-- <input 
-                           type="email" 
-                           class="message-input"
-                           [value]="['email', 'gmail']"
-                       > -->
                        <ng-select 
                            class="custom message-input"
                            [items]="allUsers"

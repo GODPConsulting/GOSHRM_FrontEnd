@@ -30,7 +30,8 @@ export interface Courses  {
     delivery_Type: string,
     duration: string,
     cost: number,
-    facilitator: [
+    facilitator: string,
+    facilitators: [
       {
         course_FacilitatorId: number,
         courseId: number,
@@ -47,6 +48,7 @@ export interface Courses  {
     ],
     currencyId: number,
     discount_Rate: number,
+    rating: number;
     completence_Assessment: string,
     welcome_message: string,
     congratulation_message: string,

@@ -7,7 +7,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { AuthService } from '@auth/services/auth.service';
@@ -19,18 +19,17 @@ import { InitialSearchDTO, ResponseModel, SearchDTO } from 'app/models/response.
 import { Courses } from 'app/pages/course-creation/models/course-creation.model';
 import { CourseCreationService } from 'app/pages/course-creation/services/course-creation.service';
 import { Subscription } from 'rxjs';
-import { AnnouncementType } from '../../models/communication.model';
 import { CommunicationService } from '../../services/communication.service';
 
 @Component({
-  selector: 'app-contact-list-dialog',
-  templateUrl: './contact-list-dialog.component.html',
-  styleUrls: ['./contact-list-dialog.component.scss']
+  selector: 'app-update-contact-deatil-dialog',
+  templateUrl: './update-contact-deatil-dialog.component.html',
+  styleUrls: ['./update-contact-deatil-dialog.component.scss']
 })
-export class ContactListDialogComponent implements OnInit {
+export class UpdateContactDeatilDialogComponent implements OnInit {
   @ViewChild('close') close!: ElementRef;
   public sub: Subscription = new Subscription();
-  public addTagForm!: FormGroup;
+  public updateContactForm!: FormGroup;
   public isLoading: boolean = false;
   public allParticipants: any[] = [];
   public courses: Courses[] = [];
@@ -48,7 +47,7 @@ export class ContactListDialogComponent implements OnInit {
   }> = new EventEmitter<{ editObject?: any; isEditing: boolean }>();
 
   constructor(
-    public dialogRef: MatDialogRef<ContactListDialogComponent>,
+    public dialogRef: MatDialogRef<UpdateContactDeatilDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<any>,
     public fb: FormBuilder,
     private _helper: HelperService,
@@ -68,9 +67,7 @@ export class ContactListDialogComponent implements OnInit {
       this.createdBy = CreatedByType.instructor;
       this.loggedInId = this.loggedInUser.trainingInstructorId
     }
-      this.initaddTagForm();
-      this.getParticipants();
-      this.getAllCourses(true);
+      this.initUpdateContact();
   }
 
   public getAllCourses(
@@ -133,29 +130,12 @@ export class ContactListDialogComponent implements OnInit {
     );
   }
 
-  public initaddTagForm() {
-    this.addTagForm = this.fb.group({
-      tagName: [this.data?.editObject?.tagName ? this.data?.editObject?.tagName : 0, Validators.required],
-      courseId: [this.data?.editObject?.courseId? this.data?.editObject?.courseId : 0, Validators.required],
-      contactListId: [this.data?.editObject?.contactListId ? this.data?.editObject?.contactListId : 0, Validators.required],
-      contactListType: [AnnouncementType.Promotional, Validators.required],
-      contactListDetails: this.fb.array([
-       this.fb.group({
-        contactListDetailsId: [0],
-        name: [''],
-        email: ['']
-       })
-      ])
+  public initUpdateContact() {
+    this.updateContactForm = this.fb.group({
+      contactListDetailsId: [+this.data?.editObject?.contactListdetailsId],
+      name: [this.data?.editObject?.name],
+      email: [this.data?.editObject?.email]
     })
-  }
-
-  get newForm(): FormArray {
-    return this.addTagForm.get('contactListDetails') as FormArray;
-  }
-
-  addUser() {
-    let user = this.fb.group(new Contact());
-		this.newForm.push(user);
   }
 
   public userSelected(event: any){
@@ -169,11 +149,11 @@ export class ContactListDialogComponent implements OnInit {
   }
 
   public submit() {
-   const payload = this.addTagForm.value;
+   const payload = this.updateContactForm.value;
    this._helper.startSpinner();
    console.log(payload);
    this.sub.add(
-    this._communication.addContactList(payload).subscribe({
+    this._communication.updateContactListDetail(payload).subscribe({
       next: (res: any) => {
         console.log(res);
         if(res.status.isSuccessful) {
@@ -208,4 +188,5 @@ export class Contact {
 	name = ''; 
 	email = '';
 } 
+
 

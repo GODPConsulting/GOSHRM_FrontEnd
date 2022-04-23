@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AnnouncementComponent } from './components/announcement/announcement.component';
 import { CommunicationComponent } from './components/communication/communication.component';
+import { ContactListComponent } from './components/contact-list/contact-list.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { QaComponent } from './components/qa/qa.component';
 import { ViewMessageComponent } from './components/view-message/view-message.component';
@@ -26,8 +27,12 @@ const routes: Routes = [
     component: ViewMessageComponent,
   },
   { 
-    path: 'announcement',
+    path: 'announcement/:id',
     component: AnnouncementComponent,
+  },
+  { 
+    path: 'contact-list',
+    component: ContactListComponent,
   },
 ];
 

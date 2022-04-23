@@ -6,9 +6,24 @@
 </div>
   <mat-dialog-content class="mat-typography">
     <div>
-        <form [formGroup]="addTagForm" *ngIf="!data.isEditing">
+        <form [formGroup]="addTagForm">
             <div class="row">
-                <div class="col-12">
+                <div class="col-md-6">
+                    <div class="form_group mb-5">
+                      <label for="" class="form-label"
+                        >Course
+                      </label>
+                      <ng-select 
+                        [items]="courses" 
+                        bindLabel="training_Name" 
+                        bindValue="courseId" 
+                        [multiple]="false"
+                        formControlName="courseId"
+                      >
+                      </ng-select>
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
                         >Tag
@@ -59,26 +74,6 @@
                 </div>
             </div>
         </form>
-        <form *ngIf="data.isEditing">
-          <div class="row">
-              <div class="col-12">
-                <div class="form_group mb-5">
-                  <label for="" class="form-label"
-                    >Full Name
-                  </label>
-                  <input type="text" class="form-control">
-                </div>
-            </div>
-              <div class="col-12">
-                  <div class="form_group mb-5">
-                    <label for="" class="form-label"
-                      >Email Address
-                    </label>
-                    <input type="text" class="form-control">
-                  </div>
-              </div>
-          </div>
-      </form>
     </div>
    
   </mat-dialog-content>
@@ -91,7 +86,7 @@
       No, cancel
     </button>
     <button
-      class="btn btn-outline-green btn-md px-4"
+      class="btn btn-outline-green btn-md px-5 me-3"
     >
         <app-loading-button
           [text]="'Add more emails'"

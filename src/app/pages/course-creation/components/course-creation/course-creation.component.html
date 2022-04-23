@@ -39,6 +39,7 @@
                     <th>Rating</th>
                     <th>Status</th>
                     <th>Date Created</th>
+                    <th>Action</th>
                     <th></th>
                   </tr>
                 </thead></ng-container
@@ -67,7 +68,7 @@
                         </span>
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
-                      {{ course?.training_Name }}
+                      {{ course?.facilitator }}
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
                       {{ course?.training_Name }}
@@ -79,20 +80,29 @@
                       {{ course?.delivery_Type }}
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
-                      <ng-rating-bar
+                      {{ course?.rating + '/5' }}
+                      <!-- <ng-rating-bar
                         [value]="4"
                         [ratingCount]="5"
                         [disabled]="true"
                         [styles]="{ margin: '0px', fontSize: '16px'}"
                         colorActive="#F88F09" 
                         colorDefault="#cecece"
-                      ></ng-rating-bar>
+                      ></ng-rating-bar> -->
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
                       {{ course?.decisionType }}
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
                       {{ course?.createdAt | date }}
+                    </td>
+                    <td>
+                      <span class="click pe-4" [routerLink]="['/communication/qa', course?.courseId]">
+                        <img width="20" src="assets/images/question.svg" alt="">
+                      </span>
+                      <span class="click" [routerLink]="['/communication/announcement', course?.courseId]">
+                        <img width="20" src="assets/images/megaphone.svg" alt="">
+                      </span>
                     </td>
                     <td>
                       <div class="dropdown">

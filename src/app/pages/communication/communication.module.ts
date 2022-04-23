@@ -13,6 +13,8 @@ import { CommunicationComponent } from './components/communication/communication
 import { ViewMessageComponent } from './components/view-message/view-message.component';
 import { SendMessageComponent } from './components/send-message/send-message.component';
 import { ContactListDialogComponent } from './dialogs/contact-list-dialog/contact-list-dialog.component';
+import { ContactListComponent } from './components/contact-list/contact-list.component';
+import { UpdateContactDeatilDialogComponent } from './dialogs/update-contact-deatil-dialog/update-contact-deatil-dialog.component';
 
 
 
@@ -25,7 +27,9 @@ import { ContactListDialogComponent } from './dialogs/contact-list-dialog/contac
     CommunicationComponent,
     ViewMessageComponent,
     SendMessageComponent,
-    ContactListDialogComponent
+    ContactListDialogComponent,
+    ContactListComponent,
+    UpdateContactDeatilDialogComponent
   ],
   imports: [
     CommonModule,
