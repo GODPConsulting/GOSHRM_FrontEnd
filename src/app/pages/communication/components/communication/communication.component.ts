@@ -30,6 +30,8 @@ export class CommunicationComponent implements OnInit {
   public createdBy!: number;
   public isInitialRequest: boolean = true;
   public searchQuery: SearchDTO = { ...InitialSearchDTO, search: '' };
+  public deliveryType: string = '';
+  public sessionType: string = '';
   
   constructor(
     public dialog: MatDialog,

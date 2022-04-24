@@ -148,44 +148,8 @@ export class ContactListComponent implements OnInit {
     console.log(this.selectedContacts)
   }
 
-  public deleteContact(contactListId: any): void {
-    console.log(contactListId)
-    let contactListIds = [];
-    if(this.isTag) {
-      contactListIds = this.selectedContacts.map((c: any) => c.contactListId)
-    } else {
-      contactListIds = this.selectedContacts.map((c: any) => c.contactListdetailsId)
-    }
-    const payload = {
-      contactListId : contactListId,
-      contactListIds: contactListIds
-    };
-    if (payload.contactListIds.length > 0) {
-    this._helper.startSpinner();
-    const operation = this.isTag ? 'deleteContactList' : 'deleteContactListDetail'
-     console.log(payload)
-      this._communication[operation](payload).subscribe({
-        next: (res: any) => {
-         if(res.status.isSuccessful) {
-          this._helper.stopSpinner();
-          console.log(res)
-          this._helper.triggerSucessAlert('Course created successfully!!!')
-          // this.get(true);
-         } else {
-           this._helper.stopSpinner();
-           this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
-         }
-        },
-        error: (error: HttpErrorResponse) => {
-          this._helper.stopSpinner();
-          console.log(error);
-        },
-      });
-    }
-  }
 
   public deleteContacts(SelectedContacts?: any): void {
-    // console.log(SelectedContacts, this.selectedContacts);
     SwalConfig.fire({
       html:`<p class="alert alert-danger"> 
                 <span class="pe-3">
