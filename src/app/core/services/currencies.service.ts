@@ -14,7 +14,7 @@ export class CurrenciesService {
   public getAllCurrencies(
   ): Observable<ResponseModel<Currency>> {
    const endpoint = '/common/currencies';
-   return this.http.getRequest(endpoint);
+   return this.http.getFromGate(endpoint);
   }
 
 }

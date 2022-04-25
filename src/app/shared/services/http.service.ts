@@ -9,6 +9,13 @@ import { Observable } from 'rxjs';
 export class HttpService {
   constructor(private http: HttpClient) {}
 
+  getFromGate<T>(
+    endpoint: string,
+    baseUrl: string = environment.gateway_url
+  ): Observable<T> | any {
+    return this.http.get(baseUrl + endpoint);
+  }
+
   getRequest<T>(
     endpoint: string,
     baseUrl: string = environment.api_url

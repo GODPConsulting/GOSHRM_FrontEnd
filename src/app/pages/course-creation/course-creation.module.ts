@@ -22,6 +22,7 @@ import { CourseSectionComponent } from './components/course-section/course-secti
 import { CourseSectionDialogComponent } from './dialogs/course-section-dialog/course-section-dialog.component';
 import { SceduleClassDialogComponent } from './dialogs/scedule-class-dialog/scedule-class-dialog.component';
 import { AddParticipantComponent } from './dialogs/add-participant/add-participant.component';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { AddParticipantComponent } from './dialogs/add-participant/add-participa
     SharedModule,
     FormsModule,
     NgRatingBarModule,
-    AngularEditorModule
+    AngularEditorModule,
+    TableModule
   ],
   providers: [
     DatePipe

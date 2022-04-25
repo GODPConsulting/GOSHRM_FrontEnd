@@ -40,6 +40,7 @@ export class ContactListComponent implements OnInit {
   public isTag: boolean = true;
   public isPromotional: boolean = true;
   public isCheck: boolean = false;
+  public viewHeight: any = '500px';
 
   constructor(
     public dialog: MatDialog,

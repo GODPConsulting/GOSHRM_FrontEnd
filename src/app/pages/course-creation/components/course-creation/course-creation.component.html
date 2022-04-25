@@ -20,43 +20,47 @@
             <p class="my-auto p-5 text-center">You do not have any course available, try create one</p>
         </div>
         <div class="" *ngIf="courses?.length != 0">
-            <table class="table caption-top text-nowrap" datatable>
-              <ng-container>
-                <thead class="bg-white">
-                  <tr>
-                    <th>
-                      <input 
-                        type="checkbox" 
-                        name="" 
-                        [(ngModel)]="isCheck"
-                        (change)="checkUncheckAll()"
-                      >
-                    </th>
-                    <th>Facilitator’s Name</th>
-                    <th>Training Tiltle</th>
-                    <th>Schedule Type</th>
-                    <th>Delivery Type</th>
-                    <th>Rating</th>
-                    <th>Status</th>
-                    <th>Date Created</th>
-                    <th>Action</th>
-                    <th></th>
+            <p-table
+                #dt
+                [value]="courses"
+                dataKey="contactListDetailsId"
+                [(selection)]="selectedCourses"
+                [paginator]="false"
+                [rows]="10"
+                [responsive]="true"
+                [scrollable]="true"
+                [scrollHeight]="viewHeight"
+                class="" 
+            >
+              <ng-template pTemplate="header">
+                  <tr class="thead">
+                      <th>
+                        <span>
+                            <p-tableHeaderCheckbox>
+                            </p-tableHeaderCheckbox>
+                        </span>
+                      </th>
+                      <th [pSortableColumn]="'facilitator'">Facilitator’s Name</th>
+                      <th [pSortableColumn]="'training_Name'">Training Tiltle</th>
+                      <th [pSortableColumn]="'scheduleType'">Schedule Type</th>
+                      <th [pSortableColumn]="'delivery_Type'">Delivery Type</th>
+                      <th [pSortableColumn]="'rating'">Rating</th>
+                      <th [pSortableColumn]="'decisionType'">Status</th>
+                      <th [pSortableColumn]="'createdAt'">Date Created</th>
+                      <th>Action</th>
+                      <th></th>         
                   </tr>
-                </thead></ng-container
-              >
-              <tbody>
-                <ng-container>
-                  <tr class="text-capitalize" *ngFor="let course of courses; index as i">
-                    <td class="d-flex">
-                      <input 
-                        type="checkbox" 
-                        class="ps-4"
-                        name="" 
-                        id="checkbox{{i}}"
-                        [(ngModel)]="course.isSelected"
-                        (change)="selectDeselectCourses(course)"
-                      >
-                      <span class="img-wrapper">
+              </ng-template>
+              <ng-template pTemplate="body" let-course let-i="rowIndex">
+                <tr class="tbody text-capitalize" [pSelectableRow]="course">
+                    <td 
+                    >
+                        <span>
+                            <p-tableCheckbox
+                                [value]="course"
+                            ></p-tableCheckbox>
+                        </span>
+                        <span class="img-wrapper ps-3">
                           <img 
                             [src]="course?.coursePhotoUrl ? course?.coursePhotoUrl : '' " 
                             alt=""
@@ -119,18 +123,18 @@
                             >Competence Assessment</a></li>
                           <li><a class="dropdown-item" [routerLink]="['/courses/learning-assessment', course?.courseId]"
                             >Learning Assessment </a></li>
-                          <li (click)="openDialog( {isEditing: true, editObject: course } )"><a class="dropdown-item"
+                          <li><a class="dropdown-item" href="#">Submit</a></li>
+                          <li disabled (click)="openDialog( {isEditing: true, editObject: course } )"><a class="dropdown-item"
                             >Participants</a></li>
                           <li (click)="openScheduleClassDialog({isEditing: false, course: course})"><a class="dropdown-item"
                             >Schedule Class</a></li>
-                          <li><a class="dropdown-item" href="#">Submit</a></li>
                         </ul>
                       </div>
                     </td>
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
+                </tr>
+              </ng-template>
+            </p-table>
+           
         </div>
         <!-- <div class="setup-card bg-white p-5 my-4" *ngFor="let course of courses">
             <div class="d-flex justify-content-between">

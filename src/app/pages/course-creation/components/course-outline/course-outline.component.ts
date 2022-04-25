@@ -28,6 +28,7 @@ export class CourseOutlineComponent implements OnInit {
   public outlineId: any;
   public outlineType = OutlineType;
   public isCheck: boolean = false;
+  public viewHeight: any = '500px';
 
   constructor(
     public dialog: MatDialog,

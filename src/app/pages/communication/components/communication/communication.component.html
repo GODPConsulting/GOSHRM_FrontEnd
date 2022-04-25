@@ -56,46 +56,53 @@
             <p class="my-auto p-5 text-center">You do not have any course available, try create one</p>
         </div>
         <div class="" *ngIf="courses?.length != 0">
-            <table class="table caption-top text-nowrap" datatable>
-              <ng-container>
-                <thead class="bg-white">
-                  <tr>
-                    <th>Course Title</th>
-                    <th>No. of Comments</th>
-                    <th>Delivery Type</th>
-                    <th>Session Type</th>
-                    <th>Last Comment Date</th>
-                    <th></th>
+            <p-table
+                #dt
+                [value]="courses"
+                dataKey="courseId"
+                [(selection)]="selectedCourses"
+                [paginator]="false"
+                [rows]="10"
+                [responsive]="true"
+                [scrollable]="true"
+                [scrollHeight]="viewHeight"
+                class="" 
+            >
+              <ng-template pTemplate="header">
+                  <tr class="thead">
+                        <th [pSortableColumn]="'courseName'">Course Title</th>
+                        <th [pSortableColumn]="'numberOfQA'">No. of Comments</th>
+                        <th [pSortableColumn]="'deliveryType'">Delivery Type</th>
+                        <th [pSortableColumn]="'sessionType'">Session Type</th>
+                        <th [pSortableColumn]="'lastQACreated'">Last Comment Date</th>
+                        <th></th>      
                   </tr>
-                </thead></ng-container
-              >
-              <tbody>
-                <ng-container>
-                  <tr class="text-capitalize" *ngFor="let course of courses; index as i">
+              </ng-template>
+              <ng-template pTemplate="body" let-course let-i="rowIndex">
+                <tr class="tbody text-capitalize" [pSelectableRow]="course">
                     <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
-                      {{ course?.courseName }}
-                    </td>
-                    <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
-                        {{ course?.numberOfQA }}
-                    </td>
-                    <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
-                        {{ course?.deliveryType }}
-                    </td>
-                    <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
-                        {{ course?.sessionType }}
-                    </td>
-                    <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
-                      {{ course?.lastQACreated | date }}
-                    </td>
-                    <td>
-                      <span class="text-orange">
-                          View Q & A
-                      </span>
-                    </td>
-                  </tr>
-                </ng-container>
-              </tbody>
-            </table>
+                        {{ course?.courseName }}
+                      </td>
+                      <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
+                          {{ course?.numberOfQA }}
+                      </td>
+                      <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
+                          {{ course?.deliveryType }}
+                      </td>
+                      <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
+                          {{ course?.sessionType }}
+                      </td>
+                      <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
+                        {{ course?.lastQACreated | date }}
+                      </td>
+                      <td class="click" [routerLink]="['/communication/qa', course?.courseId]">
+                        <span class="text-orange">
+                            View Q & A
+                        </span>
+                      </td>
+                </tr>
+              </ng-template>
+            </p-table>
         </div>
     </div>
 </div>

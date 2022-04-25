@@ -6,44 +6,68 @@
     padding: 3rem;
     color: $black-100;
     .setup_content {
-       .setup-card {
-            .card-left {
+        min-height: 50vh;
+    //    .setup-card {
+    //         .card-left {
                 .img-wrapper {
-                    width: 10rem;
-                    height: 10rem;
+                    width: 5rem;
+                    height: 5rem;
                     border-radius: 50%;
                     background: #C4C4C4;
+                    position: relative;
+                    .upload-icon {
+                        position: absolute;
+                        bottom: .3rem;
+                        right: .3rem;
+                        height: 2rem;
+                        cursor: pointer;
+                        .fa {
+                            color: $orange-400;
+                            font-size: 1.3rem !important;
+                        }
+                        .upload-file {
+                            position: absolute;
+                            height: 100%;
+                            left: .05rem;
+                            opacity: 0;
+                        }
+                    }
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                    }
                 }
-                .ratings i {
-                    color: #cecece;
-                    font-size: 1rem
-                }
+    //             .ratings i {
+    //                 color: #cecece;
+    //                 font-size: 1rem
+    //             }
                 
-                .rating-color {
-                    color: $orange-400 !important
-                }
+    //             .rating-color {
+    //                 color: $orange-400 !important
+    //             }
                 
-                .review-count {
-                    font-weight: 400;
-                    margin-bottom: 2px;
-                    font-size: 24px !important
-                }
+    //             .review-count {
+    //                 font-weight: 400;
+    //                 margin-bottom: 2px;
+    //                 font-size: 24px !important
+    //             }
                 
-                .small-ratings i {
-                    color: #cecece
-                }
+    //             .small-ratings i {
+    //                 color: #cecece
+    //             }
                 
-                .review-stat {
-                    font-weight: 300;
-                    font-size: 18px;
-                    margin-bottom: 2px
-                }
-            }
-            .card-right {
-                font-size: 1.5rem;
-                line-height: 25px;
-            }
-       }
+    //             .review-stat {
+    //                 font-weight: 300;
+    //                 font-size: 18px;
+    //                 margin-bottom: 2px
+    //             }
+    //         }
+    //         .card-right {
+    //             font-size: 1.5rem;
+    //             line-height: 25px;
+    //         }
+    //    }
     }
     .font-bold {
         font-weight: 600;
@@ -56,7 +80,7 @@
         .dropdown-item {
           padding: 1rem 1.5rem;
           font-size: 1.2rem;
-          &:hover {
+          &:hover, &:focus {
             background: #FEF1E1;
           }
         }

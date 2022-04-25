@@ -15,6 +15,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { OfflineComponent } from './offline/offline.component';
 import { TraningProviderComponent } from './pages/traning-provider.component';
 import { NgxSpinnerModule } from "ngx-spinner";
+import {TableModule} from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     CoreModule,
     MatSnackBarModule,
     NgxSpinnerModule,
+    TableModule,
     JwtModule.forRoot({
       config: {},
     }),

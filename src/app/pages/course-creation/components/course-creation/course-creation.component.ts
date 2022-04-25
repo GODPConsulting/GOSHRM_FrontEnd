@@ -35,6 +35,7 @@ export class CourseCreationComponent implements OnInit {
   public isInitialRequest: boolean = true;
   public searchQuery: SearchDTO = { ...InitialSearchDTO, search: '' };
   public isCheck: boolean = false;
+  public viewHeight: any = '500px';
   
   constructor(
     public dialog: MatDialog,

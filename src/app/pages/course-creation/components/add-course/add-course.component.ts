@@ -200,7 +200,6 @@ export class AddCourseComponent implements OnInit {
       congratulation_message: [this.course?.congratulation_message ? this.course?.congratulation_message : ''],
       addCover_Image: [this.course?.addCover_Image ? this.course?.addCover_Image : ''],
       other_Comments: [this.course?.other_Comments ? this.course?.other_Comments : ''],
-      scheduleType: [this.course?.scheduleType ? this.course?.scheduleType : '']
     })
   }
 

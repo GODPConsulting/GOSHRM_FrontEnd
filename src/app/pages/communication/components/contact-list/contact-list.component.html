@@ -67,44 +67,45 @@
 
                     <section class="broadcast tab-content mt-4" id="pills-tabContent">
                         <div>
-                            <table class="table caption-top text-nowrap" datatable *ngIf="isTag">
-                                <ng-container>
-                                    <thead>
-                                      <tr>
-                                        <th>
-                                            <span class="pe-3">
-                                                <input 
-                                                    type="checkbox" 
-                                                    name="" 
-                                                    [(ngModel)]="isCheck"
-                                                    (change)="checkUncheckAll()"
-                                                >
-                                            </span>
-                                            <span>Last Update</span>
-                                        </th>
-                                        <th>Tag Name</th>
-                                        <th>No of Emails</th>
-                                        <th></th>
-                                      </tr>
-                                    </thead></ng-container
-                                  >
-                                <tbody>
-                                    <ng-container>
-                                        <tr class="text-capitalize" *ngFor="let tag of contactLists; index as i">
-                                            <td 
-                                                class="click" 
-                                            >
-                                                <span class="pe-3">
-                                                    <input 
-                                                    type="checkbox" 
-                                                    class="ps-4"
-                                                    name="" 
-                                                    id="checkbox{{i}}"
-                                                    [(ngModel)]="tag.isSelected"
-                                                    (change)="selectDeselectCourses(tag)"
-                                                >
+                            <p-table
+                                    #dt
+                                    [value]="contactLists"
+                                    dataKey="contactListId"
+                                    [(selection)]="selectedContacts"
+                                    [paginator]="false"
+                                    [rows]="10"
+                                    [responsive]="true"
+                                    [scrollable]="true"
+                                    [scrollHeight]="viewHeight"
+                                    class="" 
+                                    *ngIf="isTag"
+                                >
+                                      <ng-template pTemplate="header">
+                                          <tr class="thead">
+                                              <th [pSortableColumn]="'updateAt'">
+                                                <span>
+                                                    <p-tableHeaderCheckbox>
+                                                    </p-tableHeaderCheckbox>
                                                 </span>
-                                                <span (click)="getContactListById(tag)">{{ tag?.updatedAt | date }}</span>
+                                                <span class="ps-3">Last Update</span>
+                                              </th>
+                                              <th [pSortableColumn]="'tagName'">Tag Name</th>
+                                              <th [pSortableColumn]="'totalEmail'">No. of Emails</th>
+                                              <th></th>         
+                                          </tr>
+                                      </ng-template>
+                                      <ng-template pTemplate="body" let-tag let-i="rowIndex">
+                                        <tr class="tbody text-capitalize" [pSelectableRow]="tag">
+                                            <td 
+                                                class="click"
+                                                (click)="getContactListById(tag)"
+                                            >
+                                                <span>
+                                                    <p-tableCheckbox
+                                                        [value]="tag"
+                                                    ></p-tableCheckbox>
+                                                </span>
+                                                <span class="ps-3">{{ tag?.updatedAt | date }}</span>
                                             </td>
                                             <td 
                                                 class="click" 
@@ -131,46 +132,46 @@
                                                 </span>
                                             </td>
                                         </tr>
-                                    </ng-container>
-                                </tbody>
-                            </table>
-                            <table class="table caption-top text-nowrap" datatable *ngIf="!isTag">
-                                <ng-container>
-                                    <thead>
-                                      <tr>
-                                        <th>
-                                            <span class="pe-3">
-                                                <input 
-                                                    type="checkbox" 
-                                                    name="" 
-                                                    [(ngModel)]="isCheck"
-                                                    (change)="checkUncheckAll()"
-                                                >
-                                            </span>
-                                            <span>Last Update</span>
-                                        </th>
-                                        <th>Full Name</th>
-                                        <th>Email Address</th>
-                                        <th></th>
-                                      </tr>
-                                    </thead></ng-container
-                                  >
-                                <tbody>
-                                    <ng-container>
-                                        <tr class="text-capitalize" *ngFor="let contact of contactDetail; index as i">
+                                      </ng-template>
+                            </p-table>
+
+                            <p-table
+                                    #dt
+                                    [value]="contactDetail"
+                                    dataKey="contactListDetailsId"
+                                    [(selection)]="selectedContacts"
+                                    [paginator]="false"
+                                    [rows]="10"
+                                    [responsive]="true"
+                                    [scrollable]="true"
+                                    [scrollHeight]="viewHeight"
+                                    class="" 
+                                    *ngIf="!isTag"
+                                >
+                                      <ng-template pTemplate="header">
+                                          <tr class="thead">
+                                              <th [pSortableColumn]="'updateAt'">
+                                                <span>
+                                                    <p-tableHeaderCheckbox>
+                                                    </p-tableHeaderCheckbox>
+                                                </span>
+                                                <span class="ps-3">Last Update</span>
+                                              </th>
+                                              <th [pSortableColumn]="'tagName'">Full Name</th>
+                                              <th [pSortableColumn]="'totalEmail'">Email Address</th>
+                                              <th></th>         
+                                          </tr>
+                                      </ng-template>
+                                      <ng-template pTemplate="body" let-contact let-i="rowIndex">
+                                        <tr class="tbody text-capitalize" [pSelectableRow]="contact">
                                             <td 
                                             >
-                                            <span class="pe-3">
-                                                <input 
-                                                    type="checkbox" 
-                                                    class="ps-4"
-                                                    name="" 
-                                                    id="checkbox{{i}}"
-                                                    [(ngModel)]="contact.isSelected"
-                                                    (change)="selectDeselectCourses(contact)"
-                                                >
-                                            </span>
-                                                <span>{{ contact?.updatedAt | date }}</span>
+                                                <span>
+                                                    <p-tableCheckbox
+                                                        [value]="contact"
+                                                    ></p-tableCheckbox>
+                                                </span>
+                                                <span class="ps-3">{{ contact?.updatedAt | date }}</span>
                                             </td>
                                             <td 
                                             >
@@ -193,9 +194,8 @@
                                                 </span>
                                             </td>
                                         </tr>
-                                    </ng-container>
-                                </tbody>
-                            </table>
+                                      </ng-template>
+                            </p-table>
                         </div>
                     </section>
                 </div>

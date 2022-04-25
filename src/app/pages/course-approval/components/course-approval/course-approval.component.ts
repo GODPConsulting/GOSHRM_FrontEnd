@@ -29,6 +29,7 @@ export class CourseApprovalComponent implements OnInit {
   public isCheck: boolean = false;
   public isInitialRequest: boolean = true;
   public searchQuery: SearchDTO = { ...InitialSearchDTO, search: '' };
+  public viewHeight: any = '500px';
 
   constructor(
     public dialog: MatDialog,

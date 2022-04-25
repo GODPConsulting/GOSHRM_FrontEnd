@@ -24,6 +24,7 @@ export class CommunicationComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public questionCourses: any[] = [];
   public courses: any[] = [];
+  public selectedCourses: any[] = [];
   public isFetchingCourses:boolean = false;
   public loggedInUser: any;
   public loggedInId!: number;
@@ -32,6 +33,7 @@ export class CommunicationComponent implements OnInit {
   public searchQuery: SearchDTO = { ...InitialSearchDTO, search: '' };
   public deliveryType: string = '';
   public sessionType: string = '';
+  public viewHeight: any = '500px';
   
   constructor(
     public dialog: MatDialog,

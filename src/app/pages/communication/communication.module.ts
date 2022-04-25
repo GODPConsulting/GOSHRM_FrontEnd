@@ -15,6 +15,7 @@ import { SendMessageComponent } from './components/send-message/send-message.com
 import { ContactListDialogComponent } from './dialogs/contact-list-dialog/contact-list-dialog.component';
 import { ContactListComponent } from './components/contact-list/contact-list.component';
 import { UpdateContactDeatilDialogComponent } from './dialogs/update-contact-deatil-dialog/update-contact-deatil-dialog.component';
+import { TableModule } from 'primeng/table';
 
 
 
@@ -39,6 +40,7 @@ import { UpdateContactDeatilDialogComponent } from './dialogs/update-contact-dea
     ReactiveFormsModule,
     FormsModule,
     MatDialogModule,
+    TableModule
   ]
 })
 export class CommunicationModule { }
