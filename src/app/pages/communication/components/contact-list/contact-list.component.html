@@ -72,7 +72,7 @@
                                     [value]="contactLists"
                                     dataKey="contactListId"
                                     [(selection)]="selectedContacts"
-                                    [paginator]="false"
+                                    [paginator]="true"
                                     [rows]="10"
                                     [responsive]="true"
                                     [scrollable]="true"
@@ -98,14 +98,13 @@
                                         <tr class="tbody text-capitalize" [pSelectableRow]="tag">
                                             <td 
                                                 class="click"
-                                                (click)="getContactListById(tag)"
                                             >
                                                 <span>
                                                     <p-tableCheckbox
                                                         [value]="tag"
                                                     ></p-tableCheckbox>
                                                 </span>
-                                                <span class="ps-3">{{ tag?.updatedAt | date }}</span>
+                                                <span class="ps-3"  (click)="getContactListById(tag)">{{ tag?.updatedAt | date }}</span>
                                             </td>
                                             <td 
                                                 class="click" 
@@ -140,7 +139,7 @@
                                     [value]="contactDetail"
                                     dataKey="contactListDetailsId"
                                     [(selection)]="selectedContacts"
-                                    [paginator]="false"
+                                    [paginator]="true"
                                     [rows]="10"
                                     [responsive]="true"
                                     [scrollable]="true"

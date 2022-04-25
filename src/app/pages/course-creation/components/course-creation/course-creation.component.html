@@ -23,14 +23,13 @@
             <p-table
                 #dt
                 [value]="courses"
-                dataKey="contactListDetailsId"
+                dataKey="courseId"
                 [(selection)]="selectedCourses"
-                [paginator]="false"
+                [paginator]="true"
                 [rows]="10"
                 [responsive]="true"
                 [scrollable]="true"
                 [scrollHeight]="viewHeight"
-                class="" 
             >
               <ng-template pTemplate="header">
                   <tr class="thead">
