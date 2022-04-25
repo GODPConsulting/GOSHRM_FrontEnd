@@ -10,22 +10,37 @@
         </div>
     </div>
    <div>
+        <div class="col-12 messages">
+            <div class="d-flex">
+                <label class="message-label pe-3">To: </label>
+                <ng-select 
+                    class="custom message-input"
+                    [items]="allUsers"
+                    bindLabel="name" 
+                    [(ngModel)]="recipient"
+                    [multiple]="true"
+                    [addTag]="newRecipient"
+                >
+                </ng-select>
+            </div>
+        </div>
        <form [formGroup]="type != 'message' ? announcementForm : messageForm">
            <div class="row p-3">
-               <div class="col-12 messages">
+               <!-- <div class="col-12 messages">
                    <div class="d-flex">
                        <label class="message-label pe-3">To: </label>
                        <ng-select 
                            class="custom message-input"
                            [items]="allUsers"
                            bindLabel="name" 
-                           bindValue="userId"
+                           
+                           [(ngModel)]="recipients"
                            [multiple]="true"
-                           formControlName="recipients"
+                           [addTag]="newRecipient"
                        >
                        </ng-select>
                    </div>
-               </div>
+               </div> -->
                <div class="col-12 messages">
                    <div class="d-flex">
                        <label class="message-label pe-3">Subject: </label>

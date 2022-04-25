@@ -57,9 +57,6 @@ export class AnnouncementComponent implements OnInit {
     this.isFetchingMessages = true;
     this._helper.startSpinner();
     const payload = {
-      userType: userType,
-      announcementType: announcementType,
-      messageType: messageType,
       senderEmail: this.loggedInUser.userName
     };
     this.sub.add(
@@ -81,7 +78,7 @@ export class AnnouncementComponent implements OnInit {
 
   public getEducational(): void {
     this.current_subTab = 'educational';
-    this.router.navigate(['/communication/announcement'], { queryParams: { q: 'educational' } });
+    this.router.navigate([`/communication/announcement/${this.courseId}`], { queryParams: { q: 'educational' } });
     this.getAllAnnouncement(MessageType.Sent, AnnouncementType.Educational, this.current_tab)
     this.announcementType = AnnouncementType.Educational;
     this.isPromotional = false;
@@ -89,7 +86,7 @@ export class AnnouncementComponent implements OnInit {
 
   public getPromotional(): void {
     this.current_subTab = 'promotion';
-    this.router.navigate(['/communication/announcement'], { queryParams: { q: 'promotional' } });
+    this.router.navigate([`/communication/announcement/${this.courseId}`], { queryParams: { q: 'promotional' } });
     this.getAllAnnouncement(MessageType.Sent, AnnouncementType.Promotional, this.current_tab)
     this.announcementType = AnnouncementType.Promotional;
     this.isPromotional = true;

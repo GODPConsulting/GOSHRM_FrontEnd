@@ -66,16 +66,20 @@ export class CommunicationComponent implements OnInit {
         pageSize: pageEvent?.pageSize,
       };
     }
+    this._helper.startSpinner();
     initial ? (this.isInitialRequest = true) : (this.isInitialRequest = false);
     const payload = {
       searchParams: this.searchQuery.search,
       id: this.loggedInId,
-      type: this.createdBy
+      type: this.createdBy,
+      dilveryType: this.deliveryType,
+      scheduleType: this.sessionType,
     }
     this.isFetchingCourses = true;
     this.sub.add(
       this._communication.getAllCourses(payload).subscribe({
         next: (res: any) => {
+          this._helper.stopSpinner();
           this.isFetchingCourses = false;
           // this.paginatedResponse = res?.response;
           this.courses = res['courses'];
@@ -84,6 +88,7 @@ export class CommunicationComponent implements OnInit {
           // this.searchQuery.pageSize = this.paginatedResponse?.pageSize;
         },
         error: (error: ResponseModel<null>) => {
+          this._helper.stopSpinner();
           this.isFetchingCourses = false;
           console.log(error);
         },
@@ -93,7 +98,7 @@ export class CommunicationComponent implements OnInit {
 
   public getSearchQuery(searchQuery: string): void {
     this.searchQuery.search = searchQuery;
-    console.log(this.searchQuery.search)
+    // console.log(this.searchQuery.search)
   }
 
   public openDialog(

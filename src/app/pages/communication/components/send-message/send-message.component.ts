@@ -30,11 +30,13 @@ export class SendMessageComponent implements OnInit {
   public recipient: any;
   public allUsers: any[] = [];
   public contactLists: any[] = [];
+  public recipients: any[] = [];
   public isFetchingUsers: boolean = false;
   public isFetchingContacts: boolean = false;
   public companyId: number = 0;
   public createdBy: number = 0;
   public loggedInId: number = 0;
+  public newRecipient = (recipient: any) => ({name:  recipient, type: 0, userType: 0});
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -87,7 +89,12 @@ export class SendMessageComponent implements OnInit {
       this.createdBy = CreatedByType.instructor;
       this.loggedInId = this.loggedInUser.trainingInstructorId
     }
-    this.initMessageForm();
+    console.log(this.type)
+    if(this.type == 'message'){
+      this.initMessageForm();
+    } else {
+      this.initAnnouncementForm();
+    }
     this.getAllUsers();
     // this.getAllContactList();
   }
@@ -139,7 +146,7 @@ export class SendMessageComponent implements OnInit {
       courseMessageId: [0],
       subject: [''],
       message: [''],
-      courseId: [0],
+      courseId: [this.courseId],
       senderEmail: [this.senderEmail],
       recipients: [],
       companyId: [this.companyId]
@@ -147,14 +154,14 @@ export class SendMessageComponent implements OnInit {
   }
 
   public initAnnouncementForm() {
-    this.messageForm = this.fb.group({
+    this.announcementForm = this.fb.group({
       courseAnnouncementId: [0],
-      announcementType: [0],
+      announcementType: [this.announcementType],
       subject: [''],
       message: [''],
-      courseId: [0],
+      courseId: [+this.courseId],
       modeOfSending: [0],
-      contactListId: [0],
+      contactListIds: [],
       senderEmail: [this.senderEmail],
       recipients: [],
       companyId: [this.companyId]
@@ -170,22 +177,68 @@ export class SendMessageComponent implements OnInit {
     }
   }
 
+  // public setPayload() {
+  //   let recipient = this.recipient.filter((m: any) => {
+  //     return this.recipients.find((user: any) => {
+  //        return user === m
+  //      })
+  //  });
+  //  console.log(this.recipient, recipient);
+  //   let receivers
+  //   if(this.recipients.includes(recipient)) {
+  //     receivers = this.recipients.filter((c: any) => {
+  //         c!== this.recipient
+  //         if(c.type == 1) {
+  //           let createdBy
+  //           if (c.userType == 1) {
+  //             createdBy = CreatedByType.provider
+  //           } else if (c.userType == 2) {
+  //             createdBy = CreatedByType.instructor
+  //           } else if (c.userType == 3) {
+  //             createdBy = CreatedByType.participant
+  //           } else {
+  //             createdBy = CreatedByType.admin
+  //           }
+  //           let user = {
+  //             recipientId: c.userId,
+  //             recipientType: createdBy,
+  //             recipientEmail: ''
+  //           }
+  //           return user
+  //         } else if(c.type == 2) {
+  //           return c.contactListId
+  //         } else {
+  //           let user = {
+  //             recipientId: '',
+  //             recipientType: 0,
+  //             recipientEmail: c.name
+  //           }
+  //           return user
+  //         }
+  //       }
+  //     );
+  //   }
+  //   console.log(receivers);
+  // }
+
   public submit() {
     this._helper.startSpinner();
-    console.log(this.htmlContent);
     let data;
     if(this.type == 'message') {
       data = this.messageForm.value;
     } else {
       data = this.announcementForm.value;
     }
+    console.log(this.recipient)
     const payload = data;
     payload.message = this.htmlContent;
-    payload.courseId = +this.courseId;
+    console.log(payload)
     let recipients = [];
+    let contacts = [];
+    let emails = [];
     let recipient = this.allUsers.filter((m: any) => {
-       return payload.recipients.find((user: any) => {
-          return user === m.userId
+       return this.recipient.find((user: any) => {
+          return user === m
         })
     });
     let user = recipient.map((m: any) => {
@@ -199,14 +252,49 @@ export class SendMessageComponent implements OnInit {
           } else {
             createdBy = CreatedByType.admin
           }
-          return {
-            recipientId: m.userId,
-            recipientType: createdBy,
-            recipientEmail: m
+          if(m.type == 1) {
+            return {
+              recipientId: m.userId,
+              recipientType: createdBy,
+              recipientEmail: m.name
+            }
+          } else {
+            return null
           }
+         
+    });
+    let contact = recipient.map((c: any) => {
+      if(c.type == 2) {
+        return c.contactListId
+      }
     })
+    let email = this.recipient.map((c: any) => {
+      if(c.type == 0) {
+        return {
+          recipientEmail: c.name
+        }
+      } else {
+        return null
+      }
+      
+    });
     recipients.push(user);
+    contacts.push(contact)
+    emails.push(email)
+    console.log(emails, emails[0]);
     payload.recipients = recipients[0];
+    for (var i of emails[0]) {
+      payload.recipients.push(i);
+    }
+    payload.contactListIds = contacts[0];
+    const results = payload.recipients.filter((element: any) => {
+      return element !== null;
+    });
+    const contactResults = payload.contactListIds.filter((element: any) => {
+      return element !== undefined;
+    });
+    payload.recipients = results;
+    payload.contactListIds = contactResults;
     const operation = this.type === 'message' ? 'sendNewMessage' : 'sendNewAnnouncement';
     console.log(payload)
       this.sub.add(

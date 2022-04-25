@@ -15,25 +15,37 @@
     <div>
         <div class="row">
             <div class="row col-md-6">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="form_group mb-4">
                         <label for="" class="form-label">Delivery Type</label>
                         <select name="" id="" class="form-select" [(ngModel)]="deliveryType">
+                            <option value="">--Select Delivery Type--</option>
                             <option value="classroom">Classroom</option>
                             <option value="online">Online</option>
                             <option value="video">Video</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="form_group mb-4">
                         <label for="" class="form-label">Session Type</label>
                         <select name="" id="" class="form-select" [(ngModel)]="sessionType">
+                            <option value="">--Select Session Type--</option>
                             <option value="in-house">In-House</option>
                             <option value="private">Private</option>
                             <option value="public">Public</option>
                         </select>
                     </div>
+                </div>
+                <div class="col-md-2">
+                   <div class="form_group mb-4 mt-5">
+                        <button 
+                            class="btn btn-green btn-lg"
+                            (click)="getAllCourses(true)"
+                        >
+                            Filter
+                        </button>
+                   </div>
                 </div>
             </div>
         </div>
