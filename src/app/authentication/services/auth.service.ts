@@ -16,46 +16,46 @@ export class AuthService {
   public login(
     loginRequestDTO: LoginRequestDTO
   ): Observable<ResponseModel<LoginResponseDTO>> {
-    const endpoint = '/lms/login';
+    const endpoint = '/login';
     return this.http.makeRequestWithData('post', endpoint, {}, loginRequestDTO);
   }
 
   public registerProvider(
     registerRequestDTO: RegisterRequestDTO
   ): Observable<ResponseModel<RegisterResponseDTO>> {
-    const endpoint = '/lms/signup';
+    const endpoint = '/signup';
     return this.http.makeRequestWithData('post', endpoint, {}, registerRequestDTO);
   }
 
   public registerParticipant(
     registerRequestDTO: RegisterRequestDTO
   ): Observable<ResponseModel<RegisterResponseDTO>> {
-    const endpoint = '/lms/participantsignup';
+    const endpoint = '/participantsignup';
     return this.http.makeRequestWithData('post', endpoint, {}, registerRequestDTO);
   }
   public forgotPassword(
     forgotPasswordRequestDTO: ForgotPassswordDTO
   ): Observable<ResponseModel<ForgotPassswordDTO>> {
-    const endpoint = '/forgetpassword/add/update/forgetpassword';
+    const endpoint = '';
     return this.http.makeRequestWithData('post', endpoint, {}, forgotPasswordRequestDTO);
   }
   public resetPassword(
     resetPasswordRequestDTO: ResetPasswordDTO
   ): Observable<ResponseModel<ResetPasswordDTO>> {
-    const endpoint = 'auth/int/company-admin/login';
+    const endpoint = '';
     return this.http.makeRequestWithData('post', endpoint, {}, resetPasswordRequestDTO);
   }
 
   public getProfile(
   ): Observable<ResponseModel<LoginResponseDTO>> {
-    const endpoint = '/lms/fetch/profile';
+    const endpoint = '/fetch/profile';
     return this.http.makeRequestWithData('get', endpoint, {});
   }
 
   public getAllUsers(
     payload: any
   ): Observable<ResponseModel<LoginResponseDTO>> {
-    const endpoint = '/lms/allUsers';
+    const endpoint = '/allUsers';
     const params = new HttpParams()
     .set('requesterId', payload.requesterId)
     .set('createdByType', payload.createdByType)
@@ -67,7 +67,7 @@ export class AuthService {
     ): Observable<ResponseModel<any>> {
       const params = new HttpParams()
       .set('companyId', companyId);
-     const endpoint = '/lms/trainingparticipant/getTrainingParticipants';
+     const endpoint = '/trainingparticipant/getTrainingParticipants';
      return this.http.getRequestWithParams(endpoint, params);
   }
 }

@@ -34,7 +34,7 @@ export class PayoutService {
   }
 
   public getPayout(): Observable<ResponseModel<Payout>> {
-   const endpoint = '/lms/payout/getAllPayOutSetup';
+   const endpoint = '/payout/getAllPayOutSetup';
    const params = new HttpParams()
    .set('companyId', this.companyId)
    .set('type', this.createdBy)
@@ -45,14 +45,14 @@ export class PayoutService {
   public updatePayoutSetup(
     payload: any
   ): Observable<ResponseModel<Payout>> {
-    const endpoint = '/lms/payout/addAndUpdatePayOutSetup';
+    const endpoint = '/payout/addAndUpdatePayOutSetup';
     return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
 
   public deletePayout(
     payload: any,
   ): Observable<ResponseModel<Payout>> {
-    const endpoint = '/lms/payoutsetup/deletePayoutsetup';
+    const endpoint = '/payoutsetup/deletePayoutsetup';
     return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
 }

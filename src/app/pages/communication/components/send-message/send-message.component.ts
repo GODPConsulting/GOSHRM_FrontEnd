@@ -96,7 +96,7 @@ export class SendMessageComponent implements OnInit {
       this.initAnnouncementForm();
     }
     this.getAllUsers();
-    // this.getAllContactList();
+    console.log(this.announcementType)
   }
 
   public getAllUsers(): void {
@@ -156,7 +156,7 @@ export class SendMessageComponent implements OnInit {
   public initAnnouncementForm() {
     this.announcementForm = this.fb.group({
       courseAnnouncementId: [0],
-      announcementType: [this.announcementType],
+      announcementType: [2],
       subject: [''],
       message: [''],
       courseId: [+this.courseId],
@@ -304,7 +304,10 @@ export class SendMessageComponent implements OnInit {
             if(res.status.isSuccessful) {
               this._helper.stopSpinner();
               this.openMessager();
-              this._helper.triggerSucessAlert('Course outline created successfully!!!')
+              this._helper.triggerSucessAlert('Course outline created successfully!!!');
+              this.recipient = [];
+              this.messageForm.reset();
+              this.announcementForm.reset();
             } else {
               this._helper.stopSpinner();
               this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)

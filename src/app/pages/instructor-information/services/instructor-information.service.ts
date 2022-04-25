@@ -15,7 +15,7 @@ export class InstructorInformationService {
   public getFaciltator(
     trainingInstructorId: string
   ): Observable<ResponseModel<Facilitator>> {
-   const endpoint = '/lms/traininginstructor/getTraininginstructorById';
+   const endpoint = '/traininginstructor/getTraininginstructorById';
    const params = new HttpParams()
    .set('trainingInstructorId', trainingInstructorId)
    return this.http.getRequestWithParams(endpoint, params);
@@ -24,14 +24,14 @@ export class InstructorInformationService {
   public UpdateFaciltator(
     payout: Facilitator
   ): Observable<ResponseModel<Facilitator>> {
-    const endpoint = '/lms/traininginstructor/add/update/traininginstructor';
+    const endpoint = '/traininginstructor/add/update/traininginstructor';
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
   }
 
   public getFacilitatorCourses(
     trainingInstructorId: string
   ): Observable<ResponseModel<FacilitatorCourses>> {
-   const endpoint = '/lms/coursecreationfacilitatedcourse/get/byId/coursecreationfacilitatedcourse';
+   const endpoint = '/coursecreationfacilitatedcourse/get/byId/coursecreationfacilitatedcourse';
    const params = new HttpParams()
    .set('trainingInstructorId', trainingInstructorId)
    return this.http.getRequestWithParams(endpoint, params);
@@ -40,7 +40,7 @@ export class InstructorInformationService {
   public updateFacilitatorCourses(
     payout: FacilitatorCourses
   ): Observable<ResponseModel<FacilitatorCourses>> {
-    const endpoint = '/lms/coursecreationfacilitatedcourse/add/update/coursecreationfacilitatedcourse';
+    const endpoint = '/coursecreationfacilitatedcourse/add/update/coursecreationfacilitatedcourse';
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
   }
 }

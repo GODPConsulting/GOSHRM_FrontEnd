@@ -35,7 +35,7 @@ export class ProfileService {
   public getProfile(
        trainingProviderId: string
     ): Observable<ResponseModel<Profile>> {
-      const endpoint = '/lms/trainingprovider/getTrainingProviderById';
+      const endpoint = '/trainingprovider/getTrainingProviderById';
       const params = new HttpParams()
       .set('trainingProviderId', trainingProviderId)
       return this.http.getRequestWithParams(endpoint, params);
@@ -44,7 +44,7 @@ export class ProfileService {
   public getInstructorProfile(
        trainingProviderId: string
     ): Observable<ResponseModel<Profile>> {
-      const endpoint = '/lms/trainingprovider/getTrainingProviderById';
+      const endpoint = '/trainingprovider/getTrainingProviderById';
       const params = new HttpParams()
       .set('trainingProviderId', trainingProviderId)
       return this.http.getRequestWithParams(endpoint, params);
@@ -53,12 +53,12 @@ export class ProfileService {
   public updateProfile(
       getProfile: Profile
     ): Observable<ResponseModel<Profile>> {
-      const endpoint = '/lms/trainingprovidercompanyInfo/addUpdateTrainingprovidercompanyInfo';
+      const endpoint = '/trainingprovidercompanyInfo/addUpdateTrainingprovidercompanyInfo';
       return this.http.makeRequestWithData('post', endpoint, {}, getProfile);
   }
 
   public getSocialMedia(): Observable<ResponseModel<Profile>> {
-   const endpoint = '/lms/socialMedia/getAllSocialMedias';
+   const endpoint = '/socialMedia/getAllSocialMedias';
    const params = new HttpParams()
    .set('companyId', this.companyId)
    .set('type', this.createdBy)
@@ -69,13 +69,13 @@ export class ProfileService {
 public updateSocialmedia(
    getSocialMedia: any
  ): Observable<ResponseModel<any>> {
-   const endpoint = '/lms/socialMedia/addAndUpdateSocialMedia';
+   const endpoint = '/socialMedia/addAndUpdateSocialMedia';
   console.log(getSocialMedia)
    return this.http.makeRequestWithData('post', endpoint, {}, getSocialMedia);
 }
 
 public getWebsites(): Observable<ResponseModel<Profile>> {
- const endpoint = '/lms/website/getWebsiteById';
+ const endpoint = '/website/getWebsiteById';
  const params = new HttpParams()
  .set('companyId', this.companyId)
  .set('type', this.createdBy)
@@ -86,14 +86,14 @@ public getWebsites(): Observable<ResponseModel<Profile>> {
   public updateWebsites(
     getWebsite: any
     ): Observable<ResponseModel<Website>> {
-    const endpoint = '/lms/website/addAndUpdateWebsite';
+    const endpoint = '/website/addAndUpdateWebsite';
     return this.http.makeRequestWithData('post', endpoint, {}, getWebsite);
   }
 
   public updateProfileImg(
     payload: any
     ): Observable<ResponseModel<Website>> {
-    const endpoint = '/lms/company/addAndUpdateCompanyLogo';
+    const endpoint = '/company/addAndUpdateCompanyLogo';
     return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
 

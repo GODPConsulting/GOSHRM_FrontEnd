@@ -13,7 +13,7 @@ export class CourseApprovalService {
   public ApproveCourse(
     payload: any
   ): Observable<ResponseModel<any>> {
-    const endpoint = '/lms/course/courseApproval';
+    const endpoint = '/course/courseApproval';
     return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
 }

@@ -57,7 +57,10 @@ export class AnnouncementComponent implements OnInit {
     this.isFetchingMessages = true;
     this._helper.startSpinner();
     const payload = {
-      senderEmail: this.loggedInUser.userName
+      senderEmail: this.loggedInUser.userName,
+      userType: userType,
+      announcementType: announcementType,
+      messageType: messageType,
     };
     this.sub.add(
       this._communication.getAllAnnoucement(payload).subscribe({
