@@ -27,7 +27,6 @@ export class CourseOutlineComponent implements OnInit {
   public courseId: any;
   public outlineId: any;
   public outlineType = OutlineType;
-  public isCheck: boolean = false;
   public viewHeight: any = '500px';
 
   constructor(
@@ -65,36 +64,6 @@ export class CourseOutlineComponent implements OnInit {
         },
       })
     );
-  }
-
-  public checkUncheckAll() {
-    for (var i = 0 ; i < this.courseOutlines.length; i++) {
-      this.courseOutlines[i].isSelected = this.isCheck;
-    }
-    this.getCheckedItemList();
-  }
-
-  public isAllSelected() {
-    this.isCheck = this.courseOutlines.every(function(item:any) {
-        return item.isSelected == true;
-      })
-    this.getCheckedItemList();
-  }
-  
-  public getCheckedItemList(){
-    this.SelectedCourseOutlines = [];
-    for (let i = 0; i < this.courseOutlines.length; i++) {
-      if(this.courseOutlines[i].isSelected)
-      this.SelectedCourseOutlines.push(this.courseOutlines[i]);
-    }
-    console.log(this.SelectedCourseOutlines);
-  }
-
-  public selectDeselectOutline(outline: CourseOutline) {
-    this.SelectedCourseOutlines.includes(outline)
-      ? (this.SelectedCourseOutlines = this.SelectedCourseOutlines.filter((c: any) => c!== outline))
-      : this.SelectedCourseOutlines.push(outline);
-    console.log(this.SelectedCourseOutlines)
   }
 
   public openDialog(

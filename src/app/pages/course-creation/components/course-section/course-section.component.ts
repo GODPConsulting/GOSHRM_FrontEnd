@@ -24,7 +24,6 @@ export class CourseSectionComponent implements OnInit {
   public loggedInUser: any;
   public courseId: any;
   public outlineType = OutlineType;
-  public isCheck: boolean = false;
   public viewHeight: any = '500px';
 
   constructor(
@@ -66,35 +65,6 @@ export class CourseSectionComponent implements OnInit {
     this.router.navigate(['/courses/course-outline'], {
       queryParams: {courseId: this.courseId, outlineId: outline?.outlineId},
     });
-  }
-  public checkUncheckAll() {
-    for (var i = 0 ; i < this.courseSections.length; i++) {
-      this.courseSections[i].isSelected = this.isCheck;
-    }
-    this.getCheckedItemList();
-  }
-
-  public isAllSelected() {
-    this.isCheck = this.courseSections.every(function(item:any) {
-        return item.isSelected == true;
-      })
-    this.getCheckedItemList();
-  }
-  
-  public getCheckedItemList(){
-    this.SelectedCourseOutlines = [];
-    for (let i = 0; i < this.courseSections.length; i++) {
-      if(this.courseSections[i].isSelected)
-      this.SelectedCourseOutlines.push(this.courseSections[i]);
-    }
-    console.log(this.SelectedCourseOutlines);
-  }
-
-  public selectDeselectOutline(outline: CourseOutline) {
-    this.SelectedCourseOutlines.includes(outline)
-      ? (this.SelectedCourseOutlines = this.SelectedCourseOutlines.filter((c: any) => c!== outline))
-      : this.SelectedCourseOutlines.push(outline);
-    console.log(this.SelectedCourseOutlines)
   }
 
   public openDialog(

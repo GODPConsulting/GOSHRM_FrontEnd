@@ -26,7 +26,6 @@ export class CourseApprovalComponent implements OnInit {
   public loggedInUser: any;
   public createdBy = CreatedByType;
   public selectedCourses: Courses[] = [];
-  public isCheck: boolean = false;
   public isInitialRequest: boolean = true;
   public searchQuery: SearchDTO = { ...InitialSearchDTO, search: '' };
   public viewHeight: any = '500px';
@@ -88,36 +87,6 @@ export class CourseApprovalComponent implements OnInit {
 
   public goTo() {
     this.router.navigate(['/training-provider/courses/add-course'])
-  }
-
-  public checkUncheckAll() {
-    for (var i = 0 ; i < this.courses.length; i++) {
-      this.courses[i].isSelected = this.isCheck;
-    }
-    this.getCheckedItemList();
-  }
-
-  public isAllSelected() {
-    this.isCheck = this.courses.every(function(item:any) {
-        return item.isSelected == true;
-      })
-    this.getCheckedItemList();
-  }
-  
-  public getCheckedItemList(){
-    this.selectedCourses = [];
-    for (let i = 0; i < this.courses.length; i++) {
-      if(this.courses[i].isSelected)
-      this.selectedCourses.push(this.courses[i]);
-    }
-    console.log(this.selectedCourses);
-  }
-
-  public selectDeselectCourses(course: Courses) {
-    this.selectedCourses.includes(course)
-      ? (this.selectedCourses = this.selectedCourses.filter((c: any) => c!== course))
-      : this.selectedCourses.push(course);
-    console.log(this.selectedCourses)
   }
 
   public openDecisionDialog(

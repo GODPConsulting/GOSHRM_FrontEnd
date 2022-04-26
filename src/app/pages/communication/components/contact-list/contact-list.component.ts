@@ -39,7 +39,6 @@ export class ContactListComponent implements OnInit {
   public announcementType: number = 1;
   public isTag: boolean = true;
   public isPromotional: boolean = true;
-  public isCheck: boolean = false;
   public viewHeight: any = '500px';
 
   constructor(
@@ -118,37 +117,6 @@ export class ContactListComponent implements OnInit {
     this.isPromotional = true;
     this.isTag = true;
   }
-
-  public checkUncheckAll() {
-    for (var i = 0 ; i < this.contactLists.length; i++) {
-      this.contactLists[i].isSelected = this.isCheck;
-    }
-    this.getCheckedItemList();
-  }
-
-  public isAllSelected() {
-    this.isCheck = this.contactLists.every(function(item:any) {
-        return item.isSelected == true;
-      })
-    this.getCheckedItemList();
-  }
-  
-  public getCheckedItemList(){
-    this.selectedContacts = [];
-    for (let i = 0; i < this.contactLists.length; i++) {
-      if(this.contactLists[i].isSelected)
-      this.selectedContacts.push(this.contactLists[i]);
-    }
-    console.log(this.selectedContacts);
-  }
-
-  public selectDeselectCourses(contact: any) {
-    this.selectedContacts.includes(contact)
-      ? (this.selectedContacts = this.selectedContacts.filter((c: any) => c!== contact))
-      : this.selectedContacts.push(contact);
-    console.log(this.selectedContacts)
-  }
-
 
   public deleteContacts(SelectedContacts?: any): void {
     SwalConfig.fire({
