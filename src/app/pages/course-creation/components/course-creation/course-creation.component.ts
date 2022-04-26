@@ -122,7 +122,7 @@ export class CourseCreationComponent implements OnInit {
   }
 
   public openScheduleClassDialog(
-    payload: { isEditing?: boolean; editObject?: any } | any
+    payload: { isEditing?: boolean; editObject?: any, course: Courses } | any
   ): void {
     let object: DialogModel<any> = payload;
     const dialogRef = this.dialog.open(SceduleClassDialogComponent, {

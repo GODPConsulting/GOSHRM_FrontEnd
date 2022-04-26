@@ -24,7 +24,7 @@ export class InstructorInformationService {
   public UpdateFaciltator(
     payout: Facilitator
   ): Observable<ResponseModel<Facilitator>> {
-    const endpoint = '/traininginstructor/add/update/traininginstructor';
+    const endpoint = '/traininginstructor/addaAndUpdateTraininginstructor';
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
   }
 
