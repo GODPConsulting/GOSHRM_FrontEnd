@@ -14,7 +14,10 @@
             ></app-searchbar>
        </div>
     </div>
-    <div class="table-responsive bg-white">
+    <ng-container 
+      class="table-responsive bg-white"
+      *ngIf="isFetchingCourseOutlines || courseSections.length > 0"
+    >
           <p-table
                 #dt
                 [value]="courseSections"
@@ -80,5 +83,12 @@
                 </tr>
               </ng-template>
           </p-table>
-    </div>
+    </ng-container>
+    
+    <app-no-data
+      name="Course Sections"
+      [is_loading]="isFetchingCourseOutlines"
+      *ngIf="courseSections?.length == 0"
+    >
+    </app-no-data>
   </div>

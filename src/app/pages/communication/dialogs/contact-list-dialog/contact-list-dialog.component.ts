@@ -135,7 +135,7 @@ export class ContactListDialogComponent implements OnInit {
 
   public initaddTagForm() {
     this.addTagForm = this.fb.group({
-      tagName: [this.data?.editObject?.tagName ? this.data?.editObject?.tagName : 0, Validators.required],
+      tagName: [this.data?.editObject?.tagName ? this.data?.editObject?.tagName : '', Validators.required],
       courseId: [this.data?.editObject?.courseId? this.data?.editObject?.courseId : 0, Validators.required],
       contactListId: [this.data?.editObject?.contactListId ? this.data?.editObject?.contactListId : 0, Validators.required],
       contactListType: [AnnouncementType.Promotional, Validators.required],

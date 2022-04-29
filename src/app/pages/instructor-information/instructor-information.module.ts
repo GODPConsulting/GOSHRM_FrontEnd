@@ -7,6 +7,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { FacilitatedCoursesComponent } from './components/facilitated-courses/facilitated-courses.component';
 import { NgRatingBarModule } from 'ng-rating-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     NgRatingBarModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    TableModule
   ]
 })
 export class InstructorInformationModule { }

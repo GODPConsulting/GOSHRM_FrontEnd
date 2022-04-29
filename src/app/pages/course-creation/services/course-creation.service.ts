@@ -163,15 +163,46 @@ export class CourseCreationService {
 
   public addUpdateCompetence(
     payload: any
-  ): Observable<ResponseModel<Courses>> {
+  ): Observable<ResponseModel<any>> {
    const endpoint = '/course/addCourseCompetenceAssessment';
    return this.http.makeRequestWithData('post',endpoint, {}, payload);
   }
 
   public deleteCompetence(
     payload: any
-  ): Observable<ResponseModel<Courses>> {
+  ): Observable<ResponseModel<any>> {
    const endpoint = '/course/deleteCourseCompetenceAssessment';
    return this.http.makeRequestWithData('post',endpoint, {}, payload);
+  }
+
+  public createScheduleClass(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+   const endpoint = '/contact/scheduleCourse';
+   return this.http.makeRequestWithData('post',endpoint, {}, payload);
+  }
+
+  public AddcourseParticipant(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+   const endpoint = '/course/addCourseParticipant';
+   return this.http.makeRequestWithData('post',endpoint, {}, payload);
+  }
+
+  public uploadCourseParticipants(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+   const endpoint = '/course/uploadParticipants';
+   return this.http.makeRequestWithData('post',endpoint, {}, payload);
+  }
+
+  public getcourseParticipant(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+   const endpoint = '/course/getCourseParticipant';
+   const params = new HttpParams()
+   .set('courseId', payload.courseId)
+   .set('searchParams', payload.searchParams);
+   return this.http.getRequestWithParams(endpoint, params);
   }
 }

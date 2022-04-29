@@ -33,6 +33,12 @@ export class AddParticipantComponent implements OnInit {
   public allParticipantsPhone: any[] = [];
   public isFetchingParticipant: boolean = false;
   public loggedInUser: any;
+  public newParticipant = (participant: any) => (
+      { 
+        participantName: participant,
+        emailAddress: '',
+        phoneNumber: ''
+      });
   
   @Output() event: EventEmitter<{
     editObject?: any;
@@ -64,7 +70,7 @@ export class AddParticipantComponent implements OnInit {
           this._helper.stopSpinner();
           this.isFetchingParticipant = false;
           this.allParticipants = res['trainingParticipant_objs'];
-          console.log(res, this.allParticipants);
+          // console.log(res, this.allParticipants);
         },
         error: (error: ResponseModel<null>) => {
           this.isFetchingParticipant = false;
@@ -77,16 +83,15 @@ export class AddParticipantComponent implements OnInit {
 
   public initParticipantForm() {
     this.addPrticipantForm = this.fb.group({
-      name: [[], Validators.required],
-      email: [[], Validators.required],
-      phoneNo: [[], Validators.required]
+     courseId: [+this.data?.editObject?.courseId, Validators.required],
+     participants: this.fb.array([
+       this.fb.group({
+        participantId: [0],
+        participantEmailAddress: [''],
+        participantPhoneNumber: ['']
+       })
+     ])
     })
-  }
-
-  compareFn(item: any, selected: any) {
-    console.log("ITEM", item);
-    console.log("SELECTED", selected);
-    return item.value === selected.value;
   }
 
   public selectParticipant() {
@@ -97,40 +102,41 @@ export class AddParticipantComponent implements OnInit {
           return m.emailAddress === user
         })
     });
-    console.log(recipient)
-    // let email = recipient.map((m: any) => {
-    //   return m.emailAddress
-    // })
-    // let phone = recipient.map((m: any) => {
-    //   return m.phoneNumber
-    // })
-    // this.allParticipantsEmail.push(email);
-    // this.allParticipantsPhone.push(phone);
-    this.allParticipantsEmail = recipient;
-    this.allParticipantsPhone  = recipient;
-    // console.log(this.allParticipantsEmail)
-    // console.log(this.allParticipantsPhone)
-    this.addPrticipantForm = this.fb.group({
-      name: [getParticipant, Validators.required],
-      email: [this.allParticipantsEmail, Validators.required],
-      phoneNo: [this.allParticipantsPhone, Validators.required]
+    let filteredEmail = recipient.map((n: any) => {
+      return n.emailAddress
     })
+    let filteredPhone = recipient.map((n: any) => {
+      return n.emailAddress
+    })
+    this.allParticipantsEmail.push(filteredEmail);
+    this.allParticipantsPhone.push(filteredPhone);
+    // console.log(recipient)
   }
 
 
-  public submitReview(): void {
-    this.isLoading = true;
-  }
-
-  public submitRating() {
+  public submit() {
     this._helper.startSpinner();
     const payload = this.addPrticipantForm.value;
-    payload.rating = +payload.rating;
-    console.log(payload);
+    let participants = [];
+    let participant = this.allParticipants.filter((m: any) => {
+      return this.allParticipantsNames.find((n: any) => {
+        return n === m.emailAddress
+      })
+    })
+    let newUser = participant.map((m: any) => {
+      return {
+        participantId: m.participantId,
+        participantEmailAddress: m.emailAddress,
+        participantPhoneNumber: m.phoneNumber
+      }
+    })
+    participants.push(newUser);
+    payload.participants = participants[0];
+    // console.log(payload);
     this.sub.add(
-      this._course.addUpdateCompetence(payload).subscribe({
+      this._course.AddcourseParticipant(payload).subscribe({
         next: (res: any) => {
-          console.log(res);
+          // console.log(res);
           if(res.status.isSuccessful) {
             this._helper.stopSpinner();
             if (this.data?.isEditing) {

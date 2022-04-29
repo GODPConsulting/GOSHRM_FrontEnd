@@ -22,12 +22,12 @@ export class LayoutComponent implements OnInit {
 
   public getInformation(): void {
     this.current_tab = 'information';
-    this.router.navigate(['training-provider/instructor-information', this.instructorId], { queryParams: { q: 'information' } });
+    this.router.navigate(['/instructor-information', this.instructorId], { queryParams: { q: 'information' } });
   }
 
   public getCourses(): void {
     this.current_tab = 'courses';
-    this.router.navigate(['training-provider/instructor-information', this.instructorId], { queryParams: { q: 'courses' } });
+    this.router.navigate(['/instructor-information', this.instructorId], { queryParams: { q: 'courses' } });
   }
 
 }

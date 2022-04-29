@@ -31,7 +31,8 @@ export class ContactListComponent implements OnInit {
   public contactLists: any[] = [];
   public contactDetail: any[] = [];
   public selectedContacts: any[] = [];
-  public isFetchingMessages: any;
+  public isFetchingContactLists: boolean = false;
+  public isFetchingContactDetails: boolean = false;
   public userType: number = 2;
   public messageType = MessageType;
   public tabType: number = 2;
@@ -60,6 +61,7 @@ export class ContactListComponent implements OnInit {
 
   public getAllContactList(type: any): void {
     this._helper.startSpinner();
+    this.isFetchingContactLists = true;
     const payload = {
       contactType: type,
       providerId: this.loggedInUser.trainingProviderId
@@ -68,12 +70,15 @@ export class ContactListComponent implements OnInit {
       this._communication.getAllContactList(payload).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
-          this.isFetchingMessages = false;
+          this.isFetchingContactLists = false;
           this.contactLists = res['contactListResponse'];
           console.log(res, this.contactLists);
+          if(this.contactLists == null) {
+            this.contactLists = [];
+          }
         },
         error: (error: ResponseModel<null>) => {
-          this.isFetchingMessages = false;
+          this.isFetchingContactLists = false;
           this._helper.stopSpinner();
           console.log(error);
         },
@@ -83,18 +88,19 @@ export class ContactListComponent implements OnInit {
 
   public getContactListById(tag: any): void {
     this.isTag = false;
+    this.isFetchingContactDetails = true
     this.subContactTitle = tag?.tagName;
     this.contactListId = tag?.contactListId
     this.sub.add(
       this._communication.getContactById(tag?.contactListId).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
-          this.isFetchingMessages = false;
+          this.isFetchingContactDetails = false;
           this.contactDetail = res['contactListDetailResponse'];
           console.log(res, this.contactDetail);
         },
         error: (error: ResponseModel<null>) => {
-          this.isFetchingMessages = false;
+          this.isFetchingContactDetails = false;
           this._helper.stopSpinner();
           console.log(error);
         },

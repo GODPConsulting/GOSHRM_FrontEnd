@@ -6,6 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
 import { NgRatingBarModule } from 'ng-rating-bar';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { NgRatingBarModule } from 'ng-rating-bar';
     MatDialogModule,
     ReactiveFormsModule,
     SharedModule,
-    NgRatingBarModule
+    NgRatingBarModule,
+    TableModule
   ],
 })
 export class RunningCoursesModule { }

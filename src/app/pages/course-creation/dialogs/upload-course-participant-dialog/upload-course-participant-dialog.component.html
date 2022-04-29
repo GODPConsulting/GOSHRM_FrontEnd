@@ -1,0 +1,36 @@
+<div class="d-flex justify-content-between" mat-dialog-title>
+    <h2 mat-dialog-title>Uppload Course Paticipant(s)</h2>
+    <div class="click" mat-dialog-close>
+      <img src="assets/icons/x.svg" alt="" />
+    </div>
+</div>
+  <mat-dialog-content class="mat-typography">
+    <ng-container>
+      <div>
+            <input 
+                id="fileSelect" type="file"
+                [(ngModel)]="file" 
+                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" 
+            /> 
+      </div>
+    </ng-container> 
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button
+      class="btn btn-outline-green btn-md d-none"
+      [mat-dialog-close]="true"
+      #close
+    >
+      Cancel
+    </button>
+    <button
+      class="btn btn-green btn-md px-4"
+      (click)="submit()"
+    >
+        <app-loading-button
+          [text]="'Upload Participants'"
+          [condition]="isLoading"
+        ></app-loading-button>
+    </button>
+  </mat-dialog-actions>
+  

@@ -7,7 +7,7 @@ import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
-import { Courses } from '../../models/course-creation.model';
+// import { Courses } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 import { DatePipe } from '@angular/common'
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -25,16 +25,17 @@ export class AddCourseComponent implements OnInit {
   public loggedInUser: any;
   public file: any;
   public currencies: Currency[]= [];
-  public instructors: Currency[]= [];
+  public instructors: any[]= [];
   public instructorId: any;
   public courseId: any = 0;
-  public course!: Courses;
+  public course!: any;
   public beginDate: any = new Date('2008-09-19 07:14:00');
   public endDate: any = new Date('2008-09-19 17:35:00');
   public sp: any;
   public htmlContent = ``;
   public documentUrl: any;
   public createdBy!: number;
+  public facilitators: any[] = [];
   public newRequirement = (requirement: any) => ({ name: requirement });
   public newParticipant = (participant: any) => ({ name: participant });
   public newCompetence = (competence: any) => ({ name: competence });
@@ -150,7 +151,17 @@ export class AddCourseComponent implements OnInit {
       this._courses.getOneCoursesById(this.courseId).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
+          console.log(res)
           this.course = res['course_CreationSetupTypes'][0];
+          let instructors = []
+          let user = this.instructors.filter((i) => {
+            return this.course.facilitator.find((f: any) => {
+              return f == i.instructorId;
+            })
+          })
+          instructors.push(user);
+          this.facilitators = instructors[0];
+          console.log(this.facilitators);
           this.initAddCourseForm();
         },
         error: (error: ResponseModel<null>) => {
@@ -192,7 +203,7 @@ export class AddCourseComponent implements OnInit {
       scheduleType: [this.course?.scheduleType ? this.course?.scheduleType : '', Validators.required],
       duration: [this.course?.duration ? this.course?.duration : ''],
       cost: [this.course?.cost ? this.course?.cost : 0],
-      facilitator: [[]],
+      facilitator: [this.course?.facilitator ? this.course?.facilitator : []],
       apply_Discount: [this.course?.apply_Discount ? this.course?.apply_Discount : false],
       discount_Rate: [this.course?.discount_Rate ? this.course?.discount_Rate : 0],
       currencyId: [this.course?.currencyId ? this.course?.currencyId : 0],

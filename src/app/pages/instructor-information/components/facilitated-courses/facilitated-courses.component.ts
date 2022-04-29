@@ -15,9 +15,11 @@ import { Subscription } from 'rxjs';
 export class FacilitatedCoursesComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public facilitatedCourses: any[]= [];
+  public selectedCourses: any[]= [];
   public isFetchngFacilitatedCourses: boolean = false;
   public loggedInUser: any;
   public instructorId: any;
+  public viewHeight: string = '500px';
   public createdBy = CreatedByType;
 
   constructor(

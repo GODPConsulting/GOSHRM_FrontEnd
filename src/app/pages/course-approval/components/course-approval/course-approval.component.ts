@@ -28,7 +28,7 @@ export class CourseApprovalComponent implements OnInit {
   public selectedCourses: Courses[] = [];
   public isInitialRequest: boolean = true;
   public searchQuery: SearchDTO = { ...InitialSearchDTO, search: '' };
-  public viewHeight: any = '500px';
+  public viewHeight: string = '500px';
 
   constructor(
     public dialog: MatDialog,

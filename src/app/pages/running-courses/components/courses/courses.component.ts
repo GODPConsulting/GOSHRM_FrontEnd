@@ -14,8 +14,10 @@ import { RunningCoursesService } from '../../services/running-courses.service';
 export class CoursesComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public runningCourses: RunningCourses[] = [];
+  public selectedCourses: RunningCourses[] = [];
   public isfetchingCourses: boolean = false;
   public loggedInUser: any;
+  public viewHeight: string = '500px';
 
   constructor(
     private _runningCourses: RunningCoursesService,

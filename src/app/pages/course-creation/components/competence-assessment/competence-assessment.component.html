@@ -1,5 +1,8 @@
 <div class="running_courses-wrapper m-0">
     <div class="title pt-3 pb-4">
+      <div class="py-4">
+        <app-back-button></app-back-button>
+      </div>
        <div class="d-flex justify-content-between">
             <h3>Competence Assessment</h3>
             <app-searchbar
@@ -12,38 +15,41 @@
        </div>
     </div>
     <div class="table-responsive bg-white">
-      <table class="table caption-top text-nowrap" datatable>
-        <ng-container>
-          <thead class="bg-white">
-            <tr>
-              <!-- <th><input type="checkbox" name="" id=""></th> -->
-              <th>
-                <span class="pe-3">
-                  <input type="checkbox" name="" id="">
-                </span>
-                Competence
-              </th>
-              <!-- <th>Description</th> -->
-              <th>Ratings</th>
-              <th></th>
-            </tr>
-          </thead></ng-container
+      <ng-container *ngIf="isFetchingCompetencies || competencies.length > 0">
+        <p-table
+            #dt
+            [value]="competencies"
+            dataKey="competenceId"
+            [(selection)]="SelectedCompetencies"
+            [paginator]="true"
+            [rows]="10"
+            [responsive]="true"
+            [scrollable]="true"
+            [scrollHeight]="viewHeight"
         >
-        <tbody>
-          <ng-container>
-            <tr class="text-capitalize" *ngFor="let competence of competencies">
-              <!-- <td><input type="checkbox" name="" id=""></td> -->
+          <ng-template pTemplate="header">
+              <tr class="thead">
+                  <th>
+                    <span class="pe-3">
+                        <p-tableHeaderCheckbox>
+                        </p-tableHeaderCheckbox>
+                    </span>
+                    <span class="ps-3" [pSortableColumn]="'facilitator'">Competence</span>
+                  </th>
+                  <th [pSortableColumn]="'training_Name'">Ratings</th>
+                  <th></th>         
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-competence let-i="rowIndex">
+            <tr class="tbody text-capitalize" [pSelectableRow]="competence">
               <td>
                 <span class="pe-3">
-                  <input 
-                    type="checkbox" 
-                    name="" id=""
-                    (change)="selectDeselectOutline(competence)"
-                  >
+                  <p-tableCheckbox
+                      [value]="competence"
+                  ></p-tableCheckbox>
                 </span>
-                {{ competence?.competence }}
+                <span class="ps-3">{{ competence?.competence }}</span>
               </td>
-              <!-- <td>PR_Sales_45342...</td> -->
               <td>
                 <ng-rating-bar
                   [value]="competence?.rating"
@@ -54,21 +60,27 @@
                   colorDefault="#cecece"
                 ></ng-rating-bar>
               </td>
-              <td class="click d-flex justify-content-around">
-                <span (click)="openDialog({isEditing: true, editObject: competence  })">
+              <td class="click d-flex">
+                <span class="pe-4" (click)="openDialog({isEditing: true, editObject: competence  })">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M6.03984 17.625C6.08672 17.625 6.13359 17.6203 6.18047 17.6133L10.1227 16.9219C10.1695 16.9125 10.2141 16.8914 10.2469 16.8563L20.182 6.92109C20.2038 6.89941 20.221 6.87366 20.2328 6.8453C20.2445 6.81695 20.2506 6.78656 20.2506 6.75586C20.2506 6.72516 20.2445 6.69477 20.2328 6.66642C20.221 6.63806 20.2038 6.61231 20.182 6.59063L16.2867 2.69297C16.2422 2.64844 16.1836 2.625 16.1203 2.625C16.057 2.625 15.9984 2.64844 15.9539 2.69297L6.01875 12.6281C5.98359 12.6633 5.9625 12.7055 5.95312 12.7523L5.26172 16.6945C5.23892 16.8201 5.24707 16.9493 5.28545 17.071C5.32384 17.1927 5.39132 17.3032 5.48203 17.393C5.63672 17.543 5.83125 17.625 6.03984 17.625ZM7.61953 13.5375L16.1203 5.03906L17.8383 6.75703L9.3375 15.2555L7.25391 15.6234L7.61953 13.5375ZM20.625 19.5938H3.375C2.96016 19.5938 2.625 19.9289 2.625 20.3438V21.1875C2.625 21.2906 2.70937 21.375 2.8125 21.375H21.1875C21.2906 21.375 21.375 21.2906 21.375 21.1875V20.3438C21.375 19.9289 21.0398 19.5938 20.625 19.5938Z" fill="#828282"/>
                     </svg>                        
                 </span>
-                <span (click)="deleteCompentency([competence])">
+                <span class="ps-4" (click)="deleteCompentency([competence])">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12.0011 1.92847C12.824 1.92839 13.6155 2.2439 14.2127 2.80999C14.8099 3.37608 15.1672 4.14964 15.2111 4.97132L15.2154 5.14275H19.9297C20.0926 5.1428 20.2493 5.20468 20.3684 5.31587C20.4874 5.42707 20.5597 5.57929 20.5709 5.74179C20.582 5.90429 20.531 6.06495 20.4282 6.19129C20.3254 6.31764 20.1785 6.40027 20.0171 6.42247L19.9297 6.42847H19.022L17.9763 19.331C17.911 20.136 17.5452 20.8868 16.9515 21.4343C16.3578 21.9817 15.5798 22.2857 14.7723 22.2856H9.22997C8.42241 22.2857 7.64442 21.9817 7.05075 21.4343C6.45707 20.8868 6.09122 20.136 6.02597 19.331L4.9794 6.42847H4.07254C3.9172 6.42846 3.76711 6.3722 3.65003 6.27009C3.53296 6.16799 3.45681 6.02694 3.43569 5.87304L3.42969 5.78561C3.42969 5.63026 3.48595 5.48017 3.58806 5.3631C3.69017 5.24602 3.83121 5.16988 3.98512 5.14875L4.07254 5.14275H8.78683C8.78683 4.29027 9.12548 3.4727 9.72827 2.86991C10.3311 2.26711 11.1486 1.92847 12.0011 1.92847ZM17.7328 6.42847H6.2694L7.3074 19.2273C7.3466 19.7103 7.56615 20.1608 7.92238 20.4892C8.27862 20.8177 8.74543 21 9.22997 20.9999H14.7723C15.2568 21 15.7236 20.8177 16.0798 20.4892C16.4361 20.1608 16.6556 19.7103 16.6948 19.2273L17.732 6.42847H17.7328ZM10.0725 9.64275C10.2279 9.64276 10.378 9.69902 10.4951 9.80112C10.6121 9.90323 10.6883 10.0443 10.7094 10.1982L10.7154 10.2856V17.1428C10.7154 17.3056 10.6535 17.4624 10.5423 17.5814C10.4311 17.7004 10.2789 17.7728 10.1164 17.7839C9.95386 17.795 9.79321 17.744 9.66686 17.6412C9.54051 17.5385 9.45789 17.3915 9.43569 17.2302L9.42969 17.1428V10.2856C9.42969 10.1151 9.49742 9.9516 9.61798 9.83104C9.73853 9.71048 9.90205 9.64275 10.0725 9.64275ZM13.9297 9.64275C14.085 9.64276 14.2351 9.69902 14.3522 9.80112C14.4693 9.90323 14.5454 10.0443 14.5665 10.1982L14.5725 10.2856V17.1428C14.5725 17.3056 14.5106 17.4624 14.3994 17.5814C14.2882 17.7004 14.136 17.7728 13.9735 17.7839C13.811 17.795 13.6504 17.744 13.524 17.6412C13.3977 17.5385 13.315 17.3915 13.2928 17.2302L13.2868 17.1428V10.2856C13.2868 10.1151 13.3546 9.9516 13.4751 9.83104C13.5957 9.71048 13.7592 9.64275 13.9297 9.64275ZM12.0011 3.21418C11.5124 3.21412 11.042 3.39958 10.6848 3.73307C10.3276 4.06656 10.1103 4.52322 10.0768 5.01075L10.0725 5.14275H13.9297L13.9254 5.01075C13.892 4.52322 13.6747 4.06656 13.3175 3.73307C12.9603 3.39958 12.4898 3.21412 12.0011 3.21418Z" fill="#4F4F4F"/>
                     </svg>                        
                 </span>
               </td>
             </tr>
-          </ng-container>
-        </tbody>
-      </table>
+          </ng-template>
+        </p-table>
+      </ng-container>
+      <app-no-data
+        name="Courses"
+        [is_loading]="isFetchingCompetencies"
+        *ngIf="competencies?.length == 0"
+      >
+      </app-no-data>
     </div>
   </div>

@@ -177,49 +177,6 @@ export class SendMessageComponent implements OnInit {
     }
   }
 
-  // public setPayload() {
-  //   let recipient = this.recipient.filter((m: any) => {
-  //     return this.recipients.find((user: any) => {
-  //        return user === m
-  //      })
-  //  });
-  //  console.log(this.recipient, recipient);
-  //   let receivers
-  //   if(this.recipients.includes(recipient)) {
-  //     receivers = this.recipients.filter((c: any) => {
-  //         c!== this.recipient
-  //         if(c.type == 1) {
-  //           let createdBy
-  //           if (c.userType == 1) {
-  //             createdBy = CreatedByType.provider
-  //           } else if (c.userType == 2) {
-  //             createdBy = CreatedByType.instructor
-  //           } else if (c.userType == 3) {
-  //             createdBy = CreatedByType.participant
-  //           } else {
-  //             createdBy = CreatedByType.admin
-  //           }
-  //           let user = {
-  //             recipientId: c.userId,
-  //             recipientType: createdBy,
-  //             recipientEmail: ''
-  //           }
-  //           return user
-  //         } else if(c.type == 2) {
-  //           return c.contactListId
-  //         } else {
-  //           let user = {
-  //             recipientId: '',
-  //             recipientType: 0,
-  //             recipientEmail: c.name
-  //           }
-  //           return user
-  //         }
-  //       }
-  //     );
-  //   }
-  //   console.log(receivers);
-  // }
 
   public submit() {
     this._helper.startSpinner();

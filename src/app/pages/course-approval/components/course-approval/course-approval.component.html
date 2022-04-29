@@ -27,10 +27,10 @@
     </div>
 
     <div class="setup_content my-4">
-        <div class="my-5" *ngIf="courses?.length == 0">
-            <p class="bg-white my-5 p-5 text-center">You do not have any course available, try create one</p>
-        </div>
-        <div class="" *ngIf="courses?.length != 0">
+        <ng-container 
+          class="bg-white p-4" 
+          *ngIf="isFetchingCourses || courses.length > 0"
+        >
             <p-table
                 #dt
                 [value]="courses"
@@ -123,7 +123,14 @@
                 </tr>
               </ng-template>
             </p-table>
-        </div>
+        </ng-container>
+
+        <app-no-data
+          name="Course"
+          [is_loading]="isFetchingCourses"
+          *ngIf="courses?.length == 0"
+        >
+        </app-no-data>
         <!-- <div class="setup-card bg-white p-5 my-4" *ngFor="let course of courses">
             <div class="d-flex justify-content-between">
                 <div>

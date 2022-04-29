@@ -18,7 +18,7 @@
                         bindLabel="participantName" 
                         bindValue="emailAddress" 
                         [multiple]="true"
-                        [compareWith]="compareFn"
+                        [addTag]="newParticipant"
                         [(ngModel)]="allParticipantsNames"
                         (change)="selectParticipant()"
                         >
@@ -35,7 +35,6 @@
                         bindLabel="emailAddress" 
                         bindValue="emailAddress" 
                         [multiple]="true"
-                        [compareWith]="compareFn"
                         [(ngModel)]="allParticipantsNames"
                         >
                         </ng-select>
@@ -51,7 +50,6 @@
                         bindLabel="phoneNumber" 
                         bindValue="emailAddress" 
                         [multiple]="true"
-                        [compareWith]="compareFn"
                         [(ngModel)]="allParticipantsNames"
                         >
                         </ng-select>
@@ -72,7 +70,7 @@
     </button>
     <button
       class="btn btn-green btn-md px-4"
-      (click)="data.isEditing ? submitRating() : submitReview()"
+      (click)="submit()"
     >
         <app-loading-button
           [text]="'Save'"

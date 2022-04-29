@@ -28,6 +28,7 @@ export class CourseCreationComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public courses: Courses[] = [];
   public isFetchingCourses:boolean = false;
+  public isFetchngFacilitatorDetail:boolean = false;
   public loggedInUser: any;
   public loggedInId!: number;
   public createdBy!: number;
@@ -35,6 +36,7 @@ export class CourseCreationComponent implements OnInit {
   public isInitialRequest: boolean = true;
   public searchQuery: SearchDTO = { ...InitialSearchDTO, search: '' };
   public viewHeight: any = '500px';
+ 
   
   constructor(
     public dialog: MatDialog,

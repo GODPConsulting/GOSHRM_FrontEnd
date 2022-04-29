@@ -102,7 +102,10 @@ export class CommunicationService {
     payload:any
   ): Observable<ResponseModel<Courses>> {
    const endpoint = '/course/getCourseAnnouncements';
-   return this.http.makeRequestWithData( 'post', endpoint, {}, payload);
+   const params = new HttpParams()
+   .set('announcementType', payload.announcementType)
+   .set('senderEmail', payload.senderEmail)
+   return this.http.getRequestWithParams( endpoint, params);
   }
 
   public getAnnouncementById(

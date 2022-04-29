@@ -19,7 +19,8 @@ export class CompetenceAssessmentComponent implements OnInit {
   public courseId: any;
   public competencies: any[] = [];
   public SelectedCompetencies: any[] = [];
-  public isFetchingCompetencies: boolean = false
+  public isFetchingCompetencies: boolean = false;
+  public viewHeight: string = '500px';
   
   constructor(
     public dialog: MatDialog,

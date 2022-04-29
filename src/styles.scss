@@ -219,7 +219,7 @@ table.table {
     }
   }
   thead {
-    background-color: $white-300;
+    background-color: $white-100;
     border-top: none !important;
     border-bottom: solid 0.2rem #C4C4C4 !important;
     th {
@@ -233,7 +233,7 @@ table.table {
 }
 
 tr.thead {
-  background-color: $white-300;
+  background-color: $white-100;
   border-top: none !important;
   border-bottom: solid 0.2rem #C4C4C4 !important;
   th {
@@ -250,7 +250,7 @@ tr.tbody {
     td {
       color: $text-body;
       font-size: 1.4rem;
-      padding: 1.6rem;
+      padding: 1.4rem;
       border: transparent;
     }
 }
@@ -262,8 +262,14 @@ tr.tbody {
     font-size: 1.6rem;
 }
 
-.p-datatable .p-datatable-tbody > tr.p-highlight {
+.p-datatable .p-datatable-tbody > tr.p-highlight,
+.p-datatable .p-sortable-column.p-highlight {
   opacity: 1;
+  background: rgba($orange-400, 0.2);
+  color: $orange-400;
+}
+
+.p-datatable .p-sortable-column.p-highlight:hover {
   background: rgba($orange-400, 0.2);
   color: $orange-400;
 }
@@ -279,6 +285,12 @@ tr.tbody {
   backface-visibility: hidden;
   background: $orange-400;
   border: .1rem solid $orange-400;
+}
+
+.p-datatable .p-datatable-tbody > tr > td,
+.p-datatable .p-datatable-thead > tr > th {
+  border: none;
+  background: $white-100;
 }
 
 .nav-pills {

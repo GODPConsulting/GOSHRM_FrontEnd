@@ -6,7 +6,7 @@
 </div>
   <mat-dialog-content class="mat-typography">
     <div>
-        <form>
+        <form [formGroup]="scheduleClassForm">
             <div class="row">
                 <div class="col-12">
                     <div class="form_group mb-5">
@@ -21,7 +21,7 @@
                       </select>
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12" *ngIf="isPrivateOthers">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
                         >Company Type
@@ -34,7 +34,7 @@
                       </select>
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12" *ngIf="isPrivateVirtual">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
                         >Available Classes
@@ -47,92 +47,114 @@
                       </select>
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12" *ngIf="isInHouseOnline">
                     <div class="form_group mb-5">
-                      <label for="" class="form-label"
+                      <label for="" class="form-label d-flex justify-content-between"
                         >Job Title
+                        <span *ngIf="isFetchingJobTitles"><i class="fa fa-spinner"></i></span>
                       </label>
-                      <input
-                        type="text"
-                        id="reviewers"
-                        class="form-control"
-                        placeholder=""
-                      />
+                      <ng-select 
+                        [items]="allJobTitles" 
+                          bindLabel="job_title" 
+                          bindValue="id" 
+                          [multiple]="true"
+                          formControlName="jobTitles"
+                          (change)="filterStaffTitle()"
+                      >
+                      </ng-select>
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12" *ngIf="isInHouseOnline">
                     <div class="form_group mb-5">
-                      <label for="" class="form-label"
+                      <label for="" class="form-label d-flex justify-content-between"
                         >Job Grade
+                        <span *ngIf="isFetchingJobGrades"><i class="fa fa-spinner"></i></span>
                       </label>
-                      <input
-                        type="text"
-                        id="reviewers"
-                        class="form-control"
-                        placeholder=""
-                      />
+                      <ng-select 
+                        [items]="allJobGrades" 
+                          bindLabel="job_grade" 
+                          bindValue="id" 
+                          [multiple]="true"
+                          formControlName="jobGrades"
+                          (change)="filterStaffPerGrade()"
+                      >
+                      </ng-select>
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12" *ngIf="isInHouseOnline">
                     <div class="form_group mb-5">
-                      <label for="" class="form-label"
+                      <label for="" class="form-label d-flex justify-content-between"
                         >Office
+                        <span *ngIf="isFetchinOffices"><i class="fa fa-spinner"></i></span>
                       </label>
-                      <input
-                        type="text"
-                        id="reviewers"
-                        class="form-control"
-                        placeholder=""
-                      />
+                      <ng-select 
+                        [items]="allOffices" 
+                          bindLabel="name" 
+                          bindValue="companyStructureId" 
+                          [multiple]="true"
+                          (change)="filterStaffPerOffice()"
+                          formControlName="offices"
+                      >
+                      </ng-select>
                     </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12" *ngIf="isInHouseOnline || isPrivateOnline">
                   <div class="form_group mb-5">
-                    <label for="" class="form-label">Participants</label>
-                    <input
-                        id=""
-                        type="text"
-                        class="form-control"
-                    />
+                    <label for="" class="form-label d-flex justify-content-between">
+                      Participants
+                      <span *ngIf="isFetchingStaffs"><i class="fa fa-spinner"></i></span>
+                    </label>
+                    <ng-select 
+                        [items]="filteredStaffs" 
+                        bindLabel="lastName"
+                        bindValue="employeeId" 
+                        [multiple]="true"
+                        formControlName="participants"
+                    >
+                    </ng-select>
                   </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12" *ngIf="isInHouseOnline || isInHouseOthers">
                   <div class="form_group mb-5">
                     <label for="" class="form-label">Training Date</label>
                     <input
                         id=""
                         type="date"
                         class="form-control"
+                        formControlName="trainingDate"
                     />
                   </div>
                 </div>
-                <div class="col-12">
+                <div class="col-12" *ngIf="isInHouseOnline || isPrivateOnline">
                   <div class="form_group mb-5">
                     <label for="" class="form-label">Duration</label>
                     <input
                         id=""
                         type="text"
                         class="form-control"
+                        formControlName="duration"
                     />
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-6" *ngIf="isInHouseOthers">
                   <div class="form_group mb-5">
                     <label for="" class="form-label">Start Time</label>
                     <input
                         id=""
                         type="time"
                         class="form-control"
+                        formControlName="startTime"
                     />
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-6" *ngIf="isInHouseOthers">
                   <div class="form_group mb-5">
                     <label for="" class="form-label">End Time</label>
                     <input
                         id=""
                         type="time"
                         class="form-control"
+                        formControlName="endTime"
                     />
                   </div>
                 </div>

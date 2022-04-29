@@ -1,41 +1,57 @@
 <div class="running_courses-wrapper my-4">
     <div class="table-responsive bg-white">
-      <table class="table caption-top text-nowrap" datatable>
-        <ng-container>
-          <thead class="bg-white">
-            <tr>
-              <th>Date</th>
-              <th>Course Title</th>
-              <th>Delivery Type</th>
-              <th>Difficulty level</th>
-              <th>Duration</th>
-              <th>No. of Enrolled</th>
-              <th>Ratings</th>
-            </tr>
-          </thead></ng-container
-        >
-        <tbody>
-          <ng-container>
-            <tr class="text-capitalize" *ngFor="let course of facilitatedCourses">
-              <td>{{ course?.training_Name}}</td>
-              <td>{{ course?.training_Name}}</td>
-              <td>{{ course?.delivery_Type}}</td>
-              <td>{{ course?.difficulty_Level}}</td>
-              <td>{{ course?.duration}}</td>
-              <td>{{ course?.no_Of_view}}</td>
-              <td>
-                <ng-rating-bar
-                  [value]="4"
-                  [ratingCount]="5"
-                  [disabled]="true"
-                  [styles]="{ margin: '0px', fontSize: '16px'}"
-                  colorActive="#F88F09" 
-                  colorDefault="#cecece"
-                ></ng-rating-bar>
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
+      <ng-container *ngIf="isFetchngFacilitatedCourses || facilitatedCourses.length > 0">
+        <p-table
+                #dt
+                [value]="facilitatedCourses"
+                dataKey="courseId"
+                [(selection)]="selectedCourses"
+                [paginator]="true"
+                [rows]="10"
+                [responsive]="true"
+                [scrollable]="true"
+                [scrollHeight]="viewHeight"
+                class="" 
+            >
+              <ng-template pTemplate="header">
+                  <tr class="thead">
+                        <th [pSortableColumn]="'createdAt'">Date</th>
+                        <th [pSortableColumn]="'training_Name'">Course Title</th>
+                        <th [pSortableColumn]="'delivery_Type'">Delivery Type</th>
+                        <th [pSortableColumn]="'difficulty_Level'">Difficulty level</th>
+                        <th [pSortableColumn]="'duration'">Duration</th>
+                        <th [pSortableColumn]="'no_Of_view'">No. of Enrolled</th>
+                        <th [pSortableColumn]="'rating'">Ratings</th>     
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-course let-i="rowIndex">
+                <tr class="tbody text-capitalize" [pSelectableRow]="course">
+                  <td>{{ course?.createdAt}}</td>
+                  <td>{{ course?.training_Name}}</td>
+                  <td>{{ course?.delivery_Type}}</td>
+                  <td>{{ course?.difficulty_Level}}</td>
+                  <td>{{ course?.duration}}</td>
+                  <td>{{ course?.no_Of_view}}</td>
+                  <td>
+                    <ng-rating-bar
+                      [value]="course?.rating"
+                      [ratingCount]="5"
+                      [disabled]="true"
+                      [styles]="{ margin: '0px', fontSize: '16px'}"
+                      colorActive="#F88F09" 
+                      colorDefault="#cecece"
+                    ></ng-rating-bar>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+      </ng-container>
+
+      <app-no-data
+        name="Facilitated Courses"
+        [is_loading]="isFetchngFacilitatedCourses"
+        *ngIf="facilitatedCourses.length == 0"
+      ></app-no-data>
+      
     </div>
   </div>

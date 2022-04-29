@@ -23,6 +23,7 @@ import { CourseSectionDialogComponent } from './dialogs/course-section-dialog/co
 import { SceduleClassDialogComponent } from './dialogs/scedule-class-dialog/scedule-class-dialog.component';
 import { AddParticipantComponent } from './dialogs/add-participant/add-participant.component';
 import { TableModule } from 'primeng/table';
+import { UploadCourseParticipantDialogComponent } from './dialogs/upload-course-participant-dialog/upload-course-participant-dialog.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { TableModule } from 'primeng/table';
     CourseSectionComponent,
     CourseSectionDialogComponent,
     SceduleClassDialogComponent,
-    AddParticipantComponent
+    AddParticipantComponent,
+    UploadCourseParticipantDialogComponent
   ],
   imports: [
     CommonModule,
