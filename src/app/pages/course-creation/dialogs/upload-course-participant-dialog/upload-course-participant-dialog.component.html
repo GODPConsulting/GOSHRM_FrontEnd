@@ -6,20 +6,25 @@
 </div>
   <mat-dialog-content class="mat-typography">
     <ng-container>
-      <div>
-          <div class="form_group mb-4">
-              <label for="" class="form-label">
-                  Choose File (Excel format)
-                  <span>● </span>
-                </label>
-              <input 
-                id="fileSelect" type="file"
-                class="form-control"
-                [(ngModel)]="file" 
-                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" 
-            /> 
-          </div>
-      </div>
+        <form [formGroup]="uploadParticipantForm">
+            <div>
+                <div class="form_group mb-4">
+                    <label for="" class="form-label">
+                        Choose File (Excel format)
+                        <span>● </span>
+                      </label>
+                    <input 
+                        name="uploadInput"
+                        id="uploadInput" 
+                        type="file"
+                        class="form-control"
+                        #fileInput 
+                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" 
+                        (change)="onSelectedFile($event, uploadParticipantForm)"
+                  /> 
+                </div>
+            </div>
+        </form>
       <div class="table-responsive pt-4">
         <span class="guide py-3">Please use the guide below for your sheet</span>
         <table class="table caption-top text-nowrap" datatable>

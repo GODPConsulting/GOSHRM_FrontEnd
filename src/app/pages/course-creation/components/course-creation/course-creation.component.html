@@ -144,9 +144,10 @@
             </p-table>
         </ng-container>
         <app-no-data
-          name="Courses"
+          name="Course"
           [is_loading]="isFetchingCourses"
           *ngIf="courses?.length == 0"
+          (open_dialog)="goTo()"
         >
         </app-no-data>
         <!-- <div class="setup-card bg-white p-5 my-4" *ngFor="let course of courses">

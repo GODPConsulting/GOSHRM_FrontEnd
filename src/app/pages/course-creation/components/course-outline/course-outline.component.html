@@ -100,9 +100,10 @@
         </p-table>
     </ng-container>
     <app-no-data
-      name="Course Outlines"
+      name="Course Outline"
       [is_loading]="isFetchingCourseOutlines"
       *ngIf="courseOutlines?.length == 0"
+      (open_dialog)="openDialog( {isEditing: false, editObject: {courseId: courseId, outlineId: outlineId}} )"
     >
     </app-no-data>
   </div>

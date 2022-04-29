@@ -4,85 +4,210 @@
             <app-back-button></app-back-button>
         </div>
         <div class="d-flex justify-content-between">
-            <h3>Course Assessment</h3>
+            <h3>Learning Assessment</h3>
             <app-searchbar
                 [canAdd]="true"
                 [canDelete]="true"
-                (btnAction)="assessments == null ? goTo() : addNewQuestion()"
+                (btnAction)="assessments?.length == 0 ? goTo() : addNewQuestion()"
                 (deleteAction)="deleteAssessment()"
 
             ></app-searchbar>
         </div>
 
-        <div class="assessment_wrapper bg-white p-4 my-5">
-            <div class="assessment-title px-3 pb-4">
-                <h4 class="text-capitalize">{{ title }}</h4>
-            </div>
+        <ng-container
+            *ngIf="isFetchingAssessment || assessments.length > 0"
+            class="my-3"
+        >
+            <div class="assessment_wrapper bg-white p-4 my-5">
+                <div class="assessment-title px-3 pb-4">
+                    <h4 class="text-capitalize">{{ title }}</h4>
+                </div>
 
-            <div *ngIf="addNewQuiz">
-                <div class="learning-form__wrapper">
-                    <form [formGroup]="quizQuestionForm">
-                        <div formArrayName="question">
-                            <div 
-                                class="question_wrapper"
-                                [formGroupName]="i"
-                                *ngFor="
-                                    let question of getQuizQuestion.controls;
-                                    index as i
-                                " 
+                <div *ngIf="addNewQuiz">
+                    <div class="learning-form__wrapper">
+                        <form [formGroup]="quizQuestionForm">
+                            <div formArrayName="question">
+                                <div 
+                                    class="question_wrapper"
+                                    [formGroupName]="i"
+                                    *ngFor="
+                                        let question of getQuizQuestion.controls;
+                                        index as i
+                                    " 
+                                >
+                                    <div class="question-title border-grey bg-white p-4 mt-5 mb-4">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form_group">
+                                                <label for="" class="form-label d-flex justify-content-between"
+                                                    >
+                                                    <span class="text-dark">Question {{this.assessments?.length + i + 1}}</span>
+                                                    <span class="click" (click)="removeQuestion(i)">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12 21.9995C17.5229 21.9995 22 17.5224 22 11.9995C22 6.47666 17.5229 1.99951 12 1.99951C6.47715 1.99951 2 6.47666 2 11.9995C2 17.5224 6.47715 21.9995 12 21.9995Z" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M15 8.99976L9 14.9998" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M9 8.99976L15 14.9998" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>                                    
+                                                    </span>
+                                                </label>
+                                                <div class="d-flex">
+                                                    <input
+                                                        type="text"
+                                                        id=""
+                                                        class="form-control"
+                                                        placeholder="Enter your question here"
+                                                        formControlName="question_Varaible"
+                                                        [ngClass]="{
+                                                        'is-invalid':
+                                                        question.get('question_Varaible').errors &&
+                                                        question.get('question_Varaible').touched
+                                                    }"
+                                                    />
+                                                    <span class="pt-3 ps-3">
+                                                        <svg width="36" height="37" viewBox="0 0 36 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M28.0817 28.3295H7.92172C6.69772 28.3295 5.76172 27.3935 5.76172 26.1695V13.2095C5.76172 11.9855 6.69772 11.0495 7.92172 11.0495H12.2417C12.3857 11.0495 12.6017 10.9055 12.6737 10.8335L13.4657 9.24945C13.7537 8.67345 14.4737 8.24146 15.1217 8.24146H20.8817C21.5297 8.24146 22.2497 8.67345 22.5377 9.24945L23.3297 10.8335C23.4017 10.9775 23.6177 11.0495 23.7617 11.0495H28.0817C29.3057 11.0495 30.2417 11.9855 30.2417 13.2095V26.1695C30.2417 27.3935 29.3057 28.3295 28.0817 28.3295ZM7.92172 12.4895C7.48972 12.4895 7.20172 12.7775 7.20172 13.2095V26.1695C7.20172 26.6015 7.48972 26.8895 7.92172 26.8895H28.0817C28.5137 26.8895 28.8017 26.6015 28.8017 26.1695V13.2095C28.8017 12.7775 28.5137 12.4895 28.0817 12.4895H23.7617C23.1137 12.4895 22.3937 12.0575 22.1057 11.4815L21.3137 9.89745C21.2417 9.75345 21.0257 9.60945 20.8817 9.60945H15.1217C14.9777 9.60945 14.7617 9.75345 14.6897 9.82545L13.8977 11.4095C13.6097 12.0575 12.8897 12.4895 12.2417 12.4895H7.92172Z" fill="#828282"/>
+                                                            <path d="M17.9995 25.4495C14.3995 25.4495 11.5195 22.5695 11.5195 18.9695C11.5195 15.3695 14.3995 12.4895 17.9995 12.4895C21.5995 12.4895 24.4795 15.3695 24.4795 18.9695C24.4795 22.5695 21.5995 25.4495 17.9995 25.4495ZM17.9995 13.9295C15.1915 13.9295 12.9595 16.1615 12.9595 18.9695C12.9595 21.7775 15.1915 24.0095 17.9995 24.0095C20.8075 24.0095 23.0395 21.7775 23.0395 18.9695C23.0395 16.1615 20.8075 13.9295 17.9995 13.9295Z" fill="#828282"/>
+                                                            <path d="M25.2005 14.6495C25.5981 14.6495 25.9205 14.3271 25.9205 13.9295C25.9205 13.5318 25.5981 13.2095 25.2005 13.2095C24.8028 13.2095 24.4805 13.5318 24.4805 13.9295C24.4805 14.3271 24.8028 14.6495 25.2005 14.6495Z" fill="#828282"/>
+                                                            <path d="M8.64062 9.60938H11.5206V10.3294H8.64062V9.60938Z" fill="#828282"/>
+                                                            <path d="M17.9984 16.0894V15.3694C15.9824 15.3694 14.3984 16.9534 14.3984 18.9694H15.1184C15.1184 17.3854 16.4144 16.0894 17.9984 16.0894Z" fill="#828282"/>
+                                                        </svg>                                    
+                                                    </span>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="question-options border-grey bg-white p-4 my-4">
+                                        <div formArrayName="course_Answers">
+                                            <div
+                                                *ngFor="
+                                                    let answer of question.get('course_Answers')['controls'];
+                                                    index as j
+                                                "
+                                                [formGroupName]="j"
+                                            >
+                                                <div class="row mb-3">
+                                            <div class="col-md-9">
+                                                <div class="form_group">
+                                                    <input type="text" class="form-control" formControlName="answer_Varaibles">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 form_group d-flex justify-content-between">
+                                                <select name="" id="" class="form-select" formControlName="isAnswer">
+                                                    <option [ngValue]="false">Wrong Answer</option>
+                                                    <option [ngValue]="true">Right Answer</option>
+                                                </select>
+                                                <span class="ps-4 pt-4">
+                                                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M15 30C6.72867 30 0 23.2713 0 15C0 6.72867 6.72867 0 15 0C23.2713 0 30 6.72867 30 15C30 23.2713 23.2713 30 15 30ZM15 1.875C7.76253 1.875 1.875 7.76253 1.875 15C1.875 22.2375 7.76253 28.125 15 28.125C22.2375 28.125 28.125 22.2375 28.125 15C28.125 7.76253 22.2375 1.875 15 1.875Z" fill="#B9BBBE"/>
+                                                        <path d="M21.5625 15.9375H8.4375C7.92 15.9375 7.5 15.5175 7.5 15C7.5 14.4825 7.92 14.0625 8.4375 14.0625H21.5625C22.08 14.0625 22.5 14.4825 22.5 15C22.5 15.5175 22.08 15.9375 21.5625 15.9375Z" fill="#B9BBBE"/>
+                                                    </svg>                                    
+                                                </span>
+                                            </div>
+                                            </div>
+                                        
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div [id]="'question'+i" class="assessment-question p-3" *ngFor="let question of assessments; index as i">
+                    <div class="action-btn d-flex justify-content-end px-3">
+                        <button 
+                            class="btn text-warning" 
+                            (click)="!isEdit ? toggleEdit(question, i) : updateQuestion(question, i)"
+                        >{{ isEdit ? 'Save' : 'Edit' }}
+                        </button>
+                        <button 
+                            class="btn text-danger" 
+                            (click)="!isEdit ? deleteQuestion(question?.questionId) : toggleEdit(question, i)"
+                            >{{ isEdit ? 'Cancel' : 'Delete' }}
+                        </button>
+                    </div>
+
+                <div [id]="'assessment'+i">
+                    <div class="question pb-2">
+                        <div>
+                            <span class="pe-3">{{  i + 1}}</span>
+                            <span>{{ question?.question_Varaible }}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="question?.photo != null" class="question-img p-4">
+                        <img 
+                            [src]="question?.photo" 
+                            alt="" 
+                        />
+                    </div>
+                    <div class="options" *ngFor="let option of question?.course_Answers; index as j">
+                        <div *ngIf="option?.answer_Varaibles != '' " class="d-flex">
+                            <input
+                                class="mt-2"
+                                #myInput
+                                type="radio"
+                                id="{{ i }}{{ j }}"
+                                value="{{ option.answerId }}"
+                                name="options{{ i }}"
+                                [checked]="
+                                checked(assessments[i]?.questionId, myInput.value)
+                                "
+                            />
+                            <label class="ps-3" for="{{ question }}{{ j }}">
+                                {{ option?.answer_Varaibles }}</label
                             >
+                        </div>
+                    </div>
+                </div>
+
+                <div [id]="'editAssessment'+i" class="d-none">
+                        <form [formGroup]="updateQuestionForm">
+                            <div>
                                 <div class="question-title border-grey bg-white p-4 mt-5 mb-4">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form_group">
-                                              <label for="" class="form-label d-flex justify-content-between"
+                                            <label for="" class="form-label d-flex justify-content-between"
                                                 >
-                                                <span class="text-dark">Question {{this.assessments?.length + i + 1}}</span>
-                                                <span class="click" (click)="removeQuestion(i)">
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M12 21.9995C17.5229 21.9995 22 17.5224 22 11.9995C22 6.47666 17.5229 1.99951 12 1.99951C6.47715 1.99951 2 6.47666 2 11.9995C2 17.5224 6.47715 21.9995 12 21.9995Z" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
-                                                        <path d="M15 8.99976L9 14.9998" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
-                                                        <path d="M9 8.99976L15 14.9998" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    </svg>                                    
-                                                </span>
-                                              </label>
-                                              <div class="d-flex">
+                                                <span class="text-dark">Question {{i + 1}}</span>
+                                            </label>
+                                            <div class="d-flex">
                                                 <input
                                                     type="text"
                                                     id=""
                                                     class="form-control"
                                                     placeholder="Enter your question here"
                                                     formControlName="question_Varaible"
-                                                    [ngClass]="{
-                                                    'is-invalid':
-                                                    question.get('question_Varaible').errors &&
-                                                    question.get('question_Varaible').touched
-                                                }"
                                                 />
                                                 <span class="pt-3 ps-3">
-                                                    <svg width="36" height="37" viewBox="0 0 36 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M28.0817 28.3295H7.92172C6.69772 28.3295 5.76172 27.3935 5.76172 26.1695V13.2095C5.76172 11.9855 6.69772 11.0495 7.92172 11.0495H12.2417C12.3857 11.0495 12.6017 10.9055 12.6737 10.8335L13.4657 9.24945C13.7537 8.67345 14.4737 8.24146 15.1217 8.24146H20.8817C21.5297 8.24146 22.2497 8.67345 22.5377 9.24945L23.3297 10.8335C23.4017 10.9775 23.6177 11.0495 23.7617 11.0495H28.0817C29.3057 11.0495 30.2417 11.9855 30.2417 13.2095V26.1695C30.2417 27.3935 29.3057 28.3295 28.0817 28.3295ZM7.92172 12.4895C7.48972 12.4895 7.20172 12.7775 7.20172 13.2095V26.1695C7.20172 26.6015 7.48972 26.8895 7.92172 26.8895H28.0817C28.5137 26.8895 28.8017 26.6015 28.8017 26.1695V13.2095C28.8017 12.7775 28.5137 12.4895 28.0817 12.4895H23.7617C23.1137 12.4895 22.3937 12.0575 22.1057 11.4815L21.3137 9.89745C21.2417 9.75345 21.0257 9.60945 20.8817 9.60945H15.1217C14.9777 9.60945 14.7617 9.75345 14.6897 9.82545L13.8977 11.4095C13.6097 12.0575 12.8897 12.4895 12.2417 12.4895H7.92172Z" fill="#828282"/>
-                                                        <path d="M17.9995 25.4495C14.3995 25.4495 11.5195 22.5695 11.5195 18.9695C11.5195 15.3695 14.3995 12.4895 17.9995 12.4895C21.5995 12.4895 24.4795 15.3695 24.4795 18.9695C24.4795 22.5695 21.5995 25.4495 17.9995 25.4495ZM17.9995 13.9295C15.1915 13.9295 12.9595 16.1615 12.9595 18.9695C12.9595 21.7775 15.1915 24.0095 17.9995 24.0095C20.8075 24.0095 23.0395 21.7775 23.0395 18.9695C23.0395 16.1615 20.8075 13.9295 17.9995 13.9295Z" fill="#828282"/>
-                                                        <path d="M25.2005 14.6495C25.5981 14.6495 25.9205 14.3271 25.9205 13.9295C25.9205 13.5318 25.5981 13.2095 25.2005 13.2095C24.8028 13.2095 24.4805 13.5318 24.4805 13.9295C24.4805 14.3271 24.8028 14.6495 25.2005 14.6495Z" fill="#828282"/>
-                                                        <path d="M8.64062 9.60938H11.5206V10.3294H8.64062V9.60938Z" fill="#828282"/>
-                                                        <path d="M17.9984 16.0894V15.3694C15.9824 15.3694 14.3984 16.9534 14.3984 18.9694H15.1184C15.1184 17.3854 16.4144 16.0894 17.9984 16.0894Z" fill="#828282"/>
-                                                    </svg>                                    
+                                                    <div class="position-relative">
+                                                        <svg width="36" height="37" viewBox="0 0 36 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M28.0817 28.3295H7.92172C6.69772 28.3295 5.76172 27.3935 5.76172 26.1695V13.2095C5.76172 11.9855 6.69772 11.0495 7.92172 11.0495H12.2417C12.3857 11.0495 12.6017 10.9055 12.6737 10.8335L13.4657 9.24945C13.7537 8.67345 14.4737 8.24146 15.1217 8.24146H20.8817C21.5297 8.24146 22.2497 8.67345 22.5377 9.24945L23.3297 10.8335C23.4017 10.9775 23.6177 11.0495 23.7617 11.0495H28.0817C29.3057 11.0495 30.2417 11.9855 30.2417 13.2095V26.1695C30.2417 27.3935 29.3057 28.3295 28.0817 28.3295ZM7.92172 12.4895C7.48972 12.4895 7.20172 12.7775 7.20172 13.2095V26.1695C7.20172 26.6015 7.48972 26.8895 7.92172 26.8895H28.0817C28.5137 26.8895 28.8017 26.6015 28.8017 26.1695V13.2095C28.8017 12.7775 28.5137 12.4895 28.0817 12.4895H23.7617C23.1137 12.4895 22.3937 12.0575 22.1057 11.4815L21.3137 9.89745C21.2417 9.75345 21.0257 9.60945 20.8817 9.60945H15.1217C14.9777 9.60945 14.7617 9.75345 14.6897 9.82545L13.8977 11.4095C13.6097 12.0575 12.8897 12.4895 12.2417 12.4895H7.92172Z" fill="#828282"/>
+                                                            <path d="M17.9995 25.4495C14.3995 25.4495 11.5195 22.5695 11.5195 18.9695C11.5195 15.3695 14.3995 12.4895 17.9995 12.4895C21.5995 12.4895 24.4795 15.3695 24.4795 18.9695C24.4795 22.5695 21.5995 25.4495 17.9995 25.4495ZM17.9995 13.9295C15.1915 13.9295 12.9595 16.1615 12.9595 18.9695C12.9595 21.7775 15.1915 24.0095 17.9995 24.0095C20.8075 24.0095 23.0395 21.7775 23.0395 18.9695C23.0395 16.1615 20.8075 13.9295 17.9995 13.9295Z" fill="#828282"/>
+                                                            <path d="M25.2005 14.6495C25.5981 14.6495 25.9205 14.3271 25.9205 13.9295C25.9205 13.5318 25.5981 13.2095 25.2005 13.2095C24.8028 13.2095 24.4805 13.5318 24.4805 13.9295C24.4805 14.3271 24.8028 14.6495 25.2005 14.6495Z" fill="#828282"/>
+                                                            <path d="M8.64062 9.60938H11.5206V10.3294H8.64062V9.60938Z" fill="#828282"/>
+                                                            <path d="M17.9984 16.0894V15.3694C15.9824 15.3694 14.3984 16.9534 14.3984 18.9694H15.1184C15.1184 17.3854 16.4144 16.0894 17.9984 16.0894Z" fill="#828282"/>
+                                                        </svg>
+                                                        <input type="file" (change)="getBase64($event)">
+                                                    </div>                                    
                                                 </span>
-                                              </div>
                                             </div>
-                                          </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="question-options border-grey bg-white p-4 my-4">
                                     <div formArrayName="course_Answers">
                                         <div
                                             *ngFor="
-                                                let answer of question.get('course_Answers')['controls'];
+                                                let answer of getOptions.controls;
                                                 index as j
                                             "
                                             [formGroupName]="j"
                                         >
-                                             <div class="row mb-3">
+                                            <div class="row mb-3">
                                         <div class="col-md-9">
                                             <div class="form_group">
                                                 <input type="text" class="form-control" formControlName="answer_Varaibles">
@@ -101,159 +226,46 @@
                                             </span>
                                         </div>
                                         </div>
-                                       
-                                    </div>
+                                    
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
                 </div>
-            </div>
+                </div>
             
-            <div [id]="'question'+i" class="assessment-question p-3" *ngFor="let question of assessments; index as i">
-                <div class="action-btn d-flex justify-content-end px-3">
+                <div class="d-flex justify-content-end">
                     <button 
-                        class="btn text-warning" 
-                        (click)="!isEdit ? toggleEdit(question, i) : updateQuestion(question, i)"
-                    >{{ isEdit ? 'Save' : 'Edit' }}
+                        class="btn text-warning"
+                        *ngIf="!addNewQuiz && assessments?.length > 0"
+                        (click)="addNewQuestion()"
+                    >
+                        Add more Question
                     </button>
                     <button 
-                        class="btn text-danger" 
-                        (click)="!isEdit ? deleteQuestion(question?.questionId) : toggleEdit(question, i)"
-                        >{{ isEdit ? 'Cancel' : 'Delete' }}
+                        class="btn btn-green btn-lg"
+                        *ngIf="addNewQuiz"
+                        (click)="submit()"
+                    >
+                        Submit
+                    </button>
+                    <button 
+                        class="btn text-warning"
+                        *ngIf="addNewQuiz"
+                        (click)="addQuestion()"
+                    >
+                        Add more Question
                     </button>
                 </div>
-
-               <div [id]="'assessment'+i">
-                <div class="question pb-2">
-                    <div>
-                        <span class="pe-3">{{  i + 1}}</span>
-                        <span>{{ question?.question_Varaible }}</span>
-                    </div>
-                </div>
-                <div *ngIf="question?.photo != null" class="question-img p-4">
-                    <img 
-                        [src]="question?.photo" 
-                        alt="" 
-                    />
-                </div>
-                <div class="options" *ngFor="let option of question?.course_Answers; index as j">
-                    <div *ngIf="option?.answer_Varaibles != '' " class="d-flex">
-                        <input
-                            class="mt-2"
-                            #myInput
-                            type="radio"
-                            id="{{ i }}{{ j }}"
-                            value="{{ option.answerId }}"
-                            name="options{{ i }}"
-                            [checked]="
-                            checked(assessments[i]?.questionId, myInput.value)
-                            "
-                        />
-                        <label class="ps-3" for="{{ question }}{{ j }}">
-                            {{ option?.answer_Varaibles }}</label
-                        >
-                    </div>
-                </div>
-               </div>
-
-               <div [id]="'editAssessment'+i" class="d-none">
-                    <form [formGroup]="updateQuestionForm">
-                        <div>
-                            <div class="question-title border-grey bg-white p-4 mt-5 mb-4">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form_group">
-                                          <label for="" class="form-label d-flex justify-content-between"
-                                            >
-                                            <span class="text-dark">Question {{i + 1}}</span>
-                                          </label>
-                                          <div class="d-flex">
-                                            <input
-                                                type="text"
-                                                id=""
-                                                class="form-control"
-                                                placeholder="Enter your question here"
-                                                formControlName="question_Varaible"
-                                            />
-                                            <span class="pt-3 ps-3">
-                                                <div class="position-relative">
-                                                    <svg width="36" height="37" viewBox="0 0 36 37" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M28.0817 28.3295H7.92172C6.69772 28.3295 5.76172 27.3935 5.76172 26.1695V13.2095C5.76172 11.9855 6.69772 11.0495 7.92172 11.0495H12.2417C12.3857 11.0495 12.6017 10.9055 12.6737 10.8335L13.4657 9.24945C13.7537 8.67345 14.4737 8.24146 15.1217 8.24146H20.8817C21.5297 8.24146 22.2497 8.67345 22.5377 9.24945L23.3297 10.8335C23.4017 10.9775 23.6177 11.0495 23.7617 11.0495H28.0817C29.3057 11.0495 30.2417 11.9855 30.2417 13.2095V26.1695C30.2417 27.3935 29.3057 28.3295 28.0817 28.3295ZM7.92172 12.4895C7.48972 12.4895 7.20172 12.7775 7.20172 13.2095V26.1695C7.20172 26.6015 7.48972 26.8895 7.92172 26.8895H28.0817C28.5137 26.8895 28.8017 26.6015 28.8017 26.1695V13.2095C28.8017 12.7775 28.5137 12.4895 28.0817 12.4895H23.7617C23.1137 12.4895 22.3937 12.0575 22.1057 11.4815L21.3137 9.89745C21.2417 9.75345 21.0257 9.60945 20.8817 9.60945H15.1217C14.9777 9.60945 14.7617 9.75345 14.6897 9.82545L13.8977 11.4095C13.6097 12.0575 12.8897 12.4895 12.2417 12.4895H7.92172Z" fill="#828282"/>
-                                                        <path d="M17.9995 25.4495C14.3995 25.4495 11.5195 22.5695 11.5195 18.9695C11.5195 15.3695 14.3995 12.4895 17.9995 12.4895C21.5995 12.4895 24.4795 15.3695 24.4795 18.9695C24.4795 22.5695 21.5995 25.4495 17.9995 25.4495ZM17.9995 13.9295C15.1915 13.9295 12.9595 16.1615 12.9595 18.9695C12.9595 21.7775 15.1915 24.0095 17.9995 24.0095C20.8075 24.0095 23.0395 21.7775 23.0395 18.9695C23.0395 16.1615 20.8075 13.9295 17.9995 13.9295Z" fill="#828282"/>
-                                                        <path d="M25.2005 14.6495C25.5981 14.6495 25.9205 14.3271 25.9205 13.9295C25.9205 13.5318 25.5981 13.2095 25.2005 13.2095C24.8028 13.2095 24.4805 13.5318 24.4805 13.9295C24.4805 14.3271 24.8028 14.6495 25.2005 14.6495Z" fill="#828282"/>
-                                                        <path d="M8.64062 9.60938H11.5206V10.3294H8.64062V9.60938Z" fill="#828282"/>
-                                                        <path d="M17.9984 16.0894V15.3694C15.9824 15.3694 14.3984 16.9534 14.3984 18.9694H15.1184C15.1184 17.3854 16.4144 16.0894 17.9984 16.0894Z" fill="#828282"/>
-                                                    </svg>
-                                                    <input type="file" (change)="getBase64($event)">
-                                                </div>                                    
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                </div>
-                            </div>
-                            <div class="question-options border-grey bg-white p-4 my-4">
-                                <div formArrayName="course_Answers">
-                                    <div
-                                        *ngFor="
-                                            let answer of getOptions.controls;
-                                            index as j
-                                        "
-                                        [formGroupName]="j"
-                                    >
-                                         <div class="row mb-3">
-                                    <div class="col-md-9">
-                                        <div class="form_group">
-                                            <input type="text" class="form-control" formControlName="answer_Varaibles">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 form_group d-flex justify-content-between">
-                                        <select name="" id="" class="form-select" formControlName="isAnswer">
-                                            <option [ngValue]="false">Wrong Answer</option>
-                                            <option [ngValue]="true">Right Answer</option>
-                                        </select>
-                                        <span class="ps-4 pt-4">
-                                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M15 30C6.72867 30 0 23.2713 0 15C0 6.72867 6.72867 0 15 0C23.2713 0 30 6.72867 30 15C30 23.2713 23.2713 30 15 30ZM15 1.875C7.76253 1.875 1.875 7.76253 1.875 15C1.875 22.2375 7.76253 28.125 15 28.125C22.2375 28.125 28.125 22.2375 28.125 15C28.125 7.76253 22.2375 1.875 15 1.875Z" fill="#B9BBBE"/>
-                                                <path d="M21.5625 15.9375H8.4375C7.92 15.9375 7.5 15.5175 7.5 15C7.5 14.4825 7.92 14.0625 8.4375 14.0625H21.5625C22.08 14.0625 22.5 14.4825 22.5 15C22.5 15.5175 22.08 15.9375 21.5625 15.9375Z" fill="#B9BBBE"/>
-                                            </svg>                                    
-                                        </span>
-                                    </div>
-                                    </div>
-                                   
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-               </div>
             </div>
-           
-            <div class="d-flex justify-content-end">
-                <button 
-                    class="btn text-warning"
-                    *ngIf="!addNewQuiz && assessments?.length > 0"
-                    (click)="addNewQuestion()"
-                >
-                    Add more Question
-                </button>
-                <button 
-                    class="btn btn-green btn-lg"
-                    *ngIf="addNewQuiz"
-                    (click)="submit()"
-                >
-                    Submit
-                </button>
-                <button 
-                    class="btn text-warning"
-                    *ngIf="addNewQuiz"
-                    (click)="addQuestion()"
-                >
-                    Add more Question
-                </button>
-            </div>
-        </div>
+        </ng-container>
+
+        <app-no-data
+            name="Learning Assessment"
+            [is_loading]="isFetchingAssessment"
+            *ngIf="assessments?.length == 0"
+            (open_dialog)="goTo()"
+        ></app-no-data>
     </div>
 </div>

@@ -150,7 +150,7 @@ export class AddParticipantComponent implements OnInit {
               editObject: payload,
             });
             this.close.nativeElement.click();
-            this._helper.triggerSucessAlert('Course outline created successfully!!!')
+            this._helper.triggerSucessAlert('Course participant added successfully!!!')
           } else {
             this._helper.stopSpinner();
             this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)

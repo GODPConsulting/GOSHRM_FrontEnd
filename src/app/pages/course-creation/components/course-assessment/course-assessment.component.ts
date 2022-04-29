@@ -150,6 +150,9 @@ export class CourseAssessmentComponent implements OnInit {
           // console.log(res)
           this.assessmentId = res.course_AssessmentSetupTypes[0]?.course_AssessmentId
           this.assessments = res?.course_AssessmentSetupTypes[0]?.question;
+          if(this.assessments == null) {
+            this.assessments = [];
+          }
           console.log(this.assessments)
           this.initQuestionForm();
         },

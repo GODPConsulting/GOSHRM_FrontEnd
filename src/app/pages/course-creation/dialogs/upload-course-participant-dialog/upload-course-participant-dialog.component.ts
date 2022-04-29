@@ -7,7 +7,9 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CurrenciesService } from '@core/services/currencies.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { Subscription } from 'rxjs';
@@ -19,10 +21,11 @@ import { CourseCreationService } from '../../services/course-creation.service';
   styleUrls: ['./upload-course-participant-dialog.component.scss']
 })
 export class UploadCourseParticipantDialogComponent implements OnInit {
-
+  @ViewChild("fileInput") fileInput!: ElementRef;
   @ViewChild('close') close!: ElementRef;
   public sub: Subscription = new Subscription();
   public isLoading: boolean =false;
+  public uploadParticipantForm!: FormGroup;
   public file!: File;
 
 
@@ -37,21 +40,30 @@ export class UploadCourseParticipantDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<any>,
     public dialog: MatDialog,
     private _course: CourseCreationService,
-    private _helper: HelperService
+    private _helper: HelperService,
+    private fb: FormBuilder,
+    private _currency: CurrenciesService
   ) { }
 
   ngOnInit() {
-    
+    this.uploadParticipantForm = this.fb.group({
+      uploadInput: [""],
+    });
+  }
+
+  onSelectedFile(event: Event, form: FormGroup) {
+    this._currency.uploadFileValidator(event, form, this.data.editObject.courseId);
   }
 
   submit() {
     this.isLoading = true;
-    // if (!this.locationUploadForm.get("uploadInput").value) {
-    //   return swal.fire("Error", "Select a file", "error");
-    // }
+    if (!this.uploadParticipantForm.get("uploadInput")?.value) {
+      return this._helper.triggerErrorAlert("Error", "Select a file");
+    }
+    console.log(this.file)
     const formData = new FormData();
     formData.append(
-      "File", this.file
+      "File", this.uploadParticipantForm.get("uploadInput")?.value
     );
     formData.append(
       "CourseId", this.data?.editObject?.courseId
@@ -63,6 +75,7 @@ export class UploadCourseParticipantDialogComponent implements OnInit {
           const message = res.status.message.friendlyMessage;
           if (res.status.isSuccessful) {
             this._helper.triggerSucessAlert(message);
+            this.fileInput.nativeElement.value = "";
             this.close.nativeElement.click();
           } else {
             this._helper.triggerErrorAlert(message);

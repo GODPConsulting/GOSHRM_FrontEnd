@@ -86,9 +86,10 @@
     </ng-container>
     
     <app-no-data
-      name="Course Sections"
+      name="Course Section"
       [is_loading]="isFetchingCourseOutlines"
       *ngIf="courseSections?.length == 0"
+      (open_dialog)="openDialog( {isEditing: false, editObject: {courseId: courseId}} )"
     >
     </app-no-data>
   </div>

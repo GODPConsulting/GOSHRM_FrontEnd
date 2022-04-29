@@ -204,15 +204,17 @@
                             
 
                             <app-no-data
-                                name="Contact Lists"
+                                name="Contact List"
                                 [is_loading]="isFetchingContactLists"
                                 *ngIf="contactLists?.length == 0 && isTag"
+                                (open_dialog)="openDialog(false)"
                             >
                             </app-no-data>
                             <app-no-data
-                                name="Contact List Details"
+                                name="Contact List Detail"
                                 [is_loading]="isFetchingContactDetails"
                                 *ngIf="contactDetail?.length == 0 && !isTag"
+                                (open_dialog)="openDialog(false)"
                             >
                             </app-no-data>
                         </div>

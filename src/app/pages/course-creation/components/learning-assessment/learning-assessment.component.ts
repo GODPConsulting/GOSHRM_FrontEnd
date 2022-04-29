@@ -173,6 +173,9 @@ export class LearningAssessmentComponent implements OnInit {
           this.assessmentId = res.course_AssessmentSetupTypes[0]?.course_AssessmentId
           this.assessments = res?.course_AssessmentSetupTypes[0]?.question;
           this.initQuestionForm();
+          if(this.assessments == null) {
+            this.assessments = [];
+          }
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();
