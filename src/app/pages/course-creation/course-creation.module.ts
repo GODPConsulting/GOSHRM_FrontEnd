@@ -20,7 +20,7 @@ import { ParticipantDialogComponent } from './dialogs/participant-dialog/partici
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { CourseSectionComponent } from './components/course-section/course-section.component';
 import { CourseSectionDialogComponent } from './dialogs/course-section-dialog/course-section-dialog.component';
-import { SceduleClassDialogComponent } from './dialogs/scedule-class-dialog/scedule-class-dialog.component';
+import { ScheduleClassDialogComponent } from './dialogs/schedule-class-dialog/schedule-class-dialog.component';
 import { AddParticipantComponent } from './dialogs/add-participant/add-participant.component';
 import { TableModule } from 'primeng/table';
 import { UploadCourseParticipantDialogComponent } from './dialogs/upload-course-participant-dialog/upload-course-participant-dialog.component';
@@ -42,7 +42,7 @@ import { UploadCourseParticipantDialogComponent } from './dialogs/upload-course-
     ParticipantDialogComponent,
     CourseSectionComponent,
     CourseSectionDialogComponent,
-    SceduleClassDialogComponent,
+    ScheduleClassDialogComponent,
     AddParticipantComponent,
     UploadCourseParticipantDialogComponent
   ],

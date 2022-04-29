@@ -17,7 +17,7 @@ import { ParticipantDialogComponent } from '../../dialogs/participant-dialog/par
 import { Courses } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 import { PageEvent } from '@angular/material/paginator';
-import { SceduleClassDialogComponent } from '../../dialogs/scedule-class-dialog/scedule-class-dialog.component';
+import { ScheduleClassDialogComponent } from '../../dialogs/schedule-class-dialog/schedule-class-dialog.component';
 
 @Component({
   selector: 'app-course-creation',
@@ -127,7 +127,7 @@ export class CourseCreationComponent implements OnInit {
     payload: { isEditing?: boolean; editObject?: any, course: Courses } | any
   ): void {
     let object: DialogModel<any> = payload;
-    const dialogRef = this.dialog.open(SceduleClassDialogComponent, {
+    const dialogRef = this.dialog.open(ScheduleClassDialogComponent, {
       data: object,
     });
     // console.log(payload)

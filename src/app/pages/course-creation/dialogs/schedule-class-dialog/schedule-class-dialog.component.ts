@@ -20,12 +20,12 @@ import { CourseOutline, OutlineType, MediaType, Courses } from '../../models/cou
 import { CourseCreationService } from '../../services/course-creation.service';
 
 @Component({
-  selector: 'app-scedule-class-dialog',
-  templateUrl: './scedule-class-dialog.component.html',
-  styleUrls: ['./scedule-class-dialog.component.scss']
+  selector: 'app-schedule-class-dialog',
+  templateUrl: './schedule-class-dialog.component.html',
+  styleUrls: ['./schedule-class-dialog.component.scss']
 })
 
-export class SceduleClassDialogComponent implements OnInit {
+export class ScheduleClassDialogComponent implements OnInit {
   @ViewChild('close') close!: ElementRef;
   public sub: Subscription = new Subscription();
   public scheduleClassForm!: FormGroup;
