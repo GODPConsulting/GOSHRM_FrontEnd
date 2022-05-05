@@ -10,6 +10,13 @@ export class CourseApprovalService {
 
   constructor(private http: HttpService) { }
 
+  public getAllCourseToBeApprove(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/coursecreation/getCoursesToBeApprove';
+    return this.http.makeRequestWithData('post', endpoint, {}, payload);
+  }
+
   public ApproveCourse(
     payload: any
   ): Observable<ResponseModel<any>> {

@@ -19,7 +19,6 @@ import { InfoComponent } from './components/info/info.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SuccessModalComponent } from './components/success-modal/success-modal.component';
 import { TaskBarComponent } from './components/task-bar/task-bar.component';
-import { FAQComponent } from './components/faq/faq.component';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { UploadDocComponent } from './components/upload-doc/upload-doc.component';
 
@@ -39,7 +38,6 @@ import { UploadDocComponent } from './components/upload-doc/upload-doc.component
     InfoComponent,
     SuccessModalComponent,
     TaskBarComponent,
-    FAQComponent,
     BackButtonComponent,
     UploadDocComponent
   ],

@@ -173,4 +173,25 @@ export class CourseCreationComponent implements OnInit {
     }
   }
 
+  public submit(courseId: number): void {
+    this._helper.startSpinner();
+      this._course.submitCourse(courseId).subscribe({
+        next: (res: any) => {
+         if(res.status.isSuccessful) {
+          this._helper.stopSpinner();
+          console.log(res)
+          this._helper.triggerSucessAlert('Course submitted successfully!!!')
+          this.getAllCourses(true);
+         } else {
+           this._helper.stopSpinner();
+           this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
+         }
+        },
+        error: (error: HttpErrorResponse) => {
+          this._helper.stopSpinner();
+          console.log(error);
+        },
+      });
+  }
+
 }

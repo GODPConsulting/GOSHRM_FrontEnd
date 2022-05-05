@@ -13,6 +13,7 @@ import { Courses } from 'app/pages/course-creation/models/course-creation.model'
 import { CourseCreationService } from 'app/pages/course-creation/services/course-creation.service';
 import { Subscription } from 'rxjs';
 import { DecisionDialogComponent } from '../../dialogs/decision-dialog/decision-dialog.component';
+import { CourseApprovalService } from '../../services/course-approval.service';
 
 @Component({
   selector: 'app-course-approval',
@@ -33,6 +34,7 @@ export class CourseApprovalComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private _course: CourseCreationService,
+    private _courseApproval: CourseApprovalService,
     public _helper: HelperService,
     private _current: CurrentUserService,
     private router: Router
@@ -63,7 +65,7 @@ export class CourseApprovalComponent implements OnInit {
     }
     this.isFetchingCourses = true;
     this.sub.add(
-      this._course.getAllCourses(payload).subscribe({
+      this._courseApproval.getAllCourseToBeApprove(payload).subscribe({
         next: (res: any) => {
           this.isFetchingCourses = false;
           // this.paginatedResponse = res?.response;

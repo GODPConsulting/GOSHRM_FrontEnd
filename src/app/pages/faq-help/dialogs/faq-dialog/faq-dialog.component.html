@@ -1,0 +1,87 @@
+<div class="d-flex justify-content-between" mat-dialog-title>
+    <h2 mat-dialog-title>FAQ/Help </h2>
+    <div class="click" mat-dialog-close>
+      <img src="assets/icons/x.svg" alt="" />
+    </div>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    <div>
+        <form [formGroup]="faqForm">
+            <div class="">
+                <div formArrayName="faq">
+                  <div *ngFor="let item of newForm.controls; index as i">
+                    <div [formGroupName]="i">
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="form_group">
+                              <label class="col-form-label"
+                                  >FAQ Title</label
+                              >
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    formControlName="faqTitle"
+                                    [ngClass]="{
+                                        'is-invalid':
+                                        (faqForm.get('faqTitle')?.errors && 
+                                        faqForm.get('faqTitle')?.touched) || 
+                                        (faqForm.get('faqTitle')?.hasError('required') &&
+                                        faqFormSubmitted)
+                                    }"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form_group">
+                            <label class="col-form-label"
+                                >FAQ Content</label
+                            >
+                            <input
+                                class="form-control"
+                                type="text"
+                                formControlName="faqContent"
+                                [ngClass]="{
+                                  'is-invalid':
+                                    (faqForm.get('faqContent')?.errors && 
+                                    faqForm.get('faqContent')?.touched) || 
+                                    (faqForm.get('faqContent')?.hasError('required') &&
+                                    faqFormSubmitted)
+                                }"
+                            />
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </form>
+    </div>
+   
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button
+      [mat-dialog-close]="false"
+      class="btn btn-outline-green btn-md me-4 px-4 d-none"
+      #close
+    >
+      No, cancel
+    </button>
+    <button
+      class="btn btn-outline-green btn-md me-4 px-4"
+      (click)="addWebsite()"
+    >
+      Add more
+    </button>
+    <button
+      class="btn btn-green btn-md px-4"
+      (click)="submit()"
+    >
+        <!-- <app-loading-button
+          [text]="'Save'"
+          [condition]="isLoading"
+        ></app-loading-button> -->
+        Save
+    </button>
+</mat-dialog-actions>
+  

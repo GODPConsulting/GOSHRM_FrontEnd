@@ -1,6 +1,10 @@
 <div class="faq_wrapper">
-    <div class="faq-title">
+    <div class="faq-title d-flex justify-content-between">
         <h3>Help/FAQ</h3>
+        <app-searchbar
+            [canAdd]="true"
+            (btnAction)="openDialog(false)"
+      ></app-searchbar>
     </div>
    <div>
         <div class="faq-content bg-white p-4 my-5">

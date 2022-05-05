@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RouteGuard } from '@core/guards/route.guard';
-import { FAQComponent } from '@shared/components/faq/faq.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 // import { OfflineComponent } from './offline/offline.component';
@@ -122,7 +121,10 @@ const routes: Routes = [
       },
       {
         path: 'faq',
-        component: FAQComponent
+        loadChildren: () =>
+          import('./pages/faq-help/faq-help.module').then(
+            (m) => m.FaqHelpModule
+          ),
       }
     ],
   },

@@ -100,6 +100,15 @@ export class CourseCreationService {
     return this.http.makeRequestWithData('post', endpoint, {}, courseIds);
   }
 
+  public submitCourse(
+    courseId: number
+  ) {
+    const endpoint = '/course/submitCourse';
+    const params = new HttpParams()
+    .set('courseId', courseId)
+    return this.http.makeRequestWithData('post', endpoint, params);
+  }
+
   public deleteQuestion(
     course: any
   ): Observable<ResponseModel<CourseAssessment>> {

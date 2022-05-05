@@ -129,7 +129,7 @@
                             >Competence Assessment</a></li>
                           <li><a class="dropdown-item" [routerLink]="['/courses/learning-assessment', course?.courseId]"
                             >Learning Assessment </a></li>
-                          <li><a class="dropdown-item" href="#">Submit</a></li>
+                          <li><a class="dropdown-item" (click)="submit(course?.courseId)">Submit</a></li>
                           <li>
                             <a 
                               class="dropdown-item"
