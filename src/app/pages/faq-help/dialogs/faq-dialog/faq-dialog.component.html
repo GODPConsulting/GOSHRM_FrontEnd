@@ -8,24 +8,24 @@
     <div>
         <form [formGroup]="faqForm">
             <div class="">
-                <div formArrayName="faq">
+                <div formArrayName="fqRequests">
                   <div *ngFor="let item of newForm.controls; index as i">
                     <div [formGroupName]="i">
                         <div class="row">
                           <div class="col-12">
                             <div class="form_group">
-                              <label class="col-form-label"
+                              <label class="form-label"
                                   >FAQ Title</label
                               >
                                 <input
                                     class="form-control"
                                     type="text"
-                                    formControlName="faqTitle"
+                                    formControlName="subject"
                                     [ngClass]="{
                                         'is-invalid':
-                                        (faqForm.get('faqTitle')?.errors && 
-                                        faqForm.get('faqTitle')?.touched) || 
-                                        (faqForm.get('faqTitle')?.hasError('required') &&
+                                        (faqForm.get('subject')?.errors && 
+                                        faqForm.get('subject')?.touched) || 
+                                        (faqForm.get('subject')?.hasError('required') &&
                                         faqFormSubmitted)
                                     }"
                                 />
@@ -33,21 +33,21 @@
                         </div>
                         <div class="col-12">
                             <div class="form_group">
-                            <label class="col-form-label"
-                                >FAQ Content</label
-                            >
-                            <input
-                                class="form-control"
-                                type="text"
-                                formControlName="faqContent"
-                                [ngClass]="{
-                                  'is-invalid':
-                                    (faqForm.get('faqContent')?.errors && 
-                                    faqForm.get('faqContent')?.touched) || 
-                                    (faqForm.get('faqContent')?.hasError('required') &&
-                                    faqFormSubmitted)
-                                }"
-                            />
+                              <label class="form-label"
+                                  >FAQ Content</label
+                              >
+                              <textarea 
+                                name="" id="" 
+                                cols="30" rows="10"
+                                formControlName="content"
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      (faqForm.get('content')?.errors && 
+                                      faqForm.get('content')?.touched) || 
+                                      (faqForm.get('content')?.hasError('required') &&
+                                      faqFormSubmitted)
+                                  }"
+                              ></textarea>
                             </div>
                         </div>
                         </div>

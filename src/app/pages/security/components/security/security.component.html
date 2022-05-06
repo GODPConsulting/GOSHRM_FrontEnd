@@ -20,7 +20,7 @@
                   <input
                     class="form-control pr-2"
                     [type]="showCurrentPassword ? 'text' : 'password'"
-                    formControlName="old_Password"
+                    formControlName="oldPassword"
                     placeholder="Enter current password"
                   />
                   <i
@@ -45,7 +45,7 @@
                   <input
                     class="form-control pr-2"
                     [type]="showPassword ? 'text' : 'password'"
-                    formControlName="new_Password"
+                    formControlName="newPassword"
                     placeholder="Enter new password"
                   />
                   <i
@@ -70,7 +70,7 @@
                   <input
                     class="form-control pr-2"
                     [type]="showConfirmPassword ? 'text' : 'password'"
-                    formControlName="confirm_Password"
+                    formControlName="confirmPassword"
                     placeholder="Re-enter new password"
                   />
                   <i
@@ -90,7 +90,7 @@
             <div class="d-flex justify-content-end my-5 pt-5">
               <button 
                 class="btn btn-orange btn-lg"
-                (click)="submit(1)"
+                (click)="submit()"
               >
                 Update
               </button>

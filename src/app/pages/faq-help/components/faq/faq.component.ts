@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
+import { ResponseModel } from 'app/models/response.model';
+import { Subscription } from 'rxjs';
 import { FaqDialogComponent } from '../../dialogs/faq-dialog/faq-dialog.component';
+import { FaqHelpService } from '../../services/faq-help.service';
 
 @Component({
   selector: 'app-faq',
@@ -9,12 +13,38 @@ import { FaqDialogComponent } from '../../dialogs/faq-dialog/faq-dialog.componen
   styleUrls: ['./faq.component.scss']
 })
 export class FaqComponent implements OnInit {
+  public sub: Subscription = new Subscription();
+  public isFetchingFaq: boolean = false;
+  public faqs: any[] = [];
 
   constructor(
     public dialog: MatDialog,
+    private _faq: FaqHelpService,
+    private _helper: HelperService
   ) { }
 
   ngOnInit(): void {
+    this.getAllFaqs();
+  }
+
+  public getAllFaqs(): void {
+    this._helper.startSpinner();
+    this.isFetchingFaq = true;
+    this.sub.add(
+      this._faq.getFaq().subscribe({
+        next: (res: any) => {
+          this._helper.stopSpinner();
+          this.isFetchingFaq = false;
+          this.faqs = res['faqs'];
+          // console.log(res, this.faqs)
+        },
+        error: (error: ResponseModel<null>) => {
+          this._helper.stopSpinner();
+          this.isFetchingFaq = false;
+          console.log(error);
+        },
+      })
+    );
   }
 
   public openDialog(

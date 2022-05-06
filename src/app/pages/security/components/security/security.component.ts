@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BaseComponent } from '@core/base/base/base.component';
+import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { HelperService } from '@core/services/healper.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { Security } from '../../models/security.model';
@@ -22,38 +24,50 @@ export class SecurityComponent implements OnInit {
   public spinner: boolean = false;
   public securityFormSubmitted: boolean = false;
   public loggedInUser: any;
+  public userType: any;
 
   constructor(
     private _security: SecurityService,
     private _base: BaseComponent,
     private fb: FormBuilder,
-    private _currentService: CurrentUserService
+    private _currentService: CurrentUserService,
+    private _helper: HelperService
   ) { }
 
   ngOnInit(): void {
     this.loggedInUser = this._currentService.getUser();
+    if(this.loggedInUser.customerTypeId == 1) {
+      this.userType = CreatedByType.provider
+    } else if(this.loggedInUser.customerTypeId == 2) {
+      this.userType = CreatedByType.instructor
+    } else {
+      this.userType = CreatedByType.participant
+    }
     this.initPasswordForm();
   }
 
   initPasswordForm() {
     this.changePasswordForm = this.fb.group({
-      old_Password: ['', Validators.required],
-      new_Password: ['', Validators.required],
-      confirm_Password: ['', Validators.required]
+      type: [this.userType],
+      userId: [this.loggedInUser.userId],
+      oldPassword: ['', Validators.required],
+      newPassword: ['', Validators.required],
+      confirmPassword: ['', Validators.required]
     })
   }
 
-  submit(securitySetupTypeId: any) {
+  submit() {
     this.securityFormSubmitted = true;
+    this._helper.startSpinner();
     const payload = this.changePasswordForm.value;
-    payload.trainingProviderId = this.loggedInUser?.trainingProviderId;
-    payload.securitySetupTypeId = securitySetupTypeId;
     console.log(payload);
     this.sub.add(
       this._security.updateSecuritySetup(payload).subscribe({
         next: (res: ResponseModel<Security>) => {
           this.securityFormSubmitted = false;
+          this._helper.stopSpinner();
           console.log(res);
+          this.changePasswordForm.reset();
           this._base.openSnackBar(
             'Great...!!!, Your action was successful',
             'success'
@@ -61,6 +75,7 @@ export class SecurityComponent implements OnInit {
         },
         error: (error: any) => {
           this.securityFormSubmitted = false;
+          this._helper.stopSpinner();
           console.log(error);
         },
       })

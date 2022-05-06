@@ -55,28 +55,22 @@ export class FaqDialogComponent implements OnInit {
   
   initFaqForm() {
     this.faqForm = this.fb.group({
-      faq: this.fb.array([
+      fqRequests: this.fb.array([
         this.fb.group({
           faqId: [0],
-          faqTitle: ['',
-            [
-              Validators.required,
-            ]
-          ],
-          faqContent: ['', Validators.required],
-          companyId: [this.loggedInUser.companyId],
-          userId: [this.loggedInUser.userId],
+          subject: ['', Validators.required],
+          content: ['', Validators.required],
         })
       ]),
     })
   }
 
   get newForm(): FormArray {
-    return this.faqForm.get('faq') as FormArray;
+    return this.faqForm.get('fqRequests') as FormArray;
   }
 
   addWebsite() {
-    let web = this.fb.group(new WebsiteDTO());
+    let web = this.fb.group(new FaqDTO());
 		this.newForm.push(web);
   }
 
@@ -93,7 +87,7 @@ export class FaqDialogComponent implements OnInit {
     if (this.faqForm.valid) {
       this._helper.startSpinner();
       this.isLoading = true;
-      const payload = this.faqForm.get('faq')?.value;
+      const payload = this.faqForm.value;
       console.log(payload)
       this._faq.addUpdateFAQ(payload).subscribe({
         next: (res: any) => {
@@ -136,10 +130,9 @@ export class FaqDialogComponent implements OnInit {
   }
 }
 
-export class WebsiteDTO {
-  websiteId= 0;
-  website_Name= "";
-  website_Link = "";
-  companyId = 0;
+export class FaqDTO {
+  faqId= 0;
+  subject= "";
+  content = "";
 }
 

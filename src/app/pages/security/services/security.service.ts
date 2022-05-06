@@ -1,4 +1,3 @@
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
 import { ResponseModel } from 'app/models/response.model';
@@ -12,19 +11,10 @@ import { Security } from '../models/security.model';
 export class SecurityService {
   constructor(private http: HttpService) {}
 
-  public getSecurity(
-    trainingProviderId: string
-  ): Observable<ResponseModel<Security>> {
-   const endpoint = '/trainingprovidersecuritysetup/get/all/trainingprovidersecuritysetup';
-   const params = new HttpParams()
-   .set('trainingProviderId', trainingProviderId)
-   return this.http.getRequestWithParams(endpoint, params);
-  }
-
   public updateSecuritySetup(
     payout: Security
   ): Observable<ResponseModel<Security>> {
-    const endpoint = '/trainingprovidersecuritysetup/add/update/trainingprovidersecuritysetup';
+    const endpoint = '/securitysetup/addAndUpdateSecuritysetup';
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
   }
 }

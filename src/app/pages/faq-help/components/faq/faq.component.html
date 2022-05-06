@@ -8,35 +8,31 @@
     </div>
    <div>
         <div class="faq-content bg-white p-4 my-5">
-            <div class="accordion" id="formAccordion" *ngFor="let item of [1,2,3,4], index as i">
+            <div class="accordion" id="formAccordion" *ngFor="let faq of faqs, index as i">
                 <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
+                <h2 class="accordion-header" [attr.id]="'heading'+i">
                     <div class="d-flex align-items-center">
                     <div
                         class="accordion-button"
                         data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne"
+                        [attr.data-bs-target]="'#collapse'+i"
                         aria-expanded="true"
-                        aria-controls="collapseOne"
+                        [attr.aria-controls]="'collapse'+i"
                     >
-                        Advanced Excel Ms
+                        {{ faq?.subject }}
                     </div>
                     <div class="w-fill-available"></div>
                     </div>
                 </h2>
                 <div
-                    id="collapseOne"
+                    [attr.id]="'collapse'+i"
                     class="accordion-collapse collapse show"
-                    aria-labelledby="headingOne"
+                    [attr.aria-labelledby]="'heading'+i"
                 >
                     <div class="accordion-body">
                     <div>
                         <p>
-                            Dolor, tortor id morbi amet etiam. Donec turpis aliquet sit tempor eget aenean 
-                            pretium dui. Semper ultrices massa vulputate blandit duis dictum sed nisl, 
-                            feugiat. Arcu id sit pulvinar risus et ut lacinia dignissim scelerisque. 
-                            Tincidunt cras rhoncus mi, purus. Elementum dolor venenatis sit id mi turpis. 
-                            Amet vel quis ut ultricies facilisis facilisis. Eget. ultricies facilisis ...
+                           {{ faq?.content }}
                         </p>
                     </div>
                     </div>
