@@ -1,3 +1,5 @@
+import { CurrentUserService } from './../../../core/services/current-user.service';
+import { environment } from './../../../../environments/environment';
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
@@ -10,7 +12,7 @@ import { CourseAssessment, CourseOutline, Courses } from '../models/course-creat
 })
 
 export class CourseCreationService {
-  constructor(private http: HttpService) {}
+  constructor(private http: HttpService, private _current: CurrentUserService) {}
 
   public getAllCourses(
     payload: any
@@ -205,6 +207,7 @@ export class CourseCreationService {
    return this.http.makeRequestWithData('post',endpoint, {}, payload);
   }
 
+
   public getcourseParticipant(
     payload: any
   ): Observable<ResponseModel<any>> {
@@ -213,5 +216,44 @@ export class CourseCreationService {
    .set('courseId', payload.courseId)
    .set('searchParams', payload.searchParams);
    return this.http.getRequestWithParams(endpoint, params);
+  }
+
+  offerLetterUpload(path: any, body: any, file: File) {
+    return new Promise((resolve, reject) => {
+      const url = `${environment.api_url}${path}`;
+      const xhr: XMLHttpRequest = new XMLHttpRequest();
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            resolve(JSON.parse(xhr.response));
+          } else {
+            reject(xhr.response);
+          }
+        }
+      };
+
+      xhr.open('POST', url, true);
+      const formData = new FormData();
+      formData.append('File', file, file.name);
+      formData.append('courseId', body.courseId);
+
+      const token = this._current.getAuthToken();
+      xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+      xhr.send(formData);
+    });
+  }
+
+  UploadCustomerOfferLetter(body: any, file: File): Promise<any> {
+    const url = `/course/uploadParticipants`;
+    return this.offerLetterUpload(
+            url,
+            body,
+            file
+        )
+        .then(data => {
+            return data;
+        });
   }
 }
