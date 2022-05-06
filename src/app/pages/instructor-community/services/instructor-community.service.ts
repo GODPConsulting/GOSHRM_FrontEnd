@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
 import { ResponseModel } from 'app/models/response.model';
+import { ConversationType } from 'app/pages/communication/models/communication.model';
 import { Courses } from 'app/pages/course-creation/models/course-creation.model';
 import { Observable } from 'rxjs';
 
@@ -19,12 +20,11 @@ export class InstructorCommunityService {
    return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
 
-  public getCourseQuestionsAndReply(
-    courseId: string
-  ): Observable<ResponseModel<Courses>> {
+  public getCourseQuestionsAndReply(): Observable<ResponseModel<Courses>> {
    const endpoint = '/course/getCourseQuestionAndReply';
    const params = new HttpParams()
-   .set('courseId', courseId)
+   .set('courseId', 0)
+   .set('conversationType', ConversationType.Conversation)
    return this.http.getRequestWithParams(endpoint, params);
   }
 

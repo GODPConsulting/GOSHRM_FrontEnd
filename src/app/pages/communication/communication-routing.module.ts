@@ -10,7 +10,7 @@ import { CommunicationResolver } from './resolvers/communication.resolver';
 
 const routes: Routes = [
   { 
-    path: '',
+    path: 'qa',
     component: CommunicationComponent,
     resolve: [CommunicationResolver]
   },

@@ -4,7 +4,7 @@ import { HttpService } from '@shared/services/http.service';
 import { ResponseModel } from 'app/models/response.model';
 import { Courses } from 'app/pages/course-creation/models/course-creation.model';
 import { Observable } from 'rxjs';
-import { messageDTO } from '../models/communication.model';
+import { ConversationType, messageDTO } from '../models/communication.model';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +26,7 @@ export class CommunicationService {
    const endpoint = '/course/getCourseQuestionAndReply';
    const params = new HttpParams()
    .set('courseId', courseId)
+   .set('conversationType', ConversationType.QA)
    return this.http.getRequestWithParams(endpoint, params);
   }
 

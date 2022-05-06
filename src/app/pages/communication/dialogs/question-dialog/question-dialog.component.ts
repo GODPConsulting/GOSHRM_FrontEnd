@@ -17,7 +17,7 @@ import { ResponseModel } from 'app/models/response.model';
 import { Courses } from 'app/pages/course-creation/models/course-creation.model';
 import { CourseCreationService } from 'app/pages/course-creation/services/course-creation.service';
 import { Subscription } from 'rxjs';
-import { QAType } from '../../models/communication.model';
+import { ConversationType, QAType } from '../../models/communication.model';
 import { CommunicationService } from '../../services/communication.service';
 
 @Component({
@@ -102,7 +102,8 @@ export class QuestionDialogComponent implements OnInit {
       createdBy: [this.userId],
       questionByName: [this.loggedInUser.full_Name],
       comment: ['', Validators.required],
-      companyId: [+this.loggedInUser.companyId]
+      companyId: [+this.loggedInUser.companyId],
+      conversationType: [ConversationType.QA],
     });
   }
 

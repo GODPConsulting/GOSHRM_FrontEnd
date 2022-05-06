@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
-import { ActivatedRoute } from '@angular/router';
 import { CreatedByType } from '@core/models/creation-type.model';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
@@ -10,9 +9,9 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { InitialSearchDTO, ResponseModel, SearchDTO } from 'app/models/response.model';
 import { QAType } from 'app/pages/communication/models/communication.model';
-import { CommunicationService } from 'app/pages/communication/services/communication.service';
 import { Subscription } from 'rxjs';
 import { QuestionDialogComponent } from '../../dialogs/question-dialog/question-dialog.component';
+import { InstructorCommunityService } from '../../services/instructor-community.service';
 
 @Component({
   selector: 'app-instructor-community',
@@ -26,7 +25,6 @@ export class InstructorCommunityComponent implements OnInit {
   public htmlContent = ``;
   public replyForm!: FormGroup;
   public loggedInUser!: any;
-  public courseId!: any;
   public userId!: string;
   public createdBy!: number;
   public questions: any[] = [];
@@ -71,15 +69,11 @@ export class InstructorCommunityComponent implements OnInit {
     public dialog: MatDialog,
     public fb: FormBuilder,
     private _current: CurrentUserService,
-    private _communication: CommunicationService,
-    private _helper: HelperService,
-    private _route: ActivatedRoute
+    private _communication: InstructorCommunityService,
+    private _helper: HelperService
   ) { }
 
   ngOnInit(): void {
-    const route = this._route.snapshot.paramMap.get('courseId');
-    this.courseId = route;
-    console.log(this.courseId)
     this.loggedInUser = this._current.getUser();
     this.userId = this.loggedInUser.userId
     if(this.loggedInUser.customerTypeId == 1) {
@@ -108,7 +102,7 @@ export class InstructorCommunityComponent implements OnInit {
     this.isFetchingQuestions = true;
     this._helper.startSpinner();
     this.sub.add(
-      this._communication.getCourseQuestionsAndReply(this.courseId).subscribe({
+      this._communication.getCourseQuestionsAndReply().subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingQuestions = false;
@@ -127,7 +121,7 @@ export class InstructorCommunityComponent implements OnInit {
     );
   }
 
-  public getResplies(question: any, reply: any ): void {
+  public getReplies(question: any, reply: any ): void {
     const payload = {
       courseQAId: question.courseQAId,
       replyId: reply.replyId
@@ -158,7 +152,7 @@ export class InstructorCommunityComponent implements OnInit {
   public initReplyForm() {
     this.replyForm = this.fb.group({
       courseQAId: [this.question?.courseQAId],
-      courseId: [this.courseId],
+      courseId: [0],
       parentId: [this.question?.replyId ? this.question?.replyId : 0],
       qaType: [QAType.Reply],
       createdByType: [this.createdBy],
@@ -185,7 +179,7 @@ export class InstructorCommunityComponent implements OnInit {
     } else {
       res?.classList.add('d-none');
     }
-    this.getResplies(question, reply);
+    this.getReplies(question, reply);
   }
 
   public openDialog(
@@ -206,7 +200,6 @@ export class InstructorCommunityComponent implements OnInit {
   public replyQuestion(question: any, index:any, reply?: any) {
     this.replyForm = this.fb.group({
       courseQAId: [question?.courseQAId],
-      courseId: [+this.courseId],
       parentId: [reply?.replyId ? reply?.replyId : 0],
       qaType: [QAType.Reply],
       createdByType: [this.createdBy],
@@ -241,7 +234,7 @@ export class InstructorCommunityComponent implements OnInit {
             } else {
               this.isSuccessful = false;
               this.isLoading = false;
-              this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
+              // this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
             }
           },
           error: (error: any) => {
