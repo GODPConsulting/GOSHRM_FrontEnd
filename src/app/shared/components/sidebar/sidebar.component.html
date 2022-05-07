@@ -133,8 +133,6 @@
             href="#collapseOne" role="button" 
             aria-expanded="false" aria-controls="collapseOne" 
             class="side-link toggle-dropdown"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: false }"
             (click)="toggleSidebar()"
           >
               <span class="side-icon">
@@ -161,7 +159,7 @@
                       class="side-link"
                       routerLinkActive="active"
                       [routerLinkActiveOptions]="{ exact: false }"
-                      routerLink="/communication"
+                      routerLink="/communication/qa"
                       (click)="toggleSidebar()"
                     >
                       <span class="side-icon ps-4">

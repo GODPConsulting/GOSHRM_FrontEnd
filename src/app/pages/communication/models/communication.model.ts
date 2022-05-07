@@ -23,6 +23,11 @@ export enum AnnouncementType {
   Promotional = 2
 }
 
+export enum ConversationType{
+  QA = 1,
+  Conversation = 2,
+}
+
 export interface messageDTO {
     courseMessageId: number,
     subject: string,

@@ -241,7 +241,7 @@ export class QaComponent implements OnInit {
             } else {
               this.isSuccessful = false;
               this.isLoading = false;
-              this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
+              // this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
             }
           },
           error: (error: any) => {

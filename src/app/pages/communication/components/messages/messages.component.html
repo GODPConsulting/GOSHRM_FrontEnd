@@ -145,10 +145,9 @@
                               <tr class="text-capitalize" *ngFor="let message of messages; index as i">
                                   <td 
                                     class="click" 
-                                    (click)="goToMesage(message)"
                                   >
                                       <span class="pe-3"><input type="checkbox" name="" id=""></span>
-                                      <span>{{ message?.name }}</span>
+                                      <span (click)="goToMesage(message)">{{ message?.name }}</span>
                                   </td>
                                   <td 
                                     class="click" 
