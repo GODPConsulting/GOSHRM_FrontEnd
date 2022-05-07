@@ -200,14 +200,6 @@ export class CourseCreationService {
    return this.http.makeRequestWithData('post',endpoint, {}, payload);
   }
 
-  public uploadCourseParticipants(
-    payload: any
-  ): Observable<ResponseModel<any>> {
-   const endpoint = '/course/uploadParticipants';
-   return this.http.makeRequestWithData('post',endpoint, {}, payload);
-  }
-
-
   public getcourseParticipant(
     payload: any
   ): Observable<ResponseModel<any>> {
@@ -218,7 +210,7 @@ export class CourseCreationService {
    return this.http.getRequestWithParams(endpoint, params);
   }
 
-  offerLetterUpload(path: any, body: any, file: File) {
+  public participantUpload(path: any, body: any, file: File) {
     return new Promise((resolve, reject) => {
       const url = `${environment.api_url}${path}`;
       const xhr: XMLHttpRequest = new XMLHttpRequest();
@@ -245,9 +237,9 @@ export class CourseCreationService {
     });
   }
 
-  UploadCustomerOfferLetter(body: any, file: File): Promise<any> {
+  public UploadParticipants(body: any, file: File): Promise<any> {
     const url = `/course/uploadParticipants`;
-    return this.offerLetterUpload(
+    return this.participantUpload(
             url,
             body,
             file

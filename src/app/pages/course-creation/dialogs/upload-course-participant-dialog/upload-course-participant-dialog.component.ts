@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-// import { CurrenciesService } from '@core/services/currencies.service';
-// import { HelperService } from '@core/services/healper.service';
+import { CurrenciesService } from '@core/services/currencies.service';
+import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { Subscription } from 'rxjs';
 import { CourseCreationService } from '../../services/course-creation.service';
@@ -40,9 +40,9 @@ export class UploadCourseParticipantDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<any>,
     public dialog: MatDialog,
     private _course: CourseCreationService,
-    // private _helper: HelperService,
+    private _helper: HelperService,
     private fb: FormBuilder,
-    // private _currency: CurrenciesService
+    private _currency: CurrenciesService
   ) { }
 
   ngOnInit() {
@@ -52,25 +52,22 @@ export class UploadCourseParticipantDialogComponent implements OnInit {
   }
 
   onSelectedFile(event: any) {
-    // this._currency.uploadFileValidator(event, this.data.editObject.courseId);
-    this.file = event?.target?.files[0]
-    console.log( event?.target);
+    this._currency.uploadFileValidator(event);
+    this.file = event?.target?.files[0];
   }
 
   submit() {
     this.isLoading = true;
-    // if (!this.uploadParticipantForm.get("uploadInput")?.value) {
-    //   return this._helper.triggerErrorAlert("Error", "Select a file");
-    // }
-    console.log(this.file)
     const body = {
       courseId: this.data?.editObject?.courseId
     }
-     this._course.UploadCustomerOfferLetter(body, this. file)
+     this._course.UploadParticipants(body, this. file)
      .then((data) => {
-       console.log(data);
+       this._helper.triggerSucessAlert(data.status.message.friendlyMessage);
+       this.close.nativeElement.click();
      })
      .catch((err) => {
+       this._helper.triggerErrorAlert(err);
        console.log(err)
      })
   }
