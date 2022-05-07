@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CurrenciesService } from '@core/services/currencies.service';
-import { HelperService } from '@core/services/healper.service';
+// import { CurrenciesService } from '@core/services/currencies.service';
+// import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { Subscription } from 'rxjs';
 import { CourseCreationService } from '../../services/course-creation.service';
@@ -26,7 +26,7 @@ export class UploadCourseParticipantDialogComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public isLoading: boolean =false;
   public uploadParticipantForm!: FormGroup;
-  public file!: File;
+  public file!: any;
 
 
   @Output() event: EventEmitter<{
@@ -40,9 +40,9 @@ export class UploadCourseParticipantDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<any>,
     public dialog: MatDialog,
     private _course: CourseCreationService,
-    private _helper: HelperService,
+    // private _helper: HelperService,
     private fb: FormBuilder,
-    private _currency: CurrenciesService
+    // private _currency: CurrenciesService
   ) { }
 
   ngOnInit() {
@@ -51,43 +51,28 @@ export class UploadCourseParticipantDialogComponent implements OnInit {
     });
   }
 
-  onSelectedFile(event: Event, form: FormGroup) {
-    this._currency.uploadFileValidator(event, form, this.data.editObject.courseId);
+  onSelectedFile(event: any) {
+    // this._currency.uploadFileValidator(event, this.data.editObject.courseId);
+    this.file = event?.target?.files[0]
+    console.log( event?.target);
   }
 
   submit() {
     this.isLoading = true;
-    if (!this.uploadParticipantForm.get("uploadInput")?.value) {
-      return this._helper.triggerErrorAlert("Error", "Select a file");
-    }
+    // if (!this.uploadParticipantForm.get("uploadInput")?.value) {
+    //   return this._helper.triggerErrorAlert("Error", "Select a file");
+    // }
     console.log(this.file)
-    const formData = new FormData();
-    formData.append(
-      "File", this.uploadParticipantForm.get("uploadInput")?.value
-    );
-    formData.append(
-      "CourseId", this.data?.editObject?.courseId
-    );
-    this.sub.add(
-      this._course.uploadCourseParticipants(formData).subscribe(
-        (res: any) => {
-          this.isLoading = false;
-          const message = res.status.message.friendlyMessage;
-          if (res.status.isSuccessful) {
-            this._helper.triggerSucessAlert(message);
-            this.fileInput.nativeElement.value = "";
-            this.close.nativeElement.click();
-          } else {
-            this._helper.triggerErrorAlert(message);
-          }
-        },
-        (err) => {
-          this.isLoading = false;
-          const message = err.status.message.friendlyMessage;
-          this._helper.triggerErrorAlert(message);
-        }
-      )
-    )
+    const body = {
+      courseId: this.data?.editObject?.courseId
+    }
+     this._course.UploadCustomerOfferLetter(body, this. file)
+     .then((data) => {
+       console.log(data);
+     })
+     .catch((err) => {
+       console.log(err)
+     })
   }
 
 }
