@@ -5,6 +5,7 @@ import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { FaqDialogComponent } from '../../dialogs/faq-dialog/faq-dialog.component';
+import { FaqDTO } from '../../models/faq.model';
 import { FaqHelpService } from '../../services/faq-help.service';
 
 @Component({
@@ -15,7 +16,7 @@ import { FaqHelpService } from '../../services/faq-help.service';
 export class FaqComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public isFetchingFaq: boolean = false;
-  public faqs: any[] = [];
+  public faqs: FaqDTO[] = [];
 
   constructor(
     public dialog: MatDialog,

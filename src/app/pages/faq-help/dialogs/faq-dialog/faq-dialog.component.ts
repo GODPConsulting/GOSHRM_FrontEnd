@@ -14,6 +14,7 @@ import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
+import { FaqDTO } from '../../models/faq.model';
 import { FaqHelpService } from '../../services/faq-help.service';
 // import { ResponseModel } from 'app/models/response.model';
 
@@ -128,11 +129,5 @@ export class FaqDialogComponent implements OnInit {
       });
     }
   }
-}
-
-export class FaqDTO {
-  faqId= 0;
-  subject= "";
-  content = "";
 }
 

@@ -11,7 +11,7 @@ import { DialogModel } from '@shared/components/models/dialog.model';
 import { InitialSearchDTO, ResponseModel, SearchDTO } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { QuestionDialogComponent } from '../../dialogs/question-dialog/question-dialog.component';
-import { QAType } from '../../models/communication.model';
+import { ConversationType, QAType } from '../../models/communication.model';
 import { CommunicationService } from '../../services/communication.service';
 
 @Component({
@@ -164,7 +164,8 @@ export class QaComponent implements OnInit {
       createdByType: [this.createdBy],
       questionByName: [this.loggedInUser.full_Name],
       createdBy: [this.userId],
-      comment: [this.question?.comment ? this.question?.comment : '', Validators.required]
+      comment: [this.question?.comment ? this.question?.comment : '', Validators.required],
+      conversationType: [ConversationType.QA],
     })
   }
 
@@ -213,7 +214,8 @@ export class QaComponent implements OnInit {
       questionByName: [this.loggedInUser.full_Name],
       createdBy: [this.userId],
       comment: [this.htmlContent, Validators.required],
-      companyId: [+this.loggedInUser.companyId]
+      companyId: [+this.loggedInUser.companyId],
+      conversationType: [ConversationType.QA],
     });
     const payload = this.replyForm.value;
     if(payload.parentId == 0 ) {

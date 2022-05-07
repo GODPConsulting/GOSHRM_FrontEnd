@@ -8,7 +8,7 @@ import { HelperService } from '@core/services/healper.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { InitialSearchDTO, ResponseModel, SearchDTO } from 'app/models/response.model';
-import { QAType } from 'app/pages/communication/models/communication.model';
+import { ConversationType, QAType } from 'app/pages/communication/models/communication.model';
 import { Subscription } from 'rxjs';
 import { QuestionDialogComponent } from '../../dialogs/question-dialog/question-dialog.component';
 import { InstructorCommunityService } from '../../services/instructor-community.service';
@@ -158,7 +158,8 @@ export class InstructorCommunityComponent implements OnInit {
       createdByType: [this.createdBy],
       questionByName: [this.loggedInUser.full_Name],
       createdBy: [this.userId],
-      comment: [this.question?.comment ? this.question?.comment : '', Validators.required]
+      comment: [this.question?.comment ? this.question?.comment : '', Validators.required],
+      conversationType: [ConversationType.Conversation],
     })
   }
 
@@ -206,7 +207,8 @@ export class InstructorCommunityComponent implements OnInit {
       questionByName: [this.loggedInUser.full_Name],
       createdBy: [this.userId],
       comment: [this.htmlContent, Validators.required],
-      companyId: [+this.loggedInUser.companyId]
+      companyId: [+this.loggedInUser.companyId],
+      conversationType: [ConversationType.Conversation],
     });
     const payload = this.replyForm.value;
     if(payload.parentId == 0 ) {
