@@ -21,6 +21,7 @@ import { SuccessModalComponent } from './components/success-modal/success-modal.
 import { TaskBarComponent } from './components/task-bar/task-bar.component';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { UploadDocComponent } from './components/upload-doc/upload-doc.component';
+import { CourseCardComponent } from 'app/pages/landing-page/components/course-card/course-card.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { UploadDocComponent } from './components/upload-doc/upload-doc.component
     SuccessModalComponent,
     TaskBarComponent,
     BackButtonComponent,
-    UploadDocComponent
+    UploadDocComponent,
+    CourseCardComponent
   ],
   imports: [
     CommonModule,
@@ -67,7 +69,8 @@ import { UploadDocComponent } from './components/upload-doc/upload-doc.component
     SuccessModalComponent,
     TaskBarComponent,
     BackButtonComponent,
-    UploadDocComponent
+    UploadDocComponent,
+    CourseCardComponent
   ],
 })
 export class SharedModule {}

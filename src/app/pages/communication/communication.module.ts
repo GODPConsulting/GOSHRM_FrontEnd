@@ -10,12 +10,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { QuestionDialogComponent } from './dialogs/question-dialog/question-dialog.component';
 import { CommunicationComponent } from './components/communication/communication.component';
-import { ViewMessageComponent } from './components/view-message/view-message.component';
 import { SendMessageComponent } from './components/send-message/send-message.component';
 import { ContactListDialogComponent } from './dialogs/contact-list-dialog/contact-list-dialog.component';
 import { ContactListComponent } from './components/contact-list/contact-list.component';
 import { UpdateContactDeatilDialogComponent } from './dialogs/update-contact-deatil-dialog/update-contact-deatil-dialog.component';
 import { TableModule } from 'primeng/table';
+import { QaLayoutComponent } from './components/qa-layout/qa-layout.component';
+import { ViewMessageComponent } from './components/view-message/view-message.component';
 
 
 
@@ -30,7 +31,8 @@ import { TableModule } from 'primeng/table';
     SendMessageComponent,
     ContactListDialogComponent,
     ContactListComponent,
-    UpdateContactDeatilDialogComponent
+    UpdateContactDeatilDialogComponent,
+    QaLayoutComponent
   ],
   imports: [
     CommonModule,

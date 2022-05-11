@@ -1,6 +1,6 @@
 export interface Courses  {
     courseId: number,
-    decisionType: string,
+    decisionType: number,
     createdByType: number,
     providerId: number,
     trainerId: number,
@@ -11,7 +11,7 @@ export interface Courses  {
     difficulty_Level: string,
     category: string,
     companyId: number,
-    scheduleType: string,
+    scheduleType: number,
     createdAt: string,
     course_Competence: [
       {
@@ -27,7 +27,7 @@ export interface Courses  {
         sectorName: string
       }
     ],
-    delivery_Type: string,
+    delivery_Type: number,
     duration: string,
     cost: number,
     facilitator: string,

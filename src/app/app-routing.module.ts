@@ -125,6 +125,27 @@ const routes: Routes = [
           import('./pages/faq-help/faq-help.module').then(
             (m) => m.FaqHelpModule
           ),
+      },
+      {
+        path: 'my-learning',
+        loadChildren: () =>
+          import('./pages/my-learnings/my-learnings.module').then(
+            (m) => m.MyLearningsModule
+          ),
+      },
+      {
+        path: 'courses/course-detail/:courseId',
+        loadChildren: () =>
+          import('./pages/course-detail/course-detail.module').then(
+            (m) => m.CourseDetailModule
+          ),
+      },
+      {
+        path: 'courses/course-description/:courseId',
+        loadChildren: () =>
+          import('./pages/course-description/course-description.module').then(
+            (m) => m.CourseDescriptionModule
+          ),
       }
     ],
   },

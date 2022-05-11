@@ -1,3 +1,5 @@
+@import "partials/abstract/mixins";
+
 .message-box {
     position: fixed;
     bottom: 2rem;
@@ -41,5 +43,13 @@
         .ng-select.custom .ng-select-container  {            
             border: none !important;
         }
+    }
+}
+
+@include maxSize($canvas: M) {
+    .message-box {
+        width: 100%;
+        right: 0;
+        min-height: 90vh;
     }
 }

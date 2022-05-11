@@ -1,0 +1,17 @@
+<div class="community__wrapper">
+    <app-back-button></app-back-button>
+    <div class="community-activities py-3">
+        <div class="d-md-flex justify-content-between">
+            <div class="">
+                <h3>Q & A</h3>
+            </div>
+            <div>
+                <app-searchbar
+                    [canAdd]="true"
+                    (btnAction)="openDialog({isEditing: false, course: courseId})"
+                ></app-searchbar>
+            </div>
+        </div>
+        <app-qa></app-qa>
+    </div>
+</div>

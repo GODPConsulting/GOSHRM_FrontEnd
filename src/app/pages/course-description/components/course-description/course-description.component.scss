@@ -1,0 +1,79 @@
+@import 'partials/abstract/variables';
+@import 'partials/abstract/mixins';
+
+.course_wrapper {
+    .banner {
+        min-height: 45vh;
+        background: $dark-100;
+        color: $white-100;
+        h2 {
+            font-weight: 600;
+            font-size: 36px;
+            line-height: 150%
+        }
+        p {
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 150%;
+        }
+        .facilitator {
+            font-size: 18px;
+            line-height: 25px;
+            &_title {
+                font-weight: 400; 
+            }
+            &_name {
+                font-weight: 600;
+            }
+        }
+        .btn {
+            width: 211px;
+        }
+    }
+    .course-details {
+        background: $white-100;
+        // position: relative;
+        &_objectives, 
+        &_requirements,
+        &_transcript,
+        &_infos{
+            .card {
+                border: 0.5px solid #E0E0E0;
+                padding: 1rem 1.5rem;
+                border-radius: .6rem;
+                margin-bottom: 3rem;
+                img &-img-top{
+                    min-height: 350px;
+                }
+                &-body {
+                    font-weight: 400;
+                    line-height: 33px;
+                    .card-title {
+                        font-size: 24px;
+                    }
+                    .card-text {
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
+        // &_infos {
+        //     position: absolute;
+        //     top: -35rem;
+        //     margin-right: 3.5rem;
+        // }
+
+    }
+}
+
+@include minSize($canvas: L) {
+    .course-details{
+        position: relative;
+        display: flex;
+        &_infos {
+            position: absolute;
+            top: -32rem;
+            margin-right: 3.5rem;
+        }
+    }
+}

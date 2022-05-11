@@ -38,6 +38,12 @@ export class QuestionDialogComponent implements OnInit {
   public courses: Courses[] = [];
   public isFetchingCourses:boolean = false;
   public course!: Courses;
+  public categoryType = [
+    {id: 1, category: 'Question'},
+    {id: 2, category: 'Stories and Inspiration'},
+    {id: 3, category: 'Thought and Recommdendation'},
+    {id: 4, category: 'Introduction'}
+  ]
   
   @Output() event: EventEmitter<{
     editObject?: any;
@@ -109,6 +115,7 @@ export class QuestionDialogComponent implements OnInit {
   public submit() {
     this._helper.startSpinner();
     const payload = this.questionForm.value;
+    payload.category = +payload.category;
     console.log(payload)
     if(this.questionForm.valid) {
       console.log(payload);

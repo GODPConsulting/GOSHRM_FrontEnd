@@ -28,8 +28,17 @@
     </div>
     <div class="container my-5">
         <div class="row">
-            <div class="col-md-6 col-lg-3" *ngFor="let item of [1,2,3,4]">
-                <app-course-card></app-course-card>
+            <div class="col-md-6 col-lg-3" *ngFor="let course of runningCourses">
+                <app-course-card
+                    [coverImage]="course?.coursePhotoUrl"
+                    [courseTitle]="course?.training_Name"
+                    [instructorName]="course?.facilitator"
+                    [price]="course?.cost"
+                    [competencies]="course?.course_Competence"
+                    (route)="goToCourseDetails(course?.courseId)"
+                    (cart)="addToCart(course)"
+                    (whilst)="addToWhilst(course)"
+                ></app-course-card>
             </div>
         </div>
     </div>

@@ -189,7 +189,7 @@ export class AddCourseComponent implements OnInit {
       providerId: [this.loggedInUser.trainingProviderId],
       trainerId: [this.loggedInUser.trainingInstructorId],
       companyId: [this.loggedInUser.companyId],
-      decisionType: [this.course?.decisionType ? this.course?.decisionType : ''],
+      decisionType: [this.course?.decisionType ? this.course?.decisionType : 0, Validators.required],
       training_Name: [this.course?.training_Name ? this.course?.training_Name : '', Validators.required],
       training_Objective: [this.course?.training_Objective? this.course?.training_Objective :''],
       course_Requirement: [[]],
@@ -199,8 +199,8 @@ export class AddCourseComponent implements OnInit {
       course_Competence: [[]],
       category: [this.course?.category ? this.course?.category : ''],
       course_sector: [[]],
-      delivery_Type: [this.course?.delivery_Type ? this.course?.delivery_Type : '', Validators.required],
-      scheduleType: [this.course?.scheduleType ? this.course?.scheduleType : '', Validators.required],
+      delivery_Type: [this.course?.delivery_Type ? this.course?.delivery_Type : 0, Validators.required],
+      scheduleType: [this.course?.scheduleType ? this.course?.scheduleType : 0, Validators.required],
       duration: [this.course?.duration ? this.course?.duration : ''],
       cost: [this.course?.cost ? this.course?.cost : 0],
       facilitator: [this.course?.facilitator ? this.course?.facilitator : []],
@@ -262,6 +262,8 @@ getTimeSpan(ticks: any ) {
       this._helper.startSpinner();
       const payload = this.addCourseForm.value;
       payload.addCover_Image  = 0;
+      payload.delivery_Type  = +payload.delivery_Type;
+      payload.decisionType  = +payload.decisionType;
       let duration = this.addCourseForm.get('duration')?.value;
       payload.cost = parseInt(payload.cost);
       let new_duration = new Date (new Date().toDateString() + ' ' + duration);

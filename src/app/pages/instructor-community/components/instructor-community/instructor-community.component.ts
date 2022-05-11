@@ -120,6 +120,28 @@ export class InstructorCommunityComponent implements OnInit {
       })
     );
   }
+  
+  getCategory(category: number) {
+    let categoryType
+    switch (category) {
+      case 1:
+        categoryType = "Question";
+        break;
+      case 2:
+        categoryType = "Stories and Inspiration";
+        break;
+      case 3:
+        categoryType = "Thought and Recommdendation ";
+        break;
+      case 4:
+        categoryType = "Introduction";
+        break;
+      default:
+        categoryType = ''
+    }
+    return categoryType
+
+  }
 
   public getReplies(question: any, reply: any ): void {
     const payload = {
@@ -193,7 +215,7 @@ export class InstructorCommunityComponent implements OnInit {
     console.log(payload);
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-
+        this.questions.push(event.editObject);
       }
     );
   }

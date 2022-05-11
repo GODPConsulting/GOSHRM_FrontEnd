@@ -18,7 +18,7 @@ export interface FacilitatorCourses {
     trainingInstructorId: number,
     facilated_Date: string,
     course_Title: string,
-    delivery_Type: string,
+    delivery_Type: number,
     course_Created: string,
     difficulty_Level: string,
     duration: string,

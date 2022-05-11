@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   public err_message: string = '';
   public isError: boolean = false;
   public profile: any;
+  
   constructor(
     // private _base: BaseComponent,
     private fb: FormBuilder,
@@ -80,7 +81,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  getProfile() {
+  public getProfile() {
     this._auth.getProfile().subscribe({
       next: (res: any) => {
         // console.log(res);

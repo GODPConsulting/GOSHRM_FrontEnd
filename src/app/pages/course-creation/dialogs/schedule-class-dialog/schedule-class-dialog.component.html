@@ -13,9 +13,13 @@
                       <label for="" class="form-label"
                         >Session Type
                       </label>
-                      <select name="" id="" class="form-select">
+                      <select 
+                        name="" id="" 
+                        class="form-select"
+                        (change)="checkFormValidation($event)"
+                      >
                           <option value="" selected></option>
-                          <option [value]="type?.name" *ngFor="let type of sessionType">
+                          <option [value]="type?.id" *ngFor="let type of sessionType">
                             {{ type?.name }}
                           </option>
                       </select>

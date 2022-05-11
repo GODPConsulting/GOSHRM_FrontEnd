@@ -13,13 +13,12 @@
                       <label for="" class="form-label"
                         >Category
                       </label>
-                      <input
-                        type="text"
-                        id="reviewers"
-                        class="form-control"
-                        placeholder=""
-                        formControlName="category"
-                      />
+                      <select name="" id="" class="form-select" formControlName="category">
+                        <option value="">-- Select Category --</option>
+                        <option [value]="item?.id" *ngFor="let item of categoryType">
+                          {{ item?.category }}
+                        </option>
+                      </select>
                     </div>
                 </div>
                 <div class="col-12">

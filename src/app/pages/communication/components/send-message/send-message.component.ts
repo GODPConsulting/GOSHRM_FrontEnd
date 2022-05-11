@@ -146,7 +146,7 @@ export class SendMessageComponent implements OnInit {
       courseMessageId: [0],
       subject: [''],
       message: [''],
-      courseId: [this.courseId],
+      courseId: [+this.courseId],
       senderEmail: [this.senderEmail],
       recipients: [],
       companyId: [this.companyId]

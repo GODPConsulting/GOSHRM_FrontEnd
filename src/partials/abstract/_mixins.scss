@@ -109,3 +109,28 @@ $XL: 1200px; // desktops..
     width: 100%;
   }
 }
+
+@mixin custom-scroll-accordion {
+  &::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: darken(white, 10);
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 0px rgba(0, 0, 0, 0);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-corner {
+    display: none;
+    height: 0px;
+    width: 0px;
+  }
+}

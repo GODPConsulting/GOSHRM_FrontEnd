@@ -36,8 +36,8 @@ export class ScheduleClassDialogComponent implements OnInit {
   public documentUrl: any;
   public course!: Courses;
   public sessionType: any[] = [
-    {id: 1, name: 'Public'},
-    {id: 2, name: 'Private'},
+    {id: 1, name: 'Private'},
+    {id: 2, name: 'Public'},
     {id: 3, name: 'In-house'},
   ];
   public isInHouseOnline: boolean = false;
@@ -76,7 +76,6 @@ export class ScheduleClassDialogComponent implements OnInit {
     this.courseId = this.activateRoute.snapshot.paramMap.get('courseId');
     this.course = this.data.course;
     this.initScheduleClassForm();
-    this.checkFormValidation();
     this.getAllJobTitles();
     this.getJobGrades();
     this.getAllOffices();
@@ -167,17 +166,18 @@ export class ScheduleClassDialogComponent implements OnInit {
     })
   }
 
-  public checkFormValidation() {
-    this.isInHouseOnline = this.data.course.delivery_Type == 'online' &&
-                          this.data.course.scheduleType == 'Inhouse';
-    this.isPrivateOnline = this.data.course.delivery_Type == 'online' &&
-                          this.data.course.scheduleType == 'private';
-    this.isInHouseOthers = this.data.course.delivery_Type != 'online' &&
-                          this.data.course.scheduleType == 'Inhouse';
-    this.isPrivateOthers = this.data.course.delivery_Type != 'online' &&
-                          this.data.course.scheduleType == 'private';
-    this.isPrivateVirtual = this.data.course.delivery_Type == 'virtual' &&
-                          this.data.course.scheduleType == 'private';
+  public checkFormValidation(event: any) {
+    let scheduleType = event.target.value
+    this.isInHouseOnline = this.data.course.delivery_Type == 1 &&
+                          scheduleType == 3;
+    this.isPrivateOnline = this.data.course.delivery_Type == 1 &&
+                          scheduleType == 1;
+    this.isInHouseOthers = this.data.course.delivery_Type != 1 &&
+                          scheduleType == 3;
+    this.isPrivateOthers = this.data.course.delivery_Type != 1 &&
+                          scheduleType == 1;
+    this.isPrivateVirtual = this.data.course.delivery_Type == 3 &&
+                          scheduleType == 1;
   }
 
   public filterStaffTitle() {

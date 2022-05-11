@@ -84,6 +84,7 @@ export class AddParticipantComponent implements OnInit {
   public initParticipantForm() {
     this.addPrticipantForm = this.fb.group({
      courseId: [+this.data?.editObject?.courseId, Validators.required],
+     participantScheduleType: [2],
      participants: this.fb.array([
        this.fb.group({
         participantId: [0],

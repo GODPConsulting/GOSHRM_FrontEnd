@@ -99,6 +99,40 @@ export class CourseCreationComponent implements OnInit {
     );
   }
 
+  getDeliveryType(status: number) {
+    let deliveryType;
+    switch (status) {
+      case 1:
+        deliveryType = "Video";
+        break;
+      case 2:
+        deliveryType = "Classroom";
+        break;
+      case 3:
+        deliveryType = "Virtual";
+        break;
+    }
+    return deliveryType;
+  }
+
+  getStatus(status: number) {
+    let deliveryType;
+    switch (status) {
+      case 1:
+        deliveryType = "Approved";
+        break;
+      case 2:
+        deliveryType = "Disapproved";
+        break;
+      case 3:
+        deliveryType = "Revert";
+        break;
+      default:
+        deliveryType = "Pending";
+    }
+    return deliveryType;
+  }
+
   public getSearchQuery(searchQuery: string): void {
     this.searchQuery.search = searchQuery;
     console.log(this.searchQuery.search)

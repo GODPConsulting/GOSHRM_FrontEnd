@@ -1,18 +1,5 @@
 <div class="community__wrapper">
-    <app-back-button></app-back-button>
-    <div class="community-activities py-3">
-        <div class="d-md-flex justify-content-between">
-            <div class="">
-                <h3>Q & A</h3>
-            </div>
-            <div>
-                <app-searchbar
-                    [canAdd]="true"
-                    (btnAction)="openDialog({isEditing: false, course: courseId})"
-                ></app-searchbar>
-            </div>
-        </div>
-        <div class="activities bg-white p-4 my-3" *ngFor="let question of questions; index as i">
+    <div class="activities bg-white p-4 my-3" *ngFor="let question of questions; index as i">
             <div class="d-flex justify-content around">
                 <div class="card-left">
                     <div class="img-wrapper">
@@ -155,6 +142,5 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </div>

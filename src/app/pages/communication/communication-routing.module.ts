@@ -4,7 +4,7 @@ import { AnnouncementComponent } from './components/announcement/announcement.co
 import { CommunicationComponent } from './components/communication/communication.component';
 import { ContactListComponent } from './components/contact-list/contact-list.component';
 import { MessagesComponent } from './components/messages/messages.component';
-import { QaComponent } from './components/qa/qa.component';
+import { QaLayoutComponent } from './components/qa-layout/qa-layout.component';
 import { ViewMessageComponent } from './components/view-message/view-message.component';
 import { CommunicationResolver } from './resolvers/communication.resolver';
 
@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   { 
     path: 'qa/:courseId',
-    component: QaComponent,
+    component: QaLayoutComponent,
   },
   { 
     path: 'messages',

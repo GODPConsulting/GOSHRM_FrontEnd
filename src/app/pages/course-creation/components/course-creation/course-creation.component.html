@@ -38,7 +38,6 @@
                       </th>
                       <th [pSortableColumn]="'facilitator'">Facilitator’s Name</th>
                       <th [pSortableColumn]="'training_Name'">Training <br> Title</th>
-                      <th [pSortableColumn]="'scheduleType'">Schedule <br> Type</th>
                       <th [pSortableColumn]="'delivery_Type'">Delivery <br> Type</th>
                       <th [pSortableColumn]="'rating'">Rating</th>
                       <th [pSortableColumn]="'decisionType'">Status</th>
@@ -74,10 +73,7 @@
                       {{ course?.training_Name }}
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
-                      {{ course?.scheduleType }}
-                    </td>
-                    <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
-                      {{ course?.delivery_Type }}
+                      {{ getDeliveryType(course?.delivery_Type) }}
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
                       {{ course?.rating + '/5' }}
@@ -91,7 +87,7 @@
                       ></ng-rating-bar> -->
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
-                      {{ course?.decisionType }}
+                      {{ getStatus(course?.decisionType) }}
                     </td>
                     <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
                       {{ course?.createdAt | date }}

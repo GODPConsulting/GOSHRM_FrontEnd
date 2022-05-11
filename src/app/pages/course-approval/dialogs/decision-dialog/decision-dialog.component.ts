@@ -43,7 +43,7 @@ export class DecisionDialogComponent implements OnInit {
   public initCourseOutlineForm() {
     this.decisionForm = this.fb.group({
       courseId: [this.data.editObject.courseId ? this.data.editObject.courseId : '', Validators.required],
-      decisionType: [this.data.editObject.decisionType ? this.data.editObject.decisionType : '', Validators.required],
+      decisionType: [this.data.editObject.decisionType ? this.data.editObject.decisionType : 4, Validators.required],
       comment: [this.data.editObject.comment ? this.data.editObject.comment : ''],
     })
   }
@@ -58,6 +58,7 @@ export class DecisionDialogComponent implements OnInit {
     const payload = this.decisionForm.value;
     let decision = this.decisionForm.get('decisionType')?.value;
     payload.courseId = parseInt(payload.courseId);
+    payload.decisionType = +payload.decisionType;
     console.log(payload);
     this.sub.add(
       this._course.ApproveCourse(payload).subscribe({

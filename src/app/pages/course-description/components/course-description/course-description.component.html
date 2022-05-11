@@ -1,0 +1,112 @@
+<div class="course_wrapper">
+    <div class="header p-4">
+        <h2>My Learning > <span>{{ course?.training_Name }}</span></h2>
+    </div>
+   
+      <div class="row banner p-4">
+          <div
+            class="col-lg-7 col-sm-12 my-auto"
+          >
+            <div class="course-info p-4">
+                    <h2 class="pb-4">{{ course?.training_Name }}</h2>
+                    <p class="pb-3">
+                        {{ course?.training_Details }}
+                    </p>
+                    <span>
+                        <ng-rating-bar
+                            [value]="0"
+                            [ratingCount]="5"
+                            [disabled]="true"
+                            [styles]="{ margin: '0px', fontSize: '16px'}"
+                            colorActive="#F88F09" 
+                            colorDefault="#cecece"
+                        ></ng-rating-bar>
+                    </span>
+                    <span>
+                        ({{course?.rating}} ratings)
+                    </span>
+                    <div class="price">
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="facilitator py-3">
+                        <span class="facilitator_title">Instructor/Facilitator:</span>
+                        <span class="facilitator_name">{{ course?.facilitator }}</span>
+                    </div>
+                    <button 
+                        class="btn btn-green btn-lg my-3"
+                        [routerLink]="['/courses/course-detail', course?.courseId]"
+                    >Start Class</button>
+            </div>
+          </div>
+      </div>
+
+      <div class="course-details d-lg-flex row p-5">
+          <div class="col-lg-7 col-sm-12 ">
+            <div class="course-details_objectives">
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Training Objectives:</h5>
+                      <p class="card-text">
+                        {{ course?.training_Objective }}
+                      </p>
+                    </div>
+                  </div>
+            </div>
+            <div class="course-details_requirements">
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Training Requirements:</h5>
+                      <ul class="card-text">
+                        <li *ngFor="let item of course?.course_Requirement">
+                            {{ item }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+            </div>
+          </div>
+          <div class="col-lg-5 col-sm-12 ">
+              <div class="course-details_infos">
+                <div class="card">
+                    <img 
+                        [src]="course?.coursePhotoUrl
+                            ? course?.coursePhotoUrl
+                            : 'assets/images/learning-bg.svg'" 
+                        class="card-img-top" alt="..."
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title">This training Includes</h5>
+                      <p class="card-text">
+
+                      </p>
+                    </div>
+                    <div class="card-body">
+                      <h5 class="card-title">Expected Competence</h5>
+                      <ul class="card-text">
+                        <li *ngFor="let item of course?.course_Competence">
+                            {{ item }}
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Welcome Message</h5>
+                        <p class="card-text">
+                          {{ course?.welcome_message }}
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="col-12">
+            <div class="course-details_transcript">
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Training Transcript:</h5>
+                      <p class="card-text" [innerHTML]="course?.training_Transcript"></p>
+                    </div>
+                  </div>
+            </div>
+          </div>
+      </div>
+</div>
