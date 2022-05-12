@@ -1,0 +1,65 @@
+@import 'partials/abstract/variables';
+@import "partials/abstract/mixins";
+@import "partials/components/forms";
+
+.community__wrapper {
+    padding: 3rem;
+
+    .activities {
+             .card-left {
+                 .img-wrapper {
+                     width: 5rem;
+                     height: 5rem;
+                     border-radius: 50%;
+                     background: #C4C4C4;
+                     img {
+                         width: 100%;
+                         height: 100%;
+                         border-radius: 50%;
+                     }
+                 }
+                 .ratings i {
+                     color: #cecece;
+                     font-size: 1rem
+                 }
+                 
+                 .rating-color {
+                     color: $orange-400 !important
+                 }
+                 
+                 .review-count {
+                     font-weight: 400;
+                     margin-bottom: 2px;
+                     font-size: 24px !important
+                 }
+                 
+                 .small-ratings i {
+                     color: #cecece
+                 }
+                 
+                 .review-stat {
+                     font-weight: 300;
+                     font-size: 18px;
+                     margin-bottom: 2px
+                 }
+             }
+             .card-right {
+                 font-size: 1.5rem;
+                 line-height: 25px;
+                 .responder-img {
+                     height: 2.4rem;
+                     width: 2.4rem;
+                     border-radius: 50%;
+                     background: #C4C4C4;
+                     img {
+                         width: 100%;
+                         height: 100%;
+                     }
+                 }
+             }
+    }
+}
+
+.isLike {
+    fill: $orange-400;
+}

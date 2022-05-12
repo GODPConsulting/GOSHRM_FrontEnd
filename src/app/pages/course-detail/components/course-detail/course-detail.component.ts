@@ -19,6 +19,7 @@ export class CourseDetailComponent implements OnInit {
   public filePath: any;
   public contentType = null;
   public isfetchingCourse: boolean = false;
+  public current_Tab: string = 'overview';
 
   constructor(
     private route: ActivatedRoute,
@@ -66,6 +67,26 @@ export class CourseDetailComponent implements OnInit {
     // const blob = new Blob([data], { type: 'text/csv' });
     // const url= window.URL.createObjectURL(blob);
     // window.open(url);
+  }
+
+  public getOverview() {
+    this.current_Tab = 'overview';
+  }
+
+  public getNote() {
+    this.current_Tab = 'note';
+  }
+
+  public getQA() {
+    this.current_Tab = 'qa';
+  }
+
+  public getTranscript() {
+    this.current_Tab = 'transcript';
+  }
+
+  public getAnnoucement() {
+    this.current_Tab = 'announcement';
   }
 
 }

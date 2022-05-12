@@ -9,13 +9,13 @@ import { NgRatingBarModule } from 'ng-rating-bar';
 
 @NgModule({
   declarations: [
-    CourseDetailComponent
+    CourseDetailComponent, 
   ],
   imports: [
     CommonModule,
     CourseDetailRoutingModule,
     SharedModule,
-    NgRatingBarModule
+    NgRatingBarModule,
   ]
 })
 export class CourseDetailModule { }
