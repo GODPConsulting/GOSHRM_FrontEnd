@@ -150,7 +150,7 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="current_Tab == 'wishlist' || current_Tab == 'carts'">
+    <ng-container *ngIf="current_Tab == 'wihlist' || current_Tab == 'carts'">
         <div class="bg-white py-5">
             <div class="container my-5">
                 <div class="row">
@@ -161,6 +161,11 @@
                             [instructorName]="course?.facilitator"
                             [price]="course?.cost"
                             [competencies]="course?.completence_Assessment"
+                            [isCart]="course?.isCart"
+                            [isWishlist]="course?.isWishlist"
+                            (route)="goToCourseDetails(course?.courseId)"
+                            (cart)="addToCart(course)"
+                            (whilst)="addToWhilst(course)"
                         ></app-course-card>
                     </div>
                 </div>

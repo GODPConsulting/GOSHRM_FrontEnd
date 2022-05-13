@@ -45,14 +45,17 @@
                 img &-img-top{
                     min-height: 350px;
                 }
+                .text {
+                    font-size: 1.4rem;
+                }
                 &-body {
                     font-weight: 400;
                     line-height: 33px;
                     .card-title {
-                        font-size: 24px;
+                        font-size: 2rem;
                     }
                     .card-text {
-                        font-size: 18px;
+                        font-size: 1.6rem;
                     }
                 }
             }

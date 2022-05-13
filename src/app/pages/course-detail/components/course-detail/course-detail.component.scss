@@ -4,11 +4,14 @@
 .view {
     height: 465.73px;
     position: relative;
-    img.w-100 {
+    overflow-y: scroll;
+    img.w-100, video {
         width: 100%;
-        height: 400px;
-        // object-fit: cover;
-        overflow-y: auto;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+        object-fit: cover;
     }
     .rating {
         font-weight: 400;
@@ -16,27 +19,36 @@
         line-height: 16px;
     }
 }
-.accordion {
-    // overflow-y: auto;
-    // position: absolute;
-    @include custom-scroll-accordion;
-    &-item {
-        border-top: 0.5px solid #828282;
-        border-bottom: 0.5px solid #828282;
-    }
-    &-header {
-        .accordion-button {
-            font-weight: 700;
-            font-size: 18px;
-            line-height: 150%;
+.section {
+    position: relative;
+    height: 465.73px;
+    overflow-y: scroll;
+    &-details {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        .accordion {
+            &-item {
+                border-top: 0.5px solid #828282;
+                border-bottom: 0.5px solid #828282;
+            }
+            &-header {
+                .accordion-button {
+                    font-weight: 700;
+                    font-size: 18px;
+                    line-height: 150%;
+                }
+            }
+            &-body {
+                border: none;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 150%;
+                cursor: pointer;
+            }
         }
-    }
-    &-body {
-        border: none;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 150%;
-        cursor: pointer;
     }
 }
 
@@ -54,7 +66,34 @@
     text-align: center;
     color: $orange-400;
     font-weight: 600;
-    font-size: 18px;
-    line-height: 20px;
-    margin: 1.5rem auto;
+    font-size: 1.8rem;
+    line-height: 2rem;
+    padding: 2rem;
 }
+
+
+#container {
+    margin-top: 15px;
+  }
+  
+  #container button{
+    padding: 15px;
+    background: black;
+    color: white;
+  }
+  #container .progress-bar {
+    margin-top: 15px;
+    width: 100%;
+    border: 2px solid black;
+  }
+  #container .progress-bar span{
+      height: 5px;
+      display:block;
+      background: red;
+      width: 0%;
+      transition: width 0.25s ease;
+  }
+  
+  #container button:active, #container button:focus{
+      outline: none;
+  }

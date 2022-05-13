@@ -10,6 +10,8 @@ export class CourseCardComponent implements OnInit {
   @Input() courseTitle: string = '';
   @Input() instructorName: string = '';
   @Input() price: string = '';
+  @Input() isCart: boolean = false;
+  @Input() isWishlist: boolean = false;
   @Input() competencies: string[] = [];
   @Output() route = new EventEmitter();
   @Output() cart = new EventEmitter();

@@ -35,6 +35,8 @@
                     [instructorName]="course?.facilitator"
                     [price]="course?.cost"
                     [competencies]="course?.course_Competence"
+                    [isCart]="course?.isCart"
+                    [isWishlist]="course?.isWishlist"
                     (route)="goToCourseDetails(course?.courseId)"
                     (cart)="addToCart(course)"
                     (whilst)="addToWhilst(course)"

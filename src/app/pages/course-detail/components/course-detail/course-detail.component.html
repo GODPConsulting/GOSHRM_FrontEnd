@@ -5,20 +5,32 @@
      
         <div class="row pb-4">
             <div
-              class="col-lg-9 col-md-12 my-auto view"
+              class="col-lg-9 col-md-12 my-auto"
             >
-              <!-- <img src="assets/images/video-bg.svg" alt="" class="w-100" /> -->
-              <div class="" *ngIf="contentType == null">
+              <div id="view" class="view">
+                <div class="" *ngIf="contentType == null">
                   <img src="{{ courseData?.coursePictureUrl }}" alt="" class="w-100" />
-              </div>
-              <div class="" *ngIf="contentType === 'jpg'">
-                  <img [src]="filePath" alt="" class="w-100" />
-              </div>
-              <div class="" *ngIf="contentType === 'pdf'">
-                  <object [data]="filePath" type="application/pdf" width="100%" height="400px"></object>
-              </div>
-              <div class="" *ngIf="contentType === 'mp4'">
-                  <video autoplay [src]="filePath" controls id="myVideo" width="100%"></video>
+                </div>
+                <div class="" *ngIf="contentType === 'jpg'">
+                    <img 
+                      [src]="filePath" 
+                      alt="" class="w-100" 
+                    />
+                </div>
+                <div class="" *ngIf="contentType === ('pdf' || 'txt')">
+                    <object 
+                      [data]="filePath" 
+                      type="application/pdf" 
+                      width="100%" height="400px"
+                    ></object>
+                </div>
+                <div class="" *ngIf="contentType === 'mp4'">
+                    <video 
+                      (timeupdate)="onTimeUpdate()" 
+                      autoplay [src]="filePath" 
+                      controls id="myVideo" width="100%"
+                    ></video>
+                  </div>
               </div>
               <div class="d-flex justify-content-between py-3">
                 <div>
@@ -56,54 +68,61 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-3 col-md-12">
-              <div class="accordion" id="accordionExample">
-                <div class="accordion-item" *ngFor="let lesson of lessons; index as i">
-                  <h2 class="accordion-header" [attr.id]="'heading'+i">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+i" aria-expanded="true" [attr.aria-controls]="'collapse'+i">
-                      Section {{i + 1}}: {{ lesson?.sectionName }}
-                    </button>
-                  </h2>
-                  <div [attr.id]="'collapse' +i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading'+i" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                     <div class="d-flex justify-content-between py-3" *ngFor="let outline of lesson?.outline; index as i">
-                       <div>
-                          <span class="pe-2"><input type="checkbox" name="" id=""></span>
-                          <span (click)="setFilePathAndType(outline)"> {{ i + 1 + ". "}}
-                            {{ (outline?.outlineName.length>25)? (outline?.outlineName | slice:0:25)+'...':(outline?.outlineName) }}
-                          </span>
+            <div class="col-lg-3 col-md-12 section">
+              <div class="section-details">
+                <div class="accordion" id="accordionExample">
+                  <div class="accordion-item" *ngFor="let lesson of lessons; index as i">
+                    <h2 class="accordion-header" [attr.id]="'heading'+i">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse'+i" aria-expanded="true" [attr.aria-controls]="'collapse'+i">
+                        Section {{i + 1}}: {{ lesson?.sectionName }}
+                      </button>
+                    </h2>
+                    <div [attr.id]="'collapse' +i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading'+i" data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                       <div class="d-flex justify-content-between py-3" *ngFor="let outline of lesson?.outline; index as i">
+                         <div>
+                            <span class="pe-2">
+                              <input type="checkbox" name="" id="" [checked]="lesson?.isRead">
+                            </span>
+                            <span (click)="setFilePathAndType(outline)"> {{ i + 1 + ". "}}
+                              <i class="fa-solid fa-video mr-2" *ngIf="outline?.contentType == 'mp4'"></i>
+                              <i class="fa-solid fa-image  mr-2" *ngIf="outline?.contentType == 'jpg'"></i>
+                              <i class="fa-solid fa-file-lines  mr-2" *ngIf="outline?.contentType == ('pdf' || 'txt')"></i>
+                              {{ (outline?.outlineName?.length>25)? (outline?.outlineName | slice:0:25)+'...':(outline?.outlineName) }}
+                            </span>
+                         </div>
+                         <span>
+                           <a [href]="outline?.outlineUrl" download>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M7.99967 14.6665L9.66634 13.3332M7.99967 14.6665V8.6665V14.6665ZM7.99967 14.6665L6.33301 13.3332L7.99967 14.6665Z" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M3.35581 6.07812C2.72529 6.23679 2.1744 6.62023 1.80665 7.15642C1.4389 7.69261 1.2796 8.34463 1.35868 8.98998C1.43777 9.63534 1.74979 10.2296 2.23612 10.6611C2.72246 11.0927 3.34963 11.3317 3.99981 11.3335H4.66648" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M10.5528 4.75864C10.3249 3.85636 9.76251 3.07447 8.97954 2.57148C8.19657 2.06849 7.25164 1.88204 6.33629 2.04991C5.42095 2.21779 4.60368 2.72743 4.05016 3.47553C3.49665 4.22364 3.2483 5.15422 3.35546 6.07864C3.35546 6.07864 3.45746 6.66664 3.66612 6.99998" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M11.3327 11.3332C11.8034 11.3328 12.2687 11.2328 12.6979 11.0397C13.1272 10.8466 13.5107 10.5648 13.8232 10.2128C14.1357 9.86082 14.3701 9.44664 14.5109 8.99752C14.6518 8.54841 14.696 8.07455 14.6405 7.60713C14.5851 7.13972 14.4313 6.68935 14.1892 6.28566C13.9472 5.88198 13.6223 5.53414 13.2362 5.26503C12.85 4.99592 12.4112 4.81165 11.9487 4.72434C11.4862 4.63704 11.0104 4.64868 10.5527 4.7585L9.66602 4.99984" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>  
+                           </a>                        
+                         </span>
                        </div>
-                       <span>
-                         <a [href]="outline?.outlineUrl" download>
-                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7.99967 14.6665L9.66634 13.3332M7.99967 14.6665V8.6665V14.6665ZM7.99967 14.6665L6.33301 13.3332L7.99967 14.6665Z" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M3.35581 6.07812C2.72529 6.23679 2.1744 6.62023 1.80665 7.15642C1.4389 7.69261 1.2796 8.34463 1.35868 8.98998C1.43777 9.63534 1.74979 10.2296 2.23612 10.6611C2.72246 11.0927 3.34963 11.3317 3.99981 11.3335H4.66648" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M10.5528 4.75864C10.3249 3.85636 9.76251 3.07447 8.97954 2.57148C8.19657 2.06849 7.25164 1.88204 6.33629 2.04991C5.42095 2.21779 4.60368 2.72743 4.05016 3.47553C3.49665 4.22364 3.2483 5.15422 3.35546 6.07864C3.35546 6.07864 3.45746 6.66664 3.66612 6.99998" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M11.3327 11.3332C11.8034 11.3328 12.2687 11.2328 12.6979 11.0397C13.1272 10.8466 13.5107 10.5648 13.8232 10.2128C14.1357 9.86082 14.3701 9.44664 14.5109 8.99752C14.6518 8.54841 14.696 8.07455 14.6405 7.60713C14.5851 7.13972 14.4313 6.68935 14.1892 6.28566C13.9472 5.88198 13.6223 5.53414 13.2362 5.26503C12.85 4.99592 12.4112 4.81165 11.9487 4.72434C11.4862 4.63704 11.0104 4.64868 10.5527 4.7585L9.66602 4.99984" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>  
-                         </a>                        
-                       </span>
-                     </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="d-flex justify-content-center py-5">
-                <div class="tex-center">
-                  <div class="dropdown">
-                    <button class="btn btn-green btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        Assessment
-                    </button>
-                    <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" [routerLink]="['/courses/course-assessment', courseId]"
-                        >Course Assessment</a></li>
-                      <li><a class="dropdown-item" [routerLink]="['/courses/competence-assessment', courseId]"
-                        >Competence Assessment</a></li>
-                      <li><a class="dropdown-item" [routerLink]="['/courses/learning-assessment', courseId]"
-                        >Learning Assessment </a></li>
-                    </ul>
+                <div class="d-flex justify-content-center py-5">
+                  <div class="tex-center">
+                    <div class="dropdown pb-5">
+                      <button class="btn btn-green btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                          Assessment
+                      </button>
+                      <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" [routerLink]="['/courses/course-assessment', courseId]"
+                          >Course Assessment</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/courses/competence-assessment', courseId]"
+                          >Competence Assessment</a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/courses/learning-assessment', courseId]"
+                          >Learning Assessment </a></li>
+                      </ul>
+                    </div>
+                    <span class="certificate mx-auto">Certificate</span>
                   </div>
-                  <span class="certificate">Certificate</span>
                 </div>
               </div>
             </div>

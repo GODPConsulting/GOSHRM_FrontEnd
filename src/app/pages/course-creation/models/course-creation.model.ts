@@ -13,6 +13,7 @@ export interface Courses  {
     companyId: number,
     scheduleType: number,
     createdAt: string,
+    coursePercentage: number,
     course_Competence: [
       {
         course_CompeteneceId: number,

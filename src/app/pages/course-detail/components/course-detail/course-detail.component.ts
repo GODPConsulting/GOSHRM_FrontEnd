@@ -1,7 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-// import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'iq-central-front-end-course-details',
@@ -20,11 +19,13 @@ export class CourseDetailComponent implements OnInit {
   public contentType = null;
   public isfetchingCourse: boolean = false;
   public current_Tab: string = 'overview';
+  public video: any;
+  public videoPlaying: boolean = false;
+  public percentage: any;
 
   constructor(
     private route: ActivatedRoute,
     private activateRoute: ActivatedRoute,
-    // private sanitizer: DomSanitizer,
   ) {
    
   }
@@ -37,11 +38,18 @@ export class CourseDetailComponent implements OnInit {
   getResolvedData() {
     this.sub.add(
       this.activateRoute.data.subscribe((data: any) => {
-        console.log(data);
+        // console.log(data);
         this.courseData = data?.resolveData?.courseDetail?.participantCourseResponse;
         this.announcements = data?.resolveData?.announcement?.courseAnnouncementresponse;
         this.questions = data?.resolveData?.questionAndAnswer?.courseQAResponse;
         this.lessons = this.courseData.sections;
+        console.log(this.lessons);
+        return this.lessons.forEach((item: any) => {
+          return item?.outline.forEach((n: any) => {
+            let contentType = this.getFileExt(n);
+            return n.contentType = contentType
+          })
+        })
       })
     );
   }
@@ -53,20 +61,21 @@ export class CourseDetailComponent implements OnInit {
   setFilePathAndType(content: any) {
     this.content = content;
     this.contentType = this.getFileExt(content);
-    this.filePath = content.outlineUrl
-    if (this.contentType === 'pdf') {
-      this.filePath = content.outlineUrl
-    } else if (this.contentType === 'mp4') {
-      this.filePath = content.outlineUrl
-    } else {
-      this.filePath = content.outlineUrl
-    }
+    this.filePath = content.outlineUrl;
   }
 
-  downloadFile(data: Response) {
-    // const blob = new Blob([data], { type: 'text/csv' });
-    // const url= window.URL.createObjectURL(blob);
-    // window.open(url);
+  public onTimeUpdate(){
+    this.video = document.querySelector("video");
+    if(!this.videoPlaying){
+        // this.video.currentTime = 10;
+        this.video.play();
+        this.videoPlaying = true;
+        this.percentage = (this.video.currentTime / this.video.duration) * 100;
+        console.log(this.percentage, this.video.currentTime, this.video.duration )
+    }else{
+        this.video.pause();
+        this.videoPlaying = false;
+    }
   }
 
   public getOverview() {
