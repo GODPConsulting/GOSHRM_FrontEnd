@@ -81,6 +81,7 @@ export class CourseSectionDialogComponent implements OnInit {
     // this.isUpload = !this.isUpload;
     let me = this;
     let file = event.target.files[0];
+    this.getDuration(event.target);
     let reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function () {
@@ -170,6 +171,17 @@ export class CourseSectionDialogComponent implements OnInit {
       })
     );
   }
+
+    // window.URL = window.URL || window.webkitURL;
+    public  getDuration(control: any) {
+        var video = document.createElement('video');
+        video.preload = 'metadata';
+        video.onloadedmetadata = () => {
+            window.URL.revokeObjectURL(video.src);
+            alert("Duration : " + video.duration + " seconds");
+        }
+        video.src = URL.createObjectURL(control.files[0]);
+    }
 
 }
 

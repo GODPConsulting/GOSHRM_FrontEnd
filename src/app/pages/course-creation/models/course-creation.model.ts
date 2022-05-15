@@ -14,6 +14,7 @@ export interface Courses  {
     scheduleType: number,
     createdAt: string,
     coursePercentage: number,
+    downloadableResources: number,
     course_Competence: [
       {
         course_CompeteneceId: number,

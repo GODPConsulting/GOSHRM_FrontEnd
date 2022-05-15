@@ -10,7 +10,7 @@
                 [canDelete]="true"
                 (btnAction)="assessments?.length == 0 ? goTo() : addNewQuestion()"
                 (deleteAction)="deleteAssessment()"
-
+                *ngIf="loggedInUser.customerTypeId != 3"
             ></app-searchbar>
         </div>
 

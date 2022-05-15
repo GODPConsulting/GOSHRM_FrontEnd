@@ -1,6 +1,17 @@
 @import 'partials/abstract/variables';
 @import 'partials/abstract/mixins';
 
+.course_wrapper {
+    .header {
+        h2 {
+            font-weight: 400;
+            font-size: 3.2rem;
+            .coursee-title {
+                font-weight: 700;
+            }
+        }
+    }
+}
 .view {
     height: 465.73px;
     position: relative;
@@ -44,9 +55,12 @@
             &-body {
                 border: none;
                 font-weight: 400;
-                font-size: 14px;
+                font-size: 1.4rem;
                 line-height: 150%;
                 cursor: pointer;
+                .duration {
+                    font-size: 1.2rem;
+                }
             }
         }
     }

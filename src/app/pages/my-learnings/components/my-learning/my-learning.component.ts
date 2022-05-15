@@ -31,7 +31,6 @@ export class MyLearningComponent implements OnInit {
   ngOnInit(): void {
     this._route.queryParams.subscribe(params => {
       const route = params.q;
-      console.log(route)
       if(route != undefined) {
         this.current_Tab = route;
       }
