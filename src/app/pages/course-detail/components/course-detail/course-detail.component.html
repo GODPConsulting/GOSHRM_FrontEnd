@@ -233,8 +233,50 @@
           </div>
         </div>
 
-        <ng-container *ngIf="current_Tab == 'qa'">
-          <!-- <app-qa></app-qa> -->
-        </ng-container>
+        <div class="tab-contents">
+          <ng-container *ngIf="current_Tab == 'overview'">
+            <div class="course-details d-lg-flex row p-5">
+              <div class="col-lg-7 col-sm-12 ">
+                <div class="course-details_objectives">
+                    <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Training Objectives:</h5>
+                          <p class="card-text">
+                            {{ courseData?.training_Objective }}
+                          </p>
+                        </div>
+                      </div>
+                </div>
+                <div class="course-details_requirements">
+                    <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Training Requirements:</h5>
+                          <ul class="card-text">
+                            <li *ngFor="let item of courseData?.course_Requirement">
+                                {{ item }}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="course-details_transcript">
+                    <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Training Transcript:</h5>
+                          <p class="card-text" [innerHTML]="courseData?.training_Transcript"></p>
+                        </div>
+                      </div>
+                </div>
+              </div>
+          </div>
+          </ng-container>
+          
+  
+          <ng-container *ngIf="current_Tab == 'qa'">
+            <!-- <app-qa></app-qa> -->
+          </ng-container>
+        </div>
         
   </div>

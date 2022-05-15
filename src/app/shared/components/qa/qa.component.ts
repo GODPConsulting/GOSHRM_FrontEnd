@@ -9,10 +9,10 @@ import { HelperService } from '@core/services/healper.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { InitialSearchDTO, ResponseModel, SearchDTO } from 'app/models/response.model';
+import { QuestionDialogComponent } from 'app/pages/communication/dialogs/question-dialog/question-dialog.component';
+import { ConversationType, QAType } from 'app/pages/communication/models/communication.model';
+import { CommunicationService } from 'app/pages/communication/services/communication.service';
 import { Subscription } from 'rxjs';
-import { QuestionDialogComponent } from '../../dialogs/question-dialog/question-dialog.component';
-import { ConversationType, QAType } from '../../models/communication.model';
-import { CommunicationService } from '../../services/communication.service';
 
 @Component({
   selector: 'app-qa',
