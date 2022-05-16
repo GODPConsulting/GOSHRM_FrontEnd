@@ -1,6 +1,8 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CourseDetailService } from '../../services/course-detail.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'iq-central-front-end-course-details',
@@ -10,6 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 export class CourseDetailComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public courseId: any;
+  public outlineId: any;
+  public sectionId: any;
   public courseData: any;
   public announcements: any[] = [];
   public questions: any[] = [];
@@ -26,6 +30,7 @@ export class CourseDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private activateRoute: ActivatedRoute,
+    private _course: CourseDetailService
   ) {
    
   }
@@ -43,7 +48,7 @@ export class CourseDetailComponent implements OnInit {
         this.announcements = data?.resolveData?.announcement?.courseAnnouncementresponse;
         this.questions = data?.resolveData?.questionAndAnswer?.courseQAResponse;
         this.lessons = this.courseData.sections;
-        console.log(this.lessons);
+        console.log(this.courseData, this.lessons);
         return this.lessons.forEach((item: any) => {
           return item?.outline.forEach((n: any) => {
             let contentType = this.getFileExt(n);
@@ -58,10 +63,12 @@ export class CourseDetailComponent implements OnInit {
     return content.outlineUrl.split(/[#?]/)[0].split('.').pop().trim();
   }
 
-  setFilePathAndType(content: any) {
+  setFilePathAndType(content: any, sectionId: number) {
     this.content = content;
     this.contentType = this.getFileExt(content);
     this.filePath = content.outlineUrl;
+    this.outlineId = content.outlineId;
+    this.sectionId = sectionId;
   }
 
   public onTimeUpdate(){
@@ -71,14 +78,22 @@ export class CourseDetailComponent implements OnInit {
         this.video.play();
         this.videoPlaying = true;
         this.percentage = (this.video.currentTime / this.video.duration) * 100;
-        console.log(this.percentage, this.video.currentTime, this.video.duration )
+        console.log(this.percentage, this.video.currentTime, this.video.duration);
     }else{
         this.video.pause();
         this.videoPlaying = false;
     }
+    const payload = {
+      sectionId: this.sectionId,
+      outlineId: this.outlineId,
+      durationOfVideoCompeleted: Math.floor((this.percentage/100))
+    }
+    setInterval(() => {
+      this.trackVideoProgress(payload);
+    }, 10000);
   }
 
-  formatTime(timeInSeconds: any) {
+  public formatTime(timeInSeconds: any) {
     const result = new Date(timeInSeconds * 1000).toISOString().substr(11, 8);
   
     return {
@@ -105,6 +120,18 @@ export class CourseDetailComponent implements OnInit {
 
   public getAnnoucement() {
     this.current_Tab = 'announcement';
+  }
+
+  public trackVideoProgress(payload: any): void {
+      console.log(payload)
+      this._course.trackVideoProgress(payload).subscribe({
+        next: (res: any) => {
+            console.log(res)
+        },
+        error: (error: HttpErrorResponse) => {
+          console.log(error);
+        },
+      });
   }
 
 }

@@ -22,6 +22,9 @@ import { TaskBarComponent } from './components/task-bar/task-bar.component';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { UploadDocComponent } from './components/upload-doc/upload-doc.component';
 import { CourseCardComponent } from 'app/pages/landing-page/components/course-card/course-card.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { FormsModule } from '@angular/forms';
+import { QaComponent } from './components/qa/qa.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ import { CourseCardComponent } from 'app/pages/landing-page/components/course-ca
     TaskBarComponent,
     BackButtonComponent,
     UploadDocComponent,
-    CourseCardComponent
+    CourseCardComponent,
+    QaComponent
   ],
   imports: [
     CommonModule,
@@ -50,6 +54,8 @@ import { CourseCardComponent } from 'app/pages/landing-page/components/course-ca
     NgxSkeletonLoaderModule,
     MatDialogModule,
     NgSelectModule,
+    AngularEditorModule,
+    FormsModule
   ],
   exports: [
     LoadingButtonComponent,
@@ -70,7 +76,8 @@ import { CourseCardComponent } from 'app/pages/landing-page/components/course-ca
     TaskBarComponent,
     BackButtonComponent,
     UploadDocComponent,
-    CourseCardComponent
+    CourseCardComponent,
+    QaComponent
   ],
 })
 export class SharedModule {}

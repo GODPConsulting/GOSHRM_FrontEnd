@@ -20,4 +20,11 @@ export class CourseDetailService {
    return this.http.getRequestWithParams(endpoint, params);
   }
 
+  public trackVideoProgress(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+   const endpoint = '/courseoutline/update/courseSectionVideo';
+   return this.http.makeRequestWithData('post' ,endpoint, {}, payload);
+  }
+
 }

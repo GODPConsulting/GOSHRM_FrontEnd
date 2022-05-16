@@ -84,9 +84,10 @@ export class QaComponent implements OnInit {
     this.userId = this.loggedInUser.userId
     if(this.loggedInUser.customerTypeId == 1) {
       this.createdBy = CreatedByType.provider;
-    }
-    if(this.loggedInUser.customerTypeId == 2) {
+    } else if(this.loggedInUser.customerTypeId == 2) {
       this.createdBy = CreatedByType.instructor;
+    } else {
+      this.createdBy = CreatedByType.participant;
     }
     this.initReplyForm();
     this.getQuestionsAndReplies(true);
