@@ -73,7 +73,8 @@ export class CourseSectionDialogComponent implements OnInit {
       type: [+this.outlineType.Section],
       trainingProviderId: [this.loggedInUser.trainingProviderId],
       trainingInstructorId: [this.loggedInUser.trainingInstructorId],
-      courseId: [+this.courseId]
+      courseId: [+this.courseId],
+      duration: [0]
     })
   }
 
@@ -179,6 +180,9 @@ export class CourseSectionDialogComponent implements OnInit {
         video.onloadedmetadata = () => {
             window.URL.revokeObjectURL(video.src);
             alert("Duration : " + video.duration + " seconds");
+            this.courseOutlineForm.setValue({
+              duration: video.duration
+            });
         }
         video.src = URL.createObjectURL(control.files[0]);
     }

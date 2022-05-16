@@ -5,6 +5,7 @@ import { CourseDetailRoutingModule } from './course-detail-routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { NgRatingBarModule } from 'ng-rating-bar';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -17,7 +18,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     CourseDetailRoutingModule,
     SharedModule,
     NgRatingBarModule,
-    AngularEditorModule
+    AngularEditorModule,
+    FormsModule
   ]
 })
 export class CourseDetailModule { }

@@ -156,7 +156,7 @@ export class SendMessageComponent implements OnInit {
   public initAnnouncementForm() {
     this.announcementForm = this.fb.group({
       courseAnnouncementId: [0],
-      announcementType: [2],
+      announcementType: [this.isPromotional ? 1 : 2],
       subject: [''],
       message: [''],
       courseId: [+this.courseId],

@@ -16,8 +16,7 @@ import { CommunicationService } from '../../services/communication.service';
 export class AnnouncementComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public subContactTitle: string = '';
-  public current_tab: string = 'contact';
-  public current_subTab: string = 'educational';
+  public current_Tab: string = 'educational';
   public loggedInUser: any;
   public courseId: any;
   public announcements: any[] = [];
@@ -44,7 +43,7 @@ export class AnnouncementComponent implements OnInit {
     this._route.queryParams.subscribe(params => {
       // this.current_subTab = params.q;
     });
-    this.getAllAnnouncement(MessageType.Inbox, AnnouncementType.Educational, this.current_tab, this.userType);
+    this.getAllAnnouncement(MessageType.Inbox, AnnouncementType.Educational, this.current_Tab, this.userType);
   }
 
   public getAllAnnouncement(
@@ -53,7 +52,7 @@ export class AnnouncementComponent implements OnInit {
     tabType: string,
     userType?: number
   ): void {
-    this.current_tab = tabType;
+    this.current_Tab = tabType;
     this.isFetchingMessages = true;
     this._helper.startSpinner();
     const payload = {
@@ -80,17 +79,17 @@ export class AnnouncementComponent implements OnInit {
   }
 
   public getEducational(): void {
-    this.current_subTab = 'educational';
+    this.current_Tab = 'educational';
     this.router.navigate([`/communication/announcement/${this.courseId}`], { queryParams: { q: 'educational' } });
-    this.getAllAnnouncement(MessageType.Sent, AnnouncementType.Educational, this.current_tab)
+    this.getAllAnnouncement(MessageType.Sent, AnnouncementType.Educational, this.current_Tab)
     this.announcementType = AnnouncementType.Educational;
     this.isPromotional = false;
   }
 
   public getPromotional(): void {
-    this.current_subTab = 'promotion';
+    this.current_Tab = 'promotion';
     this.router.navigate([`/communication/announcement/${this.courseId}`], { queryParams: { q: 'promotional' } });
-    this.getAllAnnouncement(MessageType.Sent, AnnouncementType.Promotional, this.current_tab)
+    this.getAllAnnouncement(MessageType.Sent, AnnouncementType.Promotional, this.current_Tab)
     this.announcementType = AnnouncementType.Promotional;
     this.isPromotional = true;
   }

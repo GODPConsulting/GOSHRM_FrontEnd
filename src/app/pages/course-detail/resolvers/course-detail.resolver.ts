@@ -29,7 +29,7 @@ export class CourseDetailResolver implements Resolve<boolean> {
     this.loggedInUser = this._current.getUser();
     const payload = {
       announcementType: AnnouncementType.Educational,
-      senderEmail: this.loggedInUser.username
+      senderEmail: this.loggedInUser.userName
     }
     const courseDetail = this._courseDetail.startMyLearningCourse(this.courseId);
     const announcements = this._communication.getAllAnnoucement(payload);
