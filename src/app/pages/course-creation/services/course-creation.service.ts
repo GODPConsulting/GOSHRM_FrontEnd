@@ -137,11 +137,32 @@ export class CourseCreationService {
     return this.http.getRequestWithParams( endpoint, params);
   }
 
+  public getParticipantAssessments(
+    courseId: any, assessmentType: number
+  ): Observable<ResponseModel<CourseAssessment>> {
+    const params = new HttpParams()
+    .set('courseId', courseId)
+    .set('type', assessmentType)
+    const endpoint = '/trainingparticipant/getParticipantAssessmentByCourseID';
+    return this.http.getRequestWithParams( endpoint, params);
+  }
+
+
   public AddUpdateLearningAssessment(
     course: CourseAssessment
   ): Observable<ResponseModel<CourseAssessment>> {
     const endpoint = '/learningassessment/add/update/learningassessment';
     return this.http.makeRequestWithData('post', endpoint, {}, course);
+  }
+
+  public MarkAssessment(
+    assessment: any
+  ): Observable<ResponseModel<CourseAssessment>> {
+    const endpoint = '/trainingparticipant/markParticipantAssessment';
+    const params = new HttpParams()
+    .set('courseId', assessment.assessmentId)
+    .set('assessmentId', assessment.assessmentId)
+    return this.http.makeRequestWithData('post', endpoint, params, assessment.answers);
   }
 
   public getLearningAssessments(

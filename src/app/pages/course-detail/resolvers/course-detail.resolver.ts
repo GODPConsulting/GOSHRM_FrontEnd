@@ -5,7 +5,7 @@ import {
 } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
-import { AnnouncementType } from 'app/pages/communication/models/communication.model';
+import { AnnouncementType, MessageType } from 'app/pages/communication/models/communication.model';
 import { CommunicationService } from 'app/pages/communication/services/communication.service';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -29,7 +29,8 @@ export class CourseDetailResolver implements Resolve<boolean> {
     this.loggedInUser = this._current.getUser();
     const payload = {
       announcementType: AnnouncementType.Educational,
-      senderEmail: this.loggedInUser.userName
+      senderEmail: this.loggedInUser.userName,
+      messageType: MessageType.Inbox
     }
     const courseDetail = this._courseDetail.startMyLearningCourse(this.courseId);
     const announcements = this._communication.getAllAnnoucement(payload);

@@ -43,7 +43,7 @@ export class AnnouncementComponent implements OnInit {
     this._route.queryParams.subscribe(params => {
       // this.current_subTab = params.q;
     });
-    this.getAllAnnouncement(MessageType.Inbox, AnnouncementType.Educational, this.current_Tab, this.userType);
+    this.getAllAnnouncement(MessageType.Sent, AnnouncementType.Educational, this.current_Tab, this.userType);
   }
 
   public getAllAnnouncement(

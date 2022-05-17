@@ -142,8 +142,9 @@ export class CourseAssessmentComponent implements OnInit {
   public getCourseAssessment(): void {
     this._helper.startSpinner();
     this.isFetchingAssessment = true;
+    const operation = this.loggedInUser.customerTypeId == 3 ? 'getParticipantAssessments' : 'getAssessments';
     this.sub.add(
-      this._course.getAssessments(this.courseId, this.assessmentType.CourseAssessment).subscribe({
+      this._course[operation](this.courseId, this.assessmentType.CourseAssessment).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingAssessment = false;
@@ -214,7 +215,7 @@ export class CourseAssessmentComponent implements OnInit {
   }
 
   public checked(questionId: any, answerId: any) {
-    // console.log(questionId, answerId)
+    console.log(this.allAnswered);
     return this.allAnswered.some(
       (answer: any) => answer.questionId == questionId && answer.answerId == answerId
     );

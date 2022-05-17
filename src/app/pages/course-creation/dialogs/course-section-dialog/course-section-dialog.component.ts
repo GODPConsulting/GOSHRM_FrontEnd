@@ -60,7 +60,7 @@ export class CourseSectionDialogComponent implements OnInit {
 
   public initCourseOutlineForm() {
     this.courseOutlineForm = this.fb.group({
-      outlineId: [this.outlineId],
+      outlineId: [+this.outlineId],
       sectionId: [this.data?.editObject?.sectionId ? this.data?.editObject?.sectionId : 0 ],
       companyId: [this.loggedInUser.companyId],
       number: [this.data.editObject.sectionNumber ? this.data.editObject.sectionNumber : '', Validators.required],
@@ -179,10 +179,9 @@ export class CourseSectionDialogComponent implements OnInit {
         video.preload = 'metadata';
         video.onloadedmetadata = () => {
             window.URL.revokeObjectURL(video.src);
-            alert("Duration : " + video.duration + " seconds");
-            this.courseOutlineForm.setValue({
-              duration: video.duration
-            });
+            // alert("Duration : " + video.duration + " seconds");
+            this.courseOutlineForm.get('duration')?.setValue(video.duration);
+            console.log(this.courseOutlineForm.value);
         }
         video.src = URL.createObjectURL(control.files[0]);
     }

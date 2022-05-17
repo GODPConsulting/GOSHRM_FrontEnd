@@ -142,7 +142,7 @@ export class CreateCourseAssessmentComponent implements OnInit {
           this._helper.stopSpinner();
           console.log(res)
           this._helper.triggerSucessAlert('Course created successfully!!!')
-          this.router.navigate([`/training-provider/courses/course-assessment/${this.courseId}`]);
+          this.router.navigate([`/courses/course-assessment/${this.courseId}`]);
          } else {
            this._helper.stopSpinner();
            this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)

@@ -33,6 +33,7 @@ export class LearningAssessmentComponent implements OnInit {
   public assessmentType = AssessmentType;
   public isUpload: boolean = false;
   public quizImg: any;
+  public questionIndex: any;
 
   constructor(
     private _helper: HelperService,
@@ -163,16 +164,18 @@ export class LearningAssessmentComponent implements OnInit {
   public getCourseAssessment(): void {
     this._helper.startSpinner();
     this.isFetchingAssessment = true;
+    const operation = this.loggedInUser.customerTypeId == 3 ? 'getParticipantAssessments' : 'getAssessments';
     this.sub.add(
-      this._course.getAssessments(this.courseId, this.assessmentType.LearningAssessment).subscribe({
+      this._course[operation](this.courseId, this.assessmentType.LearningAssessment).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingAssessment = false;
-          // console.log(res)
+          // console.log(res);
           this.title = res.course_AssessmentSetupTypes[0]?.title
           this.assessmentId = res.course_AssessmentSetupTypes[0]?.course_AssessmentId
           this.assessments = res?.course_AssessmentSetupTypes[0]?.question;
           this.initQuestionForm();
+          this.storeQuestionAnswerState();
           if(this.assessments == null) {
             this.assessments = [];
           }
@@ -235,7 +238,6 @@ export class LearningAssessmentComponent implements OnInit {
   }
 
   public checked(questionId: any, answerId: any) {
-    // console.log(questionId, answerId)
     return this.allAnswered.some(
       (answer: any) => answer.questionId == questionId && answer.answerId == answerId
     );
@@ -317,6 +319,40 @@ export class LearningAssessmentComponent implements OnInit {
     }
   }
 
+
+  selectOption(questionId: number, optionId: number) {
+    let obj = this.allAnswered.find((val: any) => {
+      return val.qustionId == questionId;
+    });
+    obj.optionId = optionId;
+    localStorage.setItem(
+      "userAnswersList",
+      JSON.stringify(this.allAnswered)
+    );
+    // this.setCurrentUserQuestion()
+  }
+
+  storeQuestionAnswerState() {
+    const answersList = JSON.parse(localStorage.getItem("userAnswersList") || 'null');
+    // console.log(answersList);
+    if (answersList) {
+      this.allAnswered = answersList;
+    } else {
+      this.assessments.forEach((q: any) => {
+        const state = {
+          qustionId: q.questionId,
+          optionId: 0,
+        };
+        console.log(state);
+        this.allAnswered.push(state);
+      });
+      localStorage.setItem(
+        "userAnswersList",
+        JSON.stringify(this.allAnswered)
+      );
+    }
+  }
+
   public deleteQuestion(questionId: any): void {
     const payload = {
       questionIds: [questionId]
@@ -367,6 +403,57 @@ export class LearningAssessmentComponent implements OnInit {
           this.assessmentFormSubmitted = false;
         },
       });
+  }
+
+  finish() {
+    // const answr = 0;
+    console.log(this.allAnswered)
+    const payload = {
+      assessmentId: +this.assessmentId,
+      courseId: +this.courseId,
+      answers: this.allAnswered
+    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text:
+        'This content will be saved and you will be taken to the course overview page',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Save'
+    }).then(result => {
+      if (result.value) {
+        this.submitQuiz(payload);
+      }
+    });
+  }
+
+  public submitQuiz(payload: any): void {
+    this.assessmentFormSubmitted = true;
+    if (payload.answers != []) {
+    this._helper.startSpinner();
+     console.log(payload)
+      this._course.MarkAssessment(payload).subscribe({
+        next: (res: any) => {
+         if(res.status.isSuccessful) {
+          this._helper.stopSpinner();
+          console.log(res)
+          localStorage.removeItem('userAnswersList');
+          this._helper.triggerSucessAlert('Assessment submitted successfully!!!');
+          this.router.navigate([`/courses/course-detail/${this.courseId}`]);
+         } else {
+           this._helper.stopSpinner();
+           this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
+         }
+        },
+        error: (error: HttpErrorResponse) => {
+          this._helper.stopSpinner();
+          console.log(error);
+          this.assessmentFormSubmitted = false;
+        },
+      });
+    }
   }
 
 }

@@ -106,6 +106,7 @@ export class CommunicationService {
    const params = new HttpParams()
    .set('announcementType', payload.announcementType)
    .set('senderEmail', payload.senderEmail)
+   .set('messageType', payload.messageType)
    return this.http.getRequestWithParams( endpoint, params);
   }
 

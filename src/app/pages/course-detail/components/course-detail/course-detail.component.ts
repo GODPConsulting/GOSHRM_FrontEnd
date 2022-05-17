@@ -94,10 +94,10 @@ export class CourseDetailComponent implements OnInit {
       this.activateRoute.data.subscribe((data: any) => {
         console.log(data);
         this.courseData = data?.resolveData?.courseDetail?.participantCourseResponse;
-        this.announcements = data?.resolveData?.announcement?.courseAnnouncementresponse;
+        this.announcements = data?.resolveData?.announcements?.courseAnnouncementresponse;
         this.questions = data?.resolveData?.questionAndAnswer?.courseQAResponse;
         this.lessons = this.courseData.sections;
-        console.log(this.courseData, this.lessons);
+        console.log(this.announcements);
         return this.lessons.forEach((item: any) => {
           return item?.outline.forEach((n: any) => {
             let contentType = this.getFileExt(n);
@@ -144,11 +144,7 @@ export class CourseDetailComponent implements OnInit {
 
   public formatTime(timeInSeconds: any) {
     const result = new Date(timeInSeconds * 1000).toISOString().substr(11, 8);
-  
-    return {
-      minutes: result.substr(3, 2),
-      seconds: result.substr(6, 2),
-    };
+    return  result.substr(3, 2) + ':' + result.substr(6, 2);
   };
 
   public getOverview() {
@@ -219,8 +215,6 @@ export class CourseDetailComponent implements OnInit {
           this.response = res['courseQAReplyResponse'];
           this.replies = res['courseQAReplyResponse'].replies;
           console.log(res, this.replies);
-          // this.searchQuery.pageNumber = this.paginatedResponse?.pageNumber;
-          // this.searchQuery.pageSize = this.paginatedResponse?.pageSize;
         },
         error: (error: ResponseModel<null>) => {
           this.isFetchingQuestions = false;
