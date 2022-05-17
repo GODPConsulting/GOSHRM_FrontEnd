@@ -167,17 +167,30 @@ export class ViewMessageComponent implements OnInit {
 
   public submit() {
     this._helper.startSpinner();
-    const payload = {
-      courseMessageId: +this.id,
-      courseMessagereplyId: 0,
-      courseId: +this.courseId,
-      message: this.htmlContent,
-      senderEmail: this.loggedInUser.userName,
-      companyId: this.loggedInUser.companyId
-    };
+    let payload
+    if(this.getPage == 'message') {
+      payload = {
+        courseMessageId: +this.id,
+        courseMessagereplyId: 0,
+        courseId: +this.courseId,
+        message: this.htmlContent,
+        senderEmail: this.loggedInUser.userName,
+        companyId: this.loggedInUser.companyId
+      };
+    } else {
+      payload = {
+        courseAnnouncementId: +this.id,
+        courseAnnouncmentReplyId: 0,
+        courseId: +this.courseId,
+        message: this.htmlContent,
+        senderEmail: this.loggedInUser.userName,
+        companyId: this.loggedInUser.companyId
+      };
+    }
+    const operation = this.getPage == 'message' ? 'replyMessage' : 'replyAnnouncement';
     console.log(payload)
       this.sub.add(
-        this._communication.replyMessage(payload).subscribe({
+        this._communication[operation](payload).subscribe({
           next: (res: any) => {
             console.log(res);
             if(res.status.isSuccessful) {

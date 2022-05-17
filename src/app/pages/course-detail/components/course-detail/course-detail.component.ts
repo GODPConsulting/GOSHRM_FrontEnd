@@ -3,12 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseDetailService } from '../../services/course-detail.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ConversationType, QAType } from 'app/pages/communication/models/communication.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { CommunicationService } from 'app/pages/communication/services/communication.service';
 import { HelperService } from '@core/services/healper.service';
-import { ResponseModel } from 'app/models/response.model';
+import { CurrentUserService } from '@core/services/current-user.service';
 
 @Component({
   selector: 'iq-central-front-end-course-details',
@@ -78,18 +77,19 @@ export class CourseDetailComponent implements OnInit {
     private activateRoute: ActivatedRoute,
     private _course: CourseDetailService,
     private _communication: CommunicationService,
-    private fb: FormBuilder,
-    private _helper: HelperService
+    private _helper: HelperService,
+    private _current: CurrentUserService
   ) {
    
   }
 
   ngOnInit(): void {
+    this.loggedInUser = this._current.getUser();
     this.courseId = this.route.snapshot.paramMap.get('courseId');
     this.getResolvedData();
   }
 
-  getResolvedData() {
+  public getResolvedData() {
     this.sub.add(
       this.activateRoute.data.subscribe((data: any) => {
         console.log(data);
@@ -108,11 +108,11 @@ export class CourseDetailComponent implements OnInit {
     );
   }
 
-  getFileExt(content: any) {
+  public getFileExt(content: any) {
     return content.outlineUrl.split(/[#?]/)[0].split('.').pop().trim();
   }
 
-  setFilePathAndType(content: any, sectionId: number) {
+  public setFilePathAndType(content: any, sectionId: number) {
     this.content = content;
     this.contentType = this.getFileExt(content);
     this.filePath = content.outlineUrl;
@@ -189,64 +189,35 @@ export class CourseDetailComponent implements OnInit {
     }
   }
 
-  public showQuestionSubReply(question: any, reply: any, id: any) {
-    let res = document.getElementById(`reply${id}`);
-    if(res?.classList.contains('d-none')) {
-      res?.classList.remove('d-none');
-    } else {
-      res?.classList.add('d-none');
-    }
-    this.getResplies(question, reply);
-  }
-
-  public getResplies(question: any, reply: any ): void {
-    const payload = {
-      courseQAId: question.courseQAId,
-      replyId: reply.replyId
-    }
-    this.isFetchingQuestions = true;
+  public replyAnnoucement(id: number) {
     this._helper.startSpinner();
-    this.sub.add(
-      this._communication.getCourseQuestionsAndReplyById(payload).subscribe({
-        next: (res: any) => {
-          this._helper.stopSpinner();
-          this.isFetchingQuestions = false;
-          // this.paginatedResponse = res?.response;
-          this.response = res['courseQAReplyResponse'];
-          this.replies = res['courseQAReplyResponse'].replies;
-          console.log(res, this.replies);
-        },
-        error: (error: ResponseModel<null>) => {
-          this.isFetchingQuestions = false;
-          this._helper.stopSpinner();
-          console.log(error);
-        },
-      })
-    );
-  }
-
-  public replyQuestion(question: any, index:any, reply?: any) {
-    this.replyForm = this.fb.group({
-      courseQAId: [question?.courseQAId],
-      courseId: [+this.courseId],
-      parentId: [reply?.replyId ? reply?.replyId : 0],
-      qaType: [QAType.Reply],
-      createdByType: [this.createdBy],
-      questionByName: [this.loggedInUser.full_Name],
-      createdBy: [this.userId],
-      comment: [this.htmlContent, Validators.required],
-      companyId: [+this.loggedInUser.companyId],
-      conversationType: [ConversationType.QA],
-    });
-    const payload = this.replyForm.value;
-    if(payload.parentId == 0 ) {
-      payload.reply = payload.comment;
-      this.questions[index].replies.push(payload);
-    } else {
-      payload.reply = payload.comment;
-      this.replies.push(payload);
-    }
-    this.submit(index);
+    const payload = {
+      courseAnnouncementId: id,
+      courseAnnouncmentReplyId: 0,
+      courseId: +this.courseId,
+      message: this.htmlContent,
+      senderEmail: this.loggedInUser.userName,
+      companyId: this.loggedInUser.companyId
+    };
+    console.log(payload)
+      this.sub.add(
+        this._communication.replyAnnouncement(payload).subscribe({
+          next: (res: any) => {
+            console.log(res);
+            if(res.status.isSuccessful) {
+              this._helper.stopSpinner();
+              this._helper.triggerSucessAlert('Course outline created successfully!!!');
+            } else {
+              this._helper.stopSpinner();
+              this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
+            }
+          },
+          error: (error: any) => {
+            this._helper.stopSpinner();
+            console.log(error);
+          },
+        })
+      );
   }
 
   public likeAndDislike(
