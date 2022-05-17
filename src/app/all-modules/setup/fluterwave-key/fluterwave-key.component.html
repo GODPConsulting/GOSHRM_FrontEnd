@@ -1,0 +1,211 @@
+<div class="wrapper ui-g form-wrapper">
+  <div class="ui-g-12 no-padding">
+    <div class="card no-padding p-5">
+      <div style="margin-bottom:0" class="panel panel-default">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-md-12">
+              <h2 class="panel-title pull-left">
+                Okra Key Setup
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <form novalidate [formGroup]="okraForm">
+          <div class="row panel-body mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                  <label for="bank" class="form-label">
+                  Secret Keys
+                  </label>
+                    <input
+                      type="text"
+                      name="secret_keys"
+                      class="form-control"
+                      formControlName="secret_keys"
+                    />            
+                </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="public_keys" class="form-label">
+                  Public Keys
+                </label>
+                  <input type="text" name="public_keys" formControlName="public_keys" class="form-control" />
+              </div>
+            </div>
+            <div class="d-flex col-md-6">
+                <label for="public_keys" class="form-label">
+                  Use this setup
+                </label>
+                <div class="pl-5">
+                  <input type="checkbox" name="useOkra" id="useOkra" formControlName="useOkra" />
+                </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div style="margin-bottom:0" class="panel panel-default">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-md-12">
+              <h2 class="panel-title pull-left">
+                CRC Key Setup
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <form novalidate [formGroup]="okraForm">
+          <div class="row panel-body mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                  <label for="bank" class="form-label">
+                  Username
+                  </label>
+                    <input
+                      type="text"
+                      name="secret_keys"
+                      class="form-control"
+                      formControlName="secret_keys"
+                    />            
+                </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="public_keys" class="form-label">
+                  Password
+                </label>
+                  <input type="password" name="public_keys" formControlName="public_keys" class="form-control" />
+              </div>
+            </div>
+            <div class="d-flex col-md-6">
+                <label for="public_keys" class="form-label">
+                  Use this setup
+                </label>
+                <div class="pl-5">
+                  <input type="checkbox" name="useOkra" id="useOkra" formControlName="useOkra" />
+                </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div style="margin-bottom:0" class="panel panel-default">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-md-12">
+              <h2 class="panel-title pull-left">
+                Flutterwave Key Setup
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <form novalidate [formGroup]="okraForm">
+          <div class="row panel-body mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                  <label for="bank" class="form-label">
+                  Secret Keys
+                  </label>
+                    <input
+                      type="text"
+                      name="secret_keys"
+                      class="form-control"
+                      formControlName="secret_keys"
+                    />            
+                </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="public_keys" class="form-label">
+                  Public Keys
+                </label>
+                  <input type="text" name="public_keys" formControlName="public_keys" class="form-control" />
+              </div>
+            </div>
+            <div class="d-flex col-md-6">
+                <label for="public_keys" class="form-label">
+                  Use this setup
+                </label>
+                <div class="pl-5">
+                  <input type="checkbox" name="useOkra" id="useOkra" formControlName="useOkra" />
+                </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div style="margin-bottom:0" class="panel panel-default">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-md-12">
+              <h2 class="panel-title pull-left">
+                Send Champ Key Setup
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <form novalidate [formGroup]="okraForm">
+          <div class="row panel-body mb-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                  <label for="bank" class="form-label">
+                  Private Keys
+                  </label>
+                    <input
+                      type="text"
+                      name="secret_keys"
+                      class="form-control"
+                      formControlName="secret_keys"
+                    />            
+                </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="public_keys" class="form-label">
+                  Public Keys
+                </label>
+                  <input type="text" name="public_keys" formControlName="public_keys" class="form-control" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="public_keys" class="form-label">
+                  Sender Name
+                </label>
+                  <input type="text" name="public_keys" formControlName="public_keys" class="form-control" />
+              </div>
+            </div>
+            <div class="d-flex col-md-6">
+                <label for="public_keys" class="form-label">
+                  Use this setup
+                </label>
+                <div class="pl-5">
+                  <input type="checkbox" name="useOkra" id="useOkra" formControlName="useOkra" />
+                </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-md-12">
+          <button
+            style="margin-right:15px"
+            type="button"
+            class="btn btn-success pull-right"
+            (click)="submit()"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

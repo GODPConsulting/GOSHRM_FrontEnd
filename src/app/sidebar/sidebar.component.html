@@ -1186,6 +1186,18 @@
             >
               <li
                 *ngIf="userRights?.includes('employeeidformat')"
+                routerLink="/setup/flutterwave-transfer"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'flutterwave-transfer'
+                  }"
+                  >Fluterwave Setup</a
+                >
+              </li>
+              <li
+                *ngIf="userRights?.includes('employeeidformat')"
                 routerLink="/setup/employee-id-format"
               >
                 <a
