@@ -53,6 +53,7 @@ import { CompanyStructureDefinitionComponent } from './company-structure-definit
 import { CompanyStructureDefinitionListComponent } from './company-structure-definition-list/company-structure-definition-list.component';
 import { CompanyStructureListComponent } from './company-structure-list/company-structure-list.component';
 import { DocumentTypeComponent } from './document-type/document-type.component';
+import { FluterwaveKeyComponent } from "./fluterwave-key/fluterwave-key.component";
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import { DocumentTypeComponent } from './document-type/document-type.component';
     CompanyStructureDefinitionListComponent,
     CompanyStructureListComponent,
     DocumentTypeComponent,
+    FluterwaveKeyComponent
   ],
   imports: [
     CommonModule,

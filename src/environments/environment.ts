@@ -5,7 +5,7 @@
 export const environment = {
     production: false,
     //api_url: "http://192.168.1.100:90",
-    api_url: "http://107.180.93.38:5050",
+    api_url: "https://api.goserp.co.uk",
     //api_url: "http://localhost:63936/api/v1",
     
   };

@@ -1,0 +1,13 @@
+.wrapper {
+    padding: 2rem 3rem;
+}
+
+.form-wrapper {
+    position: relative;
+}
+
+.panel-footer {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+}

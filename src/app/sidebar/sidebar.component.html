@@ -700,7 +700,7 @@
                  active:
                    urlComplete.childUrl === 'appraisal-preference'
                }"
-               >Company Information</a
+               >ESS</a
              >
            </li>
            <li
@@ -783,6 +783,15 @@
                    : 'none'
              }"
            >
+             <li routerLink="/lms/information">
+               <a
+                 href="javascript:"
+                 [ngClass]="{
+                   active: urlComplete.childUrl === 'kpi-category'
+                 }"
+                 >Company Information</a
+               >
+             </li>
              <li routerLink="/lms/application/email-setup">
                <a
                  href="javascript:"
@@ -799,6 +808,15 @@
                    active: urlComplete.childUrl === 'kpi-indicators'
                  }"
                  >Page Setup</a
+               >
+             </li>
+             <li routerLink="/lms/policy">
+               <a
+                 href="javascript:"
+                 [ngClass]="{
+                   active: urlComplete.childUrl === 'kpi-indicators'
+                 }"
+                 >Privay Policy</a
                >
              </li>
            </ul>
@@ -820,11 +838,21 @@
                  active:
                    urlComplete.childUrl === 'appraisal-preference'
                }"
-               >Privacy Policy</a
+               >Admin</a
+             >
+            </li>
+           <li routerLink="/lms/policy">
+             <a
+               href="javascript:"
+               [ngClass]="{
+                 active:
+                   urlComplete.childUrl === 'appraisal-preference'
+               }"
+               >Manager</a
              >
             </li>
            </ul>
-            </li>
+          </li>
           <!-- /LMS -->
           <!-- Managers -->
           <li
@@ -1156,6 +1184,18 @@
                     : 'none'
               }"
             >
+              <li
+                *ngIf="userRights?.includes('employeeidformat')"
+                routerLink="/setup/flutterwave-transfer"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'flutterwave-transfer'
+                  }"
+                  >Payment Setup</a
+                >
+              </li>
               <li
                 *ngIf="userRights?.includes('employeeidformat')"
                 routerLink="/setup/employee-id-format"

@@ -39,6 +39,7 @@ import { CompanyStructureDefinitionComponent } from "./company-structure-definit
 import { CompanyStructureListComponent } from "./company-structure-list/company-structure-list.component";
 import { CompanyStructureComponent } from "./company-structure/company-structure.component";
 import { DocumentTypeComponent } from "./document-type/document-type.component";
+import { FluterwaveKeyComponent } from "./fluterwave-key/fluterwave-key.component";
 
 const routes: Routes = [
   {
@@ -116,6 +117,10 @@ const routes: Routes = [
       {
         path: "location",
         component: LocationComponent,
+      },
+      {
+        path: "flutterwave-transfer",
+        component: FluterwaveKeyComponent,
       },
       {
         path: "hospital-management",
