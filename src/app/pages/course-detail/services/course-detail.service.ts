@@ -20,11 +20,37 @@ export class CourseDetailService {
    return this.http.getRequestWithParams(endpoint, params);
   }
 
+  public getCourseNote(
+    courseId: number
+  ): Observable<ResponseModel<any>> {
+   const endpoint = '/trainingparticipant/getParticipantNote';
+   const params = new HttpParams()
+   .set('courseId', courseId)
+   return this.http.getRequestWithParams(endpoint, params);
+  }
+
   public trackVideoProgress(
     payload: any
   ): Observable<ResponseModel<any>> {
    const endpoint = '/courseoutline/update/courseSectionVideo';
    return this.http.makeRequestWithData('post' ,endpoint, {}, payload);
+  }
+
+  public AddNote(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+   const endpoint = '/trainingparticipant/addParticipantNote';
+   return this.http.makeRequestWithData('post' ,endpoint, {}, payload);
+  }
+
+  public deleteNote(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+   const endpoint = '/trainingparticipant/deleteParticipantNote';
+   const params = new HttpParams()
+   .set('courseId', payload.courseId)
+   .set('participantNoteId', payload.participantNoteId);
+   return this.http.makeRequestWithData('post' ,endpoint, params);
   }
 
 }

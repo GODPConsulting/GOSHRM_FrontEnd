@@ -208,3 +208,31 @@
 .isLike {
     fill: $orange-400;
 }
+
+.note_wrapper {
+    &-lists {
+        .note-header {
+            .time {
+                font-weight: 400;
+                font-size: 1.8rem;
+            }
+            .section-name {
+                font-weight: 600;
+                font-size: 18px;
+            }
+            .outline-name {
+                font-weight: 400;
+                font-size: 1.4rem;
+            }
+        }
+        .note-para {
+            font-weight: 300;
+            font-size: 1.4rem;
+            line-height: 2rem;
+            color: rgba($black-100, 0.5);
+        }
+    }
+    .bg-deep-white {
+        background: $white-200;
+    }
+}

@@ -16,14 +16,16 @@ import { CurrentUserService } from '@core/services/current-user.service';
 })
 export class CourseDetailComponent implements OnInit {
   public sub: Subscription = new Subscription();
-  public courseId: any;
-  public outlineId: any;
-  public sectionId: any;
+  public courseId: any = 0;
+  public outlineId: number = 0;
+  public sectionId: number = 0;
+  public participantNoteId: number = 0;
   public courseData: any;
   public announcements: any[] = [];
   public questions: any[] = [];
-  public replies: any[] = [];
+  public notes: any[] = [];
   public htmlContent = ``;
+  public note = ``;
   public lessons: any;
   public content: any;
   public filePath: any;
@@ -92,12 +94,13 @@ export class CourseDetailComponent implements OnInit {
   public getResolvedData() {
     this.sub.add(
       this.activateRoute.data.subscribe((data: any) => {
-        console.log(data);
+        // console.log(data);
         this.courseData = data?.resolveData?.courseDetail?.participantCourseResponse;
         this.announcements = data?.resolveData?.announcements?.courseAnnouncementresponse;
         this.questions = data?.resolveData?.questionAndAnswer?.courseQAResponse;
+        this.notes = data?.resolveData?.note?.participantCourseNoteResponse;
         this.lessons = this.courseData.sections;
-        console.log(this.announcements);
+        console.log(this.notes);
         return this.lessons.forEach((item: any) => {
           return item?.outline.forEach((n: any) => {
             let contentType = this.getFileExt(n);
@@ -267,7 +270,7 @@ export class CourseDetailComponent implements OnInit {
       );
   }
 
-  public submit(index: any) {
+  public submit() {
     const payload = this.replyForm.value;
     this.isLoading = true;
     if(this.replyForm.valid) {
@@ -293,6 +296,73 @@ export class CourseDetailComponent implements OnInit {
         })
       );
     }
+  }
+
+  public addNote() {
+    const payload = {
+      courseId: +this.courseId,
+      outlineId: +this.outlineId,
+      participantNoteId: this.participantNoteId,
+      note: this.note,
+      sectionId: +this.sectionId,
+      time: this.video?.currentTime
+    };
+    this.isLoading = true;
+    if((this.courseId && this.outlineId && this.sectionId) == 0) {
+      this._helper.triggerErrorAlert('You need to start a lesson!');
+    } else {
+      this._helper.startSpinner();
+      this.sub.add(
+        this._course.AddNote(payload).subscribe({
+          next: (res: any) => {
+            this._helper.stopSpinner();
+            console.log(res);
+            this.note = '';
+            this._helper.triggerSucessAlert('Noted added successfully!');
+          },
+          error: (error: any) => {
+            this.isSuccessful = false;
+            this.isLoading = false;
+            this._helper.triggerErrorAlert('An error occured!!')
+            console.log(error);
+          },
+        })
+    );
+    }
+  }
+
+  public editNote(note: any) {
+    this.participantNoteId = note.participantNoteId;
+    this.note = note.note
+  }
+
+  public deleteNote(participantNoteId: number) {
+    const payload = {
+      courseId: +this.courseId,
+      participantNoteId: participantNoteId,
+    };
+    this.isLoading = true;
+      this._helper.startSpinner();
+      this.sub.add(
+        this._course.deleteNote(payload).subscribe({
+          next: (res: any) => {
+            this._helper.stopSpinner();
+            console.log(res);
+           if(res?.status?.isSuccessful) {
+            this.note = '';
+            this._helper.triggerSucessAlert('Noted deleted successfully!');
+           } else {
+            this._helper.triggerErrorAlert('An error occured!');
+           }
+          },
+          error: (error: any) => {
+            this.isSuccessful = false;
+            this.isLoading = false;
+            this._helper.triggerErrorAlert('An error occured!!')
+            console.log(error);
+          },
+        })
+    );
   }
 
 }

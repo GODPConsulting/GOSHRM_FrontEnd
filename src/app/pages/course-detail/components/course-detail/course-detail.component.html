@@ -1,4 +1,4 @@
-<div class="course_wrapper">
+<div class="course_wrapper pt-3 pb-5">
       <div class="header p-4">
           <h2>My Learning > <span class="coursee-title">{{ courseData?.courseName }}</span></h2>
       </div>
@@ -277,7 +277,7 @@
           </div>
         </div>
 
-        <div class="tab-contents">
+        <div class="tab-contents bg-white">
           <ng-container *ngIf="current_Tab == 'overview'">
             <div class="course-details d-lg-flex row p-5">
               <div class="col-lg-7 col-sm-12 ">
@@ -384,48 +384,11 @@
                                                         class="text-danger click"
                                                         *ngIf="j == (question?.replies.length-1) && !isSuccessful"
                                                     >
-                                                        <span class="pe-3" (click)="submit(i)">Retry</span>
+                                                        <span class="pe-3" (click)="submit()">Retry</span>
                                                         <span *ngIf="isLoading"><i class="fa fa-spinner"></i></span>
                                                     </div>
                                             </div><hr>
                                         </div>
-                                        <div [id]="'reply'+j" class="sub-reply d-none px-5">
-                                            <div *ngFor="let item of replies; index as k">
-                                                <div class="d-flex pb-2">
-                                                    <div class="responder-img">
-                                                        <img 
-                                                            [src]="item?.questionByPictureUrl ? item?.questionByPictureUrl : ''" 
-                                                            alt=""
-                                                        />
-                                                    </div>
-                                                    <span class="px-3">{{ item?.questionByName }}</span>
-                                                </div>
-                                                <div class="question">
-                                                    <div class="d-flex py-3">
-                                                            <span class="font-bold" [innerHTML]="item?.reply"></span>
-                                                    </div>
-                                                    <div class="d-flex">
-                                                        <div class="pe-5">
-                                                            <span (click)="likeAndDislike(question, k, item)">
-                                                                <svg [ngClass]="item?.isLiked ? 'isLike' : ''" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path d="M7 22.5H4C3.46957 22.5 2.96086 22.2893 2.58579 21.9142C2.21071 21.5391 2 21.0304 2 20.5V13.5C2 12.9696 2.21071 12.4609 2.58579 12.0858C2.96086 11.7107 3.46957 11.5 4 11.5H7M14 9.5V5.5C14 4.70435 13.6839 3.94129 13.1213 3.37868C12.5587 2.81607 11.7956 2.5 11 2.5L7 11.5V22.5H18.28C18.7623 22.5055 19.2304 22.3364 19.5979 22.024C19.9654 21.7116 20.2077 21.2769 20.28 20.8L21.66 11.8C21.7035 11.5134 21.6842 11.2207 21.6033 10.9423C21.5225 10.6638 21.3821 10.4063 21.1919 10.1875C21.0016 9.96873 20.7661 9.79393 20.5016 9.67522C20.2371 9.5565 19.9499 9.49672 19.66 9.5H14Z" stroke="#FBC783" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                </svg>                                    
-                                                            </span>
-                                                            <span class="ps-2 click">Likes {{ item?.totalLike }}</span>
-                                                        </div>
-                                                        <div class="click">
-                                                            <span>
-                                                                <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path d="M21 15.5C21 16.0304 20.7893 16.5391 20.4142 16.9142C20.0391 17.2893 19.5304 17.5 19 17.5H7L3 21.5V5.5C3 4.96957 3.21071 4.46086 3.58579 4.08579C3.96086 3.71071 4.46957 3.5 5 3.5H19C19.5304 3.5 20.0391 3.71071 20.4142 4.08579C20.7893 4.46086 21 4.96957 21 5.5V15.5Z" stroke="#FBC783" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                </svg>                                                                     
-                                                            </span>
-                                                            <span class="ps-2">Reply {{ item?.totalreply }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                </div>
-                                            </div>
-                                          </div>
                                     </div>
                                     <div *ngIf="!showSubReply">
                                         <angular-editor [(ngModel)]="htmlContent" [config]="config"></angular-editor>
@@ -439,6 +402,96 @@
                             </div>
                         </div>
                 </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngIf="current_Tab == 'note'">
+            <div class="row d-flex justify-content-center my-5">
+              <div class="col-md-10 mb-4">
+                <div class="filter">
+                  <form>
+                    <div class="row">
+                      <div class="col-md-5">
+                        <div class="form_group mb-4">
+                          <label for="" class="form-label">Lectures</label>
+                          <select name="" id="" class="form-select">
+                            <option value="">All Lectures</option>
+                            <option value="">Current Lectures</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-5">
+                        <div class="form_group mb-4">
+                          <label for="" class="form-label">Sort By</label>
+                          <select name="" id="" class="form-select">
+                            <option value="">Most Recent</option>
+                            <option value="">Oldest</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-2 mt-5">
+                        <button class="btn btn-green btn-lg">Print Note</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="note-form mb-4">
+                  <div class="row d-flex justify-content-center">
+                      <div class="col-md-10">
+                        <div class="form_group mb-4">
+                          <label for="" class="form-label">Take a Note</label>
+                          <textarea 
+                            name="" id="" 
+                            cols="30" rows="10"
+                            class="form-control"
+                            [(ngModel)]="note"
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div class="col-12 d-flex justify-content-end">
+                        <button 
+                          class="btn-outline-green btn-lg me-3"
+                        >Cancel</button>
+
+                        <button 
+                          class="btn- btn-green btn-lg"
+                          (click)="addNote()"
+                        >Save Note</button>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row d-flex justify-content-center note_wrapper my-3">
+              <div class="col-md-10 note_wrapper-lists p-3" *ngFor="let note of notes">
+                <div class="d-flex justify-content-between">
+                  <div class="note-header">
+                    <span class="pe-3 time">{{ formatTime(note?.time) }}</span>
+                    <span class="pe-3 section-name">1. {{ note?.sectionName }}</span>
+                    <span class="outline-name">1. {{ note?.outlineName }}</span>
+                  </div>
+                  <div>
+                    <span class="click pe-3" (click)="editNote(note)">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.03984 17.625C6.08672 17.625 6.13359 17.6203 6.18047 17.6133L10.1227 16.9219C10.1695 16.9125 10.2141 16.8914 10.2469 16.8563L20.182 6.92109C20.2038 6.89941 20.221 6.87366 20.2328 6.8453C20.2445 6.81695 20.2506 6.78656 20.2506 6.75586C20.2506 6.72516 20.2445 6.69477 20.2328 6.66642C20.221 6.63806 20.2038 6.61231 20.182 6.59063L16.2867 2.69297C16.2422 2.64844 16.1836 2.625 16.1203 2.625C16.057 2.625 15.9984 2.64844 15.9539 2.69297L6.01875 12.6281C5.98359 12.6633 5.9625 12.7055 5.95312 12.7523L5.26172 16.6945C5.23892 16.8201 5.24707 16.9493 5.28545 17.071C5.32384 17.1927 5.39132 17.3032 5.48203 17.393C5.63672 17.543 5.83125 17.625 6.03984 17.625ZM7.61953 13.5375L16.1203 5.03906L17.8383 6.75703L9.3375 15.2555L7.25391 15.6234L7.61953 13.5375ZM20.625 19.5938H3.375C2.96016 19.5938 2.625 19.9289 2.625 20.3438V21.1875C2.625 21.2906 2.70937 21.375 2.8125 21.375H21.1875C21.2906 21.375 21.375 21.2906 21.375 21.1875V20.3438C21.375 19.9289 21.0398 19.5938 20.625 19.5938Z" fill="#828282"/>
+                      </svg>                        
+                    </span>
+                    <span class="click" (click)="deleteNote(note?.participantNoteId)">
+                      <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.00014 0.928711C9.82299 0.928637 10.6145 1.24414 11.2117 1.81023C11.8089 2.37632 12.1663 3.14988 12.2101 3.97157L12.2144 4.143H16.9287C17.0916 4.14305 17.2484 4.20492 17.3674 4.31612C17.4864 4.42731 17.5588 4.57954 17.5699 4.74204C17.581 4.90454 17.53 5.06519 17.4272 5.19154C17.3244 5.31789 17.1775 5.40051 17.0161 5.42271L16.9287 5.42871H16.021L14.9753 18.3313C14.91 19.1362 14.5442 19.8871 13.9505 20.4345C13.3568 20.982 12.5788 21.2859 11.7713 21.2859H6.229C5.42143 21.2859 4.64344 20.982 4.04977 20.4345C3.4561 19.8871 3.09025 19.1362 3.025 18.3313L1.97843 5.42871H1.07157C0.916222 5.4287 0.766132 5.37245 0.649056 5.27034C0.53198 5.16823 0.455838 5.02719 0.434711 4.87328L0.428711 4.78585C0.428717 4.63051 0.484976 4.48042 0.587083 4.36334C0.689189 4.24627 0.830236 4.17012 0.984139 4.149L1.07157 4.143H5.78585C5.78585 3.29051 6.1245 2.47295 6.7273 1.87015C7.33009 1.26736 8.14766 0.928711 9.00014 0.928711ZM14.7319 5.42871H3.26843L4.30643 18.2276C4.34562 18.7105 4.56517 19.161 4.92141 19.4895C5.27764 19.8179 5.74446 20.0002 6.229 20.0001H11.7713C12.2558 20.0002 12.7226 19.8179 13.0789 19.4895C13.4351 19.161 13.6547 18.7105 13.6939 18.2276L14.731 5.42871H14.7319ZM7.07157 8.643C7.22691 8.643 7.377 8.69926 7.49408 8.80137C7.61116 8.90347 7.6873 9.04452 7.70843 9.19842L7.71442 9.28585V16.143C7.71438 16.3059 7.6525 16.4627 7.54131 16.5817C7.43011 16.7007 7.27788 16.7731 7.11538 16.7842C6.95289 16.7953 6.79223 16.7443 6.66588 16.6415C6.53953 16.5387 6.45691 16.3918 6.43471 16.2304L6.42871 16.143V9.28585C6.42871 9.11536 6.49644 8.95184 6.617 8.83128C6.73756 8.71073 6.90107 8.643 7.07157 8.643ZM10.9287 8.643C11.0841 8.643 11.2341 8.69926 11.3512 8.80137C11.4683 8.90347 11.5444 9.04452 11.5656 9.19842L11.5716 9.28585V16.143C11.5715 16.3059 11.5096 16.4627 11.3984 16.5817C11.2873 16.7007 11.135 16.7731 10.9725 16.7842C10.81 16.7953 10.6494 16.7443 10.523 16.6415C10.3967 16.5387 10.3141 16.3918 10.2919 16.2304L10.2859 16.143V9.28585C10.2859 9.11536 10.3536 8.95184 10.4741 8.83128C10.5947 8.71073 10.7582 8.643 10.9287 8.643ZM9.00014 2.21443C8.51146 2.21437 8.04098 2.39982 7.68378 2.73331C7.32658 3.0668 7.1093 3.52346 7.07585 4.011L7.07157 4.143H10.9287L10.9244 4.011C10.891 3.52346 10.6737 3.0668 10.3165 2.73331C9.9593 2.39982 9.48882 2.21437 9.00014 2.21443Z" fill="#4F4F4F"/>
+                      </svg>                        
+                    </span>
+                  </div>
+                </div>
+                <div class="row d-flex justify-content-end mt-3">
+                  <div class="col-md-11 bg-deep-white p-3">
+                    <p class="note-para">
+                      {{ note?.note }}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </ng-container>
           

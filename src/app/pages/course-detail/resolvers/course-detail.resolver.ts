@@ -33,16 +33,18 @@ export class CourseDetailResolver implements Resolve<boolean> {
       messageType: MessageType.Inbox
     }
     const courseDetail = this._courseDetail.startMyLearningCourse(this.courseId);
+    const note = this._courseDetail.getCourseNote(this.courseId);
     const announcements = this._communication.getAllAnnoucement(payload);
     const questionAndAnswer = this._communication.getCourseQuestionsAndReply(this.courseId);
     this._helper.startSpinner();
-    return forkJoin([courseDetail, announcements, questionAndAnswer]).pipe(
+    return forkJoin([courseDetail, announcements, questionAndAnswer, note]).pipe(
       map(response => {
         this._helper.stopSpinner();
         return {
           courseDetail: response[0],
           announcements: response[1],
           questionAndAnswer: response[2],
+          note: response[3],
         };
       })
     );
