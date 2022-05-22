@@ -27,7 +27,7 @@
                 <div class="" *ngIf="contentType === 'mp4'">
                     <video 
                       (timeupdate)="onTimeUpdate()" 
-                      autoplay [src]="filePath" 
+                      autoplay [src]="filePath"
                       controls id="myVideo" width="100%"
                     ></video>
                   </div>
@@ -79,12 +79,12 @@
                     </h2>
                     <div [attr.id]="'collapse' +i" class="accordion-collapse collapse" [attr.aria-labelledby]="'heading'+i" data-bs-parent="#accordionExample">
                       <div class="accordion-body">
-                       <div class="d-flex justify-content-between py-3" *ngFor="let outline of lesson?.outline; index as i">
+                       <div class="d-flex justify-content-between py-3" *ngFor="let outline of lesson?.outline; index as j">
                          <div class="d-flex">
                             <span class="pe-2">
                               <input type="checkbox" name="" id="" [checked]="outline?.progress >= 80">
                             </span>
-                            <span (click)="setFilePathAndType(outline, lesson?.sectionId)">
+                            <span (click)="setFilePathAndType(outline, lesson?.sectionId, i, j)">
                               <div>
                                 {{ i + 1 + ". "}} {{ (outline?.outlineName?.length>25)? (outline?.outlineName | slice:0:25)+'...':(outline?.outlineName) }}
                               </div>
@@ -160,17 +160,16 @@
                         type="button" id="dropdownMenuButton1" 
                         data-bs-toggle="dropdown" 
                         aria-expanded="false"
-                        [attr.disabled]="courseData?.coursePercentage != 100"
                       >
                           Assessment
                       </button>
                       <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item" [routerLink]="['/courses/course-assessment', courseId]"
                           >Course Assessment</a></li>
-                        <li><a class="dropdown-item" [routerLink]="['/courses/competence-assessment', courseId]"
-                          >Competence Assessment</a></li>
                         <li><a class="dropdown-item" [routerLink]="['/courses/learning-assessment', courseId]"
                           >Learning Assessment </a></li>
+                        <li><a class="dropdown-item" [routerLink]="['/courses/competence-assessment', courseId]"
+                          >Competence Assessment</a></li>
                       </ul>
                     </div>
                     <span class="mx-auto">
@@ -325,7 +324,7 @@
           <ng-container *ngIf="current_Tab == 'announcement'">
             <div class="community__wrapper">
                 <div class="activities bg-white p-4 my-3" *ngFor="let question of announcements; index as i">
-                        <div class="d-flex justify-content around">
+                        <div class="d-md-flex justify-content around">
                             <div class="card-left">
                                 <div class="img-wrapper">
                                     <img 
@@ -334,7 +333,7 @@
                                     />
                                 </div>
                             </div>
-                            <div class="card-right ps-5">
+                            <div class="card-right ps-md-5">
                                 <div class="d-flex pb-3 pt-3">
                                     <span>{{ question?.subject }}</span>
                                     <span class="font-bold ps-3">Question</span>
@@ -367,7 +366,7 @@
                                     <hr>
                                 </div>
                                 <div [id]="'response'+i" class="reply d-none py-4">
-                                    <div *ngFor="let reply of question?.messageReplyResponse; index as j">
+                                    <div *ngFor="let reply of announcementReplies; index as j">
                                         <div class="d-flex pb-2">
                                             <div class="responder-img">
                                                 <img 
@@ -382,7 +381,7 @@
                                                     <span class="font-bold" [innerHTML]="reply?.message"></span>
                                                     <div 
                                                         class="text-danger click"
-                                                        *ngIf="j == (question?.replies.length-1) && !isSuccessful"
+                                                        *ngIf="j == (announcementReplies.length-1) && !isSuccessful"
                                                     >
                                                         <span class="pe-3" (click)="submit()">Retry</span>
                                                         <span *ngIf="isLoading"><i class="fa fa-spinner"></i></span>

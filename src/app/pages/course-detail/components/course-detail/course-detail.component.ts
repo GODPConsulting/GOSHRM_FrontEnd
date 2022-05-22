@@ -8,6 +8,7 @@ import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { CommunicationService } from 'app/pages/communication/services/communication.service';
 import { HelperService } from '@core/services/healper.service';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { ResponseModel } from 'app/models/response.model';
 
 @Component({
   selector: 'iq-central-front-end-course-details',
@@ -23,6 +24,7 @@ export class CourseDetailComponent implements OnInit {
   public courseData: any;
   public announcements: any[] = [];
   public questions: any[] = [];
+  public announcementReplies: any[] = [];
   public notes: any[] = [];
   public htmlContent = ``;
   public note = ``;
@@ -40,11 +42,14 @@ export class CourseDetailComponent implements OnInit {
   public userId!: string;
   public createdBy!: number;
   public isLoading: boolean = false;
-  public isSuccessful: boolean = false;
+  public isSuccessful: boolean = true;
   public showReply: boolean = false;
   public showSubReply: boolean = false;
   public isFetchingQuestions: boolean = false;
+  public isFetchingAnnouncements: boolean = false;
   public response: any;
+  public sectionIndex: number = 0;
+  public outlineIndex: number = 0;
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -115,12 +120,31 @@ export class CourseDetailComponent implements OnInit {
     return content.outlineUrl.split(/[#?]/)[0].split('.').pop().trim();
   }
 
-  public setFilePathAndType(content: any, sectionId: number) {
+  public setFilePathAndType(content: any, sectionId: number, i: number, index: number) {
+    // console.log(content, sectionId, index);
+    this.sectionIndex = i;
+    this.outlineIndex = index;
     this.content = content;
     this.contentType = this.getFileExt(content);
     this.filePath = content.outlineUrl;
     this.outlineId = content.outlineId;
     this.sectionId = sectionId;
+  }
+
+  public getNextItem( i: number, index: number) {
+    let section = [];
+    if(section.length == (index)) {
+      section= this.lessons[i++].outline;
+      this.content = section[0];
+      document.getElementById(`collapse${i}`)?.classList.remove('show');
+      document.getElementById(`collapse${i++}`)?.classList.add('show');
+      this.setFilePathAndType(this.content,this.sectionId, i++, 0);
+    } else  {
+      console.log(this.content);
+      section= this.lessons[i].outline;
+      this.content = section[index++];
+      this.setFilePathAndType(this.content, this.sectionId, i, index++);
+    }
   }
 
   public onTimeUpdate(){
@@ -130,19 +154,23 @@ export class CourseDetailComponent implements OnInit {
         this.video.play();
         this.videoPlaying = true;
         this.percentage = (this.video.currentTime / this.video.duration) * 100;
-        console.log(this.percentage, this.video.currentTime, this.video.duration);
+        if(this.percentage >= 98) {
+          this.getNextItem(this.sectionIndex, this.outlineIndex);
+          this.onTimeUpdate()
+        }
+        // console.log(this.percentage, this.video.currentTime, this.video.duration);
     }else{
         this.video.pause();
         this.videoPlaying = false;
     }
-    const payload = {
-      sectionId: this.sectionId,
-      outlineId: this.outlineId,
-      durationOfVideoCompeleted: Math.floor((this.percentage/100))
-    }
-    setInterval(() => {
-      this.trackVideoProgress(payload);
-    }, 10000);
+    // const payload = {
+    //   sectionId: this.sectionId,
+    //   outlineId: this.outlineId,
+    //   durationOfVideoCompeleted: Math.floor((this.percentage/100))
+    // }
+    // setInterval(() => {
+    //   this.trackVideoProgress(payload);
+    // }, 10000);
   }
 
   public formatTime(timeInSeconds: any) {
@@ -170,6 +198,30 @@ export class CourseDetailComponent implements OnInit {
     this.current_Tab = 'announcement';
   }
 
+  public getAnnouncementReply(announcementId: number): void {
+    this.isFetchingAnnouncements = true;
+    this._helper.startSpinner();
+    const payload = {
+      courseId: this.courseId,
+      announcementId: announcementId
+    };
+    this.sub.add(
+      this._communication.getAnnouncementById(payload).subscribe({
+        next: (res: any) => {
+          this._helper.stopSpinner();
+          this.isFetchingAnnouncements = false;
+          console.log(res);
+          this.announcementReplies = res?.courseAnnouncementresponse?.messageReplyResponse
+        },
+        error: (error: ResponseModel<null>) => {
+          this.isFetchingAnnouncements = false;
+          this._helper.stopSpinner();
+          console.log(error);
+        },
+      })
+    );
+  }
+
   public trackVideoProgress(payload: any): void {
       console.log(payload)
       this._course.trackVideoProgress(payload).subscribe({
@@ -182,11 +234,12 @@ export class CourseDetailComponent implements OnInit {
       });
   }
 
-  public showQuestionReply(question: any, id: any) {
+  public showQuestionReply(question: any, index: any) {
     this.showReply = !this.showReply;
-    let response = document.getElementById(`response${id}`);
+    let response = document.getElementById(`response${index}`);
     if(response?.classList.contains('d-none')) {
       response?.classList.remove('d-none');
+      this.getAnnouncementReply(question?.courseAnnouncementId);
     } else {
       response?.classList.add('d-none');
     }
@@ -209,14 +262,13 @@ export class CourseDetailComponent implements OnInit {
             console.log(res);
             if(res.status.isSuccessful) {
               this._helper.stopSpinner();
-              this._helper.triggerSucessAlert('Course outline created successfully!!!');
+              this.isSuccessful = true;
             } else {
-              this._helper.stopSpinner();
-              this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
+              this.isSuccessful = false;
             }
           },
           error: (error: any) => {
-            this._helper.stopSpinner();
+            this.isSuccessful = false;
             console.log(error);
           },
         })

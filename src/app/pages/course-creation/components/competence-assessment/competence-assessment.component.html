@@ -36,7 +36,8 @@
                     </span>
                     <span class="ps-3" [pSortableColumn]="'facilitator'">Competence</span>
                   </th>
-                  <th [pSortableColumn]="'training_Name'">Ratings</th>
+                  <th [pSortableColumn]="'training_Name'">My Ratings</th>
+                  <th [pSortableColumn]="'training_Name'">Reviewer Ratings</th>
                   <th></th>         
               </tr>
           </ng-template>
@@ -49,6 +50,16 @@
                   ></p-tableCheckbox>
                 </span>
                 <span class="ps-3">{{ competence?.competence }}</span>
+              </td>
+              <td>
+                <ng-rating-bar
+                  [value]="competence?.rating"
+                  [ratingCount]="5"
+                  [disabled]="true"
+                  [styles]="{ margin: '0px', fontSize: '16px'}"
+                  colorActive="#F88F09" 
+                  colorDefault="#cecece"
+                ></ng-rating-bar>
               </td>
               <td>
                 <ng-rating-bar

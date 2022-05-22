@@ -48,6 +48,9 @@ $docstream-theme: mat.define-light-theme(
 @import "components/forms";
 
 // scrollbar styles
+body {
+  scroll-behavior: smooth;
+}
 
 /* width */
 ::-webkit-scrollbar {
