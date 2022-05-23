@@ -4,6 +4,8 @@ import { EmployeesComponent } from "./employees.component";
 import { EmployeeViewsComponent } from "./all-employees/employee-views/employee-views.component";
 import { EmployeeProfileComponent } from "./all-employees/employee-profile/employee-profile.component";
 import { EmployeeFormComponent } from "./all-employees/employee-form/employee-form.component";
+import { LayoutComponent } from "./all-employees/employee-management/layout/layout.component";
+import { PersonalDetailsComponent } from "./all-employees/employee-management/personal-details/personal-details.component";
 
 const routes: Routes = [
   {
@@ -29,6 +31,16 @@ const routes: Routes = [
       {
         path: "employee-form/:editUser",
         component: EmployeeFormComponent,
+      },
+      {
+        path: "employee-management",
+        component: LayoutComponent,
+        children: [
+          {
+          path: '',
+          component: PersonalDetailsComponent
+          }
+        ]
       },
     ],
     runGuardsAndResolvers: "always",

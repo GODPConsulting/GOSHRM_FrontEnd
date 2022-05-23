@@ -57,6 +57,11 @@ const routes: Routes = [
       {
         path: 'events',
         component: EventsComponent
+      },
+      {
+        path: "reward-management",
+        loadChildren: () =>
+          import("./reward-management/reward-management.module").then((m) => m.RewardManagementModule),
       }
     ],
   },

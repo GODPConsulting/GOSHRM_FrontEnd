@@ -1,0 +1,139 @@
+<table class="table-responsive">
+    <thead>
+      <tr>
+        <th>
+            <label class="container">
+                <input type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+        </th>
+        <th>Employee</th>
+        <th>Job Tittle</th>
+        <th>Net Pay</th>
+        <th>Date Paid</th>
+        <th>Payment Status</th>
+        <th colspan="3">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let payroll of payrollData; let id = index"
+      [ngClass]="{'bg-grey': (id + 1) % 2 !== 0}">
+        <td><label class="container">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+        </label></td>
+        <td>{{payroll.employee}}</td>
+        <td>{{payroll.jobTitle}}</td>
+        <td>{{payroll.netPay}}</td>
+        <td>{{payroll.datePaid}}</td>
+        <td [ngStyle]="{'color': payroll.PaymentStatus === 'Paid' ? 'var(--color-approved)' : 'var(--color-pending)'}">
+            {{payroll.PaymentStatus}}</td>
+        <td>
+          <span class="tooltip-custom">
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+            <span class="tooltiptext-custom">Disable Employee</span>
+          </label>
+          </span>
+        </td>
+        <td class="actions-icon">
+          <span class="tooltip-custom">
+          <img src="assets/icons/plus.svg" alt="add payroll item">
+          <span class="tooltiptext-custom">Add Payroll Item</span></span>
+        </td>
+        <td class="actions-icon" (click)="openModal()">
+          <span class="tooltip-custom">
+          <img src="assets/icons/edit.svg" alt="adjust payroll item">
+          <span class="tooltiptext-custom">Adjust Payroll Item</span></span>
+        </td>
+      </tr>
+      <hr>
+    </tbody>
+  </table>
+
+    <!-- Adjust payroll Modal -->
+  <div id="adjust-payroll" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+                <div class="d-flex justify-content-between pb-3">
+                    <div class="page-title">Adjust Payroll Item</div>
+                    <div 
+                        data-dismiss="modal"
+                        aria-label="Close"
+                        class="close-modal"
+                        (click)="closeModal()"><img src="assets/icons/delete.svg" alt="close modal">
+                    </div>
+                </div>
+
+                <div class="employee-card">
+                    <p>Sam White</p>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="emp-td">Employee ID: <span class="bold-text"> AB0001 </span></td>
+                                <td class="emp-td-2nd">Duration: <span class="bold-text"> 1-Apr-2022 : 30-Apr-2022 </span></td>
+                            </tr>
+                            <tr>
+                                <td class="emp-td">Grade: <span class="bold-text"> JG1 </span></td>
+                                <td class="emp-td-2nd">Location: <span class="bold-text"> US </span></td>
+                            </tr>
+                            <tr>
+                                <td class="emp-td">Job Title: <span class="bold-text"> Managing Director </span></td>
+                                <td class="emp-td-2nd">Working Days: <span class="bold-text"> 21 </span></td>
+                            </tr>
+                            <tr>
+                                <td class="emp-td">Office/Dept: <span class="bold-text"> Adamu Garba </span></td>
+                                <td class="emp-td-2nd">Attendance: <span class="bold-text"> 21 </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <table class="table-responsive">
+                    <thead>
+                      <tr>
+                        <th>Salary Item</th>
+                        <th>type</th>
+                        <th>Amount</th>
+                        <th>Taxable</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of dataToAdjust; let id = index"
+                        [ngClass]="{'bg-grey': (id + 1) % 2 !== 0}">
+                        <td class="pd-td">{{data.salaryItem}}</td>
+                        <td class="pd-td"> {{data.type}} 
+                        </td>
+                        <td class="pd-td">
+                            <span class="d-flex"
+                                *ngIf="selectedElement !== id || selectedSpan === 'edit'"> 
+                                {{data.amount}} 
+                                <img src="assets/icons/edit.svg" 
+                                (click)="displaySpan('save', id)" 
+                                class="adjust-item" alt="adjust payroll item">
+                            </span>
+                            <span class="d-none"
+                                [ngClass]="{'d-flex': selectedSpan === 'save' && selectedElement === id}">
+                                <input type="text" class="form-control edit-data" placeholder="{{data.type}}">
+                                <p class="save" (click)="displaySpan('edit', id)" > Save</p>
+                            </span>
+                        </td>
+                        <td>{{data.taxable}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+     
+            </div>
+        </div>   
+    </div>
+    <!-- Adjust payroll Modal -->
+
+
+    
+
+</div>

@@ -1,0 +1,70 @@
+<div class="payroll-wrapper">
+
+    <div class="d-flex justify-content-between">
+        <div class="page-title">Payroll</div>
+
+        <div class="d-flex">
+            <img class="page-title-icon" src="assets/icons/trash-orange.svg" alt="delete">
+            <img class="page-title-icon" src="assets/icons/plus-orange.svg" alt="add">
+        </div>
+    </div>
+
+    <div class="mt-5 d-flex filter-wrapper">
+        <input type="text" class="form-control payroll-filter" placeholder="Company">
+        <img class="date-dropdown" src="assets/icons/dropdown-down.svg" alt="date dropdown icon">
+        <input type="text" class="form-control payroll-filter ms-3" placeholder="Date">
+    </div>
+
+    <table class="table-responsive">
+        <thead>
+          <tr>
+            <th>
+                <label class="container">
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+            </th>
+            <th>Date Generated</th>
+            <th>Period</th>
+            <th>Total Net Pay</th>
+            <th>Approval Date</th>
+            <th>Approval Status</th>
+            <th >Payroll Status</th>
+            <th>No. of Paid Employee</th>
+            <th>No. of Unpaid Employee</th>
+            <th colspan="2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payroll of payrollData; let id = index"
+          [ngClass]="{'bg-grey': (id + 1) % 2 !== 0}">
+            <td><label class="container">
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label></td>
+            <td>{{payroll.dateGenerated}}</td>
+            <td>{{payroll.period}}</td>
+            <td>{{payroll.totalNetPay}}</td>
+            <td>{{payroll.approvalDate}}</td>
+            <td [ngStyle]="{'color': payroll.approvalStatus === 'Approved' ? 'var(--color-approved)' : 'var(--color-pending)'}">
+                {{payroll.approvalStatus}}</td>
+            <td>{{payroll.payrollStatus}}</td>
+            <td>{{payroll.noOfPaid}}</td>
+            <td>{{payroll.noofUnpaid}}</td>
+            <td class="actions-icon">
+              <span class="tooltip-custom">
+              <img src="assets/icons/approve.svg" alt="approve">
+              <span class="tooltiptext-custom">Approve Payroll</span></span>
+            </td>
+            <td class="actions-icon" 
+              [routerLink]="['/reward-management/employee-payroll']">
+              <span class="tooltip-custom">
+              <img src="assets/icons/visibilty.svg" alt="visibilty">
+              <span class="tooltiptext-custom">View Details</span></span>
+            </td>
+          </tr>
+          <hr>
+        </tbody>
+      </table>
+
+</div>

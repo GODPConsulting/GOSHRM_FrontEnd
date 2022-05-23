@@ -1,0 +1,116 @@
+<table class="table-responsive">
+    <thead>
+      <tr>
+        <th>
+            <label class="container">
+                <input type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+        </th>
+        <th>Bank Name</th>
+        <th>Sort Code</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th colspan="2"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bankData of bankSetupModelData; let id = index"
+        [ngClass]="{'bg-grey': (id + 1) % 2 !== 0}">
+        <td><label class="container">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+        </label></td>
+        <td>{{bankData.bankName}}</td>
+        <td class="central-text">{{bankData.sortCode}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="actions-icon">
+            <span class="tooltip-custom">
+            <img src="assets/icons/trash.svg" alt="delete">
+            <span class="tooltiptext-custom">Delete Item</span></span>
+        </td>
+        <td (click)="openModal()" class="actions-icon">
+            <span class="tooltip-custom">
+            <img src="assets/icons/edit.svg" alt="edit">
+            <span class="tooltiptext-custom">Edit Item</span></span>
+        </td>
+      </tr>
+    </tbody>
+</table>
+
+
+  
+    <!-- Add Bank Setup Modal -->
+    <div id="add-earnings" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md"> 
+    
+            <div class="modal-content">
+    
+                <div class="modal-body">
+    
+                    <div class="d-flex justify-content-between pb-3">
+                        <div class="page-title">Add Bank Setup</div>
+                        <div 
+                            data-dismiss="modal"
+                            aria-label="Close"
+                            class="close-modal"
+                            (click)="closeModal()"><img src="assets/icons/delete.svg" alt="close modal">
+                        </div>
+                    </div>
+
+                    <form [formGroup]="addMoreFormGroup">
+                        <!-- <div class="row">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" 
+                                placeholder="Bank Name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" 
+                                placeholder="Sort code">
+                            </div>
+                        </div> -->
+                        <div formArrayName="bankDetails">
+                            <div *ngFor="let details of banks.controls; let i = index" [formGroupName]="i">
+                                    <hr *ngIf="i > 0">
+                                    <span class="d-flex justify-content-end py-2" *ngIf="i > 0">
+                                        <img class="pointer" (click)="deleteBankdetails(i)"
+                                            src="assets/icons/trash.svg" alt="delete form">
+                                    </span>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control"
+                                            formControlName="bankName"
+                                            placeholder="Bank Name">
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" 
+                                            formControlName="sortCode"
+                                            placeholder="Sort code">
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="add-more" (click)="addBankDetails()">+ &nbsp; Add more </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-save">Save</button>         
+                            </div>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>   
+        </div>
+        <!-- Add Bank Setup Modal -->
