@@ -165,6 +165,26 @@ export class CourseCreationService {
     return this.http.makeRequestWithData('post', endpoint, params, assessment.answers);
   }
 
+  public getAssessmentScore(
+    assessment: any
+  ): Observable<ResponseModel<CourseAssessment>> {
+    const endpoint = '/trainingparticipant/getParticipantScore';
+    const params = new HttpParams()
+    .set('courseId', assessment.assessmentId)
+    .set('assessmentId', assessment.assessmentId)
+    return this.http.getRequestWithParams( endpoint, params);
+  }
+
+  public retakeAssessment(
+    assessment: any
+  ): Observable<ResponseModel<CourseAssessment>> {
+    const endpoint = '/trainingparticipant/retakeParticipantAssessment';
+    const params = new HttpParams()
+    .set('courseId', assessment.assessmentId)
+    .set('assessmentId', assessment.assessmentId)
+    return this.http.makeRequestWithData( 'post', endpoint, params);
+  }
+
   public getLearningAssessments(
     courseId: any
   ): Observable<ResponseModel<CourseAssessment>> {
@@ -198,6 +218,15 @@ export class CourseCreationService {
   ): Observable<ResponseModel<any>> {
    const endpoint = '/course/addCourseCompetenceAssessment';
    return this.http.makeRequestWithData('post',endpoint, {}, payload);
+  }
+
+  public addCompetenceReviewer(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+   const endpoint = '/trainingparticipant/reviewParticipantCourse';
+   const params = new HttpParams()
+   .set('courseId', payload.courseId)
+   return this.http.makeRequestWithData('post',endpoint, params, payload.reviewers);
   }
 
   public deleteCompetence(

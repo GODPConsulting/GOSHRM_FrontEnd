@@ -24,6 +24,7 @@ import { ScheduleClassDialogComponent } from './dialogs/schedule-class-dialog/sc
 import { AddParticipantComponent } from './dialogs/add-participant/add-participant.component';
 import { TableModule } from 'primeng/table';
 import { UploadCourseParticipantDialogComponent } from './dialogs/upload-course-participant-dialog/upload-course-participant-dialog.component';
+import { AssessmentScoreDialogsComponent } from './dialogs/assessment-score-dialogs/assessment-score-dialogs.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { UploadCourseParticipantDialogComponent } from './dialogs/upload-course-
     CourseSectionDialogComponent,
     ScheduleClassDialogComponent,
     AddParticipantComponent,
-    UploadCourseParticipantDialogComponent
+    UploadCourseParticipantDialogComponent,
+    AssessmentScoreDialogsComponent
   ],
   imports: [
     CommonModule,

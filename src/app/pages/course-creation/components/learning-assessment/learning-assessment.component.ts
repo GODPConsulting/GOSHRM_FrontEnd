@@ -1,12 +1,15 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
+import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { AssessmentScoreDialogsComponent } from '../../dialogs/assessment-score-dialogs/assessment-score-dialogs.component';
 import { AssessmentType } from '../../models/course-creation.model';
 import { CourseCreationService } from '../../services/course-creation.service';
 
@@ -34,6 +37,7 @@ export class LearningAssessmentComponent implements OnInit {
   public isUpload: boolean = false;
   public quizImg: any;
   public questionIndex: any;
+  public eligibility: boolean = true;
 
   constructor(
     private _helper: HelperService,
@@ -42,6 +46,7 @@ export class LearningAssessmentComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private _current:  CurrentUserService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -120,12 +125,12 @@ export class LearningAssessmentComponent implements OnInit {
     return this.quizQuestionForm.get('question') as FormArray;
   }
 
-  addNewQuestion(){
+  public addNewQuestion(){
     this.addNewQuiz = !this.addNewQuiz;
     window.scrollTo(0, 0);
   }
 
-  addQuestion() {
+  public addQuestion() {
     let entry = { ...this.getQuizQuestion };
     let answers: [] = entry.controls[0].get('course_Answers').value;
     //check that there is at least one true value
@@ -152,12 +157,27 @@ export class LearningAssessmentComponent implements OnInit {
     }
   }
 
-  removeQuestion(i: number) {
+  public removeQuestion(i: number) {
     if (i > 0) this.getQuizQuestion.removeAt(i);
   }
 
-  goTo() {
+  public goTo() {
     this.router.navigate(['/courses/create-learning-assessment', {courseId: this.courseId}])
+  }
+
+  public openDialog(
+    payload: { isEditing?: boolean; editObject?: any } | any
+  ): void {
+    let object: DialogModel<any> = payload;
+    const dialogRef = this.dialog.open(AssessmentScoreDialogsComponent, {
+      data: object,
+    });
+    console.log(payload)
+    dialogRef.componentInstance.event.subscribe(
+      (event: DialogModel<any>) => {
+        
+      }
+    );
   }
   
 
@@ -170,8 +190,9 @@ export class LearningAssessmentComponent implements OnInit {
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingAssessment = false;
-          // console.log(res);
-          this.title = res.course_AssessmentSetupTypes[0]?.title
+          console.log(res);
+          this.title = res.course_AssessmentSetupTypes[0]?.title;
+          this.eligibility = res.course_AssessmentSetupTypes[0]?.hasTakenAssessment;
           this.assessmentId = res.course_AssessmentSetupTypes[0]?.course_AssessmentId
           this.assessments = res?.course_AssessmentSetupTypes[0]?.question;
           this.initQuestionForm();
@@ -320,7 +341,7 @@ export class LearningAssessmentComponent implements OnInit {
   }
 
 
-  selectOption(questionId: number, optionId: number) {
+  public selectOption(questionId: number, optionId: number) {
     let obj = this.allAnswered.find((val: any) => {
       return val.qustionId == questionId;
     });
@@ -332,7 +353,7 @@ export class LearningAssessmentComponent implements OnInit {
     // this.setCurrentUserQuestion()
   }
 
-  storeQuestionAnswerState() {
+  public storeQuestionAnswerState() {
     const answersList = JSON.parse(localStorage.getItem("userAnswersList") || 'null');
     // console.log(answersList);
     if (answersList) {
@@ -441,7 +462,7 @@ export class LearningAssessmentComponent implements OnInit {
           console.log(res)
           localStorage.removeItem('userAnswersList');
           this._helper.triggerSucessAlert('Assessment submitted successfully!!!');
-          this.router.navigate([`/courses/course-detail/${this.courseId}`]);
+          this.openDialog({isEditing: false, editObject: payload});
          } else {
            this._helper.stopSpinner();
            this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)

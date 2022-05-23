@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { Subscription } from 'rxjs';
@@ -25,7 +25,10 @@ export class CompetenceAssessmentDialogComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public reviewerForm!: FormGroup;
   public ratingForm!: FormGroup;
-  public isLoading: boolean =false;
+  public isLoading: boolean = false;
+  public courseId: any;
+  public reviewers: string[] = [];
+  public addReviewers = (email: any) => (email);
   
   @Output() event: EventEmitter<{
     editObject?: any;
@@ -33,47 +36,38 @@ export class CompetenceAssessmentDialogComponent implements OnInit {
   }> = new EventEmitter<{ editObject?: any; isEditing: boolean }>();
 
   constructor(
-    public dialogRef: MatDialogRef<CompetenceAssessmentDialogComponent>,
-    // @Inject(MAT_DIALOG_DATA) public modalData: any,
     @Inject(MAT_DIALOG_DATA) public data: DialogModel<any>,
     public fb: FormBuilder,
     private _helper: HelperService,
-    private _course: CourseCreationService
+    private _course: CourseCreationService,
   ) { }
 
   ngOnInit() {
     this.initRatingForm();
-    this.initReviewerForm();
-  }
-
-  public initReviewerForm() {
-    this.reviewerForm = this.fb.group({
-      reviewers: ['', Validators.required]
-    })
   }
 
   public initRatingForm() {
     this.ratingForm = this.fb.group({
-      companyId: [this.data.editObject.companyId],
-      courseId: [this.data.editObject.courseId],
-      competenceId: [this.data.editObject.competenceId],
-      competence: [this.data.editObject.competence],
+      companyId: [this.data?.editObject?.companyId],
+      courseId: [this.data?.editObject?.courseId],
+      competenceId: [this.data?.editObject?.competenceId],
+      competence: [this.data?.editObject?.competence],
       rating: [0, Validators.required],
     })
   }
 
-
-  public submitReview(): void {
-    this.isLoading = true;
-  }
-
-  public submitRating() {
+  public submit() {
     this._helper.startSpinner();
-    const payload = this.ratingForm.value;
+    const reviewwerForm = {
+      reviewers: this.reviewers,
+      courseId: +this.data.course
+    }
+    let payload = this.data.isEditing ? this.ratingForm.value : reviewwerForm;
     payload.rating = +payload.rating;
+    const operation = this.data.isEditing ? 'addUpdateCompetence' : 'addCompetenceReviewer';
     console.log(payload);
     this.sub.add(
-      this._course.addUpdateCompetence(payload).subscribe({
+      this._course[operation](payload).subscribe({
         next: (res: any) => {
           console.log(res);
           if(res.status.isSuccessful) {
@@ -82,7 +76,7 @@ export class CompetenceAssessmentDialogComponent implements OnInit {
               payload.competenceId = payload?.competenceId;
               payload.deleted = false;
             } else {
-              payload.competenceId = res;
+              // payload.competenceId = res;
             }
             this.event.emit({
               isEditing: this.data?.isEditing,

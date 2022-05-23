@@ -1,25 +1,26 @@
 <div class="d-flex justify-content-between" mat-dialog-title>
-    <h2 mat-dialog-title>{{ data.isEditing ? 'Add Reviewer' : 'Industrial Analytics' }} </h2>
+    <h2 mat-dialog-title>{{ !data.isEditing ? 'Add Reviewer' : data.editObject.competence }} </h2>
     <div class="click" mat-dialog-close>
       <img src="assets/icons/x.svg" alt="" />
     </div>
 </div>
   <mat-dialog-content class="mat-typography">
     <div>
-        <form [formGroup]="reviewerForm" *ngIf="!data.isEditing">
+        <form *ngIf="!data.isEditing">
             <div class="row">
                 <div class="col-12">
                     <div class="form_group mb-5">
                       <label for="" class="form-label"
                         >Reviewers
                       </label>
-                      <input
-                        type="text"
-                        id="reviewers"
-                        class="form-control"
-                        placeholder=""
-                        formControlName="reviewers"
-                      />
+                      <ng-select
+                        bindLabel="email"
+                        [addTag]="addReviewers"
+                        [(ngModel)]="reviewers"
+                        [multiple]="true"
+                        [ngModelOptions]="{standalone: true}"
+                      >
+                      </ng-select>
                     </div>
                 </div>
             </div>
@@ -56,7 +57,7 @@
     </button>
     <button
       class="btn btn-green btn-md px-4"
-      (click)="data.isEditing ? submitRating() : submitReview()"
+      (click)="submit()"
     >
         <app-loading-button
           [text]="'Done'"

@@ -9,7 +9,7 @@
                 [canAdd]="true"
                 [canDelete]="true"
                 [canDownload]="true"
-                (btnAction)="openDialog({isEditing: false  })"
+                (btnAction)="openDialog({isEditing: false, course: courseId })"
                 (deleteAction)="deleteCompentency(SelectedCompetencies)"
             ></app-searchbar>
        </div>

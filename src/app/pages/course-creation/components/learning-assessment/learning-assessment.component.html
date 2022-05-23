@@ -15,7 +15,7 @@
         </div>
 
         <ng-container
-            *ngIf="isFetchingAssessment || assessments.length > 0"
+            *ngIf="(isFetchingAssessment || assessments.length > 0) && eligibility"
             class="my-3"
         >
             <div class="assessment_wrapper bg-white p-4 my-5">
