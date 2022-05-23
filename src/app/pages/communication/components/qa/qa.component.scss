@@ -56,6 +56,12 @@
                          height: 100%;
                      }
                  }
+                 .reply {
+                    &-list {
+                        max-height: 20vh;
+                        overflow-y: auto;
+                    }
+                }
              }
     }
 }

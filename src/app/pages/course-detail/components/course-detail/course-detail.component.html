@@ -8,6 +8,28 @@
               class="col-lg-9 col-md-12 my-auto"
             >
               <div id="view" class="view">
+                <div id="overlay">
+                  <div class="row action-btn d-flex justify-content-center my-auto">
+                    <div class="col-6 d-flex justify-content-between">
+                      <span class="pe-5">
+                        <i class="fa-solid fa-arrow-rotate-right"></i>Rewatch
+                      </span>
+                      <span class="" (click)="getNextItem(sectionIndex, outlineIndex)">
+                        <svg width="45" height="45" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="6" cy="6" r="6" fill="#ffffff"/>
+                          <g clip-path="url(#clip0_480_44831)">
+                          <path d="M8.86001 5.67986L4.99001 3.74486C4.9378 3.72067 4.88037 3.70992 4.82295 3.71359C4.76553 3.71727 4.70994 3.73525 4.66124 3.76589C4.61254 3.79654 4.57228 3.83887 4.54412 3.88905C4.51596 3.93923 4.5008 3.99566 4.50001 4.05319V7.92152C4.49952 7.98058 4.51428 8.03877 4.54285 8.09046C4.57143 8.14215 4.61285 8.18559 4.66312 8.21659C4.71339 8.24759 4.77081 8.2651 4.82983 8.26742C4.88884 8.26975 4.94746 8.25681 5.00001 8.22986L8.86001 6.29486C8.91719 6.26615 8.96526 6.22212 8.99885 6.16767C9.03245 6.11322 9.05024 6.0505 9.05024 5.98652C9.05024 5.92254 9.03245 5.85983 8.99885 5.80538C8.96526 5.75093 8.91719 5.70689 8.86001 5.67819V5.67986Z" fill="#000000"/>
+                          </g>
+                          <defs>
+                          <clipPath id="clip0_480_44831">
+                          <rect width="6" height="6" fill="white" transform="translate(3.5 3)"/>
+                          </clipPath>
+                          </defs>
+                        </svg> 
+                      </span>
+                    </div>
+                  </div>
+                </div>
                 <div class="" *ngIf="contentType == null">
                   <img src="{{ courseData?.coursePictureUrl }}" alt="" class="w-100" />
                 </div>
@@ -366,29 +388,31 @@
                                     <hr>
                                 </div>
                                 <div [id]="'response'+i" class="reply d-none py-4">
+                                  <div class="reply-list">
                                     <div *ngFor="let reply of announcementReplies; index as j">
-                                        <div class="d-flex pb-2">
-                                            <div class="responder-img">
-                                                <img 
-                                                    [src]="reply?.questionByPictureUrl ? reply?.questionByPictureUrl : ''" 
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <span class="px-3">{{ reply?.questionByName }}</span>
-                                        </div>
-                                        <div class="question">
-                                            <div class="py-3">
-                                                    <span class="font-bold" [innerHTML]="reply?.message"></span>
-                                                    <div 
-                                                        class="text-danger click"
-                                                        *ngIf="j == (announcementReplies.length-1) && !isSuccessful"
-                                                    >
-                                                        <span class="pe-3" (click)="submit()">Retry</span>
-                                                        <span *ngIf="isLoading"><i class="fa fa-spinner"></i></span>
-                                                    </div>
-                                            </div><hr>
-                                        </div>
+                                      <div class="d-flex pb-2">
+                                          <div class="responder-img">
+                                              <img 
+                                                  [src]="reply?.questionByPictureUrl ? reply?.questionByPictureUrl : ''" 
+                                                  alt=""
+                                              />
+                                          </div>
+                                          <span class="px-3">{{ reply?.questionByName }}</span>
+                                      </div>
+                                      <div class="question">
+                                          <div class="py-3">
+                                                  <span class="font-bold" [innerHTML]="reply?.message"></span>
+                                                  <div 
+                                                      class="text-danger click"
+                                                      *ngIf="j == (announcementReplies.length-1) && !isSuccessful"
+                                                  >
+                                                      <span class="pe-3" (click)="submit()">Retry</span>
+                                                      <span *ngIf="isLoading"><i class="fa fa-spinner"></i></span>
+                                                  </div>
+                                          </div><hr>
+                                      </div>
                                     </div>
+                                  </div>
                                     <div *ngIf="!showSubReply">
                                         <angular-editor [(ngModel)]="htmlContent" [config]="config"></angular-editor>
                                         <div class="d-flex justify-content-end py-4">
