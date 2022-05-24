@@ -4,6 +4,7 @@
             <app-back-button></app-back-button>
         </div>
         <div class="d-flex justify-content-between">
+            <button class="btn btn-green btn-lg" (click)="retakeAssessment()">Retake Assessment</button>
             <h3>Learning Assessment</h3>
             <app-searchbar
                 [canAdd]="true"
@@ -15,7 +16,7 @@
         </div>
 
         <ng-container
-            *ngIf="(isFetchingAssessment || assessments.length > 0) && eligibility"
+            *ngIf="(isFetchingAssessment || assessments.length > 0)"
             class="my-3"
         >
             <div class="assessment_wrapper bg-white p-4 my-5">

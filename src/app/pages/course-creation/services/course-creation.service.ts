@@ -180,7 +180,7 @@ export class CourseCreationService {
   ): Observable<ResponseModel<CourseAssessment>> {
     const endpoint = '/trainingparticipant/retakeParticipantAssessment';
     const params = new HttpParams()
-    .set('courseId', assessment.assessmentId)
+    .set('courseId', assessment.courseId)
     .set('assessmentId', assessment.assessmentId)
     return this.http.makeRequestWithData( 'post', endpoint, params);
   }

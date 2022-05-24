@@ -52,6 +52,7 @@ export class LearningAssessmentComponent implements OnInit {
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
     this.courseId = this._route.snapshot.paramMap.get('id');
+    console.log(this.courseId)
     this.getCourseAssessment();
     this.initUpdateQuestion();
     this.initQuestionForm();
@@ -264,7 +265,7 @@ export class LearningAssessmentComponent implements OnInit {
     );
   }
 
-  getBase64(event: any) {
+  public getBase64(event: any) {
     this.isUpload = !this.isUpload;
     let me = this;
     let file = event.target.files[0];
@@ -475,6 +476,35 @@ export class LearningAssessmentComponent implements OnInit {
         },
       });
     }
+  }
+
+  public retakeAssessment(): void {
+    this.assessmentFormSubmitted = true;
+      this._helper.startSpinner();
+      const payload = {
+        assessmentId: this.assessmentId,
+        courseId: this.courseId
+      }
+     console.log(payload)
+      this._course.retakeAssessment(payload).subscribe({
+        next: (res: any) => {
+         if(res.status.isSuccessful) {
+          this._helper.stopSpinner();
+          console.log(res)
+          this.addNewQuiz = false;
+          this._helper.triggerSucessAlert('Course created successfully!!!')
+          this.getCourseAssessment();
+         } else {
+           this._helper.stopSpinner();
+           this._helper.triggerErrorAlert(res?.status?.message?.friendlyMessage)
+         }
+        },
+        error: (error: HttpErrorResponse) => {
+          this._helper.stopSpinner();
+          console.log(error);
+          this.assessmentFormSubmitted = false;
+        },
+      });
   }
 
 }
