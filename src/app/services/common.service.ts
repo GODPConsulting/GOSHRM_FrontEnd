@@ -353,4 +353,22 @@ export class CommonService {
       })
     );
   }
+
+  getAllPaymentSetups(): Observable<any> {
+    return this.apiService
+      .get(`/employee/hrmsetup/get/all/payment-setup`)
+      .pipe(
+        map(data => {
+          return data;
+        })
+      );
+  }
+
+  addPaymentSetup(payload: Object): Observable<any> {
+    return this.apiService.post(`/employee/hrmsetup/add/update/payment-setup`, payload).pipe(
+      tap(data => {
+        return data;
+      })
+    );
+  }
 }

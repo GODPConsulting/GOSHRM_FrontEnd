@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { CommonService } from 'src/app/services/common.service';
 import { LoadingService } from 'src/app/services/loading.service';
-import swal from 'sweetalert2'
+import swal from 'sweetalert2';
+declare const $: any;
 
 @Component({
   selector: 'app-fluterwave-key',
@@ -10,113 +12,158 @@ import swal from 'sweetalert2'
 })
 export class FluterwaveKeyComponent implements OnInit {
   formTitle: string = 'Flutterwave Key Setup';
-  okraForm: FormGroup;
-  crcForm: FormGroup;
-  flutterForm: FormGroup;
-  sendChampForm: FormGroup;
+  paymentSetupForm: FormGroup;
+  updatepaymentSetupForm: FormGroup;
+  setups: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private loadingService: LoadingService,
+    private commonService:  CommonService
   ) { }
 
   ngOnInit() {
-    this.getKeysList();
-    this.okraForm = this.fb.group({
-      okraKeysId: 0,
-      secret_keys: ['',],
-      public_keys: [''],
-      useOkra: false,
-      client_Token: ['']
-    });
-    this.crcForm = this.fb.group({
-      crcId: 0,
-      username: ['',],
-      password: [''],
-      useCRC: false
-    });
-    this.flutterForm = this.fb.group({
-      flutterWaveKeysId: 0,
-      secret_keys: ['',],
-      public_keys: [''],
-      useFlutterWave: false
-    });
-    this.sendChampForm = this.fb.group({
-      sendChampId: 0,
-      privateKey: ['',],
-      publicKey: [''],
-      senderName: [''],
-      route: 0,
-      useSendChamp: false
-    });
+    this.initPaymentForm();
+    this.initUpdatePaymentForm()
+    this.getPaymentSetup();
   }
 
-  goBack() {
-
+  getPaymentSetup() {
+    this.loadingService.show();
+      this.commonService.getAllPaymentSetups().subscribe(
+        (data) => {
+          this.loadingService.hide()
+          this.setups = data.response;
+        },
+        (err) => {
+          this.loadingService.hide();
+        }
+      );
   }
-  getKeysList() {
 
-    // return this.glMappingService.getFlutterKeys().subscribe(data => {
-    //   // console.log(data);
-    //   const row = data
-    //   this.okraForm = this.fb.group({
-    //     okraKeysId: row.okraKeys.okraKeysId,
-    //     secret_keys: [row.okraKeys.secret_keys],
-    //     public_keys: [row.okraKeys.public_keys],
-    //     useOkra: [row.okraKeys.useOkra],
-    //     client_Token: [row.okraKeys.client_Token]
-    //   })
-    //   this.crcForm = this.fb.group({
-    //     crcId: row.crcKeys.crcId,
-    //     username: [row.crcKeys.username],
-    //     password: [row.crcKeys.password],
-    //     useCRC: [row.crcKeys.useCRC]
-    //   })
-    //   this.flutterForm = this.fb.group({
-    //     flutterWaveKeysId: row.flutterKeys.flutterWaveKeysId,
-    //     secret_keys: [row.flutterKeys.secret_keys],
-    //     public_keys: [row.flutterKeys.public_keys],
-    //     useFlutterWave: [row.flutterKeys.useFlutterWave]
-    //   })
-    //   this.sendChampForm = this.fb.group({
-    //     sendChampId: row.sendChampKeys.sendChampId,
-    //     privateKey: [row.sendChampKeys.privateKey],
-    //     publicKey: [row.sendChampKeys.publicKey],
-    //     senderName: [row.sendChampKeys.senderName],
-    //     route: [row.sendChampKeys.route],
-    //     useSendChamp: [row.sendChampKeys.useSendChamp]
-    //   })
-    // }, err => {
-
-    // })
+  getPaymentType(type: number) {
+      let paymentType;
+      switch (type) {
+        case 1:
+          paymentType = "Flutterwave Setup";
+          break;
+        case 2:
+          paymentType = "Paystack Setup";
+          break;
+        case 3:
+          paymentType = "Paypal Setup";
+          break;
+      }
+      return paymentType;
   }
+
+  initPaymentForm() {
+    this.paymentSetupForm = this.fb.group({
+      setup: this.fb.array([
+        this.fb.group({
+          paymentSetUpId: [0],
+          secretKey: [""],
+          publicKey: [""],
+          paymentType: [0]
+        })
+      ])
+    })
+  }
+
+  initUpdatePaymentForm() {
+    this.updatepaymentSetupForm = this.fb.group({
+        paymentSetUpId: [0],
+        secretKey: [""],
+        publicKey: [""],
+        paymentType: [0]
+    })
+  }
+
+  get newForm(): FormArray {
+    return this.paymentSetupForm.get('setup') as FormArray
+  }
+
+  addMorePayment() {
+    let setup = this.fb.group(new setupDTO());
+		this.newForm.push(setup);
+  }
+
+  openModal() {
+    $("#add-payment").modal("show");
+    this.initPaymentForm();
+  }
+
+  closeModal() {
+    $("#add-payment").modal("hide");
+  }
+
+  openUpdateModal(setup) {
+    $("#update-payment").modal("show");
+    this.updatepaymentSetupForm = this.fb.group({
+        paymentSetUpId: [setup.paymentSetUpId],
+        secretKey: [setup.secretKey],
+        publicKey: [setup.publicKey],
+        paymentType: [setup.paymentType]
+    })
+  }
+
+  closeUpdateModal() {
+    $("#update-payment").modal("hide");
+  }
+  
   submit() {
-    const payload = {
-      okraKeys: this.okraForm.value,
-      crcKeys: this.crcForm.value,
-      flutterKeys: this.flutterForm.value,
-      sendChampKeys: this.sendChampForm.value
-    }
-    // console.log(payload)
-    // if (!payload.secret_keys) {
-    //   return swal.fire('Error', 'Secret keys is required', 'error')
-    // }
-    // if (!payload.public_keys) {
-    //   return swal.fire('Error', 'Public keys is required', 'error')
-    // }
-
-    // return this.glMappingService.updateFlutterKeys(payload).subscribe(res => {
-
-    //   const message = res.status.message.friendlyMessage;
-    //   if (res.status.isSuccessful) {
-    //     swal.fire('GOS FINANCIAL', message, 'success')
-    //   } else {
-    //     swal.fire('GOS FINANCIAL', message, 'error')
-    //   }
-    // }, err => {
-
-    //   const message = err.status.message.friendlyMessage;
-    //   swal.fire('GOS FINANCIAL', message, 'error')
-    // })
+    this.loadingService.show();
+    const payload = this.paymentSetupForm.value;
+    this.commonService.addPaymentSetup(payload.setup).subscribe(
+        data => {
+          this.loadingService.hide();
+          // console.log(data);
+            if(data.status.isSuccessful) {
+              let message = data.status.message.friendlyMessage;
+              this.closeModal();
+              this.initPaymentForm();
+              this.getPaymentSetup();
+              swal.fire("GOS FINANCIAL", message, "success");
+            } else {
+              swal.fire("GOS FINANCIAL", 'An error occurred!', "error");
+            }
+        },
+        err => {
+            this.loadingService.hide();
+            let message = err.status.message.friendlyMessage;
+            swal.fire("GOS FINANCIAL", message, "error");
+        }
+    );
   }
+
+  updateSetup() {
+    this.loadingService.show();
+    const payload = this.updatepaymentSetupForm.value;
+    this.commonService.addPaymentSetup([payload]).subscribe(
+        data => {
+          this.loadingService.hide();
+          // console.log(data);
+            if(data.status.isSuccessful) {
+              let message = data.status.message.friendlyMessage;
+              this.closeUpdateModal();
+              this.getPaymentSetup();
+              swal.fire("GOS FINANCIAL", message, "success");
+            } else {
+              swal.fire("GOS FINANCIAL", 'An error occurred!', "error");
+            }
+        },
+        err => {
+            this.loadingService.hide();
+            let message = err.status.message.friendlyMessage;
+            swal.fire("GOS FINANCIAL", message, "error");
+        }
+    );
+  }
+}
+
+export class setupDTO {
+  paymentSetUpId = 0;
+  secretKey = "";
+  publicKey = "";
+  paymentType = 0;
 }
