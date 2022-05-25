@@ -18,13 +18,13 @@
               alt="Profile Picture"
             />
           </div>
-          <span class="gos-username">{{ hrmUser.firstName | titlecase }}</span
+          <span class="gos-username">{{ hrmUser?.firstName | titlecase }}</span
           ><span class="gos-jobtitle">{{
-            hrmUser.jobTitleName | titlecase
+            hrmUser?.jobTitleName | titlecase
           }}</span>
-          <span class="gos-jobtitle">{{ hrmUser.jobGradeName }}</span>
+          <span class="gos-jobtitle">{{ hrmUser?.jobGradeName }}</span>
         </div>
-        <ul *ngIf="sidebarMenus.default">
+        <ul *ngIf="sidebarMenus?.default">
           <!-- ESS -->
           <li
             *ngIf="userRights?.includes('profile')"

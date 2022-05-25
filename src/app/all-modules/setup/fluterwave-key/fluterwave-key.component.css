@@ -11,3 +11,7 @@
     bottom: 30px;
     right: 30px;
 }
+
+.click {
+    cursor: pointer;
+}
