@@ -1194,6 +1194,18 @@
             >
               <li
                 *ngIf="userRights?.includes('employeeidformat')"
+                routerLink="/setup/organization-setup"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'organization-setup'
+                  }"
+                  >Organization Setup</a
+                >
+              </li>
+              <li
+                *ngIf="userRights?.includes('employeeidformat')"
                 routerLink="/setup/flutterwave-transfer"
               >
                 <a
