@@ -40,6 +40,7 @@ import { CompanyStructureListComponent } from "./company-structure-list/company-
 import { CompanyStructureComponent } from "./company-structure/company-structure.component";
 import { DocumentTypeComponent } from "./document-type/document-type.component";
 import { FluterwaveKeyComponent } from "./fluterwave-key/fluterwave-key.component";
+import { OrganizationSetupComponent } from "./organization-setup/organization-setup.component";
 
 const routes: Routes = [
   {
@@ -201,6 +202,10 @@ const routes: Routes = [
       {
         path: "company-structure-definition-list",
         component: CompanyStructureDefinitionListComponent,
+      },
+      {
+        path: "organization-setup",
+        component: OrganizationSetupComponent,
       }
     ],
   },

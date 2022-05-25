@@ -81,9 +81,12 @@ Version      : 3.6
   --color-dark: #333333;
   --color-light: #FFFFFF;
   --color-primary: #f88f09;
+  --color-primary-new: #F88E07;
   --color-primary-light: #FDF4E7;
   --color-light-secondary: #f9fafb;
   --color-secondary: #fbe8d0;
+  --color-approved: #219653;
+  --color-pending: #F2994A;
 
   --color-grey-light: #828282;
 

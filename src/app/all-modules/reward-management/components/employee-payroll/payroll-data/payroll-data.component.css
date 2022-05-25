@@ -1,0 +1,277 @@
+* {
+  font-weight: 400;
+  font-size: 1.4rem;
+}
+.modal-content{
+  padding: 2rem;
+}
+.modal-body{
+  margin-left: -2rem;
+  margin-top: -1rem;
+  width: 100%;
+}
+.page-title{
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #4F4F4F;
+  padding-bottom: 1.5rem;
+}
+.close-modal{
+  margin-right: -1rem;
+  cursor: pointer;
+}
+.employee-card{
+  background: #F8F8F8;
+  border-radius: 1rem;
+  padding: 2rem 2rem 3rem 2rem;
+  max-width: fit-content;
+}
+.employee-card > p{
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+.employee-card > table{
+    width: 100%;
+    margin-top: 0;
+    border-collapse: default;
+    border-spacing: 0 0;
+}
+.emp-td, .emp-td-2nd{
+  font-size: 1.4rem;
+  font-weight: 400;
+  font-family: 'manrope', sans-serif;
+  padding: 1rem 2rem 0 0;
+}
+.emp-td-2nd{
+  padding: 1rem 0 0 0;
+}
+.bold-text{
+  font-family: 'manrope', sans-serif;
+  font-weight: 700;
+}
+.pd-td{
+  padding: 0 7rem 0 0;
+  cursor: pointer;
+}
+.adjust-item{
+  padding-left: 1rem;
+  display: none;
+}
+td:hover img{
+  display: inline;
+}
+
+.edit-data{
+  border-radius: .8rem;
+  padding: .8rem;
+  color: #828282;
+}
+.save{
+  color: var(--color-primary-new);
+  padding-left: .8rem;
+  padding-top: 1rem;
+}
+
+
+/* switch toggle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 25px;
+  height: 16px;
+  margin-top: 1rem;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-grey-light);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2.3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--color-primary-new);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px var(--color-primary-new);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(10px);
+  -ms-transform: translateX(10px);
+  transform: translateX(10px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 14px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+
+
+/* duplicate styles  */
+table{
+    width: 100%;
+    margin-top: 2rem;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+}
+th{
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    font-weight: 700;
+}
+td{
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    font-weight: 400;
+}
+td:first-child{
+    border-radius: 1rem 0 0 1rem;
+}
+td:last-child{
+    border-radius: 0 1rem 1rem 0;
+}
+.bg-grey{
+    background: #F6F6F6CC;
+}
+.actions-icon{
+    cursor: pointer;
+}
+
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: relative;
+    margin-bottom: 17px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  th .checkmark{
+    border: 1px solid #374957;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .container > input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #ffffff;
+    border: 1px solid #828282;
+    border-radius: .4rem;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .checkmark {
+    background-color: #ffffff;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .container input:checked ~ .checkmark {
+    background-color: var(--color-primary-new);
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .container .checkmark:after {
+    left: 6px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+  
+
+/* tooltip styles */
+.tooltip-custom {
+  position: relative;
+  display: inline-block;
+}
+.tooltip-custom .tooltiptext-custom {
+  visibility: hidden;
+  min-width: 120px;
+  background-color: #D9D9D9;
+  color: #4F4F4F;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -60px;
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+.tooltip-custom .tooltiptext-custom::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #D9D9D9 transparent transparent transparent;
+}
+.tooltip-custom:hover .tooltiptext-custom {
+  visibility: visible;
+}
+  

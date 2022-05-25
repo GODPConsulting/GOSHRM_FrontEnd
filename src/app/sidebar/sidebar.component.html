@@ -69,6 +69,15 @@
                   >Profile</a
                 >
               </li>
+              <li [routerLink]="['/employees/employee-management']">
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'appraisals'
+                  }"
+                  >Employee Management</a
+                >
+              </li>
               <li routerLink="/performance/appraisals">
                 <a
                   href="javascript:"
@@ -1126,8 +1135,7 @@
               }"
               class="noti-dot"
               ><i class="la la-cog"></i> <span> Setup</span>
-              <span class="menu-arrow"></span
-            ></a>
+              <span class="menu-arrow"></span></a>
             <ul
               style="display: none"
               [ngStyle]="{
@@ -1184,6 +1192,18 @@
                     : 'none'
               }"
             >
+              <li
+                *ngIf="userRights?.includes('employeeidformat')"
+                routerLink="/setup/organization-setup"
+              >
+                <a
+                  href="javascript:"
+                  [ngClass]="{
+                    active: urlComplete.subUrl === 'organization-setup'
+                  }"
+                  >Organization Setup</a
+                >
+              </li>
               <li
                 *ngIf="userRights?.includes('employeeidformat')"
                 routerLink="/setup/flutterwave-transfer"
@@ -1756,6 +1776,63 @@
           <!--            </ul>-->
           <!--          </li>-->
           <!--/Performance Management-->
+          <!--Reward Management-->
+          <li
+          *ngIf="userRights?.includes('profile')"
+          class="submenu"
+          [ngClass]="{
+            active:
+              urlComplete.mainUrl === 'employees' &&
+              urlComplete.subUrl === 'employeeprofile'
+          }"
+        >
+          <a
+            href="javascript:"
+            [ngClass]="{
+              subdrop:
+                urlComplete.mainUrl === 'employees' &&
+                urlComplete.subUrl === 'employeeprofile'
+            }"
+            class="noti-dot"
+            ><i class="la la-user-cog"></i> <span> Reward Management </span>
+            <span class="menu-arrow"></span
+          ></a>
+          <ul
+            style="display: none"
+            [ngStyle]="{
+              display:
+                urlComplete.mainUrl === 'employees' &&
+                urlComplete.subUrl === 'employeeprofile'
+                  ? 'block'
+                  : 'none'
+            }"
+          >
+            <li
+              *ngIf="userRights?.includes('profile')"
+              [routerLink]="['/reward-management/payroll']"
+              [queryParams]="{ employeeId: hrmUser?.employeeId }"
+            >
+              <a
+                
+                [ngClass]="{
+                  active: urlComplete.subUrl === 'employeeprofile'
+                }"
+                >Payroll</a
+              >
+            </li>
+            <li [routerLink]="['/reward-management/payroll-settings']">
+              <a
+                href="javascript:"
+                [ngClass]="{
+                  active: urlComplete.subUrl === 'appraisals'
+                }"
+                >Payroll Settings</a
+              >
+            </li>
+          </ul>
+          </li>
+          <!--/Reward Management-->
+
         </ul>
       </div>
     </perfect-scrollbar>

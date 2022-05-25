@@ -1,0 +1,130 @@
+<div class="employee-payroll-wrapper">
+
+    <div class="d-flex justify-content-between">
+        <div class="page-title">Payroll
+            <img src="assets/icons/angle-right.svg" alt="angle right">
+            <span style="font-size: 18px"> {{currentPage}} </span>
+        </div>
+        <!-- for employee payroll -->
+        <div [ngStyle]="{'display': currentPage === 'Employee Payroll' ? 'flex' : 'none'}">
+            <img class="page-title-icon" src="assets/icons/trash-orange.svg" alt="delete">
+            <img class="page-title-icon" src="assets/icons/cloud-download-orange.svg" alt="download to cloud">
+            <img class="page-title-icon" src="assets/icons/send-orange.svg" alt="send">
+        </div>
+         <!-- for Adjustment -->
+        <div [ngStyle]="{'display': currentPage === 'Adjustment' ? 'flex' : 'none'}">
+            <img class="page-title-icon" src="assets/icons/cloud-upload-orange.svg" alt="upload to cloud">
+            <img class="page-title-icon" src="assets/icons/cloud-download-orange.svg" alt="download to cloud">
+            <img class="page-title-icon" src="assets/icons/trash-orange.svg" alt="delete">
+            <img (click)="openModal()" class="page-title-icon" src="assets/icons/plus-orange.svg" alt="add">
+        </div>
+    </div>
+
+    <div class="row mt-3 mb-3">
+        <div class="cl-md-2 mr-3">
+            <div class="payroll-card-flutter">
+                <p> Flutterwave Balance: </p>
+                <div class="d-flex justify-content-between">
+                    <p>$12,220,008.78</p>
+                    <p>Jul 2021</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="payroll-card-abc">
+                <div class="d-flex justify-content-between">
+                    <p>ABC Group</p>
+                    <p>Payroll: Jul 2021</p>
+                </div>
+                <p class="total-net">Total Net Pay:</p>
+                <p>$9,220,008.78</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="payroll-nav d-flex">
+        <div class="payroll-menu"
+            routerLinkActive="active-page"
+            [routerLinkActiveOptions]="{exact: true}"
+            [routerLink]="['/reward-management/employee-payroll']"
+            (click)="switchPage('Employee Payroll')">Employee Payroll</div>
+        <div class="payroll-menu"
+            routerLinkActive="active-page"
+            [routerLink]="['/reward-management/employee-payroll/adjustment']"
+            (click)="switchPage('Adjustment')">Adjustment</div>
+    </div>
+
+    <router-outlet></router-outlet>
+
+</div>
+
+
+    <!-- Adjust payroll Modal -->
+    <div id="adjust-payroll" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+    
+            <div class="modal-content">
+    
+                <div class="modal-body">
+    
+                    <div class="d-flex justify-content-between pb-3">
+                        <div class="page-title">Adjust Payroll Item</div>
+                        <div 
+                            data-dismiss="modal"
+                            aria-label="Close"
+                            class="close-modal"
+                            (click)="closeModal()"><img src="assets/icons/delete.svg" alt="close modal">
+                        </div>
+                    </div>
+
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Company/Department">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Employee">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Payslip line description">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Adjustment Type">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Amount">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Taxable">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Note">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6 d-flex justify-content-end">
+                                <button class="btn btn-save">Save</button>         
+                            </div>
+                        </div>
+             
+                    </form>
+                    
+                </div>
+            </div>   
+        </div>
+        <!-- Adjust payroll Modal -->
