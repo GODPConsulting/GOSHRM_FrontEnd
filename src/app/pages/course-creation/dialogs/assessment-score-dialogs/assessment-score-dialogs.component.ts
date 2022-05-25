@@ -63,6 +63,7 @@ export class AssessmentScoreDialogsComponent implements OnInit {
   }
 
   public backtocourse() {
+    this.close.nativeElement.click();
     this.router.navigate([`/courses/course-detail/${this.data.editObject.courseId}`]);
   }
 
@@ -76,6 +77,7 @@ export class AssessmentScoreDialogsComponent implements OnInit {
       this._course.retakeAssessment(payload).subscribe({
         next: (res: any) => {
           console.log(res);
+          this.close.nativeElement.cliick();
         },
         error: (error: any) => {
           this._helper.stopSpinner();

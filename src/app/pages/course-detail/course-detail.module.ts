@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CourseDetailComponent } from './components/course-detail/course-detail.component';
+import { CourseDetailComponent, FormatTimePipe } from './components/course-detail/course-detail.component';
 import { CourseDetailRoutingModule } from './course-detail-routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { NgRatingBarModule } from 'ng-rating-bar';
@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    CourseDetailComponent,
+    CourseDetailComponent, FormatTimePipe
   ],
   imports: [
     CommonModule,

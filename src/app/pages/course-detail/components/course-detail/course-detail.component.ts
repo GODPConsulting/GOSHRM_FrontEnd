@@ -1,5 +1,5 @@
-import { Subscription } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Subscription, timer } from 'rxjs';
+import { Component, OnDestroy, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseDetailService } from '../../services/course-detail.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -9,13 +9,14 @@ import { CommunicationService } from 'app/pages/communication/services/communica
 import { HelperService } from '@core/services/healper.service';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { ResponseModel } from 'app/models/response.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'iq-central-front-end-course-details',
   templateUrl: './course-detail.component.html',
   styleUrls: ['./course-detail.component.scss']
 })
-export class CourseDetailComponent implements OnInit {
+export class CourseDetailComponent implements OnInit, OnDestroy {
   public sub: Subscription = new Subscription();
   public courseId: any = 0;
   public outlineId: number = 0;
@@ -50,6 +51,8 @@ export class CourseDetailComponent implements OnInit {
   public response: any;
   public sectionIndex: number = 0;
   public outlineIndex: number = 0;
+  public counter: number = 5;
+  public tick = 1000;
   public config: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -85,7 +88,8 @@ export class CourseDetailComponent implements OnInit {
     private _course: CourseDetailService,
     private _communication: CommunicationService,
     private _helper: HelperService,
-    private _current: CurrentUserService
+    private _current: CurrentUserService,
+    private sanitizer: DomSanitizer
   ) {
    
   }
@@ -117,35 +121,39 @@ export class CourseDetailComponent implements OnInit {
   }
 
   public getFileExt(content: any) {
-    return content.outlineUrl.split(/[#?]/)[0].split('.').pop().trim();
+    return content?.outlineUrl.split(/[#?]/)[0].split('.').pop().trim();
   }
 
   public setFilePathAndType(content: any, sectionId: number, i: number, index: number) {
     // console.log(content, sectionId, index);
+    document.getElementById('overlay')?.classList.add('d-none');
+    this.counter = 5;
     this.sectionIndex = i;
     this.outlineIndex = index;
     this.content = content;
     this.contentType = this.getFileExt(content);
-    this.filePath = content.outlineUrl;
-    this.outlineId = content.outlineId;
+    this.filePath = this.sanitizer.bypassSecurityTrustResourceUrl(
+      content?.outlineUrl
+    );
+    this.outlineId = content?.outlineId;
     this.sectionId = sectionId;
   }
 
   public getNextItem( i: number, index: number) {
-    let section = [];
-    if(section.length == (index)) {
-      section= this.lessons[i++].outline;
-      this.content = section[0];
-      document.getElementById(`collapse${i}`)?.classList.remove('show');
-      document.getElementById(`collapse${i++}`)?.classList.add('show');
-      this.setFilePathAndType(this.content,this.sectionId, i++, 0);
-    } else  {
-      console.log(this.content);
-      section= this.lessons[i].outline;
-      this.content = section[index++];
-      this.setFilePathAndType(this.content, this.sectionId, i, index++);
+    let sections = this.lessons;
+    let outlines = sections[this.sectionIndex].outline;
+    if(index === outlines.length - 1) {
+      index = 0;
+      i = i + 1;
+      this.content = sections[i].outline[index];
+      this.setFilePathAndType(this.content,sections[i].sectionId, i, index);
+    } else {
+      index = index + 1;
+      this.content = sections[i].outline[index];
+      this.setFilePathAndType(this.content,sections[i].sectionId, i, index);
     }
   }
+
 
   public onTimeUpdate(){
     this.video = document.querySelector("video");
@@ -155,8 +163,17 @@ export class CourseDetailComponent implements OnInit {
         this.videoPlaying = true;
         this.percentage = (this.video.currentTime / this.video.duration) * 100;
         if(this.percentage >= 98) {
+          this.sub = timer(0, this.tick).subscribe(() => {
+            --this.counter;
+            document.getElementById('overlay')?.classList.add('d-none');
+            console.log(this.counter);
+          });
+
+        if(this.counter == 0) {
+          document.getElementById('overlay')?.classList.remove('d-none');
           this.getNextItem(this.sectionIndex, this.outlineIndex);
           this.onTimeUpdate()
+        }
         }
         // console.log(this.percentage, this.video.currentTime, this.video.duration);
     }else{
@@ -417,4 +434,23 @@ export class CourseDetailComponent implements OnInit {
     );
   }
 
+  ngOnDestroy(){
+    this.sub.unsubscribe();
+  }
+
+}
+
+
+@Pipe({
+  name: "formatTime"
+})
+export class FormatTimePipe implements PipeTransform {
+  transform(value: number): string {
+    const minutes: number = Math.floor(value / 60);
+    return (
+      ("00" + minutes).slice(-2) +
+      ":" +
+      ("00" + Math.floor(value - minutes * 60)).slice(-2)
+    );
+  }
 }

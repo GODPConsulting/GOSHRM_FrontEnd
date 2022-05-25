@@ -30,7 +30,7 @@
                   </tr>
               </ng-template>
               <ng-template pTemplate="body" let-course let-i="rowIndex">
-                <tr class="tbody text-capitalize" [pSelectableRow]="course">
+                <tr class="tbody text-capitalize click" [pSelectableRow]="course" [routerLink]="['/courses/course-detail', course?.courseId]">
                   <td>{{ course?.upload_Date | date }}</td>
                   <td>{{ course?.facilitator }}</td>
                   <td>{{ course?.course_Title }}</td>

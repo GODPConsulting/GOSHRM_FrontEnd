@@ -46,6 +46,17 @@
                 top: 50%;
                 left: 50%;
             }
+            .timer {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                .counter {
+                    background: $black-100;
+                    color: $white-100;
+                    font-size: 1.6rem;
+                    font-weight: 600;
+                }
+            }
         }
     }
     

@@ -63,10 +63,25 @@
                                 [formGroupName]="j"
                             >
                                  <div class="row mb-3">
-                            <div class="col-12">
+                            <div class="col-md-9">
                                 <div class="form_group">
                                     <input type="text" class="form-control" formControlName="answer_Varaibles">
                                 </div>
+                            </div>
+                            <div class="col-md-3 form_group d-flex justify-content-between">
+                                <select name="" id="" class="form-select" formControlName="isAnswer">
+                                    <option [ngValue]="1">1 Point</option>
+                                    <option [ngValue]="2">2 Points</option>
+                                    <option [ngValue]="3">3 Points</option>
+                                    <option [ngValue]="4">4 Points</option>
+                                    <option [ngValue]="5">5 Points</option>
+                                </select>
+                                <!-- <span class="ps-4 pt-4">
+                                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 30C6.72867 30 0 23.2713 0 15C0 6.72867 6.72867 0 15 0C23.2713 0 30 6.72867 30 15C30 23.2713 23.2713 30 15 30ZM15 1.875C7.76253 1.875 1.875 7.76253 1.875 15C1.875 22.2375 7.76253 28.125 15 28.125C22.2375 28.125 28.125 22.2375 28.125 15C28.125 7.76253 22.2375 1.875 15 1.875Z" fill="#B9BBBE"/>
+                                        <path d="M21.5625 15.9375H8.4375C7.92 15.9375 7.5 15.5175 7.5 15C7.5 14.4825 7.92 14.0625 8.4375 14.0625H21.5625C22.08 14.0625 22.5 14.4825 22.5 15C22.5 15.5175 22.08 15.9375 21.5625 15.9375Z" fill="#B9BBBE"/>
+                                    </svg>                                    
+                                </span> -->
                             </div>
                             </div>
                            

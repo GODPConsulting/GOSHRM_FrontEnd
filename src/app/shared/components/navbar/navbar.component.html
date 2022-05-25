@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid">
-    <div *ngIf="loggedInUser.customerTypeId == 3">
-      <img id="logo" style="width: 100%;" src="assets/images/GOSHRM-logo.svg" alt="">
+    <div class="click" *ngIf="loggedInUser.customerTypeId == 3" routerLink="/home">
+      <img id="logo" style="width: 70%;" src="assets/images/GOSHRM-logo.svg" alt="">
     </div>
     <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -57,7 +57,7 @@
               >Security</a>
             </li>
              <li>
-               <a class="dropdown-item" 
+               <a class="dropdown-item click" 
                 (click)="logout()"
                 >Logout</a>
               </li>

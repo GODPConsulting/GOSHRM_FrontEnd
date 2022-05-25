@@ -84,6 +84,11 @@ export class CreateCourseAssessmentComponent implements OnInit {
           answer_Varaibles: [''],
           answerId: [0],
           isAnswer: [false]
+        }),
+        this.fb.group({
+          answer_Varaibles: [''],
+          answerId: [0],
+          isAnswer: [false]
         })
       ])
     });

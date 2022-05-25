@@ -20,7 +20,7 @@ import { CourseCreationService } from '../../services/course-creation.service';
 })
 export class LearningAssessmentComponent implements OnInit {
   public sub: Subscription = new Subscription();
-  public assessments: any;
+  public assessments: any[] = [];
   public isFetchingAssessment: boolean = false;
   public courseId: any;
   public allAnswered: any[] = [];

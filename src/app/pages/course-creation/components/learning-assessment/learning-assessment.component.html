@@ -9,7 +9,7 @@
             <app-searchbar
                 [canAdd]="true"
                 [canDelete]="true"
-                (btnAction)="assessments?.length == 0 ? goTo() : addNewQuestion()"
+                (btnAction)="assessments.length == 0 ? goTo() : addNewQuestion()"
                 (deleteAction)="deleteAssessment()"
                 *ngIf="loggedInUser.customerTypeId != 3"
             ></app-searchbar>
@@ -42,7 +42,7 @@
                                                 <div class="form_group">
                                                 <label for="" class="form-label d-flex justify-content-between"
                                                     >
-                                                    <span class="text-dark">Question {{this.assessments?.length + i + 1}}</span>
+                                                    <span class="text-dark">Question {{this.assessments.length + i + 1}}</span>
                                                     <span class="click" (click)="removeQuestion(i)">
                                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M12 21.9995C17.5229 21.9995 22 17.5224 22 11.9995C22 6.47666 17.5229 1.99951 12 1.99951C6.47715 1.99951 2 6.47666 2 11.9995C2 17.5224 6.47715 21.9995 12 21.9995Z" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
@@ -241,7 +241,7 @@
                 <div class="d-flex justify-content-end" *ngIf="loggedInUser.customerTypeId != 3">
                     <button 
                         class="btn text-warning"
-                        *ngIf="!addNewQuiz && assessments?.length > 0"
+                        *ngIf="!addNewQuiz && assessments.length > 0"
                         (click)="addNewQuestion()"
                     >
                         Add more Question
@@ -275,7 +275,7 @@
         <app-no-data
             name="Learning Assessment"
             [is_loading]="isFetchingAssessment"
-            *ngIf="assessments?.length == 0"
+            *ngIf="assessments.length == 0"
             (open_dialog)="goTo()"
         ></app-no-data>
     </div>

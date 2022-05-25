@@ -8,7 +8,7 @@
               class="col-lg-9 col-md-12 my-auto"
             >
               <div id="view" class="view">
-                <div id="overlay">
+                <div id="overlay" class="d-none">
                   <div class="row action-btn d-flex justify-content-center my-auto">
                     <div class="col-12 d-flex justify-content-between">
                       <span class="pe-5">
@@ -37,6 +37,9 @@
                         </svg>                          
                       </span>
                     </div>
+                  </div>
+                  <div class="timer">
+                    <span class="counter p-3">{{ counter | formatTime }}</span>
                   </div>
                 </div>
                 <div class="" *ngIf="contentType == null">
@@ -195,12 +198,47 @@
                           Assessment
                       </button>
                       <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" [routerLink]="['/courses/course-assessment', courseId]"
-                          >Course Assessment</a></li>
-                        <li><a class="dropdown-item" [routerLink]="['/courses/learning-assessment', courseId]"
-                          >Learning Assessment </a></li>
-                        <li><a class="dropdown-item" [routerLink]="['/courses/competence-assessment', courseId]"
-                          >Competence Assessment</a></li>
+                        <li>
+                          <a class="dropdown-item d-flex" [routerLink]="['/courses/course-assessment', courseId]"
+                          >
+                            <span class="pe-3">
+                              <svg width="15" height="15" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 21L13.5 19M11 21V12V21ZM11 21L8.5 19L11 21Z" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M4.03323 8.11694C3.08744 8.35494 2.26111 8.9301 1.70948 9.73438C1.15786 10.5387 0.918911 11.5167 1.03754 12.4847C1.15616 13.4528 1.62419 14.3442 2.35369 14.9914C3.0832 15.6387 4.02396 15.9974 4.99923 15.9999H5.99923" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14.8287 6.13796C14.4869 4.78453 13.6433 3.6117 12.4688 2.85722C11.2944 2.10274 9.87697 1.82305 8.50395 2.07487C7.13093 2.32668 5.90503 3.09115 5.07476 4.2133C4.24448 5.33545 3.87195 6.73133 4.03269 8.11796C4.03269 8.11796 4.18569 8.99996 4.49869 9.49996" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 16C16.706 15.9995 17.404 15.8495 18.0479 15.5599C18.6917 15.2702 19.267 14.8475 19.7357 14.3195C20.2045 13.7915 20.5561 13.1702 20.7674 12.4965C20.9787 11.8229 21.045 11.1121 20.9618 10.4109C20.8786 9.70982 20.6479 9.03427 20.2848 8.42874C19.9217 7.82321 19.4345 7.30145 18.8552 6.89778C18.276 6.49412 17.6178 6.21772 16.924 6.08676C16.2302 5.9558 15.5166 5.97327 14.83 6.138L13.5 6.5" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
+                            </span>
+                            <span>Course Assessment</span>
+                          </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" [routerLink]="['/courses/learning-assessment', courseId]"
+                            >
+                              <span class="pe-3">
+                                <svg width="15" height="15" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M11 21L13.5 19M11 21V12V21ZM11 21L8.5 19L11 21Z" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M4.03323 8.11694C3.08744 8.35494 2.26111 8.9301 1.70948 9.73438C1.15786 10.5387 0.918911 11.5167 1.03754 12.4847C1.15616 13.4528 1.62419 14.3442 2.35369 14.9914C3.0832 15.6387 4.02396 15.9974 4.99923 15.9999H5.99923" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M14.8287 6.13796C14.4869 4.78453 13.6433 3.6117 12.4688 2.85722C11.2944 2.10274 9.87697 1.82305 8.50395 2.07487C7.13093 2.32668 5.90503 3.09115 5.07476 4.2133C4.24448 5.33545 3.87195 6.73133 4.03269 8.11796C4.03269 8.11796 4.18569 8.99996 4.49869 9.49996" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                  <path d="M16 16C16.706 15.9995 17.404 15.8495 18.0479 15.5599C18.6917 15.2702 19.267 14.8475 19.7357 14.3195C20.2045 13.7915 20.5561 13.1702 20.7674 12.4965C20.9787 11.8229 21.045 11.1121 20.9618 10.4109C20.8786 9.70982 20.6479 9.03427 20.2848 8.42874C19.9217 7.82321 19.4345 7.30145 18.8552 6.89778C18.276 6.49412 17.6178 6.21772 16.924 6.08676C16.2302 5.9558 15.5166 5.97327 14.83 6.138L13.5 6.5" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                              </span>
+                              <span>Learning Assessment </span>
+                            </a>
+                          </li>
+                        <li>
+                          <a class="dropdown-item" [routerLink]="['/courses/competence-assessment', courseId]"
+                          >
+                          <span class="pe-3">
+                            <svg width="15" height="15" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M11 21L13.5 19M11 21V12V21ZM11 21L8.5 19L11 21Z" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M4.03323 8.11694C3.08744 8.35494 2.26111 8.9301 1.70948 9.73438C1.15786 10.5387 0.918911 11.5167 1.03754 12.4847C1.15616 13.4528 1.62419 14.3442 2.35369 14.9914C3.0832 15.6387 4.02396 15.9974 4.99923 15.9999H5.99923" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M14.8287 6.13796C14.4869 4.78453 13.6433 3.6117 12.4688 2.85722C11.2944 2.10274 9.87697 1.82305 8.50395 2.07487C7.13093 2.32668 5.90503 3.09115 5.07476 4.2133C4.24448 5.33545 3.87195 6.73133 4.03269 8.11796C4.03269 8.11796 4.18569 8.99996 4.49869 9.49996" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M16 16C16.706 15.9995 17.404 15.8495 18.0479 15.5599C18.6917 15.2702 19.267 14.8475 19.7357 14.3195C20.2045 13.7915 20.5561 13.1702 20.7674 12.4965C20.9787 11.8229 21.045 11.1121 20.9618 10.4109C20.8786 9.70982 20.6479 9.03427 20.2848 8.42874C19.9217 7.82321 19.4345 7.30145 18.8552 6.89778C18.276 6.49412 17.6178 6.21772 16.924 6.08676C16.2302 5.9558 15.5166 5.97327 14.83 6.138L13.5 6.5" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
+                          <span>Competence Assessment</span>
+                          </a></li>
                       </ul>
                     </div>
                     <span class="mx-auto">

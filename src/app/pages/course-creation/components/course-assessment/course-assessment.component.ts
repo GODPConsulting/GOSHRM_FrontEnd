@@ -16,7 +16,7 @@ import { CourseCreationService } from '../../services/course-creation.service';
 })
 export class CourseAssessmentComponent implements OnInit {
   public sub: Subscription = new Subscription();
-  public assessments: any;
+  public assessments: any[] = [];
   public isFetchingAssessment: boolean = false;
   public courseId: any;
   public allAnswered: any[] = [];
@@ -96,6 +96,11 @@ export class CourseAssessmentComponent implements OnInit {
         }),
         this.fb.group({
           answer_Varaibles: ['', Validators.required],
+          answerId: [0],
+          isAnswer: [false]
+        }),
+        this.fb.group({
+          answer_Varaibles: [''],
           answerId: [0],
           isAnswer: [false]
         }),
