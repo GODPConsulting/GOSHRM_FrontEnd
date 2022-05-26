@@ -146,6 +146,13 @@ const routes: Routes = [
           import('./pages/course-description/course-description.module').then(
             (m) => m.CourseDescriptionModule
           ),
+      },
+      {
+        path: 'checkout',
+        loadChildren: () =>
+          import('./pages/checkout/checkout.module').then(
+            (m) => m.CheckoutModule
+          ),
       }
     ],
   },

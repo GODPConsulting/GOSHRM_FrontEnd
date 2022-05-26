@@ -1,4 +1,4 @@
-<div class="leaning_wrapper">
+<div class="learning_wrapper">
     <div class="learning-banner">
         <div class="img-wrapper" 
             [style.background-image]="'url(/assets/images/' + banner + '.svg)'">
@@ -150,11 +150,11 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="current_Tab == 'wihlist' || current_Tab == 'carts'">
+    <ng-container *ngIf="current_Tab == 'wihlist'">
         <div class="bg-white py-5">
             <div class="container my-5">
                 <div class="row">
-                    <div class="col-md-6 col-lg-3" *ngFor="let course of courses">
+                    <div class="col-md-6 col-lg-3" *ngFor="let course of whilst">
                         <app-course-card
                             [coverImage]="course?.coursePhotoUrl"
                             [courseTitle]="course?.training_Name"
@@ -172,5 +172,64 @@
             </div>
         </div>
     </ng-container>
+
+   <ng-container *ngIf="current_Tab == 'carts'">
+    <div class="row my-5" *ngIf="current_Tab == 'carts'">
+        <div class="carts_wrapper col-md-8">
+            <div class="course-card mb-5" *ngFor="let course of carts">
+                <div class="row">
+                    <div class="col-md-4 m-0">
+                        <img [src]="
+                            course?.coursePhotoUrl ?
+                            course?.coursePhotoUrl :
+                            'assets/images/course-card.svg'" alt=""
+                        />
+                    </div>
+                    <div class="col-md-8 d-flex justify-content-between bg-white p-4 m-0">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="card-body">
+                                    <h3>{{ course?.training_Name }} - </h3>
+                                    <h5>{{ course?.facilitator }} </h5>
+                                    <div>
+                                        <span></span>
+                                        <span>(4.8 ratings)</span>
+                                    </div>
+                                    <div>
+                                        <span>Expected Competentence:</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-right">
+                                <h2>${{ course?.cost }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="bg-white p-4">
+                <h3>Total</h3>
+                <span>${{ getTotalCost(carts) }}</span>
+                <button 
+                    class="btn btn-green btn-lg"
+                    routerLink="/checkout"
+                >Checkout
+                </button>
+                <div>
+                    <div class="form_group my-4">
+                        <label for="" class="form-label">Coupon</label>
+                        <input type="text" class="form-control">
+                        <div class="d-flex justify-content-end">
+                            <span>Apply</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   </ng-container>
+   
     
 </div>

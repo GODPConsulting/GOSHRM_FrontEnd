@@ -2,7 +2,7 @@
 @import "partials/abstract/mixins";
 @import "partials/components/forms";
 
-.leaning_wrapper {
+.learning_wrapper {
     padding: 3rem;
     color: $black-100;
     .learning-banner {
@@ -87,6 +87,14 @@
           &:hover, &:focus {
             background: #FEF1E1;
           }
+        }
+    }
+    .carts_wrapper {
+        .course-card {
+            img {
+                max-height: 20rem;
+                width: 100%;
+            }
         }
     }
 }

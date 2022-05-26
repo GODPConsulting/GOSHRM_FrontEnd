@@ -57,6 +57,13 @@ export class MyLearningComponent implements OnInit {
     this.courses = this.myLearnings;
   }
 
+  public getTotalCost(carts: any) {
+    return carts.forEach((item: any) => {
+      // let cost
+        return item.cost
+    })
+  }
+
   public getWishlist() {
     this.current_Tab = 'wihlist';
     this.banner = 'learning-bg';

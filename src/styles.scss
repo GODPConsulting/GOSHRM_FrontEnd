@@ -50,6 +50,7 @@ $docstream-theme: mat.define-light-theme(
 // scrollbar styles
 body {
   scroll-behavior: smooth;
+  background: $white-300;
 }
 
 /* width */
