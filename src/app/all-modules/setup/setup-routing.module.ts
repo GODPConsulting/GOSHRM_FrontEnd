@@ -41,6 +41,8 @@ import { CompanyStructureComponent } from "./company-structure/company-structure
 import { DocumentTypeComponent } from "./document-type/document-type.component";
 import { FluterwaveKeyComponent } from "./fluterwave-key/fluterwave-key.component";
 import { OrganizationSetupComponent } from "./organization-setup/organization-setup.component";
+import { WorkforceBudgetComponent } from "./organization-setup/workforce-budget/workforce-budget.component";
+import { WorkforcePlanComponent } from "./organization-setup/workforce-plan/workforce-plan.component";
 
 const routes: Routes = [
   {
@@ -206,6 +208,20 @@ const routes: Routes = [
       {
         path: "organization-setup",
         component: OrganizationSetupComponent,
+        children: [
+          {
+            path: '',
+            redirectTo: 'workfoce-budget'
+          },
+          {
+            path: 'workfoce-budget',
+            component: WorkforceBudgetComponent
+          },
+          {
+            path: 'workforce-plan',
+            component: WorkforcePlanComponent
+          }
+        ]
       }
     ],
   },
