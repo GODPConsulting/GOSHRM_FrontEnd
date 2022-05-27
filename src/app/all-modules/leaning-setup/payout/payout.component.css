@@ -1,0 +1,87 @@
+
+.payout_wrapper {
+    padding: 3rem 5rem 3rem 5rem;
+}
+
+.payout-wrapper {
+    min-height: 70vh;
+}
+
+.btn {
+    border: none;
+    padding: 10px 25px;
+}
+
+.btn-orange {
+    background: #F88F09;
+    color: #fff;
+    border: 1px solid #F88F09;
+}
+
+.btn-outline-orange {
+    background: #fff;
+    color: #F88F09;
+    border: 1px solid #F88F09;
+}
+
+.btn-orange:hover {
+    background: transparent;
+    color: #F88F09;
+    border: 1px solid #F88F09;
+}
+
+.btn-outline-orange:hover {
+    background: #F88F09;
+    color: #fff;
+    border: 1px solid #F88F09;
+}
+
+.click {
+    cursor: pointer;
+}
+
+.edit-pen {
+    color: #F88F09;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.font-bold {
+    font-weight: bold;
+    color: #4F4F4F;
+}
+
+.text-grey {
+    color: #828282;
+}
+
+h3 {
+    font-weight: bold;
+}
+
+.form-control {
+    background: #F9FAFB;
+    border-radius: .6rem;
+}
+
+.btn-default {
+    background: #E0E0E0;
+    color: #333;
+}
+
+input[type="email"] {
+    text-transform: lowercase;
+}
+
+.text-orange {
+    color: #F88F09;
+}
+
+.fas {
+    font-size: 2rem;
+}
+
+.empty-state p {
+    margin: auto 0;
+    font-size: 1.8rem;
+}

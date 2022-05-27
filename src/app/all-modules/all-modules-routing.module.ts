@@ -33,6 +33,16 @@ const routes: Routes = [
           ),
       },
       {
+        path: "rms",
+        loadChildren: () =>
+          import("./job-setup/job-setup.module").then((m) => m.JobSetupModule),
+      },
+      {
+        path: "lms",
+        loadChildren: () =>
+          import("./leaning-setup/learning-setup.module").then((m) => m.LearningSetupModule),
+      },
+      {
         path: "notifications",
         loadChildren: () =>
           import("./notifications/notifications.module").then(
@@ -47,6 +57,11 @@ const routes: Routes = [
       {
         path: 'events',
         component: EventsComponent
+      },
+      {
+        path: "reward-management",
+        loadChildren: () =>
+          import("./reward-management/reward-management.module").then((m) => m.RewardManagementModule),
       }
     ],
   },

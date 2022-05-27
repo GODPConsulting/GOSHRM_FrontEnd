@@ -1,0 +1,95 @@
+*{
+    font-size: 14px;
+    font-weight: 400;
+}
+.employee-payroll-wrapper{
+    background: var(--color-light);
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem 3rem 3rem 3rem;
+}
+.payroll-card-flutter, .payroll-card-abc{
+    background: var(--color-dark);
+    padding: 1.2rem 1.2rem 1.5rem 1.2rem;
+    color: var(--color-light);
+    font-size: 14px;
+    border-radius: 1rem;
+    height: 10rem;
+    width: 21.2rem;
+}
+.payroll-card-abc{
+    background: #EDEDED;
+    color: #4F4F4F;
+    margin: 0;
+}
+.payroll-card-flutter > .d-flex > :first-child{
+    font-weight: 600;
+    margin-top: 2.2rem;
+}
+.payroll-card-flutter > .d-flex > :last-child{
+    font-size: 11px;
+    margin-top: 2.5rem;
+}
+.payroll-card-abc > .d-flex > :first-child{
+    font-weight: 400;
+}
+.payroll-card-abc > .d-flex > :last-child{
+    font-size: 11px;
+    font-weight: 400;
+}
+.total-net{
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-top: 1rem;
+}
+.total-net + p{
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: -1rem;
+}
+.payroll-nav{
+    border-bottom: 1px solid #E0E0E0;
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+.payroll-menu{
+    padding: 1rem 2rem;
+    color: #BDBDBD;
+    cursor: pointer;
+}
+.payroll-menu:hover{
+    color: var(--color-primary-new);
+    border-bottom: 4px solid var(--color-primary-new);
+}
+.active-page{
+    color: var(--color-primary-new);
+    border-bottom: 4px solid var(--color-primary-new);
+}
+
+/* modal styles */
+.page-title{
+    font-size: 18px;
+    font-weight: 600;
+}
+.page-title-icon{
+    cursor: pointer;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+.close-modal{
+    margin-right: -1rem;
+    cursor: pointer;
+  }
+.form-control{
+    border-radius: .8rem;
+}
+.row{
+    margin-bottom: 3rem;
+}
+.btn-save{
+    background: var(--color-primary-new);
+    color: var(--color-light);
+    padding: 1.2rem 7rem;
+    border-radius: 1rem;
+}

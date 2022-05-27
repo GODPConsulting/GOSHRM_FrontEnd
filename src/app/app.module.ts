@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -27,6 +28,7 @@ import {adapterFactory} from "angular-calendar/date-adapters/date-fns";
     AppRoutingModule,
     HttpClientModule,
     DataTablesModule,
+    FormsModule,
     // NgSelectModule,
     ToastrModule.forRoot({
       timeOut: 1500,

@@ -1,0 +1,157 @@
+<div class="email-config_wrapper ui-g">
+    <div class="ui-g-12">
+      <div class="card p-5">
+        <div style="margin-bottom:0" class="panel panel-default">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="panel-title pull-left">
+                  {{formTitle}}
+                </h2>
+              </div>
+            </div>
+          </div>
+  
+
+          <div class="py-5">
+            <form novalidate [formGroup]="form">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="smtpClient" class="form-label"
+                          >Smtp Client
+                        </label>
+                          <input
+                            class="form-control"
+                            type="text"
+                            formControlName="smtpClient"
+                            placeholder=""
+                          />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form_group mb-4">
+                        <label for="smtpPort" class="form-label"
+                          >smtp Port
+                        </label>
+                          <input
+                            class="form-control"
+                            type="text"
+                            formControlName="smtpPort"
+                            placeholder=""
+                          />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="senderEmail" class="form-label"
+                            >Sender Email
+                          </label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              formControlName="senderEmail"
+                              placeholder=""
+                            />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="mailCaption" class="form-label"
+                            > Mail Caption
+                          </label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              formControlName="mailCaption"
+                              placeholder=""
+                            />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="senderUserName" class="form-label"
+                            >Sender Username
+                          </label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              formControlName="senderUserName"
+                              placeholder=""
+                            />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="senderPassword" class="form-label"
+                            >Sender Password
+                          </label>
+                            <input
+                              class="form-control"
+                              type="password"
+                              formControlName="senderPassword"
+                              placeholder=""
+                            />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="baseFrontend" class="form-label"
+                            >Base Frontend
+                          </label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              formControlName="baseFrontend"
+                              placeholder=""
+                            />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="sendNotification" class="form-label pr-3"
+                            >Send Notification
+                          </label>
+                          <input 
+                            type="checkbox" 
+                            id="sendNotification" 
+                            formControlName="sendNotification" 
+                            name="sendNotification"
+                            />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="enableSSL" class="form-label pr-3"
+                            >Enable SSL
+                          </label>
+                          <input 
+                            type="checkbox" 
+                            id="enableSSL" 
+                            formControlName="enableSSL" 
+                            name="enableSSL"
+                            />
+                        </div>
+                      </div>
+                  </div>
+            </form>
+        </div>
+
+          <div class="panel-footer">
+            <div class="row">
+              <div class="col-md-12">
+                <button style="margin-right:5px" type="button" [disabled]="!form.valid" class="btn btn-primary pull-right"
+                        (click)="addEmailConfig(form)">
+                  Save
+                </button>
+                <button type="button" style="margin-right:5px" class="btn btn-danger pull-right" (click)="goBack()">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+  

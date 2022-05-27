@@ -1,0 +1,48 @@
+<div class="payroll-wrapper">
+
+    <div class="d-flex justify-content-between">
+        <div class="page-title">Organization Setup
+            <img src="assets/icons/angle-right.svg" alt="angle right">
+            <span style="font-size: 1.8rem"> Workforce Budget & Planning </span>
+        </div>
+
+        <div class="relative">
+            <input type="text" placeholder="Search" class="search-field">
+            <img class="search-icon" src="assets/icons/search-small.svg" alt="search icon">
+            <img class="page-title-icon" src="assets/icons/plus-orange.svg" alt="send">
+        </div>
+    </div>
+
+    <div class="row pt-5">
+        <div class="col-md-3 relative">
+            <input type="text" class="form-control" placeholder="Company">
+            <img class="dropdown" src="assets/icons/dropdown-down.svg" alt="dropdown icon">
+        </div>
+        <div class="col-md-3 relative">
+            <input type="text" class="form-control" placeholder="Approval Status">
+            <img class="dropdown" src="assets/icons/dropdown-down.svg" alt="dropdown icon">
+        </div>
+        <div class="col-md-3 relative">
+            <input type="text" class="form-control" placeholder="Date">
+            <img class="dropdown" src="assets/icons/dropdown-down.svg" alt="dropdown icon">
+        </div>
+        <div class="col-md-3 relative">
+            <div class="d-flex budget-info"> $ 12,000,000.90</div>
+        </div>
+    </div>
+
+    <div class="payroll-nav pt-4">
+        <div class="payroll-menu"
+        routerLink="workfoce-budget"
+        routerLinkActive="active-page"
+        >Workforce Budget</div>
+        
+        <div class="payroll-menu"
+        routerLink="workforce-plan"
+        routerLinkActive="active-page"
+        >Workforce plan for Approvals</div>
+    </div>
+
+    <router-outlet></router-outlet>
+
+</div>

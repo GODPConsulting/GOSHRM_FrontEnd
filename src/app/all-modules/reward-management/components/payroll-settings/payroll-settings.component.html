@@ -1,0 +1,46 @@
+<div class="payroll-wrapper">
+
+    <div class="d-flex justify-content-between">
+        <div class="page-title">Payroll Items Settings</div>
+
+        <div>
+            <img class="page-title-icon" src="assets/icons/cloud-upload-orange.svg" alt="upload to cloud">
+            <img class="page-title-icon" src="assets/icons/cloud-download-orange.svg" alt="download to cloud">
+            <img class="page-title-icon" src="assets/icons/trash-orange.svg" alt="delete">
+            <img class="page-title-icon" src="assets/icons/plus-orange.svg" alt="add">
+        </div>
+    </div>
+
+    <div class="mt-5 d-flex filter-wrapper">
+        <input type="text" class="form-control payroll-filter" placeholder="Company">
+        <img class="date-dropdown" src="assets/icons/dropdown-down.svg" alt="dropdoen date">
+        <input type="text" class="form-control payroll-filter ms-3" placeholder="Date">
+    </div>
+
+    <div class="payroll-nav pt-4">
+        <div class="payroll-menu"
+        [routerLink]="['/reward-management/payroll-settings/earning-items']"
+        routerLinkActive="active-page"
+        [routerLinkActiveOptions]="{exact: true}">Earning items</div>
+        <div class="payroll-menu"
+        >Deductions</div>
+        <div class="payroll-menu"
+        [routerLink]="['/reward-management/payroll-settings/contributions']"
+        [queryParams]="{sortBy: 'jobGrade'}"
+        [ngClass]="{'active-page': query === 'emp' || query === 'addCon' || query === 'jobGrade'}"
+        >Contribution</div>
+        <div class="payroll-menu"
+        >Pension Setting</div>
+        <div class="payroll-menu"
+        >Tax Set-Up</div>
+        <div class="payroll-menu"
+        [routerLink]="['/reward-management/payroll-settings/bank-setup']"
+        routerLinkActive="active-page"
+        >Bank Setup</div>
+        <div class="payroll-menu"
+        >Gratuity Setup</div>
+    </div>
+
+    <router-outlet></router-outlet>
+
+</div>

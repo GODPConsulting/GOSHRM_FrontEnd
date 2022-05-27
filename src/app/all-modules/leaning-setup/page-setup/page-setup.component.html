@@ -1,0 +1,233 @@
+<!-- Page Content -->
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">{{ current_tab }}</h3>
+      </div>
+      <div class="col-auto float-right ml-auto d-inline-block">
+        <app-searchbar class="d-inline-block px-3"></app-searchbar>
+        <a class="btn upload-btn hint" data-toggle="modal" (click)="multipleDelete()"
+          ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
+        </a>
+        <a *ngIf="current_tab =='Page Content'" class="btn upload-btn hint" (click)="addNew()" >
+          ><span class="hint-text">Add</span><img src="assets/img/add.svg">
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+
+  <!--Page tabs-->
+  <div class="">
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="current_tab == 'Page Banner' ? 'active' : ''"
+          id="pills-pageBanner-tab"
+          data-toggle="pill"
+          href="#pills-pageBanner"
+          role="tab"
+          aria-controls="pills-pageBanner-tab"
+          aria-selected="true"
+          (click)="getCurrentTab('Page Banner')"
+          >Page Banner</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [ngClass]="current_tab == 'Page Content' ? 'active' : ''"
+          id="pills-pageContent-tab"
+          data-toggle="pill"
+          href="#pills-pageContent"
+          role="tab"
+          aria-controls="pills-pageContent-tab"
+          aria-selected="false"
+          (click)="getCurrentTab('Page Content')"
+          >Page Content
+        </a>
+      </li>
+    </ul>
+
+      <section *ngIf="current_tab == 'Page Banner'">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="dashboard table-responsive p-3">
+              <table
+                class="table table-striped text-nowrap" 
+                datatable [dtOptions]="dtOptions" 
+                data-searching="true"
+              >
+                <thead>
+                  <tr>
+                    <th>Cover Image</th>
+                    <th>Page</th>
+                    <th>Banner Title</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="">
+                        <img class="img-wrapper" [src]="pageBanner?.photoUrl" alt="cover image">
+                    </td>
+                    <td scope="row" (click)="editBanner(pageBanner)">
+                      <span class="px-3"> {{ pageBanner?.pageBannerName }}</span>
+                    </td>
+                    <td class="d-flex justufy-content-between" (click)="editBanner(pageBanner)">
+                      <span class="pr-5">{{ pageBanner?.pageBannerTitle }}</span>
+                    </td>
+                    <td>
+                      <span class="click px-5 ml-auto">
+                        <div style="position: relative;">
+                          <i class="fas fa-upload"></i>
+                            <input type="file"
+                                style="position: absolute; width: 100%; height: 100%; top: 0; right: 3px;"
+                                name="file-1"
+                                id="file-1"
+                                accept="image/png,image/jpeg,image/jpg"
+                                (change)="getBase64($event, pageBanner)"
+                            >
+                        </div>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section *ngIf="current_tab == 'Page Content'">
+        <!-- <div class="row">
+          <div class="col-lg-12">
+            <div class="dashboard table-responsive p-3">
+              <table
+                class="table table-striped text-nowrap" 
+                datatable [dtOptions]="dtOptions" 
+                data-searching="false"
+              >
+                <thead>
+                  <tr>
+                    <th> 
+                      <input type="checkbox">
+                      <span class="px-3">Page</span>
+                    </th>
+                    <th>Section Title</th>
+                    <th>Section Content</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let content of pageContents">
+                    <th scope="row">
+                      <input type="checkbox">
+                      <span class="px-3"> {{ content?.page_Name }}</span>
+                    </th>
+                    <td>
+                     {{ content?.page_Title }}
+                    </td>
+                    <td class="d-flex justufy-content-between">
+                      <span class="pr-5">{{content?.section_Content }}</span>
+                      <div class="ml-auto">
+                        <img class="click px-3" src="assets/img/trash.svg" (click)="openDeleteModal()">
+                        <img class="click px-3" src="assets/img/edit.svg" (click)="openModal(true)">
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div> -->
+        <div class="row">
+          <div class="col-12">
+              <div class="">
+                  <div class="form-horizontal">
+                      <p-table
+                          #dt
+                          [value]="pageContents"
+                          dataKey="pageContentId"
+                          [columns]="cols"
+                          [(selection)]="selectedContent"
+                          [paginator]="true"
+                          [rows]="pageContents?.length"
+                          [responsive]="true"
+                          [scrollable]="true"
+                          [scrollHeight]="viewHeight"
+                      >
+                          <ng-template pTemplate="caption">
+                              <div style="text-align: right">
+                                  <input
+                                      type="text"
+                                      pInputText
+                                      size="50"
+                                      class="form-control"
+                                      placeholder="Search..."
+                                      (keyup)="
+                                          dt.filterGlobal(
+                                              $event.target.value,
+                                              'contains'
+                                          )
+                                      "
+                                      style="width:auto"
+                                  />
+                              </div>
+                          </ng-template>
+                          <ng-template pTemplate="header">
+                              <tr>
+                                  <th class="checkbox_row">
+                                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                  </th>
+                                  <!-- <th class="">S/N</th> -->
+                                  <th>Page</th>
+                                  <th>Section Title</th>
+                                  <th>Section content</th>
+                                  <th></th>
+                              </tr>
+                          </ng-template>
+                          <ng-template pTemplate="body" let-x let-i="rowIndex">
+                              <tr [pSelectableRow]="x">
+                                  <td class="checkbox_row">
+                                      <p-tableCheckbox
+                                          [value]="x"
+                                      ></p-tableCheckbox>
+                                  </td>
+                                  <!-- <td class=""><a class="table_link" (click)="editTestimony(x)">{{ i + 1 }}</a></td> -->
+                                  <td class="">
+                                      <img class="img-wrapper" [src]="x.photoUrl" alt="cover image">
+                                  </td>
+                                  <td><a class=""
+                                         (click)="editContent(x)">{{ x?.page_Name }}</a></td>
+                                  <td><a class=""
+                                         (click)="editContent(x)">{{ x?.page_Title }}</a></td>
+                                  <td><a class=""
+                                         (click)="editContent(x)">{{ x?.section_Content }}</a></td>
+                                 <td style="display: flex;">
+                                      <div style="position: relative;">
+                                        <i class="fas fa-upload"></i>
+                                          <input type="file"
+                                              style="position: absolute; width: 100%; height: 100%; top: 0; right: 3px;"
+                                              name="file-1"
+                                              id="file-1"
+                                              accept="image/png,image/jpeg,image/jpg"
+                                              (change)="getBase64($event, x)"
+                                          >
+                                      </div>
+                                      <div class="ml-5">
+                                        <i (click)="delete(x?.pageContentId)" class="fas fa-trash"></i>
+                                          <!-- <img class="click" (click)="delete(x?.testmonyId)" class="click px-3" src="assets/img/trash.svg"> -->
+                                      </div>
+                                  </td>
+                              </tr>
+                          </ng-template>
+                      </p-table>
+                  </div>
+              </div>
+          </div>
+      </div>
+      </section>
+</div>
+<!-- /Page Content -->

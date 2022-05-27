@@ -1,0 +1,16 @@
+<div class="policy_wrapper mt-5">
+    <div class="d-flex justify-content-between">
+        <h3>Privacy Policy</h3>
+        <img class="click" *ngIf="!canEditPolicy" (click)="editPolicy()" src="assets/img/edit-pen.svg" alt="">
+        <button class="btn btn-orange" *ngIf="canEditPolicy" (click)="updatePolicySetup()">Save</button>
+    </div>
+    <div class="policy-content bg-white p-5 my-5">
+        <div *ngIf="!canEditPolicy">
+            <div [innerHTML]="policyInfo?.policy_Content"></div>
+        </div>
+
+       <div *ngIf="canEditPolicy">
+            <angular-editor [(ngModel)]="htmlContent" [config]="config"></angular-editor>
+       </div>
+    </div>
+</div>

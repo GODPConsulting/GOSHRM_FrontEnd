@@ -1,0 +1,31 @@
+<div class="courses_wrapper">
+    <h3>Running Courses</h3>
+    <div class="bg-white my-4">
+          <div class="dashboard table-responsive p-4">
+            <table 
+              class="table table-striped text-nowrap" 
+              datatable [dtOptions]="dtOptions" 
+              data-searching="false"
+            >
+              <thead>
+                <tr>
+                  <th>Upload Date</th>
+                  <th>Training Provider</th>
+                  <th>Course Title</th>
+                  <th>No. of Views</th>
+                  <th>Ratings</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of runningCourses">
+                    <td>{{ item?.upload_Date | date }}</td>
+                    <td>{{ item?.training_Provider }}</td>
+                    <td>{{ item?.course_Title }}</td>
+                    <td>{{ item?.no_Of_Views }}</td>
+                    <td>{{ item?.ratings }}</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+    </div>
+</div>

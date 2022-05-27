@@ -1,0 +1,142 @@
+<div class="email-setup_wrapper">
+    <div class="d-flex justify-content-between">
+      <h3>Email Setup</h3>
+      <!-- <button class="btn btn-orange btn-lg">
+        Create Email
+      </button> -->
+    </div>
+    <div class="bg-white p-5 my-4">
+        <form novalidate [formGroup]="emailSetupForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form_group mb-4">
+                <label for="smtpClient" class="form-label"
+                  >Smtp Client
+                </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    formControlName="stmp_Client"
+                    placeholder=""
+                  />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form_group mb-4">
+                <label for="smtpPort" class="form-label"
+                  >smtp Port
+                </label>
+                  <input
+                    class="form-control"
+                    type="text"
+                    formControlName="smtp_Port"
+                    placeholder=""
+                  />
+              </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form_group mb-4">
+                  <label for="senderEmail" class="form-label"
+                    >Sender Email
+                  </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      formControlName="sender_Email"
+                      placeholder=""
+                    />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form_group mb-4">
+                  <label for="mailCaption" class="form-label"
+                    > Mail Caption
+                  </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      formControlName="mail_Caption"
+                      placeholder=""
+                    />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form_group mb-4">
+                  <label for="senderUserName" class="form-label"
+                    >Sender Username
+                  </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      formControlName="sender_Username"
+                      placeholder=""
+                    />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form_group mb-4">
+                  <label for="senderPassword" class="form-label"
+                    >Sender Password
+                  </label>
+                    <input
+                      class="form-control"
+                      type="password"
+                      formControlName="sender_Password"
+                      placeholder=""
+                    />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form_group mb-4">
+                  <label for="baseFrontend" class="form-label"
+                    >Base Frontend
+                  </label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      formControlName="baseFrontEndURL"
+                      placeholder=""
+                    />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form_group mb-4">
+                  <label for="sendNotification" class="form-label pr-3"
+                    >Send Notification
+                  </label>
+                  <input 
+                    type="checkbox" 
+                    id="sendNotification" 
+                    formControlName="send_notification" 
+                    name="sendNotification"
+                    />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form_group mb-4">
+                  <label for="enableSSL" class="form-label pr-3"
+                    >Enable SSL
+                  </label>
+                  <input 
+                    type="checkbox" 
+                    id="enableSSL" 
+                    formControlName="enableSSl" 
+                    name="enableSSL"
+                    />
+                </div>
+              </div>
+          </div>
+          <div class="d-flex justify-content-end pt-4">
+            <button
+              class="btn btn-orange submit-btn"
+              type="submit"
+              [disabled]="!emailSetupForm.valid"
+              (click)="updateEmailSetup()"
+            >
+              <span>Create</span>
+              <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+    </form>
+    </div>
+</div>

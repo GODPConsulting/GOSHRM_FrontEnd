@@ -1,0 +1,108 @@
+<div class="state_wrapper ui-g">
+    <div class="ui-g-12">
+      <div class="card p-4">
+        <div style="margin-bottom:0" class="panel panel-default">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="panel-title pull-left">
+                  {{formTitle}}
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          <div class="py-5">
+              <form novalidate [formGroup]="form">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="stateCode" class="form-label"
+                            >State Code
+                          </label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              formControlName="stateCode"
+                              placeholder="E.g NGN"
+                            />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="stateName" class="form-label"
+                            >State Name
+                          </label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              formControlName="stateName"
+                              placeholder="Enter Country Name"
+                            />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="stateName" class="form-label"
+                            >Country
+                          </label>
+                          <select
+                          type="text"
+                          name="countryId"
+                          formControlName="countryId"
+                          id="countryId"
+                          class="form-control"
+                        >
+                          <option value="">-- Select Country --</option>
+                          <option
+                            *ngFor="let row of countryList"
+                            [value]="row.lookupId"
+                          >
+                            {{ row.lookupName }}</option
+                          >
+                        </select>
+                        </div>
+                      </div>
+                    </div>
+              </form>
+          </div>
+  
+          <!-- <div class="panel-body">
+            <div class="form-horizontal">
+              <form novalidate [formGroup]="form">
+                <div class="form-group">
+                  <label for="" class="control-label col-md-2">
+                    Country Code
+                  </label>
+                  <div class="col-md-4">
+                    <input type="text" formControlName="countryCode" name="countryCode" class="form-control" />
+                  </div>
+  
+                  <label for="" class="control-label col-md-2">
+                    Country Name
+                  </label>
+                  <div class="col-md-4">
+                    <input type="text" formControlName="countryName" name="countryName" class="form-control" />
+                  </div>
+                </div>
+                </form>
+            </div>
+          </div> -->
+          <div class="panel-footer">
+            <div class="row">
+              <div class="col-md-12">
+                <button style="margin-right:5px" type="button" [disabled]="!form.valid" class="btn btn-primary pull-right"
+                  (click)="submitStateInfo(form)">
+                  Save
+                </button>
+                <button type="button" style="margin-right:5px" class="btn btn-danger pull-right" (click)="goBack()">
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

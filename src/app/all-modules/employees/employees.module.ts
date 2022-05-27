@@ -30,6 +30,8 @@ import { RatingModule } from "ngx-bootstrap/rating";
 import { HospitalComponent } from "./all-employees/employee-profile/hospital/hospital.component";
 import { EmployeeGymComponent } from "./all-employees/employee-profile/employee-gym/employee-gym.component";
 import {NgbRatingModule} from '@ng-bootstrap/ng-bootstrap';
+import { LayoutComponent } from './all-employees/employee-management/layout/layout.component';
+import { PersonalDetailsComponent } from './all-employees/employee-management/personal-details/personal-details.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import {NgbRatingModule} from '@ng-bootstrap/ng-bootstrap';
     CareerComponent,
     HospitalComponent,
     EmployeeGymComponent,
+    LayoutComponent,
+    PersonalDetailsComponent,
   ],
   imports: [
     CommonModule,

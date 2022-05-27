@@ -1,0 +1,79 @@
+<div class="courses_wrapper">
+    <div class="d-flex justify-content-between">
+      <h3>Training Providers</h3>
+      <div class="search-wrapper ms-auto ">
+        <div
+          class="search-wrapper-input me-4 mb-3 form_group"
+        >
+          <span class="_icon">
+            <img src="assets/img/search.svg" />
+          </span>
+          <input
+            #searchQuery
+            type="search"
+            class="form-control mt-0"
+            placeholder="Search"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="bg-white p-5 my-4">
+      <div class="dashboard table-responsive p-3">
+        <table
+          class="table table-striped text-nowrap" 
+          datatable [dtOptions]="dtOptions" 
+          data-searching="false"
+        >
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  (change)="checkUncheckAll()"
+                  [(ngModel)]="isCheck"
+                  class=""
+                />
+                <span class="px-3">Join Date</span>
+              </th>
+              <th>Name</th>
+              <th>Email Address</th>
+              <th>Website</th>
+              <th>Phone Number</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let trainee of trainingProviderS, index as i">
+              <th scope="row">
+                <label
+                  class="check-container mb-4"
+                  for="checkbox{{ i }}"
+                >
+                  <input
+                    (click)="selectDeselectTrainee(trainee)"
+                    type="checkbox"
+                    id="checkbox{{ i }}"
+                    [(ngModel)]="trainee.isSelected"
+                    class="checkbox"
+                  />
+                  <span class="checkmark"></span>
+                </label>
+                <span class="px-3">{{ trainee?.createdOn | date }}</span>
+              </th>
+              <td> {{ trainee?.full_Name }} </td>
+              <td>
+                <a [href]="'mailto:' + trainee?.email_Address">{{ trainee?.email_Address }} </a>
+              </td>
+              <td>
+                <a [href]="trainee?.website" target="_blank">{{ trainee?.website }}</a>
+              </td>
+              <td> 
+                <a [href]="'tel:' + trainee?.phone_Number">{{ trainee?.phone_Number }} </a>
+              </td>
+              <td> View </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>

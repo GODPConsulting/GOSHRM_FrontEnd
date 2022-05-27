@@ -1,0 +1,215 @@
+<div class="company_wrapper ui-g">
+    <div class="ui-g-12 no-padding">
+      <div style="margin-bottom:0" class="panel panel-default">
+        <div class="panel-heading my-5">
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="panel-title pull-left">
+                    Organisation Structure Definition
+                </h2>
+                <div class="pull-right">
+                  <a class="btn upload-btn hint"  (click)="showAddNew()"
+                  ><span class="hint-text">Add</span><img src="assets/img/add.svg">
+                  </a>
+                </div>
+                <div class="pull-right">
+                    <a class="btn upload-btn hint"  (click)="multipleDelete()"
+                    ><span class="hint-text">Delete</span><img src="assets/img/delete.svg">
+                    </a>
+                </div>
+                <div class="pull-right">
+                  <a class="btn upload-btn hint"  (click)="exportCompanyStructureDefinition()"
+                  ><span class="hint-text">Export</span><img src="assets/img/download.svg">
+                  </a>
+                </div>
+                <div class="pull-right">
+                    <a class="btn upload-btn hint"  (click)="uploadCompanyStructureDefinition()"
+                    ><span class="hint-text">Upload</span><img src="assets/img/upload.svg">
+                    </a>
+                </div>
+                <!-- <div
+                  style="padding-right: 5px;padding-left: 5px;width: 45px;"
+                  class="col-md-1 pull-right"
+                >
+                  <button
+                    pButton
+                    style="padding:0.5em 0"
+                    type="button"
+                    class="ui-button-raised ui-button-danger"
+                    (click)="multipleDelete()"
+                    icon="ui-icon-delete"
+                    iconPos="center"
+                    pTooltip="Delete"
+                    tooltipPosition="top"
+                    label=""
+                  ></button>
+                </div>
+                <div
+                  style="padding-right: 5px;padding-left: 5px;width: 45px;"
+                  class="col-md-1 pull-right"
+                >
+                  <button
+                    pButton
+                    style="padding:0.5em 0"
+                    type="button"
+                    class="ui-button-raised"
+                    (click)="showAddNew()"
+                    icon="ui-icon-plus"
+                    iconPos="center"
+                    pTooltip="Add"
+                    tooltipPosition="top"
+                    label=""
+                  ></button>
+                </div>
+                <div
+                  style="padding-right: 5px;padding-left: 5px;width: 45px;"
+                  class="col-md-1 pull-right"
+                >
+                  <button
+                    pButton
+                    style="padding:0.5em 0"
+                    type="button"
+                    class="ui-button-raised ui-button-secondary"
+                    (click)="exportCountryList()"
+                    icon="ui-icon-file-download"
+                    pTooltip="Download"
+                    tooltipPosition="top"
+                    iconPos="center"
+                    label=""
+                  ></button>
+                </div>
+                <div
+                  style="padding-right: 5px;padding-left: 5px;width: 45px;"
+                  class="col-md-1 pull-right"
+                >
+                  <button
+                    pButton
+                    type="button"
+                    style="padding:0.5em 0"
+                    class="ui-button-raised ui-button-secondary"
+                    (click)="uploadCountryList()"
+                    icon="ui-icon-file-upload"
+                    iconPos="center"
+                    pTooltip="Excel file: Country Name, Country Code"
+                    tooltipPosition="top"
+                    label=""
+                  ></button>
+                </div> -->
+                <div class="col-md-3 col-sm-6 col-xs-12 pull-right">
+                  <input
+                    style="height:35px;"
+                    class="form-control"
+                    type="file"
+                    (change)="handleFileInput($event.target.files)"
+                    id="file1"
+                    accept=".xls,.xlsx"
+                    #fileInput
+                    name="fileInput"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+  
+        <div class="panel-body">
+          <div class="form-horizontal">
+            <p-table
+              #dt
+              [columns]="cols"
+              [value]="companyStructureDefinitionList"
+              dataKey="structureDefinitionId"
+              [(selection)]="selectedCompanyStructureDefinition"
+              [paginator]="false"
+              [rows]="companyStructureDefinitionList.length"
+              [responsive]="true"
+              [scrollable]="true"
+              [scrollHeight]="viewHeight"
+            >
+              <ng-template pTemplate="caption">
+                <div style="text-align: right">
+                  <input
+                    type="text"
+                    pInputText
+                    size="50"
+                    class="form-control"
+                    placeholder="Search..."
+                    (keyup)="dt.filterGlobal($event.target.value, 'contains')"
+                    style="width:auto"
+                  />
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th class="checkbox_row">
+                    <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
+                  </th>
+                  <th class="sn_width">S/N</th>
+                  <th [pSortableColumn]="'definition'">
+                    Name
+  
+                  </th>
+                  <th [pSortableColumn]="'description'">
+                    Description
+  
+                  </th>
+                  <th [pSortableColumn]="'structureLevel'">
+                    Level
+  
+                  </th>
+                  <!--                              <th ></th>-->
+                  <!--                              <th ></th>-->
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-x let-i="rowIndex">
+                <tr [pSelectableRow]="x">
+                  <td class="checkbox_row">
+                    <p-tableCheckbox [value]="x"></p-tableCheckbox>
+                  </td>
+                  <td class="sn_width">
+                    <a
+                      style="color: #3b3b3b; text-decoration: none;"
+                      (click)="onRowSelect(x)"
+                      >{{ i + 1 }}</a
+                    >
+                  </td>
+                  <td>
+                    <a
+                      style="font-weight: bold; color: #3b3b3b; text-decoration: none;"
+                      (click)="onRowSelect(x)"
+                      >{{ x.definition }}</a
+                    >
+                  </td>
+                  <td>
+                    <a
+                      style="color: #3b3b3b; text-decoration: none;"
+                      (click)="onRowSelect(x)"
+                      >{{ x.description }}</a
+                    >
+                  </td>
+                  <td>
+                    <a
+                      style="color: #3b3b3b; text-decoration: none;"
+                      (click)="onRowSelect(x)"
+                      >{{ x.structureLevel }}</a
+                    >
+                  </td>
+                  <!--                              <td>-->
+                  <!--                                  <a (click)="editCompanyStructureDefinition(x)">Edit</a>-->
+                  <!--                              </td>-->
+                  <!--                              <td>-->
+                  <!--                                  <a (click)="deleteCompanyStructureDefinition(x)">Delete</a>-->
+                  <!--                              </td>-->
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-md-12"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

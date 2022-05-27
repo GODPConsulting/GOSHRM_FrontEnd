@@ -1,0 +1,21 @@
+.setup_wrapper {
+  padding: 3rem 5rem;
+}
+
+h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.app-container {
+  min-height: 80vh;
+}
+
+.setup-nav {
+  border: 1px solid #F2F2F2;
+  cursor: pointer;
+}
+
+.setup-nav:hover {
+  background: #F2F2F2;
+}

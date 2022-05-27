@@ -1,0 +1,313 @@
+<div class="payout_wrapper">
+    <div class="d-flex justify-content-between">
+      <h3 class="pt-3">Payout</h3>
+      <div class="d-flex">
+        <button class="btn text-orange" (click)="deletePayout()">
+          <i class="fas fa-trash"></i>
+        </button>
+        <button class="btn btn-orange" (click)="openAccountModal(payoutListItem)">
+          Add Payout
+        </button>
+      </div>
+    </div>
+    <div class="password_wrapper my-4">
+        <div class="payout-wrapper p-4 bg-white">
+          <div class="empty-state text-center my-auto" *ngIf="payoutList?.length == 0">
+            <p class="py-5">You do not have any payout account yet</p>
+          </div>
+          <div class="" *ngFor="let account of payoutList; index as i">
+            <div class="d-flex justify-content-between">
+                <div>
+                  <label for="payout{{i}}">
+                    <input 
+                      type="checkbox" 
+                      id="payout{{i}}" 
+                      name="" id=""
+                      (change)="selectDeselectPayout(account)"
+                    />
+                  </label>
+                </div>
+                <div class="click" (click)="openAccountModal(account)">
+                    <img src="assets/img/edit-pen.svg" alt="">
+                    <span class="edit-pen px-3">Edit</span>
+                </div>
+            </div>
+            <form>
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                      <label for="currentPassword" class="form-label"
+                        >Account Type
+                      </label>
+                      <select
+                        class="form-control" 
+                      >
+                           <option value="">{{ account?.account_TypeId == 1 ? 'Paypal' : 'Bank' }}</option>
+                      </select>
+                    </div>
+                </div>
+              </div>
+              
+              <div *ngIf="account?.account_TypeId == 1">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Paypay Email Address
+                          </label>
+                          <input
+                          class="form-control pr-2"
+                          type="email"
+                          placeholder="{{ account?.paypal_Email }}"
+                        />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Paypal Name
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              placeholder="{{ account?.paypal_Name }}"
+                            />
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+              <div *ngIf="account?.account_TypeId == 2">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Bank Name
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              placeholder="{{ account?.bank_Name }}"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Name
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              placeholder="{{ account?.account_Name }}"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Number
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              placeholder="{{ account?.account_Number }}"
+                            />
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+
+              <div class="d-flex justify-content-end pt-4">
+                  <button 
+                    class="btn btn-lg" 
+                    [ngClass]="!account?.account_Default 
+                      ? 'btn-orange' : 'btn-default'"
+                    (click)="changeDefaultAccount(account?.payoutId,account?.account_Default)"
+                  >
+                    Set as Default
+                  </button>
+              </div>
+               
+            </form>
+          </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit payout Modal -->
+<div id="account-modal" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-left modal-lg">
+      <div class="modal-content">
+        <div class="modal-body">
+            <form [formGroup]="payoutForm">
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="form_group mb-4">
+                      <label for="currentPassword" class="form-label"
+                        >Account Type
+                        <span class="text-danger">● </span>
+                      </label>
+                      <select
+                        id="accountType"
+                        class="form-control" 
+                        formControlName="account_TypeId"
+                        (change)="changeForm()"
+                        [ngClass]="{
+                          'is-invalid':
+                            (payoutForm.get('account_TypeId')?.errors &&
+                            payoutForm.get('account_TypeId')?.touched) ||
+                            (payoutForm.get('account_TypeId')?.hasError('required') &&
+                            payoutSetupFormSubmitted)
+                        }"
+                      >
+                           <option value="1">Paypal</option>
+                           <option value="2">Bank</option>
+                      </select>
+                      <div
+                        class="invalid-feedback"
+                      >
+                        Required
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div *ngIf="accountType == '1'">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Paypay Email Address
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="email"
+                              formControlName="paypal_Email"
+                              placeholder="|"
+                              [ngClass]="{
+                                'is-invalid':
+                                  (payoutForm.get('paypal_Email')?.errors &&
+                                  payoutForm.get('paypal_Email')?.touched) ||
+                                  (payoutForm.get('paypal_Email')?.hasError('required') &&
+                                  payoutSetupFormSubmitted)
+                              }"
+                            />
+                            <div
+                              class="invalid-feedback"
+                            >
+                              valid email address required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Paypal Name
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              formControlName="paypal_Name"
+                              placeholder="|"
+                              [ngClass]="{
+                                'is-invalid':
+                                  (payoutForm.get('paypal_Name')?.errors &&
+                                  payoutForm.get('paypal_Name')?.touched) ||
+                                  (payoutForm.get('paypal_Name')?.hasError('required') &&
+                                  payoutSetupFormSubmitted)
+                              }"
+                            />
+                            <div
+                              class="invalid-feedback"
+                            >
+                              Required
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+              <div *ngIf="accountType == '2'">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Bank Name
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              placeholder="|"
+                              formControlName="bank_Name"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Name
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              placeholder="|"
+                              formControlName="account_Name"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form_group mb-4">
+                          <label for="currentPassword" class="form-label"
+                            >Account Number
+                            <span class="text-danger">● </span>
+                          </label>
+                            <input
+                              class="form-control pr-2"
+                              type="text"
+                              placeholder="|"
+                              formControlName="account_Number"
+                            />
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+              <div>
+                <input 
+                  id="checkDefault"
+                  type="checkbox" name=""
+                  [checked]="payoutListItem?.account_Default"
+                  (change)="setDefault()"
+                >
+                <span class="px-3">Set as default</span>
+              </div>
+               
+            </form>
+            <div class="d-flex justify-content-end pt-4">
+                <button class="btn btn-outline-orange btn-lg mr-3">
+                  Delete
+                </button>
+                <button
+                class="btn btn-orange"
+                type="submit"
+                [disabled]="!payoutForm.valid"
+                (click)="updatePayoutSetup(payoutListItem.payoutId)"
+              >
+                <span>Save</span>
+                <span *ngIf="spinner"><i class="fa fa-spinner fa-spin"></i></span>
+              </button>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+  <!-- Edit payout Modal -->

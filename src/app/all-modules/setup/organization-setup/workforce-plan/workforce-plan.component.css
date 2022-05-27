@@ -1,0 +1,35 @@
+* {
+    font-size: 1.4rem;
+    font-weight: 400;
+}
+
+
+
+/* duplicate styles  */
+table{
+    width: 100%;
+    margin-top: 2rem;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+}
+th{
+    padding: 1rem 4rem 1rem 1.5rem;
+    font-weight: 700;
+}
+td{
+    padding: 1rem 4rem 1rem 1.5rem;
+}
+td:first-child{
+    border-radius: 1rem 0 0 1rem;
+}
+td:last-child{
+    border-radius: 0 1rem 1rem 0;
+}
+.bg-grey{
+    background: #F6F6F6CC;
+}
+.view-details{
+    cursor: pointer;
+    color: var(--color-primary-new);
+    font-weight: 600;
+}

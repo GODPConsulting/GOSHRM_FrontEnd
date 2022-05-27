@@ -1,0 +1,105 @@
+
+
+
+
+
+
+/* duplicate styles  */
+table{
+    width: 100%;
+    margin-top: 2rem;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+}
+th{
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    font-weight: 700;
+}
+td{
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    font-weight: 400;
+}
+td:first-child{
+    border-radius: 1rem 0 0 1rem;
+}
+td:last-child{
+    border-radius: 0 1rem 1rem 0;
+}
+.bg-grey{
+    background: #F6F6F6CC;
+}
+.actions-icon{
+    cursor: pointer;
+}
+
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: relative;
+    margin-bottom: 17px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  th .checkmark{
+    border: 1px solid #374957;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .container > input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #ffffff;
+    border: 1px solid #828282;
+    border-radius: .4rem;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .checkmark {
+    background-color: #ffffff;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .container input:checked ~ .checkmark {
+    background-color: var(--color-primary-new);
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .container input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .container .checkmark:after {
+    left: 6px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }

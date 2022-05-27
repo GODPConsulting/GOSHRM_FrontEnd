@@ -1,0 +1,41 @@
+<table class="table-responsive">
+    <thead>
+      <tr>
+        <th>
+            <label class="container">
+                <input type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+        </th>
+        <th>Reference</th>
+        <th>Emp ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Adjustment Type</th>
+        <th >Amount</th>
+        <th>Pay Date</th>
+        <th>Taxable</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of adjustmentData; let id = index"
+      [ngClass]="{'bg-grey': (id + 1) % 2 !== 0}">
+        <td><label class="container">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+        </label></td>
+        <td>{{data.reference}}</td>
+        <td>{{data.empID}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.description}}</td>
+        <td>{{data.adjustmentType}}</td>
+        <td>{{data.amount}}</td>
+        <td>{{data.payDate}}</td>
+        <td>{{data.taxable}}</td>
+        <td [ngStyle]="{'color': data.status === 'Approved' ? 'var(--color-approved)' : 'var(--color-pending)'}">
+            {{data.status}}</td>
+      </tr>
+      <hr>
+    </tbody>
+  </table>

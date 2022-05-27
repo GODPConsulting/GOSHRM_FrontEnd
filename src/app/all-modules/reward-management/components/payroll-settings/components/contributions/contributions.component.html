@@ -1,0 +1,294 @@
+<div class="contribution-wrapper">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div 
+                    [ngClass]="{'active-page': sortBy === 'jobGrade'}"
+                    class="col-md-4" (click)="changeFilter('jobGrade')">By Job Grade</div>
+                <div 
+                    [ngClass]="{'active-page': sortBy === 'emp'}"
+                    class="col-md-4" (click)="changeFilter('emp')">By Employee</div>
+                <div 
+                    [ngClass]="{'active-page': sortBy === 'addCon'}"
+                    class="col-md-4" (click)="changeFilter('addCon')">Additional Contribution</div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- table for sort by Job Grade -->
+    <table *ngIf="sortBy === 'jobGrade'" class="table-responsive" id="jobGradeTable">
+        <thead>
+          <tr>
+            <th>
+                <label class="container">
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+            </th>
+            <th>Job Grade</th>
+            <th>Employee%</th>
+            <th>Employer%</th>
+            <th colspan="2"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of sortByJobGradeData; let id = index"
+            [ngClass]="{'bg-grey': (id + 1) % 2 !== 0}">
+            <td><label class="container">
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label></td>
+            <td class="center-text">{{item.jobGrade}}</td>
+            <td class="center-text">{{item.employee}}</td>
+            <td class="center-text">{{item.employer}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="actions-icon">
+                <span class="tooltip-custom">
+                <img src="assets/icons/trash.svg" alt="delete">
+                <span class="tooltiptext-custom">Delete Item</span></span>
+            </td>
+            <td (click)="openModal('#' + sortBy)" class="actions-icon">
+                <span class="tooltip-custom">
+                <img src="assets/icons/edit.svg" alt="edit">
+                <span class="tooltiptext-custom">Edit Item</span></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+    <!-- table for sort by employee and additional contribution -->
+    <table *ngIf="sortBy !== 'jobGrade'" class="table-responsive">
+        <thead>
+          <tr>
+            <th>
+                <label class="container">
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+            </th>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Unit/Dept</th>
+            <th>Location</th>
+            <th>Contribution</th>
+            <th colspan="2"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of contributionData; let id = index"
+            [ngClass]="{'bg-grey': (id + 1) % 2 !== 0}">
+            <td><label class="container">
+              <input type="checkbox">
+              <span class="checkmark"></span>
+            </label></td>
+            <td>{{item.employeeID}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.unitDept}}</td>
+            <td>{{item.location}}</td>
+            <td>{{item.contribution}}</td>
+            <td></td>
+            <td></td>
+            <td class="actions-icon">
+                <span class="tooltip-custom">
+                <img src="assets/icons/trash.svg" alt="delete">
+                <span class="tooltiptext-custom">Delete Item</span></span>
+            </td>
+            <td (click)="openModal('#' + sortBy)" class="actions-icon">
+                <span class="tooltip-custom">
+                <img src="assets/icons/edit.svg" alt="edit">
+                <span class="tooltiptext-custom">Edit Item</span></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+</div>
+
+
+
+
+ 
+
+    <!-- Sort By job grade Modal -->
+    <div id="jobGrade" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-md"> 
+    
+            <div class="modal-content">
+    
+                <div class="modal-body">
+    
+                    <div class="d-flex justify-content-between pb-3">
+                        <div class="page-title">Add Bank Setup</div>
+                        <div 
+                            data-dismiss="modal"
+                            aria-label="Close"
+                            class="close-modal"
+                            (click)="closeModal('#jobGrade')"><img src="assets/icons/delete.svg" alt="close modal">
+                        </div>
+                    </div>
+
+                    <form>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" 
+                                placeholder="Job Grade">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" 
+                                placeholder="Employer Percentage">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" 
+                                placeholder="Employee Percentage">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-save">Save</button>         
+                            </div>
+                        </div>
+             
+                    </form>
+                    
+                </div>
+            </div>
+        </div>   
+    </div>
+    <!-- Sort By job grade Modal -->
+
+
+    <!-- Sort by employee Modal -->
+    <div id="emp" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+    
+            <div class="modal-content">
+    
+                <div class="modal-body">
+    
+                    <div class="d-flex justify-content-between pb-3">
+                        <div class="page-title">By Employee</div>
+                        <div 
+                            data-dismiss="modal"
+                            aria-label="Close"
+                            class="close-modal"
+                            (click)="closeModal('#emp')"><img src="assets/icons/delete.svg" alt="close modal">
+                        </div>
+                    </div>
+
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Employee ID">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Unit/Dept">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Location">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Employer percentage">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Employee Percentage">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6 d-flex justify-content-end">
+                                <button class="btn btn-save">Save</button>         
+                            </div>
+                        </div>
+             
+                    </form>
+                    
+                </div>
+            </div>   
+        </div>
+    </div>
+    <!-- Sort employee Modal -->
+
+
+    <!-- Sort by additional contribution Modal -->
+    <div id="addCon" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+    
+            <div class="modal-content">
+    
+                <div class="modal-body">
+    
+                    <div class="d-flex justify-content-between pb-3">
+                        <div class="page-title">Additional Contribution</div>
+                        <div 
+                            data-dismiss="modal"
+                            aria-label="Close"
+                            class="close-modal"
+                            (click)="closeModal('#addCon')"><img src="assets/icons/delete.svg" alt="close modal">
+                        </div>
+                    </div>
+
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Employee ID">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Unit/Dept">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Location">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" 
+                                placeholder="Contribution">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6 d-flex justify-content-end">
+                                <button class="btn btn-save">Save</button>         
+                            </div>
+                        </div>
+             
+                    </form>
+                    
+                </div>
+            </div>   
+        </div>
+    </div>  
+    <!-- Sort additional contribution Modal -->
+

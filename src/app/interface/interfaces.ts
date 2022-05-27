@@ -228,3 +228,8 @@ export interface AppraisalCycle {
 export interface CopyObjectivesPayload {
   comapanyId: number;
 }
+
+export interface SearchColumn {
+  header: string;
+  field: string;
+}

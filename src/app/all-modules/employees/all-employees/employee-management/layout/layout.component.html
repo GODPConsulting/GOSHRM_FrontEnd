@@ -1,0 +1,31 @@
+<div class="payroll-wrapper">
+
+    <div class="page-title">Employee Management
+        <img src="assets/icons/angle-right.svg" alt="angle right">
+        <span class="page-title-sub"> Sam Whyte </span>
+    </div>
+
+    <div class="payroll-nav d-flex pt-4">
+        <div class="payroll-menu"
+        [routerLink]="['/employees/employee-management']"
+        routerLinkActive="active-page"
+        [routerLinkActiveOptions]="{exact: true}">Personal Detail</div>
+        <div class="payroll-menu"
+        >Hobbies</div>
+        <div class="payroll-menu"
+        >Contacts & Referees</div>
+        <div class="payroll-menu"
+        >Dependants</div>
+        <div class="payroll-menu"
+        >Qualification</div>
+        <div class="payroll-menu"
+        >Career</div>
+        <div class="payroll-menu"
+        >Asset</div>
+        <div class="payroll-menu"
+        >HMO Details</div> 
+    </div>
+
+    <router-outlet></router-outlet>
+</div>
+
