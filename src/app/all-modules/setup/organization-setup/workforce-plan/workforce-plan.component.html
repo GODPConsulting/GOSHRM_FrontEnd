@@ -1,0 +1,24 @@
+<table class="table-responsive">
+    <thead>
+      <tr>
+        <th>Date Created</th>
+        <th>Office</th>
+        <th>Budget</th>
+        <th>Completion Status</th>
+        <th>Approval Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let plan of workfocePlanData; let id = index"
+        [ngClass]="{'bg-grey': (id + 1) % 2 !== 0}">
+        <td>{{plan.dateCreated}}</td>
+        <td>{{plan.office}}</td>
+        <td>{{plan.budget}}</td>
+        <td>{{plan.completionStatus}}</td>
+        <td>{{plan.approvalStatus}}</td>
+        <td class="view-details">View Details</td>
+      </tr>
+    </tbody>
+</table>
+

@@ -55,6 +55,8 @@ import { CompanyStructureListComponent } from './company-structure-list/company-
 import { DocumentTypeComponent } from './document-type/document-type.component';
 import { FluterwaveKeyComponent } from "./fluterwave-key/fluterwave-key.component";
 import { OrganizationSetupComponent } from './organization-setup/organization-setup.component';
+import { WorkforceBudgetComponent } from './organization-setup/workforce-budget/workforce-budget.component';
+import { WorkforcePlanComponent } from './organization-setup/workforce-plan/workforce-plan.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +101,9 @@ import { OrganizationSetupComponent } from './organization-setup/organization-se
     CompanyStructureListComponent,
     DocumentTypeComponent,
     FluterwaveKeyComponent,
-    OrganizationSetupComponent
+    OrganizationSetupComponent,
+    WorkforceBudgetComponent,
+    WorkforcePlanComponent
   ],
   imports: [
     CommonModule,
