@@ -162,6 +162,7 @@ export class CourseCreationService {
     const params = new HttpParams()
     .set('courseId', assessment.courseId)
     .set('assessmentId', assessment.assessmentId)
+    .set('assessmentType', assessment.assessmentType)
     return this.http.makeRequestWithData('post', endpoint, params, assessment.answers);
   }
 

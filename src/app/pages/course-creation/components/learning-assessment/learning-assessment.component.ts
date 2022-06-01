@@ -427,13 +427,12 @@ export class LearningAssessmentComponent implements OnInit {
       });
   }
 
-  finish() {
-    // const answr = 0;
-    console.log(this.allAnswered)
+  public finish() {
     const payload = {
       assessmentId: +this.assessmentId,
       courseId: +this.courseId,
-      answers: this.allAnswered
+      answers: this.allAnswered,
+      assessmentType: this.assessmentType
     }
     Swal.fire({
       title: 'Are you sure?',
@@ -441,9 +440,9 @@ export class LearningAssessmentComponent implements OnInit {
         'This content will be saved and you will be taken to the course overview page',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
+      confirmButtonColor: '#F88F09',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Save'
+      confirmButtonText: 'Submit'
     }).then(result => {
       if (result.value) {
         this.submitQuiz(payload);

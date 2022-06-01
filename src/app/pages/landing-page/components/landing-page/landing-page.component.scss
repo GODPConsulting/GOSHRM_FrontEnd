@@ -27,14 +27,12 @@
         min-height: 80vh;
         position: relative;
         .curve {
-            background: rgba($color: #0081FE, $alpha: 0.1);
+            background: url('../../../../../assets/images/footer-bg.svg') no-repeat 70% 50%;
             height: 50vh;
             width: 100%;
             position: absolute;
             bottom: 0;
             left: 0;
-            border-top-left-radius: 25%;
-            border-top-right-radius: 25%;
         }
     }
 }

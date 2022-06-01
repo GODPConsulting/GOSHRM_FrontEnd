@@ -92,27 +92,32 @@ export class CourseAssessmentComponent implements OnInit {
         this.fb.group({
           answer_Varaibles: ['', Validators.required],
           answerId: [0],
-          isAnswer: [false]
+          isAnswer: [false],
+          point: [0]
         }),
         this.fb.group({
           answer_Varaibles: ['', Validators.required],
           answerId: [0],
-          isAnswer: [false]
+          isAnswer: [false],
+          point: [0]
         }),
         this.fb.group({
           answer_Varaibles: [''],
           answerId: [0],
-          isAnswer: [false]
+          isAnswer: [false],
+          point: [0]
         }),
         this.fb.group({
           answer_Varaibles: [''],
           answerId: [0],
-          isAnswer: [false]
+          isAnswer: [false],
+          point: [0]
         }),
         this.fb.group({
           answer_Varaibles: [''],
           answerId: [0],
-          isAnswer: [false]
+          isAnswer: [false],
+          point: [0]
         })
       ])
     });
