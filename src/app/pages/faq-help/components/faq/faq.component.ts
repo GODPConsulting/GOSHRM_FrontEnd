@@ -59,9 +59,9 @@ export class FaqComponent implements OnInit {
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
         if (event?.isEditing) {
-         
+          this.getAllFaqs();
         } else {
-
+          this.getAllFaqs();
         }
       }
     );

@@ -13,7 +13,7 @@ export class FaqHelpService {
 
   public getFaq(): Observable<ResponseModel<any>> {
    const endpoint = '/getFAQs';
-   return this.http.makeRequestWithData('post', endpoint, {});
+   return this.http.getRequest(endpoint);
   }
 
   public addUpdateFAQ(

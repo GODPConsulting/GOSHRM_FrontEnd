@@ -42,7 +42,7 @@ export class QaComponent implements OnInit {
     editable: true,
     spellcheck: true,
     // height: '2rem',
-    minHeight: '3rem',
+    minHeight: '5rem',
     placeholder: 'Enter text here...',
     translate: 'no',
     defaultParagraphSeparator: 'p',
@@ -257,8 +257,8 @@ export class QaComponent implements OnInit {
   }
 
   public likeAndDislike(
-    question: any, 
-    index: any, 
+    question: any,
+    index: any,
     reply?: any,
     replyIndex?: any
   ) {

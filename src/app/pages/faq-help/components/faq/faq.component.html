@@ -7,7 +7,7 @@
       ></app-searchbar>
     </div>
    <div>
-        <div class="faq-content bg-white p-4 my-5">
+        <div class="faq-content bg-white p-4 my-5" *ngIf="faqs.length > 0">
             <div class="accordion" id="formAccordion" *ngFor="let faq of faqs, index as i">
                 <div class="accordion-item">
                 <h2 class="accordion-header" [attr.id]="'heading'+i">
@@ -40,5 +40,12 @@
                 </div>
             </div>
         </div>
+        <app-no-data
+          name="FAQ"
+          [is_loading]="isFetchingFaq"
+          *ngIf="faqs?.length == 0"
+          (open_dialog)="openDialog(false)"
+        >
+        </app-no-data>
    </div>
 </div>
