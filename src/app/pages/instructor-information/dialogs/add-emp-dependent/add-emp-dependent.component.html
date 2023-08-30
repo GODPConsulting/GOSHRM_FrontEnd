@@ -1,0 +1,113 @@
+<div class="d-flex justify-content-between" mat-dialog-title>
+  <h2 mat-dialog-title>{{ data.isEditing ? 'Edit' : 'Add' }} Content </h2>
+  <div class="click" mat-dialog-close>
+    <img src="assets/icons/close.svg" alt="" />
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="incidentForm">
+      <app-error [error_message]="error_message"></app-error>
+      <div class="row">
+          <div class="col-12">
+              <div class="form-group form_group">
+                <label>Page Name <span class="text-red">●</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Page Name"
+                  formControlName="page_Name"
+                  (keyup)="checkForKeyEnter($event)"
+                  [ngClass]="{
+                    'is-invalid':
+                      (incidentForm.get('page_Name')?.errors &&
+                        incidentForm.get('page_Name')?.touched) ||
+                      (incidentForm.get('page_Name')?.hasError('required') &&
+                        incidentFormSubmitted)
+                  }"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="
+                    incidentForm.get('page_Name')?.hasError('required') &&
+                    incidentFormSubmitted
+                  "
+                >
+                  Required
+                </div>
+              </div>
+          </div>
+          <div class="col-12">
+              <div class="form-group form_group">
+                  <label>Page Title <span class="text-red">●</span> </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter Page Title"
+                    formControlName="page_Title"
+                    (keyup)="checkForKeyEnter($event)"
+                    [ngClass]="{
+                      'is-invalid':
+                        (incidentForm.get('page_Title')?.errors &&
+                          incidentForm.get('page_Title')?.touched) ||
+                        (incidentForm.get('page_Title')?.hasError('required') &&
+                          incidentFormSubmitted)
+                    }"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="
+                    incidentForm.get('page_Title')?.hasError('required') &&
+                    incidentFormSubmitted
+                  "
+                >
+                  Required
+                </div>
+              </div>
+          </div>
+          <div class="col-12">
+              <div class="form-group form_group">
+                  <label>Page Content <span class="text-red">●</span> </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter Banner Content"
+                    formControlName="section_Content"
+                    (keyup)="checkForKeyEnter($event)"
+                    [ngClass]="{
+                      'is-invalid':
+                        (incidentForm.get('section_Content')?.errors &&
+                          incidentForm.get('section_Content')?.touched) ||
+                        (incidentForm.get('section_Content')?.hasError('required') &&
+                          incidentFormSubmitted)
+                    }"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="
+                    incidentForm.get('section_Content')?.hasError('required') &&
+                    incidentFormSubmitted
+                  "
+                >
+                  Required
+                </div>
+              </div>
+          </div>
+      </div>
+    </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    [mat-dialog-close]="false"
+    class="btn btn-outline-green btn-md me-4 px-4 d-none"
+    #close
+  >
+    No, cancel
+  </button>
+  <button
+    class="btn btn-green btn-md px-4"
+    (click)="submit()"
+  >
+      Submit
+  </button>
+</mat-dialog-actions>

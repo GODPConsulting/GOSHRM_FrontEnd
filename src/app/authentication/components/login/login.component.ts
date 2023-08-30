@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
   public err_message: string = '';
   public isError: boolean = false;
   public profile: any;
-  
+
   constructor(
     // private _base: BaseComponent,
     private fb: FormBuilder,
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
 
   initLoginForm() {
     this.loginForm = this.fb.group({
-      username: ["", Validators.compose([Validators.required, Validators.email])],
+      userName: ["", Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required],
     })
   }
@@ -86,6 +86,7 @@ export class LoginComponent implements OnInit {
       next: (res: any) => {
         // console.log(res);
         this.isLoggingIn = false;
+        res.companyId = 2;
         this._current.storeUserDetails(res);
         if(res?.status.isSuccessful) {
           this.loginFormSubmitted = true;

@@ -22,18 +22,18 @@
           id="full_Name"
           class="form-control"
           placeholder="innocent sample"
-          formControlName="full_Name"
+          formControlName="name"
           [ngClass]="{
             'is-invalid':
-              (registrationForm.get('full_Name')?.errors && 
-              registrationForm.get('full_Name')?.touched) || 
-              (registrationForm.get('full_Name')?.hasError('required') &&
+              (registrationForm.get('name')?.errors &&
+              registrationForm.get('name')?.touched) ||
+              (registrationForm.get('name')?.hasError('required') &&
               isRegisteringFormSubmitted)
           }"
         />
-        <div 
+        <div
           class="invalid-feedback"
-          *ngIf="registrationForm.get('full_Name')?.hasError('required') &&
+          *ngIf="registrationForm.get('name')?.hasError('required') &&
                   isRegisteringFormSubmitted"
         >
           Required
@@ -49,18 +49,18 @@
           id="email_Address"
           class="form-control"
           placeholder="i.sample@example.com"
-          formControlName="email_Address"
+          formControlName="email"
           [ngClass]="{
             'is-invalid':
-              (registrationForm.get('email_Address')?.errors && 
-              registrationForm.get('email_Address')?.touched) || 
-              (registrationForm.get('email_Address')?.hasError('required') &&
+              (registrationForm.get('email')?.errors &&
+              registrationForm.get('email')?.touched) ||
+              (registrationForm.get('email')?.hasError('required') &&
               isRegisteringFormSubmitted)
           }"
         />
-        <div 
+        <div
           class="invalid-feedback"
-          *ngIf="registrationForm.get('email_Address')?.hasError('required') &&
+          *ngIf="registrationForm.get('email')?.hasError('required') &&
                   isRegisteringFormSubmitted"
         >
           Enter a valid email address
@@ -80,8 +80,8 @@
             formControlName="password"
             [ngClass]="{
               'is-invalid':
-                (registrationForm.get('password')?.errors && 
-                registrationForm.get('password')?.touched) || 
+                (registrationForm.get('password')?.errors &&
+                registrationForm.get('password')?.touched) ||
                 (registrationForm.get('password')?.hasError('required') &&
                 isRegisteringFormSubmitted)
             }"
@@ -98,7 +98,7 @@
             ></i>
           </ng-template>
         </div>
-        <div 
+        <div
           class="invalid-feedback"
           *ngIf="registrationForm.get('password')?.hasError('required') &&
                   isRegisteringFormSubmitted"

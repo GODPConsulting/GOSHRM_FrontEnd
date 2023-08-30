@@ -4,18 +4,27 @@ import { CourseDescriptionComponent } from './components/course-description/cour
 import { CourseDescriptionRoutingModule } from './course-description-routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { NgRatingBarModule } from 'ng-rating-bar';
+import { TableModule } from 'primeng/table';
+import { AddAdminDialogComponent } from './dialogs/add-admin-dialog/add-admin-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
 @NgModule({
   declarations: [
-    CourseDescriptionComponent
+    CourseDescriptionComponent,
+    AddAdminDialogComponent
   ],
   imports: [
     CommonModule,
     CourseDescriptionRoutingModule,
     SharedModule,
-    NgRatingBarModule
+    NgRatingBarModule,
+    TableModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class CourseDescriptionModule { }

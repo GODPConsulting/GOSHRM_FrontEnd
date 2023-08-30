@@ -42,8 +42,8 @@ export class EditCompanyInfoDialogComponent implements OnInit {
     {name: 'Food and Beverage'}, {name: 'Healthcare'},
     {name: 'Hospitality'}, {name: 'Manufacturing'},
     {name: 'Media and News'}, {name: 'Mining'},
-    {name: 'Pharmaceutical'}, {name: 'Real Estate'}, 
-    {name: 'Telecommunication'}, {name: 'Transportation'}, 
+    {name: 'Pharmaceutical'}, {name: 'Real Estate'},
+    {name: 'Telecommunication'}, {name: 'Transportation'},
     {name: 'Utilities'}, {name: 'Others'},
   ];
 
@@ -72,7 +72,7 @@ export class EditCompanyInfoDialogComponent implements OnInit {
     this.updateProfileForm = this.fb.group({
       trainingProviderId: [this.loggedInUser.trainingProviderId],
       companyId: [this.loggedInUser.companyId],
-      full_Name: [this.data?.editObject?.full_Name ? this.data?.editObject?.full_Name  : '' ],
+      company_Name: [this.data?.editObject?.company_Name ? this.data?.editObject?.company_Name  : '' ],
       email_Address: [this.data?.editObject?.email_Address ? this.data?.editObject?.email_Address  : ''],
       phone_Number: [this.data?.editObject?.phone_Number ? this.data?.editObject?.phone_Number  : ''],
       physical_Address: [this.data?.editObject?.physical_Address ? this.data?.editObject?.physical_Address  : ''],

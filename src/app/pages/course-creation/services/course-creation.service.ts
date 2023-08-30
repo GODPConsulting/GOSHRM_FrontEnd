@@ -15,10 +15,12 @@ export class CourseCreationService {
   constructor(private http: HttpService, private _current: CurrentUserService) {}
 
   public getAllCourses(
-    payload: any
+    companyId: number
   ): Observable<ResponseModel<Courses>> {
-   const endpoint = '/coursecreation/get/byId/coursecreation';
-   return this.http.makeRequestWithData('post',endpoint, {}, payload);
+    const param = new HttpParams()
+    .set('companyId', companyId)
+   const endpoint = '/runningcourse/getAllRunningcourse';
+   return this.http.getRequestWithParams(endpoint, param);
   }
 
   public getOneCoursesById(

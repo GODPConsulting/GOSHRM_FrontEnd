@@ -1,60 +1,54 @@
 <div class="running_courses-wrapper m-0">
     <div class="title pt-3 pb-4">
-        <h3>Running Courses</h3>
+        <h3>Training Providers</h3>
     </div>
     <div class="table-responsive bg-white">
-      <ng-container 
-          class="bg-white p-4" 
+      <ng-container
+          class="bg-white p-4"
           *ngIf="isfetchingCourses || runningCourses.length > 0"
         >
             <p-table
                 #dt
                 [value]="runningCourses"
-                dataKey="courseId"
+                dataKey="trainingProviderId"
                 [(selection)]="selectedCourses"
                 [paginator]="true"
                 [rows]="10"
                 [responsive]="true"
                 [scrollable]="true"
                 [scrollHeight]="viewHeight"
-                class="" 
+                class=""
             >
               <ng-template pTemplate="header">
                   <tr class="thead">
-                      <th [pSortableColumn]="'upload_Date'">Upload Date</th>
-                      <th [pSortableColumn]="'facilitator'">Facilitator</th>
-                      <th [pSortableColumn]="'course_Title'">Course Title</th>
-                      <th [pSortableColumn]="'no_Of_Views'">No. of Enrolled</th>
-                      <th [pSortableColumn]="'rating'">Ratings</th>
-                      <th></th>        
+                      <th [pSortableColumn]="'full_Name'">Name</th>
+                      <th [pSortableColumn]="'email_Address'">Email Address</th>
+                      <th [pSortableColumn]="'website'">Website</th>
+                      <th [pSortableColumn]="'phone_Number'">Phone Number</th>
+                      <th [pSortableColumn]="'createdOn'">Date Joined</th>
                   </tr>
               </ng-template>
               <ng-template pTemplate="body" let-course let-i="rowIndex">
-                <tr class="tbody text-capitalize click" [pSelectableRow]="course" [routerLink]="['/courses/course-detail', course?.courseId]">
-                  <td>{{ course?.upload_Date | date }}</td>
-                  <td>{{ course?.facilitator }}</td>
-                  <td>{{ course?.course_Title }}</td>
-                  <td>{{ course?.no_Of_Views }}</td>
+                <tr class="tbody" [pSelectableRow]="course">
+                  <td>{{ course?.full_Name }}</td>
                   <td>
-                    <div class="d-flex justify-content-center align-items-center">
-                       <ng-rating-bar
-                        [value]="course?.rating"
-                        [ratingCount]="5"
-                        [disabled]="true"
-                        [styles]="{ margin: '0px', fontSize: '16px'}"
-                        colorActive="#F88F09" 
-                        colorDefault="#cecece"
-                      ></ng-rating-bar>
-                      </div>
+                    <a [href]="'mailto:' + course?.email_Address">{{ course?.email_Address }} </a>
                   </td>
-                  <td class="click">Update</td>
+                  <td>
+                    <a [href]="course?.website" target="_blank">{{ course?.website }}</a>
+                  <td>
+                    <a [href]="'tel:' + course?.phone_Number">{{ course?.phone_Number }} </a>
+                  </td>
+                  <td>
+                    {{ course?.createdOn | date }}
+                  </td>
                 </tr>
               </ng-template>
             </p-table>
       </ng-container>
 
       <app-no-data
-          name="Running course"
+          name="Training Providers"
           [is_loading]="isfetchingCourses"
           *ngIf="runningCourses?.length == 0"
         >

@@ -6,10 +6,10 @@ import {
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { PayoutService } from 'app/pages/payout/services/payout.service';
-import { RunningCoursesService } from 'app/pages/running-courses/services/running-courses.service';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ProfileService } from '../services/profile.service';
+import { RunningCoursesService } from 'app/pages/running-courses/services/running-courses.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,22 +19,21 @@ export class ProfileResolver implements Resolve<boolean> {
   constructor(
     private _profile: ProfileService,
     private _payout: PayoutService,
-    private _runningCourse: RunningCoursesService,
     private _current: CurrentUserService,
-    private _helper: HelperService
+    private _helper: HelperService,
+    private _trainers: RunningCoursesService
   ) {}
  public loggedInUser: any;
   resolve(route: ActivatedRouteSnapshot): Observable<any> | Promise<any> | any {
     this.loggedInUser = this._current.getUser()
-    let trainingProviderId = this.loggedInUser.trainingProviderId;
     let companyId = this.loggedInUser.companyId;
-    const profile = this._profile.getProfile(trainingProviderId);
+    const profile = this._profile.getProfile(companyId);
     const socialMedia = this._profile.getSocialMedia();
     const website = this._profile.getWebsites();
     const payout = this._payout.getPayout();
-    const runningCourse = this._runningCourse.getRunningCourses(companyId);
+    const trainers = this._trainers.getAllTrainers(companyId);
     this._helper.startSpinner();
-    return forkJoin([profile, socialMedia, website, payout, runningCourse]).pipe(
+    return forkJoin([profile, socialMedia, website, payout, trainers]).pipe(
       map(response => {
         this._helper.stopSpinner();
         return {
@@ -42,7 +41,7 @@ export class ProfileResolver implements Resolve<boolean> {
           socialMedia: response[1],
           website: response[2],
           payout: response[3],
-          runningCourse: response[4],
+          trainers: response[4],
         };
       })
     );

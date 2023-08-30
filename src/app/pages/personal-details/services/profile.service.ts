@@ -19,25 +19,19 @@ export class ProfileService {
   constructor(
     private http: HttpService,
     private _currentService: CurrentUserService,
-  ) { 
+  ) {
     this.loggedInUser = this._currentService.getUser();
     this.companyId = this.loggedInUser.companyId;
     this.userId = this.loggedInUser.userId;
-    if(this.loggedInUser.customerTypeId == 1) {
-      this.createdBy = CreatedByType.provider
-    } else if (this.loggedInUser.customerTypeId == 2) {
-      this.createdBy = CreatedByType.instructor
-    } else {
-      this.createdBy = CreatedByType.participant
-    }
+    this.createdBy = CreatedByType.admin;
   }
 
   public getProfile(
-       trainingProviderId: string
+       companyId: string
     ): Observable<ResponseModel<Profile>> {
-      const endpoint = '/trainingprovider/getTrainingProviderById';
+      const endpoint = '/company/getCompanyInfoById';
       const params = new HttpParams()
-      .set('trainingProviderId', trainingProviderId)
+      .set('CompanyId', companyId)
       return this.http.getRequestWithParams(endpoint, params);
   }
 
@@ -53,7 +47,7 @@ export class ProfileService {
   public updateProfile(
       getProfile: Profile
     ): Observable<ResponseModel<Profile>> {
-      const endpoint = '/trainingprovidercompanyInfo/addUpdateTrainingprovidercompanyInfo';
+      const endpoint = '/company/addAndUpdateCompanyInfo';
       return this.http.makeRequestWithData('post', endpoint, {}, getProfile);
   }
 
@@ -62,7 +56,7 @@ export class ProfileService {
    const params = new HttpParams()
    .set('companyId', this.companyId)
    .set('type', this.createdBy)
-   .set('userid', this.userId);
+   .set('userid', 'company');
    return this.http.getRequestWithParams(endpoint, params);
 }
 
@@ -79,7 +73,7 @@ public getWebsites(): Observable<ResponseModel<Profile>> {
  const params = new HttpParams()
  .set('companyId', this.companyId)
  .set('type', this.createdBy)
- .set('userid', this.userId);
+ .set('userid', 'company');
  return this.http.getRequestWithParams(endpoint, params);
 }
 
@@ -96,5 +90,6 @@ public getWebsites(): Observable<ResponseModel<Profile>> {
     const endpoint = '/company/addAndUpdateCompanyLogo';
     return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
+
 
 }

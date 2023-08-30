@@ -28,4 +28,13 @@ export class RunningCoursesService {
     const endpoint = '/trainingprovidersecuritysetup/add/update/trainingprovidersecuritysetup';
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
   }
+
+  public getAllTrainers(
+    companyId: string
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/trainingproviders/getAllTrainingproviders';
+    const params = new HttpParams()
+    .set('companyId', companyId)
+    return this.http.getRequestWithParams(endpoint, params);
+  }
 }

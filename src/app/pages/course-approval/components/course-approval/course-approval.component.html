@@ -1,209 +1,290 @@
-<div class="setup__wrapper">
-    <div class="row">
-        <div class="col-md-5">
-            <h3 class="">Course Approval</h3>
-        </div>
-        <div class="col-md-7 d-flex justify-content-end">
-            <app-searchbar
-            [canAdd]="true"
-            [canDelete]="true"
-            (btnAction)="goTo()"
-            (deleteAction)="deleteCourses()"
-            (searchQuery)="getSearchQuery($event)"
-            (searchAction)="getAllCourses(false)"
-          ></app-searchbar>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="form_group">
-                <label for="" class="form-label">Status</label>
-                <select name="" id="" class="form-select">
-                    <option value="4">Pending</option>
-                    <option value="1">Approved</option>
-                    <option value="2">Disapproved</option>
-                    <option value="3">Revert</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <div class="setup_content my-4">
-        <ng-container 
-          class="bg-white p-4" 
-          *ngIf="isFetchingCourses || courses.length > 0"
-        >
-            <p-table
-                #dt
-                [value]="courses"
-                dataKey="courseId"
-                [(selection)]="selectedCourses"
-                [paginator]="true"
-                [rows]="10"
-                [responsive]="true"
-                [scrollable]="true"
-                [scrollHeight]="viewHeight"
-                class="" 
-            >
-              <ng-template pTemplate="header">
-                  <tr class="thead">
-                      <th>
-                        <span>
-                            <p-tableHeaderCheckbox>
-                            </p-tableHeaderCheckbox>
-                        </span>
-                      </th>
-                      <th [pSortableColumn]="'facilitator'">Facilitator’s Name</th>
-                      <th [pSortableColumn]="'training_Name'">Training Tiltle</th>
-                      <th [pSortableColumn]="'rating'">Rating</th>
-                      <th [pSortableColumn]="'decisionType'">Status</th>
-                      <th [pSortableColumn]="'createdAt'">Date Created</th>
-                      <th></th>         
-                  </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-course let-i="rowIndex">
-                <tr class="tbody text-capitalize" [pSelectableRow]="course">
-                    <td 
-                    >
-                        <span class="pe-3">
-                            <p-tableCheckbox
-                                [value]="course"
-                            ></p-tableCheckbox>
-                        </span>
-                        <span class="img-wrapper ps-3">
-                          <img 
-                            [src]="course?.coursePhotoUrl ? course?.coursePhotoUrl : '' " 
-                            alt=""
-                          />
-                          <div class="upload-icon">
-                              <i class="fa fa-camera"></i>
-                              <input class="upload-file" type="file" name="" id="">
-                          </div>
-                        </span>
-                    </td>
-                    <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
-                      {{ course?.facilitator }}
-                    </td>
-                    <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
-                      {{ course?.training_Name }}
-                    </td>
-                    <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
-                      <ng-rating-bar
-                        [value]="4"
-                        [ratingCount]="5"
-                        [disabled]="true"
-                        [styles]="{ margin: '0px', fontSize: '16px'}"
-                        colorActive="#F88F09" 
-                        colorDefault="#cecece"
-                      ></ng-rating-bar>
-                    </td>
-                    <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
-                      {{ course?.decisionType }}
-                    </td>
-                    <td class="click" [routerLink]="['/courses/add-course', {courseId: course?.courseId}]">
-                      {{ course?.createdAt | date }}
-                    </td>
-                    <td>
-                      <div class="dropdown">
-                        <button class="btn btn-secondary btn-md dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                            Create Experience
-                        </button>
-                        <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
-                          <li><a class="dropdown-item" [routerLink]="['/training-provider/courses/course-section', course?.courseId]">
-                              View Course Outline</a>
-                          </li>
-                          <li><a class="dropdown-item" [routerLink]="['/training-provider/courses/course-assessment', course?.courseId]"
-                            >View Course Assessment</a></li>
-                          <li><a class="dropdown-item" [routerLink]="['/training-provider/courses/competence-assessment', course?.courseId]"
-                            >View Competence Assessment</a></li>
-                          <li><a class="dropdown-item" [routerLink]="['/training-provider/courses/learning-assessment', course?.courseId]"
-                            >View Learning Assessment </a></li>
-                            <li><a class="dropdown-item" (click)="openDecisionDialog({isEditing: true, editObject: course})">Decision</a></li>
-                        </ul>
+<div class="my-5">
+  <div class="row d-flex justify-content-center">
+    <div class="bg-white col-md-10 col-lg-10 col-12 p-5">
+              <h2 class="mb-5">Email Configuration</h2>
+              <form [formGroup]="emailConfigForm">
+                  <app-error [error_message]="error_message"></app-error>
+                  <div class="row">
+                      <div class="col-md-6 col-lg-6 col-12">
+                          <div class="form-group form_group">
+                              <label>Smtp Client</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Smtp Client"
+                                formControlName="stmp_Client"
+                                (keyup)="checkForKeyEnter($event)"
+                                [ngClass]="{
+                                  'is-invalid':
+                                    (emailConfigForm.get('stmp_Client')?.errors &&
+                                      emailConfigForm.get('stmp_Client')?.touched) ||
+                                    (emailConfigForm.get('stmp_Client')?.hasError('required') &&
+                                      emailConfigFormSubmitted)
+                                }"
+                              />
+                              <div
+                                class="invalid-feedback"
+                                *ngIf="
+                                  emailConfigForm.get('stmp_Client')?.hasError('required') &&
+                                  emailConfigFormSubmitted
+                                "
+                              >
+                                Required
+                              </div>
+                            </div>
                       </div>
-                    </td>
-                </tr>
-              </ng-template>
-            </p-table>
-        </ng-container>
-
-        <app-no-data
-          name="Course"
-          [is_loading]="isFetchingCourses"
-          *ngIf="courses?.length == 0"
-        >
-        </app-no-data>
-        <!-- <div class="setup-card bg-white p-5 my-4" *ngFor="let course of courses">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <input type="checkbox" name="" id="">
-                </div>
-                <div class="click" [routerLink]="['/training-provider/course-creation/add-course', {courseId: course?.courseId}]">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6.03984 17.625C6.08672 17.625 6.13359 17.6203 6.18047 17.6133L10.1227 16.9219C10.1695 16.9125 10.2141 16.8914 10.2469 16.8563L20.182 6.92109C20.2038 6.89941 20.221 6.87366 20.2328 6.8453C20.2445 6.81695 20.2506 6.78656 20.2506 6.75586C20.2506 6.72516 20.2445 6.69477 20.2328 6.66642C20.221 6.63806 20.2038 6.61231 20.182 6.59063L16.2867 2.69297C16.2422 2.64844 16.1836 2.625 16.1203 2.625C16.057 2.625 15.9984 2.64844 15.9539 2.69297L6.01875 12.6281C5.98359 12.6633 5.9625 12.7055 5.95312 12.7523L5.26172 16.6945C5.23892 16.8201 5.24707 16.9493 5.28545 17.071C5.32384 17.1927 5.39132 17.3032 5.48203 17.393C5.63672 17.543 5.83125 17.625 6.03984 17.625ZM7.61953 13.5375L16.1203 5.03906L17.8383 6.75703L9.3375 15.2555L7.25391 15.6234L7.61953 13.5375ZM20.625 19.5938H3.375C2.96016 19.5938 2.625 19.9289 2.625 20.3438V21.1875C2.625 21.2906 2.70937 21.375 2.8125 21.375H21.1875C21.2906 21.375 21.375 21.2906 21.375 21.1875V20.3438C21.375 19.9289 21.0398 19.5938 20.625 19.5938Z" fill="#828282"/>
-                    </svg>                        
-                </div>
-            </div>
-            <div class="d-md-flex justify-content around">
-                <div class="card-left pe-5">
-                    <div class="img-wrapper">
-                        <img src="" alt="">
-                    </div>
-                    <ng-rating-bar
-                        [value]="4"
-                        [ratingCount]="5"
-                        [disabled]="true"
-                        [styles]="{ margin: '0px', fontSize: '16px'}"
-                        colorActive="#F88F09" 
-                        colorDefault="#cecece"
-                    ></ng-rating-bar>
-                </div>
-                <div class="card-right">
-                    <div class="d-md-flex">
-                        <span>Training Name: </span>
-                        <span class="font-bold ps-3">{{ course?.training_Name }}</span>
-                    </div>
-                    <div class="d-md-flex py-3">
-                            <div class="text-nowrap">Training Transcript: </div>
-                            <span class="font-bold ps-3">
-                                    {{ course?.training_Transcript }}
-                                    <span class="d-block py-3"><i class="fas fa-angle-down"></i> See more</span>
-                            </span>
-                    </div>
-                    <div class="d-md-flex py-3">
-                            <span>Training Objectives: </span>
-                            <span class="font-bold ps-3">
-                                <p>{{ course?.training_Objective }}</p>
-                                <span class="d-block py-3"><i class="fas fa-angle-down"></i> See more</span>
-                            </span>
-                    </div>
-                    <div class="d-flex pb-3">
-                        <span>Instructor/Facilitator:</span>
-                        <span class="font-bold text-capitalize ps-3">{{ course?.facilitator }}</span>
-                    </div>
-                    <div class="d-flex pb-3">
-                        <span>Status:</span>
-                        <span class="font-bold ps-3">Pending</span>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex justify-content-end">
-                <div class="dropdown">
-                    <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        Create Experience
-                    </button>
-                    <ul class="dropdown-menu click" aria-labelledby="dropdownMenuButton1">
-                      <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/course-outline', course?.courseId]">
-                          View Course Outline</a>
-                    </li>
-                      <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/course-assessment', course?.courseId]"
-                        >View Course Assessment</a></li>
-                      <li><a class="dropdown-item" [routerLink]="['/training-provider/course-creation/competence-assessment', course?.courseId]"
-                        >View Competence Assessment</a></li>
-                      <li><a class="dropdown-item" routerLink="/training-provider/course-creation/learning-assessment"
-                        >View Learning Assessment </a></li>
-                      <li><a class="dropdown-item" (click)="openDecisionDialog({isEditing: true, editObject: course})">Decision</a></li>
-                    </ul>
+                      <div class="col-md-6 col-lg-6 col-12">
+                          <div class="form-group form_group">
+                              <label>Smtp Port </label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Smtp Port"
+                                formControlName="smtp_Port"
+                                (keyup)="checkForKeyEnter($event)"
+                                [ngClass]="{
+                                  'is-invalid':
+                                    (emailConfigForm.get('smtp_Port')?.errors &&
+                                      emailConfigForm.get('smtp_Port')?.touched) ||
+                                    (emailConfigForm.get('smtp_Port')?.hasError('required') &&
+                                      emailConfigFormSubmitted)
+                                }"
+                              />
+                              <div
+                                class="invalid-feedback"
+                                *ngIf="
+                                  emailConfigForm.get('smtp_Port')?.hasError('required') &&
+                                  emailConfigFormSubmitted
+                                "
+                              >
+                                Required
+                              </div>
+                            </div>
+                      </div>
+                       <div class="col-md-6 col-lg-6 col-12">
+                          <div class="form-group form_group">
+                              <label>Sender Email </label>
+                              <input
+                                type="email"
+                                class="form-control"
+                                placeholder="Sender Email"
+                                formControlName="sender_Email"
+                                (keyup)="checkForKeyEnter($event)"
+                                [ngClass]="{
+                                  'is-invalid':
+                                    (emailConfigForm.get('sender_Email')?.errors &&
+                                      emailConfigForm.get('sender_Email')?.touched) ||
+                                    (emailConfigForm.get('sender_Email')?.hasError('required') &&
+                                      emailConfigFormSubmitted)
+                                }"
+                              />
+                              <div
+                                class="invalid-feedback"
+                                *ngIf="
+                                  emailConfigForm.get('sender_Email')?.hasError('required') &&
+                                  emailConfigFormSubmitted
+                                "
+                              >
+                                Required
+                              </div>
+                            </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-12">
+                          <div class="form-group form_group">
+                              <label>Mail Caption </label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Mail Caption"
+                                formControlName="mail_Caption"
+                                (keyup)="checkForKeyEnter($event)"
+                                [ngClass]="{
+                                  'is-invalid':
+                                    (emailConfigForm.get('mail_Caption')?.errors &&
+                                      emailConfigForm.get('mail_Caption')?.touched) ||
+                                    (emailConfigForm.get('mail_Caption')?.hasError('required') &&
+                                      emailConfigFormSubmitted)
+                                }"
+                              />
+                              <div
+                                class="invalid-feedback"
+                                *ngIf="
+                                  emailConfigForm.get('mail_Caption')?.hasError('required') &&
+                                  emailConfigFormSubmitted
+                                "
+                              >
+                                Required
+                              </div>
+                            </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-12">
+                          <div class="form-group form_group">
+                              <label>Sender Username </label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Sender Username"
+                                formControlName="sender_Username"
+                                (keyup)="checkForKeyEnter($event)"
+                                [ngClass]="{
+                                  'is-invalid':
+                                    (emailConfigForm.get('sender_Username')?.errors &&
+                                      emailConfigForm.get('sender_Username')?.touched) ||
+                                    (emailConfigForm.get('sender_Username')?.hasError('required') &&
+                                      emailConfigFormSubmitted)
+                                }"
+                              />
+                              <div
+                                class="invalid-feedback"
+                                *ngIf="
+                                  emailConfigForm.get('sender_Username')?.hasError('required') &&
+                                  emailConfigFormSubmitted
+                                "
+                              >
+                                Required
+                              </div>
+                            </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-12">
+                          <div class="form_group mb-3">
+                              <label for="password" class="form-label"
+                                >Sender Password
+                              </label>
+                              <div class="position-relative">
+                                <input
+                                  class="form-control pr-2"
+                                  [type]="showPassword ? 'text' : 'password'"
+                                  placeholder="Sender Password"
+                                  formControlName="sender_Password"
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      (emailConfigForm.get('sender_Password')?.errors &&
+                                      emailConfigForm.get('sender_Password')?.touched) ||
+                                      (emailConfigForm.get('sender_Password')?.hasError('required') &&
+                                      emailConfigFormSubmitted)
+                                  }"
+                                />
+                                <i
+                                  class="fa fa-eye-slash click"
+                                  *ngIf="showPassword; else hidePassword"
+                                  (click)="showPassword = !showPassword"
+                                ></i>
+                                <ng-template #hidePassword>
+                                  <i
+                                    class="fa fa-eye click"
+                                    (click)="showPassword = !showPassword"
+                                  ></i>
+                                </ng-template>
+                              </div>
+                              <div
+                                class="invalid-feedback"
+                                *ngIf="emailConfigForm.get('sender_Password')?.hasError('required') &&
+                                emailConfigFormSubmitted"
+                              >
+                                Enter a valid password
+                              </div>
+                            </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-12">
+                          <div class="form-group form_group">
+                              <label>Base Frontend </label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Base Frontend"
+                                formControlName="baseFrontEndURL"
+                                (keyup)="checkForKeyEnter($event)"
+                                [ngClass]="{
+                                  'is-invalid':
+                                    (emailConfigForm.get('baseFrontEndURL')?.errors &&
+                                      emailConfigForm.get('baseFrontEndURL')?.touched) ||
+                                    (emailConfigForm.get('baseFrontEndURL')?.hasError('required') &&
+                                      emailConfigFormSubmitted)
+                                }"
+                              />
+                              <div
+                                class="invalid-feedback"
+                                *ngIf="
+                                  emailConfigForm.get('baseFrontEndURL')?.hasError('required') &&
+                                  emailConfigFormSubmitted
+                                "
+                              >
+                                Required
+                              </div>
+                            </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-12">
+                          <div class="form-group form_group">
+                              <label>Send Notification</label>
+                              <select
+                                  name="" id=""
+                                  class="form-control"
+                                  formControlName="send_notification"
+                                  (keyup)="checkForKeyEnter($event)"
+                                  [ngClass]="{
+                                      'is-invalid':
+                                      (emailConfigForm.get('send_notification')?.errors &&
+                                          emailConfigForm.get('send_notification')?.touched) ||
+                                      (emailConfigForm.get('send_notification')?.hasError('required') &&
+                                          emailConfigFormSubmitted)
+                                  }"
+                              >
+                                  <option value="" selected disabled>--Select--</option>
+                                  <option [ngValue]="false">No</option>
+                                  <option [ngValue]="true">Yes</option>
+                              </select>
+                              <div
+                                class="invalid-feedback"
+                                *ngIf="
+                                  emailConfigForm.get('send_notification')?.hasError('required') &&
+                                  emailConfigFormSubmitted
+                                "
+                              >
+                                Required
+                              </div>
+                            </div>
+                      </div>
+                      <div class="col-md-6 col-lg-6 col-12">
+                          <div class="form-group form_group">
+                              <label>Enable SSL</label>
+                              <select
+                                  name="" id=""
+                                  class="form-control"
+                                  formControlName="enableSSl"
+                                  (keyup)="checkForKeyEnter($event)"
+                                  [ngClass]="{
+                                      'is-invalid':
+                                      (emailConfigForm.get('enableSSl')?.errors &&
+                                          emailConfigForm.get('enableSSl')?.touched) ||
+                                      (emailConfigForm.get('enableSSl')?.hasError('required') &&
+                                          emailConfigFormSubmitted)
+                                  }"
+                              >
+                                  <option value="" selected disabled>--Select--</option>
+                                  <option [ngValue]="false">No</option>
+                                  <option [ngValue]="true">Yes</option>
+                              </select>
+                              <div
+                                class="invalid-feedback"
+                                *ngIf="
+                                  emailConfigForm.get('enableSSl')?.hasError('required') &&
+                                  emailConfigFormSubmitted
+                                "
+                              >
+                                Required
+                              </div>
+                            </div>
+                      </div>
                   </div>
-            </div>
-        </div> -->
+                  <div class="d-flex justify-content-end">
+                      <button
+                          class="btn btn-green btn-lg"
+                          (click)="submit()"
+                      >
+                          Save
+                      </button>
+                  </div>
+              </form>
     </div>
+  </div>
 </div>

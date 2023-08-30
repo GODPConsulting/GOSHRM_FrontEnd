@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
 import { ResponseModel } from 'app/models/response.model';
@@ -10,17 +11,20 @@ export class CourseApprovalService {
 
   constructor(private http: HttpService) { }
 
-  public getAllCourseToBeApprove(
+  public addEmailSetup(
     payload: any
   ): Observable<ResponseModel<any>> {
-    const endpoint = '/coursecreation/getCoursesToBeApprove';
+    const endpoint = '/emailsetup/addAndUpdateEmailSetup';
     return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
 
-  public ApproveCourse(
-    payload: any
+  public getEmailSetup(
+    companyId: number
   ): Observable<ResponseModel<any>> {
-    const endpoint = '/course/courseApproval';
-    return this.http.makeRequestWithData('post', endpoint, {}, payload);
+    const param = new HttpParams()
+    .set('companyId', companyId)
+    const endpoint = '/emailsetup/getAllEmailSetup';
+    return this.http.getRequestWithParams(endpoint, param);
   }
+
 }

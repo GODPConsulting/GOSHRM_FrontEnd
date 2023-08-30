@@ -6,6 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FaqDialogComponent } from './dialogs/faq-dialog/faq-dialog.component';
 import { SharedModule } from '@shared/shared.module';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 
@@ -17,7 +18,8 @@ import { SharedModule } from '@shared/shared.module';
     SharedModule,
     MatDialogModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    AngularEditorModule
   ]
 })
 export class FaqHelpModule { }

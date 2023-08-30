@@ -6,7 +6,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgRatingBarModule } from 'ng-rating-bar';
 import { CourseApprovalRoutingModule } from './course-approval-routing.module';
-import { DecisionDialogComponent } from './dialogs/decision-dialog/decision-dialog.component';
 import { TableModule } from 'primeng/table';
 
 
@@ -14,7 +13,6 @@ import { TableModule } from 'primeng/table';
 @NgModule({
   declarations: [
     CourseApprovalComponent,
-    DecisionDialogComponent
   ],
   imports: [
     CommonModule,

@@ -10,19 +10,18 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AuthService } from '@auth/services/auth.service';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { HelperService } from '@core/services/healper.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
-import { FaqHelpService } from '../../services/faq-help.service';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Component({
-  selector: 'app-faq-dialog',
-  templateUrl: './faq-dialog.component.html',
-  styleUrls: ['./faq-dialog.component.scss']
+  selector: 'app-add-admin-dialog',
+  templateUrl: './add-admin-dialog.component.html',
+  styleUrls: ['./add-admin-dialog.component.scss']
 })
-export class FaqDialogComponent implements OnInit {
+export class AddAdminDialogComponent implements OnInit {
   @ViewChild('close') close!: ElementRef;
   public faqForm!: FormGroup;
   public isLoading: boolean = false;
@@ -30,34 +29,6 @@ export class FaqDialogComponent implements OnInit {
   public error_message: string = '';
   public loggedInUser!: any;
   public createdBy!: number;
-  public config: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '45rem',
-    minHeight: '10rem',
-    placeholder: 'Enter text here...',
-    translate: 'no',
-    defaultParagraphSeparator: 'p',
-    defaultFontName: 'Arial',
-    toolbarHiddenButtons: [
-      ['bold']
-      ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
-    ]
-  };
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -72,7 +43,7 @@ export class FaqDialogComponent implements OnInit {
     public _base: BaseComponent,
     private _currentservice: CurrentUserService,
     private _helper: HelperService,
-    private _faq: FaqHelpService
+    private _auth: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -83,9 +54,12 @@ export class FaqDialogComponent implements OnInit {
 
   initFaqForm() {
     this.faqForm = this.fb.group({
-      policyId: [this.data.editObject?.policyId ?? 0],
-      policy_Content: [this.data.editObject?.policy_Content ?? '', Validators.required],
-      companyId: [this.loggedInUser.companyId, Validators.required],
+      name: ['', Validators.required],
+        email: ["", Validators.compose([Validators.required, Validators.email])],
+        physicalAddress: [''],
+        phoneNumber: [''],
+        companyId: [0],
+        password: ['Password@1', Validators.required],
     })
   }
 
@@ -101,11 +75,8 @@ export class FaqDialogComponent implements OnInit {
     if (this.faqForm.valid) {
       this._helper.startSpinner();
       this.isLoading = true;
-      const payload = {
-        policySetupTypes: [this.faqForm.value]
-      };
-      // console.log(payload)
-      this._faq.addUpdateFAQ(payload).subscribe({
+      const payload = this.faqForm.value;
+      this._auth.register(payload).subscribe({
         next: (res: any) => {
           if(res.status.isSuccessful) {
             this._helper.stopSpinner();

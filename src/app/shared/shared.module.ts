@@ -24,7 +24,6 @@ import { UploadDocComponent } from './components/upload-doc/upload-doc.component
 import { CourseCardComponent } from 'app/pages/landing-page/components/course-card/course-card.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormsModule } from '@angular/forms';
-import { QaComponent } from './components/qa/qa.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +44,6 @@ import { QaComponent } from './components/qa/qa.component';
     BackButtonComponent,
     UploadDocComponent,
     CourseCardComponent,
-    QaComponent
   ],
   imports: [
     CommonModule,
@@ -77,7 +75,6 @@ import { QaComponent } from './components/qa/qa.component';
     BackButtonComponent,
     UploadDocComponent,
     CourseCardComponent,
-    QaComponent
   ],
 })
 export class SharedModule {}

@@ -73,14 +73,15 @@ export class PayoutComponent implements OnInit {
 
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-        if (event?.isEditing) {
-          const index = this.payouts.findIndex((payout: Payout) => {
-            return payout.payoutId == event?.editObject?.payoutId;
-          });
-          this.payouts[index] = event?.editObject;
-        } else {
-          this.payouts = [event?.editObject, ...this.payouts];
-        }
+        // if (event?.isEditing) {
+        //   const index = this.payouts.findIndex((payout: Payout) => {
+        //     return payout.payoutId == event?.editObject?.payoutId;
+        //   });
+        //   this.payouts[index] = event?.editObject;
+        // } else {
+        //   this.payouts = [event?.editObject, ...this.payouts];
+        // }
+        this.getUserPayouts();
       }
     );
   }
@@ -114,6 +115,7 @@ export class PayoutComponent implements OnInit {
             'Great...!!!, Your action was successful',
             'success'
           );
+          this.getUserPayouts();
         },
         error: (error: any) => {
           this._helper.stopSpinner();

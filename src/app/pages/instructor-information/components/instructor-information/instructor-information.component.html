@@ -1,78 +1,70 @@
-<div class="bg-white p-4 my-4">
-    <form [formGroup]="FacilitatorForm">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form_group mb-4">
-                    <label for="" class="form-label"
-                    >Instructor Name
-                    </label>
-                    <input
-                        class="form-control pr-2"
-                        type="text"
-                        formControlName="instructor_Name"
+<div class="running_courses-wrapper my-4">
+  <div class="table-responsive bg-white">
+    <ng-container *ngIf="isFetchngFacilitatorDetail || instructor.length > 0">
+      <p-table
+              #dt
+              [value]="instructor"
+              dataKey="pageContentId"
+              [(selection)]="selectedInstructor"
+              [paginator]="true"
+              [rows]="10"
+              [responsive]="true"
+              [scrollable]="true"
+              [scrollHeight]="viewHeight"
+              class=""
+          >
+            <ng-template pTemplate="header">
+                <tr class="thead">
+                      <th [pSortableColumn]="'photoUrl'">Banner</th>
+                      <th [pSortableColumn]="'page_Name'">Page</th>
+                      <th [pSortableColumn]="'page_Title'">Section Title</th>
+                      <th [pSortableColumn]="'section_Content'">Section Content</th>
+                      <th [pSortableColumn]="''">Action</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-course let-i="rowIndex">
+              <tr class="tbody text-capitalize" [pSelectableRow]="course">
+                <td>
+                  <img class="img-wrapper" [src]="course.photoUrl ?? 'assets/images/default_banner.webp'" alt="cover image">
+                </td>
+                <td (click)="openDialog({isEditing: true, editObject: course})">{{ course?.page_Name}}</td>
+                <td (click)="openDialog({isEditing: true, editObject: course})">{{ course?.page_Title}}</td>
+                <td>{{ course?.section_Content}}</td>
+                <td>
+                  <span
+                      mat-raised-button #tooltip="matTooltip"
+                      matTooltip="Upload Image"
+                      [matTooltipPosition]="'below'"
+                      matTooltipHideDelay="100"
+                      aria-label="Upload Image"
+                      class="click ms-3"
+                      style="position: relative;"
+                  >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M15.7334 9.30427C15.6279 9.27417 15.5316 9.21816 15.4532 9.14135C15.3749 9.06453 15.317 8.96934 15.2848 8.86444C15.1062 8.25896 14.8066 7.69603 14.4041 7.20969C14.0016 6.72336 13.5047 6.32374 12.9433 6.03501C12.3819 5.74629 11.7678 5.57446 11.1381 5.52993C10.5084 5.48541 9.87618 5.5691 9.27976 5.77595C8.68334 5.98281 8.13508 6.30851 7.66817 6.73337C7.20126 7.15823 6.8254 7.6734 6.56334 8.24771C6.30128 8.82202 6.15847 9.44353 6.14354 10.0746C6.12861 10.7057 6.24189 11.3333 6.4765 11.9194C6.5304 12.0427 6.542 12.1804 6.50951 12.311C6.47701 12.4416 6.40224 12.5578 6.29683 12.6415C5.83234 12.9863 5.46969 13.4502 5.24727 13.9842C5.02485 14.5181 4.95093 15.1023 5.03333 15.6749C5.16193 16.4489 5.56377 17.1511 6.16592 17.6542C6.76807 18.1572 7.53062 18.4277 8.31517 18.4165H11.4167C11.5715 18.4165 11.7198 18.3551 11.8292 18.2457C11.9386 18.1363 12.0001 17.9879 12.0001 17.8332C12.0001 17.6785 11.9386 17.5301 11.8292 17.4207C11.7198 17.3113 11.5715 17.2499 11.4167 17.2499H8.31517C7.81133 17.2621 7.31978 17.0934 6.92961 16.7744C6.53944 16.4554 6.27646 16.0072 6.18833 15.5109C6.13245 15.1462 6.17774 14.7731 6.31928 14.4323C6.46081 14.0916 6.69316 13.7962 6.991 13.5784C7.30385 13.3445 7.53017 13.0134 7.63438 12.637C7.73859 12.2606 7.7148 11.8602 7.56675 11.4988C7.27401 10.7257 7.25895 9.8749 7.52417 9.09194C7.73603 8.47861 8.11542 7.93687 8.61937 7.52808C9.12331 7.1193 9.73166 6.85981 10.3755 6.77902C10.5248 6.75979 10.6753 6.75005 10.8258 6.74985C11.5801 6.74737 12.3149 6.98927 12.9202 7.43935C13.5255 7.88943 13.9687 8.52346 14.1835 9.24652C14.2673 9.52207 14.4184 9.77244 14.6231 9.97508C14.8278 10.1777 15.0796 10.3263 15.356 10.4074C16.0324 10.6074 16.6315 11.0093 17.0732 11.5592C17.5148 12.1091 17.7779 12.7809 17.8273 13.4845C17.8767 14.1881 17.7099 14.89 17.3494 15.4962C16.9888 16.1024 16.4517 16.584 15.8098 16.8765C15.7148 16.9252 15.6354 16.9995 15.5807 17.0911C15.5259 17.1827 15.498 17.2878 15.5001 17.3945C15.4989 17.491 15.5221 17.5863 15.5673 17.6716C15.6126 17.7568 15.6786 17.8294 15.7592 17.8825C15.8398 17.9356 15.9324 17.9677 16.0286 17.9757C16.1248 17.9837 16.2215 17.9674 16.3098 17.9283C18.7213 16.7692 20.0314 13.7201 17.9897 10.7743C17.4276 10.041 16.6313 9.52221 15.7334 9.30427Z" fill="#F88E07"/>
+                      <path d="M15.9125 14.7458C16.0219 14.6364 16.0833 14.488 16.0833 14.3334C16.0833 14.1787 16.0219 14.0303 15.9125 13.9209L14.9874 12.9958C14.6592 12.6677 14.2142 12.4834 13.7501 12.4834C13.2861 12.4834 12.841 12.6677 12.5129 12.9958L11.5877 13.9209C11.4814 14.031 11.4226 14.1783 11.424 14.3313C11.4253 14.4842 11.4866 14.6305 11.5948 14.7387C11.703 14.8468 11.8493 14.9082 12.0022 14.9095C12.1552 14.9108 12.3025 14.852 12.4125 14.7458L13.1668 13.9915V18.4167C13.1668 18.5714 13.2282 18.7198 13.3376 18.8292C13.447 18.9386 13.5954 19 13.7501 19C13.9048 19 14.0532 18.9386 14.1626 18.8292C14.272 18.7198 14.3334 18.5714 14.3334 18.4167V13.9915L15.0877 14.7458C15.1971 14.8551 15.3454 14.9166 15.5001 14.9166C15.6548 14.9166 15.8031 14.8551 15.9125 14.7458Z" fill="#F88E07"/>
+                      <rect x="0.5" y="0.5" width="23" height="23" rx="3.5" stroke="#F88E07"/>
+                    </svg>
+                    <input type="file"
+                      style="position: absolute; width: 100%; height: 100%; top: 0; right: 3px; opacity: 0;;"
+                      name="file-1"
+                      id="file-1"
+                      accept="image/png,image/jpeg,image/jpg"
+                      (change)="getBase64($event, course?.pageContentId)"
                     />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form_group mb-4">
-                    <label for="" class="form-label"
-                    >Instructor Email
-                    </label>
-                        <input
-                            class="form-control pr-2"
-                            type="text"
-                            formControlName="trainingInstructorEmail"
-                            placeholder="Enter username"
-                        />
-                    </div>
-               </div>
-            <div class="col-md-6">
-                <div class="form_group mb-4">
-                    <label for="" class="form-label"
-                    >LinkedIn link
-                    </label>
-                    <input
-                        class="form-control pr-2"
-                        type="text"
-                        formControlName="linkedin_Link"
-                        placeholder="Enter linkedIn link"
-                    />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form_group mb-4">
-                    <label for="" class="form-label"
-                    >Twitter link
-                    </label>
-                    <input
-                        class="form-control pr-2"
-                        type="text"
-                        formControlName="twitter_Link"
-                        placeholder="Enter twitter link"
-                    />
-                </div>
-            </div>
-           <div class="col-12">
-            <div class="form_group mb-4">
-                <label for="" class="form-label"
-                >Bio
-                </label>
-                   <textarea 
-                    class="form-control" 
-                    name="" id="" cols="30" 
-                    rows="10"
-                    formControlName="bios"
-                ></textarea>
-                </div>
-           </div>
-        </div>
-        <div class="d-flex justify-content-end py-5">
-            <button 
-                class="btn btn-green btn-lg"
-                (click)="submit()"
-            >
-                Save
-            </button>
-        </div>
-    </form>
+                  </span>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+    </ng-container>
+
+    <app-no-data
+      name="Page Content"
+      [is_loading]="isFetchngFacilitatorDetail"
+      *ngIf="instructor.length == 0"
+      (open_dialog)="openDialog(false)"
+    ></app-no-data>
+
+  </div>
 </div>

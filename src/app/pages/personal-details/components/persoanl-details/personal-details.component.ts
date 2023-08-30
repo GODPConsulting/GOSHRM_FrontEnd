@@ -3,17 +3,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { CurrentUserService } from '@core/services/current-user.service';
 import { DialogModel } from '@shared/components/models/dialog.model';
-// import { ResponseModel } from 'app/models/response.model';
 import { Payout } from 'app/pages/payout/models/payout.model';
-// import { PayoutService } from 'app/training-provider/payout/services/payout.service';
-import { RunningCourses } from 'app/pages/running-courses/models/running-course.model';
-// import { RunningCoursesService } from 'app/training-provider/running-courses/services/running-courses.service';
 import { Subscription } from 'rxjs';
 import { EditCompanyInfoDialogComponent } from '../../dialogs/edit-company-info-dialog/edit-company-info-dialog.component';
 import { SocialMediaDialogComponent } from '../../dialogs/social-media-dialog/social-media-dialog.component';
 import { UploadProfileComponent } from '../../dialogs/upload-profile/upload-profile.component';
 import { WebsiteDialogComponent } from '../../dialogs/website-dialog/website-dialog.component';
-// import { ProfileService } from '../../services/profile.service';
 import { Profile, SocialMedia, Website } from './../../models/user-profile.model'
 
 @Component({
@@ -32,7 +27,7 @@ export class PersonalDetailsComponent implements OnInit {
   public socialMediaInfo: SocialMedia[] = [];
   public websites: Website[] = [];
   public payouts: Payout[] = [];
-  public runningCourses: RunningCourses[] = [];
+  public trainers: any[] = [];
   public loggedInUser: any;
 
   constructor(
@@ -52,12 +47,12 @@ export class PersonalDetailsComponent implements OnInit {
   getResolvedData() {
     this.sub.add(
       this.activateRoute.data.subscribe((data: any) => {
-        // console.log(data);
-        this.profile = data?.resolveData?.profile?.trainingProviderObjs[0];
+        console.log(data);
+        this.profile = data?.resolveData?.profile?.companySetupTypes;
         this.websites = data?.resolveData?.website?.websiteSetupTypes;
         this.socialMediaInfo = data?.resolveData?.socialMedia?.socialMediaSetupTypes;
         this.payouts = data?.resolveData?.payout?.payoutSetupTypes;
-        this.runningCourses = data?.resolveData?.runningCourse?.coursesSetupTypes;
+        this.trainers = data?.resolveData?.trainers?.trainingProviderObjs;
         // console.log(this.runningCourses)
       })
     );
@@ -98,11 +93,13 @@ export class PersonalDetailsComponent implements OnInit {
     let object: DialogModel<any> = payload;
     const dialogRef = this.dialog.open(SocialMediaDialogComponent, {
       data: object,
+      panelClass:'modal=width'
     });
 
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
           this.socialMediaInfo = event?.editObject;
+          console.log(this.socialMediaInfo, event.editObject);
       }
     );
   }

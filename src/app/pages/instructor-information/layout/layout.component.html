@@ -6,17 +6,16 @@
           <h3>Innocent Sample</h3>
           </div>
           <div>
-            <button 
+            <button
               class="btn-green btn-lg"
-              [routerLink]="['/courses/add-course', {instructorId: 1}]"
-            >Add New Course</button>
+            >Add</button>
           </div>
        </div>
       <ul class="nav nav-pills vertical-nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button
             class="nav-link"
-            [ngClass]="{ active: current_tab == 'information' }"
+            [ngClass]="{ active: current_tab === 1 }"
             id="pills-info-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-info"
@@ -24,15 +23,15 @@
             role="tab"
             aria-controls="pills-info"
             aria-selected="true"
-            (click)="getInformation()"
+            (click)="toggleTab(1)"
           >
-            Personal Information
+            Page Banner
           </button>
         </li>
         <li class="nav-item" role="presentation">
           <button
             class="nav-link"
-            [ngClass]="{ active: current_tab == 'courses' }"
+            [ngClass]="{ active: current_tab === 2}"
             id="pills-identity-tab"
             data-bs-toggle="pill"
             data-bs-target="#pills-identity"
@@ -40,16 +39,16 @@
             role="tab"
             aria-controls="pills-identity"
             aria-selected="false"
-            (click)="getCourses()"
+            (click)="toggleTab(2)"
           >
-            Facilitated Ccourses
+            Page Content
           </button>
         </li>
       </ul>
     </div>
-  
+
     <section class="tab-content mt-4" id="pills-tabContent">
-      <app-facilitated-courses *ngIf="current_tab == 'courses'"></app-facilitated-courses>
-      <app-instructor-information *ngIf="current_tab == 'information'"></app-instructor-information>
+      <app-facilitated-courses *ngIf="current_tab === 1"></app-facilitated-courses>
+      <app-instructor-information *ngIf="current_tab === 2"></app-instructor-information>
     </section>
 </div>

@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HelperService } from '@core/services/healper.service';
 import { ResponseModel } from 'app/models/response.model';
-import { Courses } from 'app/pages/course-creation/models/course-creation.model';
 import { Subscription } from 'rxjs';
 import { CourseDescriptionService } from '../../services/course-description.service';
+import { DialogModel } from '@shared/components/models/dialog.model';
+import { MatDialog } from '@angular/material/dialog';
+import { AddAdminDialogComponent } from '../../dialogs/add-admin-dialog/add-admin-dialog.component';
 
 @Component({
   selector: 'app-course-description',
@@ -13,14 +15,17 @@ import { CourseDescriptionService } from '../../services/course-description.serv
 })
 export class CourseDescriptionComponent implements OnInit {
   public sub: Subscription = new Subscription();
-  public course!: Courses;
+  public admins: any[] = [];
+  public selectedAdmins: any[] = [];
   public isfetchingCourses: boolean = false;
   public courseId: any;
+  public viewHeight: string = '450px';
 
   constructor(
     private _course: CourseDescriptionService,
     private _helper: HelperService,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -33,13 +38,12 @@ export class CourseDescriptionComponent implements OnInit {
     this._helper.startSpinner();
     this.isfetchingCourses = true;
     this.sub.add(
-      this._course.getParticipantCourseById(this.courseId).subscribe({
+      this._course.getAllAdmins().subscribe({
         next: (res: any) => {
           console.log(res)
           this._helper.stopSpinner();
           this.isfetchingCourses = false;
-          this.course = res['participantCourseResponse'];
-          console.log(res, this.course)
+          this.admins = res['admins'];
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();
@@ -49,5 +53,23 @@ export class CourseDescriptionComponent implements OnInit {
       })
     );
   }
+
+  public openDialog(
+    payload: { isEditing?: boolean; editObject?: any } | any
+  ): void {
+    let object: DialogModel<any> = payload;
+    const dialogRef = this.dialog.open(AddAdminDialogComponent, {
+      data: object,
+      panelClass: 'modal-width'
+    });
+    // console.log(payload)
+    dialogRef.componentInstance.event.subscribe(
+      (event: DialogModel<any>) => {
+        this.getCoursesDetail();
+      }
+    );
+  }
+
+
 
 }

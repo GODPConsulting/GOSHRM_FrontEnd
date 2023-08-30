@@ -16,14 +16,14 @@ export class AuthService {
   public login(
     loginRequestDTO: LoginRequestDTO
   ): Observable<ResponseModel<LoginResponseDTO>> {
-    const endpoint = '/login';
+    const endpoint = '/admin/login';
     return this.http.makeRequestWithData('post', endpoint, {}, loginRequestDTO);
   }
 
-  public registerProvider(
+  public register(
     registerRequestDTO: RegisterRequestDTO
   ): Observable<ResponseModel<RegisterResponseDTO>> {
-    const endpoint = '/signup';
+    const endpoint = '/admin/signup';
     return this.http.makeRequestWithData('post', endpoint, {}, registerRequestDTO);
   }
 

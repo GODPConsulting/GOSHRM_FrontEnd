@@ -50,7 +50,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'running-courses',
+        path: 'training-providers',
         loadChildren: () =>
           import('./pages/running-courses/running-courses.module').then(
             (m) => m.RunningCoursesModule
@@ -78,20 +78,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'setup',
-        loadChildren: () =>
-          import('./pages/instructor-facilitator-setup/instructor-facilitator-setup.module').then(
-            (m) => m.InstructorFacilitatorSetupModule
-          ),
-      },
-      {
-        path: 'instructor-information/:instructorId',
-        loadChildren: () =>
-          import('./pages/instructor-information/instructor-information.module').then(
-            (m) => m.InstructorInformationModule
-          ),
-      },
-      {
         path: 'courses',
         loadChildren: () =>
           import('./pages/course-creation/course-creation.module').then(
@@ -99,52 +85,38 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'communication',
-        loadChildren: () =>
-          import('./pages/communication/communication.module').then(
-            (m) => m.CommunicationModule
-          ),
-      },
-      {
-        path: 'instructor-community',
-        loadChildren: () =>
-          import('./pages/instructor-community/instructor-community.module').then(
-            (m) => m.InstructorCommunityModule
-          ),
-      },
-      {
-        path: 'course-approval',
+        path: 'email-setup',
         loadChildren: () =>
           import('./pages/course-approval/course-approval.module').then(
             (m) => m.CourseApprovalModule
           ),
       },
       {
-        path: 'faq',
+        path: 'page-setup',
+        loadChildren: () =>
+          import('./pages/instructor-information/instructor-information.module').then(
+            (m) => m.InstructorInformationModule
+          ),
+      },
+      {
+        path: 'privacy-policy',
         loadChildren: () =>
           import('./pages/faq-help/faq-help.module').then(
             (m) => m.FaqHelpModule
           ),
       },
       {
-        path: 'my-learning',
-        loadChildren: () =>
-          import('./pages/my-learnings/my-learnings.module').then(
-            (m) => m.MyLearningsModule
-          ),
-      },
-      {
-        path: 'courses/course-detail/:courseId',
-        loadChildren: () =>
-          import('./pages/course-detail/course-detail.module').then(
-            (m) => m.CourseDetailModule
-          ),
-      },
-      {
-        path: 'courses/course-description/:courseId',
+        path: 'admins',
         loadChildren: () =>
           import('./pages/course-description/course-description.module').then(
             (m) => m.CourseDescriptionModule
+          ),
+      },
+      {
+        path: 'running-courses',
+        loadChildren: () =>
+          import('./pages/course-creation/course-creation.module').then(
+            (m) => m.CourseCreationModule
           ),
       },
       {

@@ -1,49 +1,19 @@
 <div class="faq_wrapper">
     <div class="faq-title d-flex justify-content-between">
-        <h3>Help/FAQ</h3>
+        <h3>Provacy Policy</h3>
         <app-searchbar
             [canAdd]="true"
             (btnAction)="openDialog(false)"
       ></app-searchbar>
     </div>
    <div>
-        <div class="faq-content bg-white p-4 my-5" *ngIf="faqs.length > 0">
-            <div class="accordion" id="formAccordion" *ngFor="let faq of faqs, index as i">
-                <div class="accordion-item">
-                <h2 class="accordion-header" [attr.id]="'heading'+i">
-                    <div class="d-flex align-items-center">
-                    <div
-                        class="accordion-button"
-                        data-bs-toggle="collapse"
-                        [attr.data-bs-target]="'#collapse'+i"
-                        aria-expanded="true"
-                        [attr.aria-controls]="'collapse'+i"
-                    >
-                        {{ faq?.subject }}
-                    </div>
-                    <div class="w-fill-available"></div>
-                    </div>
-                </h2>
-                <div
-                    [attr.id]="'collapse'+i"
-                    class="accordion-collapse collapse show"
-                    [attr.aria-labelledby]="'heading'+i"
-                >
-                    <div class="accordion-body">
-                    <div>
-                        <p>
-                           {{ faq?.content }}
-                        </p>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </div>
+        <div class="faq-content bg-white p-4 my-5" *ngIf="faqs">
+          <div [innerHTML]="faqs?.policy_Content"></div>
         </div>
         <app-no-data
           name="FAQ"
           [is_loading]="isFetchingFaq"
-          *ngIf="faqs?.length == 0"
+          *ngIf="!faqs"
           (open_dialog)="openDialog(false)"
         >
         </app-no-data>

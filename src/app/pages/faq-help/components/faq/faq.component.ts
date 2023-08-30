@@ -5,8 +5,8 @@ import { DialogModel } from '@shared/components/models/dialog.model';
 import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { FaqDialogComponent } from '../../dialogs/faq-dialog/faq-dialog.component';
-import { FaqDTO } from '../../models/faq.model';
 import { FaqHelpService } from '../../services/faq-help.service';
+import { CurrentUserService } from '@core/services/current-user.service';
 
 @Component({
   selector: 'app-faq',
@@ -16,15 +16,18 @@ import { FaqHelpService } from '../../services/faq-help.service';
 export class FaqComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public isFetchingFaq: boolean = false;
-  public faqs: FaqDTO[] = [];
+  public faqs: any;
+  public loggedInUser: any;
 
   constructor(
     public dialog: MatDialog,
     private _faq: FaqHelpService,
-    private _helper: HelperService
+    private _helper: HelperService,
+    private _current: CurrentUserService
   ) { }
 
   ngOnInit(): void {
+    this.loggedInUser = this._current.getUser();
     this.getAllFaqs();
   }
 
@@ -32,12 +35,11 @@ export class FaqComponent implements OnInit {
     this._helper.startSpinner();
     this.isFetchingFaq = true;
     this.sub.add(
-      this._faq.getFaq().subscribe({
+      this._faq.getFaq(this.loggedInUser.companyId).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchingFaq = false;
-          this.faqs = res['faqs'];
-          // console.log(res, this.faqs)
+          this.faqs = res['policySetupTypes'][0];
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();

@@ -34,12 +34,12 @@ export class CoursesComponent implements OnInit {
     this._helper.startSpinner();
     this.isfetchingCourses = true;
     this.sub.add(
-      this._runningCourses.getRunningCourses(this.loggedInUser.companyId).subscribe({
+      this._runningCourses.getAllTrainers(this.loggedInUser.companyId).subscribe({
         next: (res: any) => {
           console.log(res)
           this._helper.stopSpinner();
           this.isfetchingCourses = false;
-          this.runningCourses = res['coursesSetupTypes'];
+          this.runningCourses = res['trainingProviderObjs'];
           console.log(res, this.runningCourses)
         },
         error: (error: ResponseModel<null>) => {

@@ -1,35 +1,6 @@
-@import 'partials/abstract/variables';
-@import "partials/abstract/mixins";
-@import "partials/components/forms";
-
-.running_courses-wrapper {
-    // padding: 3rem;
-    color: $black-100;
-    table.table {
-        text-align: center;
-        .ratings i {
-            color: #cecece;
-            font-size: 1.4rem
-        }
-        
-        .rating-color {
-            color: $orange-400 !important
-        }
-        
-        .review-count {
-            font-weight: 400;
-            margin-bottom: 2px;
-            font-size: 24px !important
-        }
-        
-        .small-ratings i {
-            color: #cecece
-        }
-        
-        .review-stat {
-            font-weight: 300;
-            font-size: 18px;
-            margin-bottom: 2px
-        }
-    }
+.img-wrapper {
+  height: 5rem;
+  width: 7rem;
+  border: none;
+  border-radius: none;
 }

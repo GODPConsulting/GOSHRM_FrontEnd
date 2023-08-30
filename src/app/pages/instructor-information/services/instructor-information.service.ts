@@ -13,27 +13,27 @@ export class InstructorInformationService {
   constructor(private http: HttpService) {}
 
   public getFaciltator(
-    trainingInstructorId: string
+    companyId: string
   ): Observable<ResponseModel<Facilitator>> {
-   const endpoint = '/traininginstructor/getTraininginstructorById';
+   const endpoint = '/pagecontentsetup/getAllPageContent';
    const params = new HttpParams()
-   .set('trainingInstructorId', trainingInstructorId)
+   .set('companyId', companyId)
    return this.http.getRequestWithParams(endpoint, params);
   }
 
-  public UpdateFaciltator(
-    payout: Facilitator
-  ): Observable<ResponseModel<Facilitator>> {
-    const endpoint = '/traininginstructor/addaAndUpdateTraininginstructor';
+  public uploadContentImage(
+    payout: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/pagecontentsetup/addAndUpdatePageImage';
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
   }
 
   public getFacilitatorCourses(
-    trainingInstructorId: string
+    companyId: number
   ): Observable<ResponseModel<FacilitatorCourses>> {
-   const endpoint = '/coursecreationfacilitatedcourse/get/byId/coursecreationfacilitatedcourse';
+   const endpoint = '/pagecontentsetup/getAllPageContent';
    const params = new HttpParams()
-   .set('trainingInstructorId', trainingInstructorId)
+   .set('companyId', companyId)
    return this.http.getRequestWithParams(endpoint, params);
   }
 
@@ -42,5 +42,26 @@ export class InstructorInformationService {
   ): Observable<ResponseModel<FacilitatorCourses>> {
     const endpoint = '/coursecreationfacilitatedcourse/add/update/coursecreationfacilitatedcourse';
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
+  }
+
+  public deleteContent(
+    payload: any
+  ): Observable<ResponseModel<FacilitatorCourses>> {
+    const endpoint = '/pagecontentsetup/DeletePageContent';
+    return this.http.makeRequestWithData('post', endpoint, {}, payload);
+  }
+
+  public addUpdateBanner(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/pagebannersetup/addAndUpdatePageBannerSetup';
+    return this.http.makeRequestWithData('post', endpoint, {}, payload);
+  }
+
+  public addUpdateContent(
+    payload: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/pagecontentsetup/addAndUpdatePageContentSetup';
+    return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
 }

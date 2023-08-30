@@ -389,3 +389,7 @@ tr.tbody {
   color: #F88F09 !important;
   min-width: 10rem;
 }
+
+.modal-width .mat-dialog-container {
+  max-width: 52rem !important;
+}

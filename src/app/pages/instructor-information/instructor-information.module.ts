@@ -8,13 +8,18 @@ import { FacilitatedCoursesComponent } from './components/facilitated-courses/fa
 import { NgRatingBarModule } from 'ng-rating-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { AddDocumentComponent } from './dialogs/add-document/add-document.component';
+import { AddEmpDependentComponent } from './dialogs/add-emp-dependent/add-emp-dependent.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
     InstructorInformationComponent,
     LayoutComponent,
-    FacilitatedCoursesComponent
+    FacilitatedCoursesComponent,
+    AddDocumentComponent,
+    AddEmpDependentComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +28,9 @@ import { TableModule } from 'primeng/table';
     NgRatingBarModule,
     ReactiveFormsModule,
     FormsModule,
-    TableModule
+    TableModule,
+    MatDialogModule,
+    MatTooltipModule
   ]
 })
 export class InstructorInformationModule { }

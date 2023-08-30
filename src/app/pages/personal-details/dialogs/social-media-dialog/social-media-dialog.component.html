@@ -44,7 +44,7 @@
              </div>
         </form>
     </div>
-   
+
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button
@@ -56,6 +56,7 @@
     </button>
     <button
       class="btn btn-outline-green btn-md me-4 px-4"
+      *ngIf="newForm.controls.length < 4"
       (click)="addSocialMedia()"
     >
       Add more
@@ -71,4 +72,3 @@
         Save
     </button>
   </mat-dialog-actions>
-  

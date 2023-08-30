@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TraningProviderComponent } from './traning-provider.component';
 
 const routes: Routes = [
-    { path: '', 
+    { path: '',
         component: TraningProviderComponent,
         children: [
             {
@@ -19,7 +19,7 @@ const routes: Routes = [
                 ),
             },
             {
-              path: 'running-courses',
+              path: 'training-providers',
               loadChildren: () =>
                 import('./running-courses/running-courses.module').then(
                   (m) => m.RunningCoursesModule
@@ -47,45 +47,10 @@ const routes: Routes = [
                 ),
             },
             {
-              path: 'setup',
-              loadChildren: () =>
-                import('./instructor-facilitator-setup/instructor-facilitator-setup.module').then(
-                  (m) => m.InstructorFacilitatorSetupModule
-                ),
-            },
-            {
-              path: 'instructor-information/:instructorId',
-              loadChildren: () =>
-                import('./instructor-information/instructor-information.module').then(
-                  (m) => m.InstructorInformationModule
-                ),
-            },
-            {
               path: 'courses',
               loadChildren: () =>
                 import('./course-creation/course-creation.module').then(
                   (m) => m.CourseCreationModule
-                ),
-            },
-            {
-              path: 'communication',
-              loadChildren: () =>
-                import('./communication/communication.module').then(
-                  (m) => m.CommunicationModule
-                ),
-            },
-            {
-              path: 'instructor-community',
-              loadChildren: () =>
-                import('./instructor-community/instructor-community.module').then(
-                  (m) => m.InstructorCommunityModule
-                ),
-            },
-            {
-              path: 'course-approval',
-              loadChildren: () =>
-                import('./course-approval/course-approval.module').then(
-                  (m) => m.CourseApprovalModule
                 ),
             },
         ],

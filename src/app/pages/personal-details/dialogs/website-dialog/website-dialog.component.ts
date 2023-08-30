@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from '@core/base/base/base.component';
 import { CreatedByType } from '@core/models/creation-type.model';
@@ -32,6 +32,7 @@ export class WebsiteDialogComponent implements OnInit {
   public error_message: string = '';
   public loggedInUser!: any;
   public createdBy!: number;
+  public websites!: FormArray;
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -40,7 +41,7 @@ export class WebsiteDialogComponent implements OnInit {
   }> = new EventEmitter<{ editObject?: Website; isEditing: boolean }>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: DialogModel<Website>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogModel<Website[]>,
     private fb: FormBuilder,
     private _profile: ProfileService,
     public dialog: MatDialog,
@@ -51,17 +52,15 @@ export class WebsiteDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this._currentservice.getUser();
-    if(this.loggedInUser.customerTypeId == 1) {
-      this.createdBy = CreatedByType.provider
-    } else if (this.loggedInUser.customerTypeId == 2) {
-      this.createdBy = CreatedByType.instructor
-    } else {
-      this.createdBy = CreatedByType.participant
-    }
+    this.createdBy = CreatedByType.admin
     this.initWebsiteForm();
+    if(this.data.editObject.length > 0) {
+      this.patchSocialMedia();
+      this.remove(0);
+    };
   }
 
-  
+
   initWebsiteForm() {
     this.websiteForm = this.fb.group({
       websites: this.fb.array([
@@ -75,7 +74,7 @@ export class WebsiteDialogComponent implements OnInit {
           ],
           website_Name: ['', Validators.required],
           companyId: [this.loggedInUser.companyId],
-          userId: [this.loggedInUser.userId],
+          userId: ['company'],
           sociaMediaCreatedByType: [this.createdBy]
         })
       ]),
@@ -87,10 +86,43 @@ export class WebsiteDialogComponent implements OnInit {
   }
 
   addWebsite() {
-    let web = this.fb.group(new WebsiteDTO());
-		this.newForm.push(web);
+    this.newForm.push(this.createTableRow());
   }
 
+  private createTableRow(): FormGroup {
+    return this.fb.group({
+      websiteId: [0],
+      website_Link: ['https://',
+        [
+          Validators.required,
+          Validators.pattern('(https?://)([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')
+        ]
+      ],
+      website_Name: ['', Validators.required],
+      companyId: [this.loggedInUser.companyId],
+      userId: ['company'],
+      sociaMediaCreatedByType: [this.createdBy]
+    });
+  }
+
+  remove(index: number): void{
+    this.websites.removeAt(index);
+  }
+
+  public patchSocialMedia() {
+    this.data.editObject.map((item: any) => {
+      const tmpDict: any = {};
+      tmpDict['websiteId'] = new FormControl(item?.websiteId);
+      tmpDict['website_Link'] = new FormControl(item?.website_Link);
+      tmpDict['website_Name'] = new FormControl(item?.website_Name);
+      tmpDict['companyId'] = new FormControl(this.loggedInUser.companyId);
+      tmpDict['userId'] = new FormControl('company');
+      tmpDict['SociaMediaCreatedByType'] = new FormControl(this.createdBy);
+
+      this.websites = this.websiteForm.get('websites') as FormArray;
+      this.websites.push(new FormGroup(tmpDict));
+    });
+  }
 
   public checkForKeyEnter(event: KeyboardEvent): void {
     var key = event.key || event.keyCode;

@@ -1,6 +1,6 @@
 export interface Profile {
     companyId: number,
-    full_Name: string,
+    company_Name: string,
     email_Address: string,
     phone_Number: string,
     physical_Address: string,
@@ -16,7 +16,7 @@ export interface Profile {
 export interface SocialMedia {
     companyId: number,
     socialMediaId: number,
-    socialMediaType: number; 
+    socialMediaType: number;
 	socialMediaUrl: string;
     active: boolean,
     deleted: boolean,
