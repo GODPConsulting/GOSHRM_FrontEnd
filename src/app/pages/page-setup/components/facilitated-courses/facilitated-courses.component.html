@@ -1,6 +1,6 @@
 <div class="running_courses-wrapper my-4">
     <div class="table-responsive bg-white">
-      <div class="d-flex justify-content-between my-3">
+      <div class="d-flex justify-content-between my-3" *ngIf="facilitatedCourses">
         <button class="btn btn-green btn-lg" (click)="openDialog({isEditing: true, editObject: facilitatedCourses })">
           Edit Content
         </button>
