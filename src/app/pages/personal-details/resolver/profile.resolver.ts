@@ -9,7 +9,7 @@ import { PayoutService } from 'app/pages/payout/services/payout.service';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ProfileService } from '../services/profile.service';
-import { RunningCoursesService } from 'app/pages/running-courses/services/running-courses.service';
+import { RunningCoursesService } from 'app/pages/training-providers/services/running-courses.service';
 
 @Injectable({
   providedIn: 'root'

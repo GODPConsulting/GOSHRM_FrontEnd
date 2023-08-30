@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RouteGuard } from '@core/guards/route.guard';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { OfflineComponent } from './offline/offline.component';
 // import { OfflineComponent } from './offline/offline.component';
 
 const routes: Routes = [
@@ -16,13 +17,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('./authentication/authentication.module').then(
         (m) => m.AuthenticationModule
-      ),
-  },
-  {
-    path: 'home',
-    loadChildren: () =>
-      import('./pages/landing-page/landing-page.module').then(
-        (m) => m.LandingPageModule
       ),
   },
   {
@@ -52,7 +46,7 @@ const routes: Routes = [
       {
         path: 'training-providers',
         loadChildren: () =>
-          import('./pages/running-courses/running-courses.module').then(
+          import('./pages/training-providers/running-courses.module').then(
             (m) => m.RunningCoursesModule
           ),
       },
@@ -64,74 +58,53 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'settings',
-        loadChildren: () =>
-          import('./pages/account-settings/account-settings.module').then(
-            (m) => m.AccountSettingsModule
-          ),
-      },
-      {
-        path: 'security',
-        loadChildren: () =>
-          import('./pages/security/security.module').then(
-            (m) => m.SecurityModule
-          ),
-      },
-      {
         path: 'courses',
         loadChildren: () =>
-          import('./pages/course-creation/course-creation.module').then(
+          import('./pages/running-courses/course-creation.module').then(
             (m) => m.CourseCreationModule
           ),
       },
       {
         path: 'email-setup',
         loadChildren: () =>
-          import('./pages/course-approval/course-approval.module').then(
+          import('./pages/email-setup/course-approval.module').then(
             (m) => m.CourseApprovalModule
           ),
       },
       {
         path: 'page-setup',
         loadChildren: () =>
-          import('./pages/instructor-information/instructor-information.module').then(
+          import('./pages/page-setup/instructor-information.module').then(
             (m) => m.InstructorInformationModule
           ),
       },
       {
         path: 'privacy-policy',
         loadChildren: () =>
-          import('./pages/faq-help/faq-help.module').then(
+          import('./pages/privacy-policy/faq-help.module').then(
             (m) => m.FaqHelpModule
           ),
       },
       {
         path: 'admins',
         loadChildren: () =>
-          import('./pages/course-description/course-description.module').then(
+          import('./pages/admins/course-description.module').then(
             (m) => m.CourseDescriptionModule
           ),
       },
       {
         path: 'running-courses',
         loadChildren: () =>
-          import('./pages/course-creation/course-creation.module').then(
+          import('./pages/running-courses/course-creation.module').then(
             (m) => m.CourseCreationModule
           ),
       },
-      {
-        path: 'checkout',
-        loadChildren: () =>
-          import('./pages/checkout/checkout.module').then(
-            (m) => m.CheckoutModule
-          ),
-      }
     ],
   },
-  // {
-  //   path: 'offline',
-  //   component: OfflineComponent,
-  // },
+  {
+    path: 'offline',
+    component: OfflineComponent,
+  },
 
   {
     path: '**',

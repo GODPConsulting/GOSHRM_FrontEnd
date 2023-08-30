@@ -9,20 +9,17 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { JwtModule } from '@auth0/angular-jwt';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CoreModule } from '@core/core.module';
-// import { AutoLogoutService } from '@core/services/auto-logout.service';
 import { LocalStorageService } from '@shared/services/local-storage.service';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { OfflineComponent } from './offline/offline.component';
-import { TraningProviderComponent } from './pages/traning-provider.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import {TableModule} from 'primeng/table';
 
 @NgModule({
   declarations: [
-    AppComponent, 
-    NotFoundComponent, 
-    OfflineComponent, 
-    TraningProviderComponent,
+    AppComponent,
+    NotFoundComponent,
+    OfflineComponent,
   ],
   imports: [
     BrowserModule,

@@ -17,11 +17,8 @@ import { CardComponent } from './components/card/card.component';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
 import { InfoComponent } from './components/info/info.component';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { SuccessModalComponent } from './components/success-modal/success-modal.component';
-import { TaskBarComponent } from './components/task-bar/task-bar.component';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { UploadDocComponent } from './components/upload-doc/upload-doc.component';
-import { CourseCardComponent } from 'app/pages/landing-page/components/course-card/course-card.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormsModule } from '@angular/forms';
 
@@ -39,11 +36,8 @@ import { FormsModule } from '@angular/forms';
     CardComponent,
     SearchbarComponent,
     InfoComponent,
-    SuccessModalComponent,
-    TaskBarComponent,
     BackButtonComponent,
     UploadDocComponent,
-    CourseCardComponent,
   ],
   imports: [
     CommonModule,
@@ -70,11 +64,8 @@ import { FormsModule } from '@angular/forms';
     SearchbarComponent,
     InfoComponent,
     NgSelectModule,
-    SuccessModalComponent,
-    TaskBarComponent,
     BackButtonComponent,
     UploadDocComponent,
-    CourseCardComponent,
   ],
 })
 export class SharedModule {}

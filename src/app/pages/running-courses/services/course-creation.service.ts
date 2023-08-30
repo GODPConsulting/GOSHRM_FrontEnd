@@ -1,5 +1,5 @@
-import { CurrentUserService } from './../../../core/services/current-user.service';
-import { environment } from './../../../../environments/environment';
+import { CurrentUserService } from '../../../core/services/current-user.service';
+import { environment } from '../../../../environments/environment';
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@shared/services/http.service';
