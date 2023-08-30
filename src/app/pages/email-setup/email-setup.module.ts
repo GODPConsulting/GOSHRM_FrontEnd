@@ -5,7 +5,7 @@ import { SharedModule } from '@shared/shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgRatingBarModule } from 'ng-rating-bar';
-import { CourseApprovalRoutingModule } from './course-approval-routing.module';
+import { EmailSetupRoutingModule } from './email-setup-routing.module';
 import { TableModule } from 'primeng/table';
 
 
@@ -17,7 +17,7 @@ import { TableModule } from 'primeng/table';
   imports: [
     CommonModule,
     MatDialogModule,
-    CourseApprovalRoutingModule,
+    EmailSetupRoutingModule,
     ReactiveFormsModule,
     SharedModule,
     FormsModule,
@@ -25,4 +25,4 @@ import { TableModule } from 'primeng/table';
     TableModule
   ]
 })
-export class CourseApprovalModule { }
+export class EmailSetupModule { }

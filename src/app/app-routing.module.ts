@@ -47,7 +47,7 @@ const routes: Routes = [
         path: 'training-providers',
         loadChildren: () =>
           import('./pages/training-providers/running-courses.module').then(
-            (m) => m.RunningCoursesModule
+            (m) => m.TrainingProvidersModule
           ),
       },
       {
@@ -60,43 +60,43 @@ const routes: Routes = [
       {
         path: 'courses',
         loadChildren: () =>
-          import('./pages/running-courses/course-creation.module').then(
-            (m) => m.CourseCreationModule
+          import('./pages/running-courses/running-courses.module').then(
+            (m) => m.RunningCoursesModule
           ),
       },
       {
         path: 'email-setup',
         loadChildren: () =>
-          import('./pages/email-setup/course-approval.module').then(
-            (m) => m.CourseApprovalModule
+          import('./pages/email-setup/email-setup.module').then(
+            (m) => m.EmailSetupModule
           ),
       },
       {
         path: 'page-setup',
         loadChildren: () =>
-          import('./pages/page-setup/instructor-information.module').then(
-            (m) => m.InstructorInformationModule
+          import('./pages/page-setup/page-setup.module').then(
+            (m) => m.PageSetupModule
           ),
       },
       {
         path: 'privacy-policy',
         loadChildren: () =>
-          import('./pages/privacy-policy/faq-help.module').then(
-            (m) => m.FaqHelpModule
+          import('./pages/privacy-policy/privacy-policy.module').then(
+            (m) => m.PrivacyPolicyModule
           ),
       },
       {
         path: 'admins',
         loadChildren: () =>
-          import('./pages/admins/course-description.module').then(
-            (m) => m.CourseDescriptionModule
+          import('./pages/admins/admins.module').then(
+            (m) => m.AdminsModule
           ),
       },
       {
         path: 'running-courses',
         loadChildren: () =>
-          import('./pages/running-courses/course-creation.module').then(
-            (m) => m.CourseCreationModule
+          import('./pages/running-courses/running-courses.module').then(
+            (m) => m.RunningCoursesModule
           ),
       },
     ],

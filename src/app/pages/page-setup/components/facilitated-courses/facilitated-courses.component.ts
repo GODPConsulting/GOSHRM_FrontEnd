@@ -19,13 +19,14 @@ import { BaseComponent } from '@core/base/base/base.component';
 })
 export class FacilitatedCoursesComponent implements OnInit {
   public sub: Subscription = new Subscription();
-  public facilitatedCourses: any[]= [];
+  public facilitatedCourses: any;
   public selectedCourses: any[]= [];
   public isFetchngFacilitatedCourses: boolean = false;
   public loggedInUser: any;
   public instructorId: any;
   public viewHeight: string = '500px';
   public createdBy = CreatedByType;
+  public hideElement: boolean = true;
 
   constructor(
     private _content: InstructorInformationService,
@@ -46,14 +47,12 @@ export class FacilitatedCoursesComponent implements OnInit {
     this._helper.startSpinner();
     this.isFetchngFacilitatedCourses = true;
     this.sub.add(
-      this._content.getFacilitatorCourses(this.loggedInUser.companyId).subscribe({
+      this._content.getPageBanner(this.loggedInUser.companyId).subscribe({
         next: (res: any) => {
           this._helper.stopSpinner();
           this.isFetchngFacilitatedCourses = false;
-          if(res['pageBannerSetupTypes']) {
-            this.facilitatedCourses = res['pageBannerSetupTypes'];
-          }
-          console.log(res, this.facilitatedCourses)
+          this.facilitatedCourses = res['pageBannerSetupTypes'];
+          // console.log(res, this.facilitatedCourses)
         },
         error: (error: ResponseModel<null>) => {
           this._helper.stopSpinner();

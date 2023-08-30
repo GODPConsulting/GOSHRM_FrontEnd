@@ -72,7 +72,7 @@ export class AddDocumentComponent implements OnInit {
         this.data?.isEditing ? this.data?.editObject?.pageBannerTitle : '',
         Validators.required,
       ],
-      companyId: [ this.data?.isEditing ? this.data?.editObject?.companyId : this.loggedInUser.companyId],
+      companyId: [ this.loggedInUser.companyId],
     });
   }
 

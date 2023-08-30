@@ -1,20 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FaqComponent } from './components/faq/faq.component';
+import { LayoutComponent } from './layout/layout.component';
+
 const routes: Routes = [
-    { 
-        path:'',
-        component: FaqComponent,
-    },
     {
         path: '',
-        redirectTo: '',
-        pathMatch: 'full',
-    },
+        component:  LayoutComponent,
+    }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class FaqHelpRoutingModule {}
+export class PageSetupModuleRoutingModule {}

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CourseDescriptionComponent } from './components/course-description/course-description.component';
-import { CourseDescriptionRoutingModule } from './course-description-routing.module';
+import { AdminsRoutingModule } from './admins-routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { NgRatingBarModule } from 'ng-rating-bar';
 import { TableModule } from 'primeng/table';
@@ -18,7 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
-    CourseDescriptionRoutingModule,
+    AdminsRoutingModule,
     SharedModule,
     NgRatingBarModule,
     TableModule,
@@ -27,4 +27,4 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule
   ]
 })
-export class CourseDescriptionModule { }
+export class AdminsModule { }

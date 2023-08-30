@@ -3,18 +3,18 @@
         <h3>Provacy Policy</h3>
         <app-searchbar
             [canAdd]="true"
-            (btnAction)="openDialog(false)"
+            (btnAction)="openDialog({isEditing: false, editObject: faqs})"
       ></app-searchbar>
     </div>
    <div>
         <div class="faq-content bg-white p-4 my-5" *ngIf="faqs">
-          <div [innerHTML]="faqs?.policy_Content"></div>
+          <p [innerHTML]="faqs?.policy_Content"></p>
         </div>
         <app-no-data
-          name="FAQ"
+          name="Privacy Policy"
           [is_loading]="isFetchingFaq"
           *ngIf="!faqs"
-          (open_dialog)="openDialog(false)"
+          (open_dialog)="openDialog({isEditing: false, editObject: faqs})"
         >
         </app-no-data>
    </div>

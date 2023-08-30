@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { CourseCreationComponent } from './components/course-creation/course-creation.component';
-import { CourseCreationRoutingModule } from './course-creation-routing.module';
+import { RunningCoursesRoutingModule } from './running-courses-routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,7 +16,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
   ],
   imports: [
     CommonModule,
-    CourseCreationRoutingModule,
+    RunningCoursesRoutingModule,
     MatDialogModule,
     ReactiveFormsModule,
     SharedModule,
@@ -29,4 +29,4 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     DatePipe
   ]
 })
-export class CourseCreationModule { }
+export class RunningCoursesModule { }

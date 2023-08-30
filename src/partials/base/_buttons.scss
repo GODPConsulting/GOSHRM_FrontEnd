@@ -22,6 +22,9 @@
     color: $orange-400;
     background-color: transparent;
     border: .1rem solid $orange-400;
+    svg {
+      fill: $orange-400
+    }
   }
 }
 

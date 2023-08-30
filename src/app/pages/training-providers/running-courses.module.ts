@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoursesComponent } from './components/courses/courses.component';
-import { RunningCoursesRoutingModule } from './running-courses-routing.module';
+import { TrainingProvidersRoutingModule } from './training-providers-routing.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
@@ -15,7 +15,7 @@ import { TableModule } from 'primeng/table';
   ],
   imports: [
     CommonModule,
-    RunningCoursesRoutingModule,
+    TrainingProvidersRoutingModule,
     MatDialogModule,
     ReactiveFormsModule,
     SharedModule,
@@ -23,4 +23,4 @@ import { TableModule } from 'primeng/table';
     TableModule
   ],
 })
-export class RunningCoursesModule { }
+export class TrainingProvidersModule { }

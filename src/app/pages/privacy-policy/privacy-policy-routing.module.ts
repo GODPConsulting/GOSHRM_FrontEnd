@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CourseApprovalComponent } from './components/course-approval/course-approval.component';
-
+import { FaqComponent } from './components/faq/faq.component';
 const routes: Routes = [
-    { 
+    {
         path:'',
-        component: CourseApprovalComponent,
+        component: FaqComponent,
+    },
+    {
+        path: '',
+        redirectTo: '',
+        pathMatch: 'full',
     },
 ];
 
@@ -13,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CourseApprovalRoutingModule {}
+export class PrivacyPolicyRoutingModule {}

@@ -12,7 +12,7 @@ import { Facilitator, FacilitatorCourses } from '../models/instructor-informatio
 export class InstructorInformationService {
   constructor(private http: HttpService) {}
 
-  public getFaciltator(
+  public getPageContent(
     companyId: string
   ): Observable<ResponseModel<Facilitator>> {
    const endpoint = '/pagecontentsetup/getAllPageContent';
@@ -28,10 +28,10 @@ export class InstructorInformationService {
     return this.http.makeRequestWithData('post', endpoint, {}, payout);
   }
 
-  public getFacilitatorCourses(
+  public getPageBanner(
     companyId: number
   ): Observable<ResponseModel<FacilitatorCourses>> {
-   const endpoint = '/pagecontentsetup/getAllPageContent';
+   const endpoint = '/pagebannersetup/getPageBanner';
    const params = new HttpParams()
    .set('companyId', companyId)
    return this.http.getRequestWithParams(endpoint, params);

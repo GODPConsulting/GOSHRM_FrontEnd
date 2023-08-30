@@ -101,9 +101,7 @@ export class FaqDialogComponent implements OnInit {
     if (this.faqForm.valid) {
       this._helper.startSpinner();
       this.isLoading = true;
-      const payload = {
-        policySetupTypes: [this.faqForm.value]
-      };
+      const payload = this.faqForm.value;
       // console.log(payload)
       this._faq.addUpdateFAQ(payload).subscribe({
         next: (res: any) => {

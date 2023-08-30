@@ -1,6 +1,32 @@
-.img-wrapper {
-  height: 5rem;
-  width: 7rem;
-  border: none;
-  border-radius: none;
+@import "partials/abstract/variables";
+@import "partials/abstract/mixins";
+
+.banner {
+  // background: url('../../../../assets/images/banner.jpg') no-repeat center center;
+  background-size: cover;
+  box-shadow: inset 0 0 0 2000px rgba($color: $black-100, $alpha: 0.8);
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  color: $white-100;
+  h2 {
+    font-size: 7rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 8rem;
+    margin-bottom: 2rem;
+  }
+  h4 {
+    font-size: 2.4rem;
+    font-weight: 400;
+    text-align: center;
+    line-height: 2.8rem;
+    margin-bottom: 3rem;
+  }
+  button {
+    margin-bottom: 3.5rem;
+  }
+
 }

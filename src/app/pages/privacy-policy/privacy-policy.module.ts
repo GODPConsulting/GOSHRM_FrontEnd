@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FaqHelpRoutingModule } from './faq-help-routing.module';
+import { PrivacyPolicyRoutingModule } from './privacy-policy-routing.module';
 import { FaqComponent } from './components/faq/faq.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -14,7 +14,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
   declarations: [FaqComponent, FaqDialogComponent],
   imports: [
     CommonModule,
-    FaqHelpRoutingModule,
+    PrivacyPolicyRoutingModule,
     SharedModule,
     MatDialogModule,
     ReactiveFormsModule,
@@ -22,4 +22,4 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     AngularEditorModule
   ]
 })
-export class FaqHelpModule { }
+export class PrivacyPolicyModule { }
