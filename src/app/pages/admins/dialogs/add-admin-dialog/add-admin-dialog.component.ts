@@ -29,6 +29,7 @@ export class AddAdminDialogComponent implements OnInit {
   public error_message: string = '';
   public loggedInUser!: any;
   public createdBy!: number;
+  public showPassword!: boolean;
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -59,7 +60,7 @@ export class AddAdminDialogComponent implements OnInit {
         physicalAddress: [''],
         phoneNumber: [''],
         companyId: [0],
-        password: ['Password@1', Validators.required],
+        password: ['', Validators.required],
     })
   }
 

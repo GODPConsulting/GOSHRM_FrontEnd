@@ -33,7 +33,7 @@ export class PayoutFormDialogComponent implements OnInit {
   public payoutSetupFormSubmitted: boolean = false;
   public loggedInUser: any;
   public createdBy!: number;
-  
+
   @Output() event: EventEmitter<{
     editObject?: Payout;
     isEditing: boolean;
@@ -52,13 +52,7 @@ export class PayoutFormDialogComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUser = this._currentService.getUser();
-    if(this.loggedInUser.customerTypeId == 1) {
-      this.createdBy = CreatedByType.provider
-    } else if (this.loggedInUser.customerTypeId == 2) {
-      this.createdBy = CreatedByType.instructor
-    } else {
-      this.createdBy = CreatedByType.participant
-    }
+    this.createdBy = CreatedByType.admin;
     this.initPayoutSetupForm();
   }
 
@@ -72,7 +66,7 @@ export class PayoutFormDialogComponent implements OnInit {
       account_Number: [this.data?.editObject?.account_Number ? this.data?.editObject?.account_Number  : '' ],
       account_Default: [this.data?.editObject?.account_Default ? this.data?.editObject?.account_Default  : false ],
       paySetUpCreatedByType: [this.createdBy],
-      userid: [this.loggedInUser.userId],
+      userid: ['company'],
       companyId: [this.loggedInUser.companyId],
       payoutId: [this.data?.editObject?.payoutId? this.data?.editObject?.payoutId : 0]
     })
@@ -98,7 +92,7 @@ export class PayoutFormDialogComponent implements OnInit {
     this.payoutSetupFormSubmitted = true;
     const payload = this.payoutForm.value;
     payload.account_TypeId = parseInt(payload.account_TypeId);
-    console.log(payload);
+    // console.log(payload);
     this.sub.add(
       this._payoutService.updatePayoutSetup(payload).subscribe({
         next: (res: any) => {

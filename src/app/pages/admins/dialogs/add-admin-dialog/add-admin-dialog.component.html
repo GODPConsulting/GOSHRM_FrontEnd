@@ -64,6 +64,48 @@
                 </div>
               </div>
           </div>
+          <div class="col-12">
+            <div class="form-group form_group">
+              <label for="password" class="form-label"
+                >Password
+                <span>● </span>
+              </label>
+              <div class="position-relative">
+                <input
+                  class="form-control pr-2"
+                  id="password"
+                  [type]="showPassword ? 'text' : 'password'"
+                  placeholder="Enter password"
+                  formControlName="password"
+                  [ngClass]="{
+                    'is-invalid':
+                      (faqForm.get('password')?.errors &&
+                      faqForm.get('password')?.touched) ||
+                      (faqForm.get('password')?.hasError('required') &&
+                      faqFormSubmitted)
+                  }"
+                />
+                <i
+                  class="fa fa-eye-slash click"
+                  *ngIf="showPassword; else hidePassword"
+                  (click)="showPassword = !showPassword"
+                ></i>
+                <ng-template #hidePassword>
+                  <i
+                    class="fa fa-eye click"
+                    (click)="showPassword = !showPassword"
+                  ></i>
+                </ng-template>
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="faqForm.get('password')?.hasError('required') &&
+                        faqFormSubmitted"
+              >
+                Required
+              </div>
+            </div>
+          </div>
       </div>
     </form>
 
@@ -80,6 +122,6 @@
     class="btn btn-green btn-md px-4"
     (click)="submit()"
   >
-      Submit
+      Create
   </button>
 </mat-dialog-actions>

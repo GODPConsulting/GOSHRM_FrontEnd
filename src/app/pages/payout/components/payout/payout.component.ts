@@ -98,8 +98,8 @@ export class PayoutComponent implements OnInit {
   setAsDefault(payout: any) {
     this._helper.startSpinner();
     this.payoutSetupFormSubmitted = true;
-    payout.paySetUpCreatedByType = this.createdBy.provider;
-    payout.userid = this.loggedInUser.userId;
+    payout.paySetUpCreatedByType = this.createdBy.admin;
+    payout.userid = 'company';
     payout.companyId = this.loggedInUser.companyId;
     payout.payoutId = payout?.payoutId;
     payout.account_Default = !payout.account_Default;
