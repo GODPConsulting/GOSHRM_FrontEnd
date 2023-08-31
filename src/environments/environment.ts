@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   // api_url: "https://api.goserp.co.uk/learning",
-  api_url: "http://92.205.27.45:97/api/v1/learning",
+  api_url: "https://lmsback.goserp.co.uk/api/v1/learning",
   // api_url: "http://107.180.93.38:5050/lms",
   gateway_url: "https://api2.goserp.co.uk",
 };
