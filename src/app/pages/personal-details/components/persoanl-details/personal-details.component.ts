@@ -79,7 +79,7 @@ export class PersonalDetailsComponent implements OnInit {
     const dialogRef = this.dialog.open(EditCompanyInfoDialogComponent, {
       data: object,
     });
-    console.log(payload);
+    // console.log(payload);
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
           this.profile = event?.editObject;

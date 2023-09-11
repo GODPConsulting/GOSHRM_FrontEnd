@@ -4,7 +4,7 @@ export interface Profile {
     email_Address: string,
     phone_Number: string,
     physical_Address: string,
-    pictureUrl: string,
+    photoUrl: string,
     aboutInfo: string,
     industryTypes: string,
     specializationTypes: string,
