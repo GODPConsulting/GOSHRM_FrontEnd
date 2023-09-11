@@ -102,8 +102,8 @@ export class UploadProfileComponent implements OnInit {
       const imageUrl = this.croppedImage.split(",");
       const payload = {
         companyId: this.loggedInUser.companyId,
-        cratedByType: this.createdBy.provider,
-        updatedBy: this.loggedInUser.userId,
+        cratedByType: this.createdBy.admin,
+        updatedBy: 'company',
         detailId: this.loggedInUser.trainingProviderId,
         photoUrl: imageUrl[1]
       }
