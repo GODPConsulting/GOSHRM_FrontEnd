@@ -5,6 +5,10 @@ import { ResponseModel } from 'app/models/response.model';
 import { Subscription } from 'rxjs';
 import { RunningCourses } from '../../models/running-course.model';
 import { RunningCoursesService } from '../../services/running-courses.service';
+import { UtilityService } from '@shared/services/utility.service';
+import { ActionsService } from '@shared/services/action.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { BaseComponent } from '@core/base/base/base.component';
 
 @Component({
   selector: 'app-courses',
@@ -13,6 +17,7 @@ import { RunningCoursesService } from '../../services/running-courses.service';
 })
 export class CoursesComponent implements OnInit {
   public sub: Subscription = new Subscription();
+  public actionSub: Subscription = new Subscription();
   public runningCourses: RunningCourses[] = [];
   public selectedCourses: RunningCourses[] = [];
   public isfetchingCourses: boolean = false;
@@ -22,11 +27,17 @@ export class CoursesComponent implements OnInit {
   constructor(
     private _runningCourses: RunningCoursesService,
     private _currentService: CurrentUserService,
-    private _helper: HelperService
+    private _helper: HelperService,
+    private utilitiesService: UtilityService,
+    private _action: ActionsService,
+    private _base: BaseComponent
   ) { }
 
   ngOnInit(): void {
     this.loggedInUser = this._currentService.getUser();
+    this.actionSub = this._action.downloadEvent.subscribe(() => {
+      this.downloadProviders();
+    });
     this.getRunningCourses();
   }
 
@@ -49,6 +60,56 @@ export class CoursesComponent implements OnInit {
         },
       })
     );
+  }
+
+  public downloadProviders(): void {
+    this._helper.startSpinner();
+    this.sub.add(
+      this._runningCourses.downloadProviders().subscribe({
+        next: (res: any) => {
+          this._helper.stopSpinner();
+          this.utilitiesService.byteToFile(res, "providers.xlsx");
+        },
+        error: (error: ResponseModel<null>) => {
+          this._helper.stopSpinner();
+          console.log(error);
+        },
+      })
+    );
+  }
+
+  public suspendprovider(id: number): void {
+    this._helper.startSpinner();
+    this._runningCourses.suspendProvider(id).subscribe({
+      next: (res: any) => {
+        if(res == true) {
+          this._helper.stopSpinner();
+          // console.log(res)
+          this._base.openSnackBar(
+            'Great...!!!, Your action was successful',
+            'success'
+          );
+          this.getRunningCourses();
+        } else {
+          this._helper.stopSpinner();
+          this._helper.triggerErrorAlert(res.status?.message?.friendlyMessage)
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        this._helper.stopSpinner();
+        console.log(error);
+        this._base.openSnackBar(
+          error.error,
+          'error'
+        );
+        // this.error_message = error?.error?.Id[0];
+      },
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+    this.actionSub.unsubscribe();
   }
 
 }

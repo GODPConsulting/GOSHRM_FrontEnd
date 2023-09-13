@@ -1,7 +1,12 @@
 <div class="running_courses-wrapper m-0">
+  <app-back-button></app-back-button>
     <div class="d-flex justify-content-between title pt-3 pb-4">
         <h3>Training Providers</h3>
-        <app-back-button></app-back-button>
+        <app-searchbar
+              [canAdd]="false"
+              [canDelete]="false"
+              [canDownload]="true"
+        ></app-searchbar>
     </div>
     <div class="table-responsive bg-white">
       <ng-container
@@ -27,6 +32,8 @@
                       <th [pSortableColumn]="'website'">Website</th>
                       <th [pSortableColumn]="'phone_Number'">Phone Number</th>
                       <th [pSortableColumn]="'createdOn'">Date Joined</th>
+                      <th [pSortableColumn]="'courses'">Courses</th>
+                      <th>Action</th>
                   </tr>
               </ng-template>
               <ng-template pTemplate="body" let-course let-i="rowIndex">
@@ -36,12 +43,18 @@
                     <a [href]="'mailto:' + course?.email_Address">{{ course?.email_Address }} </a>
                   </td>
                   <td>
-                    <a [href]="course?.website" target="_blank">{{ course?.website }}</a>
+                    <a [href]="course?.website" target="_blank">{{ course?.website ?? '--' }}</a>
                   <td>
-                    <a [href]="'tel:' + course?.phone_Number">{{ course?.phone_Number }} </a>
+                    <a [href]="'tel:' + course?.phone_Number">{{ course?.phone_Number ?? '--' }} </a>
                   </td>
                   <td>
                     {{ course?.createdOn | date }}
+                  </td>
+                  <td class="click" routerLink="/courses" [queryParams]="{q: course?.trainingProviderId}">
+                    {{ course?.courses }}
+                  </td>
+                  <td>
+                    <button class="btn btn-green btn-md" (click)="suspendprovider(course?.trainingProviderId)">Suspend</button>
                   </td>
                 </tr>
               </ng-template>
@@ -52,6 +65,7 @@
           name="Training Providers"
           [is_loading]="isfetchingCourses"
           *ngIf="runningCourses?.length == 0"
+          [showAddBtn]="false"
         >
       </app-no-data>
     </div>

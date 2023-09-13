@@ -27,9 +27,9 @@
                 <td>
                   <img class="img-wrapper" [src]="course.photoUrl ?? 'assets/images/default_banner.webp'" alt="cover image">
                 </td>
-                <td (click)="openDialog({isEditing: true, editObject: course})">{{ course?.page_Name}}</td>
-                <td (click)="openDialog({isEditing: true, editObject: course})">{{ course?.page_Title}}</td>
-                <td>{{ course?.section_Content}}</td>
+                <td class="click" (click)="openDialog({isEditing: true, editObject: course})">{{ course?.page_Name}}</td>
+                <td class="click" (click)="openDialog({isEditing: true, editObject: course})">{{ course?.page_Title}}</td>
+                <td class="click" (click)="openDialog({isEditing: true, editObject: course})">{{ course?.section_Content}}</td>
                 <td>
                   <span
                       mat-raised-button #tooltip="matTooltip"

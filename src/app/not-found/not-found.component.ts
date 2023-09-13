@@ -19,10 +19,6 @@ export class NotFoundComponent implements OnInit {
   }
 
   public goHome(): void {
-    if(this.profile.customerTypeId == 1) {
-      this.router.navigate(['/training-provider']);
-    } else {
-      this.router.navigate(['/training-instructor']);
-    }
+    this.router.navigate(['/']);
   }
 }

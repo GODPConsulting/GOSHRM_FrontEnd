@@ -79,6 +79,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'setup',
+        loadChildren: () =>
+          import('./pages/setup/setup.module').then(
+            (m) => m.SetupModule
+          ),
+      },
+      {
         path: 'privacy-policy',
         loadChildren: () =>
           import('./pages/privacy-policy/privacy-policy.module').then(

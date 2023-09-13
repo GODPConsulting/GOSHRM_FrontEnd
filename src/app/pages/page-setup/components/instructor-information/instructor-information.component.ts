@@ -10,6 +10,7 @@ import { InstructorInformationService } from '../../services/instructor-informat
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEmpDependentComponent } from '../../dialogs/add-emp-dependent/add-emp-dependent.component';
+import { ActionsService } from '@shared/services/action.service';
 
 @Component({
   selector: 'app-instructor-information',
@@ -18,6 +19,7 @@ import { AddEmpDependentComponent } from '../../dialogs/add-emp-dependent/add-em
 })
 export class InstructorInformationComponent implements OnInit {
   public sub: Subscription = new Subscription();
+  public modalSub: Subscription = new Subscription();
   public instructor: any[] = [];
   public selectedInstructor: any[] = [];
   public selectedIds: number[] = [];
@@ -33,13 +35,17 @@ export class InstructorInformationComponent implements OnInit {
     private _base: BaseComponent,
     private _helper: HelperService,
     private _route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _action: ActionsService
   ) { }
 
   ngOnInit(): void {
     this.loggedInUser = this._currenService.getUser();
     this.instructorId = this._route.snapshot.paramMap.get('instructorId');
     this.getFacilitator();
+    this.modalSub = this._action.triggerModalEvent.subscribe((event) => {
+      event ? this.openDialog(false) : this.delete(this.selectedInstructor);
+    })
   }
 
   public getFacilitator(): void {

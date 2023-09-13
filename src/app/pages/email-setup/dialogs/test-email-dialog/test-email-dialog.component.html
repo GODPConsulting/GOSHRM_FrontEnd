@@ -1,0 +1,57 @@
+<div class="d-flex justify-content-between" mat-dialog-title>
+  <h2 mat-dialog-title>Email Test </h2>
+  <div class="click" mat-dialog-close>
+    <img src="assets/icons/close.svg" alt="" />
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="faqForm">
+      <app-error [error_message]="error_message"></app-error>
+      <div class="row">
+          <div class="col-12">
+              <div class="form-group form_group">
+                  <label>Email <span class="text-red">●</span> </label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    placeholder="Enter Email Address"
+                    formControlName="email"
+                    (keyup)="checkForKeyEnter($event)"
+                    [ngClass]="{
+                      'is-invalid':
+                        (faqForm.get('email')?.errors &&
+                          faqForm.get('email')?.touched) ||
+                        (faqForm.get('email')?.hasError('required') &&
+                          faqFormSubmitted)
+                    }"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="
+                    faqForm.get('email')?.hasError('required') &&
+                    faqFormSubmitted
+                  "
+                >
+                  Required
+                </div>
+              </div>
+          </div>
+      </div>
+    </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    [mat-dialog-close]="false"
+    class="btn btn-outline-green btn-md me-4 px-4 d-none"
+    #close
+  >
+    No, cancel
+  </button>
+  <button
+    class="btn btn-green btn-md px-4"
+    (click)="submit()"
+  >
+      Test
+  </button>
+</mat-dialog-actions>

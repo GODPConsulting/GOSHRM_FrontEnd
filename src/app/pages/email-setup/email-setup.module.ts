@@ -7,12 +7,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgRatingBarModule } from 'ng-rating-bar';
 import { EmailSetupRoutingModule } from './email-setup-routing.module';
 import { TableModule } from 'primeng/table';
+import { TestEmailDialogComponent } from './dialogs/test-email-dialog/test-email-dialog.component';
 
 
 
 @NgModule({
   declarations: [
     CourseApprovalComponent,
+    TestEmailDialogComponent,
   ],
   imports: [
     CommonModule,

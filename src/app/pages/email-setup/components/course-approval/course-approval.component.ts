@@ -8,6 +8,8 @@ import swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { CourseApprovalService } from '../../services/course-approval.service';
 import { CurrentUserService } from '@core/services/current-user.service';
+import { TestEmailDialogComponent } from '../../dialogs/test-email-dialog/test-email-dialog.component';
+import { DialogModel } from '@shared/components/models/dialog.model';
 
 @Component({
   selector: 'app-course-approval',
@@ -95,6 +97,22 @@ export class CourseApprovalComponent implements OnInit {
         this.emailConfigDetail?.companyId ?? this.loggedInUser.companyId,
       ]
     })
+  }
+
+  public openDialog(
+    payload: { isEditing?: boolean; editObject?: any } | any
+  ): void {
+    let object: DialogModel<any> = payload;
+    const dialogRef = this.dialog.open(TestEmailDialogComponent, {
+      data: object,
+      panelClass: 'modal-width'
+    });
+    // console.log(payload)
+    dialogRef.componentInstance.event.subscribe(
+      (event: DialogModel<any>) => {
+       
+      }
+    );
   }
 
 

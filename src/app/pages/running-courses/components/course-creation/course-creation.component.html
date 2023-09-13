@@ -7,6 +7,7 @@
             <app-searchbar
               [canAdd]="false"
               [canDelete]="false"
+              [canDownload]="true"
             ></app-searchbar>
         </div>
     </div>
@@ -37,6 +38,7 @@
                       <th [pSortableColumn]="'course_Title'">Course Title</th>
                       <th [pSortableColumn]="'no_Of_Views'">No. of Views</th>
                       <th [pSortableColumn]="'ratings'">Rating</th>
+                      <th>Action</th>
                   </tr>
               </ng-template>
               <ng-template pTemplate="body" let-course let-i="rowIndex">
@@ -82,6 +84,9 @@
                         colorDefault="#cecece"
                       ></ng-rating-bar>
                     </td>
+                    <td>
+                      <button class="btn btn-green btn-md" (click)="suspendCourse(course?.courseId)">Suspend</button>
+                    </td>
                 </tr>
               </ng-template>
             </p-table>
@@ -90,6 +95,7 @@
           name="Course"
           [is_loading]="isFetchingCourses"
           *ngIf="courses?.length == 0"
+          [showAddBtn]="false"
         >
         </app-no-data>
         <!-- <div class="setup-card bg-white p-5 my-4" *ngFor="let course of courses">

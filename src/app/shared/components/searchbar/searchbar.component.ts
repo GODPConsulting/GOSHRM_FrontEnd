@@ -7,6 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { ActionsService } from '@shared/services/action.service';
 
 @Component({
   selector: 'app-searchbar',
@@ -32,20 +33,25 @@ export class SearchbarComponent implements OnInit {
   @Input() canAdd: boolean = false;
   @Input() canReply: boolean = false;
 
-  constructor() { }
+  constructor(
+    private _action: ActionsService
+  ) { }
 
   ngOnInit(): void {}
 
   public btnPressed(): void {
     this.btnAction.emit();
+    this._action.addNew(true);
   }
 
   public downloadPressed(): void {
     this.downloadAction.emit();
+    this._action.download();
   }
-  
+
   public deletePressed(): void {
     this.deleteAction.emit();
+    this._action.addNew(false);
   }
   public searchPressed(): void {
     this.searchAction.emit(true);

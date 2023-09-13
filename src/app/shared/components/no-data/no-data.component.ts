@@ -10,6 +10,7 @@ export class NoDataComponent implements OnInit {
   @Input('name') name!: string;
   @Input('is_loading') is_loading!: boolean;
   @Input('is_initial') is_initial: boolean = true;
+  @Input('showAddBtn') showAddBtn: boolean = true;
   @Output() open_dialog: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() {}

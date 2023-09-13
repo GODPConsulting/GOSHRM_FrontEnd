@@ -66,28 +66,63 @@
         </div>
         <hr class="mt-3">
         <h2 mat-dialog-title>Other Information </h2>
+
         <div class="col-lg-6">
-          <div class="form_group mb-4">
-            <label for="middleName" class="form-label"
-              >Industry
-            </label>
-            <select name="" id="" class="form-select" formControlName="industryTypes">
-              <option value=""></option>
-              <option value="" selected>-- Select Industry Type --</option>
-              <option [value]="industry?.name" *ngFor="let industry of industries">{{ industry?.name }}</option>
-            </select>
+          <div class="form-group form_group">
+          <label>Industry </label>
+          <ng-select
+              [items]="industries"
+              [selectOnTab]="true"
+              appendTo="body"
+              [loading]="isfetchingIndustry"
+              [virtualScroll]="true"
+              bindValue="name"
+              bindLabel="name"
+              placeholder="Select Industry"
+              (scrollToEnd)="getAllIndustries()"
+              [searchable]="true"
+              formControlName="industryTypes"
+          >
+          </ng-select>
+          <div
+              class="p-0 m-0 click d-flex justify-content-end align-items-center"
+              (click)="getAllIndustries()"
+              *ngIf="isfetchingIndustryFailed"
+          >
+              Retry &nbsp;
+              <mat-icon [ngClass]="{ spin: isfetchingIndustry }"
+              >refresh</mat-icon
+              >
+          </div>
           </div>
         </div>
         <div class="col-lg-6">
-          <div class="form_group mb-4">
-            <label for="lastName" class="form-label"
-              >Specialization
-            </label>
-            <select name="" id="" class="form-control" formControlName="specializationTypes">
-              <option value=""></option>
-              <option value="banking & finance">Banking & Finance</option>
-              <option value="it & technology">IT & Technology</option>
-            </select>
+          <div class="form-group form_group">
+          <label>Specialization </label>
+          <ng-select
+              [items]="specializations"
+              [selectOnTab]="true"
+              appendTo="body"
+              [loading]="isfetchingSpecialization"
+              [virtualScroll]="true"
+              bindValue="name"
+              bindLabel="name"
+              placeholder="Select Specialization"
+              (scrollToEnd)="getAllSpecializations()"
+              [searchable]="true"
+              formControlName="specializationTypes"
+          >
+          </ng-select>
+          <div
+              class="p-0 m-0 click d-flex justify-content-end align-items-center"
+              (click)="getAllSpecializations()"
+              *ngIf="isfetchingSpecializationFailed"
+          >
+              Retry &nbsp;
+              <mat-icon [ngClass]="{ spin: isfetchingSpecialization }"
+              >refresh</mat-icon
+              >
+          </div>
           </div>
         </div>
         <div class="col-lg-12">

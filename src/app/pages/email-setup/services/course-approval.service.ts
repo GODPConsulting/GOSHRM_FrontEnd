@@ -27,4 +27,13 @@ export class CourseApprovalService {
     return this.http.getRequestWithParams(endpoint, param);
   }
 
+  public testEmail(
+    email: string
+  ): Observable<ResponseModel<any>> {
+    const param = new HttpParams()
+    .set('email', email)
+    const endpoint = '/email/test/mail';
+    return this.http.getRequestWithParams(endpoint, param);
+  }
+
 }

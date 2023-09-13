@@ -18,6 +18,8 @@ import { DialogModel } from '@shared/components/models/dialog.model';
 // import { ResponseModel } from 'app/models/response.model';
 import { Profile } from '../../models/user-profile.model';
 import { ProfileService } from '../../services/profile.service';
+import { SetupService } from 'app/pages/setup/services/setup.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-company-info-dialog',
@@ -25,6 +27,7 @@ import { ProfileService } from '../../services/profile.service';
   styleUrls: ['./edit-company-info-dialog.component.scss'],
 })
 export class EditCompanyInfoDialogComponent implements OnInit {
+  public sub: Subscription = new Subscription();
   @ViewChild('close') close!: ElementRef;
   public updateProfileForm!: FormGroup;
   public isLoading: boolean = false;
@@ -32,20 +35,12 @@ export class EditCompanyInfoDialogComponent implements OnInit {
   public error_message: string = '';
   public loggedInUser!: any;
   public createdBy = CreatedByType;
-  public industries: any[] = [
-    {name: 'Advertising and Marketing'}, {name: 'Aerospace'},
-    {name: 'Agriculture'}, {name: 'Computer and Technology'},
-    {name: 'Construction'}, {name: 'Consumer Discretionary'},
-    {name: 'Consumer Staples'}, {name: 'Education'},
-    {name: 'Energy'}, {name: 'Entertainment'},
-    {name: 'Fashion'}, {name: 'Finance and Economic'},
-    {name: 'Food and Beverage'}, {name: 'Healthcare'},
-    {name: 'Hospitality'}, {name: 'Manufacturing'},
-    {name: 'Media and News'}, {name: 'Mining'},
-    {name: 'Pharmaceutical'}, {name: 'Real Estate'},
-    {name: 'Telecommunication'}, {name: 'Transportation'},
-    {name: 'Utilities'}, {name: 'Others'},
-  ];
+  public isfetchingSpecialization!: boolean;
+  public isfetchingSpecializationFailed!: boolean;
+  public isfetchingIndustry!: boolean;
+  public isfetchingIndustryFailed!: boolean;
+  public specializations: any[] = [];
+  public industries: any[] = [];
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -60,12 +55,49 @@ export class EditCompanyInfoDialogComponent implements OnInit {
     public dialog: MatDialog,
     public _base: BaseComponent,
     private _currentService: CurrentUserService,
-    private _helper: HelperService
+    private _helper: HelperService,
+    private _setup: SetupService
   ) {}
 
   ngOnInit(): void {
     this.loggedInUser = this._currentService.getUser();
     this.initUpdateProfileForm();
+    this.getAllIndustries();
+    this.getAllSpecializations();
+  }
+
+  public getAllIndustries() {
+    this.isfetchingIndustry = true,
+    this.sub.add(
+      this._setup.getIndustries().subscribe({
+        next: (res: any) => {
+          this.isfetchingIndustry = false;
+          this.isfetchingIndustryFailed = false;
+          this.industries = res;
+        },
+        error: (err) => {
+          this.isfetchingIndustry = false;
+          this.isfetchingIndustryFailed = true;
+        }
+      })
+    )
+  }
+
+  public getAllSpecializations() {
+    this.isfetchingSpecialization = true,
+    this.sub.add(
+      this._setup.getSpecializations().subscribe({
+        next: (res: any) => {
+          this.isfetchingSpecialization = false;
+          this.isfetchingSpecializationFailed = false;
+          this.specializations = res;
+        },
+        error: (err) => {
+          this.isfetchingSpecialization = false;
+          this.isfetchingSpecializationFailed = true;
+        }
+      })
+    )
   }
 
   initUpdateProfileForm() {

@@ -22,6 +22,20 @@ export class RunningCoursesService {
    return this.http.getRequestWithParams(endpoint, params);
   }
 
+  public downloadProviders(): Observable<ResponseModel<any>> {
+   const endpoint = '/download/training/providers';
+   return this.http.makeRequestWithData('post', endpoint, {});
+  }
+
+  public suspendProvider(
+    providerId: number
+  ): Observable<ResponseModel<any>> {
+   const endpoint = '/training/provider/suspend';
+   const param = new HttpParams()
+   .set('trainingProviderId', providerId)
+   return this.http.getRequestWithParams(endpoint, param);
+  }
+
   public updateRunningCourses(
     payout: RunningCourses
   ): Observable<ResponseModel<RunningCourses>> {

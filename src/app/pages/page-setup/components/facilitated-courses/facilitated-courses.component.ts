@@ -27,6 +27,7 @@ export class FacilitatedCoursesComponent implements OnInit {
   public viewHeight: string = '500px';
   public createdBy = CreatedByType;
   public hideElement: boolean = true;
+  public bannerUrl: string = 'assets/images/default_banner.webp';
 
   constructor(
     private _content: InstructorInformationService,
@@ -52,6 +53,7 @@ export class FacilitatedCoursesComponent implements OnInit {
           this._helper.stopSpinner();
           this.isFetchngFacilitatedCourses = false;
           this.facilitatedCourses = res['pageBannerSetupTypes'];
+          this.bannerUrl = this.facilitatedCourses.photoUrl;
           // console.log(res, this.facilitatedCourses)
         },
         error: (error: ResponseModel<null>) => {

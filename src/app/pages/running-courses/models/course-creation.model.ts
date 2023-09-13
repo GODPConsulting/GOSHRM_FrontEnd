@@ -3,6 +3,7 @@ export interface Courses  {
     decisionType: number,
     createdByType: number,
     providerId: number,
+    training_Provider: string,
     trainerId: number,
     training_Name: string,
     training_Objective: string,
@@ -83,7 +84,7 @@ export interface CourseOutline  {
     active: boolean,
     deleted: boolean,
     companyId: number,
-    isSelected: boolean
+    isSelected: boolean,
 }
 
 export interface CourseAssessment {

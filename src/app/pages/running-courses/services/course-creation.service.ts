@@ -23,6 +23,20 @@ export class CourseCreationService {
    return this.http.getRequestWithParams(endpoint, param);
   }
 
+  public downloadCourses(): Observable<ResponseModel<Courses>> {
+   const endpoint = '/download/course';
+   return this.http.makeRequestWithData('post', endpoint, {});
+  }
+
+  public suspendCourse(
+    courseId: number
+  ): Observable<ResponseModel<any>> {
+   const endpoint = '/training/provider/course/suspend';
+   const param = new HttpParams()
+   .set('courseId', courseId)
+   return this.http.getRequestWithParams(endpoint, param);
+  }
+
   public getOneCoursesById(
     courseId: string
   ): Observable<ResponseModel<Courses>> {

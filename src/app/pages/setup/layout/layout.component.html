@@ -1,0 +1,56 @@
+<div class="container m-4">
+
+  <div class="d-flex justify-content-end">
+    <app-searchbar
+      [canAdd]="true"
+      [canDelete]="true"
+      [canDownload]="false"
+    ></app-searchbar>
+  </div>
+
+  <div class="">
+    <ul class="nav nav-pills vertical-nav nav-tabs" id="myTab" role="tablist">
+      <li
+        class="nav-item p-0"
+        role="presentation"
+      >
+        <a
+          routerLinkActive="active"
+          class="nav-link px-0 py-3"
+          id="industry-tab"
+          data-bs-toggle="tab"
+          routerLink="industry"
+          role="tab"
+          aria-controls="industry"
+          aria-selected="true"
+          >Industry</a
+        >
+      </li>
+      <li
+        class="nav-item p-0 ms-5"
+        role="presentation"
+      >
+        <a
+          routerLinkActive="active"
+          class="nav-link px-0 py-3"
+          id="specialization-tab"
+          data-bs-toggle="tab"
+          routerLink="specialization"
+          role="tab"
+          aria-controls="specialization"
+          aria-selected="false"
+          >Specialization</a
+        >
+      </li>
+    </ul>
+  </div>
+  <div class="tab-content my-4" id="myTabContent">
+    <div
+      class="tab-pane fade show active"
+      role="tabpanel"
+      aria-labelledby="performance-tab"
+    >
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

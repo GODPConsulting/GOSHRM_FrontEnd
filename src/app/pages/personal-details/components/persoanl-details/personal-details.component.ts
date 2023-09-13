@@ -47,7 +47,7 @@ export class PersonalDetailsComponent implements OnInit {
   getResolvedData() {
     this.sub.add(
       this.activateRoute.data.subscribe((data: any) => {
-        console.log(data);
+        // console.log(data);
         this.profile = data?.resolveData?.profile?.companySetupTypes;
         this.websites = data?.resolveData?.website?.websiteSetupTypes;
         this.socialMediaInfo = data?.resolveData?.socialMedia?.socialMediaSetupTypes;
