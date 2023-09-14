@@ -41,10 +41,10 @@ export class FacilitatedCoursesComponent implements OnInit {
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
     this.instructorId = this._route.snapshot.paramMap.get('instructorId');
-    this.getFacilitatedCourses();
+    this.getPageBanner();
   }
 
-  public getFacilitatedCourses(): void {
+  public getPageBanner(): void {
     this._helper.startSpinner();
     this.isFetchngFacilitatedCourses = true;
     this.sub.add(
@@ -75,7 +75,7 @@ export class FacilitatedCoursesComponent implements OnInit {
 
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-       this.getFacilitatedCourses()
+       this.getPageBanner()
       }
     );
   }
@@ -112,7 +112,7 @@ export class FacilitatedCoursesComponent implements OnInit {
             'Great...!!!, Your action was successful',
             'success'
           );
-          this.getFacilitatedCourses();
+          this.getPageBanner();
         },
         error: (error: HttpErrorResponse) => {
           console.log(error);

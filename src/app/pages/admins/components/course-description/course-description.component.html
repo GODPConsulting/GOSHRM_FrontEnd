@@ -37,7 +37,7 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-course let-i="rowIndex">
-              <tr class="tbody" [pSelectableRow]="course">
+              <tr class="tbody click" (click)="openDialog({isEditing: true, editObject: course})" [pSelectableRow]="course">
                   <!-- <td
                   >
                       <span class="pe-3">

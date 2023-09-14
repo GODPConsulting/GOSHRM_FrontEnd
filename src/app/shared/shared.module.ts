@@ -21,6 +21,7 @@ import { BackButtonComponent } from './components/back-button/back-button.compon
 import { UploadDocComponent } from './components/upload-doc/upload-doc.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormsModule } from '@angular/forms';
+import { RbacAllowDirective } from './directives/rbac-allow.directive';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { FormsModule } from '@angular/forms';
     InfoComponent,
     BackButtonComponent,
     UploadDocComponent,
+    RbacAllowDirective
   ],
   imports: [
     CommonModule,
@@ -66,6 +68,7 @@ import { FormsModule } from '@angular/forms';
     NgSelectModule,
     BackButtonComponent,
     UploadDocComponent,
+    RbacAllowDirective
   ],
 })
 export class SharedModule {}

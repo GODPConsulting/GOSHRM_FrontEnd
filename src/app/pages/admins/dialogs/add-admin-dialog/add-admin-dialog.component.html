@@ -8,7 +8,7 @@
   <form [formGroup]="faqForm">
       <app-error [error_message]="error_message"></app-error>
       <div class="row">
-          <div class="col-12">
+          <div class="col-12" *ngIf="!data.isEditing">
               <div class="form-group form_group">
                 <label>Full Name <span class="text-red">●</span></label>
                 <input
@@ -36,7 +36,7 @@
                 </div>
               </div>
           </div>
-          <div class="col-12">
+          <div class="col-12" *ngIf="!data.isEditing">
               <div class="form-group form_group">
                   <label>Email <span class="text-red">●</span> </label>
                   <input
@@ -64,7 +64,41 @@
                 </div>
               </div>
           </div>
-          <div class="col-12">
+          <div class="form-group form_group">
+            <label>User Role </label>
+            <ng-select
+                [items]="userRole"
+                [selectOnTab]="true"
+                appendTo="body"
+                [loading]="isLoadingPages"
+                [virtualScroll]="true"
+                bindValue="userRoleId"
+                bindLabel="name"
+                placeholder="Select User Role"
+                (scrollToEnd)="getAllUserRoles()"
+                [searchable]="true"
+                formControlName="userRoleId"
+                [ngClass]="{
+                  'is-invalid':
+                    (faqForm.get('userRoleId')?.errors &&
+                    faqForm.get('userRoleId')?.touched) ||
+                    (faqForm.get('userRoleId')?.hasError('required') &&
+                    faqFormSubmitted)
+                }"
+            >
+            </ng-select>
+            <div
+                class="p-0 m-0 click d-flex justify-content-end align-items-center"
+                (click)="getAllUserRoles()"
+                *ngIf="isLoadingPagesFailed"
+            >
+                Retry &nbsp;
+                <mat-icon [ngClass]="{ spin: isLoadingPages }"
+                >refresh</mat-icon
+                >
+            </div>
+            </div>
+          <div class="col-12" *ngIf="!data.isEditing">
             <div class="form-group form_group">
               <label for="password" class="form-label"
                 >Password

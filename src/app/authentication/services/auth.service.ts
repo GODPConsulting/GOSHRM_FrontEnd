@@ -27,6 +27,13 @@ export class AuthService {
     return this.http.makeRequestWithData('post', endpoint, {}, registerRequestDTO);
   }
 
+  public updateUserRole(
+    registerRequestDTO: any
+  ): Observable<ResponseModel<any>> {
+    const endpoint = '/admin/update/userrole';
+    return this.http.makeRequestWithData('post', endpoint, {}, registerRequestDTO);
+  }
+
   public registerParticipant(
     registerRequestDTO: RegisterRequestDTO
   ): Observable<ResponseModel<RegisterResponseDTO>> {

@@ -38,14 +38,17 @@ export class SpecializationComponent implements OnInit {
   }
 
   public getAllSpecializations() {
+    this._helper.startSpinner();
     this.isfetchingSpecialization = true,
     this.sub.add(
       this._setup.getSpecializations().subscribe({
         next: (res: any) => {
+          this._helper.stopSpinner();
           this.isfetchingSpecialization = false;
           this.specializations = res;
         },
         error: (err) => {
+          this._helper.stopSpinner();
           this.isfetchingSpecialization = false;
         }
       })

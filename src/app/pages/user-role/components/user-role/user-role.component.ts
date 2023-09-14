@@ -3,18 +3,18 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { ActionsService } from '@shared/services/action.service';
 import { Subscription } from 'rxjs';
-import { IndustryDialogComponent } from '../../dialogs/industry-dialog/industry-dialog.component';
-import { SetupService } from '../../services/setup.service';
 import { HelperService } from '@core/services/healper.service';
 import swal from 'sweetalert2';
 import { ConfirmationModalComponent } from '@shared/components/confirmation-modal/confirmation-modal.component';
+import { UserRoleService } from '../../services/user-role.service';
+import { UserRoleDialogComponent } from '../../dialogs/user-role-dialog/user-role-dialog.component';
 
 @Component({
-  selector: 'app-industry',
-  templateUrl: './industry.component.html',
-  styleUrls: ['./industry.component.scss']
+  selector: 'app-user-role',
+  templateUrl: './user-role.component.html',
+  styleUrls: ['./user-role.component.scss']
 })
-export class IndustryComponent implements OnInit {
+export class UserRoleComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public modalSubscription: Subscription = new Subscription();
   public isfetchingIndustry!: boolean;
@@ -26,7 +26,7 @@ export class IndustryComponent implements OnInit {
   constructor(
     private _action: ActionsService,
     private dialog: MatDialog,
-    private _setup: SetupService,
+    private _userRole: UserRoleService,
     private _helper: HelperService
   ) { }
 
@@ -34,15 +34,16 @@ export class IndustryComponent implements OnInit {
     this.modalSubscription.add(this._action.triggerModalEvent.subscribe((event)=> {
       event ? this.openDialog(false) : this.delete();
     }));
-    this.getAllIndustries();
+    this.getAllUserRoles();
   }
 
-  public getAllIndustries() {
+  public getAllUserRoles() {
     this._helper.startSpinner();
     this.isfetchingIndustry = true,
     this.sub.add(
-      this._setup.getIndustries().subscribe({
+      this._userRole.getAllUserRoles().subscribe({
         next: (res: any) => {
+          // console.log(res);
           this._helper.stopSpinner();
           this.isfetchingIndustry = false;
           this.industries = res;
@@ -59,14 +60,14 @@ export class IndustryComponent implements OnInit {
     payload: { isEditing?: boolean; editObject?: any } | any
   ): void {
     let object: DialogModel<any> = payload;
-    const dialogRef = this.dialog.open(IndustryDialogComponent, {
+    const dialogRef = this.dialog.open(UserRoleDialogComponent, {
       data: object,
       panelClass: 'modal-width'
     });
     // console.log(payload)
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-        this.getAllIndustries();
+        this.getAllUserRoles();
       }
     );
   }
@@ -100,12 +101,12 @@ export class IndustryComponent implements OnInit {
     this._helper.startSpinner();
     let payload: object;
     this.selectedIndustires?.map((item) => {
-      this.selectedIds.push(item.industryId);
+      this.selectedIds.push(item.userRoleId);
     });
     payload = {
       ids: this.selectedIds,
     };
-    this._setup.deleteIndustry(payload).subscribe(
+    this._userRole.deleteUserRole(payload).subscribe(
       (res: any) => {
         this._helper.stopSpinner();
         const message = res.status.message.friendlyMessage;
@@ -117,7 +118,7 @@ export class IndustryComponent implements OnInit {
             showConfirmButton: false,
             timer: 1500
           })
-          this.getAllIndustries();
+          this.getAllUserRoles();
         } else {
           swal.fire("GOSHRM", message, "error");
         }

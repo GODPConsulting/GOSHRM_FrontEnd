@@ -86,6 +86,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'user-role',
+        loadChildren: () =>
+          import('./pages/user-role/user-role.module').then(
+            (m) => m.UserRoleModule
+          ),
+      },
+      {
         path: 'privacy-policy',
         loadChildren: () =>
           import('./pages/privacy-policy/privacy-policy.module').then(
