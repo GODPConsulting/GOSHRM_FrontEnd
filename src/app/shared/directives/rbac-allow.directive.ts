@@ -7,6 +7,7 @@ import { CurrentUserService } from "@core/services/current-user.service";
 export class RbacAllowDirective {
   allowedRoles: string[] = [];
   user: any;
+  activities: any;
 
   constructor(
     private templateRef: TemplateRef<any>,
@@ -15,6 +16,9 @@ export class RbacAllowDirective {
   ) {
     this.user = this._current.getUser();
     // console.log(this.user);
+    this.activities = this.user.activities.map((a: any) => {
+      return a.name
+    })
   }
 
   @Input()
@@ -26,7 +30,7 @@ export class RbacAllowDirective {
   showIfUserAllowed() {
     if (
       !this.user ||
-      !this.user.activities ||
+      !this.activities ||
       !this.allowedRoles ||
       this.allowedRoles.length == 0
     ) {
@@ -34,7 +38,7 @@ export class RbacAllowDirective {
       this.viewContainer.clear();
       return;
     }
-    const userRoles = this.user.activities;
+    const userRoles = this.activities;
     if (typeof userRoles === "string") {
       if (this.allowedRoles.includes(userRoles)) {
         this.viewContainer.createEmbeddedView(this.templateRef);

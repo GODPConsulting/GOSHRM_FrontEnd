@@ -34,8 +34,8 @@
   color: $orange-400;
   transition: all ease 0.3s;
   &:hover {
-    color: $white-100;
-    background-color: $orange-400;
+    color: $orange-400;
+    background-color: transparent;
   }
 }
 

@@ -1,0 +1,144 @@
+<section class="p-4">
+
+  <div class="my-4">
+    <app-back-button></app-back-button>
+  </div>
+
+  <form [formGroup]="vatForm">
+    <!--Detail-->
+    <ng-container>
+        <div class="form_wrapper row">
+          <div class="col-lg-4 col-md-4 col-12">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-12">
+                <div class="form_group mb-5">
+                  <label for="email" class="form-label"
+                    >Name  <span class="text-red">●</span>
+
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    class="form-control"
+                    placeholder="Invoice Based"
+                    formControlName="name"
+                  />
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-12">
+                <div class="form-group form_group">
+                    <label>Description <span class="text-red">●</span> </label>
+                    <textarea
+                      name="" id=""
+                      cols="30" rows="10"
+                      class="form-control"
+                      formControlName="description"
+                    ></textarea>
+                </div>
+             </div>
+            </div>
+          </div>
+        </div>
+    </ng-container>
+
+    <!--Types-->
+    <ng-container>
+        <div class="form_wrapper row">
+          <div class="col-lg-4 col-md-4 col-12">
+            <h2>Activities</h2>
+          </div>
+          <div class="col-lg-12 col-md-12 col-12">
+            <ng-container *ngIf="newPage.controls.length > 0">
+              <p-table
+                [value]="newPage.controls"
+                class="table table-striped custom-table datatable table-hover"
+                #dt
+                dataKey="id"
+                [paginator]="false"
+                [rows]="newPage.controls.length"
+                [responsive]="true"
+                [scrollable]="true"
+                [columns]="cols"
+                [scrollHeight]="'350px'"
+              >
+
+                <ng-template pTemplate="header">
+                  <tr class="thead">
+                    <th [pSortableColumn]="'name'">Page Name</th>
+                    <th [pSortableColumn]="''">View</th>
+                    <th [pSortableColumn]="''">Create/Update</th>
+                    <th [pSortableColumn]="''">Delete</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                    <ng-container formArrayName="pages">
+                        <tr class="tbody" [formGroupName]="rowIndex">
+                            <td>
+                                {{ rowData.get('name')!.value }}
+                            </td>
+                            <td>
+                              <label class="check-container">
+                                <input
+                                  type="checkbox"
+                                  name="canView"
+                                  formControlName="canView"
+                                  (change)="changeViewValue(rowIndex)"
+                                />
+                                <span class="checkmark"></span>
+                              </label>
+                            </td>
+                            <td>
+                              <label class="check-container">
+                                <input
+                                  type="checkbox"
+                                  name="canEdit"
+                                  formControlName="canEdit"
+                                  (change)="changeCreateValue(rowIndex)"
+                                />
+                                <span class="checkmark"></span>
+                              </label>
+                            </td>
+                            <td>
+                              <label class="check-container">
+                                <input
+                                  type="checkbox"
+                                  name="canDelete"
+                                  formControlName="canDelete"
+                                  (change)="changeDeleteValue(rowIndex)"
+                                />
+                                <span class="checkmark"></span>
+                              </label>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-template>
+              </p-table>
+            </ng-container>
+            <app-no-data
+              name="Page"
+              *ngIf="newPage.controls?.length == 0"
+            >
+            </app-no-data>
+          </div>
+        </div>
+    </ng-container>
+
+    <div class="d-flex justify-content-end">
+      <!-- <button class="btn btn-outline-green btn-lg mx-3">
+        Cancel
+      </button> -->
+      <button
+        class="btn btn-green btn-lg"
+        [disabled]="isLoading"
+        (click)="submit()"
+      >
+        <app-loading-button
+          [text]=" 'Save Changes'"
+          [condition]="isLoading"
+        ></app-loading-button>
+      </button>
+    </div>
+
+  </form>
+
+</section>

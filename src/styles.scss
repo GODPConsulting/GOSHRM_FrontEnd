@@ -172,7 +172,7 @@ button {
 
   /* When the checkbox is checked, add a colored background */
   input:checked ~ .checkmark {
-    border: solid 0.6rem $green-600;
+    border: solid 0.6rem $orange-400;
   }
 
   /* Create the checkmark/indicator (hidden when not checked) */

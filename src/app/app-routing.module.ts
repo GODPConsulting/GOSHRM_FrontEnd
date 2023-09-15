@@ -93,6 +93,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'user-activities',
+        loadChildren: () =>
+          import('./pages/user-activities/user-activities.module').then(
+            (m) => m.UserActivitiesModule
+          ),
+      },
+      {
         path: 'privacy-policy',
         loadChildren: () =>
           import('./pages/privacy-policy/privacy-policy.module').then(

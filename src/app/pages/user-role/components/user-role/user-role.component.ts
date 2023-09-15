@@ -8,6 +8,7 @@ import swal from 'sweetalert2';
 import { ConfirmationModalComponent } from '@shared/components/confirmation-modal/confirmation-modal.component';
 import { UserRoleService } from '../../services/user-role.service';
 import { UserRoleDialogComponent } from '../../dialogs/user-role-dialog/user-role-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-role',
@@ -27,12 +28,13 @@ export class UserRoleComponent implements OnInit {
     private _action: ActionsService,
     private dialog: MatDialog,
     private _userRole: UserRoleService,
-    private _helper: HelperService
+    private _helper: HelperService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
     this.modalSubscription.add(this._action.triggerModalEvent.subscribe((event)=> {
-      event ? this.openDialog(false) : this.delete();
+      event ? this.routeTo() : this.delete();
     }));
     this.getAllUserRoles();
   }
@@ -130,6 +132,14 @@ export class UserRoleComponent implements OnInit {
       }
     );
     this.selectedIds = this.selectedIndustires = [];
+  }
+
+  public routeTo(userRoleId?: number) {
+    this.router.navigate(['/user-activities'], {
+      queryParams: {
+        id: userRoleId
+      }
+    })
   }
 
   ngOnDestroy() {

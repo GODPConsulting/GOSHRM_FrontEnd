@@ -38,10 +38,10 @@
                         [value]="course"
                     ></p-tableCheckbox>
                   </td>
-                  <td class="click" (click)="openDialog({isEditing: true, editObject: course})">
+                  <td class="click" (click)="routeTo(course?.userRoleId)">
                     {{ course?.name }}
                   </td>
-                  <td class="click" (click)="openDialog({isEditing: true, editObject: course})">
+                  <td class="click" (click)="routeTo(course?.userRoleId)">
                     {{ course?.description }}
                   </td>
               </tr>
@@ -52,7 +52,7 @@
         name="User Role"
         [is_loading]="isfetchingIndustry"
         *ngIf="industries?.length == 0"
-        (open_dialog)="openDialog(false)"
+        (open_dialog)="routeTo()"
       >
       </app-no-data>
     </div>
