@@ -16,7 +16,7 @@
           <div class="upload-btn">
             <button
               class=" btn btn-green btn-lg"
-              [disabled]="userActivities.canEdit"
+              [disabled]="!userActivities.canEdit"
               (click)="openProfileUploadDialog({ isEditing: false })"
             >
               Upload Photo
