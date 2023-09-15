@@ -28,6 +28,7 @@ export class FacilitatedCoursesComponent implements OnInit {
   public createdBy = CreatedByType;
   public hideElement: boolean = true;
   public bannerUrl: string = 'assets/images/default_banner.webp';
+  public userActivities: any;
 
   constructor(
     private _content: InstructorInformationService,
@@ -40,6 +41,9 @@ export class FacilitatedCoursesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
+    this.userActivities = this.loggedInUser.activities.find((a: any) => {
+      return a.name === 'PageSetup';
+    });
     this.instructorId = this._route.snapshot.paramMap.get('instructorId');
     this.getPageBanner();
   }

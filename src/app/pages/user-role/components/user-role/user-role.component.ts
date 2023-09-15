@@ -9,6 +9,7 @@ import { ConfirmationModalComponent } from '@shared/components/confirmation-moda
 import { UserRoleService } from '../../services/user-role.service';
 import { UserRoleDialogComponent } from '../../dialogs/user-role-dialog/user-role-dialog.component';
 import { Router } from '@angular/router';
+import { CurrentUserService } from '@core/services/current-user.service';
 
 @Component({
   selector: 'app-user-role',
@@ -23,16 +24,23 @@ export class UserRoleComponent implements OnInit {
   public selectedIndustires: any[] = [];
   public selectedIds: any[] = [];
   public viewHeight = '550px';
+  public loggedInUser!: any;
+  public userActivities: any;
 
   constructor(
     private _action: ActionsService,
     private dialog: MatDialog,
     private _userRole: UserRoleService,
     private _helper: HelperService,
-    private router: Router
+    private router: Router,
+    private _current: CurrentUserService
   ) { }
 
   ngOnInit(): void {
+    this.loggedInUser = this._current.getUser();
+    this.userActivities = this.loggedInUser.activities.find((a: any) => {
+      return a.name === 'User Role';
+    });
     this.modalSubscription.add(this._action.triggerModalEvent.subscribe((event)=> {
       event ? this.routeTo() : this.delete();
     }));

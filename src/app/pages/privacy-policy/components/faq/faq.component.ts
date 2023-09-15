@@ -18,6 +18,7 @@ export class FaqComponent implements OnInit {
   public isFetchingFaq: boolean = false;
   public faqs: any;
   public loggedInUser: any;
+  public userActivities: any;
 
   constructor(
     public dialog: MatDialog,
@@ -28,6 +29,9 @@ export class FaqComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this._current.getUser();
+    this.userActivities = this.loggedInUser.activities.find((a: any) => {
+      return a.name === 'Privacy Policy';
+    });
     this.getAllFaqs();
   }
 

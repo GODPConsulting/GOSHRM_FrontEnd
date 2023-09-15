@@ -29,6 +29,7 @@ export class PersonalDetailsComponent implements OnInit {
   public payouts: Payout[] = [];
   public trainers: any[] = [];
   public loggedInUser: any;
+   public userActivities: any;
 
   constructor(
     public dialog: MatDialog,
@@ -41,6 +42,9 @@ export class PersonalDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.loggedInUser = this._currentService.getUser();
+    this.userActivities = this.loggedInUser.activities.find((a: any) => {
+      return a.name === 'CompanyInfo';
+    });
     this.getResolvedData();
   }
 

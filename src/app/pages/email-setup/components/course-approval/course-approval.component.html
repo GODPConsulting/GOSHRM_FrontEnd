@@ -279,6 +279,7 @@
                   <div class="d-flex justify-content-end">
                       <button
                           class="btn btn-green btn-lg mx-3"
+                          [disabled]="!userActivities.canEdit"
                           (click)="submit()"
                       >
                           Save

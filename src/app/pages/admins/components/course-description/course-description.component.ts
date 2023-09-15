@@ -7,6 +7,7 @@ import { CourseDescriptionService } from '../../services/course-description.serv
 import { DialogModel } from '@shared/components/models/dialog.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AddAdminDialogComponent } from '../../dialogs/add-admin-dialog/add-admin-dialog.component';
+import { CurrentUserService } from '@core/services/current-user.service';
 
 @Component({
   selector: 'app-course-description',
@@ -20,15 +21,22 @@ export class CourseDescriptionComponent implements OnInit {
   public isfetchingCourses: boolean = false;
   public courseId: any;
   public viewHeight: string = '450px';
+  public loggedInUser!: any;
+  public userActivities: any;
 
   constructor(
     private _course: CourseDescriptionService,
     private _helper: HelperService,
     private _route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _current: CurrentUserService
   ) { }
 
   ngOnInit(): void {
+    this.loggedInUser = this._current.getUser();
+    this.userActivities = this.loggedInUser.activities.find((a: any) => {
+      return a.name === 'Admin';
+    });
     window.scroll(0,0);
     this.courseId = this._route.snapshot.paramMap.get('courseId');
     this.getCoursesDetail();

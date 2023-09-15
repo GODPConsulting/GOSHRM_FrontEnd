@@ -2,9 +2,9 @@
 
   <div class="d-flex justify-content-end">
     <app-searchbar
-      [canAdd]="true"
-      [canDelete]="true"
-      [canDownload]="false"
+      [canAdd]="userActivities.canEdit"
+      [canDelete]="userActivities.canDelete"
+      [canDownload]="userActivities.canEdit"
     ></app-searchbar>
   </div>
 

@@ -25,6 +25,7 @@ export class CourseApprovalComponent implements OnInit {
   public showPassword: boolean = false;
   @Input() emailConfigDetail!: any
   public loggedInUser!: any;
+  public userActivities: any;
 
   constructor(
     private fb: FormBuilder,
@@ -36,6 +37,9 @@ export class CourseApprovalComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUser = this._currentService.getUser();
+    this.userActivities = this.loggedInUser.activities.find((a: any) => {
+      return a.name === 'Email Setup';
+    });
     this.initializeForm();
     this.loadSilently();
   }
@@ -110,7 +114,7 @@ export class CourseApprovalComponent implements OnInit {
     // console.log(payload)
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-       
+
       }
     );
   }

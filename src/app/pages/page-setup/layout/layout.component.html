@@ -7,8 +7,8 @@
           </div>
           <div>
             <app-searchbar
-              [canAdd]="canAddDelete"
-              [canDelete]="canAddDelete"
+              [canAdd]="canAddDelete && userActivities.canEdit"
+              [canDelete]="canAddDelete && userActivities.canDelete"
             ></app-searchbar>
           </div>
 

@@ -2,7 +2,7 @@
     <div class="faq-title d-flex justify-content-between">
         <h3>Provacy Policy</h3>
         <app-searchbar
-            [canAdd]="true"
+            [canAdd]="userActivities.canEdit"
             (btnAction)="openDialog({isEditing: false, editObject: faqs})"
       ></app-searchbar>
     </div>

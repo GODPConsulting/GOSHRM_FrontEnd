@@ -1,8 +1,8 @@
 <div class="setup__wrapper">
   <div class="d-flex justify-content-end mt-5">
     <app-searchbar
-      [canAdd]="true"
-      [canDelete]="true"
+      [canAdd]="userActivities.canEdit"
+      [canDelete]="userActivities.canDelete"
     ></app-searchbar>
   </div>
   <div class="setup_content bg-white my-5">

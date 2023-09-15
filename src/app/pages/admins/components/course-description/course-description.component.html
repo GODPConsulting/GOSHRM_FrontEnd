@@ -5,7 +5,7 @@
       </div>
       <div class="col-md-7 d-flex justify-content-end">
           <app-searchbar
-            [canAdd]="true"
+            [canAdd]="userActivities.canEdit"
             (btnAction)="openDialog(false)"
           ></app-searchbar>
       </div>
