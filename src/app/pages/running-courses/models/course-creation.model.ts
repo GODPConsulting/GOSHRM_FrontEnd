@@ -4,6 +4,7 @@ export interface Courses  {
     createdByType: number,
     providerId: number,
     training_Provider: string,
+    training_ProviderId: number,
     trainerId: number,
     training_Name: string,
     training_Objective: string,

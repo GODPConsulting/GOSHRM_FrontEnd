@@ -71,7 +71,7 @@ export class CourseCreationComponent implements OnInit {
           this.courses = res['coursesSetupTypes'];
           if(this.providerId) {
             this.courses = this.courses.filter(c => {
-              return +c.training_Provider === this.providerId;
+              return c.training_ProviderId === this.providerId;
             })
           }
 

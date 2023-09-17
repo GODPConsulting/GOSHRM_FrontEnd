@@ -32,7 +32,7 @@
                       <th [pSortableColumn]="'website'">Website</th>
                       <th [pSortableColumn]="'phone_Number'">Phone Number</th>
                       <th [pSortableColumn]="'createdOn'">Date Joined</th>
-                      <th [pSortableColumn]="'courses'">Courses</th>
+                      <th [pSortableColumn]="'courseCount'">Courses</th>
                       <th>Action</th>
                   </tr>
               </ng-template>
@@ -51,7 +51,7 @@
                     {{ course?.createdOn | date }}
                   </td>
                   <td class="click" routerLink="/courses" [queryParams]="{q: course?.trainingProviderId}">
-                    {{ course?.courses }}
+                    {{ course?.courseCount }}
                   </td>
                   <td>
                     <button class="btn btn-green btn-md" (click)="suspendprovider(course?.trainingProviderId)">{{ course?.status }}</button>
