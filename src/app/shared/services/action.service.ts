@@ -34,8 +34,8 @@ export class ActionsService {
       this.deleteEvent.emit(true);
     }
 
-    download(){
-      this.downloadEvent.emit(true);
+    download(value: boolean){
+      this.downloadEvent.emit(value);
     }
 
     view(){

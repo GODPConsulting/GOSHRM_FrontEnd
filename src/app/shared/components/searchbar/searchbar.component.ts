@@ -31,7 +31,7 @@ export class SearchbarComponent implements OnInit {
   @Input() canDownload: boolean = false;
   @Input() canDelete: boolean = false;
   @Input() canAdd: boolean = false;
-  @Input() canReply: boolean = false;
+  @Input() canUpload: boolean = false;
 
   constructor(
     private _action: ActionsService
@@ -44,9 +44,9 @@ export class SearchbarComponent implements OnInit {
     this._action.addNew(true);
   }
 
-  public downloadPressed(): void {
-    this.downloadAction.emit();
-    this._action.download();
+  public downloadPressed(value: boolean): void {
+    this.downloadAction.emit(value);
+    this._action.download(value);
   }
 
   public deletePressed(): void {

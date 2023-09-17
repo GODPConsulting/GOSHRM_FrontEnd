@@ -54,7 +54,7 @@
                     {{ course?.courses }}
                   </td>
                   <td>
-                    <button class="btn btn-green btn-md" (click)="suspendprovider(course?.trainingProviderId)">Suspend</button>
+                    <button class="btn btn-green btn-md" (click)="suspendprovider(course?.trainingProviderId)">{{ course?.status }}</button>
                   </td>
                 </tr>
               </ng-template>

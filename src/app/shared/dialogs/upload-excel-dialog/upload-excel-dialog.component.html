@@ -1,0 +1,72 @@
+<div class="d-flex justify-content-between" mat-dialog-title>
+    <h2 mat-dialog-title>Upload {{ data.editObject.name }} </h2>
+    <div class="click" mat-dialog-close>
+      <img src="assets/icons/close.svg" alt="" />
+    </div>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    <app-error [error_message]="error_message"></app-error>
+    <div class="row">
+        <div class="col-12">
+            <app-upload-doc
+                [isExcel]="true"
+                [allType]="false"
+                [additionalInfo]="data.editObject.additionalInfo"
+                (selectedFiles)="getFile($event)"
+            ></app-upload-doc>
+        </div>
+        <div class="col-12" *ngIf="file">
+            <div class="wrapper">
+              <div class="d-flex">
+                <img src="assets/images/xls.png" alt="" class="wrapper_ext" />
+                <p class="wrapper_name">
+                  {{
+                    (file.name.length>20) ?
+                    (file.name | slice:0:20)+'...' :
+                    (file.name)
+                  }} - {{ formatBytes() }}
+                </p>
+              </div>
+              <img
+                src="assets/icons/close.svg"
+                alt=""
+                class="wrapper_close"
+                (click)="removeFile()"
+              />
+            </div>
+        </div>
+        <div class="col-12">
+          <table class="table">
+            <caption>Format</caption>
+            <thead>
+              <th>Name</th>
+              <th>Description</th>
+            </thead>
+          </table>
+        </div>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button
+      [mat-dialog-close]="false"
+      class="btn btn-outline-green btn-md d-none"
+      #close
+    >
+      No, cancel
+    </button>
+    <!-- <button
+      class="btn btn-outline-green btn-md px-4 mx-3"
+    >
+        <a
+          [href]="'../../../../assets/files/'+data.editObject.format+'.xlsx'"
+          target="_blank"
+        >Download Format</a>
+    </button> -->
+    <button
+      class="btn btn-green btn-md px-4"
+      (click)="submit()"
+    >
+        Submit
+    </button>
+  </mat-dialog-actions>

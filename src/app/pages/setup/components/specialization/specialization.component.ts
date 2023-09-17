@@ -8,6 +8,9 @@ import { HelperService } from '@core/services/healper.service';
 import swal from 'sweetalert2';
 import { ConfirmationModalComponent } from '@shared/components/confirmation-modal/confirmation-modal.component';
 import { SpecializationDialogComponent } from '../../dialogs/specialization-dialog/specialization-dialog.component';
+import { ResponseModel } from 'app/models/response.model';
+import { UtilityService } from '@shared/services/utility.service';
+import { UploadExcelDialogComponent } from '@shared/dialogs/upload-excel-dialog/upload-excel-dialog.component';
 
 @Component({
   selector: 'app-specialization',
@@ -17,6 +20,7 @@ import { SpecializationDialogComponent } from '../../dialogs/specialization-dial
 export class SpecializationComponent implements OnInit {
   public sub: Subscription = new Subscription();
   public modalSubscription: Subscription = new Subscription();
+  public actionSubscription: Subscription = new Subscription();
   public isfetchingSpecialization!: boolean;
   public specializations: any[] = [];
   public selectedSpecializations: any[] = [];
@@ -27,12 +31,16 @@ export class SpecializationComponent implements OnInit {
     private _action: ActionsService,
     private dialog: MatDialog,
     private _setup: SetupService,
-    private _helper: HelperService
+    private _helper: HelperService,
+    private utilitiesService: UtilityService
   ) { }
 
   ngOnInit(): void {
     this.modalSubscription.add(this._action.triggerModalEvent.subscribe((event)=> {
       event ? this.openDialog(false) : this.delete();
+    }));
+    this.actionSubscription.add(this._action.downloadEvent.subscribe((event)=> {
+      event ? this.downloadSpecialization() : this.openUploadDialog({ isEditing: true, editObject: {endpoint: '/setup/upload/specialization', name: 'Specialization', format: 'Specialization'} });
     }));
     this.getAllSpecializations();
   }
@@ -94,6 +102,38 @@ export class SpecializationComponent implements OnInit {
       });
     }
 
+  }
+
+  public downloadSpecialization(): void {
+    this._helper.startSpinner();
+    this.sub.add(
+      this._setup.downloadSpecialization().subscribe({
+        next: (res: any) => {
+          this._helper.stopSpinner();
+          this.utilitiesService.byteToFile(res, "Specialization.xlsx");
+        },
+        error: (error: ResponseModel<null>) => {
+          this._helper.stopSpinner();
+          console.log(error);
+        },
+      })
+    );
+  }
+
+  public openUploadDialog(
+    data: { isEditing?: boolean; editObject?: any } | any
+  ): void {
+    let object: DialogModel<any> = data;
+    const dialogRef = this.dialog.open(UploadExcelDialogComponent, {
+      data: object,
+      panelClass: 'modal-width'
+    });
+
+    dialogRef.componentInstance.event.subscribe(
+      (event: DialogModel<any>) => {
+          this.getAllSpecializations();
+      }
+    );
   }
 
   public deleteAction() {

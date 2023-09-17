@@ -28,6 +28,16 @@ export class SetupService {
    return this.http.makeRequestWithData('post', endpoint, {}, payload);
   }
 
+  public downloadIndustry(): Observable<ResponseModel<any>> {
+   const endpoint = '/setup/download/industry';
+   return this.http.makeRequestWithData('post', endpoint, {});
+  }
+
+  public uploadIndustry(): Observable<ResponseModel<any>> {
+   const endpoint = '/setup/upload/industry';
+   return this.http.makeRequestWithData('post', endpoint, {});
+  }
+
   public getSpecializations(): Observable<ResponseModel<any[]>> {
     const endpoint = '/setup/get/specialization';
     return this.http.getRequest(endpoint);
@@ -45,6 +55,16 @@ export class SetupService {
    ): Observable<ResponseModel<any>> {
     const endpoint = '/setup/delete/specialization';
     return this.http.makeRequestWithData('post', endpoint, {}, payload);
+   }
+
+   public downloadSpecialization(): Observable<ResponseModel<any>> {
+    const endpoint = '/setup/download/specialization';
+    return this.http.makeRequestWithData('post', endpoint, {});
+   }
+
+   public uploadSpecialization(): Observable<ResponseModel<any>> {
+    const endpoint = '/setup/upload/specialization';
+    return this.http.makeRequestWithData('post', endpoint, {});
    }
 
 

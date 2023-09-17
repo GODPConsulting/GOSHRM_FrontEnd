@@ -22,6 +22,7 @@ import { UploadDocComponent } from './components/upload-doc/upload-doc.component
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { FormsModule } from '@angular/forms';
 import { RbacAllowDirective } from './directives/rbac-allow.directive';
+import { UploadExcelDialogComponent } from './dialogs/upload-excel-dialog/upload-excel-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { RbacAllowDirective } from './directives/rbac-allow.directive';
     InfoComponent,
     BackButtonComponent,
     UploadDocComponent,
-    RbacAllowDirective
+    RbacAllowDirective,
+    UploadExcelDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -68,7 +70,8 @@ import { RbacAllowDirective } from './directives/rbac-allow.directive';
     NgSelectModule,
     BackButtonComponent,
     UploadDocComponent,
-    RbacAllowDirective
+    RbacAllowDirective,
+    UploadExcelDialogComponent
   ],
 })
 export class SharedModule {}

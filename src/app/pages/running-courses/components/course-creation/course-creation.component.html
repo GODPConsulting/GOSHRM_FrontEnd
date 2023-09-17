@@ -85,7 +85,7 @@
                       ></ng-rating-bar>
                     </td>
                     <td>
-                      <button class="btn btn-green btn-md" (click)="suspendCourse(course?.courseId)">Suspend</button>
+                      <button class="btn btn-green btn-md" (click)="suspendCourse(course?.courseId)">{{ course?.status }}</button>
                     </td>
                 </tr>
               </ng-template>
