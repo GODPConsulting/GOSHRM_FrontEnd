@@ -120,6 +120,20 @@ const routes: Routes = [
             (m) => m.RunningCoursesModule
           ),
       },
+      {
+        path: 'testimony',
+        loadChildren: () =>
+          import('./pages/testimony/testimony.module').then(
+            (m) => m.TestimonyModule
+          ),
+      },
+      {
+        path: 'payment-setup',
+        loadChildren: () =>
+          import('./pages/payment/payment.module').then(
+            (m) => m.PaymentModule
+          ),
+      },
     ],
   },
   {

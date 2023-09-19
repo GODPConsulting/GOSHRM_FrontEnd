@@ -1,0 +1,148 @@
+<div class="d-flex justify-content-between" mat-dialog-title>
+  <h2 mat-dialog-title>{{ data.isEditing ? 'Edit' : 'Add' }} Testimony </h2>
+  <div class="click" mat-dialog-close>
+    <img src="assets/icons/close.svg" alt="" />
+  </div>
+</div>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="faqForm">
+      <app-error [error_message]="error_message"></app-error>
+      <div class="row">
+          <div class="col-12">
+              <div class="form-group form_group">
+                <label>Name <span class="text-red">●</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Full Name"
+                  formControlName="name"
+                  (keyup)="checkForKeyEnter($event)"
+                  [ngClass]="{
+                    'is-invalid':
+                      (faqForm.get('name')?.errors &&
+                        faqForm.get('name')?.touched) ||
+                      (faqForm.get('name')?.hasError('required') &&
+                        faqFormSubmitted)
+                  }"
+                />
+                <div
+                  class="invalid-feedback"
+                  *ngIf="
+                    faqForm.get('name')?.hasError('required') &&
+                    faqFormSubmitted
+                  "
+                >
+                  Required
+                </div>
+              </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group form_group">
+              <label>Designation </label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter Designation"
+                formControlName="title"
+                (keyup)="checkForKeyEnter($event)"
+                [ngClass]="{
+                  'is-invalid':
+                    (faqForm.get('title')?.errors &&
+                      faqForm.get('title')?.touched) ||
+                    (faqForm.get('title')?.hasError('required') &&
+                      faqFormSubmitted)
+                }"
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  faqForm.get('title')?.hasError('required') &&
+                  faqFormSubmitted
+                "
+              >
+                Required
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-group form_group">
+                <label>Testimonial <span class="text-red">●</span> </label>
+                <textarea
+                  name="" id=""
+                  cols="30" rows="10"
+                  class="form-control"
+                  formControlName="testimonyText"
+                  (keyup)="checkForKeyEnter($event)"
+                  [ngClass]="{
+                    'is-invalid':
+                      (faqForm.get('testimonyText')?.errors &&
+                        faqForm.get('testimonyText')?.touched) ||
+                      (faqForm.get('testimonyText')?.hasError('required') &&
+                        faqFormSubmitted)
+                  }"
+                ></textarea>
+              <div
+                class="invalid-feedback"
+                *ngIf="
+                  faqForm.get('testimonyText')?.hasError('required') &&
+                  faqFormSubmitted
+                "
+              >
+                Required
+              </div>
+            </div>
+         </div>
+         <div class="col-12">
+          <div class="form-group form_group">
+            <label>Make Visible </label>
+            <select
+              name="" id="" class="form-control"
+              formControlName="makeVisible"
+              [ngClass]="{
+                'is-invalid':
+                  (faqForm.get('makeVisible')?.errors &&
+                    faqForm.get('makeVisible')?.touched) ||
+                  (faqForm.get('makeVisible')?.hasError('required') &&
+                    faqFormSubmitted)
+              }"
+            >
+              <option [ngValue]="false">No</option>
+              <option [ngValue]="true">Yes</option>
+            </select>
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                faqForm.get('makeVisible')?.hasError('required') &&
+                faqFormSubmitted
+              "
+            >
+              Required
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-12">
+          <app-upload-doc
+            [isImage]="true"
+            [allType]="false"
+            (selectedFiles)="onFileDropped($event)"
+          ></app-upload-doc>
+        </div> -->
+      </div>
+    </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button
+    [mat-dialog-close]="false"
+    class="btn btn-outline-green btn-md me-4 px-4 d-none"
+    #close
+  >
+    No, cancel
+  </button>
+  <button
+    class="btn btn-green btn-md px-4"
+    (click)="submit()"
+  >
+      Submit
+  </button>
+</mat-dialog-actions>

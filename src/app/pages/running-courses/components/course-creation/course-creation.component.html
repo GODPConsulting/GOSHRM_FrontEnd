@@ -38,6 +38,7 @@
                       <th [pSortableColumn]="'course_Title'">Course Title</th>
                       <th [pSortableColumn]="'no_Of_Views'">No. of Views</th>
                       <th [pSortableColumn]="'ratings'">Rating</th>
+                      <th [pSortableColumn]="'status'">Status</th>
                       <th>Action</th>
                   </tr>
               </ng-template>
@@ -85,7 +86,30 @@
                       ></ng-rating-bar>
                     </td>
                     <td>
-                      <button class="btn btn-green btn-md" (click)="suspendCourse(course?.courseId)">{{ course?.status }}</button>
+                    <div class="d-flex align-items-center me-2">
+                      <span
+                        class="badge"
+                        [ngClass]="{
+                          'badge-success': course?.status == 'Not Suspended',
+                          'badge-error': course?.status == 'Suspended'
+                        }"
+                      >
+                        {{
+                          course?.status
+                        }}
+                      </span>
+                    </div>
+                  </td>
+                    <td>
+                      <button class="btn btn-green btn-md" (click)="suspendCourse(course?.courseId)">
+                        {{
+                          course?.status == 'Not Suspended'
+                          ? "Suspended"
+                          : course?.status == 'Suspended'
+                          ? 'Unsuspended'
+                          : "--"
+                        }}
+                      </button>
                     </td>
                 </tr>
               </ng-template>

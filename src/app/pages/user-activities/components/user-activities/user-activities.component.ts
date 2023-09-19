@@ -166,6 +166,13 @@ export class UserActivitiesComponent implements OnInit {
     this.pages.removeAt(index);
   }
 
+  public toggleAllview() {
+    this.pages = this.vatForm.get('pages') as FormArray;
+    for (let i = 0; i < this.pages.length; i++) {
+     this.changeViewValue(i);
+    }
+  }
+
   public changeViewValue(index: number) {
     let canView =  (<FormArray>this.vatForm.controls['pages']).at(index).get('canView')!.value;
     (<FormArray>this.vatForm.controls['pages']).at(index).patchValue(

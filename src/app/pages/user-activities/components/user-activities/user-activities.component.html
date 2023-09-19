@@ -59,15 +59,47 @@
                 [responsive]="true"
                 [scrollable]="true"
                 [columns]="cols"
-                [scrollHeight]="'350px'"
+                [scrollHeight]="'420px'"
               >
 
                 <ng-template pTemplate="header">
                   <tr class="thead">
                     <th [pSortableColumn]="'name'">Page Name</th>
-                    <th [pSortableColumn]="''">View</th>
-                    <th [pSortableColumn]="''">Create/Update</th>
-                    <th [pSortableColumn]="''">Delete</th>
+                    <th [pSortableColumn]="''">
+                      <label class="check-container">
+                        <input
+                          type="checkbox"
+                          name="canEdit"
+                          (change)="toggleAllview()"
+                        />
+                        <span class="checkmark"></span>
+                      </label>
+                      <span class="ms-5">View</span>
+                    </th>
+                    <th [pSortableColumn]="''">
+                      <label class="check-container">
+                        <input
+                          type="checkbox"
+                          name="canEdit"
+                          (change)="toggleAllview()"
+                        />
+                        <span class="checkmark"></span>
+                      </label>
+                      <span class="ms-5">Create/Update</span>
+
+                    </th>
+                    <th [pSortableColumn]="''">
+                      <label class="check-container">
+                        <input
+                          type="checkbox"
+                          name="canEdit"
+                          (change)="toggleAllview()"
+                        />
+                        <span class="checkmark"></span>
+                      </label>
+                      <span class="ms-5">Delete</span>
+
+                    </th>
                   </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">

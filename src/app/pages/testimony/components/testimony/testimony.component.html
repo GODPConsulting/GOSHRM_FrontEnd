@@ -1,0 +1,69 @@
+<div class="setup__wrapper">
+  <div class="d-flex justify-content-end mt-5">
+    <app-searchbar
+      [canAdd]="userActivities.canEdit"
+      [canDelete]="userActivities.canDelete"
+    ></app-searchbar>
+  </div>
+  <div class="setup_content bg-white my-5">
+      <ng-container *ngIf="isfetchingIndustry || industries.length > 0">
+          <p-table
+              #dt
+              [value]="industries"
+              dataKey="testimonyId"
+              [(selection)]="selectedIndustires"
+              [paginator]="true"
+              [rows]="15"
+              [responsive]="true"
+              [scrollable]="true"
+              [scrollHeight]="viewHeight"
+          >
+            <ng-template pTemplate="header">
+                <tr class="thead">
+                    <th>
+                      <span>
+                          <p-tableHeaderCheckbox>
+                          </p-tableHeaderCheckbox>
+                      </span>
+                    </th>
+                    <th [pSortableColumn]="'name'">Name</th>
+                    <th [pSortableColumn]="'title'">Designation</th>
+                    <th [pSortableColumn]="'testimonyText'">Testimonial</th>
+                    <th [pSortableColumn]="'makeVisible'">Visible</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-course let-i="rowIndex">
+              <tr class="tbody text-capitalize" [pSelectableRow]="course">
+                  <td
+                  >
+                    <p-tableCheckbox
+                        [value]="course"
+                    ></p-tableCheckbox>
+                  </td>
+                  <td class="click" (click)="openDialog({isEditing: true, editObject: course})">
+                    {{ course?.name }}
+                  </td>
+                  <td class="click" (click)="openDialog({isEditing: true, editObject: course})">
+                    {{ course?.title }}
+                  </td>
+                  <td class="click" (click)="openDialog({isEditing: true, editObject: course})">
+                    {{course?.testimonyText?.length > 50 ?
+                      course?.testimonyText?.slice(0, 50) + '...' :
+                      course?.testimonyText}}
+                  </td>
+                  <td class="click" (click)="openDialog({isEditing: true, editObject: course})">
+                    {{ course?.makeVisible ? 'Yes' : 'No' }}
+                  </td>
+              </tr>
+            </ng-template>
+          </p-table>
+      </ng-container>
+      <app-no-data
+        name="Testimony"
+        [is_loading]="isfetchingIndustry"
+        *ngIf="industries?.length == 0"
+        (open_dialog)="openDialog(false)"
+      >
+      </app-no-data>
+    </div>
+</div>

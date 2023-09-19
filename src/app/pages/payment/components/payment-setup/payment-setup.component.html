@@ -1,0 +1,174 @@
+<div class="my-5">
+    <div class="row d-flex justify-content-center">
+        <div class="bg-white col-md-10 col-lg-10 col-12 p-5">
+            <div class="row">
+                <div class="col-md-4 col-lg-3 mb-2">
+                  <div class="form_group">
+                    <label for="paymentSetup" class="form-label">Payment Setup</label>
+                    <ng-select
+                      [items]="paymentOptions"
+                      [selectOnTab]="true"
+                      [clearable]="false"
+                      appendTo="body"
+                      [virtualScroll]="true"
+                      [readonly]="true"
+                      bindValue="name"
+                      bindLabel="name"
+                      placeholder="Payment Setup"
+                      id="paymentSetup"
+                      [(ngModel)]="selectedPayment"
+                      [searchable]="true">
+                    </ng-select>
+                  </div>
+                </div>
+            </div>
+
+            <!-- Flutterwave form -->
+            <form [formGroup]="flutterwaveSetupForm" *ngIf="selectedPayment ==='Flutterwave'">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form_group">
+                            <label for="secretKey" class="form-label">
+                            Flutterwave Secret Keys*
+                            </label>
+                            <input
+                                type="text"
+                                formControlName="value"
+                                class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group">
+                        <label for="publicKey" class="form-label">
+                            Flutterwave Public Keys*
+                        </label>
+                            <input
+                            type="text"
+                            formControlName="key"
+                            class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button
+                        (click)="addPaymentSetup(1)"
+                        [disabled]="!flutterwaveSetupForm.valid"
+                        class="btn btn-green btn-lg"
+                    >
+                        Save
+                    </button>
+                </div>
+            </form>
+            <!-- /Flutterwave form -->
+
+            <!-- PayStack form -->
+            <form [formGroup]="paystackSetupForm" *ngIf="selectedPayment ==='PayStack'">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form_group">
+                            <label for="secretKey" class="form-label">
+                            Paystack Secret Keys*
+                            </label>
+                            <input
+                                type="text"
+                                formControlName="secret"
+                                class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                    <div class="form_group">
+                    <label for="publicKey" class="form-label">
+                        Paystack Public Keys*
+                    </label>
+                        <input
+                        type="text"
+                        formControlName="key"
+                        class="form-control"/>
+                    </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button
+                        (click)="addPaymentSetup(2)"
+                        [disabled]="!paystackSetupForm.valid"
+                        class="btn btn-green btn-lg">
+
+                        Save
+                    </button>
+                </div>
+            </form>
+            <!-- /PayStack form -->
+
+            <!-- BankOne form -->
+            <form [formGroup]="bankoneSetupForm" *ngIf="selectedPayment ==='Bankone'">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form_group">
+                            <label for="secret" class="form-label">
+                            Bank One Token*
+                            </label>
+                            <input
+                                type="text"
+                                id="secret"
+                                formControlName="secret"
+                                class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group">
+                        <label for="key" class="form-label">
+                            Bank Institution Code*
+                        </label>
+                            <input
+                            type="text"
+                            id="key"
+                            formControlName="key"
+                            class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group">
+                            <label for="payrollCode" class="form-label">
+                            Payroll GL Code*
+                            </label>
+                            <input
+                                type="text"
+                                id="payrollCode"
+                                formControlName="payrollCode"
+                                class="form-control"/>
+                        </div>
+                        <div class="error-msg" *ngIf="bankoneSetupForm.get('payrollCode')?.errors?.maxlength">
+                            *Payroll code has a maximum character of 7
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form_group">
+                        <label for="nonPayrollCode" class="form-label">
+                            Non Payroll GL Code*
+                        </label>
+                            <input
+                            type="text"
+                            id="nonPayrollCode"
+                            formControlName="nonPayrollCode"
+                            class="form-control"/>
+                        </div>
+                        <div class="error-msg" *ngIf="bankoneSetupForm.get('nonPayrollCode')?.errors?.maxlength">
+                        *Non payroll code has a maximum character of 7
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <button
+                        (click)="addPaymentSetup(3)"
+                        [disabled]="!bankoneSetupForm.valid"
+                        class="btn btn-green btn-lg">
+
+                        Save
+                    </button>
+                </div>
+            </form>
+            <!-- /BankOne form -->
+
+        </div>
+    </div>
+</div>

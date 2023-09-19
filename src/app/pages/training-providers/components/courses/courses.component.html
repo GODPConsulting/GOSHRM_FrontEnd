@@ -33,6 +33,7 @@
                       <th [pSortableColumn]="'phone_Number'">Phone Number</th>
                       <th [pSortableColumn]="'createdOn'">Date Joined</th>
                       <th [pSortableColumn]="'courseCount'">Courses</th>
+                      <th [pSortableColumn]="'status'">Status</th>
                       <th>Action</th>
                   </tr>
               </ng-template>
@@ -54,7 +55,30 @@
                     {{ course?.courseCount }}
                   </td>
                   <td>
-                    <button class="btn btn-green btn-md" (click)="suspendprovider(course?.trainingProviderId)">{{ course?.status }}</button>
+                    <div class="d-flex align-items-center me-2">
+                      <span
+                        class="badge"
+                        [ngClass]="{
+                          'badge-success': course?.status == 'Not Suspended',
+                          'badge-error': course?.status == 'Suspended'
+                        }"
+                      >
+                        {{
+                          course?.status
+                        }}
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <button class="btn btn-green btn-md" (click)="suspendprovider(course?.trainingProviderId)">
+                      {{
+                        course?.status == 'Not Suspended'
+                        ? "Suspended"
+                        : course?.status == 'Suspended'
+                        ? 'Unsuspended'
+                        : "--"
+                      }}
+                    </button>
                   </td>
                 </tr>
               </ng-template>
