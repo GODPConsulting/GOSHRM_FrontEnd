@@ -66,32 +66,32 @@
          </div>
          <div class="col-12">
           <div class="form-group form_group">
-          <label>Pages </label>
-          <ng-select
-              [items]="pages"
-              [selectOnTab]="true"
-              appendTo="body"
-              [loading]="isLoadingPages"
-              [virtualScroll]="true"
-              bindLabel="name"
-              [multiple]="true"
-              [closeOnSelect]="false"
-              placeholder="Select Page"
-              (scrollToEnd)="getAllPages()"
-              [searchable]="true"
-              formControlName="pages"
-          >
-          </ng-select>
-          <div
-              class="p-0 m-0 click d-flex justify-content-end align-items-center"
-              (click)="getAllPages()"
-              *ngIf="isLoadingPagesFailed"
-          >
-              Retry &nbsp;
-              <mat-icon [ngClass]="{ spin: isLoadingPages }"
-              >refresh</mat-icon
-              >
-          </div>
+            <label>Pages </label>
+            <ng-select
+                [items]="pages"
+                [selectOnTab]="true"
+                appendTo="body"
+                [loading]="isLoadingPages"
+                [virtualScroll]="true"
+                bindLabel="name"
+                [multiple]="true"
+                [closeOnSelect]="false"
+                placeholder="Select Page"
+                (scrollToEnd)="getAllPages()"
+                [searchable]="true"
+                formControlName="pages"
+            >
+            </ng-select>
+            <div
+                class="p-0 m-0 click d-flex justify-content-end align-items-center"
+                (click)="getAllPages()"
+                *ngIf="isLoadingPagesFailed"
+            >
+                Retry &nbsp;
+                <mat-icon [ngClass]="{ spin: isLoadingPages }"
+                >refresh</mat-icon
+                >
+            </div>
           </div>
         </div>
       </div>
