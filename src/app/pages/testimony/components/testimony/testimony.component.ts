@@ -42,10 +42,10 @@ export class TestimonyComponent implements OnInit {
     this.modalSubscription.add(this._action.triggerModalEvent.subscribe((event)=> {
       event ? this.openDialog(false) : this.delete();
     }));
-    this.getAllUserRoles();
+    this.getTestimonies();
   }
 
-  public getAllUserRoles() {
+  public getTestimonies() {
     this._helper.startSpinner();
     this.isfetchingIndustry = true,
     this.sub.add(
@@ -75,7 +75,7 @@ export class TestimonyComponent implements OnInit {
     // console.log(payload)
     dialogRef.componentInstance.event.subscribe(
       (event: DialogModel<any>) => {
-        this.getAllUserRoles();
+        this.getTestimonies();
       }
     );
   }
@@ -126,7 +126,7 @@ export class TestimonyComponent implements OnInit {
             showConfirmButton: false,
             timer: 1500
           })
-          this.getAllUserRoles();
+          this.getTestimonies();
         } else {
           swal.fire("GOSHRM", message, "error");
         }

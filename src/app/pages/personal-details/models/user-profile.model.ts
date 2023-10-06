@@ -10,7 +10,8 @@ export interface Profile {
     specializationTypes: string,
     active: boolean,
     deleted: boolean,
-    trainingProviderId: 0
+    trainingProviderId: number,
+    currencyCode: string
 }
 
 export interface SocialMedia {

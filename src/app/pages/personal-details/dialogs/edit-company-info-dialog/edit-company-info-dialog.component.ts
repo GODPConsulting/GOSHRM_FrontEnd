@@ -20,6 +20,7 @@ import { Profile } from '../../models/user-profile.model';
 import { ProfileService } from '../../services/profile.service';
 import { SetupService } from 'app/pages/setup/services/setup.service';
 import { Subscription } from 'rxjs';
+import { Currencies } from '@shared/jsons/currencies';
 
 @Component({
   selector: 'app-edit-company-info-dialog',
@@ -41,6 +42,7 @@ export class EditCompanyInfoDialogComponent implements OnInit {
   public isfetchingIndustryFailed!: boolean;
   public specializations: any[] = [];
   public industries: any[] = [];
+  public currencies = Currencies;
 
   //event for added leave or updated leave
   @Output() event: EventEmitter<{
@@ -111,6 +113,7 @@ export class EditCompanyInfoDialogComponent implements OnInit {
       aboutInfo: [this.data?.editObject?.aboutInfo ? this.data?.editObject?.aboutInfo  : ''],
       industryTypes: [this.data?.editObject?.industryTypes ? this.data?.editObject?.industryTypes  : ''],
       specializationTypes: [this.data?.editObject?.specializationTypes ? this.data?.editObject?.specializationTypes  : ''],
+      currencyCode: [this.data?.editObject?.currencyCode ? this.data?.editObject?.currencyCode  : ''],
     })
   }
 
